@@ -1,0 +1,5 @@
+intermediate/**/*.asm
+intermediate/**/*.h
+intermediate/**/*.globals.c
+*.obj
+*.pyc
