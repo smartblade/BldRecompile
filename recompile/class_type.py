@@ -34,10 +34,7 @@ class ClassType:
         )
         lines.append("")
         lines.append("struct {} {{".format(self._class_name))
-        for offset, (field_type, field_name) in self._fields.items():
-            indent = " " * 4
-            type_name = field_type.get_type_name(is_metafile=True)
-            lines.append("{}{} {};".format(indent, type_name, field_name))
+        self._write_fields(lines, is_metafile=True)
         lines.append("};")
         return "\n".join(lines) + "\n"
 
@@ -49,18 +46,38 @@ class ClassType:
         for method in self._methods:
             if method.method_class is None:
                 raise Exception("Method class should be set.")
-            if len(method.parameters) > 0:
-                raise Exception("Parameters are not implemented.")
+            parameters = []
+            for parameter_type, parameter_name in method.parameters:
+                type_name = parameter_type.get_type_name(is_metafile=False)
+                sep = "" if type_name.endswith("*") else " "
+                parameters.append("{}{}{}".format(type_name, sep, parameter_name))
             lines.append(
-                "{}{}{}();".format(
+                "{}{}{}({});".format(
                     indent,
                     method.return_arg,
                     method.proc_name,
+                    ", ".join(parameters),
                 )
             )
         lines.append("")
-        for offset, (field_type, field_name) in self._fields.items():
-            type_name = field_type.get_type_name(is_metafile=False)
-            lines.append("{}{} {};".format(indent, type_name, field_name))
+        self._write_fields(lines, is_metafile=False)
         lines.append("};")
         return "\n".join(lines) + "\n"
+
+    def _write_fields(self, lines, is_metafile):
+        cur_offset = 0
+        for offset, (field_type, field_name) in self._fields.items():
+            indent = " " * 4
+            if cur_offset != offset:
+                self._fill_unused_fields(lines, cur_offset, offset - cur_offset)
+            type_name = field_type.get_type_name(is_metafile=is_metafile)
+            lines.append("{}{} {};".format(indent, type_name, field_name))
+            cur_offset = offset + field_type.size
+
+    def _fill_unused_fields(self, lines, offset, size):
+        indent = " " * 4
+        lines.append(
+            "{}char unused_fields_{}[0x{}];".format(
+                indent, format(offset, '04X'), format(size, '04X')
+            )
+        )

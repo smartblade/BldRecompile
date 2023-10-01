@@ -3,3 +3,7 @@ class Unknown32:
         if is_metafile:
             return "word32"
         return "unknown32"
+
+    @property
+    def size(self):
+        return 4

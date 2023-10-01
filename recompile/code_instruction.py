@@ -7,4 +7,7 @@ class CodeInstruction:
         return "CodeInstruction({})".format(self._instr)
 
     def emit_code(self):
-        return "{}{}".format(" " * 4, self._instr)
+        instr = self._instr
+        if "memcpy" in instr:
+            instr += " // TODO improve emitting of memcpy instructions"
+        return "{}{}".format(" " * 4, instr)

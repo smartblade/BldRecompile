@@ -21,13 +21,17 @@ class ProcedureBody:
         lines.append("")
         if self._proc_decl.method_class is None:
             raise Exception("Only thiscall is implemented.")
-        if len(self._proc_decl.parameters) > 0:
-            raise Exception("Parameters are not implemented.")
+        parameters = []
+        for parameter_type, parameter_name in self._proc_decl.parameters:
+            type_name = parameter_type.get_type_name(is_metafile=False)
+            sep = "" if type_name.endswith("*") else " "
+            parameters.append("{}{}{}".format(type_name, sep, parameter_name))
         lines.append(
-            "{}{}::{}()".format(
+            "{}{}::{}({})".format(
                 self._proc_decl.return_arg,
                 self._proc_decl.method_class.class_name,
                 self._proc_decl.proc_name,
+                ", ".join(parameters),
             )
         )
         lines.append("{")

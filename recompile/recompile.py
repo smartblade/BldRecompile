@@ -9,6 +9,7 @@ import sys
 import time
 
 from class_type import ClassType
+from pointer32 import Pointer32
 from procedure_body import ProcedureBody
 from unknown32 import Unknown32
 
@@ -110,9 +111,7 @@ def parse_procedure_declaration(s):
     parameters = s[start_brackets_pos + 1:end_brackets_pos].split(',')
     parsed_parameters = []
     for p in parameters:
-        parsed_parameters.append(parse_variable_declaration(p))
-    if len(parsed_parameters) > 1:
-        raise Exception("Parameters are not implemented.")
+        parsed_parameters.append(parse_variable_declaration(p.strip()))
     var_type, var_name = parsed_parameters[0]
     # Check if it is 'thiscall' convention
     if var_name == "ecx":
@@ -124,29 +123,43 @@ def parse_procedure_declaration(s):
         class_name = type_tokens[1]
         if not class_name.startswith("Eq_"):
             raise Exception("Class name should be started with 'Eq_'.")
-        return make_tuple('ProcedureDeclation', class_name=class_name)
+        return make_tuple(
+            'ProcedureDeclation',
+             class_name=class_name,
+             parameters=parsed_parameters[1:])
     else:
         raise Exception("Only thiscall is implemented.")
 
 def parse_data_type(s):
     if s == "word32":
         return Unknown32()
+    if s == "<unknown>*":
+        return Pointer32()
     raise Exception("Not implemented type: {}.".format(s))
 
 def emit_cdecl(proc_decl):
     if proc_decl.method_class is None:
         raise Exception("Only thiscall is implemented.")
-    if len(proc_decl.parameters) > 0:
-        raise Exception("Parameters are not implemented.")
     this_arg = "{} *this".format(proc_decl.method_class.class_name)
-    return "word32 __thiscall {}({})".format(proc_decl.proc_name, this_arg)
+    parameters = [this_arg]
+    for parameter_type, parameter_name in proc_decl.parameters:
+        parameters.append(
+            "{} {}".format(
+                parameter_type.get_type_name(is_metafile=True),
+                parameter_name,
+            )
+        )
+    return "word32 __thiscall {}({})".format(
+        proc_decl.proc_name, ", ".join(parameters)
+    )
 
 def emit_metafile(proc_decl, decl_file_name):
     with open(decl_file_name, "wt") as f:
         if proc_decl.method_class is None:
             raise Exception("Only thiscall is implemented.")
-        if len(proc_decl.parameters) > 0:
-            raise Exception("Parameters are not implemented.")
+        for arg_type, arg_name in proc_decl.parameters:
+            if isinstance(arg_type, ClassType):
+                arg_type.get_declaration(is_metafile=True)
         class_decl = proc_decl.method_class.get_declaration(is_metafile=True)
         f.write(class_decl)
 
@@ -163,6 +176,13 @@ def define_field_name(field_type, field_name):
     if isinstance(field_type, Unknown32):
         field_name = field_name.replace("dw", "unknown_field_")
     return field_name
+
+def define_parameter_name(field_type, parameter_name):
+    if isinstance(field_type, Unknown32):
+        parameter_name = parameter_name.replace("dwArg", "unknown_param_")
+    if isinstance(field_type, Pointer32):
+        parameter_name = parameter_name.replace("dwArg", "unknown_ptr_")
+    return parameter_name
 
 def process_header_file(file_name, classes):
     with open(file_name) as f:
@@ -210,11 +230,17 @@ def process_intermediate_output(output_dir, addr):
     if proc.class_name is not None:
         method_class = classes[proc.class_name]
         method_class = method_class.rename("unknown_class_{}".format(addr))
+    parameters = []
+    for parameter in proc.parameters:
+        var_type, var_name = parameter
+        var_type = parse_data_type(var_type)
+        var_name = define_parameter_name(var_type, var_name)
+        parameters.append((var_type, var_name))
     proc_decl = make_tuple(
         'ProcedureDeclation',
         proc_name = "unknown_method_{}".format(addr),
         method_class=method_class,
-        parameters=[],
+        parameters=parameters,
     )
     if method_class is not None:
         method_class.add_method(proc_decl)
@@ -299,6 +325,7 @@ def create_common_header():
     common_header_name = os.path.join(script_dir, "output", "common.h")
     with open(common_header_name, "wt") as f:
         f.write("#pragma once\n\n")
+        f.write("#include <string.h>\n\n")
         f.write("typedef int unknown32;\n")
 
 def run():
@@ -312,7 +339,8 @@ def run():
     create_common_header()
     for addr, proc in proc_dict.items():
         process_procedure(output_file_name, addr)
-        break
+        if addr > "00401000":
+            break
 
 if __name__ == '__main__':
     start_time = time.time()
