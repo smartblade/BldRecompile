@@ -373,7 +373,7 @@ def run():
     create_common_header()
     for addr, proc in proc_dict.items():
         process_procedure(output_file_name, addr)
-        if addr > "00401000":
+        if addr > "00401051":
             break
 
 if __name__ == '__main__':
