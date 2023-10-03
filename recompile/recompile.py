@@ -1,4 +1,5 @@
 from collections import namedtuple
+import hashlib
 import json
 import os
 import os.path
@@ -288,6 +289,39 @@ def process_final_output(output_dir, proc_decl, addr):
     compile_bat = os.path.join(script_dir, "compile.bat")
     execute_command([compile_bat, cpp_file_name])
 
+def update_hash(hasher, file_name):
+    with open(file_name, "rb") as f:
+        hasher.update(f.read())
+    return hasher.digest()
+
+def is_hash_changed(hash_file_name, new_hash):
+    try:
+        with open(hash_file_name, "rb") as f:
+            existing_hash = f.read()
+            return existing_hash != new_hash
+    except FileNotFoundError:
+        return True
+
+def write_hash(hash_file_name, new_hash):
+    with open(hash_file_name, "wb") as f:
+        f.write(new_hash)
+
+def execute_reko(project_file_name, decl_base_name):
+    hash_file_name = project_file_name + ".obj"
+    hasher = hashlib.sha256()
+    update_hash(hasher, project_file_name)
+    if decl_base_name is not None:
+        decl_file_name = os.path.join(
+            os.path.dirname(project_file_name), decl_base_name
+        )
+        update_hash(hasher, decl_file_name)
+    new_hash = hasher.digest()
+    if not is_hash_changed(hash_file_name, new_hash):
+        print("Input files were not changed: skipping executing of Reko...")
+        return
+    execute_command([reko_cmdline, project_file_name])
+    write_hash(hash_file_name, new_hash)
+
 def process_procedure(project_template, addr):
     decompile_file_part_py = os.path.join(
         script_dir, "..", "projects", "decompile_file_part.py"
@@ -309,7 +343,7 @@ def process_procedure(project_template, addr):
     shutil.copyfile(output_file_name, output_file_name + "_")
     output_dir_name = addr
     set_output_dir(output_file_name, output_dir_name)
-    execute_command([reko_cmdline, output_file_name])
+    execute_reko(output_file_name, None)
     output_dir = os.path.join(os.path.dirname(output_file_name), output_dir_name)
     proc_decl = process_intermediate_output(output_dir, addr)
     output_file_name += "_"
@@ -317,7 +351,7 @@ def process_procedure(project_template, addr):
     set_output_dir(output_file_name, output_dir_name)
     decl_file_name = "decl_{}.inc".format(output_dir_name)
     set_procedure_declaration(output_file_name, proc_decl, decl_file_name, addr)
-    execute_command([reko_cmdline, output_file_name])
+    execute_reko(output_file_name, decl_file_name)
     output_dir = os.path.join(os.path.dirname(output_file_name), output_dir_name)
     process_final_output(output_dir, proc_decl, addr)
 
