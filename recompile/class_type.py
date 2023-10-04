@@ -1,3 +1,5 @@
+from unknown32 import Unknown32
+
 class ClassType:
     def __init__(self, class_name, fields):
         self._class_name = class_name
@@ -16,6 +18,11 @@ class ClassType:
 
     def add_method(self, method):
         self._methods.append(method)
+
+    def ensure_field(self, offset):
+        if offset in self._fields:
+            return
+        self._fields[offset] = (Unknown32(), "unknown_field_{:04X}".format(offset))
 
     def update_method(self, updated_method):
         methods = []

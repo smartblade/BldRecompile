@@ -170,11 +170,25 @@ def emit_metafile(proc_decl, decl_file_name):
 def process_output_code(file_name, addr):
     with open(file_name) as f:
         lines = f.readlines()
+    body_lines = None
     for line in lines:
         if line.startswith("//"):
             continue
         if addr in line:
-            return parse_procedure_declaration(line)
+            proc = parse_procedure_declaration(line)
+            body_lines = []
+        elif body_lines is not None:
+            body_lines.append(line)
+        if line.startswith("}"):
+            return proc, body_lines
+
+def ensure_class_fields(method_class, body_lines):
+    field_offset_regexp = re.compile('\(char\s*\*\)\s*ecx\s*\+\s*(?P<offset>\d+)')
+    for line in body_lines:
+        match = re.search(field_offset_regexp, line)
+        if match:
+            offset = match.group('offset')
+            method_class.ensure_field(int(offset))
 
 def define_field_name(field_type, field_name):
     if isinstance(field_type, Unknown32):
@@ -225,7 +239,9 @@ def process_output_dir(output_dir):
 
 def process_intermediate_output(output_dir, addr):
     code_file, header_file = process_output_dir(output_dir)
-    proc = process_output_code(os.path.join(output_dir, code_file), addr)
+    proc, body_lines = process_output_code(
+        os.path.join(output_dir, code_file), addr
+    )
     class_name = extract_class_name(proc.class_type)
     classes = {}
     if class_name is not None:
@@ -243,6 +259,7 @@ def process_intermediate_output(output_dir, addr):
         else:
             method_class = classes[class_name]
         method_class = method_class.rename("unknown_class_{}".format(addr))
+        ensure_class_fields(method_class, body_lines)
     parameters = []
     for parameter in proc.parameters:
         var_type, var_name = parameter
