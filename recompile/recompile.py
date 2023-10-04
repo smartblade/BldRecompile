@@ -116,20 +116,23 @@ def parse_procedure_declaration(s):
     var_type, var_name = parsed_parameters[0]
     # Check if it is 'thiscall' convention
     if var_name == "ecx":
-        type_tokens = var_type.split(" ")
-        if type_tokens[0] != "struct":
-            raise Exception("Only structures is supported for thiscall parameter.")
-        if type_tokens[-1] != "*":
-            raise Exception("Only pointers is supported for thiscall parameter.")
-        class_name = type_tokens[1]
-        if not class_name.startswith("Eq_"):
-            raise Exception("Class name should be started with 'Eq_'.")
         return make_tuple(
             'ProcedureDeclation',
-             class_name=class_name,
+             class_type=var_type,
              parameters=parsed_parameters[1:])
     else:
         raise Exception("Only thiscall is implemented.")
+
+def extract_class_name(class_type):
+    type_tokens = class_type.split(" ")
+    if type_tokens[0] != "struct":
+        return None
+    if type_tokens[-1] != "*":
+        raise Exception("Only pointers is supported for thiscall parameter.")
+    class_name = type_tokens[1]
+    if not class_name.startswith("Eq_"):
+        raise Exception("Class name should be started with 'Eq_'.")
+    return class_name
 
 def parse_data_type(s):
     if s == "word32":
@@ -223,13 +226,22 @@ def process_output_dir(output_dir):
 def process_intermediate_output(output_dir, addr):
     code_file, header_file = process_output_dir(output_dir)
     proc = process_output_code(os.path.join(output_dir, code_file), addr)
+    class_name = extract_class_name(proc.class_type)
     classes = {}
-    if proc.class_name is not None:
-        classes[proc.class_name] = None
+    if class_name is not None:
+        classes[class_name] = None
     process_header_file(os.path.join(output_dir, header_file), classes)
     method_class = None
-    if proc.class_name is not None:
-        method_class = classes[proc.class_name]
+    if proc.class_type is not None:
+        if class_name is None:
+            class_type = parse_data_type(proc.class_type)
+            if (
+                isinstance(class_type, Pointer32) and
+                class_type.pointee is None
+            ):
+                method_class = ClassType("", {})
+        else:
+            method_class = classes[class_name]
         method_class = method_class.rename("unknown_class_{}".format(addr))
     parameters = []
     for parameter in proc.parameters:
@@ -373,7 +385,7 @@ def run():
     create_common_header()
     for addr, proc in proc_dict.items():
         process_procedure(output_file_name, addr)
-        if addr > "00401051":
+        if addr > "00401548":
             break
 
 if __name__ == '__main__':
