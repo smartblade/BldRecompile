@@ -10,6 +10,7 @@ import sys
 import time
 
 from class_type import ClassType
+from double import Double
 from pointer32 import Pointer32
 from procedure_body import ProcedureBody
 from unknown32 import Unknown32
@@ -134,11 +135,16 @@ def extract_class_name(class_type):
         raise Exception("Class name should be started with 'Eq_'.")
     return class_name
 
-def parse_data_type(s):
+def parse_data_type(s, classes):
     if s == "word32":
         return Unknown32()
+    if s == "real64":
+        return Double()
     if s == "<unknown>*":
         return Pointer32()
+    class_name = extract_class_name(s)
+    if class_name is not None:
+        return Pointer32(classes[class_name])
     raise Exception("Not implemented type: {}.".format(s))
 
 def emit_cdecl(proc_decl):
@@ -162,8 +168,12 @@ def emit_metafile(proc_decl, decl_file_name):
         if proc_decl.method_class is None:
             raise Exception("Only thiscall is implemented.")
         for arg_type, arg_name in proc_decl.parameters:
-            if isinstance(arg_type, ClassType):
-                arg_type.get_declaration(is_metafile=True)
+            if (
+                isinstance(arg_type, Pointer32) and
+                isinstance(arg_type.pointee, ClassType)
+            ):
+                f.write(arg_type.pointee.get_declaration(is_metafile=True))
+                f.write("\n")
         class_decl = proc_decl.method_class.get_declaration(is_metafile=True)
         f.write(class_decl)
 
@@ -193,6 +203,8 @@ def ensure_class_fields(method_class, body_lines):
 def define_field_name(field_type, field_name):
     if isinstance(field_type, Unknown32):
         field_name = field_name.replace("dw", "unknown_field_")
+    elif isinstance(field_type, Double):
+        field_name = field_name.replace("t", "unknown_double_")
     return field_name
 
 def define_parameter_name(field_type, parameter_name):
@@ -202,29 +214,58 @@ def define_parameter_name(field_type, parameter_name):
         parameter_name = parameter_name.replace("dwArg", "unknown_ptr_")
     return parameter_name
 
-def process_header_file(file_name, classes):
+def process_header_file(file_name, required_classes):
     with open(file_name) as f:
         lines = f.readlines()
+    unions = {}
+    classes = {}
     cur_class = None
+    union_types = None
     for line in lines:
         if line.startswith("//"):
             continue
         if line.startswith("typedef struct Eq_"):
             class_name = line.split(" ")[2]
-            if class_name in classes:
-                cur_class = {}
+            cur_class = {}
         elif cur_class is not None:
             if line.startswith("}"):
-                classes[class_name] = ClassType(class_name, cur_class)
+                classes[class_name] = cur_class
                 cur_class = None
                 continue
             tokens = line.split("//")
             offset = fromHex(tokens[1])
             decl = tokens[0].strip().strip(";")
             var_type, var_name = parse_variable_declaration(decl)
-            var_type = parse_data_type(var_type)
-            var_name = define_field_name(var_type, var_name)
             cur_class[offset] = (var_type, var_name)
+        elif line.startswith("typedef union Eq_"):
+            union_name = line.split(" ")[2]
+            union_types = {}
+        elif union_types is not None:
+            if line.startswith("}"):
+                unions[union_name] = union_types
+                union_types = None
+                continue
+            decl = line.strip().strip(";")
+            var_type, var_name = parse_variable_declaration(decl)
+            union_types[var_type] = var_name
+    for class_name in required_classes.keys():
+        skip_offset_if_word32 = None
+        new_fields = {}
+        for offset, (var_type, var_name) in classes[class_name].items():
+            if offset == skip_offset_if_word32 and var_type == "word32":
+                continue
+            if (
+                var_type in unions and
+                "real64" in unions[var_type] and
+                "word32" in unions[var_type]
+            ):
+                # Merge 2 'word32' fields into 1 'double'
+                var_type = "real64"
+                skip_offset_if_word32 = offset + 4
+            var_type = parse_data_type(var_type, {})
+            var_name = define_field_name(var_type, var_name)
+            new_fields[offset] = (var_type, var_name)
+        required_classes[class_name] = ClassType(class_name, new_fields)
 
 def process_output_dir(output_dir):
     for root, dirs, files in os.walk(output_dir):
@@ -246,24 +287,37 @@ def process_intermediate_output(output_dir, addr):
     classes = {}
     if class_name is not None:
         classes[class_name] = None
+    for (var_type, var_name) in proc.parameters:
+        class_name = extract_class_name(var_type)
+        if class_name is not None:
+            classes[class_name] = None
     process_header_file(os.path.join(output_dir, header_file), classes)
     method_class = None
     if proc.class_type is not None:
-        if class_name is None:
-            class_type = parse_data_type(proc.class_type)
-            if (
-                isinstance(class_type, Pointer32) and
-                class_type.pointee is None
-            ):
+        ptr_to_class = parse_data_type(proc.class_type, classes)
+        if (isinstance(ptr_to_class, Pointer32)):
+            if ptr_to_class.pointee is None:
                 method_class = ClassType("", {})
+            else:
+                method_class = ptr_to_class.pointee
         else:
-            method_class = classes[class_name]
+            raise Exception(
+                "Not supported type as method class: {}.".format(ptr_to_class)
+            )
         method_class = method_class.rename("unknown_class_{}".format(addr))
         ensure_class_fields(method_class, body_lines)
     parameters = []
-    for parameter in proc.parameters:
-        var_type, var_name = parameter
-        var_type = parse_data_type(var_type)
+    for (var_type, var_name) in proc.parameters:
+        var_type = parse_data_type(var_type, classes)
+        if (
+            isinstance(var_type, Pointer32) and
+            isinstance(var_type.pointee, ClassType)
+        ):
+            var_type = Pointer32(
+                var_type.pointee.rename(
+                    "unknown_class_{}_p_{}".format(addr, var_name[-2:])
+                )
+            )
         var_name = define_parameter_name(var_type, var_name)
         parameters.append((var_type, var_name))
     proc_decl = make_tuple(
@@ -306,6 +360,7 @@ def process_final_output(output_dir, proc_decl, addr):
     body = extract_procedure_body(
         os.path.join(output_dir, code_file), proc_decl
     )
+    body.transform_instructions()
     output_dir = os.path.join(output_dir, "..", "..", "output")
     cpp_file_name = os.path.join(output_dir, "{}.cpp".format(addr))
     with open(cpp_file_name, "wt") as f:
@@ -402,7 +457,7 @@ def run():
     create_common_header()
     for addr, proc in proc_dict.items():
         process_procedure(output_file_name, addr)
-        if addr > "00401548":
+        if addr >= "004015F6":
             break
 
 if __name__ == '__main__':

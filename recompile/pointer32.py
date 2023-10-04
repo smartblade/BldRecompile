@@ -11,4 +11,5 @@ class Pointer32:
             if is_metafile:
                 return "ptr32"
             return "void *"
-        raise Exception("Pointee is not implemented.")
+        pointee_type = self._pointee.get_type_name(is_metafile)
+        return "{} *".format(pointee_type)

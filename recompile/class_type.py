@@ -32,6 +32,9 @@ class ClassType:
             methods.append(method)
         self._methods = methods
 
+    def get_type_name(self, is_metafile):
+        return self._class_name
+
     def get_declaration(self, is_metafile):
         if not is_metafile:
             return self._get_cpp_declaration()
