@@ -11,13 +11,10 @@ import time
 
 from class_type import ClassType
 from double import Double
+from files_location import FilesLocation
 from pointer32 import Pointer32
 from procedure_body import ProcedureBody
 from unknown32 import Unknown32
-
-script_dir = os.path.dirname(os.path.realpath(__file__))
-reko_cmdline_dir = os.path.abspath(script_dir + "/../reko")
-reko_cmdline = os.path.join(reko_cmdline_dir, "decompile.exe")
 
 def toHex(n):
     return format(n, '08X')
@@ -63,17 +60,12 @@ def set_output_dir(project_file_name, output_dir):
                 line = line.replace(".reko", output_dir)
             f.write(line)
 
-def set_procedure_declaration(
-    project_file_name, proc_decl, decl_base_name, addr
-):
-    decl_file_name = os.path.join(
-        os.path.dirname(project_file_name), decl_base_name
-    )
-    emit_metafile(proc_decl, decl_file_name)
+def set_procedure_declaration(files, proc_decl, addr):
+    emit_metafile(proc_decl, files.decl)
     cdecl = emit_cdecl(proc_decl)
-    with open(project_file_name) as f:
+    with open(files.project) as f:
         lines = f.readlines()
-    with open(project_file_name, "wt") as f:
+    with open(files.project, "wt") as f:
         cdecl_str = "<CSignature>{}</CSignature>\n"
         metadata_start = "<metadata>\n"
         filename_str = "<filename>{}</filename>\n"
@@ -82,7 +74,7 @@ def set_procedure_declaration(
         for line in lines:
             if not decl_file_entry_written and "<script>" in line:
                 f.write(" " * 2 + metadata_start)
-                f.write(" " * 4 + filename_str.format(decl_base_name))
+                f.write(" " * 4 + filename_str.format(files.decl_basename))
                 f.write(" " * 2 + metadata_end)
                 decl_file_entry_written = True
             f.write(line)
@@ -273,16 +265,14 @@ def process_output_dir(output_dir):
             if file.endswith("globals.c"):
                 continue
             if file.endswith(".c"):
-                code_file = file
+                code_file = os.path.join(output_dir, file)
             if file.endswith(".h"):
-                header_file = file
+                header_file = os.path.join(output_dir, file)
     return (code_file, header_file)
 
 def process_intermediate_output(output_dir, addr):
     code_file, header_file = process_output_dir(output_dir)
-    proc, body_lines = process_output_code(
-        os.path.join(output_dir, code_file), addr
-    )
+    proc, body_lines = process_output_code(code_file, addr)
     class_name = extract_class_name(proc.class_type)
     classes = {}
     if class_name is not None:
@@ -291,7 +281,7 @@ def process_intermediate_output(output_dir, addr):
         class_name = extract_class_name(var_type)
         if class_name is not None:
             classes[class_name] = None
-    process_header_file(os.path.join(output_dir, header_file), classes)
+    process_header_file(header_file, classes)
     method_class = None
     if proc.class_type is not None:
         ptr_to_class = parse_data_type(proc.class_type, classes)
@@ -355,23 +345,19 @@ def extract_procedure_body(file_name, proc_decl):
         if instructions is not None:
             instructions.append(line)
 
-def process_final_output(output_dir, proc_decl, addr):
-    code_file, header_file = process_output_dir(output_dir)
-    body = extract_procedure_body(
-        os.path.join(output_dir, code_file), proc_decl
-    )
+def process_final_output(files, proc_decl, addr):
+    code_file, header_file = process_output_dir(files.project_output)
+    body = extract_procedure_body(code_file, proc_decl)
     body.transform_instructions()
-    output_dir = os.path.join(output_dir, "..", "..", "output")
-    cpp_file_name = os.path.join(output_dir, "{}.cpp".format(addr))
+    cpp_file_name = os.path.join(files.output, "{}.cpp".format(addr))
     with open(cpp_file_name, "wt") as f:
         f.write(body.emit_code())
     header_file_name = os.path.join(
-        output_dir, "{}.h".format(proc_decl.proc_name)
+        files.output, "{}.h".format(proc_decl.proc_name)
     )
     with open(header_file_name, "wt") as f:
         f.write(body.emit_header())
-    compile_bat = os.path.join(script_dir, "compile.bat")
-    execute_command([compile_bat, cpp_file_name])
+    execute_command([files.compile_bat, cpp_file_name])
 
 def update_hash(hasher, file_name):
     with open(file_name, "rb") as f:
@@ -390,73 +376,65 @@ def write_hash(hash_file_name, new_hash):
     with open(hash_file_name, "wb") as f:
         f.write(new_hash)
 
-def execute_reko(project_file_name, decl_base_name):
-    hash_file_name = project_file_name + ".obj"
+def execute_reko(files, has_decl_file=True):
+    hash_file_name = files.project + ".obj"
     hasher = hashlib.sha256()
-    update_hash(hasher, project_file_name)
-    if decl_base_name is not None:
-        decl_file_name = os.path.join(
-            os.path.dirname(project_file_name), decl_base_name
-        )
-        update_hash(hasher, decl_file_name)
+    update_hash(hasher, files.project)
+    if has_decl_file:
+        update_hash(hasher, files.decl)
     new_hash = hasher.digest()
     if not is_hash_changed(hash_file_name, new_hash):
         print("Input files were not changed: skipping executing of Reko...")
         return
-    execute_command([reko_cmdline, project_file_name])
+    execute_command([files.reko_cmdline, files.project])
     write_hash(hash_file_name, new_hash)
 
-def process_procedure(project_template, addr):
-    decompile_file_part_py = os.path.join(
-        script_dir, "..", "projects", "decompile_file_part.py"
-    )
+def process_procedure(files, addr):
     command = [
-        sys.executable, decompile_file_part_py,
-        "--file-name={}".format(project_template),
+        sys.executable, files.decompile_file_part_py,
+        "--file-name={}".format(files.intermediate_project),
         "--start-address={}".format(addr),
         "--end-address={}".format(toHex(fromHex(addr) + 1))
     ]
     execute_command(command)
     fname_regexp = re.compile('^(?P<fname>.+)\.(?P<ext>.+)')
-    match = re.search(fname_regexp, project_template)
+    match = re.search(fname_regexp, files.intermediate_project)
     output_file_name = "{}_{}-{}.{}".format(
         match.group('fname'),
         addr,
         toHex(fromHex(addr) + 1),
         match.group('ext'))
-    shutil.copyfile(output_file_name, output_file_name + "_")
-    output_dir_name = addr
-    set_output_dir(output_file_name, output_dir_name)
-    execute_reko(output_file_name, None)
-    output_dir = os.path.join(os.path.dirname(output_file_name), output_dir_name)
-    proc_decl = process_intermediate_output(output_dir, addr)
-    output_file_name += "_"
-    output_dir_name += "_"
-    set_output_dir(output_file_name, output_dir_name)
-    decl_file_name = "decl_{}.inc".format(output_dir_name)
-    set_procedure_declaration(output_file_name, proc_decl, decl_file_name, addr)
-    execute_reko(output_file_name, decl_file_name)
-    output_dir = os.path.join(os.path.dirname(output_file_name), output_dir_name)
-    process_final_output(output_dir, proc_decl, addr)
+    tmp_project_file_name = output_file_name + "_tmp"
+    shutil.move(output_file_name, tmp_project_file_name)
+    with files.next_run() as run_files:
+        shutil.copyfile(tmp_project_file_name, run_files.project)
+        set_output_dir(run_files.project, run_files.project_output_basename)
+        execute_reko(run_files, has_decl_file=False)
+        proc_decl = process_intermediate_output(run_files.project_output, addr)
+    with files.next_run() as run_files:
+        shutil.copyfile(tmp_project_file_name, run_files.project)
+        set_output_dir(run_files.project, run_files.project_output_basename)
+        set_procedure_declaration(run_files, proc_decl, addr)
+        execute_reko(run_files)
+        process_final_output(run_files, proc_decl, addr)
+    os.remove(tmp_project_file_name)
 
-def create_common_header():
-    common_header_name = os.path.join(script_dir, "output", "common.h")
-    with open(common_header_name, "wt") as f:
+def create_common_header(files):
+    with open(files.common_header_name, "wt") as f:
         f.write("#pragma once\n\n")
         f.write("#include <string.h>\n\n")
         f.write("typedef int unknown32;\n")
 
 def run():
-    procedures_dict_file = os.path.join(script_dir, "procedures_dict.json")
-    with open(procedures_dict_file, "rt") as f:
+    files = FilesLocation(os.path.dirname(os.path.realpath(__file__)))
+    with open(files.procedures_dict_file, "rt") as f:
         proc_dict = json.load(f)
-    project_name = "Blade.dcproject"
-    project_template = os.path.join(script_dir, project_name)
-    output_file_name = os.path.join(script_dir, "intermediate", project_name)
-    make_project_file(project_template, output_file_name, proc_dict)
-    create_common_header()
+    make_project_file(
+        files.project_template, files.intermediate_project, proc_dict
+    )
+    create_common_header(files)
     for addr, proc in proc_dict.items():
-        process_procedure(output_file_name, addr)
+        process_procedure(files.for_procedure(addr), addr)
         if addr >= "004015F6":
             break
 
