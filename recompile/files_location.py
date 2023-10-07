@@ -99,10 +99,9 @@ class ProcedureRunFilesLocation(FilesLocation):
         self._run_index = run_index
         fname_regexp = re.compile('^(?P<fname>.+)\.(?P<ext>.+)')
         match = re.search(fname_regexp, self.intermediate_project)
-        self._project_prefix = "{}_{}-{}.{}".format(
+        self._project_prefix = "{}_{}.{}".format(
             match.group('fname'),
             addr,
-            format(int(addr, 16) + 1, '08X'),
             match.group('ext'))
 
     @property
