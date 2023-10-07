@@ -412,20 +412,17 @@ def process_procedure(files, addr):
         addr,
         toHex(fromHex(addr) + 1),
         match.group('ext'))
-    tmp_project_file_name = output_file_name + "_tmp"
-    shutil.move(output_file_name, tmp_project_file_name)
     with files.next_run() as run_files:
-        shutil.copyfile(tmp_project_file_name, run_files.project)
+        shutil.copyfile(output_file_name, run_files.project)
         set_output_dir(run_files.project, run_files.project_output_basename)
         execute_reko(run_files, has_decl_file=False)
         proc_decl = process_intermediate_output(run_files.project_output, addr)
     with files.next_run() as run_files:
-        shutil.copyfile(tmp_project_file_name, run_files.project)
+        shutil.copyfile(output_file_name, run_files.project)
         set_output_dir(run_files.project, run_files.project_output_basename)
         set_procedure_declaration(run_files, proc_decl, addr)
         execute_reko(run_files)
         process_final_output(run_files, proc_decl, addr)
-    os.remove(tmp_project_file_name)
 
 def create_common_header(files):
     with open(files.common_header_name, "wt") as f:
