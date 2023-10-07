@@ -55,19 +55,9 @@ class ProcedureBody:
         lines.append('#include "common.h"')
         lines.append('#include "{}.h"'.format(self._proc_decl.proc_name))
         lines.append("")
-        if self._proc_decl.method_class is None:
-            raise Exception("Only thiscall is implemented.")
-        parameters = []
-        for parameter_type, parameter_name in self._proc_decl.parameters:
-            type_name = parameter_type.get_type_name(is_metafile=False)
-            sep = "" if type_name.endswith("*") else " "
-            parameters.append("{}{}{}".format(type_name, sep, parameter_name))
         lines.append(
-            "{}{}::{}({})".format(
-                self._proc_decl.return_arg,
-                self._proc_decl.method_class.class_name,
-                self._proc_decl.proc_name,
-                ", ".join(parameters),
+            self._proc_decl.get_declaration(
+                is_metafile=False, is_definition=True
             )
         )
         lines.append("{")
@@ -80,16 +70,5 @@ class ProcedureBody:
         lines = []
         lines.append("#pragma once")
         lines.append("")
-        for parameter_type, parameter_name in self._proc_decl.parameters:
-            if (
-                isinstance(parameter_type, Pointer32) and
-                isinstance(parameter_type.pointee, ClassType)
-            ):
-                lines.append(
-                    parameter_type.pointee.get_declaration(is_metafile=False)
-                )
-        class_cpp_decl = self._proc_decl.method_class.get_declaration(
-            is_metafile=False
-        )
-        lines.append(class_cpp_decl)
+        lines.append(self._proc_decl.get_types_declarations(is_metafile=False))
         return "\n".join(lines) + "\n"

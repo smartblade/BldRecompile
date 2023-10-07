@@ -15,6 +15,7 @@ from double import Double
 from files_location import FilesLocation
 from pointer32 import Pointer32
 from procedure_body import ProcedureBody
+from procedure_declaration import ProcedureDeclaration
 from unknown32 import Unknown32
 
 parser = argparse.ArgumentParser()
@@ -70,7 +71,7 @@ def set_output_dir(project_file_name, output_dir):
 
 def set_procedure_declaration(files, proc_decl, addr):
     emit_metafile(proc_decl, files.decl)
-    cdecl = emit_cdecl(proc_decl)
+    cdecl = proc_decl.get_declaration(is_metafile=True)
     with open(files.project) as f:
         lines = f.readlines()
     with open(files.project, "wt") as f:
@@ -147,35 +148,9 @@ def parse_data_type(s, classes):
         return Pointer32(classes[class_name])
     raise Exception("Not implemented type: {}.".format(s))
 
-def emit_cdecl(proc_decl):
-    if proc_decl.method_class is None:
-        raise Exception("Only thiscall is implemented.")
-    this_arg = "{} *this".format(proc_decl.method_class.class_name)
-    parameters = [this_arg]
-    for parameter_type, parameter_name in proc_decl.parameters:
-        parameters.append(
-            "{} {}".format(
-                parameter_type.get_type_name(is_metafile=True),
-                parameter_name,
-            )
-        )
-    return "word32 __thiscall {}({})".format(
-        proc_decl.proc_name, ", ".join(parameters)
-    )
-
 def emit_metafile(proc_decl, decl_file_name):
     with open(decl_file_name, "wt") as f:
-        if proc_decl.method_class is None:
-            raise Exception("Only thiscall is implemented.")
-        for arg_type, arg_name in proc_decl.parameters:
-            if (
-                isinstance(arg_type, Pointer32) and
-                isinstance(arg_type.pointee, ClassType)
-            ):
-                f.write(arg_type.pointee.get_declaration(is_metafile=True))
-                f.write("\n")
-        class_decl = proc_decl.method_class.get_declaration(is_metafile=True)
-        f.write(class_decl)
+        f.write(proc_decl.get_types_declarations(is_metafile=True))
 
 def process_output_code(file_name, addr):
     with open(file_name) as f:
@@ -318,9 +293,8 @@ def process_intermediate_output(output_dir, addr):
             )
         var_name = define_parameter_name(var_type, var_name)
         parameters.append((var_type, var_name))
-    proc_decl = make_tuple(
-        'ProcedureDeclation',
-        proc_name = "unknown_method_{}".format(addr),
+    proc_decl = ProcedureDeclaration(
+        proc_name="unknown_method_{}".format(addr),
         method_class=method_class,
         parameters=parameters,
     )
@@ -336,15 +310,7 @@ def extract_procedure_body(file_name, proc_decl):
         if line.startswith("//"):
             continue
         if proc_decl.proc_name in line:
-            name_pos = line.find(proc_decl.proc_name)
-            return_arg = line[:name_pos].strip()
-            proc_decl = make_tuple(
-                'ProcedureDeclation',
-                 return_arg=return_arg,
-                 **proc_decl._asdict(),
-            )
-            if proc_decl.method_class is not None:
-                proc_decl.method_class.update_method(proc_decl)
+            proc_decl.extract_return_arg_from_line(line)
         if line.startswith("{"):
             instructions = []
             continue

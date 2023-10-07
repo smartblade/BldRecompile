@@ -24,14 +24,6 @@ class ClassType:
             return
         self._fields[offset] = (Unknown32(), "unknown_field_{:04X}".format(offset))
 
-    def update_method(self, updated_method):
-        methods = []
-        for method in self._methods:
-            if method.proc_name == updated_method.proc_name:
-                method = updated_method
-            methods.append(method)
-        self._methods = methods
-
     def get_type_name(self, is_metafile):
         return self._class_name
 
@@ -54,19 +46,9 @@ class ClassType:
         lines.append("public:")
         indent = " " * 4
         for method in self._methods:
-            if method.method_class is None:
-                raise Exception("Method class should be set.")
-            parameters = []
-            for parameter_type, parameter_name in method.parameters:
-                type_name = parameter_type.get_type_name(is_metafile=False)
-                sep = "" if type_name.endswith("*") else " "
-                parameters.append("{}{}{}".format(type_name, sep, parameter_name))
             lines.append(
-                "{}{}{}({});".format(
-                    indent,
-                    method.return_arg,
-                    method.proc_name,
-                    ", ".join(parameters),
+                "{}{};".format(
+                    indent, method.get_declaration(is_metafile=False)
                 )
             )
         lines.append("")
