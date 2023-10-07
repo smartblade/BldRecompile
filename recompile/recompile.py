@@ -385,17 +385,16 @@ def write_hash(hash_file_name, new_hash):
         f.write(new_hash)
 
 def execute_reko(files, has_decl_file=True):
-    hash_file_name = files.project + ".obj"
     hasher = hashlib.sha256()
     update_hash(hasher, files.project)
     if has_decl_file:
         update_hash(hasher, files.decl)
     new_hash = hasher.digest()
-    if not is_hash_changed(hash_file_name, new_hash):
+    if not is_hash_changed(files.reko_hash, new_hash):
         print("Input files were not changed: skipping executing of Reko...")
         return
     execute_command([files.reko_cmdline, files.project])
-    write_hash(hash_file_name, new_hash)
+    write_hash(files.reko_hash, new_hash)
 
 def process_procedure(files, addr):
     command = [
