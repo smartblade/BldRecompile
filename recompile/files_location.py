@@ -1,9 +1,10 @@
 from contextlib import contextmanager
 import os
 import re
+import shutil
 
 class FilesLocation:
-    def __init__(self, root_directory):
+    def __init__(self, root_directory, cleanup=False):
         self._root_directory = root_directory
         self._reko_cmdline = self._path("..", "reko", "decompile.exe")
         self._decompile_file_part_py = self._path(
@@ -12,10 +13,15 @@ class FilesLocation:
         self._procedures_dict_file = self._path("procedures_dict.json")
         project_name = "Blade.dcproject"
         self._project_template = self._path(project_name)
-        self._intermediate_project = self._path("intermediate", project_name)
+        self._intermediate = self._path("intermediate")
+        self._intermediate_project = os.path.join(
+            self._intermediate, project_name
+        )
         self._output = self._path("output")
         self._common_header_name = os.path.join(self._output, "common.h")
         self._compile_bat = self._path("compile.bat")
+        if cleanup:
+            self._cleanup()
 
     @property
     def reko_cmdline(self):
@@ -38,6 +44,10 @@ class FilesLocation:
         return self._intermediate_project
 
     @property
+    def intermediate(self):
+        return self._intermediate
+
+    @property
     def output(self):
         return self._output
 
@@ -54,6 +64,17 @@ class FilesLocation:
 
     def _path(self, *args):
         return os.path.abspath(os.path.join(self._root_directory, *args))
+
+    def _cleanup(self):
+        self._cleanup_directory(self.intermediate)
+        self._cleanup_directory(self.output)
+
+    def _cleanup_directory(self, directory):
+        try:
+            shutil.rmtree(directory)
+        except FileNotFoundError:
+            pass
+        os.mkdir(directory)
 
 class ProcedureFilesLocation(FilesLocation):
     def __init__(self, root_directory, addr):

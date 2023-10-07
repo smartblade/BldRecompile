@@ -1,6 +1,7 @@
 from collections import namedtuple
 import hashlib
 import json
+import argparse
 import os
 import os.path
 import re
@@ -15,6 +16,13 @@ from files_location import FilesLocation
 from pointer32 import Pointer32
 from procedure_body import ProcedureBody
 from unknown32 import Unknown32
+
+parser = argparse.ArgumentParser()
+parser.add_argument(
+    "--rebuild", action='store_true', dest="rebuild",
+    help="Clean up intermediate and output directories and rerun Reko."
+)
+options = parser.parse_args()
 
 def toHex(n):
     return format(n, '08X')
@@ -426,7 +434,8 @@ def create_common_header(files):
         f.write("typedef int unknown32;\n")
 
 def run():
-    files = FilesLocation(os.path.dirname(os.path.realpath(__file__)))
+    root_path = os.path.dirname(os.path.realpath(__file__))
+    files = FilesLocation(root_path, options.rebuild)
     with open(files.procedures_dict_file, "rt") as f:
         proc_dict = json.load(f)
     make_project_file(
