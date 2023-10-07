@@ -1,6 +1,5 @@
 from contextlib import contextmanager
 import os
-import re
 import shutil
 
 class FilesLocation:
@@ -95,14 +94,11 @@ class ProcedureFilesLocation(FilesLocation):
 class ProcedureRunFilesLocation(FilesLocation):
     def __init__(self, root_directory, addr, run_index):
         super().__init__(root_directory)
-        self._addr = addr
         self._run_index = run_index
-        fname_regexp = re.compile('^(?P<fname>.+)\.(?P<ext>.+)')
-        match = re.search(fname_regexp, self.intermediate_project)
-        self._project_prefix = "{}_{}.{}".format(
-            match.group('fname'),
-            addr,
-            match.group('ext'))
+        run_dir = os.path.join(self.intermediate, addr)
+        project_basename = os.path.basename(self.intermediate_project) + "_"
+        self._project_prefix = os.path.join(run_dir, project_basename)
+        self._ensure_directory(run_dir)
 
     @property
     def project(self):
@@ -114,7 +110,7 @@ class ProcedureRunFilesLocation(FilesLocation):
 
     @property
     def project_output_basename(self):
-        return self._add_run_suffix(self._addr)
+        return self._add_run_suffix("")
 
     @property
     def decl(self):
@@ -125,9 +121,15 @@ class ProcedureRunFilesLocation(FilesLocation):
         return "decl_{}.inc".format(self.project_output_basename)
 
     def _add_run_suffix(self, s):
-        return "{}{}".format(s, "_" * self._run_index)
+        return "{}{:02d}".format(s, self._run_index)
 
     def _project_relative(self, *args):
         return os.path.abspath(
             os.path.join(os.path.dirname(self.project), *args)
         )
+
+    def _ensure_directory(self, directory):
+        try:
+            os.mkdir(directory)
+        except FileExistsError:
+            pass
