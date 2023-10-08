@@ -146,6 +146,10 @@ def parse_data_type(s, classes):
     class_name = extract_class_name(s)
     if class_name is not None:
         return Pointer32(classes[class_name])
+    if s in classes:
+        return classes[s]
+    if s.endswith("*"):
+        return Pointer32(parse_data_type(s[:-1].strip(), classes))
     raise Exception("Not implemented type: {}.".format(s))
 
 def emit_metafile(proc_decl, decl_file_name):
@@ -406,7 +410,7 @@ def run():
     create_common_header(files)
     for addr, proc in proc_dict.items():
         process_procedure(files.for_procedure(addr), addr)
-        if addr >= "004015F6":
+        if addr >= "00401873":
             break
 
 if __name__ == '__main__':

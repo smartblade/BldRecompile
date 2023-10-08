@@ -1,3 +1,5 @@
+from collections import namedtuple
+
 from block_transformer import transform_block
 from class_type import ClassType
 from code_instruction import CodeInstruction
@@ -7,45 +9,69 @@ from pointer32 import Pointer32
 class ProcedureBody:
     def __init__(self, proc_decl, instructions):
         self._proc_decl = proc_decl
-        processing_blocks = []
-        current_block = []
-        block_type = None
-        for instr_str in instructions:
-            instr_str = instr_str.strip()
-            if instr_str.startswith("if (") and instr_str.endswith(")"):
-                if_clause = instr_str[4:-1]
-                processing_blocks.append((block_type, current_block))
-                block_type = "if"
-                current_block = []
-            elif instr_str == "else":
-                processing_blocks.append((block_type, current_block))
-                block_type = "else"
-                current_block = []
-            elif instr_str == "{":
-                continue
-            elif instr_str == "}":
-                finished_block_type = block_type
-                finished_block = current_block
-                (block_type, current_block) = processing_blocks.pop()
-                if finished_block_type == "if":
-                    current_block.append(
-                        IfInstruction(if_clause, finished_block)
-                    )
-                elif finished_block_type == "else":
-                    current_block[-1].add_else_block(finished_block)
-            elif instr_str.endswith(";"):
-                current_block.append(CodeInstruction(instr_str[:-1]))
-            else:
-                raise Exception(
-                    "Not supported instruction type: '{}'.".format(instr_str)
-                )
-        self._instructions = current_block
+        self._instructions = self._parse_instructions(instructions)
 
     def __repr__(self):
         return "ProcedureBody(proc_decl={}, instructions={})".format(
             self._proc_decl,
             self._instructions,
         )
+
+    def _parse_instructions(self, instructions):
+        blocks_state = []
+        state = self._new_state(
+            block_type=None,
+            current_block=[],
+            multiple_lines=True,
+        )
+        for instr_str in instructions:
+            instr_str = instr_str.strip()
+            if instr_str.startswith("if (") and instr_str.endswith(")"):
+                if_clause = instr_str[4:-1]
+                state = self._start_block(blocks_state, state, "if")
+            elif instr_str == "else":
+                state = self._start_block(blocks_state, state, "else")
+            elif instr_str == "{":
+                state = self._multiple_lines(state)
+            elif instr_str == "}":
+                state = self._end_block(blocks_state, state, if_clause)
+            elif instr_str.endswith(";"):
+                state.current_block.append(CodeInstruction(instr_str[:-1]))
+                if not state.multiple_lines:
+                    state = self._end_block(blocks_state, state, if_clause)
+            else:
+                raise Exception(
+                    "Not supported instruction type: '{}'.".format(instr_str)
+                )
+        return state.current_block
+
+    def _new_state(self, **kwargs):
+        return namedtuple('State', kwargs.keys())(**kwargs)
+
+    def _multiple_lines(self, state):
+        return self._new_state(
+            block_type=state.block_type,
+            current_block=state.current_block,
+            multiple_lines=True,
+        )
+
+    def _start_block(self, blocks_state, state, new_block_type):
+        blocks_state.append(state)
+        return self._new_state(
+            block_type=new_block_type,
+            current_block=[],
+            multiple_lines=False,
+        )
+
+    def _end_block(self, blocks_state, state, if_clause):
+        prev_state = blocks_state.pop()
+        if state.block_type == "if":
+            prev_state.current_block.append(
+                IfInstruction(if_clause, state.current_block)
+            )
+        elif state.block_type == "else":
+            prev_state.current_block[-1].add_else_block(state.current_block)
+        return prev_state
 
     def transform_instructions(self):
         self._instructions = transform_block(self._instructions)
