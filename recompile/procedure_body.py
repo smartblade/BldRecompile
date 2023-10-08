@@ -74,7 +74,9 @@ class ProcedureBody:
         return prev_state
 
     def transform_instructions(self):
-        self._instructions = transform_block(self._instructions)
+        self._instructions = transform_block(
+            self._instructions, renamed_identifiers={}
+        )
 
     def emit_code(self):
         lines = []

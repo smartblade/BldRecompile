@@ -1,6 +1,6 @@
 from code_instruction import CodeInstruction
 
-def transform_block(instructions):
+def transform_block(instructions, **kwargs):
     new_instructions = []
     i = 0
     while i < len(instructions):
@@ -12,7 +12,7 @@ def transform_block(instructions):
                 new_instructions.append(new_instr)
                 i += 2
                 continue
-        cur_instr = cur_instr.transform_instruction()
+        cur_instr = cur_instr.transform_instruction(**kwargs)
         new_instructions.append(cur_instr)
         i += 1
     return new_instructions

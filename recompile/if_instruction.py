@@ -12,11 +12,11 @@ class IfInstruction:
     def add_else_block(self, else_block):
         self._else_block = else_block
 
-    def transform_instruction(self):
-        if_block = transform_block(self._if_block)
+    def transform_instruction(self, **kwargs):
+        if_block = transform_block(self._if_block, **kwargs)
         else_block = None
         if self._else_block is not None:
-            else_block = transform_block(self._else_block)
+            else_block = transform_block(self._else_block, **kwargs)
         return self.__class__(self._if_clause, if_block, else_block)
 
     def emit_code(self):
