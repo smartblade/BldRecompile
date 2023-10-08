@@ -183,7 +183,8 @@ def define_field_name(field_type, field_name):
     if isinstance(field_type, Unknown32):
         field_name = field_name.replace("dw", "unknown_field_")
     elif isinstance(field_type, Double):
-        field_name = field_name.replace("t", "unknown_double_")
+        if field_name[0] == "t" or field_name[0] == "r":
+            field_name = "unknown_double_{}".format(field_name[1:])
     return field_name
 
 def define_parameter_name(field_type, parameter_name):
