@@ -1,4 +1,3 @@
-from collections import namedtuple
 import hashlib
 import json
 import argparse
@@ -11,28 +10,25 @@ import sys
 import time
 
 from class_type import ClassType
-from double import Double
+import code_parser as parser
 from files_location import FilesLocation
 from pointer32 import Pointer32
 from procedure_body import ProcedureBody
 from procedure_declaration import ProcedureDeclaration
 from unknown32 import Unknown32
 
-parser = argparse.ArgumentParser()
-parser.add_argument(
+argument_parser = argparse.ArgumentParser()
+argument_parser.add_argument(
     "--rebuild", action='store_true', dest="rebuild",
     help="Clean up intermediate and output directories and rerun Reko."
 )
-options = parser.parse_args()
+options = argument_parser.parse_args()
 
 def toHex(n):
     return format(n, '08X')
 
 def fromHex(h):
     return int(h, 16)
-
-def make_tuple(name, **kwargs):
-    return namedtuple(name, kwargs.keys())(**kwargs)
 
 def make_project_file(template_name, output_file_name, proc_dict):
     with open(template_name) as f:
@@ -98,60 +94,6 @@ def execute_command(command):
     if code:
         raise Exception('Failed to execute {}.'.format(command))
 
-def parse_variable_declaration(s):
-    last_space = s.rfind(' ')
-    if last_space < 0:
-        raise Exception("Failed to parse variable declaration: ' ' was not found.")
-    return (s[:last_space], s[last_space + 1:])
-
-def parse_procedure_declaration(s):
-    start_brackets_pos = s.find("(")
-    if start_brackets_pos < 0:
-        raise Exception("Failed to parse declaration: '(' was not found.")
-    end_brackets_pos = s.find(")")
-    if end_brackets_pos < 0:
-        raise Exception("Failed to parse declaration: ')' was not found.")
-    parameters = s[start_brackets_pos + 1:end_brackets_pos].split(',')
-    parsed_parameters = []
-    for p in parameters:
-        parsed_parameters.append(parse_variable_declaration(p.strip()))
-    var_type, var_name = parsed_parameters[0]
-    # Check if it is 'thiscall' convention
-    if var_name == "ecx":
-        return make_tuple(
-            'ProcedureDeclation',
-             class_type=var_type,
-             parameters=parsed_parameters[1:])
-    else:
-        raise Exception("Only thiscall is implemented.")
-
-def extract_class_name(class_type):
-    type_tokens = class_type.split(" ")
-    if type_tokens[0] != "struct":
-        return None
-    if type_tokens[-1] != "*":
-        raise Exception("Only pointers is supported for thiscall parameter.")
-    class_name = type_tokens[1]
-    if not class_name.startswith("Eq_"):
-        raise Exception("Class name should be started with 'Eq_'.")
-    return class_name
-
-def parse_data_type(s, classes):
-    if s == "word32":
-        return Unknown32()
-    if s == "real64":
-        return Double()
-    if s == "<unknown>*":
-        return Pointer32()
-    class_name = extract_class_name(s)
-    if class_name is not None:
-        return Pointer32(classes[class_name])
-    if s in classes:
-        return classes[s]
-    if s.endswith("*"):
-        return Pointer32(parse_data_type(s[:-1].strip(), classes))
-    raise Exception("Not implemented type: {}.".format(s))
-
 def emit_metafile(proc_decl, decl_file_name):
     with open(decl_file_name, "wt") as f:
         f.write(proc_decl.get_types_declarations(is_metafile=True))
@@ -164,7 +106,7 @@ def process_output_code(file_name, addr):
         if line.startswith("//"):
             continue
         if addr in line:
-            proc = parse_procedure_declaration(line)
+            proc = parser.parse_procedure_declaration(line)
             body_lines = []
         elif body_lines is not None:
             body_lines.append(line)
@@ -179,14 +121,6 @@ def ensure_class_fields(method_class, body_lines):
             offset = match.group('offset')
             method_class.ensure_field(int(offset))
 
-def define_field_name(field_type, field_name):
-    if isinstance(field_type, Unknown32):
-        field_name = field_name.replace("dw", "unknown_field_")
-    elif isinstance(field_type, Double):
-        if field_name[0] == "t" or field_name[0] == "r":
-            field_name = "unknown_double_{}".format(field_name[1:])
-    return field_name
-
 def define_parameter_name(field_type, parameter_name):
     if isinstance(field_type, Unknown32):
         parameter_name = parameter_name.replace("dwArg", "unknown_param_")
@@ -197,55 +131,7 @@ def define_parameter_name(field_type, parameter_name):
 def process_header_file(file_name, required_classes):
     with open(file_name) as f:
         lines = f.readlines()
-    unions = {}
-    classes = {}
-    cur_class = None
-    union_types = None
-    for line in lines:
-        if line.startswith("//"):
-            continue
-        if line.startswith("typedef struct Eq_"):
-            class_name = line.split(" ")[2]
-            cur_class = {}
-        elif cur_class is not None:
-            if line.startswith("}"):
-                classes[class_name] = cur_class
-                cur_class = None
-                continue
-            tokens = line.split("//")
-            offset = fromHex(tokens[1])
-            decl = tokens[0].strip().strip(";")
-            var_type, var_name = parse_variable_declaration(decl)
-            cur_class[offset] = (var_type, var_name)
-        elif line.startswith("typedef union Eq_"):
-            union_name = line.split(" ")[2]
-            union_types = {}
-        elif union_types is not None:
-            if line.startswith("}"):
-                unions[union_name] = union_types
-                union_types = None
-                continue
-            decl = line.strip().strip(";")
-            var_type, var_name = parse_variable_declaration(decl)
-            union_types[var_type] = var_name
-    for class_name in required_classes.keys():
-        skip_offset_if_word32 = None
-        new_fields = {}
-        for offset, (var_type, var_name) in classes[class_name].items():
-            if offset == skip_offset_if_word32 and var_type == "word32":
-                continue
-            if (
-                var_type in unions and
-                "real64" in unions[var_type] and
-                "word32" in unions[var_type]
-            ):
-                # Merge 2 'word32' fields into 1 'double'
-                var_type = "real64"
-                skip_offset_if_word32 = offset + 4
-            var_type = parse_data_type(var_type, {})
-            var_name = define_field_name(var_type, var_name)
-            new_fields[offset] = (var_type, var_name)
-        required_classes[class_name] = ClassType(class_name, new_fields)
+    parser.parse_data_types_declarations(lines, required_classes)
 
 def process_output_dir(output_dir):
     for root, dirs, files in os.walk(output_dir):
@@ -261,18 +147,18 @@ def process_output_dir(output_dir):
 def process_intermediate_output(output_dir, addr):
     code_file, header_file = process_output_dir(output_dir)
     proc, body_lines = process_output_code(code_file, addr)
-    class_name = extract_class_name(proc.class_type)
+    class_name = parser.extract_class_name(proc.class_type)
     classes = {}
     if class_name is not None:
         classes[class_name] = None
     for (var_type, var_name) in proc.parameters:
-        class_name = extract_class_name(var_type)
+        class_name = parser.extract_class_name(var_type)
         if class_name is not None:
             classes[class_name] = None
     process_header_file(header_file, classes)
     method_class = None
     if proc.class_type is not None:
-        ptr_to_class = parse_data_type(proc.class_type, classes)
+        ptr_to_class = parser.parse_data_type(proc.class_type, classes)
         if (isinstance(ptr_to_class, Pointer32)):
             if ptr_to_class.pointee is None:
                 method_class = ClassType("", {})
@@ -286,7 +172,7 @@ def process_intermediate_output(output_dir, addr):
         ensure_class_fields(method_class, body_lines)
     parameters = []
     for (var_type, var_name) in proc.parameters:
-        var_type = parse_data_type(var_type, classes)
+        var_type = parser.parse_data_type(var_type, classes)
         if (
             isinstance(var_type, Pointer32) and
             isinstance(var_type.pointee, ClassType)

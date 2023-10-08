@@ -1,3 +1,4 @@
+import code_parser as parser
 from variable_declaration import VariableDeclaration
 
 class CodeInstruction:
@@ -35,8 +36,7 @@ class CodeInstruction:
             return None
         if var_type.startswith("return"):
             return None
-        from recompile import parse_data_type #TODO move parse function to separate module
-        var_type = parse_data_type(var_type, [])
+        var_type = parser.parse_data_type(var_type, [])
         return VariableDeclaration(var_type, var_name)
 
     def emit_code(self):

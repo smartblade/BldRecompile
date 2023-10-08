@@ -1,4 +1,5 @@
 from class_type import ClassType
+import code_parser as parser
 from pointer32 import Pointer32
 from unknown32 import Unknown32
 
@@ -64,7 +65,6 @@ class ProcedureDeclaration:
 
     def extract_return_arg_from_line(self, line):
         name_pos = line.find(self._proc_name)
-        from recompile import parse_data_type #TODO move parse function to separate module
-        self._return_arg = parse_data_type(
+        self._return_arg = parser.parse_data_type(
             line[:name_pos].strip(), self.get_used_types()
         )
