@@ -14,6 +14,13 @@ class ProcedureDeclaration:
     def proc_name(self):
         return self._proc_name
 
+    @property
+    def return_type(self):
+        return self._return_arg
+
+    def change_return_type(self, return_type):
+        self._return_arg = return_type
+
     def get_used_types(self):
         types = {}
         if self._method_class is None:

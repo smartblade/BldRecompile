@@ -50,16 +50,18 @@ def merge_word32_into_double(first, second):
         second_offset = int(second_field[-4:], 16)
         if second_offset != first_offset + 4:
             return
-        return first
-    if not first.startswith("(real64)"):
+        if len(first) != 1:
+            return
+        return first[0]
+    if not first[0] == "(real64)":
         return
-    first_num = first[8:].strip()
+    first_num = first[1:]
     second_num = second
-    if not first_num.startswith("0x"):
+    if len(first_num) != 1 or not first_num[0].startswith("0x"):
         return
-    if not second_num.startswith("0x"):
+    if len(second_num) != 1 or not second_num[0].startswith("0x"):
         return
-    return make_double(first_num, second_num)
+    return make_double(first_num[0], second_num[0])
 
 def make_double(first_num, second_num):
     if first_num == "0x00" and second_num == "0x00":
@@ -70,7 +72,10 @@ def make_double(first_num, second_num):
         )
     )
 
-def as_field_access(expression):
+def as_field_access(tokens):
+    if len(tokens) != 1:
+        return (None, None)
+    expression = tokens[0]
     tokens = expression.split("->")
     if len(tokens) < 2:
         return (None, None)

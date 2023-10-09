@@ -75,7 +75,9 @@ class ProcedureBody:
 
     def transform_instructions(self):
         self._instructions = transform_block(
-            self._instructions, renamed_identifiers={}
+            self._instructions,
+            declared_identifiers={},
+            proc_decl=self._proc_decl,
         )
 
     def emit_code(self):
