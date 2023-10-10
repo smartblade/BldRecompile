@@ -128,6 +128,14 @@ class ProcedureRunFilesLocation(FilesLocation):
     def reko_hash_basename(self):
         return "reko{}.hash".format(self.project_output_basename)
 
+    @property
+    def compile_hash(self):
+        return self._project_relative(self.compile_hash_basename)
+
+    @property
+    def compile_hash_basename(self):
+        return "compile{}.hash".format(self.project_output_basename)
+
     def _add_run_suffix(self, s):
         return "{}{:02d}".format(s, self._run_index)
 
