@@ -11,6 +11,7 @@ import time
 
 from class_type import ClassType
 import code_parser as parser
+from exceptions import SkippedProcedureException
 from files_location import FilesLocation
 from pointer32 import Pointer32
 from procedure_body import ProcedureBody
@@ -121,6 +122,14 @@ def ensure_class_fields(method_class, body_lines):
             offset = match.group('offset')
             method_class.ensure_field(int(offset))
 
+def extract_callees(body_lines):
+    callees = set()
+    for line in body_lines:
+        proc_callees = line.split("unknown_procedure_")[1:]
+        for proc_callee in proc_callees:
+            callees.add(proc_callee[:8])
+    return callees
+
 def define_parameter_name(field_type, parameter_name):
     if isinstance(field_type, Unknown32):
         parameter_name = parameter_name.replace("dwArg", "unknown_param_")
@@ -147,6 +156,9 @@ def process_output_dir(output_dir):
 def process_intermediate_output(output_dir, addr):
     code_file, header_file = process_output_dir(output_dir)
     proc, body_lines = process_output_code(code_file, addr)
+    callees = extract_callees(body_lines)
+    if len(callees) > 0:
+        raise SkippedProcedureException()
     class_name = parser.extract_class_name(proc.class_type)
     classes = {}
     if class_name is not None:
@@ -307,8 +319,11 @@ def run():
     )
     create_common_header(files)
     for addr, proc in proc_dict.items():
-        process_procedure(files.for_procedure(addr), addr)
-        if addr >= "00401873":
+        try:
+            process_procedure(files.for_procedure(addr), addr)
+        except SkippedProcedureException:
+            print("Skipping {} procedure...".format(addr))
+        if addr >= "00402630":
             break
 
 if __name__ == '__main__':

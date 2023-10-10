@@ -1,0 +1,2 @@
+class SkippedProcedureException(Exception):
+    pass
