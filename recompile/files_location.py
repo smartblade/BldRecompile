@@ -6,9 +6,6 @@ class FilesLocation:
     def __init__(self, root_directory, cleanup=False):
         self._root_directory = root_directory
         self._reko_cmdline = self._path("..", "reko", "decompile.exe")
-        self._decompile_file_part_py = self._path(
-            "..", "projects", "decompile_file_part.py"
-        )
         self._procedures_dict_file = self._path("procedures_dict.json")
         project_name = "Blade.dcproject"
         self._project_template = self._path(project_name)
@@ -25,10 +22,6 @@ class FilesLocation:
     @property
     def reko_cmdline(self):
         return self._reko_cmdline
-
-    @property
-    def decompile_file_part_py(self):
-        return self._decompile_file_part_py
 
     @property
     def procedures_dict_file(self):
@@ -80,6 +73,17 @@ class ProcedureFilesLocation(FilesLocation):
         super().__init__(root_directory)
         self._addr = addr
         self._run_index = 0
+        self._procedure_dir = os.path.join(self.intermediate, self._addr)
+        self._callees_json = os.path.join(self._procedure_dir, "callees.json")
+        self._ensure_directory(self._procedure_dir)
+
+    @property
+    def procedure_directory(self):
+        return self._procedure_dir
+
+    @property
+    def callees_json(self):
+        return self._callees_json
 
     @contextmanager
     def next_run(self):
@@ -91,14 +95,20 @@ class ProcedureFilesLocation(FilesLocation):
         finally:
             self._run_index += 1
 
-class ProcedureRunFilesLocation(FilesLocation):
+    def _ensure_directory(self, directory):
+        try:
+            os.mkdir(directory)
+        except FileExistsError:
+            pass
+
+class ProcedureRunFilesLocation(ProcedureFilesLocation):
     def __init__(self, root_directory, addr, run_index):
-        super().__init__(root_directory)
+        super().__init__(root_directory, addr)
         self._run_index = run_index
-        run_dir = os.path.join(self.intermediate, addr)
         project_basename = os.path.basename(self.intermediate_project) + "_"
-        self._project_prefix = os.path.join(run_dir, project_basename)
-        self._ensure_directory(run_dir)
+        self._project_prefix = os.path.join(
+            self.procedure_directory, project_basename
+        )
 
     @property
     def project(self):
@@ -143,9 +153,3 @@ class ProcedureRunFilesLocation(FilesLocation):
         return os.path.abspath(
             os.path.join(os.path.dirname(self.project), *args)
         )
-
-    def _ensure_directory(self, directory):
-        try:
-            os.mkdir(directory)
-        except FileExistsError:
-            pass

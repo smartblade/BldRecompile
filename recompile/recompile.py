@@ -31,7 +31,7 @@ def toHex(n):
 def fromHex(h):
     return int(h, 16)
 
-def make_project_file(template_name, output_file_name, proc_dict):
+def make_project_file(template_name, output_file_name, proc_addrs):
     with open(template_name) as f:
         lines = f.readlines()
     with open(output_file_name, "wt") as f:
@@ -44,7 +44,7 @@ def make_project_file(template_name, output_file_name, proc_dict):
             if "<address>" in line:
                 defined_procedures.add(line[17:25])
             if "<registerValues />" in line:
-                for addr in proc_dict.keys():
+                for addr in proc_addrs:
                     if addr in defined_procedures:
                         continue
                     f.write(" " * 6 + procedure_start.format(addr))
@@ -56,6 +56,18 @@ def make_project_file(template_name, output_file_name, proc_dict):
             raise Exception(
                 'Failed to insert declarations of procedures to project file.'
             )
+
+def set_decompiled_part(project_file_name, addr):
+    with open(project_file_name) as f:
+        lines = f.readlines()
+    with open(project_file_name, "wt") as f:
+        intv_regexp = re.compile('procedure name="decompile_(?P<intv>[\d\-_ABCDEF]+)"')
+        for line in lines:
+            match = re.search(intv_regexp, line)
+            if match:
+                intv = match.group('intv')
+                line = line.replace(intv, '{}'.format(addr))
+            f.write(line)
 
 def set_output_dir(project_file_name, output_dir):
     with open(project_file_name) as f:
@@ -86,6 +98,17 @@ def set_procedure_declaration(files, proc_decl, addr):
             f.write(line)
             if "<address>" in line and addr == line[17:25]:
                 f.write(" " * 8 + cdecl_str.format(cdecl))
+
+def make_procedure_project(files, addr):
+    procs = load_callees(files)
+    if procs is not None:
+        procs.append(addr)
+        make_project_file(
+            files.project_template, files.project, sorted(procs)
+        )
+    else:
+        shutil.copyfile(files.intermediate_project, files.project)
+    set_decompiled_part(files.project, addr)
 
 def execute_command(command):
     print("command started: {}".format(command))
@@ -153,10 +176,22 @@ def process_output_dir(output_dir):
                 header_file = os.path.join(output_dir, file)
     return (code_file, header_file)
 
-def process_intermediate_output(output_dir, addr):
-    code_file, header_file = process_output_dir(output_dir)
+def load_callees(files):
+    try:
+        with open(files.callees_json, "rt") as f:
+            return json.load(f)
+    except FileNotFoundError:
+       return None
+
+def dump_callees(files, callees):
+    with open(files.callees_json, "wt") as f:
+        json.dump(list(sorted(callees)), f)
+
+def process_intermediate_output(files, addr):
+    code_file, header_file = process_output_dir(files.project_output)
     proc, body_lines = process_output_code(code_file, addr)
     callees = extract_callees(body_lines)
+    dump_callees(files, callees)
     if len(callees) > 0:
         raise SkippedProcedureException()
     class_name = parser.extract_class_name(proc.class_type)
@@ -277,27 +312,13 @@ def compile_cpp(files, cpp_file_name, header_file_name):
     write_hash(files.compile_hash, new_hash)
 
 def process_procedure(files, addr):
-    command = [
-        sys.executable, files.decompile_file_part_py,
-        "--file-name={}".format(files.intermediate_project),
-        "--start-address={}".format(addr),
-        "--end-address={}".format(toHex(fromHex(addr) + 1))
-    ]
-    execute_command(command)
-    fname_regexp = re.compile('^(?P<fname>.+)\.(?P<ext>.+)')
-    match = re.search(fname_regexp, files.intermediate_project)
-    output_file_name = "{}_{}-{}.{}".format(
-        match.group('fname'),
-        addr,
-        toHex(fromHex(addr) + 1),
-        match.group('ext'))
     with files.next_run() as run_files:
-        shutil.copyfile(output_file_name, run_files.project)
+        make_procedure_project(run_files, addr)
         set_output_dir(run_files.project, run_files.project_output_basename)
         execute_reko(run_files, has_decl_file=False)
-        proc_decl = process_intermediate_output(run_files.project_output, addr)
+        proc_decl = process_intermediate_output(run_files, addr)
     with files.next_run() as run_files:
-        shutil.copyfile(output_file_name, run_files.project)
+        make_procedure_project(run_files, addr)
         set_output_dir(run_files.project, run_files.project_output_basename)
         set_procedure_declaration(run_files, proc_decl, addr)
         execute_reko(run_files)
@@ -315,7 +336,7 @@ def run():
     with open(files.procedures_dict_file, "rt") as f:
         proc_dict = json.load(f)
     make_project_file(
-        files.project_template, files.intermediate_project, proc_dict
+        files.project_template, files.intermediate_project, proc_dict.keys()
     )
     create_common_header(files)
     for addr, proc in proc_dict.items():
