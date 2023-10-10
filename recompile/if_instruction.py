@@ -21,6 +21,8 @@ class IfInstruction:
 
     def emit_code(self):
         lines = []
+        if self._if_clause.endswith("this->unknown_double_0028) <= 0.0)"):
+            lines.append(" " * 4 + "// TODO avoid emitting unnecessary brackets")
         lines.append(" " * 4 + "if ({})".format(self._if_clause))
         lines.append(" " * 4 + "{")
         for instr in self._if_block:
