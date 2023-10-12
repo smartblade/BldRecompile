@@ -101,4 +101,4 @@ class ProcedureBody:
         lines.append("#pragma once")
         lines.append("")
         lines.append(self._proc_decl.get_types_declarations(is_metafile=False))
-        return "\n".join(lines) + "\n"
+        return "\n".join(lines)
