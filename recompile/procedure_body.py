@@ -3,6 +3,7 @@ from collections import namedtuple
 from block_transformer import transform_block
 from class_type import ClassType
 from code_instruction import CodeInstruction
+import code_parser as parser
 from if_instruction import IfInstruction
 from pointer32 import Pointer32
 
@@ -27,7 +28,7 @@ class ProcedureBody:
         for instr_str in instructions:
             instr_str = instr_str.strip()
             if instr_str.startswith("if (") and instr_str.endswith(")"):
-                if_clause = instr_str[4:-1]
+                if_clause = parser.parse_cpp_expression(instr_str[4:-1])
                 state = self._start_block(blocks_state, state, "if")
             elif instr_str == "else":
                 state = self._start_block(blocks_state, state, "else")
@@ -77,6 +78,7 @@ class ProcedureBody:
         self._instructions = transform_block(
             self._instructions,
             declared_identifiers={},
+            id_suffixes={},
             proc_decl=self._proc_decl,
         )
 

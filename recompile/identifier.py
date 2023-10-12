@@ -17,5 +17,5 @@ class Identifier:
     def rename(self, name):
         self._name = name
 
-    def __str__(self):
+    def emit_code(self):
         return self._name

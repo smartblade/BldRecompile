@@ -17,13 +17,15 @@ class IfInstruction:
         else_block = None
         if self._else_block is not None:
             else_block = transform_block(self._else_block, **kwargs)
-        return self.__class__(self._if_clause, if_block, else_block)
+        if_clause = self._if_clause.transform_expression(**kwargs)
+        return self.__class__(if_clause, if_block, else_block)
 
     def emit_code(self):
         lines = []
-        if self._if_clause.endswith("this->unknown_double_0028) <= 0.0)"):
+        if_clause = self._if_clause.emit_code()
+        if if_clause.endswith("this->unknown_double_0028) <= 0.0)"):
             lines.append(" " * 4 + "// TODO avoid emitting unnecessary brackets")
-        lines.append(" " * 4 + "if ({})".format(self._if_clause))
+        lines.append(" " * 4 + "if ({})".format(if_clause))
         lines.append(" " * 4 + "{")
         for instr in self._if_block:
             lines.append(" " * 4 + instr.emit_code())

@@ -37,8 +37,8 @@ def merge_instructions(first_instr, second_instr):
     return CodeInstruction("{} = {}".format(dst, src))
 
 def merge_word32_into_double(first, second):
-    (first_var, first_field) = as_field_access(first)
-    (second_var, second_field) = as_field_access(second)
+    (first_var, first_field) = first.as_field_access()
+    (second_var, second_field) = second.as_field_access()
     if (first_var is not None and second_var is not None):
         if first_var != second_var:
             return
@@ -50,18 +50,21 @@ def merge_word32_into_double(first, second):
         second_offset = int(second_field[-4:], 16)
         if second_offset != first_offset + 4:
             return
-        if len(first) != 1:
+        first = first.as_one_token()
+        if first is None:
             return
-        return first[0]
-    if not first[0] == "(real64)":
+        return first
+    first_num = first.strip_real64()
+    if first_num is None:
         return
-    first_num = first[1:]
     second_num = second
-    if len(first_num) != 1 or not first_num[0].startswith("0x"):
+    first_num = first_num.as_one_token()
+    if first_num is None or not first_num.startswith("0x"):
         return
-    if len(second_num) != 1 or not second_num[0].startswith("0x"):
+    second_num = second_num.as_one_token()
+    if second_num is None or not second_num.startswith("0x"):
         return
-    return make_double(first_num[0], second_num[0])
+    return make_double(first_num, second_num)
 
 def make_double(first_num, second_num):
     if first_num == "0x00" and second_num == "0x00":
@@ -71,13 +74,3 @@ def make_double(first_num, second_num):
             first_num, second_num
         )
     )
-
-def as_field_access(tokens):
-    if len(tokens) != 1:
-        return (None, None)
-    expression = tokens[0]
-    tokens = expression.split("->")
-    if len(tokens) < 2:
-        return (None, None)
-    (var_name, field_name) = tokens
-    return (var_name, field_name)

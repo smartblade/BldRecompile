@@ -38,7 +38,14 @@ class ProcedureDeclaration:
     def get_types_declarations(self, is_metafile):
         lines = []
         for data_type in self.get_used_types().values():
+            alignment = data_type.alignment
+            if (alignment):
+                lines.append("#pragma pack(push, {})".format(alignment))
+                lines.append("")
             lines.append(data_type.get_declaration(is_metafile))
+            if (alignment):
+                lines.append("#pragma pack(pop)")
+                lines.append("")
         return "\n".join(lines)
 
     def get_declaration(self, is_metafile, is_definition=False):

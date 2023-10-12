@@ -16,6 +16,13 @@ class ClassType:
     def rename(self, new_name):
         return self.__class__(new_name, self._fields)
 
+    @property
+    def alignment(self):
+        for offset, (field_type, field_name) in self._fields.items():
+            if offset % 8 == 4 and field_type.size == 8:
+                return 4
+        return None
+
     def add_method(self, method):
         self._methods.append(method)
 

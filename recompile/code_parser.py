@@ -4,6 +4,8 @@ from class_type import ClassType
 from double import Double
 from pointer32 import Pointer32
 from unknown32 import Unknown32
+from unparsed_token import UnparsedToken
+from unparsed_tokens import UnparsedTokens
 
 def _make_tuple(name, **kwargs):
     return namedtuple(name, kwargs.keys())(**kwargs)
@@ -120,3 +122,7 @@ def define_field_name(field_type, field_name):
         if field_name[0] == "t" or field_name[0] == "r":
             field_name = "unknown_double_{}".format(field_name[1:])
     return field_name
+
+def parse_cpp_expression(line):
+    tokens = line.split(" ")
+    return UnparsedTokens(list(map(UnparsedToken, tokens)))
