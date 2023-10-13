@@ -53,6 +53,8 @@ def parse_data_type(s, classes):
         return Unknown32()
     if s == "real64":
         return Double()
+    if s == "void":
+        return None
     if s == "<unknown>*":
         return Pointer32()
     class_name = extract_class_name(s)

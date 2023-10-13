@@ -11,7 +11,7 @@ import time
 
 from class_type import ClassType
 import code_parser as parser
-from exceptions import SkippedProcedureException
+from exceptions import SkippedProcedureException, NextRunException
 from files_location import FilesLocation
 from pointer32 import Pointer32
 from procedure_body import ProcedureBody
@@ -311,18 +311,27 @@ def compile_cpp(files, cpp_file_name, header_file_name):
     execute_command([files.compile_bat, cpp_file_name])
     write_hash(files.compile_hash, new_hash)
 
+def next_run(files, run_callback, max_times):
+    for i in range(max_times):
+        with files.next_run() as run_files:
+            try:
+                return run_callback(run_files)
+            except NextRunException:
+                pass
+
 def process_procedure(files, addr):
     with files.next_run() as run_files:
         make_procedure_project(run_files, addr)
         set_output_dir(run_files.project, run_files.project_output_basename)
         execute_reko(run_files, has_decl_file=False)
         proc_decl = process_intermediate_output(run_files, addr)
-    with files.next_run() as run_files:
+    def final_output(run_files):
         make_procedure_project(run_files, addr)
         set_output_dir(run_files.project, run_files.project_output_basename)
         set_procedure_declaration(run_files, proc_decl, addr)
         execute_reko(run_files)
         process_final_output(run_files, proc_decl, addr)
+    next_run(files, final_output, max_times=2)
 
 def create_common_header(files):
     with open(files.common_header_name, "wt") as f:
@@ -344,7 +353,7 @@ def run():
             process_procedure(files.for_procedure(addr), addr)
         except SkippedProcedureException:
             print("Skipping {} procedure...".format(addr))
-        if addr >= "00404980":
+        if addr >= "00404B00":
             break
 
 if __name__ == '__main__':

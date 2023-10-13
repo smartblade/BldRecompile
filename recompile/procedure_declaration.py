@@ -64,7 +64,7 @@ class ProcedureDeclaration:
             proc_name = "{}::{}".format(
                 self._method_class.class_name, self._proc_name
             )
-        return_arg = self._return_arg.get_type_name(is_metafile=is_metafile)
+        return_arg = self._get_return_type_name(is_metafile=is_metafile)
         sep = "" if return_arg.endswith("*") else " "
         calling_convention = ""
         if is_metafile:
@@ -82,3 +82,8 @@ class ProcedureDeclaration:
         self._return_arg = parser.parse_data_type(
             line[:name_pos].strip(), self.get_used_types()
         )
+
+    def _get_return_type_name(self, is_metafile):
+        if self._return_arg is None:
+            return "void"
+        return self._return_arg.get_type_name(is_metafile=is_metafile)

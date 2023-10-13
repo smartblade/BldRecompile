@@ -1,4 +1,5 @@
 import code_parser as parser
+from exceptions import NextRunException
 from identifier import Identifier
 from int32 import Int32
 from unknown32 import Unknown32
@@ -30,6 +31,12 @@ class CodeInstruction:
                     proc_decl.return_type, return_expression.data_type
                 )
                 proc_decl.change_return_type(new_data_type)
+            if (
+                isinstance(return_expression, UnparsedToken) and
+                return_expression.emit_code() == "<invalid>"
+            ):
+                proc_decl.change_return_type(None)
+                raise NextRunException()
             return self
         decl = dst.as_variable_declaration(
             declared_identifiers, id_suffixes, src
