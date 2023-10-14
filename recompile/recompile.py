@@ -13,6 +13,7 @@ from class_type import ClassType
 import code_parser as parser
 from exceptions import SkippedProcedureException, NextRunException
 from files_location import FilesLocation
+from hex_conversion import from_hex
 from pointer32 import Pointer32
 from procedure_body import ProcedureBody
 from procedure_declaration import ProcedureDeclaration
@@ -24,12 +25,6 @@ argument_parser.add_argument(
     help="Clean up intermediate and output directories and rerun Reko."
 )
 options = argument_parser.parse_args()
-
-def toHex(n):
-    return format(n, '08X')
-
-def fromHex(h):
-    return int(h, 16)
 
 def make_project_file(template_name, output_file_name, proc_addrs):
     with open(template_name) as f:
@@ -145,6 +140,16 @@ def ensure_class_fields(method_class, body_lines):
             offset = match.group('offset')
             method_class.ensure_field(int(offset))
 
+def guess_float_fields(method_class, body_lines):
+    field_access_regexp = re.compile('ecx->dw(?P<offset>[\dABCDEF]+)\s*=\s*0x(?P<const>[\dABCDEF]+)')
+    for line in body_lines:
+        match = re.search(field_access_regexp, line)
+        if match:
+            offset = match.group('offset')
+            const = match.group('const')
+            if const == "3FF00000":
+                method_class.merge_word32_into_double(from_hex(offset) - 4)
+
 def extract_callees(body_lines):
     callees = set()
     for line in body_lines:
@@ -217,6 +222,7 @@ def process_intermediate_output(files, addr):
             )
         method_class = method_class.rename("unknown_class_{}".format(addr))
         ensure_class_fields(method_class, body_lines)
+        guess_float_fields(method_class, body_lines)
     parameters = []
     for (var_type, var_name) in proc.parameters:
         var_type = parser.parse_data_type(var_type, classes)
@@ -354,7 +360,7 @@ def run():
             process_procedure(files.for_procedure(addr), addr)
         except SkippedProcedureException:
             print("Skipping {} procedure...".format(addr))
-        if addr >= "00404B40":
+        if addr >= "00404F2F":
             break
 
 if __name__ == '__main__':

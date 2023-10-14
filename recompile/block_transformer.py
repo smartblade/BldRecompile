@@ -1,4 +1,7 @@
+import struct
+
 from code_instruction import CodeInstruction
+from hex_conversion import from_hex, to_hex
 
 def transform_block(instructions, **kwargs):
     new_instructions = []
@@ -67,10 +70,10 @@ def merge_word32_into_double(first, second):
     return make_double(first_num, second_num)
 
 def make_double(first_num, second_num):
-    if first_num == "0x00" and second_num == "0x00":
-        return "0.0"
-    raise Exception(
-        "Not implemented merging double: {} and {}.".format(
-            first_num, second_num
-        )
+    (double, ) = struct.unpack(
+        '>d',
+        bytes.fromhex(
+            to_hex(from_hex(second_num)) + to_hex(from_hex(first_num))
+        ),
     )
+    return double

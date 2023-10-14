@@ -1,4 +1,5 @@
 from unknown32 import Unknown32
+from double import Double
 
 class ClassType:
     def __init__(self, class_name, fields):
@@ -30,6 +31,26 @@ class ClassType:
         if offset in self._fields:
             return
         self._fields[offset] = (Unknown32(), "unknown_field_{:04X}".format(offset))
+
+    def merge_word32_into_double(self, offset):
+        (first_field_type, first_field_name) = self._fields[offset]
+        if not isinstance(first_field_type, Unknown32):
+            raise Exception(
+                "Field {} type expected to be {} bat was: {}".format(
+                    first_field_name, Unknown32, first_field_type
+                )
+            )
+        (second_field_type, second_field_name) = self._fields[offset + 4]
+        if not isinstance(second_field_type, Unknown32):
+            raise Exception(
+                "Field {} type expected to be {} bat was: {}".format(
+                    second_field_name, Unknown32, second_field_type
+                )
+            )
+        del self._fields[offset + 4]
+        self._fields[offset] = (
+            Double(), "unknown_double_{:04X}".format(offset)
+        )
 
     def get_type_name(self, is_metafile):
         return self._class_name
