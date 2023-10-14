@@ -3,6 +3,7 @@ from collections import namedtuple
 from class_type import ClassType
 from double import Double
 from pointer32 import Pointer32
+from unknown_byte import UnknownByte
 from unknown32 import Unknown32
 from unparsed_token import UnparsedToken
 from unparsed_tokens import UnparsedTokens
@@ -49,8 +50,12 @@ def extract_class_name(class_type):
     return class_name
 
 def parse_data_type(s, classes):
+    if s == "byte":
+        return UnknownByte()
     if s == "word32":
         return Unknown32()
+    if s == "ptr32":
+        return Pointer32()
     if s == "real64":
         return Double()
     if s == "void":
@@ -123,6 +128,8 @@ def define_field_name(field_type, field_name):
     elif isinstance(field_type, Double):
         if field_name[0] == "t" or field_name[0] == "r":
             field_name = "unknown_double_{}".format(field_name[1:])
+    elif isinstance(field_type, UnknownByte):
+        field_name = field_name.replace("b", "unknown_byte_")
     return field_name
 
 def parse_cpp_expression(line):

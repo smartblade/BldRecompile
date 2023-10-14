@@ -337,6 +337,7 @@ def create_common_header(files):
     with open(files.common_header_name, "wt") as f:
         f.write("#pragma once\n\n")
         f.write("#include <string.h>\n\n")
+        f.write("typedef char unknown_byte;\n")
         f.write("typedef int unknown32;\n")
 
 def run():
@@ -353,7 +354,7 @@ def run():
             process_procedure(files.for_procedure(addr), addr)
         except SkippedProcedureException:
             print("Skipping {} procedure...".format(addr))
-        if addr >= "00404B00":
+        if addr >= "00404B40":
             break
 
 if __name__ == '__main__':
