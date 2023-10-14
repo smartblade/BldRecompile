@@ -1,5 +1,6 @@
 from collections import namedtuple
 
+from brackets_expression import BracketsExpression
 from class_type import ClassType
 from double import Double
 from pointer32 import Pointer32
@@ -133,5 +134,28 @@ def define_field_name(field_type, field_name):
     return field_name
 
 def parse_cpp_expression(line):
-    tokens = line.split(" ")
-    return UnparsedTokens(list(map(UnparsedToken, tokens)))
+    state = []
+    tokens = []
+    cur_token = ""
+    for c in line + " ":
+        if c == " ":
+            if len(cur_token) > 0:
+                tokens.append(UnparsedToken(cur_token))
+                cur_token = ""
+        elif c == "(":
+            state.append((cur_token, tokens))
+            cur_token = ""
+            tokens = []
+        elif c == ")":
+            if len(cur_token) > 0:
+                tokens.append(UnparsedToken(cur_token))
+                cur_token = ""
+            brackets_tokens = tokens
+            (prefix, tokens) = state.pop()
+            brackets = BracketsExpression(
+                prefix, UnparsedTokens(brackets_tokens)
+            )
+            tokens.append(brackets)
+        else:
+            cur_token += c
+    return UnparsedTokens(tokens)

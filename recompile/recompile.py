@@ -11,6 +11,7 @@ import time
 
 from class_type import ClassType
 import code_parser as parser
+from double import Double
 from exceptions import SkippedProcedureException, NextRunException
 from files_location import FilesLocation
 from hex_conversion import from_hex
@@ -150,6 +151,51 @@ def guess_float_fields(method_class, body_lines):
             if const == "3FF00000":
                 method_class.merge_word32_into_double(from_hex(offset) - 4)
 
+def merge_double_fields(parameters, body_lines):
+    field_access_regexp = re.compile('word32\s(?P<var>\w+)\s*=\s*(?P<obj>\w+)->dw(?P<offset>[\dABCDEF]+)')
+    seq_regexp = re.compile('real64\s\w+\s*=\s*SEQ\((?P<first_var>\w+),\s(?P<second_var>\w+)\)')
+    merge_candidates = {}
+    for line in body_lines:
+        match = re.search(field_access_regexp, line)
+        if match:
+            var = match.group('var')
+            offset = match.group('offset')
+            obj = match.group('obj')
+            merge_candidates[var] = (obj, from_hex(offset))
+            continue
+        match = re.search(seq_regexp, line)
+        if match:
+            first_var = match.group('first_var')
+            second_var = match.group('second_var')
+            first_obj, first_offset = merge_candidates[first_var]
+            second_obj, second_offset = merge_candidates[second_var]
+            if first_obj != second_obj:
+                raise Exception(
+                    "Can't merge different object fields into double sequence: {} and {}.".format(
+                        first_obj, second_obj
+                    )
+                )
+            if first_offset != second_offset + 4:
+                raise Exception(
+                    "Inconsistent offsets can't merge into double sequence: {} and {}.".format(
+                        first_offset, second_offset
+                    )
+                )
+            obj = first_obj.replace("dwArg", "unknown_ptr_")
+            parameter_found = False
+            for param_type, param_name in parameters:
+                if param_name == obj:
+                    parameter_found = True
+                    if not isinstance(param_type, Pointer32):
+                        raise Exception(
+                            "Parameter type should be pointer bat was: {}.".format(
+                                 param_type
+                             )
+                        )
+                    param_type.pointee.merge_word32_into_double(second_offset)
+            if not parameter_found:
+                raise Exception("Parameter {} was not found.".format(obj))
+
 def extract_callees(body_lines):
     callees = set()
     for line in body_lines:
@@ -161,8 +207,10 @@ def extract_callees(body_lines):
 def define_parameter_name(field_type, parameter_name):
     if isinstance(field_type, Unknown32):
         parameter_name = parameter_name.replace("dwArg", "unknown_param_")
-    if isinstance(field_type, Pointer32):
+    elif isinstance(field_type, Pointer32):
         parameter_name = parameter_name.replace("dwArg", "unknown_ptr_")
+    elif isinstance(field_type, Double):
+        parameter_name = parameter_name.replace("rArg", "unknown_double_")
     return parameter_name
 
 def process_header_file(file_name, required_classes):
@@ -237,6 +285,7 @@ def process_intermediate_output(files, addr):
             )
         var_name = define_parameter_name(var_type, var_name)
         parameters.append((var_type, var_name))
+    merge_double_fields(parameters, body_lines)
     proc_decl = ProcedureDeclaration(
         proc_name="unknown_method_{}".format(addr),
         method_class=method_class,
@@ -342,6 +391,7 @@ def process_procedure(files, addr):
 def create_common_header(files):
     with open(files.common_header_name, "wt") as f:
         f.write("#pragma once\n\n")
+        f.write("#include <math.h>\n")
         f.write("#include <string.h>\n\n")
         f.write("typedef char unknown_byte;\n")
         f.write("typedef int unknown32;\n")
@@ -360,7 +410,7 @@ def run():
             process_procedure(files.for_procedure(addr), addr)
         except SkippedProcedureException:
             print("Skipping {} procedure...".format(addr))
-        if addr >= "00404F2F":
+        if addr >= "00405050":
             break
 
 if __name__ == '__main__':

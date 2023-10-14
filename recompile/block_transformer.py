@@ -12,13 +12,17 @@ def transform_block(instructions, **kwargs):
             next_instr = instructions[i + 1]
             new_instr = merge_instructions(cur_instr, next_instr)
             if new_instr is not None:
-                new_instructions.append(new_instr)
+                transform_instruction(new_instr, new_instructions, **kwargs)
                 i += 2
                 continue
-        cur_instr = cur_instr.transform_instruction(**kwargs)
-        new_instructions.append(cur_instr)
+        transform_instruction(cur_instr, new_instructions, **kwargs)
         i += 1
     return new_instructions
+
+def transform_instruction(instr, instructions, **kwargs):
+    instr = instr.transform_instruction(**kwargs)
+    if instr is not None:
+        instructions.append(instr)
 
 def merge_instructions(first_instr, second_instr):
     if not isinstance(first_instr, CodeInstruction):
@@ -57,6 +61,13 @@ def merge_word32_into_double(first, second):
         if first is None:
             return
         return first
+    (first_type, first_var) = first.as_two_tokens()
+    (second_type, second_var) = second.as_two_tokens()
+    if (
+        first_type is not None and first_type.startswith("Eq_") and
+        second_type == "word32"
+    ):
+        return "real64 rSeq_{}_{}".format(second_var, first_var)
     first_num = first.strip_real64()
     if first_num is None:
         return

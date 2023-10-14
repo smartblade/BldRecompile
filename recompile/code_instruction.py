@@ -20,7 +20,7 @@ class CodeInstruction:
         )
         (dst, src) = self.as_assignment()
         if src is None:
-            decl = self._tokens.as_variable_declaration(
+            decl, eliminate = self._tokens.as_variable_declaration(
                 declared_identifiers, id_suffixes
             )
             if decl is not None:
@@ -38,9 +38,11 @@ class CodeInstruction:
                 proc_decl.change_return_type(None)
                 raise NextRunException()
             return self
-        decl = dst.as_variable_declaration(
+        decl, eliminate = dst.as_variable_declaration(
             declared_identifiers, id_suffixes, src
         )
+        if eliminate:
+            return None
         if decl is not None:
             return decl
         if src.as_one_token() == "0x00":
@@ -82,6 +84,9 @@ class CodeInstruction:
         comment = ""
         if "memcpy" in instr:
             comment += " // TODO improve emitting of memcpy instructions"
-        if instr.endswith("unknown_fpu_2"):
+        if (
+            instr.endswith("unknown_fpu_2") and
+            instr.startswith("unknown_ptr_0C")
+        ):
             comment += " // TODO inconsitent coalescing"
         return "{}{};{}".format(" " * 4, instr, comment)
