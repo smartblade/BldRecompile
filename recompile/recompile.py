@@ -410,7 +410,7 @@ def run():
             process_procedure(files.for_procedure(addr), addr)
         except SkippedProcedureException:
             print("Skipping {} procedure...".format(addr))
-        if addr >= "00405050":
+        if addr >= "00405227":
             break
 
 if __name__ == '__main__':
