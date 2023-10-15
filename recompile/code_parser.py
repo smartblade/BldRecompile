@@ -2,6 +2,8 @@ from collections import namedtuple
 
 from brackets_expression import BracketsExpression
 from class_type import ClassType
+from exceptions import UnknownTypeException
+from float_type import Float
 from double import Double
 from pointer32 import Pointer32
 from unknown_byte import UnknownByte
@@ -59,6 +61,8 @@ def parse_data_type(s, classes):
         return Pointer32()
     if s == "real64":
         return Double()
+    if s == "real32":
+        return Float()
     if s == "void":
         return None
     if s == "<unknown>*":
@@ -70,7 +74,7 @@ def parse_data_type(s, classes):
         return classes[s]
     if s.endswith("*"):
         return Pointer32(parse_data_type(s[:-1].strip(), classes))
-    raise Exception("Not implemented type: {}.".format(s))
+    raise UnknownTypeException("Not implemented type: {}.".format(s))
 
 def parse_data_types_declarations(lines, required_classes):
     unions = {}
@@ -129,6 +133,8 @@ def define_field_name(field_type, field_name):
     elif isinstance(field_type, Double):
         if field_name[0] == "t" or field_name[0] == "r":
             field_name = "unknown_double_{}".format(field_name[1:])
+    elif isinstance(field_type, Float):
+        field_name = field_name.replace("r", "unknown_float_")
     elif isinstance(field_type, UnknownByte):
         field_name = field_name.replace("b", "unknown_byte_")
     return field_name

@@ -1,8 +1,10 @@
 import re
 
 from brackets_expression import BracketsExpression
+from cast import Cast
 import code_parser as parser
 from double import Double
+from exceptions import UnknownTypeException
 from identifier import Identifier
 from unknown32 import Unknown32
 from unparsed_token import UnparsedToken
@@ -118,7 +120,26 @@ class UnparsedTokens:
                 self._tokens,
             )
         )
-        return UnparsedTokens(tokens)
+        new_tokens = []
+        i = 0
+        while i < len(tokens):
+            if (
+                i + 1 < len(tokens) and
+                isinstance(tokens[i], BracketsExpression)
+            ):
+                brackets_expression = tokens[i].expression.as_one_token()
+                if brackets_expression is not None:
+                    try:
+                        data_type = parser.parse_data_type(brackets_expression, [])
+                    except UnknownTypeException:
+                        data_type = None
+                    if data_type is not None:
+                        new_tokens.append(Cast(data_type, tokens[i + 1]))
+                        i += 2
+                        continue
+            new_tokens.append(tokens[i])
+            i += 1
+        return UnparsedTokens(new_tokens)
 
     def emit_code(self):
         return " ".join(map(lambda token: token.emit_code(), self._tokens))

@@ -1,4 +1,5 @@
 import code_parser as parser
+from assignment import Assignment
 from exceptions import NextRunException
 from identifier import Identifier
 from int32 import Int32
@@ -59,7 +60,7 @@ class CodeInstruction:
                 )
                 identifier.rename(new_var_name)
                 src = UnparsedToken("1")
-        return self.__class__("{} = {}".format(dst.emit_code(), src.emit_code()))
+        return Assignment(dst, src)
 
     def as_assignment(self):
         return self._tokens.as_assignment()
@@ -84,9 +85,4 @@ class CodeInstruction:
         comment = ""
         if "memcpy" in instr:
             comment += " // TODO improve emitting of memcpy instructions"
-        if (
-            instr.endswith("unknown_fpu_2") and
-            instr.startswith("unknown_ptr_0C")
-        ):
-            comment += " // TODO inconsitent coalescing"
         return "{}{};{}".format(" " * 4, instr, comment)

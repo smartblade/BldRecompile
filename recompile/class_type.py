@@ -34,6 +34,9 @@ class ClassType:
 
     def merge_word32_into_double(self, offset):
         (first_field_type, first_field_name) = self._fields[offset]
+        # Check if it was already merged
+        if isinstance(first_field_type, Double):
+            return
         if not isinstance(first_field_type, Unknown32):
             raise Exception(
                 "Field {} type expected to be {} bat was: {}".format(

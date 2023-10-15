@@ -3,3 +3,6 @@ class SkippedProcedureException(Exception):
 
 class NextRunException(Exception):
     pass
+
+class UnknownTypeException(Exception):
+    pass
