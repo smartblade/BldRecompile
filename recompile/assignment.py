@@ -3,7 +3,7 @@ class Assignment:
         self._dst = dst
         self._src = src
 
-    def emit_code(self):
+    def emit_code(self, writer):
         dst = self._dst.emit_code()
         src = self._src.emit_code()
         comment = ""
@@ -12,4 +12,4 @@ class Assignment:
             dst.startswith("unknown_ptr_0C")
         ):
             comment += " // TODO inconsitent coalescing"
-        return "{}{} = {};{}".format(" " * 4, dst, src, comment)
+        writer.write_line("{} = {};{}".format(dst, src, comment))

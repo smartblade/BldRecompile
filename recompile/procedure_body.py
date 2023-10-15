@@ -6,6 +6,7 @@ from code_instruction import CodeInstruction
 import code_parser as parser
 from if_instruction import IfInstruction
 from pointer32 import Pointer32
+from writer import Writer
 
 class ProcedureBody:
     def __init__(self, proc_decl, instructions):
@@ -83,20 +84,21 @@ class ProcedureBody:
         )
 
     def emit_code(self):
-        lines = []
-        lines.append('#include "common.h"')
-        lines.append('#include "{}.h"'.format(self._proc_decl.proc_name))
-        lines.append("")
-        lines.append(
+        writer = Writer()
+        writer.write_line('#include "common.h"')
+        writer.write_line('#include "{}.h"'.format(self._proc_decl.proc_name))
+        writer.write_line("")
+        writer.write_line(
             self._proc_decl.get_declaration(
                 is_metafile=False, is_definition=True
             )
         )
-        lines.append("{")
-        for instr in self._instructions:
-            lines.append(instr.emit_code())
-        lines.append("}")
-        return "\n".join(lines) + "\n"
+        writer.write_line("{")
+        with writer.indent():
+            for instr in self._instructions:
+                instr.emit_code(writer)
+        writer.write_line("}")
+        return writer.get_string()
 
     def emit_header(self):
         lines = []

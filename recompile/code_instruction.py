@@ -80,9 +80,9 @@ class CodeInstruction:
             )
         return new_data_type
 
-    def emit_code(self):
+    def emit_code(self, writer):
         instr = self._tokens.emit_code()
         comment = ""
         if "memcpy" in instr:
             comment += " // TODO improve emitting of memcpy instructions"
-        return "{}{};{}".format(" " * 4, instr, comment)
+        writer.write_line("{};{}".format(instr, comment))

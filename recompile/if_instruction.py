@@ -20,20 +20,20 @@ class IfInstruction:
         if_clause = self._if_clause.transform_expression(**kwargs)
         return self.__class__(if_clause, if_block, else_block)
 
-    def emit_code(self):
-        lines = []
+    def emit_code(self, writer):
         if_clause = self._if_clause.emit_code()
         if if_clause.endswith("this->unknown_double_0028) <= 0.0)"):
-            lines.append(" " * 4 + "// TODO avoid emitting unnecessary brackets")
-        lines.append(" " * 4 + "if ({})".format(if_clause))
-        lines.append(" " * 4 + "{")
-        for instr in self._if_block:
-            lines.append(" " * 4 + instr.emit_code())
-        lines.append(" " * 4 + "}")
+            writer.write_line("// TODO avoid emitting unnecessary brackets")
+        writer.write_line("if ({})".format(if_clause))
+        writer.write_line("{")
+        with writer.indent():
+            for instr in self._if_block:
+                instr.emit_code(writer)
+        writer.write_line("}")
         if self._else_block is not None:
-            lines.append(" " * 4 + "else")
-            lines.append(" " * 4 + "{")
-            for instr in self._else_block:
-                lines.append(" " * 4 + instr.emit_code())
-            lines.append(" " * 4 + "}")
-        return "\n".join(lines)
+            writer.write_line("else")
+            writer.write_line("{")
+            with writer.indent():
+                for instr in self._else_block:
+                    instr.emit_code(writer)
+            writer.write_line("}")
