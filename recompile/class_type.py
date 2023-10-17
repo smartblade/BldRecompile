@@ -27,6 +27,14 @@ class ClassType:
     def add_method(self, method):
         self._methods.append(method)
 
+    def find_data_type_by_field(self, field_name):
+        for field_type, name in self._fields.values():
+            if name == field_name:
+                return field_type
+        raise Exception(
+            "Field {} was not found at {}.".format(field_name, self)
+        )
+
     def ensure_field(self, offset):
         if offset in self._fields:
             return

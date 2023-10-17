@@ -1,5 +1,6 @@
 from class_type import ClassType
 import code_parser as parser
+from identifier import Identifier
 from pointer32 import Pointer32
 from unknown32 import Unknown32
 
@@ -20,6 +21,12 @@ class ProcedureDeclaration:
 
     def change_return_type(self, return_type):
         self._return_arg = return_type
+
+    def get_parameters_ids(self):
+        param_dict = {}
+        for param_type, param_name in self._parameters:
+            param_dict[param_name] = Identifier(param_type, param_name)
+        return param_dict
 
     def get_used_types(self):
         types = {}

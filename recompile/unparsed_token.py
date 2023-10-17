@@ -15,6 +15,4 @@ class UnparsedToken:
 
     @property
     def data_type(self):
-        if self._token[-20:-4] == "->unknown_float_":
-            return Float()
         raise Exception("Can't deduce data type for: {}".format(self))

@@ -5,6 +5,7 @@ from brackets_expression import BracketsExpression
 from class_type import ClassType
 from constant import Constant
 from exceptions import UnknownTypeException
+from field_access import FieldAccess
 from float_type import Float
 from double import Double
 from pointer32 import Pointer32
@@ -14,6 +15,7 @@ from unparsed_token import UnparsedToken
 from unparsed_tokens import UnparsedTokens
 
 const_regexp = re.compile('^(?P<float>\d+\.\d+F?)$')
+field_access_regexp = re.compile('^(?P<expression>.+)->(?P<field>\w+)$')
 
 def _make_tuple(name, **kwargs):
     return namedtuple(name, kwargs.keys())(**kwargs)
@@ -180,4 +182,9 @@ def _new_token(s):
             data_type = Double()
             value = float(s)
         return Constant(data_type, value)
+    match = re.search(field_access_regexp, s)
+    if match:
+        expression = match.group('expression')
+        field_name = match.group('field')
+        return FieldAccess(_new_token(expression), field_name)
     return UnparsedToken(s)

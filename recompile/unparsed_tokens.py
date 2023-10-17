@@ -5,6 +5,7 @@ from cast import Cast
 import code_parser as parser
 from double import Double
 from exceptions import UnknownTypeException
+from field_access import FieldAccess
 from identifier import Identifier
 from unknown32 import Unknown32
 from unparsed_token import UnparsedToken
@@ -15,6 +16,9 @@ loc_var_regexp = re.compile('^((?P<prefix>dw|r)Loc(?P<offset>[\dABCDEF]{2}))|(?P
 class UnparsedTokens:
     def __init__(self, tokens):
         self._tokens = tokens
+
+    def __repr__(self):
+        return "UnparsedTokens({})".format(self._tokens)
 
     def as_assignment(self):
         eq_pos = self._find_token("=")
@@ -56,14 +60,10 @@ class UnparsedTokens:
     def as_field_access(self):
         if len(self._tokens) != 1:
             return (None, None)
-        expression = self._tokens[0]
-        if not isinstance(expression, UnparsedToken):
+        field_access = self._tokens[0]
+        if not isinstance(field_access, FieldAccess):
             return (None, None)
-        tokens = expression.emit_code().split("->")
-        if len(tokens) < 2:
-            return (None, None)
-        (var_name, field_name) = tokens
-        return (var_name, field_name)
+        return (field_access.expression.emit_code(), field_access.field_name)
 
     def as_identifier(self):
         if len(self._tokens) != 1:

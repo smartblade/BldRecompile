@@ -57,10 +57,7 @@ def merge_word32_into_double(first, second):
         second_offset = int(second_field[-4:], 16)
         if second_offset != first_offset + 4:
             return
-        first = first.as_one_token()
-        if first is None:
-            return
-        return first
+        return first.emit_code()
     (first_type, first_var) = first.as_two_tokens()
     (second_type, second_var) = second.as_two_tokens()
     if (
