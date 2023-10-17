@@ -3,6 +3,7 @@ from assignment import Assignment
 from exceptions import NextRunException
 from identifier import Identifier
 from int32 import Int32
+from pointer32 import Pointer32
 from unknown32 import Unknown32
 from unparsed_token import UnparsedToken
 
@@ -66,6 +67,11 @@ class CodeInstruction:
         return self._tokens.as_assignment()
 
     def _merge_types(self, data_type, new_data_type):
+        if (
+            isinstance(data_type, Pointer32) and
+            isinstance(new_data_type, Pointer32)
+        ):
+            return data_type
         if not isinstance(data_type, Unknown32):
             raise Exception(
                 "Can't merge {} with {}.".format(

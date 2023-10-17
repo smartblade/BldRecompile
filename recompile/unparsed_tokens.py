@@ -11,7 +11,7 @@ from unknown32 import Unknown32
 from unparsed_token import UnparsedToken
 from variable_declaration import VariableDeclaration
 
-loc_var_regexp = re.compile('^((?P<prefix>dw|r)Loc(?P<offset>[\dABCDEF]{2}))|(?P<reg>eax)|(?P<fpu>rLoc1)|(?P<seq>rSeq\w+)_\d+')
+loc_var_regexp = re.compile('^((?P<prefix>dw|r)Loc(?P<offset>[\dABCDEF]{2}))|(?P<reg>eax|ecx|edx)|(?P<fpu>rLoc1)|(?P<seq>rSeq\w+)_\d+')
 
 class UnparsedTokens:
     def __init__(self, tokens):
