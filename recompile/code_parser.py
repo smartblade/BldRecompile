@@ -1,7 +1,9 @@
 from collections import namedtuple
+import re
 
 from brackets_expression import BracketsExpression
 from class_type import ClassType
+from constant import Constant
 from exceptions import UnknownTypeException
 from float_type import Float
 from double import Double
@@ -10,6 +12,8 @@ from unknown_byte import UnknownByte
 from unknown32 import Unknown32
 from unparsed_token import UnparsedToken
 from unparsed_tokens import UnparsedTokens
+
+const_regexp = re.compile('^(?P<float>\d+\.\d+F?)$')
 
 def _make_tuple(name, **kwargs):
     return namedtuple(name, kwargs.keys())(**kwargs)
@@ -146,7 +150,7 @@ def parse_cpp_expression(line):
     for c in line + " ":
         if c == " ":
             if len(cur_token) > 0:
-                tokens.append(UnparsedToken(cur_token))
+                tokens.append(_new_token(cur_token))
                 cur_token = ""
         elif c == "(":
             state.append((cur_token, tokens))
@@ -154,7 +158,7 @@ def parse_cpp_expression(line):
             tokens = []
         elif c == ")":
             if len(cur_token) > 0:
-                tokens.append(UnparsedToken(cur_token))
+                tokens.append(_new_token(cur_token))
                 cur_token = ""
             brackets_tokens = tokens
             (prefix, tokens) = state.pop()
@@ -165,3 +169,15 @@ def parse_cpp_expression(line):
         else:
             cur_token += c
     return UnparsedTokens(tokens)
+
+def _new_token(s):
+    match = re.search(const_regexp, s)
+    if match:
+        if s.endswith("F"):
+            data_type = Float()
+            value = float(s[:-1])
+        else:
+            data_type = Double()
+            value = float(s)
+        return Constant(data_type, value)
+    return UnparsedToken(s)
