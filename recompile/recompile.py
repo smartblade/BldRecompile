@@ -218,6 +218,16 @@ def process_header_file(file_name, required_classes):
         lines = f.readlines()
     parser.parse_data_types_declarations(lines, required_classes)
 
+def process_dis_file(file_name):
+    field_access_regexp = re.compile('//\sstackDelta:\s(?P<stack_offset>\d+);\sfpuStackDelta:\s(?P<fpu_offset>\d+);')
+    with open(file_name) as f:
+        for line in f:
+            match = re.search(field_access_regexp, line)
+            if match:
+                stack_offset = int(match.group('stack_offset'))
+                fpu_offset = int(match.group('fpu_offset'))
+                return (stack_offset, fpu_offset)
+
 def process_output_dir(output_dir):
     for root, dirs, files in os.walk(output_dir):
         for file in files:
@@ -225,9 +235,11 @@ def process_output_dir(output_dir):
                 continue
             if file.endswith(".c"):
                 code_file = os.path.join(output_dir, file)
-            if file.endswith(".h"):
+            elif file.endswith(".h"):
                 header_file = os.path.join(output_dir, file)
-    return (code_file, header_file)
+            elif file.endswith(".dis"):
+                dis_file = os.path.join(output_dir, file)
+    return (code_file, header_file, dis_file)
 
 def load_callees(files):
     try:
@@ -241,7 +253,10 @@ def dump_callees(files, callees):
         json.dump(list(sorted(callees)), f)
 
 def process_intermediate_output(files, addr):
-    code_file, header_file = process_output_dir(files.project_output)
+    code_file, header_file, dis_file = process_output_dir(files.project_output)
+    stack_offset, fpu_offset = process_dis_file(dis_file)
+    if fpu_offset != 0:
+        raise Exception("Unsupported FPU offset: {}".format(fpu_offset))
     proc, body_lines = process_output_code(code_file, addr)
     callees = extract_callees(body_lines)
     dump_callees(files, callees)
@@ -272,7 +287,10 @@ def process_intermediate_output(files, addr):
         ensure_class_fields(method_class, body_lines)
         guess_float_fields(method_class, body_lines)
     parameters = []
+    cur_offset = 4 #Return address size at stack
     for (var_type, var_name) in proc.parameters:
+        offset = from_hex(var_name[-2:])
+        fill_unused_params(parameters, cur_offset, offset - cur_offset)
         var_type = parser.parse_data_type(var_type, classes)
         if (
             isinstance(var_type, Pointer32) and
@@ -285,6 +303,8 @@ def process_intermediate_output(files, addr):
             )
         var_name = define_parameter_name(var_type, var_name)
         parameters.append((var_type, var_name))
+        cur_offset = offset + var_type.size
+    fill_unused_params(parameters, cur_offset, stack_offset - cur_offset)
     merge_double_fields(parameters, body_lines)
     proc_decl = ProcedureDeclaration(
         proc_name="unknown_method_{}".format(addr),
@@ -294,6 +314,18 @@ def process_intermediate_output(files, addr):
     if method_class is not None:
         method_class.add_method(proc_decl)
     return proc_decl
+
+def fill_unused_params(parameters, offset, size):
+    if size < 0:
+        raise Exception(
+            "Inconsistent parameters at {:X} before {:X} offset.".format(
+                offset + size, offset
+            )
+        )
+    if size % 4 != 0:
+        raise Exception("Size {} should be multiple of 4.".format(size))
+    for i in range(offset, offset + size, 4):
+        parameters.append((Unknown32(), "unused_param_{:02X}".format(i)))
 
 def extract_procedure_body(file_name, proc_decl):
     with open(file_name) as f:
@@ -313,7 +345,7 @@ def extract_procedure_body(file_name, proc_decl):
             instructions.append(line)
 
 def process_final_output(files, proc_decl, addr):
-    code_file, header_file = process_output_dir(files.project_output)
+    code_file, header_file, dis_file = process_output_dir(files.project_output)
     body = extract_procedure_body(code_file, proc_decl)
     body.transform_instructions()
     cpp_file_name = os.path.join(files.output, "{}.cpp".format(addr))

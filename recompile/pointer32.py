@@ -3,6 +3,10 @@ class Pointer32:
         self._pointee = pointee
 
     @property
+    def size(self):
+        return 4
+
+    @property
     def pointee(self):
         return self._pointee
 
