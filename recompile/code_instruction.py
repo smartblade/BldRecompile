@@ -72,6 +72,11 @@ class CodeInstruction:
             isinstance(new_data_type, Pointer32)
         ):
             return data_type
+        if (
+            isinstance(data_type, Unknown32) and
+            isinstance(new_data_type, Unknown32)
+        ):
+            return data_type
         if not isinstance(data_type, Unknown32):
             raise Exception(
                 "Can't merge {} with {}.".format(
