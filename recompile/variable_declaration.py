@@ -3,6 +3,10 @@ class VariableDeclaration:
         self._id = identifier
         self._initial_expression = initial_expression
 
+    @property
+    def id(self):
+        return self._id
+
     def emit_code(self, writer):
         type_name = self._id.data_type.get_type_name(is_metafile=False)
         sep = "" if type_name.endswith("*") else " "

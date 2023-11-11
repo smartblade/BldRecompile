@@ -3,6 +3,10 @@ class Assignment:
         self._dst = dst
         self._src = src
 
+    @property
+    def src(self):
+        return self._src
+
     def emit_code(self, writer):
         dst = self._dst.emit_code()
         src = self._src.emit_code()

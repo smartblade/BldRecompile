@@ -66,6 +66,9 @@ class CodeInstruction:
     def as_assignment(self):
         return self._tokens.as_assignment()
 
+    def as_return(self):
+        return self._tokens.as_return()
+
     def _merge_types(self, data_type, new_data_type):
         if (
             isinstance(data_type, Pointer32) and

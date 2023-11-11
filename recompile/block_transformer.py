@@ -1,7 +1,11 @@
 import struct
 
+from assignment import Assignment
 from code_instruction import CodeInstruction
+from exceptions import NextRunException
+from variable_declaration import VariableDeclaration
 from hex_conversion import from_hex, to_hex
+from identifier import Identifier
 
 def transform_block(instructions, **kwargs):
     new_instructions = []
@@ -17,6 +21,7 @@ def transform_block(instructions, **kwargs):
                 continue
         transform_instruction(cur_instr, new_instructions, **kwargs)
         i += 1
+    _validate_return_instruction(new_instructions, **kwargs)
     return new_instructions
 
 def transform_instruction(instr, instructions, **kwargs):
@@ -85,3 +90,22 @@ def make_double(first_num, second_num):
         ),
     )
     return double
+
+def _validate_return_instruction(instructions, proc_decl, **kwargs):
+    if len(instructions) < 3:
+        return
+    if not isinstance(instructions[-1], CodeInstruction):
+        return
+    return_expression = instructions[-1].as_return()
+    if not isinstance(return_expression, Identifier):
+        return
+    if not isinstance(instructions[-3], VariableDeclaration):
+        return
+    if instructions[-3].id != return_expression:
+        return
+    if not isinstance(instructions[-2], Assignment):
+        return
+    if instructions[-2].src.as_identifier() != return_expression:
+        return
+    proc_decl.change_return_type(None)
+    raise NextRunException()
