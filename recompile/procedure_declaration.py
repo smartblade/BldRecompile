@@ -2,13 +2,14 @@ from class_type import ClassType
 import code_parser as parser
 from identifier import Identifier
 from pointer32 import Pointer32
-from unknown32 import Unknown32
 
 class ProcedureDeclaration:
-    def __init__(self, proc_name, method_class, parameters):
+    def __init__(
+        self, proc_name, method_class, parameters, return_arg
+    ):
         self._proc_name = proc_name
         self._method_class = method_class
-        self._return_arg = Unknown32()
+        self._return_arg = return_arg
         self._parameters = parameters
 
     @property

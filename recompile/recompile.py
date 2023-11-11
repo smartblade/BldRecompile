@@ -255,7 +255,7 @@ def dump_callees(files, callees):
 def process_intermediate_output(files, addr):
     code_file, header_file, dis_file = process_output_dir(files.project_output)
     stack_offset, fpu_offset = process_dis_file(dis_file)
-    if fpu_offset != 0:
+    if fpu_offset != 0 and fpu_offset != 1:
         raise Exception("Unsupported FPU offset: {}".format(fpu_offset))
     proc, body_lines = process_output_code(code_file, addr)
     callees = extract_callees(body_lines)
@@ -306,10 +306,15 @@ def process_intermediate_output(files, addr):
         cur_offset = offset + var_type.size
     fill_unused_params(parameters, cur_offset, stack_offset - cur_offset)
     merge_double_fields(parameters, body_lines)
+    if fpu_offset == 1:
+        return_arg = Double()
+    else:
+        return_arg = Unknown32()
     proc_decl = ProcedureDeclaration(
         proc_name="unknown_method_{}".format(addr),
         method_class=method_class,
         parameters=parameters,
+        return_arg=return_arg,
     )
     if method_class is not None:
         method_class.add_method(proc_decl)
@@ -442,7 +447,7 @@ def run():
             process_procedure(files.for_procedure(addr), addr)
         except SkippedProcedureException:
             print("Skipping {} procedure...".format(addr))
-        if addr >= "0040578A":
+        if addr >= "004057CC":
             break
 
 if __name__ == '__main__':
