@@ -75,12 +75,13 @@ class ProcedureBody:
             prev_state.current_block[-1].add_else_block(state.current_block)
         return prev_state
 
-    def transform_instructions(self):
+    def transform_instructions(self, recompiled_decls):
         self._instructions = transform_block(
             self._instructions,
             declared_identifiers=self._proc_decl.get_parameters_ids(),
             id_suffixes={},
             proc_decl=self._proc_decl,
+            recompiled_decls=recompiled_decls,
         )
 
     def emit_code(self):

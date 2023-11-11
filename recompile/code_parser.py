@@ -9,6 +9,7 @@ from field_access import FieldAccess
 from float_type import Float
 from double import Double
 from pointer32 import Pointer32
+from procedure_call import ProcedureCall
 from unknown_byte import UnknownByte
 from unknown32 import Unknown32
 from unparsed_token import UnparsedToken
@@ -164,9 +165,7 @@ def parse_cpp_expression(line):
                 cur_token = ""
             brackets_tokens = tokens
             (prefix, tokens) = state.pop()
-            brackets = BracketsExpression(
-                prefix, UnparsedTokens(brackets_tokens)
-            )
+            brackets = _new_brackets_expression(prefix, brackets_tokens)
             tokens.append(brackets)
         else:
             cur_token += c
@@ -188,3 +187,13 @@ def _new_token(s):
         field_name = match.group('field')
         return FieldAccess(_new_token(expression), field_name)
     return UnparsedToken(s)
+
+def _new_brackets_expression(prefix, tokens):
+    if prefix.startswith("unknown_method_"):
+        if len(tokens) != 1:
+            raise Exception(
+                "Should be 1 token inside brackets but was: {}".format(tokens)
+            )
+        callee_addr = prefix[15:]
+        return ProcedureCall(prefix, tokens, callee_addr, is_method=True)
+    return BracketsExpression(prefix, UnparsedTokens(tokens))

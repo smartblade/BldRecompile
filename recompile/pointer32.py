@@ -2,6 +2,9 @@ class Pointer32:
     def __init__(self, pointee=None):
         self._pointee = pointee
 
+    def __repr__(self):
+        return "ptr32({})".format(self._pointee)
+
     @property
     def size(self):
         return 4

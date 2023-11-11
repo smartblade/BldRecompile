@@ -27,12 +27,15 @@ argument_parser.add_argument(
 )
 options = argument_parser.parse_args()
 
-def make_project_file(template_name, output_file_name, proc_addrs):
+def make_project_file(
+    template_name, output_file_name, proc_addrs, recompiled_calles
+):
     with open(template_name) as f:
         lines = f.readlines()
     with open(output_file_name, "wt") as f:
-        procedure_start = "<procedure name=\"unknown_procedure_{}\">\n"
+        procedure_start = "<procedure name=\"{}\">\n"
         addr_str = "<address>{}</address>\n"
+        cdecl_str = "<CSignature>{}</CSignature>\n"
         procedure_end = "</procedure>\n"
         defined_procedures = set()
         procedure_declarations_inserted = False
@@ -43,8 +46,18 @@ def make_project_file(template_name, output_file_name, proc_addrs):
                 for addr in proc_addrs:
                     if addr in defined_procedures:
                         continue
-                    f.write(" " * 6 + procedure_start.format(addr))
+                    if addr in recompiled_calles:
+                        cdecl = recompiled_calles[addr].get_declaration(
+                            is_metafile=True, is_brief=True
+                        )
+                        proc_name = recompiled_calles[addr].proc_name
+                    else:
+                        cdecl = None
+                        proc_name = "unknown_procedure_{}".format(addr)
+                    f.write(" " * 6 + procedure_start.format(proc_name))
                     f.write(" " * 8 + addr_str.format(addr))
+                    if cdecl is not None:
+                        f.write(" " * 8 + cdecl_str.format(cdecl))
                     f.write(" " * 6 + procedure_end)
                 procedure_declarations_inserted = True
             f.write(line)
@@ -95,12 +108,17 @@ def set_procedure_declaration(files, proc_decl, addr):
             if "<address>" in line and addr == line[17:25]:
                 f.write(" " * 8 + cdecl_str.format(cdecl))
 
-def make_procedure_project(files, addr):
-    procs = load_callees(files)
-    if procs is not None:
-        procs.append(addr)
+def make_procedure_project(files, addr, recompiled_decls):
+    calles = load_callees(files)
+    if calles is not None:
+        recompiled_calles = dict(
+            (addr, recompiled_decls[addr]) for addr in calles
+            if addr in recompiled_decls
+        )
+        procs = [*calles, addr]
         make_project_file(
-            files.project_template, files.project, sorted(procs)
+            files.project_template, files.project, sorted(procs),
+            recompiled_calles,
         )
     else:
         shutil.copyfile(files.intermediate_project, files.project)
@@ -198,10 +216,12 @@ def merge_double_fields(parameters, body_lines):
 
 def extract_callees(body_lines):
     callees = set()
+    prefixes = ["unknown_procedure_", "unknown_method_"]
     for line in body_lines:
-        proc_callees = line.split("unknown_procedure_")[1:]
-        for proc_callee in proc_callees:
-            callees.add(proc_callee[:8])
+        for prefix in prefixes:
+            proc_callees = line.split(prefix)[1:]
+            for proc_callee in proc_callees:
+                callees.add(proc_callee[:8])
     return callees
 
 def define_parameter_name(field_type, parameter_name):
@@ -252,7 +272,7 @@ def dump_callees(files, callees):
     with open(files.callees_json, "wt") as f:
         json.dump(list(sorted(callees)), f)
 
-def process_intermediate_output(files, addr):
+def process_intermediate_output(files, addr, recompiled_decls):
     code_file, header_file, dis_file = process_output_dir(files.project_output)
     stack_offset, fpu_offset = process_dis_file(dis_file)
     if fpu_offset != 0 and fpu_offset != 1:
@@ -260,7 +280,7 @@ def process_intermediate_output(files, addr):
     proc, body_lines = process_output_code(code_file, addr)
     callees = extract_callees(body_lines)
     dump_callees(files, callees)
-    if len(callees) > 0:
+    if len(set(callees) - set(recompiled_decls)) > 0:
         raise SkippedProcedureException()
     class_name = parser.extract_class_name(proc.class_type)
     classes = {}
@@ -349,10 +369,10 @@ def extract_procedure_body(file_name, proc_decl):
         if instructions is not None:
             instructions.append(line)
 
-def process_final_output(files, proc_decl, addr):
+def process_final_output(files, proc_decl, addr, recompiled_decls):
     code_file, header_file, dis_file = process_output_dir(files.project_output)
     body = extract_procedure_body(code_file, proc_decl)
-    body.transform_instructions()
+    body.transform_instructions(recompiled_decls)
     cpp_file_name = os.path.join(files.output, "{}.cpp".format(addr))
     with open(cpp_file_name, "wt") as f:
         f.write(body.emit_code())
@@ -411,19 +431,22 @@ def next_run(files, run_callback, max_times):
             except NextRunException:
                 pass
 
-def process_procedure(files, addr):
+def process_procedure(files, addr, recompiled_decls):
     with files.next_run() as run_files:
-        make_procedure_project(run_files, addr)
+        make_procedure_project(run_files, addr, recompiled_decls)
         set_output_dir(run_files.project, run_files.project_output_basename)
         execute_reko(run_files, has_decl_file=False)
-        proc_decl = process_intermediate_output(run_files, addr)
+        proc_decl = process_intermediate_output(
+            run_files, addr, recompiled_decls
+        )
     def final_output(run_files):
-        make_procedure_project(run_files, addr)
+        make_procedure_project(run_files, addr, recompiled_decls)
         set_output_dir(run_files.project, run_files.project_output_basename)
         set_procedure_declaration(run_files, proc_decl, addr)
         execute_reko(run_files)
-        process_final_output(run_files, proc_decl, addr)
+        process_final_output(run_files, proc_decl, addr, recompiled_decls)
     next_run(files, final_output, max_times=2)
+    return proc_decl
 
 def create_common_header(files):
     with open(files.common_header_name, "wt") as f:
@@ -439,15 +462,18 @@ def run():
     with open(files.procedures_dict_file, "rt") as f:
         proc_dict = json.load(f)
     make_project_file(
-        files.project_template, files.intermediate_project, proc_dict.keys()
+        files.project_template, files.intermediate_project, proc_dict.keys(), {}
     )
     create_common_header(files)
+    recompiled_decls = {}
     for addr, proc in proc_dict.items():
         try:
-            process_procedure(files.for_procedure(addr), addr)
+            recompiled_decls[addr] = process_procedure(
+                files.for_procedure(addr), addr, recompiled_decls
+            )
         except SkippedProcedureException:
             print("Skipping {} procedure...".format(addr))
-        if addr >= "0040583A":
+        if addr >= "00405872":
             break
 
 if __name__ == '__main__':

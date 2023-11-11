@@ -15,10 +15,11 @@ class CodeInstruction:
         return "CodeInstruction({})".format(self._tokens)
 
     def transform_instruction(
-        self, declared_identifiers, id_suffixes, proc_decl
+        self, declared_identifiers, id_suffixes, proc_decl, **kwargs
     ):
         self._tokens = self._tokens.transform_expression(
-            declared_identifiers=declared_identifiers
+            declared_identifiers=declared_identifiers,
+            **kwargs,
         )
         (dst, src) = self.as_assignment()
         if src is None:
