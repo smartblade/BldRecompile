@@ -101,8 +101,10 @@ class ClassType:
             indent = " " * 4
             if cur_offset != offset:
                 self._fill_unused_fields(lines, cur_offset, offset - cur_offset)
-            type_name = field_type.get_type_name(is_metafile=is_metafile)
-            lines.append("{}{} {};".format(indent, type_name, field_name))
+            field_decl = field_type.make_variable_declaration(
+                field_name, is_metafile=is_metafile
+            )
+            lines.append("{}{};".format(indent, field_decl))
             cur_offset = offset + field_type.size
 
     def _fill_unused_fields(self, lines, offset, size):

@@ -1,3 +1,4 @@
+from calling_convention import CallingConvention
 from class_type import ClassType
 import code_parser as parser
 from identifier import Identifier
@@ -5,9 +6,10 @@ from pointer32 import Pointer32
 
 class ProcedureDeclaration:
     def __init__(
-        self, proc_name, method_class, parameters, return_arg
+        self, proc_name, convention, method_class, parameters, return_arg
     ):
         self._proc_name = proc_name
+        self._convention = convention
         self._method_class = method_class
         self._return_arg = return_arg
         self._parameters = parameters
@@ -35,8 +37,6 @@ class ProcedureDeclaration:
 
     def get_used_types(self):
         types = {}
-        if self._method_class is None:
-            raise Exception("Only thiscall is implemented.")
         for parameter_type, parameter_name in self._parameters:
             if (
                 isinstance(parameter_type, Pointer32) and
@@ -44,7 +44,8 @@ class ProcedureDeclaration:
             ):
                 class_type = parameter_type.pointee
                 types[class_type.class_name] = class_type
-        types[self._method_class.class_name] = self._method_class
+        if self._method_class is not None:
+            types[self._method_class.class_name] = self._method_class
         return types
 
     def get_types_declarations(self, is_metafile):
@@ -61,10 +62,8 @@ class ProcedureDeclaration:
         return "\n".join(lines)
 
     def get_declaration(self, is_metafile, is_definition=False, is_brief=False):
-        if self._method_class is None:
-            raise Exception("Only thiscall is implemented.")
         parameters = []
-        if is_metafile:
+        if is_metafile and self._method_class is not None:
             if is_brief:
                 this_arg = "ptr32 this"
             else:
@@ -77,15 +76,17 @@ class ProcedureDeclaration:
             sep = "" if type_name.endswith("*") else " "
             parameters.append("{}{}{}".format(type_name, sep, parameter_name))
         proc_name = self._proc_name
-        if is_definition:
+        if is_definition and self._method_class is not None:
             proc_name = "{}::{}".format(
                 self._method_class.class_name, self._proc_name
             )
         return_arg = self._get_return_type_name(is_metafile=is_metafile)
         sep = "" if return_arg.endswith("*") else " "
         calling_convention = ""
-        if is_metafile:
+        if is_metafile and self._convention == CallingConvention.THISCALL:
             calling_convention = "__thiscall "
+        elif self._convention == CallingConvention.STDCALL:
+            calling_convention = "__stdcall "
         return "{}{}{}{}({})".format(
             return_arg,
             sep,

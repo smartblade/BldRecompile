@@ -7,6 +7,7 @@ from double import Double
 from exceptions import UnknownTypeException
 from field_access import FieldAccess
 from identifier import Identifier
+from int32 import Int32
 from unknown32 import Unknown32
 from unparsed_token import UnparsedToken
 from variable_declaration import VariableDeclaration
@@ -152,6 +153,8 @@ class UnparsedTokens:
                 prefix = match.group('prefix')
                 if prefix =="dw" and isinstance(var_type, Unknown32):
                     return "unknown_loc_{}".format(offset)
+                if prefix =="dw" and isinstance(var_type, Int32):
+                    return "unknown_int_loc_{}".format(offset)
                 if prefix =="r" and isinstance(var_type, Double):
                     return "unknown_double_loc_{}".format(offset)
             reg = match.group('reg')

@@ -9,6 +9,7 @@ import subprocess
 import sys
 import time
 
+from calling_convention import CallingConvention
 from class_type import ClassType
 import code_parser as parser
 from double import Double
@@ -306,6 +307,13 @@ def process_intermediate_output(files, addr, recompiled_decls):
         method_class = method_class.rename("unknown_class_{}".format(addr))
         ensure_class_fields(method_class, body_lines)
         guess_float_fields(method_class, body_lines)
+    if proc.class_type is not None:
+        convention = CallingConvention.THISCALL
+    else:
+        if stack_offset == 4:
+            convention = CallingConvention.CDECL
+        else:
+            convention = CallingConvention.STDCALL
     parameters = []
     cur_offset = 4 #Return address size at stack
     for (var_type, var_name) in proc.parameters:
@@ -324,7 +332,8 @@ def process_intermediate_output(files, addr, recompiled_decls):
         var_name = define_parameter_name(var_type, var_name)
         parameters.append((var_type, var_name))
         cur_offset = offset + var_type.size
-    fill_unused_params(parameters, cur_offset, stack_offset - cur_offset)
+    if convention != CallingConvention.CDECL:
+        fill_unused_params(parameters, cur_offset, stack_offset - cur_offset)
     merge_double_fields(parameters, body_lines)
     if fpu_offset == 1:
         return_arg = Double()
@@ -332,6 +341,7 @@ def process_intermediate_output(files, addr, recompiled_decls):
         return_arg = Unknown32()
     proc_decl = ProcedureDeclaration(
         proc_name="unknown_method_{}".format(addr),
+        convention=convention,
         method_class=method_class,
         parameters=parameters,
         return_arg=return_arg,
@@ -473,7 +483,7 @@ def run():
             )
         except SkippedProcedureException:
             print("Skipping {} procedure...".format(addr))
-        if addr >= "00405BA9":
+        if addr >= "00405F0D":
             break
 
 if __name__ == '__main__':
