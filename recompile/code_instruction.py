@@ -70,6 +70,9 @@ class CodeInstruction:
     def as_return(self):
         return self._tokens.as_return()
 
+    def as_two_tokens(self):
+        return self._tokens.as_two_tokens()
+
     def _merge_types(self, data_type, new_data_type):
         if (
             isinstance(data_type, Pointer32) and

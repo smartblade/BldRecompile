@@ -14,6 +14,11 @@ def transform_block(instructions, **kwargs):
         cur_instr = instructions[i]
         if i < len(instructions) - 1:
             next_instr = instructions[i + 1]
+            new_instr = merge_union_declaration(cur_instr, next_instr)
+            if new_instr is not None:
+                i += 1
+                cur_instr = new_instr
+                next_instr = instructions[i + 1]
             new_instr = merge_instructions(cur_instr, next_instr)
             if new_instr is not None:
                 transform_instruction(new_instr, new_instructions, **kwargs)
@@ -28,6 +33,25 @@ def transform_instruction(instr, instructions, **kwargs):
     instr = instr.transform_instruction(**kwargs)
     if instr is not None:
         instructions.append(instr)
+
+def merge_union_declaration(first_instr, second_instr):
+    if not isinstance(first_instr, CodeInstruction):
+        return
+    if not isinstance(second_instr, CodeInstruction):
+        return
+    (first_type, first_var) = first_instr.as_two_tokens()
+    if first_type is None:
+        return
+    if not first_type.startswith("Eq_"):
+        return
+    (second_dst, second_src) = second_instr.as_assignment()
+    if second_dst is None:
+        return
+    if second_dst.emit_code() != "{}.u0".format(first_var):
+        return
+    return CodeInstruction(
+        "{} {} = {}".format(first_type, first_var, second_src.emit_code())
+    )
 
 def merge_instructions(first_instr, second_instr):
     if not isinstance(first_instr, CodeInstruction):
