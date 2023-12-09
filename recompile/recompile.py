@@ -9,19 +9,24 @@ import subprocess
 import sys
 import time
 
+from address_of import AddressOf
 from assignment import Assignment
 from calling_convention import CallingConvention
+from cast import Cast
 from class_type import ClassType
 import code_parser as parser
 from double import Double
 from exceptions import SkippedProcedureException, NextRunException
+from field_access import FieldAccess
 from files_location import FilesLocation
 from hex_conversion import from_hex
+from identifier import Identifier
 from pointer32 import Pointer32
 from parse_instructions import parse_instructions
 from procedure_call import ProcedureCall
 from procedure_body import ProcedureBody
 from procedure_declaration import ProcedureDeclaration
+from unknown_class import UnknownClass
 from unknown32 import Unknown32
 from unparsed_tokens import UnparsedTokens
 from writer import Writer
@@ -34,7 +39,8 @@ argument_parser.add_argument(
 options = argument_parser.parse_args()
 
 def make_project_file(
-    template_name, output_file_name, proc_addrs, recompiled_calles
+    template_name, output_file_name, proc_addrs, recompiled_calles,
+    full_typed_args_by_proc = {},
 ):
     with open(template_name) as f:
         lines = f.readlines()
@@ -53,8 +59,11 @@ def make_project_file(
                     if addr in defined_procedures:
                         continue
                     if addr in recompiled_calles:
+                        full_typed_args = full_typed_args_by_proc.get(
+                            addr, set()
+                        )
                         cdecl = recompiled_calles[addr].get_declaration(
-                            is_metafile=True, is_brief=True
+                            is_metafile=True, full_typed_args=full_typed_args
                         )
                         proc_name = recompiled_calles[addr].proc_name
                     else:
@@ -93,9 +102,16 @@ def set_output_dir(project_file_name, output_dir):
                 line = line.replace(".reko", output_dir)
             f.write(line)
 
-def set_procedure_declaration(files, proc_decl, addr):
-    emit_metafile(proc_decl, files.decl)
-    cdecl = proc_decl.get_declaration(is_metafile=True)
+def set_declarations(
+    files, proc_decl, recompiled_calles, full_typed_args_by_proc, addr
+):
+    metafile_created = emit_metafile(
+        proc_decl, recompiled_calles, full_typed_args_by_proc, files.decl
+    )
+    if proc_decl is not None:
+        cdecl = proc_decl.get_declaration(is_metafile=True)
+    else:
+        cdecl = None
     with open(files.project) as f:
         lines = f.readlines()
     with open(files.project, "wt") as f:
@@ -106,25 +122,33 @@ def set_procedure_declaration(files, proc_decl, addr):
         decl_file_entry_written = False
         for line in lines:
             if not decl_file_entry_written and "<script>" in line:
-                f.write(" " * 2 + metadata_start)
-                f.write(" " * 4 + filename_str.format(files.decl_basename))
-                f.write(" " * 2 + metadata_end)
+                if metafile_created:
+                    f.write(" " * 2 + metadata_start)
+                    f.write(" " * 4 + filename_str.format(files.decl_basename))
+                    f.write(" " * 2 + metadata_end)
                 decl_file_entry_written = True
             f.write(line)
             if "<address>" in line and addr == line[17:25]:
-                f.write(" " * 8 + cdecl_str.format(cdecl))
+                if cdecl is not None:
+                    f.write(" " * 8 + cdecl_str.format(cdecl))
 
-def make_procedure_project(files, addr, recompiled_decls):
-    calles = load_callees(files)
+def get_recompiled_calles(calles, recompiled_decls):
     if calles is not None:
-        recompiled_calles = dict(
+        return dict(
             (addr, recompiled_decls[addr]) for addr in calles
             if addr in recompiled_decls
         )
+    return None
+
+def make_procedure_project(
+    files, calles, addr, recompiled_decls, full_typed_args_by_proc
+):
+    if calles is not None:
+        recompiled_calles = get_recompiled_calles(calles, recompiled_decls)
         procs = [*calles, addr]
         make_project_file(
             files.project_template, files.project, sorted(procs),
-            recompiled_calles,
+            recompiled_calles, full_typed_args_by_proc,
         )
     else:
         shutil.copyfile(files.intermediate_project, files.project)
@@ -138,9 +162,20 @@ def execute_command(command):
     if code:
         raise Exception('Failed to execute {}.'.format(command))
 
-def emit_metafile(proc_decl, decl_file_name):
+def emit_metafile(
+    proc_decl, recompiled_calles, full_typed_args_by_proc, decl_file_name
+):
+    if recompiled_calles is None:
+        return False
+    if proc_decl is None and len(full_typed_args_by_proc) == 0:
+        return False
     with open(decl_file_name, "wt") as f:
-        f.write(proc_decl.get_types_declarations(is_metafile=True))
+        if proc_decl is not None:
+            f.write(proc_decl.get_types_declarations(is_metafile=True))
+        for callee_addr, full_typed_args in full_typed_args_by_proc.items():
+            callee = recompiled_calles[callee_addr]
+            f.write(callee.get_types_declarations(is_metafile=True))
+    return True
 
 def process_output_code(file_name, addr):
     with open(file_name) as f:
@@ -237,14 +272,63 @@ def merge_double_fields(parameters, body_instructions):
             if not parameter_found:
                 raise Exception("Parameter {} was not found.".format(obj))
 
-def extract_callees(body_instructions):
+def analyse_types(classes, body_instructions):
+    def on_expression_visited(e):
+        if not isinstance(e, Assignment):
+            return
+        cast = e.src.as_type(Cast)
+        if cast is None:
+            return
+        if not isinstance(cast.data_type, Unknown32):
+            return
+        fa = e.dst.as_type(FieldAccess)
+        if fa is None:
+            return
+        if not isinstance(fa.expression.data_type, Pointer32):
+            return
+        pointee = fa.expression.data_type.pointee
+        if (
+            isinstance(pointee, UnknownClass) and
+            isinstance(fa.expression, AddressOf) and
+            isinstance(fa.expression.expression, Identifier)
+        ):
+            identifier = fa.expression.expression
+            identifier.change_data_type(classes[pointee.class_name])
+        if not isinstance(fa.expression.data_type.pointee, ClassType):
+            return
+        class_type = fa.expression.data_type.pointee
+        offset = class_type.find_offset_by_field_name(fa.field_name)
+        class_type.merge_word32_into_double(offset)
+    for instr in body_instructions:
+        instr.visit(on_expression_visited)
+
+def collect_addr_of_locals(pc, recompiled_decls, full_typed_args_by_proc):
+    if pc.callee_address not in recompiled_decls:
+        return
+    callee_decl = recompiled_decls[pc.callee_address]
+    parameters = list(callee_decl.get_parameters_ids().keys())
+    for i in range(len(parameters)):
+        if (
+            isinstance(pc.arguments[i], AddressOf) and
+            isinstance(pc.arguments[i].expression, Identifier)
+        ):
+            if pc.callee_address not in full_typed_args_by_proc:
+                full_typed_args = set()
+                full_typed_args_by_proc[pc.callee_address] = full_typed_args
+            else:
+                full_typed_args = full_typed_args_by_proc[pc.callee_address]
+            full_typed_args.add(parameters[i])
+
+def extract_callees(body_instructions, recompiled_decls):
     def on_expression_visited(e):
         if isinstance(e, ProcedureCall) and e.callee_address is not None:
             callees.add(e.callee_address)
+            collect_addr_of_locals(e, recompiled_decls, full_typed_args_by_proc)
     callees = set()
+    full_typed_args_by_proc = {}
     for instr in body_instructions:
         instr.visit(on_expression_visited)
-    return callees
+    return (callees, full_typed_args_by_proc)
 
 def define_parameter_name(field_type, parameter_name):
     if isinstance(field_type, Unknown32):
@@ -255,10 +339,10 @@ def define_parameter_name(field_type, parameter_name):
         parameter_name = parameter_name.replace("rArg", "unknown_double_")
     return parameter_name
 
-def process_header_file(file_name):
+def process_header_file(file_name, defined_types):
     with open(file_name) as f:
         lines = f.readlines()
-    return parser.parse_data_types_declarations(lines)
+    return parser.parse_data_types_declarations(lines, defined_types)
 
 def process_dis_file(file_name):
     field_access_regexp = re.compile('//\sstackDelta:\s(?P<stack_offset>\d+);\sfpuStackDelta:\s(?P<fpu_offset>\d+);')
@@ -324,11 +408,17 @@ def process_intermediate_output(files, addr, recompiled_decls):
     if fpu_offset != 0 and fpu_offset != 1:
         raise Exception("Unsupported FPU offset: {}".format(fpu_offset))
     proc, body_instructions = process_output_code(code_file, addr)
-    callees = extract_callees(body_instructions)
+    (callees, full_typed_args_by_proc) = extract_callees(
+        body_instructions, recompiled_decls
+    )
     dump_callees(files, callees)
     if len(set(callees) - set(recompiled_decls)) > 0:
         raise SkippedProcedureException()
-    classes = process_header_file(header_file)
+    defined_types = {}
+    for callee_add in full_typed_args_by_proc.keys():
+        callee_decl = recompiled_decls[callee_add]
+        defined_types.update(callee_decl.get_used_types())
+    classes = process_header_file(header_file, defined_types)
     method_class = None
     if proc.class_type is not None:
         ptr_to_class = parser.parse_data_type(proc.class_type, classes)
@@ -372,6 +462,7 @@ def process_intermediate_output(files, addr, recompiled_decls):
     if convention != CallingConvention.CDECL:
         fill_unused_params(parameters, cur_offset, stack_offset - cur_offset)
     merge_double_fields(parameters, body_instructions)
+    analyse_types(classes, body_instructions)
     if fpu_offset == 1:
         return_arg = Double()
     else:
@@ -385,7 +476,7 @@ def process_intermediate_output(files, addr, recompiled_decls):
     )
     if method_class is not None:
         method_class.add_method(proc_decl)
-    return proc_decl
+    return (proc_decl, full_typed_args_by_proc)
 
 def fill_unused_params(parameters, offset, size):
     if size < 0:
@@ -416,10 +507,12 @@ def extract_procedure_body(file_name, proc_decl):
         if instructions is not None:
             instructions.append(line)
 
-def process_final_output(files, proc_decl, addr, recompiled_decls):
+def process_final_output(
+    files, proc_decl, addr, recompiled_calles, full_typed_args_by_proc
+):
     code_file, header_file, dis_file = process_output_dir(files.project_output)
     body = extract_procedure_body(code_file, proc_decl)
-    body.transform_instructions(recompiled_decls)
+    body.transform_instructions(recompiled_calles)
     cpp_file_name = os.path.join(files.output, "{}.cpp".format(addr))
     with open(cpp_file_name, "wt") as f:
         f.write(body.emit_code())
@@ -427,7 +520,7 @@ def process_final_output(files, proc_decl, addr, recompiled_decls):
         files.output, "{}.h".format(proc_decl.proc_name)
     )
     with open(header_file_name, "wt") as f:
-        f.write(body.emit_header())
+        f.write(body.emit_header(recompiled_calles, full_typed_args_by_proc))
     compile_cpp(files, cpp_file_name, header_file_name)
 
 def update_hash(hasher, file_name):
@@ -479,19 +572,45 @@ def next_run(files, run_callback, max_times):
                 pass
 
 def process_procedure(files, addr, recompiled_decls):
-    with files.next_run() as run_files:
-        make_procedure_project(run_files, addr, recompiled_decls)
+    def intermediate_output(run_files):
+        calles = load_callees(files)
+        recompiled_calles = get_recompiled_calles(calles, recompiled_decls)
+        make_procedure_project(
+            run_files, calles, addr, recompiled_decls, full_typed_args_by_proc
+        )
         set_output_dir(run_files.project, run_files.project_output_basename)
+        set_declarations(
+            run_files, None, recompiled_calles, full_typed_args_by_proc, addr
+        )
         execute_reko(run_files, has_decl_file=False)
-        proc_decl = process_intermediate_output(
+        proc_decl, new_full_typed_args_by_proc = process_intermediate_output(
             run_files, addr, recompiled_decls
         )
+        if (
+            len(new_full_typed_args_by_proc) > 0 and
+            len(full_typed_args_by_proc) == 0
+        ):
+            full_typed_args_by_proc.update(new_full_typed_args_by_proc)
+            raise NextRunException()
+        return proc_decl
     def final_output(run_files):
-        make_procedure_project(run_files, addr, recompiled_decls)
+        calles = load_callees(files)
+        recompiled_calles = get_recompiled_calles(calles, recompiled_decls)
+        make_procedure_project(
+            run_files, calles, addr, recompiled_decls, full_typed_args_by_proc
+        )
         set_output_dir(run_files.project, run_files.project_output_basename)
-        set_procedure_declaration(run_files, proc_decl, addr)
+        set_declarations(
+            run_files, proc_decl, recompiled_calles, full_typed_args_by_proc,
+            addr
+        )
         execute_reko(run_files)
-        process_final_output(run_files, proc_decl, addr, recompiled_decls)
+        process_final_output(
+            run_files, proc_decl, addr, recompiled_calles,
+            full_typed_args_by_proc
+        )
+    full_typed_args_by_proc = {}
+    proc_decl = next_run(files, intermediate_output, max_times=2)
     next_run(files, final_output, max_times=2)
     return proc_decl
 
@@ -520,7 +639,7 @@ def run():
             )
         except SkippedProcedureException:
             print("Skipping {} procedure...".format(addr))
-        if addr >= "00405F0D":
+        if addr >= "00405F87":
             break
 
 if __name__ == '__main__':

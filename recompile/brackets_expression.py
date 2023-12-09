@@ -15,15 +15,8 @@ class BracketsExpression:
         return self._expression
 
     def transform_expression(self, **kwargs):
-        prefix = self._prefix
-        if prefix == "_CIcos":
-            prefix = "cos"
-        if prefix == "_CIsin":
-            prefix = "sin"
-        if prefix == "_CIsqrt":
-            prefix = "sqrt"
         expression = self._expression.transform_expression(**kwargs)
-        return BracketsExpression(prefix, expression)
+        return BracketsExpression(self._prefix, expression)
 
     def visit(self, on_expression_visited, **kwargs):
         on_expression_visited(self, **kwargs)

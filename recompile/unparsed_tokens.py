@@ -1,12 +1,13 @@
 import re
 
-from brackets_expression import BracketsExpression
 from cast import Cast
 import code_parser as parser
 from double import Double
 from exceptions import UnknownTypeException
 from field_access import FieldAccess
 from identifier import Identifier
+from procedure_call import ProcedureCall
+from unknown_class import UnknownClass
 from unparsed_token import UnparsedToken
 from variable_declaration import VariableDeclaration, loc_var_regexp
 
@@ -40,7 +41,7 @@ class UnparsedTokens:
         try:
             var_type = parser.parse_data_type(var_type, [])
         except UnknownTypeException:
-            pass
+            var_type = UnknownClass(var_type)
         identifier = Identifier(var_type, var_name)
         if var_name in declared_identifiers:
             raise Exception("Redeclarated identifier: {}.".format(var_name))
@@ -74,11 +75,18 @@ class UnparsedTokens:
     def as_seq(self):
         if len(self._tokens) != 1:
             return (None, None)
-        if not isinstance(self._tokens[0], BracketsExpression):
+        if not isinstance(self._tokens[0], ProcedureCall):
             return (None, None)
-        if self._tokens[0].prefix != "SEQ":
+        if self._tokens[0].name != "SEQ":
             return (None, None)
-        return self._tokens[0].expression.emit_code().split(", ")
+        return self._tokens[0].arguments
+
+    def as_type(self, data_type):
+        if len(self._tokens) != 1:
+            return None
+        if not isinstance(self._tokens[0], data_type):
+            return None
+        return self._tokens[0]
 
     def as_one_token(self):
         if len(self._tokens) != 1:

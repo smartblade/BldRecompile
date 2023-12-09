@@ -1,3 +1,5 @@
+from address_of import AddressOf
+
 class FieldAccess:
     def __init__(self, expression, field_name):
         self._expression = expression
@@ -28,4 +30,10 @@ class FieldAccess:
         self._expression.visit(on_expression_visited, **kwargs)
 
     def emit_code(self):
-        return "{}->{}".format(self._expression.emit_code(), self._field_name)
+        expression = self._expression
+        if isinstance(expression, AddressOf):
+            expression = expression.expression
+            sep = "."
+        else:
+            sep = "->"
+        return "{}{}{}".format(expression.emit_code(), sep, self._field_name)

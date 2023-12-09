@@ -1,6 +1,7 @@
 from collections import namedtuple
 import re
 
+from address_of import AddressOf
 from array_access import ArrayAccess
 from brackets_expression import BracketsExpression
 from array_type import Array
@@ -21,7 +22,8 @@ from unparsed_token import UnparsedToken
 from unparsed_tokens import UnparsedTokens
 
 const_regexp = re.compile('^(?P<float>\d+\.\d+F?)$')
-field_access_regexp = re.compile('^(?P<expression>.+)->(?P<field>\w+)$')
+field_access_regexp = re.compile('^(?P<expression>.+)(?P<sep>->|\.)(?P<field>\w+)$')
+typedef_regexp = re.compile('^typedef\s(?P<type_name>\w+)\s(?P<new_type_name>Eq_\d+);$')
 
 def _make_tuple(name, **kwargs):
     return namedtuple(name, kwargs.keys())(**kwargs)
@@ -105,7 +107,7 @@ def parse_data_type(s, classes):
         return Pointer32(parse_data_type(s[:-1].strip(), classes))
     raise UnknownTypeException("Not implemented type: {}.".format(s))
 
-def parse_data_types_declarations(lines):
+def parse_data_types_declarations(lines, defined_types):
     parsed_classes = {}
     unions = {}
     classes = {}
@@ -142,6 +144,12 @@ def parse_data_types_declarations(lines):
             decl = line.strip().strip(";")
             var_type, var_name = parse_variable_declaration(decl)
             union_types[var_type] = var_name
+        else:
+            match = re.search(typedef_regexp, line)
+            if match:
+                type_name = match.group('type_name')
+                new_type_name = match.group('new_type_name')
+                parsed_classes[new_type_name] = defined_types[type_name]
     for class_name in classes.keys():
         skip_offset_if_word32 = None
         new_fields = {}
@@ -198,6 +206,12 @@ def parse_cpp_expression(line, declared_identifiers):
                 cur_token = "".join(state.cur_token)
                 _append_token(state.tokens, _new_token(state, cur_token))
                 state.cur_token.clear()
+        elif c == ",":
+            if len(state.cur_token) > 0:
+                cur_token = "".join(state.cur_token)
+                _append_token(state.tokens, _new_token(state, cur_token))
+                state.cur_token.clear()
+            _append_token(state.tokens, _new_token(state, ","))
         elif c in brackets_dict:
             state = _opening_bracket(states, state, c)
         elif c in closing_brackets:
@@ -248,25 +262,30 @@ def _new_token(state, s):
             data_type = Double()
             value = float(s)
         return Constant(data_type, value)
+    if s.startswith("&"):
+        return AddressOf(_new_token(state, s[1:]))
     match = re.search(field_access_regexp, s)
     if match:
         expression = match.group('expression')
         field_name = match.group('field')
-        return FieldAccess(_new_token(state, expression), field_name)
+        sep = match.group('sep')
+        return _new_field_access(_new_token(state, expression), sep, field_name)
     if s.startswith("++"):
         return Increment(_new_token(state, s[2:]))
     if s.startswith("->"):
         prev = state.tokens.pop()
-        return FieldAccess(prev, s[2:])
+        return _new_field_access(prev, "->", s[2:])
     if s in state.declared_identifiers:
         return state.declared_identifiers[s]
     return UnparsedToken(s)
 
+def _new_field_access(e, sep, field_name):
+    if sep == '.':
+        e = AddressOf(e)
+    return FieldAccess(e, field_name)
+
 def _new_brackets_expression(state, prefix, brackets_tokens):
-    if (
-        prefix.startswith("unknown_procedure_") or
-        prefix.startswith("unknown_method_")
-    ):
+    if (prefix != ""):
         arguments = []
         def append_arg(arg):
             if len(arg) == 1:
@@ -275,19 +294,23 @@ def _new_brackets_expression(state, prefix, brackets_tokens):
                 arguments.append(UnparsedTokens(arg))
         cur_arg = []
         for token in brackets_tokens:
-            if (
-                isinstance(token, UnparsedToken) and
-                token.emit_code().endswith(",")
-            ):
-                cur_arg.append(_new_token(state, token.emit_code()[:-1]))
+            if (isinstance(token, UnparsedToken) and token.emit_code() == ","):
                 append_arg(cur_arg)
                 cur_arg = []
             else:
                 cur_arg.append(token)
         if len(cur_arg) > 0:
             append_arg(cur_arg)
-        callee_addr = prefix[-8:]
-        return ProcedureCall(prefix, arguments, callee_addr, is_method=True)
+        if (
+            prefix.startswith("unknown_procedure_") or
+            prefix.startswith("unknown_method_")
+        ):
+            callee_addr = prefix[-8:]
+            is_method = True
+        else:
+            callee_addr = None
+            is_method = False
+        return ProcedureCall(prefix, arguments, callee_addr, is_method)
     return BracketsExpression(prefix, UnparsedTokens(brackets_tokens))
 
 def _new_array_access(state, prefix, brackets_tokens):

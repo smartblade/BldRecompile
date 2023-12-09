@@ -5,7 +5,7 @@ from identifier import Identifier
 from int32 import Int32
 from unknown32 import Unknown32
 
-loc_var_regexp = re.compile('^((?P<prefix>dw|r)Loc(?P<offset>[\dABCDEF]{2}))|(?P<reg>eax|ecx|edx)|(?P<fpu>rLoc1)|(?P<seq>rSeq\w+)_\d+')
+loc_var_regexp = re.compile('^((?P<prefix>dw|r|t)Loc(?P<offset>[\dABCDEF]{2}))|(?P<reg>eax|ecx|edx)|(?P<fpu>rLoc1)|(?P<seq>rSeq\w+)_\d+')
 
 class VariableDeclaration:
     def __init__(self, identifier, initial_expression):
@@ -42,7 +42,9 @@ class VariableDeclaration:
         if initial_expression is not None:
             first, second = initial_expression.as_seq()
             if first is not None:
-                seq_id_name = "rSeq_{}_{}".format(first, second)
+                seq_id_name = "rSeq_{}_{}".format(
+                    first.emit_code(), second.emit_code()
+                )
                 declared_identifiers[seq_id_name].rename(self._id.name)
                 identifier = declared_identifiers[seq_id_name]
                 declared_identifiers[var_name] = identifier
@@ -78,6 +80,8 @@ class VariableDeclaration:
                     return "unknown_int_loc_{}".format(offset)
                 if prefix =="r" and isinstance(var_type, Double):
                     return "unknown_double_loc_{}".format(offset)
+                if prefix =="t":
+                    return "unknown_struct_loc_{}".format(offset)
             reg = match.group('reg')
             if reg is not None and isinstance(var_type, Unknown32):
                 return "unknown_{}".format(reg)

@@ -19,6 +19,10 @@ class ProcedureDeclaration:
         return self._proc_name
 
     @property
+    def method_class(self):
+        return self._method_class
+
+    @property
     def return_type(self):
         return self._return_arg
 
@@ -27,11 +31,11 @@ class ProcedureDeclaration:
 
     def get_parameters_ids(self):
         param_dict = {}
-        for param_type, param_name in self._parameters:
-            param_dict[param_name] = Identifier(param_type, param_name)
         if self._method_class is not None:
             param_name = "this"
             param_type = Pointer32(self._method_class)
+            param_dict[param_name] = Identifier(param_type, param_name)
+        for param_type, param_name in self._parameters:
             param_dict[param_name] = Identifier(param_type, param_name)
         return param_dict
 
@@ -61,15 +65,25 @@ class ProcedureDeclaration:
                 lines.append("")
         return "\n".join(lines)
 
-    def get_declaration(self, is_metafile, is_definition=False, is_brief=False):
+    def get_declaration(
+        self, is_metafile, is_definition=False, full_typed_args=None
+    ):
         parameters = []
         if is_metafile and self._method_class is not None:
+            is_brief = (
+                full_typed_args is not None and
+                "this" not in full_typed_args
+            )
             if is_brief:
                 this_arg = "ptr32 this"
             else:
                 this_arg = "{} *this".format(self._method_class.class_name)
             parameters.append(this_arg)
         for parameter_type, parameter_name in self._parameters:
+            is_brief = (
+                full_typed_args is not None and
+                parameter_name not in full_typed_args
+            )
             type_name = self._get_type_name(
                 parameter_type, is_metafile, is_brief
             )
@@ -80,7 +94,9 @@ class ProcedureDeclaration:
             proc_name = "{}::{}".format(
                 self._method_class.class_name, self._proc_name
             )
-        return_arg = self._get_return_type_name(is_metafile=is_metafile)
+        return_arg = self._get_return_type_name(
+            is_metafile=is_metafile, is_brief=full_typed_args is not None
+        )
         sep = "" if return_arg.endswith("*") else " "
         calling_convention = ""
         if is_metafile and self._convention == CallingConvention.THISCALL:
@@ -106,7 +122,9 @@ class ProcedureDeclaration:
             return "ptr32"
         return data_type.get_type_name(is_metafile=is_metafile)
 
-    def _get_return_type_name(self, is_metafile):
+    def _get_return_type_name(self, is_metafile, is_brief):
         if self._return_arg is None:
             return "void"
+        if is_brief and isinstance(self._return_arg, Pointer32):
+            return "ptr32"
         return self._return_arg.get_type_name(is_metafile=is_metafile)

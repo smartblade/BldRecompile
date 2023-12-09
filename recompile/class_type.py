@@ -35,6 +35,14 @@ class ClassType:
             "Field {} was not found at {}.".format(field_name, self)
         )
 
+    def find_offset_by_field_name(self, field_name):
+        for offset, (field_type, name) in self._fields.items():
+            if name == field_name:
+                return offset
+        raise Exception(
+            "Field {} was not found at {}.".format(field_name, self)
+        )
+
     def ensure_field(self, offset):
         if offset in self._fields:
             return

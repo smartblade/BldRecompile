@@ -8,6 +8,7 @@ from variable_declaration import VariableDeclaration
 from hex_conversion import from_hex, to_hex
 from identifier import Identifier
 from return_instruction import ReturnInstruction
+from unknown_class import UnknownClass
 from unknown32 import Unknown32
 from variable_declaration import VariableDeclaration
 
@@ -43,9 +44,9 @@ def merge_union_declaration(first_instr, second_instr):
         return
     if not isinstance(second_instr, Assignment):
         return
-    if not isinstance(first_instr.id.data_type, str):
+    if not isinstance(first_instr.id.data_type, UnknownClass):
         return
-    if not first_instr.id.data_type.startswith("Eq_"):
+    if not first_instr.id.data_type.class_name.startswith("Eq_"):
         return
     if second_instr.dst.emit_code() != "{}.u0".format(first_instr.id.name):
         return
@@ -64,8 +65,8 @@ def merge_instructions(first_instr, second_instr):
         if initial_expression is None:
             return
         if (
-            isinstance(first_instr.id.data_type, str) and
-            first_instr.id.data_type.startswith("Eq_") and
+            isinstance(first_instr.id.data_type, UnknownClass) and
+            first_instr.id.data_type.class_name.startswith("Eq_") and
             isinstance(second_instr.id.data_type, Unknown32)
         ):
             initial_expression = parser.parse_cpp_expression(

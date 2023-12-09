@@ -1,3 +1,8 @@
+from address_of import AddressOf
+from identifier import Identifier
+from unknown_class import UnknownClass
+from field_access import FieldAccess
+
 class ProcedureCall:
     def __init__(self, name, arguments, callee_addr, is_method):
         self._name = name
@@ -9,6 +14,14 @@ class ProcedureCall:
         return "{}({})".format(
             self._name, ", ".join(map(repr, self._arguments))
         )
+
+    @property
+    def name(self):
+        return self._name
+
+    @property
+    def arguments(self):
+        return self._arguments
 
     @property
     def callee_address(self):
@@ -24,9 +37,24 @@ class ProcedureCall:
         )
         if self._is_method:
             data_type = arguments[0].data_type
-            data_type.pointee.add_method(recompiled_decls[self._callee_addr])
+            proc_decl = recompiled_decls[self._callee_addr]
+            if (
+                isinstance(arguments[0], AddressOf) and
+                isinstance(arguments[0].expression, Identifier) and
+                isinstance(arguments[0].expression.data_type, UnknownClass)
+            ):
+                arguments[0].expression.change_data_type(proc_decl.method_class)
+            if not isinstance(data_type.pointee, UnknownClass):
+                data_type.pointee.add_method(proc_decl)
+        name = self._name
+        if name == "_CIcos":
+            name = "cos"
+        if name == "_CIsin":
+            name = "sin"
+        if name == "_CIsqrt":
+            name = "sqrt"
         return ProcedureCall(
-            self._name, arguments, self._callee_addr, self._is_method
+            name, arguments, self._callee_addr, self._is_method
         )
 
     def visit(self, on_expression_visited, **kwargs):
@@ -36,7 +64,7 @@ class ProcedureCall:
 
     def emit_code(self):
         if self._is_method:
-            call = "{}->{}".format(self._arguments[0].emit_code(), self._name)
+            call = FieldAccess(self._arguments[0], self._name).emit_code()
             arguments = self._arguments[1:]
         else:
             call = self._name

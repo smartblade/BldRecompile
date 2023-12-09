@@ -44,9 +44,12 @@ class ProcedureBody:
         writer.write_line("}")
         return writer.get_string()
 
-    def emit_header(self):
+    def emit_header(self, recompiled_calles, full_typed_args_by_proc):
         lines = []
         lines.append("#pragma once")
         lines.append("")
         lines.append(self._proc_decl.get_types_declarations(is_metafile=False))
+        for callee_addr, full_typed_args in full_typed_args_by_proc.items():
+            callee = recompiled_calles[callee_addr]
+            lines.append(callee.get_types_declarations(is_metafile=False))
         return "\n".join(lines)
