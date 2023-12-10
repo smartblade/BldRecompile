@@ -249,6 +249,29 @@ def process_dis_file(file_name):
                 fpu_offset = int(match.group('fpu_offset'))
                 return (stack_offset, fpu_offset)
 
+def reduce_header_file(header_file):
+    with open(header_file) as f:
+        lines = f.readlines()
+    with open(header_file, "wt") as f:
+        skip = False
+        for line in lines:
+            if line.startswith("//"):
+                continue
+            elif line.startswith("/*"):
+                skip = True
+            elif line.startswith("*/"):
+                skip = False
+                continue
+            elif line.startswith("typedef struct Globals"):
+                skip = True
+            elif line.startswith("}"):
+                if skip:
+                    skip = False
+                    continue
+            if skip:
+                continue
+            f.write(line)
+
 def process_output_dir(output_dir):
     for root, dirs, files in os.walk(output_dir):
         for file in files:
@@ -258,6 +281,7 @@ def process_output_dir(output_dir):
                 code_file = os.path.join(output_dir, file)
             elif file.endswith(".h"):
                 header_file = os.path.join(output_dir, file)
+                reduce_header_file(header_file)
             elif file.endswith(".dis"):
                 dis_file = os.path.join(output_dir, file)
     return (code_file, header_file, dis_file)
