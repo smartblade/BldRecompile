@@ -234,10 +234,10 @@ def define_parameter_name(field_type, parameter_name):
         parameter_name = parameter_name.replace("rArg", "unknown_double_")
     return parameter_name
 
-def process_header_file(file_name, required_classes):
+def process_header_file(file_name):
     with open(file_name) as f:
         lines = f.readlines()
-    parser.parse_data_types_declarations(lines, required_classes)
+    return parser.parse_data_types_declarations(lines)
 
 def process_dis_file(file_name):
     field_access_regexp = re.compile('//\sstackDelta:\s(?P<stack_offset>\d+);\sfpuStackDelta:\s(?P<fpu_offset>\d+);')
@@ -307,15 +307,7 @@ def process_intermediate_output(files, addr, recompiled_decls):
     dump_callees(files, callees)
     if len(set(callees) - set(recompiled_decls)) > 0:
         raise SkippedProcedureException()
-    class_name = parser.extract_class_name(proc.class_type)
-    classes = {}
-    if class_name is not None:
-        classes[class_name] = None
-    for (var_type, var_name) in proc.parameters:
-        class_name = parser.extract_class_name(var_type)
-        if class_name is not None:
-            classes[class_name] = None
-    process_header_file(header_file, classes)
+    classes = process_header_file(header_file)
     method_class = None
     if proc.class_type is not None:
         ptr_to_class = parser.parse_data_type(proc.class_type, classes)

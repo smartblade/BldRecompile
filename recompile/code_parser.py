@@ -104,7 +104,8 @@ def parse_data_type(s, classes):
         return Pointer32(parse_data_type(s[:-1].strip(), classes))
     raise UnknownTypeException("Not implemented type: {}.".format(s))
 
-def parse_data_types_declarations(lines, required_classes):
+def parse_data_types_declarations(lines):
+    parsed_classes = {}
     unions = {}
     classes = {}
     class_sizes = {}
@@ -140,7 +141,7 @@ def parse_data_types_declarations(lines, required_classes):
             decl = line.strip().strip(";")
             var_type, var_name = parse_variable_declaration(decl)
             union_types[var_type] = var_name
-    for class_name in required_classes.keys():
+    for class_name in classes.keys():
         skip_offset_if_word32 = None
         new_fields = {}
         for offset, (var_type, var_name) in classes[class_name].items():
@@ -165,7 +166,8 @@ def parse_data_types_declarations(lines, required_classes):
                 size = class_sizes[class_name] // var_type.pointee.size
                 var_type = Array(var_type.pointee, size)
             new_fields[offset] = (var_type, var_name)
-        required_classes[class_name] = ClassType(class_name, new_fields)
+        parsed_classes[class_name] = ClassType(class_name, new_fields)
+    return parsed_classes
 
 def define_field_name(field_type, field_name):
     if isinstance(field_type, Unknown32):
