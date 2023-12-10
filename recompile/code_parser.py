@@ -212,7 +212,9 @@ def parse_cpp_expression(line):
                 array = _new_array_access(tokens, prefix, brackets_tokens)
                 tokens.append(array)
             else:
-                brackets = _new_brackets_expression(prefix, brackets_tokens)
+                brackets = _new_brackets_expression(
+                    tokens, prefix, brackets_tokens
+                )
                 tokens.append(brackets)
 
         else:
@@ -241,15 +243,33 @@ def _new_token(tokens, s):
         return FieldAccess(prev, s[2:])
     return UnparsedToken(s)
 
-def _new_brackets_expression(prefix, tokens):
-    if prefix.startswith("unknown_method_"):
-        if len(tokens) != 1:
-            raise Exception(
-                "Should be 1 token inside brackets but was: {}".format(tokens)
-            )
-        callee_addr = prefix[15:]
-        return ProcedureCall(prefix, tokens, callee_addr, is_method=True)
-    return BracketsExpression(prefix, UnparsedTokens(tokens))
+def _new_brackets_expression(tokens, prefix, brackets_tokens):
+    if (
+        prefix.startswith("unknown_procedure_") or
+        prefix.startswith("unknown_method_")
+    ):
+        arguments = []
+        def append_arg(arg):
+            if len(arg) == 1:
+                arguments.append(arg[0])
+            else:
+                arguments.append(UnparsedTokens(arg))
+        cur_arg = []
+        for token in brackets_tokens:
+            if (
+                isinstance(token, UnparsedToken) and
+                token.emit_code().endswith(",")
+            ):
+                cur_arg.append(_new_token(tokens, token.emit_code()[:-1]))
+                append_arg(cur_arg)
+                cur_arg = []
+            else:
+                cur_arg.append(token)
+        if len(cur_arg) > 0:
+            append_arg(cur_arg)
+        callee_addr = prefix[-8:]
+        return ProcedureCall(prefix, arguments, callee_addr, is_method=True)
+    return BracketsExpression(prefix, UnparsedTokens(brackets_tokens))
 
 def _new_array_access(tokens, prefix, brackets_tokens):
     if prefix == "":

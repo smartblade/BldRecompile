@@ -17,9 +17,13 @@ from exceptions import SkippedProcedureException, NextRunException
 from files_location import FilesLocation
 from hex_conversion import from_hex
 from pointer32 import Pointer32
+from parse_instructions import parse_instructions
+from procedure_call import ProcedureCall
 from procedure_body import ProcedureBody
 from procedure_declaration import ProcedureDeclaration
 from unknown32 import Unknown32
+from unparsed_tokens import UnparsedTokens
+from writer import Writer
 
 argument_parser = argparse.ArgumentParser()
 argument_parser.add_argument(
@@ -144,37 +148,57 @@ def process_output_code(file_name, addr):
     for line in lines:
         if line.startswith("//"):
             continue
+        if line.startswith("}"):
+            return proc, parse_instructions(body_lines)
         if addr in line:
             proc = parser.parse_procedure_declaration(line)
+        elif line.startswith("{"):
             body_lines = []
         elif body_lines is not None:
             body_lines.append(line)
-        if line.startswith("}"):
-            return proc, body_lines
 
-def ensure_class_fields(method_class, body_lines):
+def ensure_class_fields(method_class, body_instructions):
     field_offset_regexp = re.compile('\(char\s*\*\)\s*ecx\s*\+\s*(?P<offset>\d+)')
-    for line in body_lines:
-        match = re.search(field_offset_regexp, line)
-        if match:
-            offset = match.group('offset')
-            method_class.ensure_field(int(offset))
+    def on_expression_visited(e):
+        if isinstance(e, UnparsedTokens):
+            match = re.search(field_offset_regexp, e.emit_code())
+            if match:
+                offset = match.group('offset')
+                method_class.ensure_field(int(offset))
+    for instr in body_instructions:
+        instr.visit(on_expression_visited)
 
-def guess_float_fields(method_class, body_lines):
-    field_access_regexp = re.compile('ecx->dw(?P<offset>[\dABCDEF]+)\s*=\s*0x(?P<const>[\dABCDEF]+)')
-    for line in body_lines:
-        match = re.search(field_access_regexp, line)
-        if match:
-            offset = match.group('offset')
-            const = match.group('const')
-            if const == "3FF00000":
-                method_class.merge_word32_into_double(from_hex(offset) - 4)
+def guess_float_fields(method_class, body_instructions):
+    field_access_regexp = re.compile('^ecx->dw(?P<offset>[\dABCDEF]+)\s*$')
+    hex_regexp = re.compile('^\s*0x(?P<const>[\dABCDEF]+)$')
+    def on_expression_visited(e):
+        if not isinstance(e, UnparsedTokens):
+            return
+        (dst, src) = e.as_assignment()
+        if dst is None:
+            return
+        match = re.search(field_access_regexp, dst.emit_code())
+        if not match:
+            return
+        offset = match.group('offset')
+        match = re.search(hex_regexp, src.emit_code())
+        if not match:
+            return
+        const = match.group('const')
+        if const == "3FF00000":
+            method_class.merge_word32_into_double(from_hex(offset) - 4)
+    for instr in body_instructions:
+        instr.visit(on_expression_visited)
 
-def merge_double_fields(parameters, body_lines):
+def merge_double_fields(parameters, body_instructions):
     field_access_regexp = re.compile('word32\s(?P<var>\w+)\s*=\s*(?P<obj>\w+)->dw(?P<offset>[\dABCDEF]+)')
     seq_regexp = re.compile('real64\s\w+\s*=\s*SEQ\((?P<first_var>\w+),\s(?P<second_var>\w+)\)')
     merge_candidates = {}
-    for line in body_lines:
+    writer = Writer()
+    for instr in body_instructions:
+        instr.emit_code(writer)
+    lines = writer.get_string()
+    for line in lines.split("\n"):
         match = re.search(field_access_regexp, line)
         if match:
             var = match.group('var')
@@ -215,14 +239,13 @@ def merge_double_fields(parameters, body_lines):
             if not parameter_found:
                 raise Exception("Parameter {} was not found.".format(obj))
 
-def extract_callees(body_lines):
+def extract_callees(body_instructions):
+    def on_expression_visited(e):
+        if isinstance(e, ProcedureCall) and e.callee_address is not None:
+            callees.add(e.callee_address)
     callees = set()
-    prefixes = ["unknown_procedure_", "unknown_method_"]
-    for line in body_lines:
-        for prefix in prefixes:
-            proc_callees = line.split(prefix)[1:]
-            for proc_callee in proc_callees:
-                callees.add(proc_callee[:8])
+    for instr in body_instructions:
+        instr.visit(on_expression_visited)
     return callees
 
 def define_parameter_name(field_type, parameter_name):
@@ -302,8 +325,8 @@ def process_intermediate_output(files, addr, recompiled_decls):
     stack_offset, fpu_offset = process_dis_file(dis_file)
     if fpu_offset != 0 and fpu_offset != 1:
         raise Exception("Unsupported FPU offset: {}".format(fpu_offset))
-    proc, body_lines = process_output_code(code_file, addr)
-    callees = extract_callees(body_lines)
+    proc, body_instructions = process_output_code(code_file, addr)
+    callees = extract_callees(body_instructions)
     dump_callees(files, callees)
     if len(set(callees) - set(recompiled_decls)) > 0:
         raise SkippedProcedureException()
@@ -321,8 +344,8 @@ def process_intermediate_output(files, addr, recompiled_decls):
                 "Not supported type as method class: {}.".format(ptr_to_class)
             )
         method_class = method_class.rename("unknown_class_{}".format(addr))
-        ensure_class_fields(method_class, body_lines)
-        guess_float_fields(method_class, body_lines)
+        ensure_class_fields(method_class, body_instructions)
+        guess_float_fields(method_class, body_instructions)
     if proc.class_type is not None:
         convention = CallingConvention.THISCALL
     else:
@@ -350,7 +373,7 @@ def process_intermediate_output(files, addr, recompiled_decls):
         cur_offset = offset + var_type.size
     if convention != CallingConvention.CDECL:
         fill_unused_params(parameters, cur_offset, stack_offset - cur_offset)
-    merge_double_fields(parameters, body_lines)
+    merge_double_fields(parameters, body_instructions)
     if fpu_offset == 1:
         return_arg = Double()
     else:

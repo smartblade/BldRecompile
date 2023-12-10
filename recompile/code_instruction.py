@@ -64,6 +64,9 @@ class CodeInstruction:
                 src = UnparsedToken("1")
         return Assignment(dst, src)
 
+    def visit(self, on_expression_visited, **kwargs):
+        self._tokens.visit(on_expression_visited, **kwargs)
+
     def as_assignment(self):
         return self._tokens.as_assignment()
 

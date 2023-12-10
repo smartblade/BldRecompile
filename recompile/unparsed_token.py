@@ -10,6 +10,9 @@ class UnparsedToken:
     def transform_expression(self, declared_identifiers, **kwargs):
         return declared_identifiers.get(self._token, self)
 
+    def visit(self, on_expression_visited, **kwargs):
+        on_expression_visited(self, **kwargs)
+
     def emit_code(self):
         return self._token
 

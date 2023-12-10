@@ -3,6 +3,9 @@ class BracketsExpression:
         self._prefix = prefix
         self._expression = expression
 
+    def __repr__(self):
+        return "{}Brackets({})".format(self._prefix, self._expression)
+
     @property
     def prefix(self):
         return self._prefix
@@ -21,6 +24,10 @@ class BracketsExpression:
             prefix = "sqrt"
         expression = self._expression.transform_expression(**kwargs)
         return BracketsExpression(prefix, expression)
+
+    def visit(self, on_expression_visited, **kwargs):
+        on_expression_visited(self, **kwargs)
+        self._expression.visit(on_expression_visited, **kwargs)
 
     def emit_code(self):
         return "{}({})".format(

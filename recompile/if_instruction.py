@@ -1,4 +1,5 @@
 from block_transformer import transform_block
+from block_visitor import visit_block
 
 class IfInstruction:
     def __init__(self, if_clause, if_block, else_block=None):
@@ -19,6 +20,12 @@ class IfInstruction:
             else_block = transform_block(self._else_block, **kwargs)
         if_clause = self._if_clause.transform_expression(**kwargs)
         return self.__class__(if_clause, if_block, else_block)
+
+    def visit(self, on_expression_visited, **kwargs):
+        self._if_clause.visit(on_expression_visited, **kwargs)
+        visit_block(self._if_block, on_expression_visited, **kwargs)
+        if self._else_block is not None:
+            visit_block(self._else_block, on_expression_visited, **kwargs)
 
     def emit_code(self, writer):
         if_clause = self._if_clause.emit_code()

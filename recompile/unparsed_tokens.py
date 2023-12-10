@@ -142,6 +142,11 @@ class UnparsedTokens:
             i += 1
         return UnparsedTokens(new_tokens)
 
+    def visit(self, on_expression_visited, **kwargs):
+        on_expression_visited(self, **kwargs)
+        for token in self._tokens:
+            token.visit(on_expression_visited, **kwargs)
+
     def emit_code(self):
         return " ".join(map(lambda token: token.emit_code(), self._tokens))
 

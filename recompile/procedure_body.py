@@ -1,97 +1,19 @@
-from collections import namedtuple
-
 from block_transformer import transform_block
 from class_type import ClassType
-from code_instruction import CodeInstruction
-import code_parser as parser
-from for_instruction import ForInstruction
-from if_instruction import IfInstruction
+from parse_instructions import parse_instructions
 from pointer32 import Pointer32
-from while_instruction import WhileInstruction
 from writer import Writer
 
 class ProcedureBody:
     def __init__(self, proc_decl, instructions):
         self._proc_decl = proc_decl
-        self._instructions = self._parse_instructions(instructions)
+        self._instructions = parse_instructions(instructions)
 
     def __repr__(self):
         return "ProcedureBody(proc_decl={}, instructions={})".format(
             self._proc_decl,
             self._instructions,
         )
-
-    def _parse_instructions(self, instructions):
-        blocks_state = []
-        state = self._new_state(
-            block_type=None,
-            current_block=[],
-            multiple_lines=True,
-        )
-        for instr_str in instructions:
-            instr_str = instr_str.strip()
-            if instr_str.startswith("if (") and instr_str.endswith(")"):
-                clause = parser.parse_cpp_expression(instr_str[4:-1])
-                state = self._start_block(blocks_state, state, "if", clause)
-            elif instr_str == "else":
-                state = self._start_block(blocks_state, state, "else", None)
-            elif instr_str.startswith("while (") and instr_str.endswith(")"):
-                clause = parser.parse_cpp_expression(instr_str[7:-1])
-                state = self._start_block(blocks_state, state, "while", clause)
-            elif instr_str.startswith("for (") and instr_str.endswith(")"):
-                clause = parser.parse_cpp_expression(instr_str[5:-1])
-                state = self._start_block(blocks_state, state, "for", clause)
-            elif instr_str == "{":
-                state = self._multiple_lines(state)
-            elif instr_str == "}":
-                state = self._end_block(blocks_state, state)
-            elif instr_str.endswith(";"):
-                state.current_block.append(CodeInstruction(instr_str[:-1]))
-                if not state.multiple_lines:
-                    state = self._end_block(blocks_state, state)
-            else:
-                raise Exception(
-                    "Not supported instruction type: '{}'.".format(instr_str)
-                )
-        return state.current_block
-
-    def _new_state(self, **kwargs):
-        return namedtuple('State', kwargs.keys())(**kwargs)
-
-    def _multiple_lines(self, state):
-        return self._new_state(
-            block_type=state.block_type,
-            clause=state.clause,
-            current_block=state.current_block,
-            multiple_lines=True,
-        )
-
-    def _start_block(self, blocks_state, state, new_block_type, clause):
-        blocks_state.append(state)
-        return self._new_state(
-            block_type=new_block_type,
-            clause=clause,
-            current_block=[],
-            multiple_lines=False,
-        )
-
-    def _end_block(self, blocks_state, state):
-        prev_state = blocks_state.pop()
-        if state.block_type == "if":
-            prev_state.current_block.append(
-                IfInstruction(state.clause, state.current_block)
-            )
-        elif state.block_type == "else":
-            prev_state.current_block[-1].add_else_block(state.current_block)
-        elif state.block_type == "while":
-            prev_state.current_block.append(
-                WhileInstruction(state.clause, state.current_block)
-            )
-        elif state.block_type == "for":
-            prev_state.current_block.append(
-                ForInstruction(state.clause, state.current_block)
-            )
-        return prev_state
 
     def transform_instructions(self, recompiled_decls):
         self._instructions = transform_block(

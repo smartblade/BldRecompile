@@ -10,6 +10,10 @@ class ProcedureCall:
             self._name, ", ".join(map(repr, self._arguments))
         )
 
+    @property
+    def callee_address(self):
+        return self._callee_addr
+
     def transform_expression(self, **kwargs):
         recompiled_decls = kwargs['recompiled_decls']
         arguments = list(
@@ -24,6 +28,11 @@ class ProcedureCall:
         return ProcedureCall(
             self._name, arguments, self._callee_addr, self._is_method
         )
+
+    def visit(self, on_expression_visited, **kwargs):
+        on_expression_visited(self, **kwargs)
+        for arg in self._arguments:
+            arg.visit(on_expression_visited, **kwargs)
 
     def emit_code(self):
         if self._is_method:
