@@ -9,6 +9,7 @@ import subprocess
 import sys
 import time
 
+from assignment import Assignment
 from calling_convention import CallingConvention
 from class_type import ClassType
 import code_parser as parser
@@ -172,16 +173,13 @@ def guess_float_fields(method_class, body_instructions):
     field_access_regexp = re.compile('^ecx->dw(?P<offset>[\dABCDEF]+)\s*$')
     hex_regexp = re.compile('^\s*0x(?P<const>[\dABCDEF]+)$')
     def on_expression_visited(e):
-        if not isinstance(e, UnparsedTokens):
+        if not isinstance(e, Assignment):
             return
-        (dst, src) = e.as_assignment()
-        if dst is None:
-            return
-        match = re.search(field_access_regexp, dst.emit_code())
+        match = re.search(field_access_regexp, e.dst.emit_code())
         if not match:
             return
         offset = match.group('offset')
-        match = re.search(hex_regexp, src.emit_code())
+        match = re.search(hex_regexp, e.src.emit_code())
         if not match:
             return
         const = match.group('const')

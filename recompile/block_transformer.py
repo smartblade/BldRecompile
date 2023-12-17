@@ -2,6 +2,7 @@ import struct
 
 from assignment import Assignment
 from code_instruction import CodeInstruction
+import code_parser as parser
 from exceptions import NextRunException
 from variable_declaration import VariableDeclaration
 from hex_conversion import from_hex, to_hex
@@ -37,40 +38,32 @@ def transform_instruction(instr, instructions, **kwargs):
 def merge_union_declaration(first_instr, second_instr):
     if not isinstance(first_instr, CodeInstruction):
         return
-    if not isinstance(second_instr, CodeInstruction):
+    if not isinstance(second_instr, Assignment):
         return
     (first_type, first_var) = first_instr.as_two_tokens()
     if first_type is None:
         return
     if not first_type.startswith("Eq_"):
         return
-    (second_dst, second_src) = second_instr.as_assignment()
-    if second_dst is None:
+    if second_instr.dst.emit_code() != "{}.u0".format(first_var):
         return
-    if second_dst.emit_code() != "{}.u0".format(first_var):
-        return
-    return CodeInstruction(
-        "{} {} = {}".format(first_type, first_var, second_src.emit_code())
-    )
+    dst = parser.parse_cpp_expression("{} {}".format(first_type, first_var))
+    return Assignment(dst, second_instr.src)
 
 def merge_instructions(first_instr, second_instr):
-    if not isinstance(first_instr, CodeInstruction):
+    if not isinstance(first_instr, Assignment):
         return
-    if not isinstance(second_instr, CodeInstruction):
+    if not isinstance(second_instr, Assignment):
         return
-    (first_dst, first_src) = first_instr.as_assignment()
-    if first_dst is None:
-        return
-    (second_dst, second_src) = second_instr.as_assignment()
-    if second_dst is None:
-        return
-    src = merge_word32_into_double(first_src, second_src)
+    src = merge_word32_into_double(first_instr.src, second_instr.src)
     if src is None:
         return
-    dst = merge_word32_into_double(first_dst, second_dst)
+    dst = merge_word32_into_double(first_instr.dst, second_instr.dst)
     if dst is None:
         return
-    return CodeInstruction("{} = {}".format(dst, src))
+    dst = parser.parse_cpp_expression("{}".format(dst))
+    src = parser.parse_cpp_expression("{}".format(src))
+    return Assignment(dst, src)
 
 def merge_word32_into_double(first, second):
     (first_var, first_field) = first.as_field_access()

@@ -1,5 +1,6 @@
 from collections import namedtuple
 
+from assignment import Assignment
 from code_instruction import CodeInstruction
 import code_parser as parser
 from for_instruction import ForInstruction
@@ -36,7 +37,7 @@ def parse_instructions(instructions):
         elif instr_str == "}":
             state = _end_block(blocks_state, state)
         elif instr_str.endswith(";"):
-            state.current_block.append(CodeInstruction(instr_str[:-1]))
+            state.current_block.append(_parse_instruction(instr_str[:-1]))
             if not state.multiple_lines:
                 state = _end_block(blocks_state, state)
         else:
@@ -82,3 +83,10 @@ def _end_block(blocks_state, state):
             ForInstruction(state.clause, state.current_block)
         )
     return prev_state
+
+def _parse_instruction(instr):
+    tokens = parser.parse_cpp_expression(instr)
+    (dst, src) = tokens.as_assignment()
+    if src is not None:
+        return Assignment(dst, src)
+    return CodeInstruction(tokens)
