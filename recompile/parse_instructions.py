@@ -5,6 +5,7 @@ from code_instruction import CodeInstruction
 import code_parser as parser
 from for_instruction import ForInstruction
 from if_instruction import IfInstruction
+from return_instruction import ReturnInstruction
 from while_instruction import WhileInstruction
 
 def parse_instructions(instructions):
@@ -86,6 +87,9 @@ def _end_block(blocks_state, state):
 
 def _parse_instruction(instr):
     tokens = parser.parse_cpp_expression(instr)
+    return_expression = tokens.as_return()
+    if return_expression is not None:
+        return ReturnInstruction(return_expression)
     (dst, src) = tokens.as_assignment()
     if src is not None:
         return Assignment(dst, src)

@@ -7,6 +7,7 @@ from exceptions import NextRunException
 from variable_declaration import VariableDeclaration
 from hex_conversion import from_hex, to_hex
 from identifier import Identifier
+from return_instruction import ReturnInstruction
 
 def transform_block(instructions, **kwargs):
     new_instructions = []
@@ -111,9 +112,9 @@ def make_double(first_num, second_num):
 def _validate_return_instruction(instructions, proc_decl, **kwargs):
     if len(instructions) < 3:
         return
-    if not isinstance(instructions[-1], CodeInstruction):
+    if not isinstance(instructions[-1], ReturnInstruction):
         return
-    return_expression = instructions[-1].as_return()
+    return_expression = instructions[-1].expression
     if not isinstance(return_expression, Identifier):
         return
     if not isinstance(instructions[-3], VariableDeclaration):
