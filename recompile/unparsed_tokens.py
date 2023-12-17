@@ -108,11 +108,13 @@ class UnparsedTokens:
         return (self._tokens[0].emit_code(), self._tokens[1].emit_code())
 
     def strip_real64(self):
-        if not isinstance(self._tokens[0], BracketsExpression):
+        if len(self._tokens) != 1:
             return None
-        if not self._tokens[0].emit_code() == "(real64)":
+        if not isinstance(self._tokens[0], Cast):
             return None
-        return UnparsedTokens(self._tokens[1:])
+        if not isinstance(self._tokens[0].data_type, Double):
+            return None
+        return self._tokens[0].expression
 
     def transform_expression(self, **kwargs):
         tokens = list(
@@ -121,26 +123,7 @@ class UnparsedTokens:
                 self._tokens,
             )
         )
-        new_tokens = []
-        i = 0
-        while i < len(tokens):
-            if (
-                i + 1 < len(tokens) and
-                isinstance(tokens[i], BracketsExpression)
-            ):
-                brackets_expression = tokens[i].expression.as_one_token()
-                if brackets_expression is not None:
-                    try:
-                        data_type = parser.parse_data_type(brackets_expression, [])
-                    except UnknownTypeException:
-                        data_type = None
-                    if data_type is not None:
-                        new_tokens.append(Cast(data_type, tokens[i + 1]))
-                        i += 2
-                        continue
-            new_tokens.append(tokens[i])
-            i += 1
-        return UnparsedTokens(new_tokens)
+        return UnparsedTokens(tokens)
 
     def visit(self, on_expression_visited, **kwargs):
         on_expression_visited(self, **kwargs)

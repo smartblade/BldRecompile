@@ -98,7 +98,7 @@ def merge_word32_into_double(first, second):
     if first_num is None:
         return
     second_num = second
-    first_num = first_num.as_one_token()
+    first_num = first_num.emit_code()
     if first_num is None or not first_num.startswith("0x"):
         return
     second_num = second_num.as_one_token()

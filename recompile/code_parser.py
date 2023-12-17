@@ -4,6 +4,7 @@ import re
 from array_access import ArrayAccess
 from brackets_expression import BracketsExpression
 from array_type import Array
+from cast import Cast
 from class_type import ClassType
 from constant import Constant
 from exceptions import UnknownTypeException
@@ -192,7 +193,7 @@ def parse_cpp_expression(line):
     for c in line + " ":
         if c == " ":
             if len(cur_token) > 0:
-                tokens.append(_new_token(tokens, cur_token))
+                _append_token(tokens, _new_token(tokens, cur_token))
                 cur_token = ""
         elif c in brackets_dict:
             state.append((c, cur_token, tokens))
@@ -200,7 +201,7 @@ def parse_cpp_expression(line):
             tokens = []
         elif c in closing_brackets:
             if len(cur_token) > 0:
-                tokens.append(_new_token(tokens, cur_token))
+                _append_token(tokens, _new_token(tokens, cur_token))
                 cur_token = ""
             brackets_tokens = tokens
             (bracket, prefix, tokens) = state.pop()
@@ -210,16 +211,30 @@ def parse_cpp_expression(line):
                 )
             if c == "]":
                 array = _new_array_access(tokens, prefix, brackets_tokens)
-                tokens.append(array)
+                _append_token(tokens, array)
             else:
                 brackets = _new_brackets_expression(
                     tokens, prefix, brackets_tokens
                 )
-                tokens.append(brackets)
+                _append_token(tokens, brackets)
 
         else:
             cur_token += c
     return UnparsedTokens(tokens)
+
+def _append_token(tokens, token):
+    if len(tokens) > 0 and isinstance(tokens[-1], BracketsExpression):
+        brackets_expression = tokens[-1].expression.as_one_token()
+        if tokens[-1].prefix == "" and brackets_expression is not None:
+            try:
+                data_type = parse_data_type(brackets_expression, [])
+            except UnknownTypeException:
+                data_type = None
+            if data_type is not None:
+                tokens.pop()
+                tokens.append(Cast(data_type, token))
+                return
+    tokens.append(token)
 
 def _new_token(tokens, s):
     match = re.search(const_regexp, s)
