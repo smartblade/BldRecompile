@@ -1,13 +1,15 @@
 import struct
 
 from assignment import Assignment
-from code_instruction import CodeInstruction
 import code_parser as parser
+from double import Double
 from exceptions import NextRunException
 from variable_declaration import VariableDeclaration
 from hex_conversion import from_hex, to_hex
 from identifier import Identifier
 from return_instruction import ReturnInstruction
+from unknown32 import Unknown32
+from variable_declaration import VariableDeclaration
 
 def transform_block(instructions, **kwargs):
     new_instructions = []
@@ -37,21 +39,44 @@ def transform_instruction(instr, instructions, **kwargs):
         instructions.append(instr)
 
 def merge_union_declaration(first_instr, second_instr):
-    if not isinstance(first_instr, CodeInstruction):
+    if not isinstance(first_instr, VariableDeclaration):
         return
     if not isinstance(second_instr, Assignment):
         return
-    (first_type, first_var) = first_instr.as_two_tokens()
-    if first_type is None:
+    if not isinstance(first_instr.id.data_type, str):
         return
-    if not first_type.startswith("Eq_"):
+    if not first_instr.id.data_type.startswith("Eq_"):
         return
-    if second_instr.dst.emit_code() != "{}.u0".format(first_var):
+    if second_instr.dst.emit_code() != "{}.u0".format(first_instr.id.name):
         return
-    dst = parser.parse_cpp_expression("{} {}".format(first_type, first_var))
-    return Assignment(dst, second_instr.src)
+    return VariableDeclaration(first_instr.id, second_instr.src)
 
 def merge_instructions(first_instr, second_instr):
+    if (
+        isinstance(first_instr, VariableDeclaration) and
+        first_instr.initial_expression is not None and
+        isinstance(second_instr, VariableDeclaration) and
+        second_instr.initial_expression is not None
+    ):
+        initial_expression = merge_word32_into_double(
+            first_instr.initial_expression, second_instr.initial_expression
+        )
+        if initial_expression is None:
+            return
+        if (
+            isinstance(first_instr.id.data_type, str) and
+            first_instr.id.data_type.startswith("Eq_") and
+            isinstance(second_instr.id.data_type, Unknown32)
+        ):
+            initial_expression = parser.parse_cpp_expression(
+                "{}".format(initial_expression), {}
+            )
+            identifier = Identifier(
+                Double(),
+                "rSeq_{}_{}".format(second_instr.id.name, first_instr.id.name),
+            )
+            return VariableDeclaration(identifier, initial_expression)
+        return
     if not isinstance(first_instr, Assignment):
         return
     if not isinstance(second_instr, Assignment):
@@ -62,8 +87,8 @@ def merge_instructions(first_instr, second_instr):
     dst = merge_word32_into_double(first_instr.dst, second_instr.dst)
     if dst is None:
         return
-    dst = parser.parse_cpp_expression("{}".format(dst))
-    src = parser.parse_cpp_expression("{}".format(src))
+    dst = parser.parse_cpp_expression("{}".format(dst), {})
+    src = parser.parse_cpp_expression("{}".format(src), {})
     return Assignment(dst, src)
 
 def merge_word32_into_double(first, second):
@@ -81,13 +106,6 @@ def merge_word32_into_double(first, second):
         if second_offset != first_offset + 4:
             return
         return first.emit_code()
-    (first_type, first_var) = first.as_two_tokens()
-    (second_type, second_var) = second.as_two_tokens()
-    if (
-        first_type is not None and first_type.startswith("Eq_") and
-        second_type == "word32"
-    ):
-        return "real64 rSeq_{}_{}".format(second_var, first_var)
     first_num = first.strip_real64()
     if first_num is None:
         return

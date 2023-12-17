@@ -6,24 +6,13 @@ class CodeInstruction:
         return "CodeInstruction({})".format(self._tokens)
 
     def transform_instruction(
-        self, declared_identifiers, id_suffixes, **kwargs
+        self, **kwargs
     ):
-        self._tokens = self._tokens.transform_expression(
-            declared_identifiers=declared_identifiers,
-            **kwargs,
-        )
-        decl, eliminate = self._tokens.as_variable_declaration(
-            declared_identifiers, id_suffixes
-        )
-        if decl is not None:
-            return decl
-        return self
+        tokens = self._tokens.transform_expression(**kwargs)
+        return CodeInstruction(tokens)
 
     def visit(self, on_expression_visited, **kwargs):
         self._tokens.visit(on_expression_visited, **kwargs)
-
-    def as_two_tokens(self):
-        return self._tokens.as_two_tokens()
 
     def emit_code(self, writer):
         instr = self._tokens.emit_code()

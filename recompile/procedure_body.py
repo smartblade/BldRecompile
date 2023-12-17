@@ -7,7 +7,10 @@ from writer import Writer
 class ProcedureBody:
     def __init__(self, proc_decl, instructions):
         self._proc_decl = proc_decl
-        self._instructions = parse_instructions(instructions)
+        self._instructions = parse_instructions(
+            instructions,
+            declared_identifiers=self._proc_decl.get_parameters_ids(),
+        )
 
     def __repr__(self):
         return "ProcedureBody(proc_decl={}, instructions={})".format(

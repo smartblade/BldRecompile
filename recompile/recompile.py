@@ -150,7 +150,7 @@ def process_output_code(file_name, addr):
         if line.startswith("//"):
             continue
         if line.startswith("}"):
-            return proc, parse_instructions(body_lines)
+            return proc, parse_instructions(body_lines, {})
         if addr in line:
             proc = parser.parse_procedure_declaration(line)
         elif line.startswith("{"):
@@ -189,8 +189,8 @@ def guess_float_fields(method_class, body_instructions):
         instr.visit(on_expression_visited)
 
 def merge_double_fields(parameters, body_instructions):
-    field_access_regexp = re.compile('word32\s(?P<var>\w+)\s*=\s*(?P<obj>\w+)->dw(?P<offset>[\dABCDEF]+)')
-    seq_regexp = re.compile('real64\s\w+\s*=\s*SEQ\((?P<first_var>\w+),\s(?P<second_var>\w+)\)')
+    field_access_regexp = re.compile('unknown32\s(?P<var>\w+)\s*=\s*(?P<obj>\w+)->dw(?P<offset>[\dABCDEF]+)')
+    seq_regexp = re.compile('double\s\w+\s*=\s*SEQ\((?P<first_var>\w+),\s(?P<second_var>\w+)\)')
     merge_candidates = {}
     writer = Writer()
     for instr in body_instructions:

@@ -7,6 +7,9 @@ class Assignment:
         self._dst = dst
         self._src = src
 
+    def __repr__(self):
+        return "Assign({}={})".format(self._dst, self._src)
+
     @property
     def dst(self):
         return self._dst
@@ -18,17 +21,8 @@ class Assignment:
     def transform_instruction(
         self, **kwargs
     ):
-        declared_identifiers = kwargs['declared_identifiers']
-        id_suffixes = kwargs['id_suffixes']
         src = self._src.transform_expression(**kwargs)
         dst = self._dst.transform_expression(**kwargs)
-        decl, eliminate = dst.as_variable_declaration(
-            declared_identifiers, id_suffixes, src
-        )
-        if eliminate:
-            return None
-        if decl is not None:
-            return decl
         if src.as_one_token() == "0x00":
             src = UnparsedToken("0")
         elif src.as_one_token() == "0x01":

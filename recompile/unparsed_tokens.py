@@ -7,12 +7,8 @@ from double import Double
 from exceptions import UnknownTypeException
 from field_access import FieldAccess
 from identifier import Identifier
-from int32 import Int32
-from unknown32 import Unknown32
 from unparsed_token import UnparsedToken
-from variable_declaration import VariableDeclaration
-
-loc_var_regexp = re.compile('^((?P<prefix>dw|r)Loc(?P<offset>[\dABCDEF]{2}))|(?P<reg>eax|ecx|edx)|(?P<fpu>rLoc1)|(?P<seq>rSeq\w+)_\d+')
+from variable_declaration import VariableDeclaration, loc_var_regexp
 
 class UnparsedTokens:
     def __init__(self, tokens):
@@ -29,34 +25,27 @@ class UnparsedTokens:
         src = UnparsedTokens(self._tokens[eq_pos + 1:])
         return (dst, src)
 
-    def as_variable_declaration(
-        self, declared_identifiers, id_suffixes, initial_expression=None
-    ):
+    def as_variable_declaration(self, declared_identifiers):
         if len(self._tokens) < 2:
-            return (None, None)
+            return None
         var_name = self._tokens[-1]
         if not isinstance(var_name, UnparsedToken):
-            return (None, None)
+            return None
         var_name = var_name.emit_code()
         if not re.search(loc_var_regexp, var_name):
-            return (None, None)
+            return None
         var_type = " ".join(
             map(lambda token: token.emit_code(), self._tokens[:-1])
         )
-        var_type = parser.parse_data_type(var_type, [])
-        new_var_name = self._define_variable_name(var_type, var_name)
-        identifier = Identifier(var_type, new_var_name)
-        self._ensure_unique_id(identifier, id_suffixes)
-        eliminate = False
-        if initial_expression is not None:
-            first, second = initial_expression.as_seq()
-            if first is not None:
-                seq_id_name = "rSeq_{}_{}".format(first, second)
-                declared_identifiers[seq_id_name].rename(identifier.name)
-                identifier = declared_identifiers[seq_id_name]
-                eliminate = True
+        try:
+            var_type = parser.parse_data_type(var_type, [])
+        except UnknownTypeException:
+            pass
+        identifier = Identifier(var_type, var_name)
+        if var_name in declared_identifiers:
+            raise Exception("Redeclarated identifier: {}.".format(var_name))
         declared_identifiers[var_name] = identifier
-        return (VariableDeclaration(identifier, initial_expression), eliminate)
+        return identifier
 
     def as_field_access(self):
         if len(self._tokens) != 1:
@@ -98,15 +87,6 @@ class UnparsedTokens:
             return None
         return self._tokens[0].emit_code()
 
-    def as_two_tokens(self):
-        if len(self._tokens) != 2:
-            return (None, None)
-        if not isinstance(self._tokens[0], UnparsedToken):
-            return (None, None)
-        if not isinstance(self._tokens[1], UnparsedToken):
-            return (None, None)
-        return (self._tokens[0].emit_code(), self._tokens[1].emit_code())
-
     def strip_real64(self):
         if len(self._tokens) != 1:
             return None
@@ -132,45 +112,6 @@ class UnparsedTokens:
 
     def emit_code(self):
         return " ".join(map(lambda token: token.emit_code(), self._tokens))
-
-    def _define_variable_name(self, var_type, var_name):
-        match = re.search(loc_var_regexp, var_name)
-        if match:
-            offset = match.group('offset')
-            if offset is not None:
-                prefix = match.group('prefix')
-                if prefix =="dw" and isinstance(var_type, Unknown32):
-                    return "unknown_loc_{}".format(offset)
-                if prefix =="dw" and isinstance(var_type, Int32):
-                    return "unknown_int_loc_{}".format(offset)
-                if prefix =="r" and isinstance(var_type, Double):
-                    return "unknown_double_loc_{}".format(offset)
-            reg = match.group('reg')
-            if reg is not None and isinstance(var_type, Unknown32):
-                return "unknown_{}".format(reg)
-            if match.group('fpu') is not None:
-                if isinstance(var_type, Double):
-                    return "unknown_fpu"
-            if match.group('seq') is not None:
-                return var_name
-        raise Exception("Unparsed variable name: {}.".format(var_name))
-
-    def _ensure_unique_id(self, identifier, id_suffixes):
-        if not identifier.name in id_suffixes:
-            id_suffixes[identifier.name] = identifier
-        else:
-            if isinstance(id_suffixes[identifier.name], Identifier):
-                self._add_suffix_to_id(
-                    id_suffixes[identifier.name], 1, id_suffixes
-                )
-            self._add_suffix_to_id(
-                identifier, id_suffixes[identifier.name] + 1, id_suffixes
-            )
-
-    def _add_suffix_to_id(self, identifier, suffix, id_suffixes):
-        name = identifier.name
-        identifier.rename("{}_{}".format(name, suffix))
-        id_suffixes[name] = suffix
 
     def _find_token(self, s):
         for i in range(len(self._tokens)):

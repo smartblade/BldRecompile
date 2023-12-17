@@ -74,7 +74,7 @@ def extract_class_name(class_type):
         raise Exception("Only pointers is supported for thiscall parameter.")
     class_name = type_tokens[1]
     if not class_name.startswith("Eq_"):
-        raise Exception(
+        raise UnknownTypeException(
             "Class name '{}' should be started with 'Eq_'.".format(class_name)
         )
     return class_name
@@ -184,43 +184,45 @@ def define_field_name(field_type, field_name):
         field_name = field_name.replace("a", "unknown_array_")
     return field_name
 
-def parse_cpp_expression(line):
+def parse_cpp_expression(line, declared_identifiers):
     brackets_dict = {"(": ")", "[": "]"}
     closing_brackets = set(brackets_dict.values())
-    state = []
-    tokens = []
-    cur_token = ""
+    states = []
+    state = _new_state(
+        bracket=None, cur_token=[], tokens=[],
+        declared_identifiers=declared_identifiers,
+    )
     for c in line + " ":
         if c == " ":
-            if len(cur_token) > 0:
-                _append_token(tokens, _new_token(tokens, cur_token))
-                cur_token = ""
+            if len(state.cur_token) > 0:
+                cur_token = "".join(state.cur_token)
+                _append_token(state.tokens, _new_token(state, cur_token))
+                state.cur_token.clear()
         elif c in brackets_dict:
-            state.append((c, cur_token, tokens))
-            cur_token = ""
-            tokens = []
+            state = _opening_bracket(states, state, c)
         elif c in closing_brackets:
-            if len(cur_token) > 0:
-                _append_token(tokens, _new_token(tokens, cur_token))
-                cur_token = ""
-            brackets_tokens = tokens
-            (bracket, prefix, tokens) = state.pop()
+            if len(state.cur_token) > 0:
+                cur_token = "".join(state.cur_token)
+                _append_token(state.tokens, _new_token(state, cur_token))
+                state.cur_token.clear()
+            brackets_tokens = state.tokens
+            (bracket, prefix, state) = _closing_bracket(states, state)
             if brackets_dict[bracket] != c:
                 raise Exception(
                     "Mismatched brackets: {} and {}".format(bracket, c)
                 )
             if c == "]":
-                array = _new_array_access(tokens, prefix, brackets_tokens)
-                _append_token(tokens, array)
+                array = _new_array_access(state, prefix, brackets_tokens)
+                _append_token(state.tokens, array)
             else:
                 brackets = _new_brackets_expression(
-                    tokens, prefix, brackets_tokens
+                    state, prefix, brackets_tokens
                 )
-                _append_token(tokens, brackets)
+                _append_token(state.tokens, brackets)
 
         else:
-            cur_token += c
-    return UnparsedTokens(tokens)
+            state.cur_token.append(c)
+    return UnparsedTokens(state.tokens)
 
 def _append_token(tokens, token):
     if len(tokens) > 0 and isinstance(tokens[-1], BracketsExpression):
@@ -236,7 +238,7 @@ def _append_token(tokens, token):
                 return
     tokens.append(token)
 
-def _new_token(tokens, s):
+def _new_token(state, s):
     match = re.search(const_regexp, s)
     if match:
         if s.endswith("F"):
@@ -250,15 +252,17 @@ def _new_token(tokens, s):
     if match:
         expression = match.group('expression')
         field_name = match.group('field')
-        return FieldAccess(_new_token(tokens, expression), field_name)
+        return FieldAccess(_new_token(state, expression), field_name)
     if s.startswith("++"):
-        return Increment(_new_token(tokens, s[2:]))
+        return Increment(_new_token(state, s[2:]))
     if s.startswith("->"):
-        prev = tokens.pop()
+        prev = state.tokens.pop()
         return FieldAccess(prev, s[2:])
+    if s in state.declared_identifiers:
+        return state.declared_identifiers[s]
     return UnparsedToken(s)
 
-def _new_brackets_expression(tokens, prefix, brackets_tokens):
+def _new_brackets_expression(state, prefix, brackets_tokens):
     if (
         prefix.startswith("unknown_procedure_") or
         prefix.startswith("unknown_method_")
@@ -275,7 +279,7 @@ def _new_brackets_expression(tokens, prefix, brackets_tokens):
                 isinstance(token, UnparsedToken) and
                 token.emit_code().endswith(",")
             ):
-                cur_arg.append(_new_token(tokens, token.emit_code()[:-1]))
+                cur_arg.append(_new_token(state, token.emit_code()[:-1]))
                 append_arg(cur_arg)
                 cur_arg = []
             else:
@@ -286,9 +290,26 @@ def _new_brackets_expression(tokens, prefix, brackets_tokens):
         return ProcedureCall(prefix, arguments, callee_addr, is_method=True)
     return BracketsExpression(prefix, UnparsedTokens(brackets_tokens))
 
-def _new_array_access(tokens, prefix, brackets_tokens):
+def _new_array_access(state, prefix, brackets_tokens):
     if prefix == "":
-        array = tokens.pop()
+        array = state.tokens.pop()
     else:
-        array = _new_token(tokens, prefix)
+        array = _new_token(state, prefix)
     return ArrayAccess(array, UnparsedTokens(brackets_tokens))
+
+def _new_state(**kwargs):
+    return namedtuple('State', kwargs.keys())(**kwargs)
+
+def _opening_bracket(states, state, bracket):
+    states.append(state)
+    return _new_state(
+        bracket=bracket, cur_token=[], tokens=[],
+        declared_identifiers=state.declared_identifiers,
+    )
+
+def _closing_bracket(states, state):
+    bracket = state.bracket
+    state = states.pop()
+    prefix = "".join(state.cur_token)
+    state.cur_token.clear()
+    return (bracket, prefix, state)
