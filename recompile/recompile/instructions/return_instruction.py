@@ -1,7 +1,7 @@
 from exceptions import NextRunException
-from identifier import Identifier
+import expressions
 from merge_types import merge_types
-from unparsed_token import UnparsedToken
+
 
 class ReturnInstruction:
     def __init__(self, expression):
@@ -16,13 +16,13 @@ class ReturnInstruction:
 
     def transform_instruction(self, proc_decl, **kwargs):
         expression = self._expression.transform_expression(**kwargs)
-        if isinstance(expression, Identifier):
+        if isinstance(expression, expressions.Identifier):
             new_data_type = merge_types(
                 proc_decl.return_type, expression.data_type
             )
             proc_decl.change_return_type(new_data_type)
         if (
-            isinstance(expression, UnparsedToken) and
+            isinstance(expression, expressions.UnparsedToken) and
             expression.emit_code() == "<invalid>"
         ):
             proc_decl.change_return_type(None)

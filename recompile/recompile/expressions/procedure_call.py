@@ -1,7 +1,5 @@
-from address_of import AddressOf
-from identifier import Identifier
 import data_types
-from field_access import FieldAccess
+import expressions
 
 
 class ProcedureCall:
@@ -40,8 +38,8 @@ class ProcedureCall:
             data_type = arguments[0].data_type
             proc_decl = recompiled_decls[self._callee_addr]
             if (
-                isinstance(arguments[0], AddressOf) and
-                isinstance(arguments[0].expression, Identifier) and
+                isinstance(arguments[0], expressions.AddressOf) and
+                isinstance(arguments[0].expression, expressions.Identifier) and
                 isinstance(
                     arguments[0].expression.data_type, data_types.UnknownClass
                 )
@@ -67,7 +65,9 @@ class ProcedureCall:
 
     def emit_code(self):
         if self._is_method:
-            call = FieldAccess(self._arguments[0], self._name).emit_code()
+            call = expressions.FieldAccess(
+                self._arguments[0], self._name
+            ).emit_code()
             arguments = self._arguments[1:]
         else:
             call = self._name

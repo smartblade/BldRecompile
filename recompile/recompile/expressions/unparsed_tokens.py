@@ -1,14 +1,10 @@
 import re
 
-from cast import Cast
 import code_parser as parser
 import data_types
 from exceptions import UnknownTypeException
-from field_access import FieldAccess
-from identifier import Identifier
+import expressions
 from instructions.variable_declaration import loc_var_regexp
-from procedure_call import ProcedureCall
-from unparsed_token import UnparsedToken
 
 
 class UnparsedTokens:
@@ -30,7 +26,7 @@ class UnparsedTokens:
         if len(self._tokens) < 2:
             return None
         var_name = self._tokens[-1]
-        if not isinstance(var_name, UnparsedToken):
+        if not isinstance(var_name, expressions.UnparsedToken):
             return None
         var_name = var_name.emit_code()
         if not re.search(loc_var_regexp, var_name):
@@ -42,7 +38,7 @@ class UnparsedTokens:
             var_type = parser.parse_data_type(var_type, [])
         except UnknownTypeException:
             var_type = data_types.UnknownClass(var_type)
-        identifier = Identifier(var_type, var_name)
+        identifier = expressions.Identifier(var_type, var_name)
         if var_name in declared_identifiers:
             raise Exception("Redeclarated identifier: {}.".format(var_name))
         declared_identifiers[var_name] = identifier
@@ -52,21 +48,21 @@ class UnparsedTokens:
         if len(self._tokens) != 1:
             return (None, None)
         field_access = self._tokens[0]
-        if not isinstance(field_access, FieldAccess):
+        if not isinstance(field_access, expressions.FieldAccess):
             return (None, None)
         return (field_access.expression.emit_code(), field_access.field_name)
 
     def as_identifier(self):
         if len(self._tokens) != 1:
             return (None, None)
-        if not isinstance(self._tokens[0], Identifier):
+        if not isinstance(self._tokens[0], expressions.Identifier):
             return None
         return self._tokens[0]
 
     def as_return(self):
         if len(self._tokens) != 2:
             return None
-        if not isinstance(self._tokens[0], UnparsedToken):
+        if not isinstance(self._tokens[0], expressions.UnparsedToken):
             return None
         if self._tokens[0].emit_code() != "return":
             return None
@@ -75,7 +71,7 @@ class UnparsedTokens:
     def as_seq(self):
         if len(self._tokens) != 1:
             return (None, None)
-        if not isinstance(self._tokens[0], ProcedureCall):
+        if not isinstance(self._tokens[0], expressions.ProcedureCall):
             return (None, None)
         if self._tokens[0].name != "SEQ":
             return (None, None)
@@ -91,14 +87,14 @@ class UnparsedTokens:
     def as_one_token(self):
         if len(self._tokens) != 1:
             return None
-        if not isinstance(self._tokens[0], UnparsedToken):
+        if not isinstance(self._tokens[0], expressions.UnparsedToken):
             return None
         return self._tokens[0].emit_code()
 
     def strip_real64(self):
         if len(self._tokens) != 1:
             return None
-        if not isinstance(self._tokens[0], Cast):
+        if not isinstance(self._tokens[0], expressions.Cast):
             return None
         if not isinstance(self._tokens[0].data_type, data_types.Double):
             return None
@@ -123,7 +119,10 @@ class UnparsedTokens:
 
     def _find_token(self, s):
         for i in range(len(self._tokens)):
-             token = self._tokens[i]
-             if isinstance(token, UnparsedToken) and token.emit_code() == s:
-                 return i
+            token = self._tokens[i]
+            if (
+                isinstance(token, expressions.UnparsedToken) and
+                token.emit_code() == s
+            ):
+                return i
         return -1

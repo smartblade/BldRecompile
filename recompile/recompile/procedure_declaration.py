@@ -1,7 +1,7 @@
 from calling_convention import CallingConvention
-import data_types
 import code_parser as parser
-from identifier import Identifier
+import data_types
+from expressions import Identifier
 
 class ProcedureDeclaration:
     def __init__(

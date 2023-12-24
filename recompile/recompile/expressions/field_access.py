@@ -1,4 +1,4 @@
-from address_of import AddressOf
+import expressions
 
 class FieldAccess:
     def __init__(self, expression, field_name):
@@ -31,7 +31,7 @@ class FieldAccess:
 
     def emit_code(self):
         expression = self._expression
-        if isinstance(expression, AddressOf):
+        if isinstance(expression, expressions.AddressOf):
             expression = expression.expression
             sep = "."
         else:

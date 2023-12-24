@@ -1,18 +1,9 @@
 from collections import namedtuple
 import re
 
-from address_of import AddressOf
-from array_access import ArrayAccess
-from brackets_expression import BracketsExpression
-from cast import Cast
-from constant import Constant
 import data_types
 from exceptions import UnknownTypeException
-from increment import Increment
-from field_access import FieldAccess
-from procedure_call import ProcedureCall
-from unparsed_token import UnparsedToken
-from unparsed_tokens import UnparsedTokens
+import expressions
 
 const_regexp = re.compile('^(?P<float>\d+\.\d+F?)$')
 field_access_regexp = re.compile('^(?P<expression>.+)(?P<sep>->|\.)(?P<field>\w+)$')
@@ -231,10 +222,13 @@ def parse_cpp_expression(line, declared_identifiers):
 
         else:
             state.cur_token.append(c)
-    return UnparsedTokens(state.tokens)
+    return expressions.UnparsedTokens(state.tokens)
 
 def _append_token(tokens, token):
-    if len(tokens) > 0 and isinstance(tokens[-1], BracketsExpression):
+    if (
+        len(tokens) > 0 and
+        isinstance(tokens[-1], expressions.BracketsExpression)
+    ):
         brackets_expression = tokens[-1].expression.as_one_token()
         if tokens[-1].prefix == "" and brackets_expression is not None:
             try:
@@ -243,7 +237,7 @@ def _append_token(tokens, token):
                 data_type = None
             if data_type is not None:
                 tokens.pop()
-                tokens.append(Cast(data_type, token))
+                tokens.append(expressions.Cast(data_type, token))
                 return
     tokens.append(token)
 
@@ -256,9 +250,9 @@ def _new_token(state, s):
         else:
             data_type = data_types.Double()
             value = float(s)
-        return Constant(data_type, value)
+        return expressions.Constant(data_type, value)
     if s.startswith("&"):
-        return AddressOf(_new_token(state, s[1:]))
+        return expressions.AddressOf(_new_token(state, s[1:]))
     match = re.search(field_access_regexp, s)
     if match:
         expression = match.group('expression')
@@ -266,18 +260,18 @@ def _new_token(state, s):
         sep = match.group('sep')
         return _new_field_access(_new_token(state, expression), sep, field_name)
     if s.startswith("++"):
-        return Increment(_new_token(state, s[2:]))
+        return expressions.Increment(_new_token(state, s[2:]))
     if s.startswith("->"):
         prev = state.tokens.pop()
         return _new_field_access(prev, "->", s[2:])
     if s in state.declared_identifiers:
         return state.declared_identifiers[s]
-    return UnparsedToken(s)
+    return expressions.UnparsedToken(s)
 
 def _new_field_access(e, sep, field_name):
     if sep == '.':
-        e = AddressOf(e)
-    return FieldAccess(e, field_name)
+        e = expressions.AddressOf(e)
+    return expressions.FieldAccess(e, field_name)
 
 def _new_brackets_expression(state, prefix, brackets_tokens):
     if (prefix != ""):
@@ -286,10 +280,13 @@ def _new_brackets_expression(state, prefix, brackets_tokens):
             if len(arg) == 1:
                 arguments.append(arg[0])
             else:
-                arguments.append(UnparsedTokens(arg))
+                arguments.append(expressions.UnparsedTokens(arg))
         cur_arg = []
         for token in brackets_tokens:
-            if (isinstance(token, UnparsedToken) and token.emit_code() == ","):
+            if (
+                isinstance(token, expressions.UnparsedToken) and
+                token.emit_code() == ","
+            ):
                 append_arg(cur_arg)
                 cur_arg = []
             else:
@@ -305,15 +302,21 @@ def _new_brackets_expression(state, prefix, brackets_tokens):
         else:
             callee_addr = None
             is_method = False
-        return ProcedureCall(prefix, arguments, callee_addr, is_method)
-    return BracketsExpression(prefix, UnparsedTokens(brackets_tokens))
+        return expressions.ProcedureCall(
+            prefix, arguments, callee_addr, is_method
+        )
+    return expressions.BracketsExpression(
+        prefix, expressions.UnparsedTokens(brackets_tokens)
+    )
 
 def _new_array_access(state, prefix, brackets_tokens):
     if prefix == "":
         array = state.tokens.pop()
     else:
         array = _new_token(state, prefix)
-    return ArrayAccess(array, UnparsedTokens(brackets_tokens))
+    return expressions.ArrayAccess(
+        array, expressions.UnparsedTokens(brackets_tokens)
+    )
 
 def _new_state(**kwargs):
     return namedtuple('State', kwargs.keys())(**kwargs)

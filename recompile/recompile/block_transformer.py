@@ -3,8 +3,8 @@ import struct
 import code_parser as parser
 import data_types
 from exceptions import NextRunException
+import expressions
 from hex_conversion import from_hex, to_hex
-from identifier import Identifier
 import instructions
 
 
@@ -68,7 +68,7 @@ def merge_instructions(first_instr, second_instr):
             initial_expression = parser.parse_cpp_expression(
                 "{}".format(initial_expression), {}
             )
-            identifier = Identifier(
+            identifier = expressions.Identifier(
                 data_types.Double(),
                 "rSeq_{}_{}".format(second_instr.id.name, first_instr.id.name),
             )
@@ -131,7 +131,7 @@ def _validate_return_instruction(code_instructions, proc_decl, **kwargs):
     if not isinstance(code_instructions[-1], instructions.ReturnInstruction):
         return
     return_expression = code_instructions[-1].expression
-    if not isinstance(return_expression, Identifier):
+    if not isinstance(return_expression, expressions.Identifier):
         return
     if not isinstance(code_instructions[-3], instructions.VariableDeclaration):
         return

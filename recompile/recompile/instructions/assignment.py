@@ -1,5 +1,5 @@
-from unparsed_token import UnparsedToken
 import data_types
+import expressions
 from merge_types import merge_types
 
 
@@ -25,7 +25,7 @@ class Assignment:
         src = self._src.transform_expression(**kwargs)
         dst = self._dst.transform_expression(**kwargs)
         if src.as_one_token() == "0x00":
-            src = UnparsedToken("0")
+            src = expressions.UnparsedToken("0")
         elif src.as_one_token() == "0x01":
             # 0x01 can not be pointer and it's unlikely float, so make it
             # integer
@@ -39,7 +39,7 @@ class Assignment:
                     "unknown_loc_", "unknown_int_loc_"
                 )
                 identifier.rename(new_var_name)
-                src = UnparsedToken("1")
+                src = expressions.UnparsedToken("1")
         return Assignment(dst, src)
 
     def visit(self, on_expression_visited, **kwargs):

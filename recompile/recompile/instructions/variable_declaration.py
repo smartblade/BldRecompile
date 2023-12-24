@@ -1,7 +1,7 @@
 import re
 
 import data_types
-from identifier import Identifier
+import expressions
 
 loc_var_regexp = re.compile('^((?P<prefix>dw|r|t)Loc(?P<offset>[\dABCDEF]{2}))|(?P<reg>eax|ecx|edx)|(?P<fpu>rLoc1)|(?P<seq>rSeq\w+)_\d+')
 
@@ -95,7 +95,7 @@ class VariableDeclaration:
         if not identifier.name in id_suffixes:
             id_suffixes[identifier.name] = identifier
         else:
-            if isinstance(id_suffixes[identifier.name], Identifier):
+            if isinstance(id_suffixes[identifier.name], expressions.Identifier):
                 self._add_suffix_to_id(
                     id_suffixes[identifier.name], 1, id_suffixes
                 )

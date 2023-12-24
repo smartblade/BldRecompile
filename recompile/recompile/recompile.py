@@ -9,22 +9,17 @@ import subprocess
 import sys
 import time
 
-from address_of import AddressOf
 from calling_convention import CallingConvention
-from cast import Cast
 import code_parser as parser
 import data_types
 from exceptions import SkippedProcedureException, NextRunException
-from field_access import FieldAccess
+import expressions
 from files_location import FilesLocation
 from hex_conversion import from_hex
-from identifier import Identifier
 import instructions
 from parse_instructions import parse_instructions
-from procedure_call import ProcedureCall
 from procedure_body import ProcedureBody
 from procedure_declaration import ProcedureDeclaration
-from unparsed_tokens import UnparsedTokens
 from writer import Writer
 
 argument_parser = argparse.ArgumentParser()
@@ -193,7 +188,7 @@ def process_output_code(file_name, addr):
 def ensure_class_fields(method_class, body_instructions):
     field_offset_regexp = re.compile('\(char\s*\*\)\s*ecx\s*\+\s*(?P<offset>\d+)')
     def on_expression_visited(e):
-        if isinstance(e, UnparsedTokens):
+        if isinstance(e, expressions.UnparsedTokens):
             match = re.search(field_offset_regexp, e.emit_code())
             if match:
                 offset = match.group('offset')
@@ -273,12 +268,12 @@ def analyse_types(classes, body_instructions):
     def on_expression_visited(e):
         if not isinstance(e, instructions.Assignment):
             return
-        cast = e.src.as_type(Cast)
+        cast = e.src.as_type(expressions.Cast)
         if cast is None:
             return
         if not isinstance(cast.data_type, data_types.Unknown32):
             return
-        fa = e.dst.as_type(FieldAccess)
+        fa = e.dst.as_type(expressions.FieldAccess)
         if fa is None:
             return
         if not isinstance(fa.expression.data_type, data_types.Pointer32):
@@ -286,8 +281,8 @@ def analyse_types(classes, body_instructions):
         pointee = fa.expression.data_type.pointee
         if (
             isinstance(pointee, data_types.UnknownClass) and
-            isinstance(fa.expression, AddressOf) and
-            isinstance(fa.expression.expression, Identifier)
+            isinstance(fa.expression, expressions.AddressOf) and
+            isinstance(fa.expression.expression, expressions.Identifier)
         ):
             identifier = fa.expression.expression
             identifier.change_data_type(classes[pointee.class_name])
@@ -308,8 +303,8 @@ def collect_addr_of_locals(pc, recompiled_decls, full_typed_args_by_proc):
     parameters = list(callee_decl.get_parameters_ids().keys())
     for i in range(len(parameters)):
         if (
-            isinstance(pc.arguments[i], AddressOf) and
-            isinstance(pc.arguments[i].expression, Identifier)
+            isinstance(pc.arguments[i], expressions.AddressOf) and
+            isinstance(pc.arguments[i].expression, expressions.Identifier)
         ):
             if pc.callee_address not in full_typed_args_by_proc:
                 full_typed_args = set()
@@ -320,7 +315,9 @@ def collect_addr_of_locals(pc, recompiled_decls, full_typed_args_by_proc):
 
 def extract_callees(body_instructions, recompiled_decls):
     def on_expression_visited(e):
-        if isinstance(e, ProcedureCall) and e.callee_address is not None:
+        if not isinstance(e, expressions.ProcedureCall):
+            return
+        if e.callee_address is not None:
             callees.add(e.callee_address)
             collect_addr_of_locals(e, recompiled_decls, full_typed_args_by_proc)
     callees = set()
