@@ -623,7 +623,7 @@ def create_common_header(files):
         f.write("typedef int unknown32;\n")
 
 def run():
-    root_path = os.path.dirname(os.path.realpath(__file__))
+    root_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "..")
     files = FilesLocation(root_path, options.rebuild)
     with open(files.procedures_dict_file, "rt") as f:
         proc_dict = json.load(f)
