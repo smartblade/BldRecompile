@@ -15,6 +15,7 @@ import data_types
 from exceptions import SkippedProcedureException, NextRunException
 import expressions
 from files_location import FilesLocation
+from header_declarations import HeaderDeclarations
 from hex_conversion import from_hex
 import instructions
 from parse_instructions import parse_instructions
@@ -31,8 +32,7 @@ options = argument_parser.parse_args()
 
 
 def make_project_file(
-    template_name, output_file_name, proc_addrs, recompiled_calles,
-    full_typed_args_by_proc={},
+    template_name, output_file_name, proc_addrs, declarations,
 ):
     with open(template_name) as f:
         lines = f.readlines()
@@ -50,17 +50,7 @@ def make_project_file(
                 for addr in proc_addrs:
                     if addr in defined_procedures:
                         continue
-                    if addr in recompiled_calles:
-                        full_typed_args = full_typed_args_by_proc.get(
-                            addr, set()
-                        )
-                        cdecl = recompiled_calles[addr].get_declaration(
-                            is_metafile=True, full_typed_args=full_typed_args
-                        )
-                        proc_name = recompiled_calles[addr].proc_name
-                    else:
-                        cdecl = None
-                        proc_name = "unknown_procedure_{}".format(addr)
+                    proc_name, cdecl = declarations.get_declaration_at(addr)
                     f.write(" " * 6 + procedure_start.format(proc_name))
                     f.write(" " * 8 + addr_str.format(addr))
                     if cdecl is not None:
@@ -94,14 +84,11 @@ def set_output_dir(project_file_name, output_dir):
                 line = line.replace(".reko", output_dir)
             f.write(line)
 
-def set_declarations(
-    files, proc_decl, recompiled_calles, full_typed_args_by_proc, addr
-):
-    metafile_created = emit_metafile(
-        proc_decl, recompiled_calles, full_typed_args_by_proc, files.decl
-    )
-    if proc_decl is not None:
-        cdecl = proc_decl.get_declaration(is_metafile=True)
+
+def set_declarations(files, declarations, addr):
+    metafile_created = declarations.emit_metafile(files.decl)
+    if declarations.proc_decl is not None:
+        cdecl = declarations.proc_decl.get_declaration(is_metafile=True)
     else:
         cdecl = None
     with open(files.project) as f:
@@ -124,23 +111,12 @@ def set_declarations(
                 if cdecl is not None:
                     f.write(" " * 8 + cdecl_str.format(cdecl))
 
-def get_recompiled_calles(calles, recompiled_decls):
-    if calles is not None:
-        return dict(
-            (addr, recompiled_decls[addr]) for addr in calles
-            if addr in recompiled_decls
-        )
-    return None
 
-def make_procedure_project(
-    files, calles, addr, recompiled_decls, full_typed_args_by_proc
-):
+def make_procedure_project(files, calles, addr, declarations):
     if calles is not None:
-        recompiled_calles = get_recompiled_calles(calles, recompiled_decls)
         procs = [*calles, addr]
         make_project_file(
-            files.project_template, files.project, sorted(procs),
-            recompiled_calles, full_typed_args_by_proc,
+            files.project_template, files.project, sorted(procs), declarations,
         )
     else:
         shutil.copyfile(files.intermediate_project, files.project)
@@ -154,20 +130,6 @@ def execute_command(command):
     if code:
         raise Exception('Failed to execute {}.'.format(command))
 
-def emit_metafile(
-    proc_decl, recompiled_calles, full_typed_args_by_proc, decl_file_name
-):
-    if recompiled_calles is None:
-        return False
-    if proc_decl is None and len(full_typed_args_by_proc) == 0:
-        return False
-    with open(decl_file_name, "wt") as f:
-        if proc_decl is not None:
-            f.write(proc_decl.get_types_declarations(is_metafile=True))
-        for callee_addr, full_typed_args in full_typed_args_by_proc.items():
-            callee = recompiled_calles[callee_addr]
-            f.write(callee.get_types_declarations(is_metafile=True))
-    return True
 
 def process_output_code(file_name, addr):
     with open(file_name) as f:
@@ -472,7 +434,9 @@ def process_intermediate_output(files, addr, recompiled_decls):
     )
     if method_class is not None:
         method_class.add_method(proc_decl)
-    return (proc_decl, full_typed_args_by_proc)
+    return HeaderDeclarations(
+        proc_decl, recompiled_decls, full_typed_args_by_proc
+    )
 
 def fill_unused_params(parameters, offset, size):
     if size < 0:
@@ -505,20 +469,19 @@ def extract_procedure_body(file_name, proc_decl):
         if instructions is not None:
             instructions.append(line)
 
-def process_final_output(
-    files, proc_decl, addr, recompiled_calles, full_typed_args_by_proc
-):
+
+def process_final_output(files, declarations, addr):
     code_file, header_file, dis_file = process_output_dir(files.project_output)
-    body = extract_procedure_body(code_file, proc_decl)
-    body.transform_instructions(recompiled_calles)
+    body = extract_procedure_body(code_file, declarations.proc_decl)
+    body.transform_instructions(declarations.recompiled_decls)
     cpp_file_name = os.path.join(files.output, "{}.cpp".format(addr))
     with open(cpp_file_name, "wt") as f:
         f.write(body.emit_code())
     header_file_name = os.path.join(
-        files.output, "{}.h".format(proc_decl.proc_name)
+        files.output, "{}.h".format(declarations.proc_decl.proc_name)
     )
     with open(header_file_name, "wt") as f:
-        f.write(body.emit_header(recompiled_calles, full_typed_args_by_proc))
+        f.write(declarations.emit_header())
     compile_cpp(files, cpp_file_name, header_file_name)
 
 def update_hash(hasher, file_name):
@@ -572,45 +535,34 @@ def next_run(files, run_callback, max_times):
 def process_procedure(files, addr, recompiled_decls):
     def intermediate_output(run_files):
         calles = load_callees(files)
-        recompiled_calles = get_recompiled_calles(calles, recompiled_decls)
-        make_procedure_project(
-            run_files, calles, addr, recompiled_decls, full_typed_args_by_proc
+        declarations = HeaderDeclarations(
+            None, recompiled_decls, full_typed_args_by_proc
         )
+        make_procedure_project(run_files, calles, addr, declarations)
         set_output_dir(run_files.project, run_files.project_output_basename)
-        set_declarations(
-            run_files, None, recompiled_calles, full_typed_args_by_proc, addr
-        )
+        set_declarations(run_files, declarations, addr)
         execute_reko(run_files, has_decl_file=False)
-        proc_decl, new_full_typed_args_by_proc = process_intermediate_output(
+        declarations = process_intermediate_output(
             run_files, addr, recompiled_decls
         )
         if (
-            len(new_full_typed_args_by_proc) > 0 and
+            len(declarations.full_typed_args_by_proc) > 0 and
             len(full_typed_args_by_proc) == 0
         ):
-            full_typed_args_by_proc.update(new_full_typed_args_by_proc)
+            full_typed_args_by_proc.update(declarations.full_typed_args_by_proc)
             raise NextRunException()
-        return proc_decl
+        return declarations
     def final_output(run_files):
         calles = load_callees(files)
-        recompiled_calles = get_recompiled_calles(calles, recompiled_decls)
-        make_procedure_project(
-            run_files, calles, addr, recompiled_decls, full_typed_args_by_proc
-        )
+        make_procedure_project(run_files, calles, addr, declarations)
         set_output_dir(run_files.project, run_files.project_output_basename)
-        set_declarations(
-            run_files, proc_decl, recompiled_calles, full_typed_args_by_proc,
-            addr
-        )
+        set_declarations(run_files, declarations, addr)
         execute_reko(run_files)
-        process_final_output(
-            run_files, proc_decl, addr, recompiled_calles,
-            full_typed_args_by_proc
-        )
+        process_final_output(run_files, declarations, addr)
     full_typed_args_by_proc = {}
-    proc_decl = next_run(files, intermediate_output, max_times=2)
+    declarations = next_run(files, intermediate_output, max_times=2)
     next_run(files, final_output, max_times=2)
-    return proc_decl
+    return declarations.proc_decl
 
 def create_common_header(files):
     with open(files.common_header_name, "wt") as f:
@@ -626,7 +578,8 @@ def run():
     with open(files.procedures_dict_file, "rt") as f:
         proc_dict = json.load(f)
     make_project_file(
-        files.project_template, files.intermediate_project, proc_dict.keys(), {}
+        files.project_template, files.intermediate_project, proc_dict.keys(),
+        HeaderDeclarations(None, {}, {})
     )
     create_common_header(files)
     recompiled_decls = {}
