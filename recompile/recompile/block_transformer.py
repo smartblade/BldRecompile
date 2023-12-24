@@ -1,13 +1,12 @@
 import struct
 
-from assignment import Assignment
 import code_parser as parser
 import data_types
 from exceptions import NextRunException
 from hex_conversion import from_hex, to_hex
 from identifier import Identifier
-from return_instruction import ReturnInstruction
-from variable_declaration import VariableDeclaration
+import instructions
+
 
 def transform_block(instructions, **kwargs):
     new_instructions = []
@@ -37,9 +36,9 @@ def transform_instruction(instr, instructions, **kwargs):
         instructions.append(instr)
 
 def merge_union_declaration(first_instr, second_instr):
-    if not isinstance(first_instr, VariableDeclaration):
+    if not isinstance(first_instr, instructions.VariableDeclaration):
         return
-    if not isinstance(second_instr, Assignment):
+    if not isinstance(second_instr, instructions.Assignment):
         return
     if not isinstance(first_instr.id.data_type, data_types.UnknownClass):
         return
@@ -47,13 +46,13 @@ def merge_union_declaration(first_instr, second_instr):
         return
     if second_instr.dst.emit_code() != "{}.u0".format(first_instr.id.name):
         return
-    return VariableDeclaration(first_instr.id, second_instr.src)
+    return instructions.VariableDeclaration(first_instr.id, second_instr.src)
 
 def merge_instructions(first_instr, second_instr):
     if (
-        isinstance(first_instr, VariableDeclaration) and
+        isinstance(first_instr, instructions.VariableDeclaration) and
         first_instr.initial_expression is not None and
-        isinstance(second_instr, VariableDeclaration) and
+        isinstance(second_instr, instructions.VariableDeclaration) and
         second_instr.initial_expression is not None
     ):
         initial_expression = merge_word32_into_double(
@@ -73,11 +72,11 @@ def merge_instructions(first_instr, second_instr):
                 data_types.Double(),
                 "rSeq_{}_{}".format(second_instr.id.name, first_instr.id.name),
             )
-            return VariableDeclaration(identifier, initial_expression)
+            return instructions.VariableDeclaration(identifier, initial_expression)
         return
-    if not isinstance(first_instr, Assignment):
+    if not isinstance(first_instr, instructions.Assignment):
         return
-    if not isinstance(second_instr, Assignment):
+    if not isinstance(second_instr, instructions.Assignment):
         return
     src = merge_word32_into_double(first_instr.src, second_instr.src)
     if src is None:
@@ -87,7 +86,7 @@ def merge_instructions(first_instr, second_instr):
         return
     dst = parser.parse_cpp_expression("{}".format(dst), {})
     src = parser.parse_cpp_expression("{}".format(src), {})
-    return Assignment(dst, src)
+    return instructions.Assignment(dst, src)
 
 def merge_word32_into_double(first, second):
     (first_var, first_field) = first.as_field_access()
@@ -125,21 +124,22 @@ def make_double(first_num, second_num):
     )
     return double
 
-def _validate_return_instruction(instructions, proc_decl, **kwargs):
-    if len(instructions) < 3:
+
+def _validate_return_instruction(code_instructions, proc_decl, **kwargs):
+    if len(code_instructions) < 3:
         return
-    if not isinstance(instructions[-1], ReturnInstruction):
+    if not isinstance(code_instructions[-1], instructions.ReturnInstruction):
         return
-    return_expression = instructions[-1].expression
+    return_expression = code_instructions[-1].expression
     if not isinstance(return_expression, Identifier):
         return
-    if not isinstance(instructions[-3], VariableDeclaration):
+    if not isinstance(code_instructions[-3], instructions.VariableDeclaration):
         return
-    if instructions[-3].id != return_expression:
+    if code_instructions[-3].id != return_expression:
         return
-    if not isinstance(instructions[-2], Assignment):
+    if not isinstance(code_instructions[-2], instructions.Assignment):
         return
-    if instructions[-2].src.as_identifier() != return_expression:
+    if code_instructions[-2].src.as_identifier() != return_expression:
         return
     proc_decl.change_return_type(None)
     raise NextRunException()

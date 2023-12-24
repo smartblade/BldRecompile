@@ -10,7 +10,6 @@ import sys
 import time
 
 from address_of import AddressOf
-from assignment import Assignment
 from calling_convention import CallingConvention
 from cast import Cast
 import code_parser as parser
@@ -20,6 +19,7 @@ from field_access import FieldAccess
 from files_location import FilesLocation
 from hex_conversion import from_hex
 from identifier import Identifier
+import instructions
 from parse_instructions import parse_instructions
 from procedure_call import ProcedureCall
 from procedure_body import ProcedureBody
@@ -205,7 +205,7 @@ def guess_float_fields(method_class, body_instructions):
     field_access_regexp = re.compile('^ecx->dw(?P<offset>[\dABCDEF]+)\s*$')
     hex_regexp = re.compile('^\s*0x(?P<const>[\dABCDEF]+)$')
     def on_expression_visited(e):
-        if not isinstance(e, Assignment):
+        if not isinstance(e, instructions.Assignment):
             return
         match = re.search(field_access_regexp, e.dst.emit_code())
         if not match:
@@ -271,7 +271,7 @@ def merge_double_fields(parameters, body_instructions):
 
 def analyse_types(classes, body_instructions):
     def on_expression_visited(e):
-        if not isinstance(e, Assignment):
+        if not isinstance(e, instructions.Assignment):
             return
         cast = e.src.as_type(Cast)
         if cast is None:

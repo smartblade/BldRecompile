@@ -1,13 +1,7 @@
 from collections import namedtuple
 
-from assignment import Assignment
-from code_instruction import CodeInstruction
 import code_parser as parser
-from for_instruction import ForInstruction
-from if_instruction import IfInstruction
-from return_instruction import ReturnInstruction
-from variable_declaration import VariableDeclaration
-from while_instruction import WhileInstruction
+import instructions
 
 def parse_instructions(instructions, declared_identifiers):
     blocks_state = []
@@ -79,17 +73,17 @@ def _end_block(blocks_state, state):
     prev_state = blocks_state.pop()
     if state.block_type == "if":
         prev_state.current_block.append(
-            IfInstruction(state.clause, state.current_block)
+            instructions.IfInstruction(state.clause, state.current_block)
         )
     elif state.block_type == "else":
         prev_state.current_block[-1].add_else_block(state.current_block)
     elif state.block_type == "while":
         prev_state.current_block.append(
-            WhileInstruction(state.clause, state.current_block)
+            instructions.WhileInstruction(state.clause, state.current_block)
         )
     elif state.block_type == "for":
         prev_state.current_block.append(
-            ForInstruction(state.clause, state.current_block)
+            instructions.ForInstruction(state.clause, state.current_block)
         )
     return prev_state
 
@@ -97,14 +91,14 @@ def _parse_instruction(instr, declared_identifiers):
     tokens = parser.parse_cpp_expression(instr, declared_identifiers)
     return_expression = tokens.as_return()
     if return_expression is not None:
-        return ReturnInstruction(return_expression)
+        return instructions.ReturnInstruction(return_expression)
     (dst, src) = tokens.as_assignment()
     if src is not None:
         identifier = dst.as_variable_declaration(declared_identifiers)
         if identifier is not None:
-            return VariableDeclaration(identifier, src)
-        return Assignment(dst, src)
+            return instructions.VariableDeclaration(identifier, src)
+        return instructions.Assignment(dst, src)
     identifier = tokens.as_variable_declaration(declared_identifiers)
     if identifier is not None:
-        return VariableDeclaration(identifier, None)
-    return CodeInstruction(tokens)
+        return instructions.VariableDeclaration(identifier, None)
+    return instructions.CodeInstruction(tokens)

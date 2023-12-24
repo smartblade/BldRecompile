@@ -6,9 +6,9 @@ import data_types
 from exceptions import UnknownTypeException
 from field_access import FieldAccess
 from identifier import Identifier
+from instructions.variable_declaration import loc_var_regexp
 from procedure_call import ProcedureCall
 from unparsed_token import UnparsedToken
-from variable_declaration import VariableDeclaration, loc_var_regexp
 
 
 class UnparsedTokens:
