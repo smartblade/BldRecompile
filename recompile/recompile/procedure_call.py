@@ -1,7 +1,8 @@
 from address_of import AddressOf
 from identifier import Identifier
-from unknown_class import UnknownClass
+import data_types
 from field_access import FieldAccess
+
 
 class ProcedureCall:
     def __init__(self, name, arguments, callee_addr, is_method):
@@ -41,10 +42,12 @@ class ProcedureCall:
             if (
                 isinstance(arguments[0], AddressOf) and
                 isinstance(arguments[0].expression, Identifier) and
-                isinstance(arguments[0].expression.data_type, UnknownClass)
+                isinstance(
+                    arguments[0].expression.data_type, data_types.UnknownClass
+                )
             ):
                 arguments[0].expression.change_data_type(proc_decl.method_class)
-            if not isinstance(data_type.pointee, UnknownClass):
+            if not isinstance(data_type.pointee, data_types.UnknownClass):
                 data_type.pointee.add_method(proc_decl)
         name = self._name
         if name == "_CIcos":

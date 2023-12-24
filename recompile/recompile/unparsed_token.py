@@ -1,5 +1,3 @@
-from float_type import Float
-
 class UnparsedToken:
     def __init__(self, token):
         self._token = token

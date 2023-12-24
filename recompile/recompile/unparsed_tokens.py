@@ -2,14 +2,14 @@ import re
 
 from cast import Cast
 import code_parser as parser
-from double import Double
+import data_types
 from exceptions import UnknownTypeException
 from field_access import FieldAccess
 from identifier import Identifier
 from procedure_call import ProcedureCall
-from unknown_class import UnknownClass
 from unparsed_token import UnparsedToken
 from variable_declaration import VariableDeclaration, loc_var_regexp
+
 
 class UnparsedTokens:
     def __init__(self, tokens):
@@ -41,7 +41,7 @@ class UnparsedTokens:
         try:
             var_type = parser.parse_data_type(var_type, [])
         except UnknownTypeException:
-            var_type = UnknownClass(var_type)
+            var_type = data_types.UnknownClass(var_type)
         identifier = Identifier(var_type, var_name)
         if var_name in declared_identifiers:
             raise Exception("Redeclarated identifier: {}.".format(var_name))
@@ -100,7 +100,7 @@ class UnparsedTokens:
             return None
         if not isinstance(self._tokens[0], Cast):
             return None
-        if not isinstance(self._tokens[0].data_type, Double):
+        if not isinstance(self._tokens[0].data_type, data_types.Double):
             return None
         return self._tokens[0].expression
 

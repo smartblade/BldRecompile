@@ -1,6 +1,7 @@
 from unparsed_token import UnparsedToken
-from int32 import Int32
+import data_types
 from merge_types import merge_types
+
 
 class Assignment:
     def __init__(self, dst, src):
@@ -30,7 +31,9 @@ class Assignment:
             # integer
             identifier = dst.as_identifier()
             if identifier is not None:
-                new_data_type = merge_types(identifier.data_type, Int32())
+                new_data_type = merge_types(
+                    identifier.data_type, data_types.Int32()
+                )
                 identifier.change_data_type(new_data_type)
                 new_var_name = identifier.name.replace(
                     "unknown_loc_", "unknown_int_loc_"

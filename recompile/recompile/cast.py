@@ -1,5 +1,5 @@
-from double import Double
-from float_type import Float
+import data_types
+
 
 class Cast:
     def __init__(self, data_type, expression):
@@ -36,8 +36,8 @@ class Cast:
     def _is_implicit(self):
         # Cast float -> double can be done implicitly
         if (
-            isinstance(self._data_type, Double) and
-            isinstance(self._expression.data_type, Float)
+            isinstance(self._data_type, data_types.Double) and
+            isinstance(self._expression.data_type, data_types.Float)
         ):
             return True
         return False

@@ -2,14 +2,11 @@ import struct
 
 from assignment import Assignment
 import code_parser as parser
-from double import Double
+import data_types
 from exceptions import NextRunException
-from variable_declaration import VariableDeclaration
 from hex_conversion import from_hex, to_hex
 from identifier import Identifier
 from return_instruction import ReturnInstruction
-from unknown_class import UnknownClass
-from unknown32 import Unknown32
 from variable_declaration import VariableDeclaration
 
 def transform_block(instructions, **kwargs):
@@ -44,7 +41,7 @@ def merge_union_declaration(first_instr, second_instr):
         return
     if not isinstance(second_instr, Assignment):
         return
-    if not isinstance(first_instr.id.data_type, UnknownClass):
+    if not isinstance(first_instr.id.data_type, data_types.UnknownClass):
         return
     if not first_instr.id.data_type.class_name.startswith("Eq_"):
         return
@@ -65,15 +62,15 @@ def merge_instructions(first_instr, second_instr):
         if initial_expression is None:
             return
         if (
-            isinstance(first_instr.id.data_type, UnknownClass) and
+            isinstance(first_instr.id.data_type, data_types.UnknownClass) and
             first_instr.id.data_type.class_name.startswith("Eq_") and
-            isinstance(second_instr.id.data_type, Unknown32)
+            isinstance(second_instr.id.data_type, data_types.Unknown32)
         ):
             initial_expression = parser.parse_cpp_expression(
                 "{}".format(initial_expression), {}
             )
             identifier = Identifier(
-                Double(),
+                data_types.Double(),
                 "rSeq_{}_{}".format(second_instr.id.name, first_instr.id.name),
             )
             return VariableDeclaration(identifier, initial_expression)

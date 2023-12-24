@@ -13,21 +13,17 @@ from address_of import AddressOf
 from assignment import Assignment
 from calling_convention import CallingConvention
 from cast import Cast
-from class_type import ClassType
 import code_parser as parser
-from double import Double
+import data_types
 from exceptions import SkippedProcedureException, NextRunException
 from field_access import FieldAccess
 from files_location import FilesLocation
 from hex_conversion import from_hex
 from identifier import Identifier
-from pointer32 import Pointer32
 from parse_instructions import parse_instructions
 from procedure_call import ProcedureCall
 from procedure_body import ProcedureBody
 from procedure_declaration import ProcedureDeclaration
-from unknown_class import UnknownClass
-from unknown32 import Unknown32
 from unparsed_tokens import UnparsedTokens
 from writer import Writer
 
@@ -38,9 +34,10 @@ argument_parser.add_argument(
 )
 options = argument_parser.parse_args()
 
+
 def make_project_file(
     template_name, output_file_name, proc_addrs, recompiled_calles,
-    full_typed_args_by_proc = {},
+    full_typed_args_by_proc={},
 ):
     with open(template_name) as f:
         lines = f.readlines()
@@ -262,7 +259,7 @@ def merge_double_fields(parameters, body_instructions):
             for param_type, param_name in parameters:
                 if param_name == obj:
                     parameter_found = True
-                    if not isinstance(param_type, Pointer32):
+                    if not isinstance(param_type, data_types.Pointer32):
                         raise Exception(
                             "Parameter type should be pointer bat was: {}.".format(
                                  param_type
@@ -279,22 +276,24 @@ def analyse_types(classes, body_instructions):
         cast = e.src.as_type(Cast)
         if cast is None:
             return
-        if not isinstance(cast.data_type, Unknown32):
+        if not isinstance(cast.data_type, data_types.Unknown32):
             return
         fa = e.dst.as_type(FieldAccess)
         if fa is None:
             return
-        if not isinstance(fa.expression.data_type, Pointer32):
+        if not isinstance(fa.expression.data_type, data_types.Pointer32):
             return
         pointee = fa.expression.data_type.pointee
         if (
-            isinstance(pointee, UnknownClass) and
+            isinstance(pointee, data_types.UnknownClass) and
             isinstance(fa.expression, AddressOf) and
             isinstance(fa.expression.expression, Identifier)
         ):
             identifier = fa.expression.expression
             identifier.change_data_type(classes[pointee.class_name])
-        if not isinstance(fa.expression.data_type.pointee, ClassType):
+        if not isinstance(
+            fa.expression.data_type.pointee, data_types.ClassType
+        ):
             return
         class_type = fa.expression.data_type.pointee
         offset = class_type.find_offset_by_field_name(fa.field_name)
@@ -331,11 +330,11 @@ def extract_callees(body_instructions, recompiled_decls):
     return (callees, full_typed_args_by_proc)
 
 def define_parameter_name(field_type, parameter_name):
-    if isinstance(field_type, Unknown32):
+    if isinstance(field_type, data_types.Unknown32):
         parameter_name = parameter_name.replace("dwArg", "unknown_param_")
-    elif isinstance(field_type, Pointer32):
+    elif isinstance(field_type, data_types.Pointer32):
         parameter_name = parameter_name.replace("dwArg", "unknown_ptr_")
-    elif isinstance(field_type, Double):
+    elif isinstance(field_type, data_types.Double):
         parameter_name = parameter_name.replace("rArg", "unknown_double_")
     return parameter_name
 
@@ -422,9 +421,9 @@ def process_intermediate_output(files, addr, recompiled_decls):
     method_class = None
     if proc.class_type is not None:
         ptr_to_class = parser.parse_data_type(proc.class_type, classes)
-        if (isinstance(ptr_to_class, Pointer32)):
+        if (isinstance(ptr_to_class, data_types.Pointer32)):
             if ptr_to_class.pointee is None:
-                method_class = ClassType("", {})
+                method_class = data_types.ClassType("", {})
             else:
                 method_class = ptr_to_class.pointee
         else:
@@ -448,10 +447,10 @@ def process_intermediate_output(files, addr, recompiled_decls):
         fill_unused_params(parameters, cur_offset, offset - cur_offset)
         var_type = parser.parse_data_type(var_type, classes)
         if (
-            isinstance(var_type, Pointer32) and
-            isinstance(var_type.pointee, ClassType)
+            isinstance(var_type, data_types.Pointer32) and
+            isinstance(var_type.pointee, data_types.ClassType)
         ):
-            var_type = Pointer32(
+            var_type = data_types.Pointer32(
                 var_type.pointee.rename(
                     "unknown_class_{}_p_{}".format(addr, var_name[-2:])
                 )
@@ -464,9 +463,9 @@ def process_intermediate_output(files, addr, recompiled_decls):
     merge_double_fields(parameters, body_instructions)
     analyse_types(classes, body_instructions)
     if fpu_offset == 1:
-        return_arg = Double()
+        return_arg = data_types.Double()
     else:
-        return_arg = Unknown32()
+        return_arg = data_types.Unknown32()
     proc_decl = ProcedureDeclaration(
         proc_name="unknown_method_{}".format(addr),
         convention=convention,
@@ -488,7 +487,9 @@ def fill_unused_params(parameters, offset, size):
     if size % 4 != 0:
         raise Exception("Size {} should be multiple of 4.".format(size))
     for i in range(offset, offset + size, 4):
-        parameters.append((Unknown32(), "unused_param_{:02X}".format(i)))
+        parameters.append(
+            (data_types.Unknown32(), "unused_param_{:02X}".format(i))
+        )
 
 def extract_procedure_body(file_name, proc_decl):
     with open(file_name) as f:

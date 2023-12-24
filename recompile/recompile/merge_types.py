@@ -1,25 +1,24 @@
-from int32 import Int32
-from pointer32 import Pointer32
-from unknown32 import Unknown32
+import data_types
+
 
 def merge_types(data_type, new_data_type):
     if (
-        isinstance(data_type, Pointer32) and
-        isinstance(new_data_type, Pointer32)
+        isinstance(data_type, data_types.Pointer32) and
+        isinstance(new_data_type, data_types.Pointer32)
     ):
         return data_type
     if (
-        isinstance(data_type, Unknown32) and
-        isinstance(new_data_type, Unknown32)
+        isinstance(data_type, data_types.Unknown32) and
+        isinstance(new_data_type, data_types.Unknown32)
     ):
         return data_type
-    if not isinstance(data_type, Unknown32):
+    if not isinstance(data_type, data_types.Unknown32):
         raise Exception(
             "Can't merge {} with {}.".format(
                 data_type, new_data_type
             )
         )
-    if not isinstance(new_data_type, Int32):
+    if not isinstance(new_data_type, data_types.Int32):
         raise Exception(
             "Can't merge {} with {}.".format(
                 data_type, new_data_type

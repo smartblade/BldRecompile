@@ -1,4 +1,4 @@
-from pointer32 import Pointer32
+import data_types
 
 class AddressOf:
     def __init__(self, expression):
@@ -13,7 +13,7 @@ class AddressOf:
 
     @property
     def data_type(self):
-        return Pointer32(self._expression.data_type)
+        return data_types.Pointer32(self._expression.data_type)
 
     def transform_expression(self, **kwargs):
         expression = self._expression.transform_expression(**kwargs)

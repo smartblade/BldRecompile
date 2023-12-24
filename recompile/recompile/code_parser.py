@@ -4,20 +4,13 @@ import re
 from address_of import AddressOf
 from array_access import ArrayAccess
 from brackets_expression import BracketsExpression
-from array_type import Array
 from cast import Cast
-from class_type import ClassType
 from constant import Constant
+import data_types
 from exceptions import UnknownTypeException
 from increment import Increment
 from field_access import FieldAccess
-from float_type import Float
-from int32 import Int32
-from double import Double
-from pointer32 import Pointer32
 from procedure_call import ProcedureCall
-from unknown_byte import UnknownByte
-from unknown32 import Unknown32
 from unparsed_token import UnparsedToken
 from unparsed_tokens import UnparsedTokens
 
@@ -83,28 +76,28 @@ def extract_class_name(class_type):
 
 def parse_data_type(s, classes):
     if s == "byte":
-        return UnknownByte()
+        return data_types.UnknownByte()
     if s == "word32":
-        return Unknown32()
+        return data_types.Unknown32()
     if s == "ptr32":
-        return Pointer32()
+        return data_types.Pointer32()
     if s == "int32":
-        return Int32()
+        return data_types.Int32()
     if s == "real64":
-        return Double()
+        return data_types.Double()
     if s == "real32":
-        return Float()
+        return data_types.Float()
     if s == "void":
         return None
     if s == "<unknown>*":
-        return Pointer32()
+        return data_types.Pointer32()
     class_name = extract_class_name(s)
     if class_name is not None:
-        return Pointer32(classes[class_name])
+        return data_types.Pointer32(classes[class_name])
     if s in classes:
         return classes[s]
     if s.endswith("*"):
-        return Pointer32(parse_data_type(s[:-1].strip(), classes))
+        return data_types.Pointer32(parse_data_type(s[:-1].strip(), classes))
     raise UnknownTypeException("Not implemented type: {}.".format(s))
 
 def parse_data_types_declarations(lines, defined_types):
@@ -173,20 +166,22 @@ def parse_data_types_declarations(lines, defined_types):
                 class_sizes[class_name] % var_type.pointee.size == 0
             ):
                 size = class_sizes[class_name] // var_type.pointee.size
-                var_type = Array(var_type.pointee, size)
+                var_type = data_types.Array(var_type.pointee, size)
             new_fields[offset] = (var_type, var_name)
-        parsed_classes[class_name] = ClassType(class_name, new_fields)
+        parsed_classes[class_name] = data_types.ClassType(
+            class_name, new_fields
+        )
     return parsed_classes
 
 def define_field_name(field_type, field_name):
-    if isinstance(field_type, Unknown32):
+    if isinstance(field_type, data_types.Unknown32):
         field_name = field_name.replace("dw", "unknown_field_")
-    elif isinstance(field_type, Double):
+    elif isinstance(field_type, data_types.Double):
         if field_name[0] == "t" or field_name[0] == "r":
             field_name = "unknown_double_{}".format(field_name[1:])
-    elif isinstance(field_type, Float):
+    elif isinstance(field_type, data_types.Float):
         field_name = field_name.replace("r", "unknown_float_")
-    elif isinstance(field_type, UnknownByte):
+    elif isinstance(field_type, data_types.UnknownByte):
         field_name = field_name.replace("b", "unknown_byte_")
     elif field_name[0] == "a":
         field_name = field_name.replace("a", "unknown_array_")
@@ -256,10 +251,10 @@ def _new_token(state, s):
     match = re.search(const_regexp, s)
     if match:
         if s.endswith("F"):
-            data_type = Float()
+            data_type = data_types.Float()
             value = float(s[:-1])
         else:
-            data_type = Double()
+            data_type = data_types.Double()
             value = float(s)
         return Constant(data_type, value)
     if s.startswith("&"):

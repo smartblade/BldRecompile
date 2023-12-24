@@ -1,8 +1,7 @@
 from calling_convention import CallingConvention
-from class_type import ClassType
+import data_types
 import code_parser as parser
 from identifier import Identifier
-from pointer32 import Pointer32
 
 class ProcedureDeclaration:
     def __init__(
@@ -33,7 +32,7 @@ class ProcedureDeclaration:
         param_dict = {}
         if self._method_class is not None:
             param_name = "this"
-            param_type = Pointer32(self._method_class)
+            param_type = data_types.Pointer32(self._method_class)
             param_dict[param_name] = Identifier(param_type, param_name)
         for param_type, param_name in self._parameters:
             param_dict[param_name] = Identifier(param_type, param_name)
@@ -43,8 +42,8 @@ class ProcedureDeclaration:
         types = {}
         for parameter_type, parameter_name in self._parameters:
             if (
-                isinstance(parameter_type, Pointer32) and
-                isinstance(parameter_type.pointee, ClassType)
+                isinstance(parameter_type, data_types.Pointer32) and
+                isinstance(parameter_type.pointee, data_types.ClassType)
             ):
                 class_type = parameter_type.pointee
                 types[class_type.class_name] = class_type
@@ -118,13 +117,13 @@ class ProcedureDeclaration:
         )
 
     def _get_type_name(self, data_type, is_metafile, is_brief):
-        if is_brief and isinstance(data_type, Pointer32):
+        if is_brief and isinstance(data_type, data_types.Pointer32):
             return "ptr32"
         return data_type.get_type_name(is_metafile=is_metafile)
 
     def _get_return_type_name(self, is_metafile, is_brief):
         if self._return_arg is None:
             return "void"
-        if is_brief and isinstance(self._return_arg, Pointer32):
+        if is_brief and isinstance(self._return_arg, data_types.Pointer32):
             return "ptr32"
         return self._return_arg.get_type_name(is_metafile=is_metafile)

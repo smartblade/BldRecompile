@@ -1,5 +1,5 @@
-from unknown32 import Unknown32
-from double import Double
+from data_types.unknown32 import Unknown32
+from data_types.double import Double
 
 class ClassType:
     def __init__(self, class_name, fields):

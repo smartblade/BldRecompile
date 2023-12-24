@@ -1,4 +1,4 @@
-from data_type import DataType
+from data_types.data_type import DataType
 
 class UnknownClass(DataType):
     def __init__(self, class_name,):

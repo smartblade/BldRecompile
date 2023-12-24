@@ -1,4 +1,5 @@
-from float_type import Float
+import data_types
+
 
 class Constant:
     def __init__(self, data_type, value):
@@ -16,6 +17,6 @@ class Constant:
         on_expression_visited(self, **kwargs)
 
     def emit_code(self):
-        if isinstance(self._data_type, Float):
+        if isinstance(self._data_type, data_types.Float):
             return "{}F".format(self._value)
         return "{}".format(self._value)

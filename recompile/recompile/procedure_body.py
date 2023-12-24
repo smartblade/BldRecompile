@@ -1,7 +1,5 @@
 from block_transformer import transform_block
-from class_type import ClassType
 from parse_instructions import parse_instructions
-from pointer32 import Pointer32
 from writer import Writer
 
 class ProcedureBody:

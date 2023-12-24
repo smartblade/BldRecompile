@@ -1,11 +1,10 @@
 import re
 
-from double import Double
+import data_types
 from identifier import Identifier
-from int32 import Int32
-from unknown32 import Unknown32
 
 loc_var_regexp = re.compile('^((?P<prefix>dw|r|t)Loc(?P<offset>[\dABCDEF]{2}))|(?P<reg>eax|ecx|edx)|(?P<fpu>rLoc1)|(?P<seq>rSeq\w+)_\d+')
+
 
 class VariableDeclaration:
     def __init__(self, identifier, initial_expression):
@@ -74,19 +73,19 @@ class VariableDeclaration:
             offset = match.group('offset')
             if offset is not None:
                 prefix = match.group('prefix')
-                if prefix =="dw" and isinstance(var_type, Unknown32):
+                if prefix =="dw" and isinstance(var_type, data_types.Unknown32):
                     return "unknown_loc_{}".format(offset)
-                if prefix =="dw" and isinstance(var_type, Int32):
+                if prefix =="dw" and isinstance(var_type, data_types.Int32):
                     return "unknown_int_loc_{}".format(offset)
-                if prefix =="r" and isinstance(var_type, Double):
+                if prefix =="r" and isinstance(var_type, data_types.Double):
                     return "unknown_double_loc_{}".format(offset)
                 if prefix =="t":
                     return "unknown_struct_loc_{}".format(offset)
             reg = match.group('reg')
-            if reg is not None and isinstance(var_type, Unknown32):
+            if reg is not None and isinstance(var_type, data_types.Unknown32):
                 return "unknown_{}".format(reg)
             if match.group('fpu') is not None:
-                if isinstance(var_type, Double):
+                if isinstance(var_type, data_types.Double):
                     return "unknown_fpu"
             if match.group('seq') is not None:
                 return var_name
