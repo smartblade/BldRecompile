@@ -5,7 +5,7 @@ import data_types
 from exceptions import UnknownTypeException
 import expressions
 
-const_regexp = re.compile('^(?P<float>\d+\.\d+F?)$')
+const_regexp = re.compile('^(?P<float>\d+\.\d+F?)|(?P<hex>0x[\dABCDEF]+)$')
 field_access_regexp = re.compile('^(?P<expression>.+)(?P<sep>->|\.)(?P<field>\w+)$')
 typedef_regexp = re.compile('^typedef\s(?P<type_name>\w+)\s(?P<new_type_name>Eq_\d+);$')
 
@@ -59,10 +59,8 @@ def extract_class_name(class_type):
     if type_tokens[-1] != "*":
         raise Exception("Only pointers is supported for thiscall parameter.")
     class_name = type_tokens[1]
-    if not class_name.startswith("Eq_"):
-        raise UnknownTypeException(
-            "Class name '{}' should be started with 'Eq_'.".format(class_name)
-        )
+    if len(type_tokens) != 3:
+        raise Exception("Failed to extract class name from '{}'.".format(class_type))
     return class_name
 
 def parse_data_type(s, classes):
@@ -84,6 +82,8 @@ def parse_data_type(s, classes):
         return data_types.Pointer32()
     class_name = extract_class_name(s)
     if class_name is not None:
+        if class_name not in classes:
+            raise UnknownTypeException("Unknown class: {}.".format(class_name))
         return data_types.Pointer32(classes[class_name])
     if s in classes:
         return classes[s]
@@ -101,7 +101,7 @@ def parse_data_types_declarations(lines, defined_types):
     for line in lines:
         if line.startswith("//"):
             continue
-        if line.startswith("typedef struct Eq_"):
+        if line.startswith("typedef struct "):
             class_name = line.split(" ")[2]
             cur_class = {}
             tokens = line.split("// size: ")
@@ -244,7 +244,15 @@ def _append_token(tokens, token):
 def _new_token(state, s):
     match = re.search(const_regexp, s)
     if match:
-        if s.endswith("F"):
+        if s.startswith("0x"):
+            if len(s) == 4:
+                data_type = data_types.UnknownByte()
+            elif len(s) == 6 or len(s) == 10:
+                data_type = data_types.Unknown32()
+            else:
+                raise Exception("Can't define type for '{}'".format(s))
+            value = s
+        elif s.endswith("F"):
             data_type = data_types.Float()
             value = float(s[:-1])
         else:

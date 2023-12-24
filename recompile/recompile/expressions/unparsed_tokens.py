@@ -35,7 +35,7 @@ class UnparsedTokens:
             map(lambda token: token.emit_code(), self._tokens[:-1])
         )
         try:
-            var_type = parser.parse_data_type(var_type, [])
+            var_type = parser.parse_data_type(var_type, {})
         except UnknownTypeException:
             var_type = data_types.UnknownClass(var_type)
         identifier = expressions.Identifier(var_type, var_name)

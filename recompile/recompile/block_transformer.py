@@ -110,8 +110,11 @@ def merge_word32_into_double(first, second):
     first_num = first_num.emit_code()
     if first_num is None or not first_num.startswith("0x"):
         return
-    second_num = second_num.as_one_token()
-    if second_num is None or not second_num.startswith("0x"):
+    second_num = second_num.as_type(expressions.Constant)
+    if second_num is None:
+        return
+    second_num = second_num.emit_code()
+    if not second_num.startswith("0x"):
         return
     return make_double(first_num, second_num)
 

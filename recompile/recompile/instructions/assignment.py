@@ -24,9 +24,10 @@ class Assignment:
     ):
         src = self._src.transform_expression(**kwargs)
         dst = self._dst.transform_expression(**kwargs)
-        if src.as_one_token() == "0x00":
+        c = src.as_type(expressions.Constant)
+        if c is not None and c.emit_code() == "0x00":
             src = expressions.UnparsedToken("0")
-        elif src.as_one_token() == "0x01":
+        elif c is not None and c.emit_code() == "0x01":
             # 0x01 can not be pointer and it's unlikely float, so make it
             # integer
             identifier = dst.as_identifier()

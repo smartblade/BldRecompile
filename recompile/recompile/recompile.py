@@ -360,6 +360,13 @@ def dump_callees(files, callees):
     with open(files.callees_json, "wt") as f:
         json.dump(list(sorted(callees)), f)
 
+
+def ensure_class_name(c, default_name):
+    if not c.class_name or c.class_name.startswith("Eq_"):
+        return c.rename(default_name)
+    return c
+
+
 def process_intermediate_output(files, addr, recompiled_decls):
     code_file, header_file, dis_file = process_output_dir(files.project_output)
     stack_offset, fpu_offset = process_dis_file(dis_file)
@@ -389,7 +396,9 @@ def process_intermediate_output(files, addr, recompiled_decls):
             raise Exception(
                 "Not supported type as method class: {}.".format(ptr_to_class)
             )
-        method_class = method_class.rename("unknown_class_{}".format(addr))
+        method_class = ensure_class_name(
+            method_class, "unknown_class_{}".format(addr)
+        )
         ensure_class_fields(method_class, body_instructions)
         guess_float_fields(method_class, body_instructions)
     if proc.class_type is not None:
@@ -410,7 +419,8 @@ def process_intermediate_output(files, addr, recompiled_decls):
             isinstance(var_type.pointee, data_types.ClassType)
         ):
             var_type = data_types.Pointer32(
-                var_type.pointee.rename(
+                ensure_class_name(
+                    var_type.pointee,
                     "unknown_class_{}_p_{}".format(addr, var_name[-2:])
                 )
             )
@@ -590,7 +600,7 @@ def run():
             )
         except SkippedProcedureException:
             print("Skipping {} procedure...".format(addr))
-        if addr >= "00406BA7":
+        if addr >= "00406C69":
             break
 
 if __name__ == '__main__':

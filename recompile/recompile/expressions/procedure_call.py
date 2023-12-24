@@ -1,5 +1,6 @@
 import data_types
 import expressions
+from procedure_declaration import ProcedureDeclaration
 
 
 class ProcedureCall:
@@ -47,6 +48,26 @@ class ProcedureCall:
                 arguments[0].expression.change_data_type(proc_decl.method_class)
             if not isinstance(data_type.pointee, data_types.UnknownClass):
                 data_type.pointee.add_method(proc_decl)
+        # TODO remove it when imported procedures declaration will be added to
+        # Reko output
+        if (
+            not self._is_method and
+            self._callee_addr is None and
+            isinstance(arguments[0], expressions.Identifier) and
+            isinstance(arguments[0].data_type, data_types.Pointer32) and
+            isinstance(arguments[0].data_type.pointee, data_types.ClassType)
+        ):
+            this_class = arguments[0].data_type.pointee
+            if this_class.class_name.startswith("B_"):
+                parameters = []
+                for i in range(1, len(arguments)):
+                    parameters.append((arguments[i].data_type, "p{}".format(i)))
+                this_class.add_method(
+                    ProcedureDeclaration(
+                        self._name, None, this_class, parameters, None
+                    )
+                )
+                self._is_method = True
         name = self._name
         if name == "_CIcos":
             name = "cos"
