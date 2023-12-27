@@ -11,7 +11,11 @@ class IfInstruction:
         return "IfInstruction({})".format(self._if_block)
 
     def add_else_block(self, else_block):
-        self._else_block = else_block
+        if self._else_block is None:
+            self._else_block = else_block
+        else:
+            assert len(self._else_block) == 1
+            self._else_block[-1].add_else_block(else_block)
 
     def transform_instruction(self, **kwargs):
         if_block = transform_block(self._if_block, **kwargs)
@@ -27,20 +31,30 @@ class IfInstruction:
         if self._else_block is not None:
             visit_block(self._else_block, on_expression_visited, **kwargs)
 
-    def emit_code(self, writer):
+    def emit_code(self, writer, is_elif=False):
         if_clause = self._if_clause.emit_code()
         if if_clause.endswith("this->unknown_double_0028) <= 0.0)"):
             writer.write_line("// TODO avoid emitting unnecessary brackets")
-        writer.write_line("if ({})".format(if_clause))
+        if is_elif:
+            operator = "else if"
+        else:
+            operator = "if"
+        writer.write_line("{} ({})".format(operator, if_clause))
         writer.write_line("{")
         with writer.indent():
             for instr in self._if_block:
                 instr.emit_code(writer)
         writer.write_line("}")
         if self._else_block is not None:
-            writer.write_line("else")
-            writer.write_line("{")
-            with writer.indent():
-                for instr in self._else_block:
-                    instr.emit_code(writer)
-            writer.write_line("}")
+            self._write_else_block(self._else_block, writer)
+
+    def _write_else_block(self, else_block, writer):
+        if len(else_block) == 1 and isinstance(else_block[0], IfInstruction):
+            else_block[0].emit_code(writer, is_elif=True)
+            return
+        writer.write_line("else")
+        writer.write_line("{")
+        with writer.indent():
+            for instr in else_block:
+                instr.emit_code(writer)
+        writer.write_line("}")

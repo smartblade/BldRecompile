@@ -18,8 +18,9 @@ def parse_instructions(instructions, declared_identifiers):
             )
             state = _start_block(blocks_state, state, "if", clause)
         elif instr_str.startswith("else if (") and instr_str.endswith(")"):
+            state = _start_block(blocks_state, state, "else", None)
             clause = parser.parse_cpp_expression(
-                "'else if' is not implemented yet.", declared_identifiers
+                instr_str[9:-1], declared_identifiers
             )
             state = _start_block(blocks_state, state, "if", clause)
         elif instr_str == "else":
@@ -38,10 +39,12 @@ def parse_instructions(instructions, declared_identifiers):
             state = _multiple_lines(state)
         elif instr_str == "}":
             state = _end_block(blocks_state, state)
+            while not state.multiple_lines:
+                state = _end_block(blocks_state, state)
         elif instr_str.endswith(";"):
             instr = _parse_instruction(instr_str[:-1], declared_identifiers)
             state.current_block.append(instr)
-            if not state.multiple_lines:
+            while not state.multiple_lines:
                 state = _end_block(blocks_state, state)
         else:
             raise Exception(
