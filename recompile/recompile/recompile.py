@@ -600,7 +600,7 @@ def run():
             )
         except SkippedProcedureException:
             print("Skipping {} procedure...".format(addr))
-        if addr >= "00406C69":
+        if addr >= "00406C83":
             break
 
 if __name__ == '__main__':
