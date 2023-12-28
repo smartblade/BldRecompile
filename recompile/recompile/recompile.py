@@ -14,6 +14,7 @@ import code_parser as parser
 import data_types
 from exceptions import SkippedProcedureException, NextRunException
 import expressions
+from expressions.operator import Operator
 from files_location import FilesLocation
 from header_declarations import HeaderDeclarations
 from hex_conversion import from_hex
@@ -148,13 +149,20 @@ def process_output_code(file_name, addr):
             body_lines.append(line)
 
 def ensure_class_fields(method_class, body_instructions):
-    field_offset_regexp = re.compile('\(char\s*\*\)\s*ecx\s*\+\s*(?P<offset>\d+)')
+    char_cast_regexp = re.compile('\(char\s*\*\)\s*ecx')
+    offset_regexp = re.compile('(?P<offset>\d+)')
     def on_expression_visited(e):
-        if isinstance(e, expressions.UnparsedTokens):
-            match = re.search(field_offset_regexp, e.emit_code())
-            if match:
-                offset = match.group('offset')
-                method_class.ensure_field(int(offset))
+        if not isinstance(e, expressions.Bin):
+            return
+        if e.operator != Operator.ADD:
+            return
+        match = re.search(char_cast_regexp, e.left.emit_code())
+        if not match:
+            return
+        match = re.search(offset_regexp, e.right.emit_code())
+        if match:
+            offset = match.group('offset')
+            method_class.ensure_field(int(offset))
     for instr in body_instructions:
         instr.visit(on_expression_visited)
 
@@ -230,14 +238,14 @@ def analyse_types(classes, body_instructions):
     def on_expression_visited(e):
         if not isinstance(e, instructions.Assignment):
             return
-        cast = e.src.as_type(expressions.Cast)
-        if cast is None:
+        if not isinstance(e.src, expressions.Cast):
             return
+        cast = e.src
         if not isinstance(cast.data_type, data_types.Unknown32):
             return
-        fa = e.dst.as_type(expressions.FieldAccess)
-        if fa is None:
+        if not isinstance(e.dst, expressions.FieldAccess):
             return
+        fa = e.dst
         if not isinstance(fa.expression.data_type, data_types.Pointer32):
             return
         pointee = fa.expression.data_type.pointee

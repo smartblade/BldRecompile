@@ -1,6 +1,8 @@
 from collections import namedtuple
 
 import code_parser as parser
+import expressions
+from expressions.operator import Operator
 import instructions
 
 def parse_instructions(instructions, declared_identifiers):
@@ -91,17 +93,25 @@ def _end_block(blocks_state, state):
     return prev_state
 
 def _parse_instruction(instr, declared_identifiers):
+    if len(instr) == 0:
+        return instructions.empty
     tokens = parser.parse_cpp_expression(instr, declared_identifiers)
-    return_expression = tokens.as_return()
+    if isinstance(tokens, expressions.UnparsedTokens):
+        return_expression = tokens.as_return()
+    else:
+        return_expression = None
     if return_expression is not None:
         return instructions.ReturnInstruction(return_expression)
-    (dst, src) = tokens.as_assignment()
-    if src is not None:
-        identifier = dst.as_variable_declaration(declared_identifiers)
-        if identifier is not None:
-            return instructions.VariableDeclaration(identifier, src)
+    if isinstance(tokens, expressions.Bin) and tokens.operator == Operator.ASS:
+        dst = tokens.left
+        src = tokens.right
+        if isinstance(dst, expressions.UnparsedTokens):
+            identifier = dst.as_variable_declaration(declared_identifiers)
+            if identifier is not None:
+                return instructions.VariableDeclaration(identifier, src)
         return instructions.Assignment(dst, src)
-    identifier = tokens.as_variable_declaration(declared_identifiers)
-    if identifier is not None:
-        return instructions.VariableDeclaration(identifier, None)
+    if isinstance(tokens, expressions.UnparsedTokens):
+        identifier = tokens.as_variable_declaration(declared_identifiers)
+        if identifier is not None:
+            return instructions.VariableDeclaration(identifier, None)
     return instructions.CodeInstruction(tokens)

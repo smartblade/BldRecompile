@@ -6,6 +6,9 @@ class Constant:
         self._data_type = data_type
         self._value = value
 
+    def __repr__(self):
+        return "Const({})".format(self._value)
+
     @property
     def data_type(self):
         return self._data_type

@@ -40,4 +40,10 @@ class Cast:
             isinstance(self._expression.data_type, data_types.Float)
         ):
             return True
+        # Cast double -> float can be done implicitly
+        if (
+            isinstance(self._data_type, data_types.Float) and
+            isinstance(self._expression.data_type, data_types.Double)
+        ):
+            return True
         return False

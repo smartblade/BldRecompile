@@ -39,7 +39,7 @@ class VariableDeclaration:
         self._id.rename(new_var_name)
         self._ensure_unique_id(self._id, id_suffixes)
         if initial_expression is not None:
-            first, second = initial_expression.as_seq()
+            first, second = _as_seq(initial_expression)
             if first is not None:
                 seq_id_name = "rSeq_{}_{}".format(
                     first.emit_code(), second.emit_code()
@@ -107,3 +107,11 @@ class VariableDeclaration:
         name = identifier.name
         identifier.rename("{}_{}".format(name, suffix))
         id_suffixes[name] = suffix
+
+
+def _as_seq(e):
+    if not isinstance(e, expressions.ProcedureCall):
+        return None, None
+    if e.name != "SEQ":
+        return None, None
+    return e.arguments

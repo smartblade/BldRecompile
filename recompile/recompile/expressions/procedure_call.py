@@ -16,6 +16,12 @@ class ProcedureCall:
         )
 
     @property
+    def data_type(self):
+        if self._name == "sqrt":
+            return data_types.Double()
+        raise Exception("Can't deduce data type for: {}".format(self))
+
+    @property
     def name(self):
         return self._name
 

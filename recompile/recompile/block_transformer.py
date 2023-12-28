@@ -88,9 +88,24 @@ def merge_instructions(first_instr, second_instr):
     src = parser.parse_cpp_expression("{}".format(src), {})
     return instructions.Assignment(dst, src)
 
+
+def _as_field_access(e):
+    if not isinstance(e, expressions.FieldAccess):
+        return None, None
+    return e.expression.emit_code(), e.field_name
+
+
+def _strip_real64(e):
+    if not isinstance(e, expressions.Cast):
+        return None
+    if not isinstance(e.data_type, data_types.Double):
+        return None
+    return e.expression
+
+
 def merge_word32_into_double(first, second):
-    (first_var, first_field) = first.as_field_access()
-    (second_var, second_field) = second.as_field_access()
+    (first_var, first_field) = _as_field_access(first)
+    (second_var, second_field) = _as_field_access(second)
     if (first_var is not None and second_var is not None):
         if first_var != second_var:
             return
@@ -103,15 +118,14 @@ def merge_word32_into_double(first, second):
         if second_offset != first_offset + 4:
             return
         return first.emit_code()
-    first_num = first.strip_real64()
+    first_num = _strip_real64(first)
     if first_num is None:
         return
     second_num = second
     first_num = first_num.emit_code()
     if first_num is None or not first_num.startswith("0x"):
         return
-    second_num = second_num.as_type(expressions.Constant)
-    if second_num is None:
+    if not isinstance(second_num, expressions.Constant):
         return
     second_num = second_num.emit_code()
     if not second_num.startswith("0x"):
@@ -142,7 +156,7 @@ def _validate_return_instruction(code_instructions, proc_decl, **kwargs):
         return
     if not isinstance(code_instructions[-2], instructions.Assignment):
         return
-    if code_instructions[-2].src.as_identifier() != return_expression:
+    if code_instructions[-2].src != return_expression:
         return
     proc_decl.change_return_type(None)
     raise NextRunException()

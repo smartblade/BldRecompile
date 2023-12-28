@@ -24,14 +24,14 @@ class Assignment:
     ):
         src = self._src.transform_expression(**kwargs)
         dst = self._dst.transform_expression(**kwargs)
-        c = src.as_type(expressions.Constant)
-        if c is not None and c.emit_code() == "0x00":
+        is_src_const = isinstance(src, expressions.Constant)
+        if is_src_const and src.emit_code() == "0x00":
             src = expressions.UnparsedToken("0")
-        elif c is not None and c.emit_code() == "0x01":
+        elif is_src_const and src.emit_code() == "0x01":
             # 0x01 can not be pointer and it's unlikely float, so make it
             # integer
-            identifier = dst.as_identifier()
-            if identifier is not None:
+            if isinstance(dst, expressions.Identifier):
+                identifier = dst
                 new_data_type = merge_types(
                     identifier.data_type, data_types.Int32()
                 )

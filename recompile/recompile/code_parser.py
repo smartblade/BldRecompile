@@ -4,6 +4,7 @@ import re
 import data_types
 from exceptions import UnknownTypeException
 import expressions
+from expressions.operator import Operator, operators, priorities
 
 const_regexp = re.compile('^(?P<float>\d+\.\d+F?)|(?P<hex>0x[\dABCDEF]+)$')
 field_access_regexp = re.compile('^(?P<expression>.+)(?P<sep>->|\.)(?P<field>\w+)$')
@@ -219,17 +220,19 @@ def parse_cpp_expression(line, declared_identifiers):
                     state, prefix, brackets_tokens
                 )
                 _append_token(state.tokens, brackets)
-
         else:
             state.cur_token.append(c)
-    return expressions.UnparsedTokens(state.tokens)
+    return _make_expression_from_tokens(state.tokens)
 
 def _append_token(tokens, token):
     if (
         len(tokens) > 0 and
         isinstance(tokens[-1], expressions.BracketsExpression)
     ):
-        brackets_expression = tokens[-1].expression.as_one_token()
+        if isinstance(tokens[-1].expression, expressions.UnparsedToken):
+            brackets_expression = tokens[-1].expression.emit_code()
+        else:
+            brackets_expression = None
         if tokens[-1].prefix == "" and brackets_expression is not None:
             try:
                 data_type = parse_data_type(brackets_expression, [])
@@ -259,7 +262,7 @@ def _new_token(state, s):
             data_type = data_types.Double()
             value = float(s)
         return expressions.Constant(data_type, value)
-    if s.startswith("&"):
+    if s.startswith("&") and s != Operator.AND.value:
         return expressions.AddressOf(_new_token(state, s[1:]))
     match = re.search(field_access_regexp, s)
     if match:
@@ -288,7 +291,7 @@ def _new_brackets_expression(state, prefix, brackets_tokens):
             if len(arg) == 1:
                 arguments.append(arg[0])
             else:
-                arguments.append(expressions.UnparsedTokens(arg))
+                arguments.append(_make_expression_from_tokens(arg))
         cur_arg = []
         for token in brackets_tokens:
             if (
@@ -314,16 +317,18 @@ def _new_brackets_expression(state, prefix, brackets_tokens):
             prefix, arguments, callee_addr, is_method
         )
     return expressions.BracketsExpression(
-        prefix, expressions.UnparsedTokens(brackets_tokens)
+        prefix, _make_expression_from_tokens(brackets_tokens)
     )
 
 def _new_array_access(state, prefix, brackets_tokens):
+    if len(brackets_tokens) == 0:
+        return expressions.UnparsedToken("{}[]".format(prefix))
     if prefix == "":
         array = state.tokens.pop()
     else:
         array = _new_token(state, prefix)
     return expressions.ArrayAccess(
-        array, expressions.UnparsedTokens(brackets_tokens)
+        array, _make_expression_from_tokens(brackets_tokens)
     )
 
 def _new_state(**kwargs):
@@ -342,3 +347,66 @@ def _closing_bracket(states, state):
     prefix = "".join(state.cur_token)
     state.cur_token.clear()
     return (bracket, prefix, state)
+
+
+def _make_expression_from_tokens(tokens):
+    prev_tokens = None
+    prev_op = None
+    cur_tokens = []
+    cur_op = None
+    states = []
+    for token in tokens:
+        if (
+            isinstance(token, expressions.UnparsedToken) and
+            token.emit_code() in operators
+        ):
+            cur_op = operators[token.emit_code()]
+            if prev_tokens is None:
+                prev_tokens = cur_tokens
+                prev_op = cur_op
+            else:
+                while True:
+                    if priorities[prev_op] <= priorities[cur_op]:
+                        cur_tokens = [
+                            expressions.Bin(
+                                prev_op,
+                                _make_operand(prev_tokens),
+                                _make_operand(cur_tokens),
+                            )
+                        ]
+                        if len(states) > 0:
+                            (prev_tokens, prev_op) = states.pop()
+                        else:
+                            prev_tokens = cur_tokens
+                            prev_op = cur_op
+                            break
+                    else:
+                        states.append((prev_tokens, prev_op))
+                        prev_tokens = cur_tokens
+                        prev_op = cur_op
+                        break
+            cur_tokens = []
+        else:
+            cur_tokens.append(token)
+    if len(cur_tokens) > 0 and prev_tokens is not None:
+        bin = expressions.Bin(
+            prev_op,
+            _make_operand(prev_tokens),
+            _make_operand(cur_tokens),
+        )
+        while len(states) > 0:
+            (prev_tokens, prev_op) = states.pop()
+            bin = expressions.Bin(
+                prev_op,
+                _make_operand(prev_tokens),
+                bin,
+            )
+        return bin
+    return _make_operand(tokens)
+
+
+def _make_operand(tokens):
+    assert len(tokens) > 0
+    if len(tokens) == 1:
+        return tokens[0]
+    return expressions.UnparsedTokens(tokens)

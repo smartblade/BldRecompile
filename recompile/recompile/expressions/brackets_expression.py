@@ -7,6 +7,11 @@ class BracketsExpression:
         return "{}Brackets({})".format(self._prefix, self._expression)
 
     @property
+    def data_type(self):
+        assert self._prefix == ""
+        return self._expression.data_type
+
+    @property
     def prefix(self):
         return self._prefix
 

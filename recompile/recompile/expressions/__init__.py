@@ -1,5 +1,6 @@
 from .address_of import AddressOf
 from .array_access import ArrayAccess
+from .binary_expression import BinaryExpression as Bin
 from .brackets_expression import BracketsExpression
 from .cast import Cast
 from .constant import Constant
