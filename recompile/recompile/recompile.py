@@ -443,8 +443,12 @@ def process_intermediate_output(files, addr, recompiled_decls):
         return_arg = data_types.Double()
     else:
         return_arg = data_types.Unknown32()
+    if method_class is not None:
+        proc_name = "unknown_method_{}".format(addr)
+    else:
+        proc_name = "unknown_function_{}".format(addr)
     proc_decl = ProcedureDeclaration(
-        proc_name="unknown_method_{}".format(addr),
+        proc_name=proc_name,
         convention=convention,
         method_class=method_class,
         parameters=parameters,
