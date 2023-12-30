@@ -1,19 +1,13 @@
 class BracketsExpression:
-    def __init__(self, prefix, expression):
-        self._prefix = prefix
+    def __init__(self, expression):
         self._expression = expression
 
     def __repr__(self):
-        return "{}Brackets({})".format(self._prefix, self._expression)
+        return "Brackets({})".format(self._expression)
 
     @property
     def data_type(self):
-        assert self._prefix == ""
         return self._expression.data_type
-
-    @property
-    def prefix(self):
-        return self._prefix
 
     @property
     def expression(self):
@@ -21,13 +15,11 @@ class BracketsExpression:
 
     def transform_expression(self, **kwargs):
         expression = self._expression.transform_expression(**kwargs)
-        return BracketsExpression(self._prefix, expression)
+        return BracketsExpression(expression)
 
     def visit(self, on_expression_visited, **kwargs):
         on_expression_visited(self, **kwargs)
         self._expression.visit(on_expression_visited, **kwargs)
 
     def emit_code(self):
-        return "{}({})".format(
-            self._prefix, self._expression.emit_code()
-        )
+        return "({})".format(self._expression.emit_code())

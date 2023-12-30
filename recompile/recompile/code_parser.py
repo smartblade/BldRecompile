@@ -233,7 +233,7 @@ def _append_token(tokens, token):
             brackets_expression = tokens[-1].expression.emit_code()
         else:
             brackets_expression = None
-        if tokens[-1].prefix == "" and brackets_expression is not None:
+        if brackets_expression is not None:
             try:
                 data_type = parse_data_type(brackets_expression, [])
             except UnknownTypeException:
@@ -317,7 +317,7 @@ def _new_brackets_expression(state, prefix, brackets_tokens):
             prefix, arguments, callee_addr, is_method
         )
     return expressions.BracketsExpression(
-        prefix, _make_expression_from_tokens(brackets_tokens)
+        _make_expression_from_tokens(brackets_tokens)
     )
 
 def _new_array_access(state, prefix, brackets_tokens):
