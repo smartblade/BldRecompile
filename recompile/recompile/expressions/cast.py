@@ -46,4 +46,10 @@ class Cast:
             isinstance(self._expression.data_type, data_types.Double)
         ):
             return True
+        # Eliminate float -> float cast
+        if (
+            isinstance(self._data_type, data_types.Float) and
+            isinstance(self._expression.data_type, data_types.Float)
+        ):
+            return True
         return False

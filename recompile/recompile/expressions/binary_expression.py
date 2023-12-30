@@ -26,6 +26,11 @@ class BinaryExpression:
             isinstance(right_type, data_types.Double)
         ):
             return right_type
+        if (
+            isinstance(left_type, data_types.Float) and
+            isinstance(right_type, data_types.Float)
+        ):
+            return left_type
         raise Exception("Can't union {} and {}".format(left_type, right_type))
 
     @property
