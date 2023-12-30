@@ -24,6 +24,7 @@ class Assignment:
     ):
         src = self._src.transform_expression(**kwargs)
         dst = self._dst.transform_expression(**kwargs)
+        src = _strip_brackets(src)
         is_src_const = isinstance(src, expressions.Constant)
         if is_src_const and src.emit_code() == "0x00":
             src = expressions.UnparsedToken("0")
@@ -58,3 +59,9 @@ class Assignment:
         ):
             comment += " // TODO inconsitent coalescing"
         writer.write_line("{} = {};{}".format(dst, src, comment))
+
+
+def _strip_brackets(e):
+    if isinstance(e, expressions.BracketsExpression):
+        return e.expression
+    return e
