@@ -154,9 +154,28 @@ def _validate_return_instruction(code_instructions, proc_decl, **kwargs):
         return
     if code_instructions[-3].id != return_expression:
         return
-    if not isinstance(code_instructions[-2], instructions.Assignment):
-        return
-    if code_instructions[-2].src != return_expression:
+    if not _is_one_use_of_id(code_instructions[-2], return_expression):
         return
     proc_decl.change_return_type(None)
     raise NextRunException()
+
+
+def _is_one_use_of_id(instr, identifier):
+    if isinstance(instr, instructions.IfInstruction):
+        if _is_one_use_of_id(instr.if_block()[-1], identifier):
+            return True
+        if _is_one_use_of_id(instr.else_block()[-1], identifier):
+            return True
+        return False
+    uses = {}
+
+    def on_expression_visited(e, uses):
+        if isinstance(e, expressions.Identifier):
+            uses[e] = uses.get(e, 0) + 1
+        if (
+            isinstance(e, instructions.Assignment) and
+            isinstance(e.dst, expressions.Identifier)
+        ):
+            uses[e.dst] = uses.get(e.dst, 0) - 1
+    instr.visit(on_expression_visited, uses=uses)
+    return uses.get(identifier, 0) == 1

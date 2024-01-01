@@ -12,6 +12,8 @@ def merge_types(data_type, new_data_type):
         isinstance(new_data_type, data_types.Unknown32)
     ):
         return data_type
+    if isinstance(new_data_type, data_types.UnknownClass):
+        return data_type
     if not isinstance(data_type, data_types.Unknown32):
         raise Exception(
             "Can't merge {} with {}.".format(

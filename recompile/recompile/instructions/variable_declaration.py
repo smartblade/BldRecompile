@@ -3,7 +3,7 @@ import re
 import data_types
 import expressions
 
-loc_var_regexp = re.compile('^((?P<prefix>dw|r|t)Loc(?P<offset>[\dABCDEF]{2}))|(?P<reg>eax|ecx|edx)|(?P<fpu>rLoc1)|(?P<seq>rSeq\w+)_\d+')
+loc_var_regexp = re.compile('^((?P<prefix>dw|r|t)Loc(?P<offset>[\dABCDEF]{2}))|(?P<reg>eax|ecx|edx)|(?P<fpu>rLoc1)|(?P<fp>fp)|(?P<seq>rSeq\w+)_\d+')
 
 
 class VariableDeclaration:
@@ -85,12 +85,18 @@ class VariableDeclaration:
                 if prefix == "t":
                     return "unknown_struct_loc_{}".format(offset)
             reg = match.group('reg')
-            if reg is not None and isinstance(var_type, data_types.Unknown32):
-                return "unknown_{}".format(reg)
+            if reg is not None:
+                if (
+                    isinstance(var_type, data_types.Unknown32) or
+                    isinstance(var_type, data_types.UnknownClass)
+                ):
+                    return "unknown_{}".format(reg)
             if match.group('fpu') is not None:
                 if isinstance(var_type, data_types.Double):
                     return "unknown_fpu"
             if match.group('seq') is not None:
+                return var_name
+            if match.group('fp') is not None:
                 return var_name
         raise Exception("Unparsed variable name: {}.".format(var_name))
 

@@ -105,13 +105,24 @@ def _parse_instruction(instr, declared_identifiers):
     if isinstance(tokens, expressions.Bin) and tokens.operator == Operator.ASS:
         dst = tokens.left
         src = tokens.right
-        if isinstance(dst, expressions.UnparsedTokens):
-            identifier = dst.as_variable_declaration(declared_identifiers)
-            if identifier is not None:
-                return instructions.VariableDeclaration(identifier, src)
+        decl = _as_variable_declarations(dst, src, declared_identifiers)
+        if decl is not None:
+            return decl
         return instructions.Assignment(dst, src)
-    if isinstance(tokens, expressions.UnparsedTokens):
-        identifier = tokens.as_variable_declaration(declared_identifiers)
-        if identifier is not None:
-            return instructions.VariableDeclaration(identifier, None)
+    decl = _as_variable_declarations(tokens, None, declared_identifiers)
+    if decl is not None:
+        return decl
     return instructions.CodeInstruction(tokens)
+
+
+def _as_variable_declarations(e, src, declared_identifiers):
+    if isinstance(e, expressions.Bin) and e.operator == Operator.MUL:
+        e = expressions.UnparsedTokens(
+            [e.left, expressions.UnparsedToken("*"), e.right]
+        )
+    if not isinstance(e, expressions.UnparsedTokens):
+        return None
+    identifier = e.as_variable_declaration(declared_identifiers)
+    if identifier is None:
+        return None
+    return instructions.VariableDeclaration(identifier, src)

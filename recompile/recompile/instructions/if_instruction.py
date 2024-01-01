@@ -10,6 +10,12 @@ class IfInstruction:
     def __repr__(self):
         return "IfInstruction({})".format(self._if_block)
 
+    def if_block(self):
+        return self._if_block
+
+    def else_block(self):
+        return self._else_block
+
     def add_else_block(self, else_block):
         if self._else_block is None:
             self._else_block = else_block

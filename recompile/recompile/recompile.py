@@ -266,16 +266,28 @@ def analyse_types(classes, body_instructions):
     for instr in body_instructions:
         instr.visit(on_expression_visited)
 
+
+def is_addr_of_local(e):
+    if (
+        isinstance(e, expressions.AddressOf) and
+        isinstance(e.expression, expressions.Identifier)
+    ):
+        return True
+    if (
+        isinstance(e, expressions.Bin) and
+        isinstance(e.left, expressions.Identifier) and
+        e.left.name == "fp"
+    ):
+        return True
+    return False
+
 def collect_addr_of_locals(pc, recompiled_decls, full_typed_args_by_proc):
     if pc.callee_address not in recompiled_decls:
         return
     callee_decl = recompiled_decls[pc.callee_address]
     parameters = list(callee_decl.get_parameters_ids().keys())
     for i in range(len(parameters)):
-        if (
-            isinstance(pc.arguments[i], expressions.AddressOf) and
-            isinstance(pc.arguments[i].expression, expressions.Identifier)
-        ):
+        if is_addr_of_local(pc.arguments[i]):
             if pc.callee_address not in full_typed_args_by_proc:
                 full_typed_args = set()
                 full_typed_args_by_proc[pc.callee_address] = full_typed_args
@@ -612,7 +624,7 @@ def run():
             )
         except SkippedProcedureException:
             print("Skipping {} procedure...".format(addr))
-        if addr >= "00407191":
+        if addr >= "004073E8":
             break
 
 if __name__ == '__main__':
