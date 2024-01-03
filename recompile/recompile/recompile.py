@@ -166,22 +166,33 @@ def ensure_class_fields(method_class, body_instructions):
     for instr in body_instructions:
         instr.visit(on_expression_visited)
 
-def guess_float_fields(method_class, body_instructions):
-    field_access_regexp = re.compile('^ecx->dw(?P<offset>[\dABCDEF]+)\s*$')
-    hex_regexp = re.compile('^\s*0x(?P<const>[\dABCDEF]+)$')
+
+def guess_float_fields(proc_decl, par_by_orig_name, body_instructions):
+    field_regexp = re.compile(r'^dw(?P<offset>[\dABCDEF]+)\s*$')
+    parameters = proc_decl.get_parameters_ids()
+
     def on_expression_visited(e):
         if not isinstance(e, instructions.Assignment):
             return
-        match = re.search(field_access_regexp, e.dst.emit_code())
+        if not isinstance(e.dst, expressions.FieldAccess):
+            return
+        match = re.search(field_regexp, e.dst.field_name)
         if not match:
             return
         offset = match.group('offset')
-        match = re.search(hex_regexp, e.src.emit_code())
-        if not match:
+        if not isinstance(e.dst.expression, expressions.UnparsedToken):
             return
-        const = match.group('const')
-        if const == "3FF00000":
-            method_class.merge_word32_into_double(from_hex(offset) - 4)
+        parameter_name = par_by_orig_name.get(e.dst.expression.emit_code())
+        if parameter_name is None:
+            return
+        parameter = parameters[parameter_name]
+        if not isinstance(parameter.data_type, data_types.Pointer32):
+            return
+        parameter_class = parameter.data_type.pointee
+        if not isinstance(e.src, expressions.Constant):
+            return
+        if e.src.emit_code() == "0x3FF00000":
+            parameter_class.merge_word32_into_double(from_hex(offset) - 4)
     for instr in body_instructions:
         instr.visit(on_expression_visited)
 
@@ -420,7 +431,6 @@ def process_intermediate_output(files, addr, recompiled_decls):
             method_class, "unknown_class_{}".format(addr)
         )
         ensure_class_fields(method_class, body_instructions)
-        guess_float_fields(method_class, body_instructions)
     if proc.class_type is not None:
         convention = CallingConvention.THISCALL
     else:
@@ -429,7 +439,8 @@ def process_intermediate_output(files, addr, recompiled_decls):
         else:
             convention = CallingConvention.STDCALL
     parameters = []
-    cur_offset = 4 #Return address size at stack
+    cur_offset = 4  # Return address size at stack
+    par_by_orig_name = {"ecx": "this"}
     for (var_type, var_name) in proc.parameters:
         offset = from_hex(var_name[-2:])
         fill_unused_params(parameters, cur_offset, offset - cur_offset)
@@ -444,7 +455,8 @@ def process_intermediate_output(files, addr, recompiled_decls):
                     "unknown_class_{}_p_{}".format(addr, var_name[-2:])
                 )
             )
-        var_name = define_parameter_name(var_type, var_name)
+        par_by_orig_name[var_name] = define_parameter_name(var_type, var_name)
+        var_name = par_by_orig_name[var_name]
         parameters.append((var_type, var_name))
         cur_offset = offset + var_type.size
     if convention != CallingConvention.CDECL:
@@ -468,6 +480,7 @@ def process_intermediate_output(files, addr, recompiled_decls):
     )
     if method_class is not None:
         method_class.add_method(proc_decl)
+    guess_float_fields(proc_decl, par_by_orig_name, body_instructions)
     return HeaderDeclarations(
         proc_decl, recompiled_decls, full_typed_args_by_proc
     )
