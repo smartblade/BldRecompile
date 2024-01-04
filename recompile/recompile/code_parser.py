@@ -13,7 +13,7 @@ field_access_regexp = re.compile('^(?P<expression>.+)(?P<sep>->|\.)(?P<field>\w+
 typedef_regexp = re.compile('^typedef\s(?P<type_name>\w+)\s(?P<new_type_name>Eq_\d+);$')
 extproc_regexp = re.compile(
     r'^(?P<return_type>.*)\s(?P<convention>__\w+)\s((?P<class_name>\w+)::)?'
-    r'(?P<proc_name>\w+)\((?P<parameters>.*)\);'
+    r'(?P<proc_name>(\w+)|operator\s>+)\((?P<parameters>.*)\);'
 )
 
 def _make_tuple(name, **kwargs):
@@ -142,6 +142,10 @@ def parse_data_types_declarations(lines, defined_types):
             if match:
                 type_name = match.group('type_name')
                 new_type_name = match.group('new_type_name')
+                if type_name not in defined_types:
+                    defined_types[type_name] = data_types.ClassType(
+                        type_name, {}
+                    )
                 defined_types[new_type_name] = defined_types[type_name]
                 continue
             match = re.search(extproc_regexp, line)
@@ -209,8 +213,29 @@ def _make_external_procedure(
     )
     if method_class is not None:
         method_class.add_method(external_procedure)
+    # TODO remove it when procedure name demangling will be implemented
+    if external_procedure.proc_name.startswith("operator"):
+        return _replace_pointers_to_references(external_procedure)
     return external_procedure
 
+
+def _replace_pointers_to_references(proc):
+    parameters = proc.get_parameters_ids()
+    new_parameters = []
+    for parameter in parameters.values():
+        if isinstance(parameter.data_type, data_types.Pointer32):
+            data_type = data_types.Reference(parameter.data_type.pointee)
+        else:
+            data_type = parameter.data_type
+        new_parameters.append((data_type, parameter.name))
+    if isinstance(proc.return_type, data_types.Pointer32):
+        return_type = data_types.Reference(proc.return_type.pointee)
+    else:
+        return_type = proc.return_type
+    return ProcedureDeclaration(
+        proc.proc_name, proc.convention, proc.method_class, new_parameters,
+        return_type
+    )
 
 def define_field_name(field_type, field_name):
     if isinstance(field_type, data_types.Unknown32):
@@ -349,6 +374,16 @@ def _new_field_access(e, sep, field_name):
 
 def _new_brackets_expression(state, prefix, brackets_tokens):
     if (prefix != ""):
+        operator = None
+        if (
+            prefix in operators and
+            len(state.tokens) > 0 and
+            isinstance(state.tokens[-1], expressions.UnparsedToken) and
+            state.tokens[-1].emit_code() == "operator"
+        ):
+            operator_token = state.tokens.pop()
+            operator = operators[prefix]
+            prefix = operator_token.emit_code() + " " + prefix
         arguments = []
         def append_arg(arg):
             if len(arg) == 1:
@@ -377,7 +412,7 @@ def _new_brackets_expression(state, prefix, brackets_tokens):
             callee_addr = None
             is_method = False
         return expressions.ProcedureCall(
-            prefix, arguments, callee_addr, is_method
+            prefix, operator, arguments, callee_addr, is_method
         )
     return expressions.BracketsExpression(
         _make_expression_from_tokens(brackets_tokens)

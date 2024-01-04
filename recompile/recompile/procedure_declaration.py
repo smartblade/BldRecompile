@@ -18,6 +18,10 @@ class ProcedureDeclaration:
         return self._proc_name
 
     @property
+    def convention(self):
+        return self._convention
+
+    @property
     def method_class(self):
         return self._method_class
 
@@ -86,7 +90,7 @@ class ProcedureDeclaration:
             type_name = self._get_type_name(
                 parameter_type, is_metafile, is_brief
             )
-            sep = "" if type_name.endswith("*") else " "
+            sep = "" if type_name[-1] in {"*", "&"} else " "
             parameters.append("{}{}{}".format(type_name, sep, parameter_name))
         proc_name = self._proc_name
         if is_definition and self._method_class is not None:
@@ -96,7 +100,7 @@ class ProcedureDeclaration:
         return_arg = self._get_return_type_name(
             is_metafile=is_metafile, is_brief=full_typed_args is not None
         )
-        sep = "" if return_arg.endswith("*") else " "
+        sep = "" if return_arg[-1] in {"*", "&"} else " "
         calling_convention = ""
         if is_metafile and self._convention == CallingConvention.THISCALL:
             calling_convention = "__thiscall "

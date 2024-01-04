@@ -73,10 +73,13 @@ class VariableDeclaration:
             offset = match.group('offset')
             if offset is not None:
                 prefix = match.group('prefix')
-                if prefix == "dw" and isinstance(var_type, data_types.Unknown32):
-                    return "unknown_loc_{}".format(offset)
-                if prefix == "dw" and isinstance(var_type, data_types.Int32):
-                    return "unknown_int_loc_{}".format(offset)
+                if prefix == "dw":
+                    if isinstance(var_type, data_types.Unknown32):
+                        return "unknown_loc_{}".format(offset)
+                    if isinstance(var_type, data_types.Int32):
+                        return "unknown_int_loc_{}".format(offset)
+                    if isinstance(var_type, data_types.Float):
+                        return "unknown_float_loc_{}".format(offset)
                 if prefix == "r":
                     if isinstance(var_type, data_types.Double):
                         return "unknown_double_loc_{}".format(offset)

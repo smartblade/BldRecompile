@@ -57,6 +57,11 @@ class HeaderDeclarations:
         for callee_addr, full_typed_args in self._typed_args_by_proc.items():
             callee = self._recompiled_decls[callee_addr]
             lines.append(callee.get_types_declarations(is_metafile=False))
+        for ext_proc in self._external_procedures.values():
+            if ext_proc.method_class is not None:
+                continue
+            declaration = ext_proc.get_declaration(is_metafile=False)
+            lines.append("{};\n".format(declaration))
         return "\n".join(lines)
 
 

@@ -6,6 +6,8 @@ class Operator(Enum):
     SUB = "-"
     MUL = "*"
     DIV = "/"
+    SHL = "<<"
+    SHR = ">>"
     LT = "<"
     GT = ">"
     LE = "<="
@@ -24,6 +26,8 @@ priorities = {
     Operator.DIV: 5,
     Operator.ADD: 6,
     Operator.SUB: 6,
+    Operator.SHL: 7,
+    Operator.SHR: 7,
     Operator.LT: 8,
     Operator.GT: 8,
     Operator.LE: 8,

@@ -27,6 +27,9 @@ class ClassType:
     def add_method(self, method):
         self._methods.append(method)
 
+    def get_field_by_offset(self, offset):
+        return self._fields[offset]
+
     def find_data_type_by_field(self, field_name):
         for field_type, name in self._fields.values():
             if name == field_name:

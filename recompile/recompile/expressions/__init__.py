@@ -4,6 +4,7 @@ from .binary_expression import BinaryExpression as Bin
 from .brackets_expression import BracketsExpression
 from .cast import Cast
 from .constant import Constant
+from .dereference import Dereference
 from .field_access import FieldAccess
 from .identifier import Identifier
 from .increment import Increment
