@@ -1,8 +1,12 @@
 class HeaderDeclarations:
-    def __init__(self, proc_decl, recompiled_decls, full_typed_args_by_proc):
+    def __init__(
+        self, proc_decl, recompiled_decls, full_typed_args_by_proc,
+        external_procedures,
+    ):
         self._proc_decl = proc_decl
         self._recompiled_decls = recompiled_decls
         self._typed_args_by_proc = full_typed_args_by_proc
+        self._external_procedures = _procedures_to_dict(external_procedures)
 
     @property
     def proc_decl(self):
@@ -15,6 +19,9 @@ class HeaderDeclarations:
     @property
     def full_typed_args_by_proc(self):
         return self._typed_args_by_proc
+
+    def external_procedure_by_name(self, name):
+        return self._external_procedures.get(name)
 
     def get_declaration_at(self, addr):
         if addr in self._recompiled_decls:
@@ -51,3 +58,14 @@ class HeaderDeclarations:
             callee = self._recompiled_decls[callee_addr]
             lines.append(callee.get_types_declarations(is_metafile=False))
         return "\n".join(lines)
+
+
+def _procedures_to_dict(procedures):
+    proc_dict = {}
+    for proc in procedures:
+        if proc.proc_name in proc_dict:
+            raise Exception(
+                "Redeclared external procedure: {}".format(proc.proc_name)
+            )
+        proc_dict[proc.proc_name] = proc
+    return proc_dict

@@ -16,13 +16,13 @@ class ProcedureBody:
             self._instructions,
         )
 
-    def transform_instructions(self, recompiled_decls):
+    def transform_instructions(self, declarations):
         self._instructions = transform_block(
             self._instructions,
             declared_identifiers=self._proc_decl.get_parameters_ids(),
             id_suffixes={},
             proc_decl=self._proc_decl,
-            recompiled_decls=recompiled_decls,
+            declarations=declarations,
         )
 
     def emit_code(self):

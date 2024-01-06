@@ -5,6 +5,7 @@ from .double import Double
 from .float_type import Float
 from .int32 import Int32
 from .pointer32 import Pointer32
+from .uint32 import UInt32
 from .unknown32 import Unknown32
 from .unknown_byte import UnknownByte
 from .unknown_class import UnknownClass

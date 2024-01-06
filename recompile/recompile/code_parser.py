@@ -2,13 +2,19 @@ from collections import namedtuple
 import re
 
 import data_types
+from calling_convention import calling_conventions
 from exceptions import UnknownTypeException
 import expressions
 from expressions.operator import Operator, operators, priorities
+from procedure_declaration import ProcedureDeclaration
 
 const_regexp = re.compile('^(?P<float>\d+\.\d+F?)|(?P<hex>0x[\dABCDEF]+)$')
 field_access_regexp = re.compile('^(?P<expression>.+)(?P<sep>->|\.)(?P<field>\w+)$')
 typedef_regexp = re.compile('^typedef\s(?P<type_name>\w+)\s(?P<new_type_name>Eq_\d+);$')
+extproc_regexp = re.compile(
+    r'^(?P<return_type>.*)\s(?P<convention>__\w+)\s((?P<class_name>\w+)::)?'
+    r'(?P<proc_name>\w+)\((?P<parameters>.*)\);'
+)
 
 def _make_tuple(name, **kwargs):
     return namedtuple(name, kwargs.keys())(**kwargs)
@@ -79,6 +85,8 @@ def parse_data_type(s, classes):
         return data_types.Float()
     if s == "void":
         return None
+    if s == "uint32":
+        return data_types.UInt32()
     if s == "<unknown>*":
         return data_types.Pointer32()
     class_name = extract_class_name(s)
@@ -93,12 +101,12 @@ def parse_data_type(s, classes):
     raise UnknownTypeException("Not implemented type: {}.".format(s))
 
 def parse_data_types_declarations(lines, defined_types):
-    parsed_classes = {}
     unions = {}
     classes = {}
     class_sizes = {}
     cur_class = None
     union_types = None
+    ext_proc_dicts = []
     for line in lines:
         if line.startswith("//"):
             continue
@@ -134,7 +142,11 @@ def parse_data_types_declarations(lines, defined_types):
             if match:
                 type_name = match.group('type_name')
                 new_type_name = match.group('new_type_name')
-                parsed_classes[new_type_name] = defined_types[type_name]
+                defined_types[new_type_name] = defined_types[type_name]
+                continue
+            match = re.search(extproc_regexp, line)
+            if match:
+                ext_proc_dicts.append(match.groupdict())
     for class_name in classes.keys():
         skip_offset_if_word32 = None
         new_fields = {}
@@ -160,10 +172,45 @@ def parse_data_types_declarations(lines, defined_types):
                 size = class_sizes[class_name] // var_type.pointee.size
                 var_type = data_types.Array(var_type.pointee, size)
             new_fields[offset] = (var_type, var_name)
-        parsed_classes[class_name] = data_types.ClassType(
+        defined_types[class_name] = data_types.ClassType(
             class_name, new_fields
         )
-    return parsed_classes
+    external_procedures = []
+    for ext_proc_dict in ext_proc_dicts:
+        external_procedure = _make_external_procedure(
+            defined_types, **ext_proc_dict
+        )
+        external_procedures.append(external_procedure)
+    return _make_tuple(
+        'Declarations',
+        defined_types=defined_types,
+        external_procedures=external_procedures,
+    )
+
+
+def _make_external_procedure(
+    defined_types, return_type, convention, class_name, proc_name, parameters
+):
+    return_type = parse_data_type(return_type, defined_types)
+    convention = calling_conventions[convention]
+    if class_name is not None:
+        method_class = defined_types[class_name]
+    else:
+        method_class = None
+    parameters = parameters.split(',')
+    parsed_parameters = []
+    for p in parameters:
+        var_type, var_name = parse_variable_declaration(p.strip())
+        var_type = parse_data_type(var_type, defined_types)
+        var_name = define_parameter_name(var_type, var_name)
+        parsed_parameters.append((var_type, var_name))
+    external_procedure = ProcedureDeclaration(
+        proc_name, convention, method_class, parsed_parameters, return_type
+    )
+    if method_class is not None:
+        method_class.add_method(external_procedure)
+    return external_procedure
+
 
 def define_field_name(field_type, field_name):
     if isinstance(field_type, data_types.Unknown32):
@@ -178,6 +225,22 @@ def define_field_name(field_type, field_name):
     elif field_name[0] == "a":
         field_name = field_name.replace("a", "unknown_array_")
     return field_name
+
+
+def define_parameter_name(field_type, parameter_name):
+    if isinstance(field_type, data_types.Unknown32):
+        parameter_name = parameter_name.replace("dwArg", "unknown_param_")
+    elif isinstance(field_type, data_types.Pointer32):
+        if parameter_name.startswith("dw"):
+            parameter_name = parameter_name.replace("dwArg", "unknown_ptr_")
+        else:
+            parameter_name = parameter_name.replace("ptrArg", "unknown_ptr_")
+    elif isinstance(field_type, data_types.Double):
+        parameter_name = parameter_name.replace("rArg", "unknown_double_")
+    elif isinstance(field_type, data_types.UInt32):
+        parameter_name = parameter_name.replace("dwArg", "unknown_uint_")
+    return parameter_name
+
 
 def parse_cpp_expression(line, declared_identifiers):
     brackets_dict = {"(": ")", "[": "]"}

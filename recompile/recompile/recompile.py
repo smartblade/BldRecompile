@@ -319,14 +319,6 @@ def extract_callees(body_instructions, recompiled_decls):
         instr.visit(on_expression_visited)
     return (callees, full_typed_args_by_proc)
 
-def define_parameter_name(field_type, parameter_name):
-    if isinstance(field_type, data_types.Unknown32):
-        parameter_name = parameter_name.replace("dwArg", "unknown_param_")
-    elif isinstance(field_type, data_types.Pointer32):
-        parameter_name = parameter_name.replace("dwArg", "unknown_ptr_")
-    elif isinstance(field_type, data_types.Double):
-        parameter_name = parameter_name.replace("rArg", "unknown_double_")
-    return parameter_name
 
 def process_header_file(file_name, defined_types):
     with open(file_name) as f:
@@ -414,7 +406,8 @@ def process_intermediate_output(files, addr, recompiled_decls):
     for callee_add in full_typed_args_by_proc.keys():
         callee_decl = recompiled_decls[callee_add]
         defined_types.update(callee_decl.get_used_types())
-    classes = process_header_file(header_file, defined_types)
+    declarations = process_header_file(header_file, defined_types)
+    classes = declarations.defined_types
     method_class = None
     if proc.class_type is not None:
         ptr_to_class = parser.parse_data_type(proc.class_type, classes)
@@ -455,7 +448,9 @@ def process_intermediate_output(files, addr, recompiled_decls):
                     "unknown_class_{}_p_{}".format(addr, var_name[-2:])
                 )
             )
-        par_by_orig_name[var_name] = define_parameter_name(var_type, var_name)
+        par_by_orig_name[var_name] = parser.define_parameter_name(
+            var_type, var_name
+        )
         var_name = par_by_orig_name[var_name]
         parameters.append((var_type, var_name))
         cur_offset = offset + var_type.size
@@ -482,7 +477,8 @@ def process_intermediate_output(files, addr, recompiled_decls):
         method_class.add_method(proc_decl)
     guess_float_fields(proc_decl, par_by_orig_name, body_instructions)
     return HeaderDeclarations(
-        proc_decl, recompiled_decls, full_typed_args_by_proc
+        proc_decl, recompiled_decls, full_typed_args_by_proc,
+        declarations.external_procedures,
     )
 
 def fill_unused_params(parameters, offset, size):
@@ -520,7 +516,7 @@ def extract_procedure_body(file_name, proc_decl):
 def process_final_output(files, declarations, addr):
     code_file, header_file, dis_file = process_output_dir(files.project_output)
     body = extract_procedure_body(code_file, declarations.proc_decl)
-    body.transform_instructions(declarations.recompiled_decls)
+    body.transform_instructions(declarations)
     cpp_file_name = os.path.join(files.output, "{}.cpp".format(addr))
     with open(cpp_file_name, "wt") as f:
         f.write(body.emit_code())
@@ -583,7 +579,7 @@ def process_procedure(files, addr, recompiled_decls):
     def intermediate_output(run_files):
         calles = load_callees(files)
         declarations = HeaderDeclarations(
-            None, recompiled_decls, full_typed_args_by_proc
+            None, recompiled_decls, full_typed_args_by_proc, []
         )
         make_procedure_project(run_files, calles, addr, declarations)
         set_output_dir(run_files.project, run_files.project_output_basename)
@@ -626,7 +622,7 @@ def run():
         proc_dict = json.load(f)
     make_project_file(
         files.project_template, files.intermediate_project, proc_dict.keys(),
-        HeaderDeclarations(None, {}, {})
+        HeaderDeclarations(None, {}, {}, [])
     )
     create_common_header(files)
     recompiled_decls = {}
