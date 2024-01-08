@@ -155,4 +155,6 @@ def _transform_ptrs_to_references(proc_decl, arguments):
 def _dereference(e):
     if isinstance(e, expressions.AddressOf):
         return e.expression
+    if isinstance(e, expressions.Bin):
+        e = expressions.BracketsExpression(e)
     return expressions.Dereference(e)

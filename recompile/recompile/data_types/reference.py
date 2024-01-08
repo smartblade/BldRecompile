@@ -1,5 +1,9 @@
-class Reference:
+from data_types.data_type import DataType
+
+
+class Reference(DataType):
     def __init__(self, referent=None):
+        super().__init__()
         self._referent = referent
 
     def __repr__(self):

@@ -8,12 +8,14 @@ import expressions
 from expressions.operator import Operator, operators, priorities
 from procedure_declaration import ProcedureDeclaration
 
-const_regexp = re.compile('^(?P<float>\d+\.\d+F?)|(?P<hex>0x[\dABCDEF]+)$')
+const_regexp = re.compile(
+    r'^((?P<float>\d+\.\d+F?)|(?P<hex>0x[\dABCDEF]+)|(?P<int>\d+))$'
+)
 field_access_regexp = re.compile('^(?P<expression>.+)(?P<sep>->|\.)(?P<field>\w+)$')
 typedef_regexp = re.compile('^typedef\s(?P<type_name>\w+)\s(?P<new_type_name>Eq_\d+);$')
 extproc_regexp = re.compile(
     r'^(?P<return_type>.*)\s(?P<convention>__\w+)\s((?P<class_name>\w+)::)?'
-    r'(?P<proc_name>(\w+)|operator\s>+)\((?P<parameters>.*)\);'
+    r'(?P<proc_name>(\w+)|operator\s[><]+)\((?P<parameters>.*)\);'
 )
 
 def _make_tuple(name, **kwargs):
@@ -89,6 +91,10 @@ def parse_data_type(s, classes):
         return data_types.UInt32()
     if s == "<unknown>*":
         return data_types.Pointer32()
+    if s.startswith("const"):
+        data_type = parse_data_type(s[5:].strip(), classes)
+        data_type.add_qualifier("const")
+        return data_type
     class_name = extract_class_name(s)
     if class_name is not None:
         if class_name not in classes:
@@ -225,11 +231,13 @@ def _replace_pointers_to_references(proc):
     for parameter in parameters.values():
         if isinstance(parameter.data_type, data_types.Pointer32):
             data_type = data_types.Reference(parameter.data_type.pointee)
+            data_type.set_qualifiers(parameter.data_type.qualifiers)
         else:
             data_type = parameter.data_type
         new_parameters.append((data_type, parameter.name))
     if isinstance(proc.return_type, data_types.Pointer32):
         return_type = data_types.Reference(proc.return_type.pointee)
+        return_type.set_qualifiers(proc.return_type.qualifiers)
     else:
         return_type = proc.return_type
     return ProcedureDeclaration(
@@ -342,6 +350,9 @@ def _new_token(state, s):
                 data_type = data_types.Unknown32()
             else:
                 raise Exception("Can't define type for '{}'".format(s))
+            value = s
+        elif match.group('int') is not None:
+            data_type = data_types.Int32()
             value = s
         elif s.endswith("F"):
             data_type = data_types.Float()

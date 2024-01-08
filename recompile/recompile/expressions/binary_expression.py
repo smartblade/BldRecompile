@@ -1,4 +1,5 @@
 import data_types
+from expressions.operator import Operator
 
 
 class BinaryExpression:
@@ -29,6 +30,12 @@ class BinaryExpression:
         if (
             isinstance(left_type, data_types.Float) and
             isinstance(right_type, data_types.Float)
+        ):
+            return left_type
+        if (
+            self._operator == Operator.ADD and
+            isinstance(left_type, data_types.Pointer32) and
+            isinstance(right_type, data_types.Int32)
         ):
             return left_type
         raise Exception("Can't union {} and {}".format(left_type, right_type))

@@ -1,5 +1,9 @@
-class Pointer32:
+from data_types.data_type import DataType
+
+
+class Pointer32(DataType):
     def __init__(self, pointee=None):
+        super().__init__()
         self._pointee = pointee
 
     def __repr__(self):

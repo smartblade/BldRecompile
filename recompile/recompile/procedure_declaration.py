@@ -87,11 +87,10 @@ class ProcedureDeclaration:
                 full_typed_args is not None and
                 parameter_name not in full_typed_args
             )
-            type_name = self._get_type_name(
-                parameter_type, is_metafile, is_brief
+            parameter = self._make_variable_declaration(
+                parameter_type, parameter_name, is_metafile, is_brief
             )
-            sep = "" if type_name[-1] in {"*", "&"} else " "
-            parameters.append("{}{}{}".format(type_name, sep, parameter_name))
+            parameters.append(parameter)
         proc_name = self._proc_name
         if is_definition and self._method_class is not None:
             proc_name = "{}::{}".format(
@@ -120,10 +119,12 @@ class ProcedureDeclaration:
             line[:name_pos].strip(), self.get_used_types()
         )
 
-    def _get_type_name(self, data_type, is_metafile, is_brief):
+    def _make_variable_declaration(
+        self, data_type, var_name, is_metafile, is_brief
+    ):
         if is_brief and isinstance(data_type, data_types.Pointer32):
-            return "ptr32"
-        return data_type.get_type_name(is_metafile=is_metafile)
+            return "ptr32 {}".format(var_name)
+        return data_type.make_variable_declaration(var_name, is_metafile)
 
     def _get_return_type_name(self, is_metafile, is_brief):
         if self._return_arg is None:

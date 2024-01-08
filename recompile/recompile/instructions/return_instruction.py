@@ -1,3 +1,4 @@
+import data_types
 from exceptions import NextRunException
 import expressions
 from merge_types import merge_types
@@ -27,6 +28,13 @@ class ReturnInstruction:
         ):
             proc_decl.change_return_type(None)
             raise NextRunException()
+        if (
+            isinstance(expression, expressions.ProcedureCall) and
+            isinstance(expression.data_type, data_types.Reference) and
+            isinstance(proc_decl.return_type, data_types.Pointer32)
+        ):
+            expression = expressions.BracketsExpression(expression)
+            expression = expressions.AddressOf(expression)
         return ReturnInstruction(expression)
 
     def visit(self, on_expression_visited, **kwargs):
