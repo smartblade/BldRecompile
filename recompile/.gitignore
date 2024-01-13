@@ -1,4 +1,3 @@
 intermediate/**/*.asm
-intermediate/**/*.globals.c
 *.obj
 *.pyc
