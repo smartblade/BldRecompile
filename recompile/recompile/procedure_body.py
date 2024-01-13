@@ -3,11 +3,14 @@ from parse_instructions import parse_instructions
 from writer import Writer
 
 class ProcedureBody:
-    def __init__(self, proc_decl, instructions):
-        self._proc_decl = proc_decl
+    def __init__(self, declarations, instructions):
+        self._proc_decl = declarations.proc_decl
         self._instructions = parse_instructions(
             instructions,
-            declared_identifiers=self._proc_decl.get_parameters_ids(),
+            declared_identifiers={
+                **self._proc_decl.get_parameters_ids(),
+                **declarations.gbl_vars,
+            }
         )
 
     def __repr__(self):

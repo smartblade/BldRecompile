@@ -6,6 +6,7 @@ class ClassType:
         self._class_name = class_name
         self._fields = fields
         self._methods = []
+        self._fields_sorted = True
 
     def __repr__(self):
         return "class {}".format(self._class_name)
@@ -49,7 +50,10 @@ class ClassType:
     def ensure_field(self, offset):
         if offset in self._fields:
             return
-        self._fields[offset] = (Unknown32(), "unknown_field_{:04X}".format(offset))
+        self._fields[offset] = (
+            Unknown32(), "unknown_field_{:04X}".format(offset)
+        )
+        self._fields_sorted = False
 
     def merge_word32_into_double(self, offset):
         (first_field_type, first_field_name) = self._fields[offset]
@@ -107,6 +111,7 @@ class ClassType:
         return "\n".join(lines) + "\n"
 
     def _write_fields(self, lines, is_metafile):
+        self._sort_fields()
         cur_offset = 0
         for offset, (field_type, field_name) in self._fields.items():
             indent = " " * 4
@@ -125,3 +130,9 @@ class ClassType:
                 indent, format(offset, '04X'), format(size, '04X')
             )
         )
+
+    def _sort_fields(self):
+        if self._fields_sorted:
+            return
+        self._fields = dict(sorted(self._fields.items()))
+        self._fields_sorted = True

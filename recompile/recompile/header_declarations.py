@@ -1,12 +1,13 @@
 class HeaderDeclarations:
     def __init__(
         self, proc_decl, recompiled_decls, full_typed_args_by_proc,
-        external_procedures,
+        external_procedures, gbl_vars
     ):
         self._proc_decl = proc_decl
         self._recompiled_decls = recompiled_decls
         self._typed_args_by_proc = full_typed_args_by_proc
         self._external_procedures = _procedures_to_dict(external_procedures)
+        self._gbl_vars = gbl_vars
 
     @property
     def proc_decl(self):
@@ -19,6 +20,10 @@ class HeaderDeclarations:
     @property
     def full_typed_args_by_proc(self):
         return self._typed_args_by_proc
+
+    @property
+    def gbl_vars(self):
+        return self._gbl_vars
 
     def external_procedure_by_name(self, name):
         return self._external_procedures.get(name)
@@ -57,11 +62,26 @@ class HeaderDeclarations:
         for callee_addr, full_typed_args in self._typed_args_by_proc.items():
             callee = self._recompiled_decls[callee_addr]
             lines.append(callee.get_types_declarations(is_metafile=False))
+        need_new_line = False
         for ext_proc in self._external_procedures.values():
             if ext_proc.method_class is not None:
                 continue
             declaration = ext_proc.get_declaration(is_metafile=False)
-            lines.append("{};\n".format(declaration))
+            lines.append("{};".format(declaration))
+            need_new_line = True
+        for gbl in self._gbl_vars.values():
+            if gbl.name.startswith("g_"):
+                continue
+            if gbl.data_type is not None:
+                declaration = gbl.data_type.make_variable_declaration(
+                    gbl.name, is_metafile=False
+                )
+            else:
+                declaration = "struct unknown {}".format(gbl.name)
+            lines.append("extern {};".format(declaration))
+            need_new_line = True
+        if need_new_line:
+            lines.append("")
         return "\n".join(lines)
 
 

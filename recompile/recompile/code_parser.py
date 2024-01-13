@@ -6,6 +6,8 @@ from calling_convention import calling_conventions
 from exceptions import UnknownTypeException
 import expressions
 from expressions.operator import Operator, operators, priorities
+from hex_conversion import to_hex, from_hex
+from make_tuple import make_tuple
 from procedure_declaration import ProcedureDeclaration
 
 const_regexp = re.compile(
@@ -17,9 +19,9 @@ extproc_regexp = re.compile(
     r'^(?P<return_type>.*)\s(?P<convention>__\w+)\s((?P<class_name>\w+)::)?'
     r'(?P<proc_name>(\w+)|operator\s[><]+)\((?P<parameters>.*)\);'
 )
+global_regexp = re.compile(r'^(?P<data_type>.+)\s(?P<var_name>g_\w+)\s=')
+global_name_regexp = re.compile(r'^g_[a-z]+(?P<var_addr>[\dABCDEF]+)$')
 
-def _make_tuple(name, **kwargs):
-    return namedtuple(name, kwargs.keys())(**kwargs)
 
 def parse_variable_declaration(s):
     last_space = s.rfind(' ')
@@ -53,7 +55,7 @@ def parse_procedure_declaration(s):
     else:
         class_type=None
         parameters=parsed_parameters
-    return _make_tuple(
+    return make_tuple(
         'ProcedureDeclation',
          class_type=class_type,
          parameters=parameters
@@ -86,6 +88,8 @@ def parse_data_type(s, classes):
     if s == "real32":
         return data_types.Float()
     if s == "void":
+        return None
+    if s == "<unknown>":
         return None
     if s == "uint32":
         return data_types.UInt32()
@@ -191,11 +195,23 @@ def parse_data_types_declarations(lines, defined_types):
             defined_types, **ext_proc_dict
         )
         external_procedures.append(external_procedure)
-    return _make_tuple(
+    return make_tuple(
         'Declarations',
         defined_types=defined_types,
         external_procedures=external_procedures,
     )
+
+
+def parse_globals_declarations(lines, defined_types):
+    gbl_vars = {}
+    for line in lines:
+        match = re.search(global_regexp, line)
+        if not match:
+            continue
+        data_type = parse_data_type(match.group('data_type'), defined_types)
+        var_name = match.group('var_name')
+        gbl_vars[var_name] = expressions.Identifier(data_type, var_name)
+    return gbl_vars
 
 
 def _make_external_procedure(
@@ -257,6 +273,8 @@ def define_field_name(field_type, field_name):
         field_name = field_name.replace("b", "unknown_byte_")
     elif field_name[0] == "a":
         field_name = field_name.replace("a", "unknown_array_")
+    elif isinstance(field_type, data_types.Pointer32):
+        field_name = field_name.replace("ptr", "unknown_ptr_")
     return field_name
 
 
@@ -273,6 +291,25 @@ def define_parameter_name(field_type, parameter_name):
     elif isinstance(field_type, data_types.UInt32):
         parameter_name = parameter_name.replace("dwArg", "unknown_uint_")
     return parameter_name
+
+
+def define_global_name(data_type, gbl_name):
+    match = re.search(global_name_regexp, gbl_name)
+    if not match:
+        return gbl_name
+    addr = from_hex(match.group("var_addr"))
+    prefix = None
+    if data_type is None or isinstance(data_type, data_types.Unknown32):
+        prefix = "unknown_gbl_"
+    elif isinstance(data_type, data_types.Pointer32):
+        prefix = "unknown_ptr_gbl_"
+    elif isinstance(data_type, data_types.Double):
+        prefix = "unknown_double_gbl_"
+    elif isinstance(data_type, data_types.UInt32):
+        prefix = "unknown_uint_gbl_"
+    if prefix is not None:
+        gbl_name = "{}{}".format(prefix, to_hex(addr))
+    return gbl_name
 
 
 def parse_cpp_expression(line, declared_identifiers):

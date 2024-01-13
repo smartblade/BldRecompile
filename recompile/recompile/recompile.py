@@ -19,6 +19,7 @@ from files_location import FilesLocation
 from header_declarations import HeaderDeclarations
 from hex_conversion import from_hex
 import instructions
+from make_tuple import make_tuple
 from parse_instructions import parse_instructions
 from procedure_body import ProcedureBody
 from procedure_declaration import ProcedureDeclaration
@@ -158,8 +159,10 @@ def process_output_code(file_name, addr):
             body_lines.append(line)
 
 def ensure_class_fields(method_class, body_instructions):
-    char_cast_regexp = re.compile('\(char\s*\*\)\s*ecx')
-    offset_regexp = re.compile('(?P<offset>\d+)')
+    char_cast_regexp = re.compile(
+        r'^(\(char\s*\*\)\s*ecx|&ecx->(?P<field_name>\w+))$'
+    )
+    offset_regexp = re.compile(r'^(?P<offset>\d+)$')
     def on_expression_visited(e):
         if not isinstance(e, expressions.Bin):
             return
@@ -168,10 +171,17 @@ def ensure_class_fields(method_class, body_instructions):
         match = re.search(char_cast_regexp, e.left.emit_code())
         if not match:
             return
+        field_name = match.group('field_name')
         match = re.search(offset_regexp, e.right.emit_code())
         if match:
             offset = match.group('offset')
-            method_class.ensure_field(int(offset))
+            size = None
+            if field_name is None:
+                size = 1
+            # TODO deduce type from expression instead of field name parsing
+            elif field_name.startswith("ptr"):
+                size = 4
+            method_class.ensure_field(int(offset) * size)
     for instr in body_instructions:
         instr.visit(on_expression_visited)
 
@@ -334,6 +344,15 @@ def process_header_file(file_name, defined_types):
         lines = f.readlines()
     return parser.parse_data_types_declarations(lines, defined_types)
 
+
+def process_globals_file(file_name, defined_types):
+    if file_name is None:
+        return {}
+    with open(file_name) as f:
+        lines = f.readlines()
+    return parser.parse_globals_declarations(lines, defined_types)
+
+
 def process_dis_file(file_name):
     field_access_regexp = re.compile('//\sstackDelta:\s(?P<stack_offset>\d+);\sfpuStackDelta:\s(?P<fpu_offset>\d+);')
     with open(file_name) as f:
@@ -404,6 +423,10 @@ def reduce_globals_file(globals_file):
 
 
 def process_output_dir(output_dir):
+    code_file = None
+    header_file = None
+    dis_file = None
+    globals_file = None
     for root, dirs, files in os.walk(output_dir):
         for file in files:
             if file.endswith("globals.c"):
@@ -416,7 +439,13 @@ def process_output_dir(output_dir):
                 reduce_header_file(header_file)
             elif file.endswith(".dis"):
                 dis_file = os.path.join(output_dir, file)
-    return (code_file, header_file, dis_file)
+    return make_tuple(
+        'OutputDirectory',
+        code_file=code_file,
+        header_file=header_file,
+        dis_file=dis_file,
+        globals_file=globals_file,
+    )
 
 def load_callees(files):
     try:
@@ -437,11 +466,11 @@ def ensure_class_name(c, default_name):
 
 
 def process_intermediate_output(files, addr, recompiled_decls):
-    code_file, header_file, dis_file = process_output_dir(files.project_output)
-    stack_offset, fpu_offset = process_dis_file(dis_file)
+    output = process_output_dir(files.project_output)
+    stack_offset, fpu_offset = process_dis_file(output.dis_file)
     if fpu_offset != 0 and fpu_offset != 1:
         raise Exception("Unsupported FPU offset: {}".format(fpu_offset))
-    proc, body_instructions = process_output_code(code_file, addr)
+    proc, body_instructions = process_output_code(output.code_file, addr)
     (callees, full_typed_args_by_proc) = extract_callees(
         body_instructions, recompiled_decls
     )
@@ -452,7 +481,8 @@ def process_intermediate_output(files, addr, recompiled_decls):
     for callee_add in full_typed_args_by_proc.keys():
         callee_decl = recompiled_decls[callee_add]
         defined_types.update(callee_decl.get_used_types())
-    declarations = process_header_file(header_file, defined_types)
+    declarations = process_header_file(output.header_file, defined_types)
+    gbl_vars = process_globals_file(output.globals_file, defined_types)
     classes = declarations.defined_types
     method_class = None
     if proc.class_type is not None:
@@ -524,7 +554,7 @@ def process_intermediate_output(files, addr, recompiled_decls):
     guess_float_fields(proc_decl, par_by_orig_name, body_instructions)
     return HeaderDeclarations(
         proc_decl, recompiled_decls, full_typed_args_by_proc,
-        declarations.external_procedures,
+        declarations.external_procedures, gbl_vars
     )
 
 def fill_unused_params(parameters, offset, size):
@@ -541,9 +571,11 @@ def fill_unused_params(parameters, offset, size):
             (data_types.Unknown32(), "unused_param_{:02X}".format(i))
         )
 
-def extract_procedure_body(file_name, proc_decl):
+
+def extract_procedure_body(file_name, declarations):
     with open(file_name) as f:
         lines = f.readlines()
+    proc_decl = declarations.proc_decl
     instructions = None
     for line in lines:
         if line.startswith("//"):
@@ -554,14 +586,14 @@ def extract_procedure_body(file_name, proc_decl):
             instructions = []
             continue
         if line.startswith("}"):
-            return ProcedureBody(proc_decl, instructions)
+            return ProcedureBody(declarations, instructions)
         if instructions is not None:
             instructions.append(line)
 
 
 def process_final_output(files, declarations, addr):
-    code_file, header_file, dis_file = process_output_dir(files.project_output)
-    body = extract_procedure_body(code_file, declarations.proc_decl)
+    output = process_output_dir(files.project_output)
+    body = extract_procedure_body(output.code_file, declarations)
     body.transform_instructions(declarations)
     cpp_file_name = os.path.join(files.output, "{}.cpp".format(addr))
     with open(cpp_file_name, "wt") as f:
@@ -625,7 +657,7 @@ def process_procedure(files, addr, recompiled_decls):
     def intermediate_output(run_files):
         calles = load_callees(files)
         declarations = HeaderDeclarations(
-            None, recompiled_decls, full_typed_args_by_proc, []
+            None, recompiled_decls, full_typed_args_by_proc, [], {}
         )
         make_procedure_project(run_files, calles, addr, declarations)
         set_output_dir(run_files.project, run_files.project_output_basename)
@@ -668,7 +700,7 @@ def run():
         proc_dict = json.load(f)
     make_project_file(
         files.project_template, files.intermediate_project, proc_dict.keys(),
-        HeaderDeclarations(None, {}, {}, [])
+        HeaderDeclarations(None, {}, {}, [], {})
     )
     create_common_header(files)
     recompiled_decls = {}
@@ -679,7 +711,7 @@ def run():
             )
         except SkippedProcedureException:
             print("Skipping {} procedure...".format(addr))
-        if addr >= "00407B05":
+        if addr >= "00407B50":
             break
 
 if __name__ == '__main__':
