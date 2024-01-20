@@ -6,6 +6,7 @@ import re
 import time
 
 from calling_convention import CallingConvention
+from common_header import create_common_header
 import data_types
 from exceptions import SkippedProcedureException, NextRunException
 import execute
@@ -243,13 +244,6 @@ def process_procedure(files, addr, recompiled_decls):
     next_run(files, final_output, max_times=2)
     return declarations.proc_decl
 
-def create_common_header(files):
-    with open(files.common_header_name, "wt") as f:
-        f.write("#pragma once\n\n")
-        f.write("#include <math.h>\n")
-        f.write("#include <string.h>\n\n")
-        f.write("typedef char unknown_byte;\n")
-        f.write("typedef int unknown32;\n")
 
 def run():
     root_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "..")
