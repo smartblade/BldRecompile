@@ -123,9 +123,9 @@ def set_declarations(files, declarations, addr):
                     f.write(" " * 8 + cdecl_str.format(cdecl))
 
 
-def make_procedure_project(files, calles, addr, declarations):
-    if calles is not None:
-        procs = [*calles, addr]
+def make_procedure_project(files, callees, addr, declarations):
+    if callees is not None:
+        procs = [*callees, addr]
         make_project_file(
             files.project_template, files.project, sorted(procs), declarations,
         )
@@ -655,11 +655,11 @@ def next_run(files, run_callback, max_times):
 
 def process_procedure(files, addr, recompiled_decls):
     def intermediate_output(run_files):
-        calles = load_callees(files)
+        callees = load_callees(files)
         declarations = HeaderDeclarations(
             None, recompiled_decls, full_typed_args_by_proc, [], {}
         )
-        make_procedure_project(run_files, calles, addr, declarations)
+        make_procedure_project(run_files, callees, addr, declarations)
         set_output_dir(run_files.project, run_files.project_output_basename)
         set_declarations(run_files, declarations, addr)
         execute_reko(run_files, has_decl_file=False)
@@ -674,8 +674,8 @@ def process_procedure(files, addr, recompiled_decls):
             raise NextRunException()
         return declarations
     def final_output(run_files):
-        calles = load_callees(files)
-        make_procedure_project(run_files, calles, addr, declarations)
+        callees = load_callees(files)
+        make_procedure_project(run_files, callees, addr, declarations)
         set_output_dir(run_files.project, run_files.project_output_basename)
         set_declarations(run_files, declarations, addr)
         execute_reko(run_files)
