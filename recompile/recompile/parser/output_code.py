@@ -1,5 +1,4 @@
-import code_parser as parser
-from parse_instructions import parse_instructions
+import parser
 
 
 def parse_output_code(lines, addr):
@@ -8,7 +7,7 @@ def parse_output_code(lines, addr):
         if line.startswith("//"):
             continue
         if line.startswith("}"):
-            return proc, parse_instructions(body_lines, {})
+            return proc, parser.parse_instructions(body_lines, {})
         if addr in line:
             proc = parser.parse_procedure_declaration(line)
         elif line.startswith("{"):

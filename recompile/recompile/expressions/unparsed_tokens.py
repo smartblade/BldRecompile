@@ -1,10 +1,10 @@
 import re
 
-import code_parser as parser
 import data_types
 from exceptions import UnknownTypeException
 import expressions
 from instructions.variable_declaration import loc_var_regexp
+import parser
 
 
 class UnparsedTokens:

@@ -1,9 +1,10 @@
 from collections import namedtuple
 
-import code_parser as parser
 import expressions
 from expressions.operator import Operator
 import instructions
+import parser
+
 
 def parse_instructions(instructions, declared_identifiers):
     blocks_state = []

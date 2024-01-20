@@ -1,11 +1,11 @@
 import struct
 
-import code_parser as parser
 import data_types
 from exceptions import NextRunException
 import expressions
 from hex_conversion import from_hex, to_hex
 import instructions
+import parser
 
 
 def transform_block(instructions, **kwargs):

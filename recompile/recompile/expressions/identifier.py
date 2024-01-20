@@ -1,4 +1,5 @@
-import code_parser as parser
+import parser
+
 
 class Identifier:
     def __init__(self, data_type, name):
