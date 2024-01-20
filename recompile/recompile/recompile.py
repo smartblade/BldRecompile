@@ -18,8 +18,8 @@ from hex_conversion import from_hex
 import instructions
 import make_project as prj
 from output_dir import process_output_dir
-from parse_instructions import parse_instructions
-from procedure_body import ProcedureBody
+from parse_output_code import parse_output_code
+from parse_procedure_body import parse_procedure_body
 from procedure_declaration import ProcedureDeclaration
 from writer import Writer
 
@@ -34,18 +34,8 @@ options = argument_parser.parse_args()
 def process_output_code(file_name, addr):
     with open(file_name) as f:
         lines = f.readlines()
-    body_lines = None
-    for line in lines:
-        if line.startswith("//"):
-            continue
-        if line.startswith("}"):
-            return proc, parse_instructions(body_lines, {})
-        if addr in line:
-            proc = parser.parse_procedure_declaration(line)
-        elif line.startswith("{"):
-            body_lines = []
-        elif body_lines is not None:
-            body_lines.append(line)
+    return parse_output_code(lines, addr)
+
 
 def ensure_class_fields(method_class, body_instructions):
     char_cast_regexp = re.compile(
@@ -381,20 +371,7 @@ def fill_unused_params(parameters, offset, size):
 def extract_procedure_body(file_name, declarations):
     with open(file_name) as f:
         lines = f.readlines()
-    proc_decl = declarations.proc_decl
-    instructions = None
-    for line in lines:
-        if line.startswith("//"):
-            continue
-        if proc_decl.proc_name in line:
-            proc_decl.extract_return_arg_from_line(line)
-        if line.startswith("{"):
-            instructions = []
-            continue
-        if line.startswith("}"):
-            return ProcedureBody(declarations, instructions)
-        if instructions is not None:
-            instructions.append(line)
+    return parse_procedure_body(lines, declarations)
 
 
 def process_final_output(files, declarations, addr):
