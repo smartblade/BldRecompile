@@ -219,7 +219,7 @@ def extract_callees(body_instructions, recompiled_decls):
 def process_header_file(file_name, defined_types):
     with open(file_name) as f:
         lines = f.readlines()
-    return parser.parse_data_types_declarations(lines, defined_types)
+    return parser.parse_header_declarations(lines, defined_types)
 
 
 def process_globals_file(file_name, defined_types):

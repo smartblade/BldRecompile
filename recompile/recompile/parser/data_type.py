@@ -1,0 +1,55 @@
+import data_types
+from exceptions import UnknownTypeException
+
+
+def parse_data_type(s, classes):
+    if s == "byte":
+        return data_types.UnknownByte()
+    if s == "word32":
+        return data_types.Unknown32()
+    if s == "ptr32":
+        return data_types.Pointer32()
+    if s == "int32":
+        return data_types.Int32()
+    if s == "real64":
+        return data_types.Double()
+    if s == "real32":
+        return data_types.Float()
+    if s == "void":
+        return None
+    if s == "<unknown>":
+        return None
+    if s == "uint32":
+        return data_types.UInt32()
+    if s == "<unknown>*":
+        return data_types.Pointer32()
+    if s.startswith("const"):
+        data_type = parse_data_type(s[5:].strip(), classes)
+        data_type.add_qualifier("const")
+        return data_type
+    class_name = _extract_class_name(s)
+    if class_name is not None:
+        if class_name not in classes:
+            raise UnknownTypeException("Unknown class: {}.".format(class_name))
+        return data_types.Pointer32(classes[class_name])
+    if s in classes:
+        return classes[s]
+    if s.endswith("*"):
+        return data_types.Pointer32(parse_data_type(s[:-1].strip(), classes))
+    raise UnknownTypeException("Not implemented type: {}.".format(s))
+
+
+def _extract_class_name(class_type):
+    if class_type is None:
+        return None
+    type_tokens = class_type.split(" ")
+    if type_tokens[0] != "struct":
+        return None
+    if type_tokens[-1] != "*":
+        raise Exception("Only pointers is supported for thiscall parameter.")
+    class_name = type_tokens[1]
+    if len(type_tokens) != 3:
+        raise Exception(
+            "Failed to extract class name from '{}'.".format(class_type)
+        )
+    return class_name
