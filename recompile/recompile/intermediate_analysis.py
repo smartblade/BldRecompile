@@ -158,7 +158,7 @@ def collect_used_globals(gbl_vars, body_instructions):
     for instr in body_instructions:
         instr.visit(on_expression_visited)
     return dict(
-        (name, gbl)
+        (name if gbl.data_type is None else gbl.name, gbl)
         for name, gbl in gbl_vars.items() if gbl.name in used_ids
     )
 

@@ -37,9 +37,14 @@ class Assignment:
                     identifier.data_type, data_types.Int32()
                 )
                 identifier.change_data_type(new_data_type)
-                new_var_name = identifier.name.replace(
-                    "unknown_loc_", "unknown_int_loc_"
-                )
+                if identifier.address is None:
+                    new_var_name = identifier.name.replace(
+                        "unknown_loc_", "unknown_int_loc_"
+                    )
+                else:
+                    new_var_name = identifier.name.replace(
+                        "unknown_gbl_", "unknown_int_gbl_"
+                    )
                 identifier.rename(new_var_name)
                 src = expressions.UnparsedToken("1")
         return Assignment(dst, src)

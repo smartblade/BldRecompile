@@ -3,12 +3,12 @@ import os
 import os.path
 import re
 
-import data_types
 from exceptions import SkippedProcedureException, NextRunException
 import execute
 from header_declarations import HeaderDeclarations
 import intermediate_analysis as analysis
 import make_project as prj
+import naming
 from output_dir import process_output_dir
 import parser
 
@@ -95,6 +95,7 @@ def process_intermediate_output(files, proc_state):
         declared_identifiers={**orig_parameters, **gbl_vars}
     )
     gbl_vars = analysis.collect_used_globals(gbl_vars, body_instructions)
+    naming.define_class_names(gbl_vars)
     if proc_decl.method_class is not None:
         analysis.ensure_class_fields(proc_decl.method_class, body_instructions)
     analysis.merge_double_fields(

@@ -1,3 +1,6 @@
+import data_types
+
+
 class HeaderDeclarations:
     def __init__(
         self, proc_decl, recompiled_decls, full_typed_args_by_proc,
@@ -76,21 +79,40 @@ class HeaderDeclarations:
         return "\n".join(lines)
 
     def _emit_types_declarations(self, is_metafile, lines):
+        emitted_types = set()
         if self._proc_decl is not None:
             _emit_procedure_types_declarations(
-                self._proc_decl, is_metafile, lines
+                self._proc_decl, is_metafile, lines, emitted_types
             )
         for callee_addr, typed_args in self._typed_args_by_proc.items():
             callee = self._recompiled_decls[callee_addr]
-            _emit_procedure_types_declarations(callee, is_metafile, lines)
+            _emit_procedure_types_declarations(
+                callee, is_metafile, lines, emitted_types
+            )
+        for gbl in self._gbl_vars.values():
+            _emit_type_declaration(
+                gbl.data_type, is_metafile, lines, emitted_types
+            )
 
 
-def _emit_procedure_types_declarations(proc_decl, is_metafile, lines):
+def _emit_procedure_types_declarations(
+        proc_decl, is_metafile, lines, emitted_types
+):
     for data_type in proc_decl.get_used_types().values():
-        _emit_type_declaration(data_type, is_metafile, lines)
+        _emit_type_declaration(data_type, is_metafile, lines, emitted_types)
 
 
-def _emit_type_declaration(data_type, is_metafile, lines):
+def _emit_type_declaration(data_type, is_metafile, lines, emitted_types):
+    if isinstance(data_type, data_types.Pointer32):
+        _emit_type_declaration(
+            data_type.pointee, is_metafile, lines, emitted_types
+        )
+        return
+    if not isinstance(data_type, data_types.ClassType):
+        return
+    if data_type.class_name in emitted_types:
+        return
+    emitted_types.add(data_type.class_name)
     alignment = data_type.alignment
     if alignment:
         lines.append("#pragma pack(push, {})".format(alignment))

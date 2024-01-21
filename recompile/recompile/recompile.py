@@ -37,7 +37,7 @@ def run():
             print("Skipping {} procedure...".format(proc_state.address))
         else:
             print("{} procedure was recompiled.".format(proc_state.address))
-        if proc_state.address >= "00407E80":
+        if proc_state.address >= "00407E8A":
             proc_state.print_status()
             break
 

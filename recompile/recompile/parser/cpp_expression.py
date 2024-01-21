@@ -8,7 +8,8 @@ from expressions.operator import Operator, operators, priorities
 import parser
 
 const_regexp = re.compile(
-    r'^((?P<float>\d+\.\d+F?)|(?P<hex>0x[\dABCDEF]+)|(?P<int>\d+))$'
+    r'^((?P<float>\d+\.\d+F?)|(?P<hex>0x[\dABCDEF]+)|(?P<int>\d+)|'
+    r'(?P<null>null))$'
 )
 field_access_regexp = re.compile(
     r'^(?P<expression>.+)(?P<sep>->|\.)(?P<field>\w+)$'
@@ -96,6 +97,8 @@ def _new_token(state, s):
         elif match.group('int') is not None:
             data_type = data_types.Int32()
             value = s
+        elif match.group('null') is not None:
+            return expressions.Null
         elif s.endswith("F"):
             data_type = data_types.Float()
             value = float(s[:-1])

@@ -1,6 +1,10 @@
 import re
 import shutil
 
+import data_types
+from hex_conversion import to_hex
+from writer import Writer
+
 intv_regexp = re.compile(r'procedure name="decompile_(?P<intv>[\d\-_ABCDEF]+)"')
 
 
@@ -14,6 +18,10 @@ def make_project_file(
         addr_str = "<address>{}</address>\n"
         cdecl_str = "<CSignature>{}</CSignature>\n"
         procedure_end = "</procedure>\n"
+        global_start = "<global>\n"
+        gbl_addr_str = "<Address>{}</Address>\n"
+        name_str = "<Name>{}</Name>\n"
+        global_end = "</global>\n"
         defined_procedures = set()
         procedure_declarations_inserted = False
         for line in lines:
@@ -29,6 +37,14 @@ def make_project_file(
                     if cdecl is not None:
                         f.write(" " * 8 + cdecl_str.format(cdecl))
                     f.write(" " * 6 + procedure_end)
+                for gbl in declarations.gbl_vars.values():
+                    if gbl.data_type is None:
+                        continue
+                    f.write(" " * 6 + global_start)
+                    f.write(" " * 8 + gbl_addr_str.format(to_hex(gbl.address)))
+                    f.write(_type_to_xml(gbl.data_type))
+                    f.write(" " * 8 + name_str.format(gbl.name))
+                    f.write(" " * 6 + global_end)
                 procedure_declarations_inserted = True
             f.write(line)
         if not procedure_declarations_inserted:
@@ -95,3 +111,32 @@ def make_procedure_project(files, callees, addr, declarations):
     else:
         shutil.copyfile(files.intermediate_project, files.project)
     set_decompiled_part(files.project, addr)
+
+
+def _type_to_xml(data_type):
+    writer = Writer(indent_length=2)
+    with writer.indent():
+        with writer.indent():
+            with writer.indent():
+                with writer.indent():
+                    _write_xml_type(data_type, writer)
+    return writer.get_string()
+
+
+def _write_xml_type(data_type, writer):
+    if isinstance(data_type, data_types.Pointer32):
+        if data_type.pointee is None:
+            writer.write_line('<prim domain="Pointer" size="4" />')
+            return
+        writer.write_line('<ptr size="4">')
+        with writer.indent():
+            _write_xml_type(data_type.pointee, writer)
+        writer.write_line('</ptr>')
+        return
+    if isinstance(data_type, data_types.ClassType):
+        writer.write_line("<type>{}</type>".format(data_type.class_name))
+        return
+    if isinstance(data_type, data_types.Unknown32):
+        writer.write_line('<prim domain="Any" size="4" />')
+        return
+    raise Exception("Can't convert {} to xml.".format(data_type))

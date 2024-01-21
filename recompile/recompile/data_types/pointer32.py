@@ -21,6 +21,11 @@ class Pointer32(DataType):
         if self._pointee is None:
             if is_metafile:
                 return "ptr32"
-            return "void *"
+            return _make_ptr_type("void")
         pointee_type = self._pointee.get_type_name(is_metafile)
-        return "{} *".format(pointee_type)
+        return _make_ptr_type(pointee_type)
+
+
+def _make_ptr_type(pointee_str):
+    sep = "" if pointee_str[-1] == "*" else " "
+    return "{}{}*".format(pointee_str, sep)

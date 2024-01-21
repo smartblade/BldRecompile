@@ -2,6 +2,7 @@ from calling_convention import CallingConvention
 import data_types
 from hex_conversion import from_hex
 from make_tuple import make_tuple
+import naming
 import parser
 from procedure_declaration import ProcedureDeclaration
 
@@ -51,7 +52,7 @@ def parse_procedure_declaration(proc, addr, stack_offset, fpu_offset, classes):
             raise Exception(
                 "Not supported type as method class: {}.".format(ptr_to_class)
             )
-        method_class = _ensure_class_name(
+        method_class = naming.ensure_class_name(
             method_class, "unknown_class_{}".format(addr)
         )
         par_by_orig_name["ecx"] = "this"
@@ -73,7 +74,7 @@ def parse_procedure_declaration(proc, addr, stack_offset, fpu_offset, classes):
                 isinstance(var_type.pointee, data_types.ClassType)
         ):
             var_type = data_types.Pointer32(
-                _ensure_class_name(
+                naming.ensure_class_name(
                     var_type.pointee,
                     "unknown_class_{}_p_{}".format(addr, var_name[-2:])
                 )
@@ -104,12 +105,6 @@ def parse_procedure_declaration(proc, addr, stack_offset, fpu_offset, classes):
     if method_class is not None:
         method_class.add_method(proc_decl)
     return par_by_orig_name, proc_decl
-
-
-def _ensure_class_name(c, default_name):
-    if not c.class_name or c.class_name.startswith("Eq_"):
-        return c.rename(default_name)
-    return c
 
 
 def _fill_unused_params(parameters, offset, size):
