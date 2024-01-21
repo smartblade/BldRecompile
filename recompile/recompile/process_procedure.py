@@ -70,21 +70,23 @@ def ensure_class_name(c, default_name):
     return c
 
 
-def process_intermediate_output(files, addr, recompiled_decls):
+def process_intermediate_output(files, proc_state):
+    addr = proc_state.address
     output = process_output_dir(files.project_output)
     stack_offset, fpu_offset = process_dis_file(output.dis_file)
     if fpu_offset != 0 and fpu_offset != 1:
         raise Exception("Unsupported FPU offset: {}".format(fpu_offset))
     proc, body_instructions = process_output_code(output.code_file, addr)
     (callees, full_typed_args_by_proc) = analysis.extract_callees(
-        body_instructions, recompiled_decls
+        body_instructions, proc_state.recompiled_decls
     )
+    proc_state.callees = callees
     dump_callees(files, callees)
-    if len(set(callees) - set(recompiled_decls)) > 0:
+    if len(set(callees) - set(proc_state.recompiled_decls)) > 0:
         raise SkippedProcedureException()
     defined_types = {}
     for callee_add in full_typed_args_by_proc.keys():
-        callee_decl = recompiled_decls[callee_add]
+        callee_decl = proc_state.recompiled_decls[callee_add]
         defined_types.update(callee_decl.get_used_types())
     declarations = process_header_file(output.header_file, defined_types)
     gbl_vars = process_globals_file(output.globals_file, defined_types)
@@ -158,7 +160,7 @@ def process_intermediate_output(files, addr, recompiled_decls):
         method_class.add_method(proc_decl)
     analysis.guess_float_fields(proc_decl, par_by_orig_name, body_instructions)
     return HeaderDeclarations(
-        proc_decl, recompiled_decls, full_typed_args_by_proc,
+        proc_decl, proc_state.recompiled_decls, full_typed_args_by_proc,
         declarations.external_procedures, gbl_vars
     )
 
@@ -208,19 +210,19 @@ def next_run(files, run_callback, max_times):
                 pass
 
 
-def process_procedure(files, addr, recompiled_decls):
+def process_procedure(proc_state):
+    addr = proc_state.address
+
     def intermediate_output(run_files):
-        callees = load_callees(files)
+        callees = load_callees(run_files)
         declarations = HeaderDeclarations(
-            None, recompiled_decls, full_typed_args_by_proc, [], {}
+            None, proc_state.recompiled_decls, full_typed_args_by_proc, [], {}
         )
         prj.make_procedure_project(run_files, callees, addr, declarations)
         prj.set_output_dir(run_files.project, run_files.project_output_basename)
         prj.set_declarations(run_files, declarations, addr)
         execute.reko(run_files, has_decl_file=False)
-        declarations = process_intermediate_output(
-            run_files, addr, recompiled_decls
-        )
+        declarations = process_intermediate_output(run_files, proc_state)
         if (
             len(declarations.full_typed_args_by_proc) > 0 and
             len(full_typed_args_by_proc) == 0
@@ -230,13 +232,13 @@ def process_procedure(files, addr, recompiled_decls):
         return declarations
 
     def final_output(run_files):
-        callees = load_callees(files)
+        callees = load_callees(run_files)
         prj.make_procedure_project(run_files, callees, addr, declarations)
         prj.set_output_dir(run_files.project, run_files.project_output_basename)
         prj.set_declarations(run_files, declarations, addr)
         execute.reko(run_files)
         process_final_output(run_files, declarations, addr)
     full_typed_args_by_proc = {}
-    declarations = next_run(files, intermediate_output, max_times=2)
-    next_run(files, final_output, max_times=2)
-    return declarations.proc_decl
+    declarations = next_run(proc_state.files, intermediate_output, max_times=2)
+    next_run(proc_state.files, final_output, max_times=2)
+    proc_state.recompiled_decls[addr] = declarations.proc_decl

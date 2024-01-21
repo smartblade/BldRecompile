@@ -8,6 +8,7 @@ from common_header import create_common_header
 from exceptions import SkippedProcedureException
 from files_location import FilesLocation
 from header_declarations import HeaderDeclarations
+from iterate_procedures import iterate_procedures
 import make_project as prj
 from process_procedure import process_procedure
 
@@ -29,15 +30,13 @@ def run():
         HeaderDeclarations(None, {}, {}, [], {})
     )
     create_common_header(files)
-    recompiled_decls = {}
-    for addr, proc in proc_dict.items():
+    for proc_state in iterate_procedures(proc_dict, files):
         try:
-            recompiled_decls[addr] = process_procedure(
-                files.for_procedure(addr), addr, recompiled_decls
-            )
+            process_procedure(proc_state)
         except SkippedProcedureException:
-            print("Skipping {} procedure...".format(addr))
-        if addr >= "00407E80":
+            print("Skipping {} procedure...".format(proc_state.address))
+        if proc_state.address >= "00407E80":
+            proc_state.print_status()
             break
 
 
