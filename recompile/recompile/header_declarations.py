@@ -43,25 +43,18 @@ class HeaderDeclarations:
     def emit_metafile(self, decl_file_name):
         if self._proc_decl is None and len(self._typed_args_by_proc) == 0:
             return False
+        lines = []
+        self._emit_types_declarations(is_metafile=True, lines=lines)
         with open(decl_file_name, "wt") as f:
-            if self._proc_decl is not None:
-                f.write(
-                    self._proc_decl.get_types_declarations(is_metafile=True)
-                )
-            for callee_addr, typed_args in self._typed_args_by_proc.items():
-                callee = self._recompiled_decls[callee_addr]
-                f.write(callee.get_types_declarations(is_metafile=True))
+            f.write("\n".join(lines))
         return True
 
     def emit_header(self):
         lines = [
             "#pragma once",
             "",
-            self._proc_decl.get_types_declarations(is_metafile=False),
         ]
-        for callee_addr, full_typed_args in self._typed_args_by_proc.items():
-            callee = self._recompiled_decls[callee_addr]
-            lines.append(callee.get_types_declarations(is_metafile=False))
+        self._emit_types_declarations(is_metafile=False, lines=lines)
         need_new_line = False
         for ext_proc in self._external_procedures.values():
             if ext_proc.method_class is not None:
@@ -83,6 +76,31 @@ class HeaderDeclarations:
         if need_new_line:
             lines.append("")
         return "\n".join(lines)
+
+    def _emit_types_declarations(self, is_metafile, lines):
+        if self._proc_decl is not None:
+            _emit_procedure_types_declarations(
+                self._proc_decl, is_metafile, lines
+            )
+        for callee_addr, typed_args in self._typed_args_by_proc.items():
+            callee = self._recompiled_decls[callee_addr]
+            _emit_procedure_types_declarations(callee, is_metafile, lines)
+
+
+def _emit_procedure_types_declarations(proc_decl, is_metafile, lines):
+    for data_type in proc_decl.get_used_types().values():
+        _emit_type_declaration(data_type, is_metafile, lines)
+
+
+def _emit_type_declaration(data_type, is_metafile, lines):
+    alignment = data_type.alignment
+    if alignment:
+        lines.append("#pragma pack(push, {})".format(alignment))
+        lines.append("")
+    lines.append(data_type.get_declaration(is_metafile))
+    if alignment:
+        lines.append("#pragma pack(pop)")
+        lines.append("")
 
 
 def _procedures_to_dict(procedures):
