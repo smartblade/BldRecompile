@@ -9,7 +9,7 @@ def parse_output_code(lines, addr):
         if line.startswith("}"):
             return proc, parser.parse_instructions(body_lines, {})
         if addr in line:
-            proc = parser.parse_procedure_declaration(line)
+            proc = parser.split_procedure_parameters(line)
         elif line.startswith("{"):
             body_lines = []
         elif body_lines is not None:

@@ -3,17 +3,14 @@ import os
 import os.path
 import re
 
-from calling_convention import CallingConvention
 import data_types
 from exceptions import SkippedProcedureException, NextRunException
 import execute
 from header_declarations import HeaderDeclarations
-from hex_conversion import from_hex
 import intermediate_analysis as analysis
 import make_project as prj
 from output_dir import process_output_dir
 import parser
-from procedure_declaration import ProcedureDeclaration
 
 stack_delta_regexp = re.compile(
     r'//\sstackDelta:\s(?P<stack_offset>\d+);'
@@ -64,12 +61,6 @@ def dump_callees(files, callees):
         json.dump(list(sorted(callees)), f)
 
 
-def ensure_class_name(c, default_name):
-    if not c.class_name or c.class_name.startswith("Eq_"):
-        return c.rename(default_name)
-    return c
-
-
 def process_intermediate_output(files, proc_state):
     addr = proc_state.address
     output = process_output_dir(files.project_output)
@@ -90,94 +81,20 @@ def process_intermediate_output(files, proc_state):
         defined_types.update(callee_decl.get_used_types())
     declarations = process_header_file(output.header_file, defined_types)
     gbl_vars = process_globals_file(output.globals_file, defined_types)
-    classes = declarations.defined_types
-    method_class = None
-    if proc.class_type is not None:
-        ptr_to_class = parser.parse_data_type(proc.class_type, classes)
-        if (isinstance(ptr_to_class, data_types.Pointer32)):
-            if ptr_to_class.pointee is None:
-                method_class = data_types.ClassType("", {})
-            else:
-                method_class = ptr_to_class.pointee
-        else:
-            raise Exception(
-                "Not supported type as method class: {}.".format(ptr_to_class)
-            )
-        method_class = ensure_class_name(
-            method_class, "unknown_class_{}".format(addr)
-        )
-        analysis.ensure_class_fields(method_class, body_instructions)
-    if proc.class_type is not None:
-        convention = CallingConvention.THISCALL
-    else:
-        if stack_offset == 4:
-            convention = CallingConvention.CDECL
-        else:
-            convention = CallingConvention.STDCALL
-    parameters = []
-    cur_offset = 4  # Return address size at stack
-    par_by_orig_name = {"ecx": "this"}
-    for (var_type, var_name) in proc.parameters:
-        offset = from_hex(var_name[-2:])
-        fill_unused_params(parameters, cur_offset, offset - cur_offset)
-        var_type = parser.parse_data_type(var_type, classes)
-        if (
-            isinstance(var_type, data_types.Pointer32) and
-            isinstance(var_type.pointee, data_types.ClassType)
-        ):
-            var_type = data_types.Pointer32(
-                ensure_class_name(
-                    var_type.pointee,
-                    "unknown_class_{}_p_{}".format(addr, var_name[-2:])
-                )
-            )
-        par_by_orig_name[var_name] = parser.define_parameter_name(
-            var_type, var_name
-        )
-        var_name = par_by_orig_name[var_name]
-        parameters.append((var_type, var_name))
-        cur_offset = offset + var_type.size
-    if convention != CallingConvention.CDECL:
-        fill_unused_params(parameters, cur_offset, stack_offset - cur_offset)
-    analysis.merge_double_fields(parameters, body_instructions)
-    analysis.analyse_types(classes, body_instructions)
-    if fpu_offset == 1:
-        return_arg = data_types.Double()
-    else:
-        return_arg = data_types.Unknown32()
-    if method_class is not None:
-        proc_name = "unknown_method_{}".format(addr)
-    else:
-        proc_name = "unknown_function_{}".format(addr)
-    proc_decl = ProcedureDeclaration(
-        proc_name=proc_name,
-        convention=convention,
-        method_class=method_class,
-        parameters=parameters,
-        return_arg=return_arg,
+    par_by_orig_name, proc_decl = parser.parse_procedure_declaration(
+        proc, addr, stack_offset, fpu_offset, declarations.defined_types
     )
-    if method_class is not None:
-        method_class.add_method(proc_decl)
+    if proc_decl.method_class is not None:
+        analysis.ensure_class_fields(proc_decl.method_class, body_instructions)
+    analysis.merge_double_fields(
+        proc_decl.get_parameters_ids(), body_instructions
+    )
+    analysis.analyse_types(declarations.defined_types, body_instructions)
     analysis.guess_float_fields(proc_decl, par_by_orig_name, body_instructions)
     return HeaderDeclarations(
         proc_decl, proc_state.recompiled_decls, full_typed_args_by_proc,
         declarations.external_procedures, gbl_vars
     )
-
-
-def fill_unused_params(parameters, offset, size):
-    if size < 0:
-        raise Exception(
-            "Inconsistent parameters at {:X} before {:X} offset.".format(
-                offset + size, offset
-            )
-        )
-    if size % 4 != 0:
-        raise Exception("Size {} should be multiple of 4.".format(size))
-    for i in range(offset, offset + size, 4):
-        parameters.append(
-            (data_types.Unknown32(), "unused_param_{:02X}".format(i))
-        )
 
 
 def extract_procedure_body(file_name, declarations):

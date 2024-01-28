@@ -9,4 +9,5 @@ from .instructions import parse_instructions
 from .output_code import parse_output_code
 from .procedure_body import parse_procedure_body
 from .procedure_declaration import parse_procedure_declaration
+from .procedure_declaration import split_procedure_parameters
 from .variable_declaration import parse_variable_declaration

@@ -106,19 +106,17 @@ def merge_double_fields(parameters, body_instructions):
                     )
                 )
             obj = first_obj.replace("dwArg", "unknown_ptr_")
-            parameter_found = False
-            for param_type, param_name in parameters:
-                if param_name == obj:
-                    parameter_found = True
-                    if not isinstance(param_type, data_types.Pointer32):
-                        raise Exception(
-                            "Parameter type should be pointer bat was: {}.".format(
-                                 param_type
-                             )
-                        )
-                    param_type.pointee.merge_word32_into_double(second_offset)
-            if not parameter_found:
+            parameter = parameters.get(obj)
+            if parameter is None:
                 raise Exception("Parameter {} was not found.".format(obj))
+            param_type = parameter.data_type
+            if not isinstance(param_type, data_types.Pointer32):
+                raise Exception(
+                    "Parameter type should be pointer bat was: {}.".format(
+                        param_type
+                    )
+                )
+            param_type.pointee.merge_word32_into_double(second_offset)
 
 
 def analyse_types(classes, body_instructions):
