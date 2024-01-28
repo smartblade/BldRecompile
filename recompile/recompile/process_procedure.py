@@ -94,6 +94,7 @@ def process_intermediate_output(files, proc_state):
         addr,
         declared_identifiers={**orig_parameters, **gbl_vars}
     )
+    gbl_vars = analysis.collect_used_globals(gbl_vars, body_instructions)
     if proc_decl.method_class is not None:
         analysis.ensure_class_fields(proc_decl.method_class, body_instructions)
     analysis.merge_double_fields(

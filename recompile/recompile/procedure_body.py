@@ -1,4 +1,4 @@
-from block_transformer import transform_block
+import block_transformer as transformer
 from writer import Writer
 
 
@@ -14,7 +14,7 @@ class ProcedureBody:
         )
 
     def transform_instructions(self, declarations):
-        self._instructions = transform_block(
+        self._instructions = transformer.transform_block(
             self._instructions,
             declared_identifiers=self._proc_decl.get_parameters_ids(),
             id_suffixes={},

@@ -1,6 +1,3 @@
-import parser
-
-
 class Identifier:
     def __init__(self, data_type, name):
         self._data_type = data_type
@@ -24,9 +21,6 @@ class Identifier:
         self._name = name
 
     def transform_expression(self, **kwargs):
-        if self._name.startswith("g_"):
-            new_name = parser.define_global_name(self._data_type, self._name)
-            self.rename(new_name)
         return self
 
     def visit(self, on_expression_visited, **kwargs):

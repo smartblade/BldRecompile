@@ -63,8 +63,6 @@ class HeaderDeclarations:
             lines.append("{};".format(declaration))
             need_new_line = True
         for gbl in self._gbl_vars.values():
-            if gbl.name.startswith("g_"):
-                continue
             if gbl.data_type is not None:
                 declaration = gbl.data_type.make_variable_declaration(
                     gbl.name, is_metafile=False

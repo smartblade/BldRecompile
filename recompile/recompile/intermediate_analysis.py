@@ -149,6 +149,20 @@ def analyse_types(classes, body_instructions):
         instr.visit(on_expression_visited)
 
 
+def collect_used_globals(gbl_vars, body_instructions):
+    def on_expression_visited(e):
+        if not isinstance(e, expressions.Identifier):
+            return
+        used_ids.add(e.name)
+    used_ids = set()
+    for instr in body_instructions:
+        instr.visit(on_expression_visited)
+    return dict(
+        (name, gbl)
+        for name, gbl in gbl_vars.items() if gbl.name in used_ids
+    )
+
+
 def _is_addr_of_local(e):
     if (
         isinstance(e, expressions.AddressOf) and

@@ -16,5 +16,6 @@ def parse_globals_declarations(lines, defined_types):
             match.group('data_type'), defined_types
         )
         var_name = match.group('var_name')
-        gbl_vars[var_name] = expressions.Identifier(data_type, var_name)
+        new_name = parser.define_global_name(data_type, var_name)
+        gbl_vars[var_name] = expressions.Identifier(data_type, new_name)
     return gbl_vars
