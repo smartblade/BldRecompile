@@ -38,6 +38,7 @@ def split_procedure_parameters(s):
 
 
 def parse_procedure_declaration(proc, addr, stack_offset, fpu_offset, classes):
+    par_by_orig_name = {}
     method_class = None
     if proc.class_type is not None:
         ptr_to_class = parser.parse_data_type(proc.class_type, classes)
@@ -53,6 +54,7 @@ def parse_procedure_declaration(proc, addr, stack_offset, fpu_offset, classes):
         method_class = _ensure_class_name(
             method_class, "unknown_class_{}".format(addr)
         )
+        par_by_orig_name["ecx"] = "this"
     if proc.class_type is not None:
         convention = CallingConvention.THISCALL
     else:
@@ -62,7 +64,6 @@ def parse_procedure_declaration(proc, addr, stack_offset, fpu_offset, classes):
             convention = CallingConvention.STDCALL
     parameters = []
     cur_offset = 4  # Return address size at stack
-    par_by_orig_name = {"ecx": "this"}
     for (var_type, var_name) in proc.parameters:
         offset = from_hex(var_name[-2:])
         _fill_unused_params(parameters, cur_offset, offset - cur_offset)

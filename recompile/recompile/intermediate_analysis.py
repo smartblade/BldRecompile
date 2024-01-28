@@ -8,7 +8,7 @@ import instructions
 from writer import Writer
 
 char_cast_regexp = re.compile(
-    r'^(\(char\s*\*\)\s*ecx|&ecx->(?P<field_name>\w+))$'
+    r'^(\(char\s*\*\)\s*this|&this->(?P<field_name>\w+))$'
 )
 offset_regexp = re.compile(r'^(?P<offset>\d+)$')
 field_regexp = re.compile(r'^dw(?P<offset>[\dABCDEF]+)\s*$')
@@ -44,7 +44,7 @@ def ensure_class_fields(method_class, body_instructions):
         instr.visit(on_expression_visited)
 
 
-def guess_float_fields(proc_decl, par_by_orig_name, body_instructions):
+def guess_float_fields(proc_decl, body_instructions):
     parameters = proc_decl.get_parameters_ids()
 
     def on_expression_visited(e):
@@ -56,15 +56,12 @@ def guess_float_fields(proc_decl, par_by_orig_name, body_instructions):
         if not match:
             return
         offset = match.group('offset')
-        if not isinstance(e.dst.expression, expressions.UnparsedToken):
+        if not isinstance(e.dst.expression, expressions.Identifier):
             return
-        parameter_name = par_by_orig_name.get(e.dst.expression.emit_code())
-        if parameter_name is None:
+        identifier = e.dst.expression
+        if not isinstance(identifier.data_type, data_types.Pointer32):
             return
-        parameter = parameters[parameter_name]
-        if not isinstance(parameter.data_type, data_types.Pointer32):
-            return
-        parameter_class = parameter.data_type.pointee
+        parameter_class = identifier.data_type.pointee
         if not isinstance(e.src, expressions.Constant):
             return
         if e.src.emit_code() == "0x3FF00000":
@@ -105,7 +102,7 @@ def merge_double_fields(parameters, body_instructions):
                         first_offset, second_offset
                     )
                 )
-            obj = first_obj.replace("dwArg", "unknown_ptr_")
+            obj = first_obj
             parameter = parameters.get(obj)
             if parameter is None:
                 raise Exception("Parameter {} was not found.".format(obj))
