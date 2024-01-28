@@ -1,3 +1,4 @@
+import parser
 from procedure_body import ProcedureBody
 
 
@@ -13,6 +14,13 @@ def parse_procedure_body(lines, declarations):
             instructions = []
             continue
         if line.startswith("}"):
-            return ProcedureBody(declarations, instructions)
+            instructions = parser.parse_instructions(
+                instructions,
+                declared_identifiers={
+                    **declarations.proc_decl.get_parameters_ids(),
+                    **declarations.gbl_vars,
+                }
+            )
+            return ProcedureBody(declarations.proc_decl, instructions)
         if instructions is not None:
             instructions.append(line)

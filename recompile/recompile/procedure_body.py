@@ -1,17 +1,11 @@
 from block_transformer import transform_block
-import parser
 from writer import Writer
 
+
 class ProcedureBody:
-    def __init__(self, declarations, instructions):
-        self._proc_decl = declarations.proc_decl
-        self._instructions = parser.parse_instructions(
-            instructions,
-            declared_identifiers={
-                **self._proc_decl.get_parameters_ids(),
-                **declarations.gbl_vars,
-            }
-        )
+    def __init__(self, proc_decl, instructions):
+        self._proc_decl = proc_decl
+        self._instructions = instructions
 
     def __repr__(self):
         return "ProcedureBody(proc_decl={}, instructions={})".format(
