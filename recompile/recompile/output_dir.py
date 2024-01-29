@@ -71,6 +71,7 @@ def reduce_globals_file(globals_file):
     with open(globals_file, "wt") as f:
         for line in new_lines:
             f.write(line)
+    return globals_file
 
 
 def process_output_dir(output_dir):
@@ -82,7 +83,7 @@ def process_output_dir(output_dir):
         for file in files:
             if file.endswith("globals.c"):
                 globals_file = os.path.join(output_dir, file)
-                reduce_globals_file(globals_file)
+                globals_file = reduce_globals_file(globals_file)
             elif file.endswith(".c"):
                 code_file = os.path.join(output_dir, file)
             elif file.endswith(".h"):
