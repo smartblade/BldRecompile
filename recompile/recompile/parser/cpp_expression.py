@@ -17,32 +17,33 @@ field_access_regexp = re.compile(
 )
 
 
-def parse_cpp_expression(line, declared_identifiers):
+def parse_cpp_expression(line, declared_identifiers, defined_types):
     brackets_dict = {"(": ")", "[": "]"}
     closing_brackets = set(brackets_dict.values())
     states = []
     state = _new_state(
         bracket=None, cur_token=[], tokens=[],
         declared_identifiers=declared_identifiers,
+        defined_types=defined_types,
     )
     for c in line + " ":
         if c == " ":
             if len(state.cur_token) > 0:
                 cur_token = "".join(state.cur_token)
-                _append_token(state.tokens, _new_token(state, cur_token))
+                _append_token(state, _new_token(state, cur_token))
                 state.cur_token.clear()
         elif c == ",":
             if len(state.cur_token) > 0:
                 cur_token = "".join(state.cur_token)
-                _append_token(state.tokens, _new_token(state, cur_token))
+                _append_token(state, _new_token(state, cur_token))
                 state.cur_token.clear()
-            _append_token(state.tokens, _new_token(state, ","))
+            _append_token(state, _new_token(state, ","))
         elif c in brackets_dict:
             state = _opening_bracket(states, state, c)
         elif c in closing_brackets:
             if len(state.cur_token) > 0:
                 cur_token = "".join(state.cur_token)
-                _append_token(state.tokens, _new_token(state, cur_token))
+                _append_token(state, _new_token(state, cur_token))
                 state.cur_token.clear()
             brackets_tokens = state.tokens
             (bracket, prefix, state) = _closing_bracket(states, state)
@@ -52,29 +53,36 @@ def parse_cpp_expression(line, declared_identifiers):
                 )
             if c == "]":
                 array = _new_array_access(state, prefix, brackets_tokens)
-                _append_token(state.tokens, array)
+                _append_token(state, array)
             else:
                 brackets = _new_brackets_expression(
                     state, prefix, brackets_tokens
                 )
-                _append_token(state.tokens, brackets)
+                _append_token(state, brackets)
         else:
             state.cur_token.append(c)
     return _make_expression_from_tokens(state.tokens)
 
 
-def _append_token(tokens, token):
+def _append_token(state, token):
+    tokens = state.tokens
     if (
         len(tokens) > 0 and
         isinstance(tokens[-1], expressions.BracketsExpression)
     ):
-        if isinstance(tokens[-1].expression, expressions.UnparsedToken):
-            brackets_expression = tokens[-1].expression.emit_code()
+        e = tokens[-1].expression
+        if (
+            isinstance(e, expressions.UnparsedToken) or
+            isinstance(e, expressions.UnparsedTokens) and e.is_ptr_type()
+        ):
+            brackets_expression = e.emit_code()
         else:
             brackets_expression = None
         if brackets_expression is not None:
             try:
-                data_type = parser.parse_data_type(brackets_expression, [])
+                data_type = parser.parse_data_type(
+                    brackets_expression, state.defined_types
+                )
             except UnknownTypeException:
                 data_type = None
             if data_type is not None:
@@ -200,6 +208,7 @@ def _opening_bracket(states, state, bracket):
     return _new_state(
         bracket=bracket, cur_token=[], tokens=[],
         declared_identifiers=state.declared_identifiers,
+        defined_types=state.defined_types,
     )
 
 

@@ -6,7 +6,7 @@ import instructions
 import parser
 
 
-def parse_instructions(instructions, declared_identifiers):
+def parse_instructions(instructions, declared_identifiers, defined_types):
     blocks_state = []
     state = _new_state(
         block_type=None,
@@ -17,25 +17,25 @@ def parse_instructions(instructions, declared_identifiers):
         instr_str = instr_str.strip()
         if instr_str.startswith("if (") and instr_str.endswith(")"):
             clause = parser.parse_cpp_expression(
-                instr_str[4:-1], declared_identifiers
+                instr_str[4:-1], declared_identifiers, defined_types
             )
             state = _start_block(blocks_state, state, "if", clause)
         elif instr_str.startswith("else if (") and instr_str.endswith(")"):
             state = _start_block(blocks_state, state, "else", None)
             clause = parser.parse_cpp_expression(
-                instr_str[9:-1], declared_identifiers
+                instr_str[9:-1], declared_identifiers, defined_types
             )
             state = _start_block(blocks_state, state, "if", clause)
         elif instr_str == "else":
             state = _start_block(blocks_state, state, "else", None)
         elif instr_str.startswith("while (") and instr_str.endswith(")"):
             clause = parser.parse_cpp_expression(
-                instr_str[7:-1], declared_identifiers
+                instr_str[7:-1], declared_identifiers, defined_types
             )
             state = _start_block(blocks_state, state, "while", clause)
         elif instr_str.startswith("for (") and instr_str.endswith(")"):
             clause = parser.parse_cpp_expression(
-                instr_str[5:-1], declared_identifiers
+                instr_str[5:-1], declared_identifiers, defined_types
             )
             state = _start_block(blocks_state, state, "for", clause)
         elif instr_str == "{":
@@ -45,7 +45,7 @@ def parse_instructions(instructions, declared_identifiers):
             while not state.multiple_lines:
                 state = _end_block(blocks_state, state)
         elif instr_str.endswith(";"):
-            instr = _parse_instruction(instr_str[:-1], declared_identifiers)
+            instr = _parse_instruction(instr_str[:-1], declared_identifiers, defined_types)
             state.current_block.append(instr)
             while not state.multiple_lines:
                 state = _end_block(blocks_state, state)
@@ -93,10 +93,13 @@ def _end_block(blocks_state, state):
         )
     return prev_state
 
-def _parse_instruction(instr, declared_identifiers):
+
+def _parse_instruction(instr, declared_identifiers, defined_types):
     if len(instr) == 0:
         return instructions.empty
-    tokens = parser.parse_cpp_expression(instr, declared_identifiers)
+    tokens = parser.parse_cpp_expression(
+        instr, declared_identifiers, defined_types
+    )
     if isinstance(tokens, expressions.UnparsedTokens):
         return_expression = tokens.as_return()
     else:

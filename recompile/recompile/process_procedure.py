@@ -18,10 +18,10 @@ stack_delta_regexp = re.compile(
 )
 
 
-def process_output_code(file_name, addr, declared_identifiers):
+def process_output_code(file_name, *args, **kwargs):
     with open(file_name) as f:
         lines = f.readlines()
-    return parser.parse_output_code(lines, addr, declared_identifiers)
+    return parser.parse_output_code(lines, *args, **kwargs)
 
 
 def process_header_file(file_name, defined_types):
@@ -67,7 +67,9 @@ def process_intermediate_output(files, proc_state):
     stack_offset, fpu_offset = process_dis_file(output.dis_file)
     if fpu_offset != 0 and fpu_offset != 1:
         raise Exception("Unsupported FPU offset: {}".format(fpu_offset))
-    proc, body_instructions = process_output_code(output.code_file, addr, {})
+    proc, body_instructions = process_output_code(
+        output.code_file, addr, {}, {}
+    )
     (callees, full_typed_args_by_proc) = analysis.extract_callees(
         body_instructions, proc_state.recompiled_decls
     )
@@ -92,7 +94,8 @@ def process_intermediate_output(files, proc_state):
     proc, body_instructions = process_output_code(
         output.code_file,
         addr,
-        declared_identifiers={**orig_parameters, **gbl_vars}
+        declared_identifiers={**orig_parameters, **gbl_vars},
+        defined_types=declarations.defined_types,
     )
     gbl_vars = analysis.collect_used_globals(gbl_vars, body_instructions)
     naming.define_class_names(gbl_vars)

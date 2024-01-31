@@ -66,7 +66,7 @@ def merge_instructions(first_instr, second_instr):
             isinstance(second_instr.id.data_type, data_types.Unknown32)
         ):
             initial_expression = parser.parse_cpp_expression(
-                "{}".format(initial_expression), {}
+                "{}".format(initial_expression), {}, {}
             )
             identifier = expressions.Identifier(
                 data_types.Double(),
@@ -84,8 +84,8 @@ def merge_instructions(first_instr, second_instr):
     dst = merge_word32_into_double(first_instr.dst, second_instr.dst)
     if dst is None:
         return
-    dst = parser.parse_cpp_expression("{}".format(dst), {})
-    src = parser.parse_cpp_expression("{}".format(src), {})
+    dst = parser.parse_cpp_expression("{}".format(dst), {}, {})
+    src = parser.parse_cpp_expression("{}".format(src), {}, {})
     return instructions.Assignment(dst, src)
 
 

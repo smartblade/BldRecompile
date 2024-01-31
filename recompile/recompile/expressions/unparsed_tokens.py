@@ -45,6 +45,11 @@ class UnparsedTokens:
             return None
         return self._tokens[1]
 
+    def is_ptr_type(self):
+        if len(self._tokens) < 1:
+            return False
+        return self._tokens[-1].emit_code() == "*"
+
     def transform_expression(self, **kwargs):
         tokens = list(
             map(

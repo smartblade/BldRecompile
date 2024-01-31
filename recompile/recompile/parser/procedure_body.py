@@ -19,7 +19,8 @@ def parse_procedure_body(lines, declarations):
                 declared_identifiers={
                     **declarations.proc_decl.get_parameters_ids(),
                     **declarations.gbl_vars,
-                }
+                },
+                defined_types={},
             )
             return ProcedureBody(declarations.proc_decl, instructions)
         if instructions is not None:
