@@ -119,24 +119,27 @@ def merge_word32_into_double(first, second):
             return
         return first.emit_code()
     first_num = _strip_real64(first)
-    if first_num is None:
+    if not isinstance(first_num, expressions.Constant):
         return
     second_num = second
-    first_num = first_num.emit_code()
-    if first_num is None or not first_num.startswith("0x"):
+    if not isinstance(
+        first_num.data_type, (data_types.UnknownByte, data_types.Unknown32)
+    ):
         return
     if not isinstance(second_num, expressions.Constant):
         return
-    second_num = second_num.emit_code()
-    if not second_num.startswith("0x"):
+    if not isinstance(
+        second_num.data_type, (data_types.UnknownByte, data_types.Unknown32)
+    ):
         return
-    return make_double(first_num, second_num)
+    return make_double(first_num.value, second_num.value)
+
 
 def make_double(first_num, second_num):
     (double, ) = struct.unpack(
         '>d',
         bytes.fromhex(
-            to_hex(from_hex(second_num)) + to_hex(from_hex(first_num))
+            to_hex(second_num) + to_hex(first_num)
         ),
     )
     return double

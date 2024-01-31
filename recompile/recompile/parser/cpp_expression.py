@@ -5,6 +5,7 @@ import data_types
 from exceptions import UnknownTypeException
 import expressions
 from expressions.operator import Operator, operators, priorities
+from hex_conversion import from_hex
 import parser
 
 const_regexp = re.compile(
@@ -93,7 +94,7 @@ def _new_token(state, s):
                 data_type = data_types.Unknown32()
             else:
                 raise Exception("Can't define type for '{}'".format(s))
-            value = s
+            value = from_hex(s)
         elif match.group('int') is not None:
             data_type = data_types.Int32()
             value = s

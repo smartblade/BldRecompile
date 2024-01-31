@@ -25,12 +25,13 @@ class Assignment:
         src = self._src.transform_expression(**kwargs)
         dst = self._dst.transform_expression(**kwargs)
         src = _strip_brackets(src)
-        is_src_const = isinstance(src, expressions.Constant)
-        if is_src_const and src.emit_code() == "0x00":
-            src = expressions.UnparsedToken("0")
-        elif is_src_const and src.emit_code() == "0x01":
-            # 0x01 can not be pointer and it's unlikely float, so make it
-            # integer
+        if (
+            isinstance(src, expressions.Constant) and
+            isinstance(src.data_type, data_types.UnknownByte) and
+            src.value > 0
+        ):
+            # Small value can not be pointer, and it's unlikely float, so make
+            # it integer
             if isinstance(dst, expressions.Identifier):
                 identifier = dst
                 new_data_type = merge_types(
@@ -46,7 +47,7 @@ class Assignment:
                         "unknown_gbl_", "unknown_int_gbl_"
                     )
                 identifier.rename(new_var_name)
-                src = expressions.UnparsedToken("1")
+                src = expressions.Constant(identifier.data_type, src.value)
         return Assignment(dst, src)
 
     def visit(self, on_expression_visited, **kwargs):
