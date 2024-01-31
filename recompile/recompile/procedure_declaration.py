@@ -101,10 +101,10 @@ class ProcedureDeclaration:
             ", ".join(parameters),
         )
 
-    def extract_return_arg_from_line(self, line):
+    def extract_return_arg_from_line(self, line, declarations):
         name_pos = line.find(self._proc_name)
         self._return_arg = parser.parse_data_type(
-            line[:name_pos].strip(), self.get_used_types()
+            line[:name_pos].strip(), declarations.get_types_declarations()
         )
 
     def _make_variable_declaration(

@@ -78,41 +78,40 @@ class HeaderDeclarations:
             lines.append("")
         return "\n".join(lines)
 
-    def _emit_types_declarations(self, is_metafile, lines):
-        emitted_types = set()
+    def get_types_declarations(self):
+        declared_types = {}
         if self._proc_decl is not None:
-            _emit_procedure_types_declarations(
-                self._proc_decl, is_metafile, lines, emitted_types
-            )
+            _add_procedure_types_declarations(self._proc_decl, declared_types)
         for callee_addr, typed_args in self._typed_args_by_proc.items():
             callee = self._recompiled_decls[callee_addr]
-            _emit_procedure_types_declarations(
-                callee, is_metafile, lines, emitted_types
-            )
+            _add_procedure_types_declarations(callee, declared_types)
         for gbl in self._gbl_vars.values():
-            _emit_type_declaration(
-                gbl.data_type, is_metafile, lines, emitted_types
-            )
+            _add_type_declaration(gbl.data_type, declared_types)
+        return declared_types
+
+    def _emit_types_declarations(self, is_metafile, lines):
+        declared_types = self.get_types_declarations()
+        for data_type in declared_types.values():
+            _emit_type_declaration(data_type, is_metafile, lines)
 
 
-def _emit_procedure_types_declarations(
-        proc_decl, is_metafile, lines, emitted_types
-):
+def _add_procedure_types_declarations(proc_decl, declared_types):
     for data_type in proc_decl.get_used_types().values():
-        _emit_type_declaration(data_type, is_metafile, lines, emitted_types)
+        _add_type_declaration(data_type, declared_types)
 
 
-def _emit_type_declaration(data_type, is_metafile, lines, emitted_types):
+def _add_type_declaration(data_type, declared_types):
     if isinstance(data_type, data_types.Pointer32):
-        _emit_type_declaration(
-            data_type.pointee, is_metafile, lines, emitted_types
-        )
+        _add_type_declaration(data_type.pointee, declared_types)
         return
     if not isinstance(data_type, data_types.ClassType):
         return
-    if data_type.class_name in emitted_types:
+    if data_type.class_name in declared_types:
         return
-    emitted_types.add(data_type.class_name)
+    declared_types[data_type.class_name] = data_type
+
+
+def _emit_type_declaration(data_type, is_metafile, lines):
     alignment = data_type.alignment
     if alignment:
         lines.append("#pragma pack(push, {})".format(alignment))

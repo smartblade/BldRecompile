@@ -9,7 +9,7 @@ def parse_procedure_body(lines, declarations):
         if line.startswith("//"):
             continue
         if proc_decl.proc_name in line:
-            proc_decl.extract_return_arg_from_line(line)
+            proc_decl.extract_return_arg_from_line(line, declarations)
         if line.startswith("{"):
             instructions = []
             continue

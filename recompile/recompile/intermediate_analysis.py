@@ -1,6 +1,7 @@
 import re
 
 import data_types
+from exceptions import UndefinedTypeException
 import expressions
 from expressions.operator import Operator
 from hex_conversion import from_hex
@@ -120,9 +121,11 @@ def analyse_types(classes, body_instructions):
     def on_expression_visited(e):
         if not isinstance(e, instructions.Assignment):
             return
+        _analyse_assignment(e, changed_types)
         if not isinstance(e.src, expressions.Cast):
             return
         cast = e.src
+        _analyse_cast(e.dst, cast, changed_types)
         if not isinstance(cast.data_type, data_types.Unknown32):
             return
         if not isinstance(e.dst, expressions.FieldAccess):
@@ -145,8 +148,90 @@ def analyse_types(classes, body_instructions):
         class_type = fa.expression.data_type.pointee
         offset = class_type.find_offset_by_field_name(fa.field_name)
         class_type.merge_word32_into_double(offset)
-    for instr in body_instructions:
-        instr.visit(on_expression_visited)
+    changed_types = set()
+    while True:
+        num_changed_types_before = len(changed_types)
+        for instr in body_instructions:
+            instr.visit(on_expression_visited)
+        if len(changed_types) <= num_changed_types_before:
+            break
+
+
+def _analyse_assignment(ass, changed_types):
+    try:
+        src_type = _get_type_of(ass.src, changed_types)
+    except UndefinedTypeException:
+        return
+    _push_type_down(src_type, ass.dst, changed_types)
+
+
+def _analyse_cast(dst, src_cast, changed_types):
+    if not isinstance(src_cast.data_type, data_types.Pointer32):
+        return
+    _push_type_down(dst.data_type, src_cast.expression, changed_types)
+
+
+def _push_type_down(data_type, e, changed_types):
+    if isinstance(e, expressions.AddressOf):
+        _push_type_down(data_type.pointee, e.expression, changed_types)
+        return
+    if isinstance(e, expressions.FieldAccess):
+        obj_type = e.expression.data_type.pointee
+        offset = from_hex(e.field_name[-4:])
+        _merge_field(obj_type, offset, data_type)
+        return
+    if isinstance(e, expressions.Identifier):
+        try:
+            new_data_type = _merge_types(e.data_type, data_type)
+        except UndefinedTypeException:
+            return
+        e.change_data_type(new_data_type)
+        changed_types.add(e)
+
+
+def _get_type_of(e, changed_types):
+    if isinstance(e, expressions.AddressOf):
+        return data_types.Pointer32(_get_type_of(e.expression, changed_types))
+    if isinstance(e, expressions.Identifier):
+        if e in changed_types:
+            return e.data_type
+    raise UndefinedTypeException()
+
+
+def _merge_field(obj_type, offset, new_field_type):
+    try:
+        field_type, field_name = obj_type.get_field_by_offset(offset)
+    except KeyError:
+        obj_type.add_field(offset, new_field_type)
+        return
+    try:
+        new_field_type = _merge_types(field_type, new_field_type)
+    except UndefinedTypeException:
+        return
+    obj_type.add_field(offset, new_field_type)
+
+
+def _merge_types(data_type, new_data_type):
+    if data_type == new_data_type:
+        raise UndefinedTypeException()
+    if data_type is None:
+        return new_data_type
+    if (
+        isinstance(new_data_type, data_types.Pointer32) and
+        isinstance(data_type, data_types.Pointer32)
+    ):
+        return data_types.Pointer32(
+            _merge_types(data_type.pointee, new_data_type.pointee)
+        )
+    if isinstance(new_data_type, data_types.ClassType):
+        if isinstance(data_type, data_types.Pointer32):
+            _merge_field(new_data_type, 0, data_type)
+            return new_data_type
+    raise Exception(
+        "Can't merge {} with {}.".format(
+            data_type, new_data_type
+        )
+    )
 
 
 def collect_used_globals(gbl_vars, body_instructions):

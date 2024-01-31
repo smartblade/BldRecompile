@@ -1,8 +1,12 @@
+import data_types
+from data_types.data_type import DataType
 from data_types.unknown32 import Unknown32
 from data_types.double import Double
 
-class ClassType:
+
+class ClassType(DataType):
     def __init__(self, class_name, fields):
+        super().__init__()
         self._class_name = class_name
         self._fields = fields
         self._methods = []
@@ -50,9 +54,12 @@ class ClassType:
     def ensure_field(self, offset):
         if offset in self._fields:
             return
-        self._fields[offset] = (
-            Unknown32(), "unknown_field_{:04X}".format(offset)
-        )
+        self.add_field(offset, Unknown32())
+        self._fields_sorted = False
+
+    def add_field(self, offset, data_type):
+        field_name = _define_field_name(data_type, offset)
+        self._fields[offset] = data_type, field_name
         self._fields_sorted = False
 
     def merge_word32_into_double(self, offset):
@@ -136,3 +143,9 @@ class ClassType:
             return
         self._fields = dict(sorted(self._fields.items()))
         self._fields_sorted = True
+
+
+def _define_field_name(data_type, offset):
+    if isinstance(data_type, data_types.Pointer32):
+        return "unknown_ptr_{:04X}".format(offset)
+    return "unknown_field_{:04X}".format(offset)
