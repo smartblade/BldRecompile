@@ -1,4 +1,5 @@
 import data_types
+import expressions
 
 
 class Cast:
@@ -50,6 +51,12 @@ class Cast:
         if (
             isinstance(self._data_type, data_types.Float) and
             isinstance(self._expression.data_type, data_types.Float)
+        ):
+            return True
+        # Eliminate "(<...> *) null" cast
+        if (
+            isinstance(self._data_type, data_types.Pointer32) and
+            self._expression == expressions.Null
         ):
             return True
         return False

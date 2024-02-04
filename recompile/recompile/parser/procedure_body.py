@@ -20,7 +20,7 @@ def parse_procedure_body(lines, declarations):
                     **declarations.proc_decl.get_parameters_ids(),
                     **declarations.gbl_vars,
                 },
-                defined_types={},
+                defined_types=declarations.get_types_declarations(),
             )
             return ProcedureBody(declarations.proc_decl, instructions)
         if instructions is not None:
