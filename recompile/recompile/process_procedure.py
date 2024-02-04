@@ -104,7 +104,9 @@ def process_intermediate_output(files, proc_state):
     analysis.merge_double_fields(
         proc_decl.get_parameters_ids(), body_instructions
     )
-    analysis.analyse_types(declarations.defined_types, body_instructions)
+    analysis.analyse_types(
+        declarations.defined_types, gbl_vars, body_instructions
+    )
     analysis.guess_float_fields(proc_decl, body_instructions)
     return HeaderDeclarations(
         proc_decl, proc_state.recompiled_decls, full_typed_args_by_proc,

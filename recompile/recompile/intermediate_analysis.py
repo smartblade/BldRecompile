@@ -117,15 +117,15 @@ def merge_double_fields(parameters, body_instructions):
             param_type.pointee.merge_word32_into_double(second_offset)
 
 
-def analyse_types(classes, body_instructions):
+def analyse_types(classes, gbl_vars, body_instructions):
     def on_expression_visited(e):
         if not isinstance(e, instructions.Assignment):
             return
-        _analyse_assignment(e, changed_types)
+        _analyse_assignment(e, gbl_vars, changed_types)
         if not isinstance(e.src, expressions.Cast):
             return
         cast = e.src
-        _analyse_cast(e.dst, cast, changed_types)
+        _analyse_cast(e.dst, cast, gbl_vars, changed_types)
         if not isinstance(cast.data_type, data_types.Unknown32):
             return
         if not isinstance(e.dst, expressions.FieldAccess):
@@ -148,7 +148,7 @@ def analyse_types(classes, body_instructions):
         class_type = fa.expression.data_type.pointee
         offset = class_type.find_offset_by_field_name(fa.field_name)
         class_type.merge_word32_into_double(offset)
-    changed_types = set()
+    changed_types = {}
     while True:
         num_changed_types_before = len(changed_types)
         for instr in body_instructions:
@@ -157,23 +157,56 @@ def analyse_types(classes, body_instructions):
             break
 
 
-def _analyse_assignment(ass, changed_types):
+class _FieldType:
+    def __init__(self, obj_type, offset, size):
+        self.obj_type = obj_type
+        self.offset = offset
+        self.size = size
+
+    def make_type(self):
+        data_type, field_name = self.obj_type.get_field_by_offset(self.offset)
+        if data_type.size != self.size:
+            raise Exception(
+                "Expected size {}, but was {}".format(
+                    self.size, data_type.size
+                )
+            )
+        return data_type
+
+
+def _analyse_assignment(ass, gbl_vars, changed_types):
+    _push_type(ass.src, ass.dst, gbl_vars, changed_types)
+    _push_type(ass.dst, ass.src, gbl_vars, changed_types)
+
+
+def _push_type(from_expression, to_expression, gbl_vars, changed_types):
     try:
-        src_type = _get_type_of(ass.src, changed_types)
+        data_type = _get_type_of(from_expression, changed_types)
     except UndefinedTypeException:
         return
-    _push_type_down(src_type, ass.dst, changed_types)
+    _push_type_down(data_type, to_expression, gbl_vars, changed_types)
 
 
-def _analyse_cast(dst, src_cast, changed_types):
+def _analyse_cast(dst, src_cast, gbl_vars, changed_types):
     if not isinstance(src_cast.data_type, data_types.Pointer32):
         return
-    _push_type_down(dst.data_type, src_cast.expression, changed_types)
+    _push_type_down(
+        dst.data_type, src_cast.expression, gbl_vars, changed_types
+    )
 
 
-def _push_type_down(data_type, e, changed_types):
+def _pointee(data_type):
+    if isinstance(data_type, data_types.ClassType):
+        field_type, field_name = data_type.get_field_by_offset(0)
+        return _pointee(field_type)
+    return data_type.pointee
+
+
+def _push_type_down(data_type, e, gbl_vars, changed_types):
     if isinstance(e, expressions.AddressOf):
-        _push_type_down(data_type.pointee, e.expression, changed_types)
+        _push_type_down(
+            _pointee(data_type), e.expression, gbl_vars, changed_types
+        )
         return
     if isinstance(e, expressions.FieldAccess):
         obj_type = e.expression.data_type.pointee
@@ -186,7 +219,14 @@ def _push_type_down(data_type, e, changed_types):
         except UndefinedTypeException:
             return
         e.change_data_type(new_data_type)
-        changed_types.add(e)
+        changed_types[e] = new_data_type
+        if (
+            isinstance(e.data_type, data_types.ClassType) and
+            e.address is not None
+        ):
+            _merge_globals_to_class(
+                gbl_vars, e.address, e.data_type, changed_types
+            )
 
 
 def _get_type_of(e, changed_types):
@@ -194,8 +234,27 @@ def _get_type_of(e, changed_types):
         return data_types.Pointer32(_get_type_of(e.expression, changed_types))
     if isinstance(e, expressions.Identifier):
         if e in changed_types:
-            return e.data_type
+            data_type = changed_types[e]
+            if isinstance(data_type, _FieldType):
+                data_type = data_type.make_type()
+            return data_type
     raise UndefinedTypeException()
+
+
+def _merge_globals_to_class(gbl_vars, address, data_type, changed_types):
+    globals_to_be_removed = []
+    for gbl in gbl_vars.values():
+        if gbl.address <= address:
+            continue
+        if gbl.address >= address + data_type.size:
+            break
+        _merge_field(data_type, gbl.address - address, gbl.data_type)
+        changed_types[gbl] = _FieldType(
+            data_type, gbl.address - address, gbl.data_type.size
+        )
+        globals_to_be_removed.append(gbl.name)
+    for gbl_name in globals_to_be_removed:
+        del gbl_vars[gbl_name]
 
 
 def _merge_field(obj_type, offset, new_field_type):

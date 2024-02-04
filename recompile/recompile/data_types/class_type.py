@@ -29,6 +29,14 @@ class ClassType(DataType):
                 return 4
         return None
 
+    @property
+    def size(self):
+        size = 0
+        for offset, (field_type, field_name) in self._fields.items():
+            if offset + field_type.size > size:
+                size = offset + field_type.size
+        return size
+
     def add_method(self, method):
         self._methods.append(method)
 
