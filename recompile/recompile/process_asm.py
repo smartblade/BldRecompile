@@ -1398,7 +1398,7 @@ def read_module_name(asm_files):
         return f.readlines()[0].rstrip()
 
 def run():
-    src_dir = os.path.abspath('src')
+    src_dir = os.path.abspath('../../../BldMystery/src')
     print("Collect symbols from sources...")
     symbols_dict = collectSymbolsFromSources(src_dir)
     for (root, dirs, files) in os.walk(src_dir):
