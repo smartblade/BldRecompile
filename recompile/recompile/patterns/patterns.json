@@ -1,0 +1,36 @@
+[
+{
+	"instructions": [
+		{"push": ["ebp"]},
+		{"mov":  ["ebp", "esp"]},
+		{"push": ["ecx"]}
+	],
+	"action": {"prolog": {}}
+},
+{
+	"instructions": [
+		{"mov": ["esp", "ebp"]},
+		{"pop": ["ebp"]},
+		{"ret": []}
+	],
+	"action": {"epilog": {}}
+},
+{
+	"instructions": [
+		{"mov":  ["[ebp%offset%]", "%eax-ecx-edx%"]}
+	],
+	"action": {"assignment": {"dst": "STACKVAR(%offset%, 4)", "src": "REGVALUE(%eax-ecx-edx%)"}}
+},
+{
+	"instructions": [
+		{"mov":  ["%eax-ecx-edx%", "[ebp%offset%]"]}
+	],
+	"action": {"tmpreg": {"dst": "%eax-ecx-edx%", "src": "STACKVAR(%offset%, 4)"}}
+},
+{
+	"instructions": [
+		{"mov":  ["%eax-ecx-edx%", "[%eax-ecx-edx%%offset%]"]}
+	],
+	"action": {"tmpreg": {"dst": "%eax-ecx-edx%", "src": "ACCESS(REGVALUE(%eax-ecx-edx%), %offset%, 4)"}}
+}
+]

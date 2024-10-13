@@ -27,6 +27,10 @@ def parse_data_type(s, classes):
         data_type = parse_data_type(s[5:].strip(), classes)
         data_type.add_qualifier("const")
         return data_type
+    if s.endswith("const"):
+        data_type = parse_data_type(s[:-5].strip(), classes)
+        data_type.add_qualifier("const")
+        return data_type
     class_name = _extract_class_name(s)
     if class_name is not None:
         if class_name not in classes:
@@ -35,8 +39,22 @@ def parse_data_type(s, classes):
     if s in classes:
         return classes[s]
     if s.endswith("*"):
-        return data_types.Pointer32(parse_data_type(s[:-1].strip(), classes))
+        return _parse_const(data_types.Pointer32, s[:-1], classes)
+    if s.endswith("&"):
+        return _parse_const(data_types.Reference, s[:-1], classes)
     raise UnknownTypeException("Not implemented type: {}.".format(s))
+
+
+def _parse_const(cb, s, classes):
+    s = s.strip()
+    is_const = False
+    if s.endswith("const"):
+        s = s[:-5].strip()
+        is_const = True
+    data_type = cb(parse_data_type(s, classes))
+    if is_const:
+        data_type.add_qualifier("const")
+    return data_type
 
 
 def _extract_class_name(class_type):

@@ -5,6 +5,7 @@ import os
 import pathlib
 import re
 import time
+from patterns.asm_patterns import process_asm_patterns
 
 parser = OptionParser()
 parser.add_option("--show-hex-prefix", dest="show_hex_prefix",
@@ -13,9 +14,13 @@ parser.add_option("--show-hex-prefix", dest="show_hex_prefix",
 parser.add_option("--write-proc-dict", dest="write_proc_dict",
                   help="Write procedures dictionary to json file (yes, no)",
                   default="no")
+parser.add_option("--asm-patterns", dest="asm_patterns",
+                  help="Convert asm patterns to C++ code (yes, no)",
+                  default="no")
 (options, args) = parser.parse_args()
 options.show_hex_prefix = (options.show_hex_prefix != 'no')
 options.write_proc_dict = (options.write_proc_dict != 'no')
+options.asm_patterns = (options.asm_patterns != 'no')
 
 entry_point_regexp = re.compile('Entry\s+Point:\s+(?P<entryPoint>[\dABCDEF]+)')
 export_regexp = re.compile('\*\s+Export:\s+(?P<export>\S+),\s+(?P<ordinal>\d+)')
@@ -880,38 +885,44 @@ class MemoryArea:
             return True
         return self._bytes[index] is None and self._bytes[index + 1] is None
 
+
+class CppDeclaration:
+    def __init__(self, mangled_name, declaration, class_name, is_implemented):
+        self.mangled_name = mangled_name
+        self.declaration = declaration
+        self.class_name = class_name
+        self.is_implemented = is_implemented
+
+
 class SrcSymbols:
-    def __init__(self):
-        self.varNames = {}
-        self.implementedVariables = set()
-        self.mangledNames = {}
-        self.implementedProcedures = set()
+    def __init__(self, module):
+        self.variables = {}
+        self.procedures = {}
+        self.module = module
+
+    def is_implemented_procedure(self, addr):
+        return addr in self.procedures and self.procedures[addr].is_implemented
+
+    def is_implemented_variable(self, addr):
+        return addr in self.variables and self.variables[addr].is_implemented
 
     @staticmethod
     def ensure_symbols_for_module(symbols_dict, module):
         symbols = symbols_dict.get(module)
         if symbols is None:
-            symbols = SrcSymbols()
+            symbols = SrcSymbols(module)
             symbols_dict[module] = symbols
         return symbols
 
     @staticmethod
-    def create_symbols_dict(
-        varNames, implementedVariables, mangledNames, implementedProcedures
-    ):
+    def create_symbols_dict(variables, procedures):
         symbols_dict = {}
-        for (module, addr), var_name in varNames.items():
+        for (module, addr), variable in variables.items():
             symbols = SrcSymbols.ensure_symbols_for_module(symbols_dict, module)
-            symbols.varNames[addr] = var_name
-        for module, addr in implementedVariables:
+            symbols.variables[addr] = variable
+        for (module, addr), procedure in procedures.items():
             symbols = SrcSymbols.ensure_symbols_for_module(symbols_dict, module)
-            symbols.implementedVariables.add(addr)
-        for (module, addr), mangled_name in mangledNames.items():
-            symbols = SrcSymbols.ensure_symbols_for_module(symbols_dict, module)
-            symbols.mangledNames[addr] = mangled_name
-        for module, addr in implementedProcedures:
-            symbols = SrcSymbols.ensure_symbols_for_module(symbols_dict, module)
-            symbols.implementedProcedures.add(addr)
+            symbols.procedures[addr] = procedure
         return symbols_dict
 
 class AsmFiles:
@@ -1114,8 +1125,8 @@ def writeExportCmd(asm_files, symbols):
             exportName = match.group('exportName')
             internalName = match.group('internalName')
             if (
-                not addr in symbols.implementedProcedures and
-                not addr in symbols.implementedVariables
+                not symbols.is_implemented_procedure(addr) and
+                not symbols.is_implemented_variable(addr)
             ):
                 exportAddrs.append(addr)
                 exportNames[addr] = exportName
@@ -1124,10 +1135,10 @@ def writeExportCmd(asm_files, symbols):
     for addr in exportAddrs:
         exportName = exportNames[addr]
         internalName = internalNames[addr]
-        if addr in symbols.mangledNames:
-            internalName = symbols.mangledNames[addr]
-        elif addr in symbols.varNames:
-            internalName = symbols.varNames[addr]
+        if addr in symbols.procedures:
+            internalName = symbols.procedures[addr].mangled_name
+        elif addr in symbols.variables:
+            internalName = symbols.variables[addr].mangled_name
         if isCdeclMangling(exportName, internalName):
             symbolName = "{}".format(exportName)
         else:
@@ -1138,16 +1149,25 @@ def writeExportCmd(asm_files, symbols):
 def collectProceduresFromFile(fileName):
     mangledNames = {}
     nativeProcedures = set()
+    declarations = {}
     f = open(fileName)
     lines = f.readlines()
     module_regexp = re.compile('Module:\s+(?P<module>[\S]+)')
     addr_regexp = re.compile('Entry\s+point:\s+0x(?P<addr>[\dABCDEF]+)')
     mangling_regexp = re.compile('VC\+\+\s+mangling:\s+(?P<mangling>[\S]+)')
-    proc_regexp = re.compile('\W(?P<proc>\w+)\s*\([^\(\)]*\)\s*\{')
+    proc_regexp = re.compile('\W(?P<proc>\w+)\s*\([^\(\)]*\)')
+    class_regexp = re.compile(r'^class\s+(LIB_EXP\s+)?(?P<class>\w+)')
+    class_name = None
     meta = False
+    definition_finished = True
     module = None
     addr_by_module = {}
     for line in lines:
+        match = re.search(class_regexp, line)
+        if match:
+            class_name = match.group("class")
+        if line.startswith("};"):
+            class_name = None
         if line.find("/*") >= 0:
             meta = True
             module = None
@@ -1156,6 +1176,7 @@ def collectProceduresFromFile(fileName):
         if line.find("*/") >= 0:
             meta = False
             definition = ""
+            definition_finished = False
             for module, addr in addr_by_module.items():
                 mangledNames[(module, addr)] = mangling
         if line.find("BLD_NATIVE") >= 0:
@@ -1171,12 +1192,24 @@ def collectProceduresFromFile(fileName):
             match = re.search(mangling_regexp, line)
             if match:
                 mangling = match.group('mangling')
-        elif (
+        else:
+            if (
+                not definition_finished and
+                line.find("*/") < 0 and
+                not line.startswith("#")
+            ):
+                definition += line
+            if not definition_finished and line.find("{") >= 0:
+                definition_finished = True
+                definition = definition.strip().strip("{")
+                for module, addr in addr_by_module.items():
+                    declarations[(module, addr)] = definition, class_name
+        if (
+            not meta and
             len(addr_by_module) > 0 and
             mangledNames[(module, addr_by_module[module])] is None
         ):
-            definition += line
-            if line.find("{") >= 0:
+            if definition_finished:
                 cdecl_mangling = None
                 match = re.search(proc_regexp, definition)
                 if match:
@@ -1186,10 +1219,21 @@ def collectProceduresFromFile(fileName):
                     fallback = "fn{}".format(toHex(addr))
                     mangledNames[(module, addr)] = cdecl_mangling or fallback
     f.close()
-    return (mangledNames, set(mangledNames.keys()) - nativeProcedures)
+    procedures_dict = {}
+    for key, mangled_name in mangledNames.items():
+        is_implemented = key not in nativeProcedures
+        if key in declarations:
+            declaration, class_name = declarations[key]
+        else:
+            declaration = None
+            class_name = None
+        procedures_dict[key] = CppDeclaration(
+            mangled_name, declaration, class_name, is_implemented)
+    return procedures_dict
 
 def collectVariablesFromFile(fileName):
     varNames = {}
+    declarations = {}
     nativeVariables = set()
     f = open(fileName)
     lines = f.readlines()
@@ -1231,33 +1275,33 @@ def collectVariablesFromFile(fileName):
             if match:
                 for module, addr in addr_by_module.items():
                     varNames[(module, addr)] = "_{}".format(match.group('name'))
+                    declarations[(module, addr)] = line
                     nativeVariables.add((module, addr))
                 addr_by_module = {}
     f.close()
-    return varNames, set(varNames.keys()) - nativeVariables
+    variables_dict = {}
+    for key, mangled_name in varNames.items():
+        is_implemented = key not in nativeVariables
+        variables_dict[key] = CppDeclaration(
+            mangled_name, declarations.get(key), None, is_implemented)
+    return variables_dict
 
 def collectSymbolsFromSources(src_dir):
     if options.write_proc_dict:
         return SrcSymbols.create_symbols_dict({}, set(), {}, set())
-    varNames = {}
-    implementedVariables = []
-    mangledNames = {}
-    implementedProcedures = []
+    variables = {}
+    procedures = {}
     for (root, dirs, files) in os.walk(src_dir):
         for file in files:
             if file.lower().endswith(".cpp") or file.lower().endswith(".h"):
                 fileName = os.path.join(root, file)
-                (names, implemented) = collectProceduresFromFile(fileName)
-                mangledNames.update(names)
-                implementedProcedures += implemented
-                (names, implemented) = collectVariablesFromFile(fileName)
-                varNames.update(names)
-                implementedVariables += implemented
+                file_procs = collectProceduresFromFile(fileName)
+                procedures.update(file_procs)
+                file_vars = collectVariablesFromFile(fileName)
+                variables.update(file_vars)
     return SrcSymbols.create_symbols_dict(
-        varNames,
-        set(implementedVariables),
-        mangledNames,
-        set(implementedProcedures)
+        variables,
+        procedures,
     )
 
 def openForWriting(filename):
@@ -1371,10 +1415,12 @@ def calc_hash(symbols):
     hasher = hashlib.sha256()
     json_str = json.dumps(
         (
-            symbols.varNames,
-            sorted(symbols.implementedVariables),
-            symbols.mangledNames,
-            sorted(symbols.implementedProcedures)
+            dict(
+                (key, (var.mangled_name, var.is_implemented))
+                for key, var in symbols.variables.items()),
+            dict(
+                (key, (proc.mangled_name, proc.is_implemented))
+                for key, proc in symbols.procedures.items()),
         ),
         sort_keys=True
     )
@@ -1406,18 +1452,22 @@ def run():
             asm_files = AsmFiles(root)
             module_name = read_module_name(asm_files)
             print("Processing {}".format(module_name))
-            symbols = symbols_dict.get(module_name, SrcSymbols())
+            symbols = symbols_dict.get(module_name, SrcSymbols(module_name))
             process_asm_dir(asm_files, symbols)
 
 def process_asm_dir(asm_files, symbols):
     symbols_hash = calc_hash(symbols)
-    print("Checking hash for collected symbols...")
-    if not is_hash_changed(asm_files.intermediate_hash, symbols_hash):
-        print("Nothing to do...")
-        return
+    if not options.asm_patterns:
+        print("Checking hash for collected symbols...")
+        if not is_hash_changed(asm_files.intermediate_hash, symbols_hash):
+            print("Nothing to do...")
+            return
     ensureAsmCode(asm_files)
     print("Reading code...")
     lines = readAsmCode(asm_files.intermediate_asm)
+    if options.asm_patterns:
+        process_asm_patterns(lines, symbols)
+        return
     print("Writing code...")
     f = open(asm_files.output_asm, "wt")
     isImplementedProc = False
@@ -1426,7 +1476,7 @@ def process_asm_dir(asm_files, symbols):
         if line.startswith("l"):
             if line.find("PROC") >= 0:
                 addr = fromHex(line[1:9])
-                isImplementedProc = addr in symbols.implementedProcedures
+                isImplementedProc = symbols.is_implemented_procedure(addr)
                 if isImplementedProc:
                     f.write(
                         "{} call l{}; Implemented in c++ code\n".format(
@@ -1434,7 +1484,7 @@ def process_asm_dir(asm_files, symbols):
                             toHex(addr)))
         if line.startswith("g"):
             addr = fromHex(line[1:9])
-            isImplementedVar = addr in symbols.implementedVariables
+            isImplementedVar = symbols.is_implemented_variable(addr)
             if isImplementedVar:
                 f.write(
                     "{} dd g{}; Defined in c++ code\n".format(
@@ -1465,17 +1515,17 @@ def process_asm_dir(asm_files, symbols):
     writeExportCmd(asm_files, symbols)
     print("Writing procedures declarations...")
     f = openForWriting(asm_files.output_procedures)
-    for addr in sorted(symbols.mangledNames.keys()):
-        name = symbols.mangledNames[addr]
+    for addr in sorted(symbols.procedures.keys()):
+        name = symbols.procedures[addr].mangled_name
         label = "l{}".format(toHex(addr))
         f.write("externdef {}: near\n{} equ {}\n".format(name, label, name))
     f.close()
     print("Writing variable declarations...")
     f = openForWriting(asm_files.output_variables)
-    for addr in sorted(symbols.varNames.keys()):
-        name = symbols.varNames[addr]
+    for addr in sorted(symbols.variables.keys()):
+        name = symbols.variables[addr].mangled_name
         label = "g{}".format(toHex(addr))
-        if addr in symbols.implementedVariables:
+        if symbols.is_implemented_variable(addr):
             f.write("externdef {}: ptr\n{} equ {}\n".format(name, label, name))
         else:
             f.write("public {}\n{} equ {}\n".format(name, label, name))

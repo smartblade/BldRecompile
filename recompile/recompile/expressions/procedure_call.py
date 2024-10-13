@@ -24,7 +24,7 @@ class ProcedureCall:
             return data_types.Double()
         if self._proc_decl is not None:
             return self._proc_decl.return_type
-        raise Exception("Can't deduce data type for: {}".format(self))
+        raise AttributeError("Can't deduce data type for: {}".format(self))
 
     @property
     def name(self):
@@ -87,6 +87,19 @@ class ProcedureCall:
         on_expression_visited(self, **kwargs)
         for arg in self._arguments:
             arg.visit(on_expression_visited, **kwargs)
+
+    def transform(self, transform_callback, **kwargs):
+        arguments = list(
+            map(
+                lambda a: a.transform(transform_callback, **kwargs),
+                self._arguments,
+            )
+        )
+        pc = ProcedureCall(
+            self._name, self._operator, arguments, self._callee_addr,
+            self._is_method, self._proc_decl
+        )
+        return transform_callback(pc, **kwargs)
 
     def emit_code(self):
         if self._operator is not None and len(self._arguments) == 2:

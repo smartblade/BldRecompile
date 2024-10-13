@@ -23,6 +23,9 @@ class Constant:
     def visit(self, on_expression_visited, **kwargs):
         on_expression_visited(self, **kwargs)
 
+    def transform(self, transform_callback, **kwargs):
+        return transform_callback(self, **kwargs)
+
     def emit_code(self):
         if isinstance(self._data_type, data_types.Float):
             return "{}F".format(self._value)

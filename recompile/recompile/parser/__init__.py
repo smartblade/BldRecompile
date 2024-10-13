@@ -1,4 +1,5 @@
 from .cpp_expression import parse_cpp_expression
+from .cpp_function import parse_cpp_function
 from .data_type import parse_data_type
 from .define_name import define_field_name
 from .define_name import define_global_name

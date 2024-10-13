@@ -41,5 +41,16 @@ class ReturnInstruction:
         on_expression_visited(self, **kwargs)
         self._expression.visit(on_expression_visited, **kwargs)
 
+    def transform(self, transform_callback, **kwargs):
+        expression = None
+        if self._expression is not None:
+            expression = self._expression.transform(
+                transform_callback, **kwargs)
+        ri = ReturnInstruction(expression)
+        return transform_callback(ri, **kwargs)
+
     def emit_code(self, writer):
+        if self._expression is None:
+            writer.write_line("return;")
+            return
         writer.write_line("return {};".format(self._expression.emit_code()))

@@ -19,7 +19,10 @@ def split_procedure_parameters(s):
         parameters = []
     parsed_parameters = []
     for p in parameters:
-        parsed_parameters.append(parser.parse_variable_declaration(p.strip()))
+        p = p.strip()
+        if p == "...":
+            continue
+        parsed_parameters.append(parser.parse_variable_declaration(p))
     if parsed_parameters:
         var_type, var_name = parsed_parameters[0]
     else:

@@ -27,7 +27,28 @@ class ProcedureDeclaration:
 
     @property
     def return_type(self):
+        if self._return_arg is None and self.is_constructor:
+            return data_types.Pointer32(self.method_class)
         return self._return_arg
+
+    @property
+    def is_constructor(self):
+        if self._method_class is None:
+            return False
+        return self._method_class.class_name == self._proc_name
+
+    @property
+    def is_destructor(self):
+        return self._proc_name.startswith("~")
+
+    @property
+    def stack_delta(self):
+        if self._convention == CallingConvention.CDECL:
+            return 0
+        stack_delta = 0
+        for parameter_type, parameter_name in self._parameters:
+            stack_delta += parameter_type.size
+        return stack_delta
 
     def change_return_type(self, return_type):
         self._return_arg = return_type
@@ -87,7 +108,7 @@ class ProcedureDeclaration:
         return_arg = self._get_return_type_name(
             is_metafile=is_metafile, is_brief=full_typed_args is not None
         )
-        sep = "" if return_arg[-1] in {"*", "&"} else " "
+        sep = "" if not return_arg or return_arg[-1] in {"*", "&"} else " "
         calling_convention = ""
         if is_metafile and self._convention == CallingConvention.THISCALL:
             calling_convention = "__thiscall "
@@ -115,6 +136,8 @@ class ProcedureDeclaration:
         return data_type.make_variable_declaration(var_name, is_metafile)
 
     def _get_return_type_name(self, is_metafile, is_brief):
+        if not is_metafile and (self.is_constructor or self.is_destructor):
+            return ""
         if self._return_arg is None:
             return "void"
         if is_brief and isinstance(self._return_arg, data_types.Pointer32):
