@@ -402,7 +402,7 @@ Failed to find pattern for 'mov eax, dword ptr [eax]'
 // address: 0x100022E0
 unsigned int B_Name::Length()
 {
-    return reinterpret_cast<unsigned int>(ACCESS(this, 4, 4));
+    return this->len;
 }
 
 // address: 0x10002300
@@ -587,19 +587,19 @@ Failed to find pattern for 'mov dword ptr [eax+004h], 000000000h'
 // address: 0x10002EE0
 B_List *B_ListElement::GetList()
 {
-    return reinterpret_cast<B_List *>(ACCESS(this, 4, 4));
+    return this->list;
 }
 
 // address: 0x10002F00
 B_ListElement *B_ListElement::GetNext()
 {
-    return reinterpret_cast<B_ListElement *>(ACCESS(this, 8, 4));
+    return this->next;
 }
 
 // address: 0x10002F20
 B_ListElement *B_ListElement::GetPrev()
 {
-    return reinterpret_cast<B_ListElement *>(ACCESS(this, 12, 4));
+    return this->prev;
 }
 
 // address: 0x10002F40

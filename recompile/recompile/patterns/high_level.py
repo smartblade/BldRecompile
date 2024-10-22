@@ -157,6 +157,11 @@ def _convert_expression_to_type(e, target_type):
     ):
         if _can_convert_pointees(src_type.pointee, target_type.referent):
             return expressions.Dereference(e)
+    if (
+        isinstance(src_type, data_types.UInt32) and
+        isinstance(target_type, data_types.UInt32)
+    ):
+        return e
     raise Exception("Can't convert {} to {}".format(src_type, target_type))
 
 

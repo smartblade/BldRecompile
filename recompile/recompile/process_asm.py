@@ -5,6 +5,9 @@ import os
 import pathlib
 import re
 import time
+
+from make_tuple import make_tuple
+import parser as cpp_parser
 from patterns.asm_patterns import process_asm_patterns
 
 parser = OptionParser()
@@ -1447,15 +1450,22 @@ def run():
     src_dir = os.path.abspath('../../../BldMystery/src')
     print("Collect symbols from sources...")
     symbols_dict = collectSymbolsFromSources(src_dir)
+    if options.asm_patterns:
+        declared_types = cpp_parser.parse_cpp_header(src_dir)
+    else:
+        declared_types = {}
     for (root, dirs, files) in os.walk(src_dir):
         if "raw.txt" in files:
             asm_files = AsmFiles(root)
             module_name = read_module_name(asm_files)
             print("Processing {}".format(module_name))
             symbols = symbols_dict.get(module_name, SrcSymbols(module_name))
-            process_asm_dir(asm_files, symbols)
+            declarations = make_tuple(
+                "Declarations", symbols=symbols, declared_types=declared_types)
+            process_asm_dir(asm_files, declarations)
 
-def process_asm_dir(asm_files, symbols):
+def process_asm_dir(asm_files, declarations):
+    symbols = declarations.symbols
     symbols_hash = calc_hash(symbols)
     if not options.asm_patterns:
         print("Checking hash for collected symbols...")
@@ -1466,7 +1476,7 @@ def process_asm_dir(asm_files, symbols):
     print("Reading code...")
     lines = readAsmCode(asm_files.intermediate_asm)
     if options.asm_patterns:
-        process_asm_patterns(lines, symbols)
+        process_asm_patterns(lines, declarations)
         return
     print("Writing code...")
     f = open(asm_files.output_asm, "wt")

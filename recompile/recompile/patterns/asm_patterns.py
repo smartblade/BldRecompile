@@ -12,8 +12,8 @@ command_regexp = re.compile(r'^(?P<cmd>\w+)(\s+(?P<operands>.+))?$')
 operand_regexp = re.compile(r'^(dword\s+ptr\s+)?(?P<operand>.+)$')
 
 
-def process_asm_patterns(lines, symbols):
-    if symbols.module != "BBLibc.dll":
+def process_asm_patterns(lines, declarations):
+    if declarations.symbols.module != "BBLibc.dll":
         return
     patterns_path = os.path.join(
         os.path.dirname(os.path.realpath(__file__)), "patterns.json")
@@ -27,23 +27,25 @@ def process_asm_patterns(lines, symbols):
             proc_addr = from_hex(line[1:9])
             proc_lines.clear()
         elif proc_addr is not None and line.find("ENDP") >= 0:
-            _build_proc(writer, symbols, patterns, proc_addr, proc_lines)
+            _build_proc(writer, declarations, patterns, proc_addr, proc_lines)
             proc_addr = None
         elif proc_addr is not None:
             proc_lines.append(line.strip())
-    with open("{}.cpp".format(symbols.module), "wt") as f:
+    with open("{}.cpp".format(declarations.symbols.module), "wt") as f:
         f.write(writer.get_string())
 
 
-def _build_proc(writer, symbols, patterns, proc_addr, proc_lines):
+def _build_proc(writer, declarations, patterns, proc_addr, proc_lines):
     if (
-        proc_addr in symbols.procedures and
-        symbols.procedures[proc_addr].declaration is not None
+        proc_addr in declarations.symbols.procedures and
+        declarations.symbols.procedures[proc_addr].declaration is not None
     ):
-        cpp_declaration = symbols.procedures[proc_addr]
+        cpp_declaration = declarations.symbols.procedures[proc_addr]
         proc_decl = parser.parse_cpp_function(
             cpp_declaration.class_name,
-            cpp_declaration.declaration)
+            cpp_declaration.declaration,
+            declarations.declared_types,
+        )
         decl_string = proc_decl.get_declaration(
             is_metafile=False, is_definition=True)
     else:
