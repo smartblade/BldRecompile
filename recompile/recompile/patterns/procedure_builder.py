@@ -11,9 +11,10 @@ class ProcedureBuilder:
         else:
             self._method_class = None
 
-    def make_prolog(self):
+    def make_prolog(self, allocated):
         self._instructions.append(
-            instructions.ProcedureInfo(self._method_class))
+            instructions.ProcedureInfo(
+                self._method_class, int(allocated.emit_code())))
 
     def make_epilog(self):
         self._expect_first_procedure_info().set_stack_delta(0)

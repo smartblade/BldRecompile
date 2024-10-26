@@ -5,7 +5,7 @@
 		{"mov":  ["ebp", "esp"]},
 		{"push": ["ecx"]}
 	],
-	"action": {"prolog": {}}
+	"action": {"prolog": {"allocated": "4"}}
 },
 {
 	"instructions": [

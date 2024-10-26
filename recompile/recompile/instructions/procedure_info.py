@@ -3,11 +3,12 @@ import expressions
 
 
 class ProcedureInfo:
-    def __init__(self, method_class):
+    def __init__(self, method_class, local_size):
         self._this = None
         self._stack_delta = None
         self._this_offset = None
         self._method_class = method_class
+        self._local_size = local_size
 
     @property
     def stack_variables(self):
@@ -24,8 +25,10 @@ class ProcedureInfo:
         return self._this_offset is not None
 
     def __repr__(self):
-        return "ProcedureInfo(this={}, this_offset={}, stack_delta={})".format(
-            self._this, self._this_offset, self._stack_delta)
+        return (
+            "ProcedureInfo("
+            "this={}, this_offset={}, local_size={}, stack_delta={})").format(
+            self._this, self._this_offset, self._local_size, self._stack_delta)
 
     def pop_reg_value(self, reg):
         if reg == "ecx" and self._this is None:
