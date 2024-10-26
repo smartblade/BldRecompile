@@ -9,6 +9,13 @@
 },
 {
 	"instructions": [
+		{"push": ["ebp"]},
+		{"mov":  ["ebp", "esp"]}
+	],
+	"action": {"prolog": {"allocated": "0"}}
+},
+{
+	"instructions": [
 		{"mov": ["esp", "ebp"]},
 		{"pop": ["ebp"]},
 		{"ret": []}
