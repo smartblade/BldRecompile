@@ -24,6 +24,10 @@ class ProcedureInfo:
     def is_thiscall(self):
         return self._this_offset is not None
 
+    @property
+    def is_stack_pointer_trashed(self):
+        return self._local_size != 0
+
     def __repr__(self):
         return (
             "ProcedureInfo("

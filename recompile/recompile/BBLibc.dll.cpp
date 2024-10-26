@@ -2077,9 +2077,7 @@ Failed to find pattern for 'sub esp, 000000018h'
 // address: 0x1000B2ED
 p1000B2ED
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
 }
-Failed to find pattern for 'pop ebp'
 
 // address: 0x1000B300
 p1000B300
@@ -2343,9 +2341,7 @@ Failed to find pattern for 'sub esp, 00000000Ch'
 // address: 0x1000E0E2
 p1000E0E2
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
 }
-Failed to find pattern for 'pop ebp'
 
 // address: 0x1000E0E7
 p1000E0E7
@@ -2714,9 +2710,7 @@ Failed to find pattern for 'sub esp, 000000010h'
 // address: 0x10012153
 p10012153
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
 }
-Failed to find pattern for 'pop ebp'
 
 // address: 0x10012158
 p10012158
@@ -2946,9 +2940,7 @@ Failed to find pattern for 'mov ecx, dword ptr [eax+018h]'
 // address: 0x100145AA
 p100145AA
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
 }
-Failed to find pattern for 'pop ebp'
 
 // address: 0x100145B0
 p100145B0
@@ -3076,9 +3068,7 @@ Failed to find pattern for 'sub esp, 000000040h'
 // address: 0x1001636E
 p1001636E
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
 }
-Failed to find pattern for 'pop ebp'
 
 // address: 0x10016380
 p10016380
@@ -3913,10 +3903,8 @@ Failed to find pattern for 'push eax'
 // address: 0x100239F8
 p100239F8
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
     REGDEF(eax=STACKVAR(16, 4))
 }
-Failed to find pattern for 'pop ebp'
 
 // address: 0x10023A00
 p10023A00
@@ -3936,9 +3924,7 @@ Failed to find pattern for 'xor eax, eax'
 // address: 0x10023A26
 p10023A26
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
 }
-Failed to find pattern for 'pop ebp'
 
 // address: 0x10023A30
 p10023A30
@@ -4050,9 +4036,7 @@ Failed to find pattern for 'sub esp, 000000050h'
 // address: 0x10024A44
 p10024A44
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
 }
-Failed to find pattern for 'pop ebp'
 
 // address: 0x10024A49
 p10024A49
@@ -4178,9 +4162,7 @@ Failed to find pattern for 'sub esp, 000000044h'
 // address: 0x10026874
 p10026874
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
 }
-Failed to find pattern for 'pop ebp'
 
 // address: 0x10026879
 p10026879
@@ -4517,9 +4499,7 @@ Failed to find pattern for 'push offset l10029C45'
 // address: 0x10029C45
 p10029C45
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
 }
-Failed to find pattern for 'pop ebp'
 
 // address: 0x10029C4A
 p10029C4A
@@ -6504,8 +6484,9 @@ B_RDataLight::B_RDataLight(float a, float b, float c, float d)
     STACKVAR(16, 4) = STACKVAR(16, 4);
     STACKVAR(20, 4) = STACKVAR(20, 4);
     REGDEF(eax=STACKVAR(-4, 4))
+    RESTORE(esp);
 }
-Failed to find pattern for 'mov esp, ebp'
+Failed to find pattern for 'pop ebp'
 
 // address: 0x10040CE6
 void B_RDataLight::Interp(double t, B_RDataLight &start, double u, B_RDataLight &end)

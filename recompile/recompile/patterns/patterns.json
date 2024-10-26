@@ -16,11 +16,16 @@
 },
 {
 	"instructions": [
-		{"mov": ["esp", "ebp"]},
+		{"mov": ["esp", "ebp"]}
+	],
+	"action": {"epilog-restore": {"restore": "RESTORE(esp)"}}
+},
+{
+	"instructions": [
 		{"pop": ["ebp"]},
 		{"ret": []}
 	],
-	"action": {"epilog": {}}
+	"action": {"epilog-return": {}}
 },
 {
 	"instructions": [

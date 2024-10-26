@@ -4,7 +4,8 @@ from patterns.predefined_procedures import visit_predefined_procedures
 
 _actions = {
     "prolog": lambda builder, **kwargs: builder.make_prolog(**kwargs),
-    "epilog": lambda builder, **kwargs: builder.make_epilog(**kwargs),
+    "epilog-restore": lambda builder, **kwargs: builder.make_restore(**kwargs),
+    "epilog-return": lambda builder, **kwargs: builder.make_epilog(**kwargs),
     "assignment": lambda builder, **kwargs: builder.make_assignment(**kwargs),
     "tmpreg": lambda builder, **kwargs: builder.update_temporary_reg(**kwargs),
 }

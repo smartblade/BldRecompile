@@ -2,6 +2,10 @@ class CodeInstruction:
     def __init__(self, tokens):
         self._tokens = tokens
 
+    @property
+    def expression(self):
+        return self._tokens
+
     def __repr__(self):
         return "CodeInstruction({})".format(self._tokens)
 
@@ -13,6 +17,11 @@ class CodeInstruction:
 
     def visit(self, on_expression_visited, **kwargs):
         self._tokens.visit(on_expression_visited, **kwargs)
+
+    def transform(self, transform_callback, **kwargs):
+        expression = self._tokens.transform(transform_callback, **kwargs)
+        instruction = CodeInstruction(expression)
+        return transform_callback(instruction, **kwargs)
 
     def emit_code(self, writer):
         instr = self._tokens.emit_code()
