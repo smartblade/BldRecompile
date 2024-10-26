@@ -22,17 +22,33 @@ def process_asm_patterns(lines, declarations):
     proc_addr = None
     proc_lines = []
     writer = Writer()
+    smallest_failed_proc_len = None
+    smallest_failed_proc_exc = None
+    smallest_failed_proc_addr = None
     for line in lines:
         if line.startswith("l") and line.find("PROC") >= 0:
             proc_addr = from_hex(line[1:9])
             proc_lines.clear()
         elif proc_addr is not None and line.find("ENDP") >= 0:
-            _build_proc(writer, declarations, patterns, proc_addr, proc_lines)
+            exc = _build_proc(
+                writer, declarations, patterns, proc_addr, proc_lines)
+            if exc is not None:
+                if (
+                    smallest_failed_proc_len is None or
+                    len(proc_lines) < smallest_failed_proc_len
+                ):
+                    smallest_failed_proc_len = len(proc_lines)
+                    smallest_failed_proc_addr = proc_addr
+                    smallest_failed_proc_exc = exc
             proc_addr = None
         elif proc_addr is not None:
             proc_lines.append(line.strip())
     with open("{}.cpp".format(declarations.symbols.module), "wt") as f:
         f.write(writer.get_string())
+    if smallest_failed_proc_exc is not None:
+        raise Exception(
+            "Failed to build {}".format(to_hex(smallest_failed_proc_addr))
+        ) from smallest_failed_proc_exc
 
 
 def _build_proc(writer, declarations, patterns, proc_addr, proc_lines):
@@ -60,6 +76,7 @@ def _build_proc(writer, declarations, patterns, proc_addr, proc_lines):
     except Exception as exc:
         builder.emit_code(writer)
         writer.write_line(str(exc))
+        return exc
     else:
         builder.make_high_level_code()
         builder.emit_code(writer)
