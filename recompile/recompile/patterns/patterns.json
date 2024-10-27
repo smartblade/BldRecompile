@@ -35,6 +35,12 @@
 },
 {
 	"instructions": [
+		{"mov":  ["[%label%]", "%hex%"]}
+	],
+	"action": {"assignment": {"dst": "ACCESS(GLOBAL(%label%), 0, %size%)", "src": "%hex%"}}
+},
+{
+	"instructions": [
 		{"mov":  ["%eax-ecx-edx%", "[ebp%offset%]"]}
 	],
 	"action": {"tmpreg": {"dst": "%eax-ecx-edx%", "src": "STACKVAR(%offset%, %size%)"}}

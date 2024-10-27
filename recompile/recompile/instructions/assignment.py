@@ -55,6 +55,12 @@ class Assignment:
         self._src.visit(on_expression_visited, **kwargs)
         self._dst.visit(on_expression_visited, **kwargs)
 
+    def transform(self, transform_callback, **kwargs):
+        src = self._src.transform(transform_callback, **kwargs)
+        dst = self._dst.transform(transform_callback, **kwargs)
+        instruction = Assignment(dst, src)
+        return transform_callback(instruction, **kwargs)
+
     def emit_code(self, writer):
         dst = self._dst.emit_code()
         src = self._src.emit_code()

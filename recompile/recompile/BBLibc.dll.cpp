@@ -2,9 +2,8 @@
 // address: 0x10001000
 void B_IDataFile::ResetnOpenedFiles()
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    ACCESS(GLOBAL(0x10049EFC), 0, 4) = 0x00000000;
 }
-Failed to find pattern for 'mov dword ptr [g10049EFC], 000000000h'
 
 // address: 0x1000100F
 int B_IDataFile::GetnOpenedFiles()
@@ -4220,8 +4219,13 @@ Failed to find pattern for 'call l1002699F'
 p1002699F
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    ACCESS(GLOBAL(0x1004A524), 0, 4) = 0x00000000;
+    ACCESS(GLOBAL(0x1004A528), 0, 4) = 0x00000000;
+    ACCESS(GLOBAL(0x1004A52C), 0, 4) = 0x00000010;
+    ACCESS(GLOBAL(0x1004A530), 0, 4) = 0x00000000;
+    ACCESS(GLOBAL(0x1004A534), 0, 4) = 0x00000000;
 }
-Failed to find pattern for 'mov dword ptr [g1004A524], 000000000h'
+Failed to find pattern for 'mov dword ptr [g1004A520], offset g10042CB8'
 
 // address: 0x100269E0
 p100269E0
@@ -4809,8 +4813,10 @@ Failed to find pattern for 'call l1003143A'
 p1003143A
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    ACCESS(GLOBAL(0x1004A960), 0, 4) = 0x00000000;
+    ACCESS(GLOBAL(0x1004A964), 0, 4) = 0x3FF00000;
 }
-Failed to find pattern for 'mov dword ptr [g1004A960], 000000000h'
+Failed to find pattern for 'mov eax, offset g1004A968'
 
 // address: 0x10031477
 p10031477
@@ -4823,8 +4829,10 @@ Failed to find pattern for 'call l10031481'
 p10031481
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    ACCESS(GLOBAL(0x1004A948), 0, 4) = 0x00000000;
+    ACCESS(GLOBAL(0x1004A94C), 0, 4) = 0x00000000;
 }
-Failed to find pattern for 'mov dword ptr [g1004A948], 000000000h'
+Failed to find pattern for 'mov eax, offset g1004A950'
 
 // address: 0x100314BE
 p100314BE
@@ -4837,8 +4845,10 @@ Failed to find pattern for 'call l100314C8'
 p100314C8
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    ACCESS(GLOBAL(0x1004A978), 0, 4) = 0x00000000;
+    ACCESS(GLOBAL(0x1004A97C), 0, 4) = 0x00000000;
 }
-Failed to find pattern for 'mov dword ptr [g1004A978], 000000000h'
+Failed to find pattern for 'mov eax, offset g1004A980'
 
 // address: 0x10031505
 p10031505
@@ -5206,8 +5216,12 @@ Failed to find pattern for 'call l10034354'
 p10034354
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    ACCESS(GLOBAL(0x1004A994), 0, 4) = 0x00000000;
+    ACCESS(GLOBAL(0x1004A998), 0, 4) = 0x00000000;
+    ACCESS(GLOBAL(0x1004A99C), 0, 4) = 0x00000080;
+    ACCESS(GLOBAL(0x1004A9A0), 0, 4) = 0x00000000;
 }
-Failed to find pattern for 'mov dword ptr [g1004A994], 000000000h'
+Failed to find pattern for 'mov dword ptr [g1004A990], offset g10042D78'
 
 // address: 0x1003438B
 p1003438B
@@ -5234,8 +5248,12 @@ Failed to find pattern for 'call l1003441E'
 p1003441E
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    ACCESS(GLOBAL(0x1004A9AC), 0, 4) = 0x00000000;
+    ACCESS(GLOBAL(0x1004A9B0), 0, 4) = 0x00000000;
+    ACCESS(GLOBAL(0x1004A9B4), 0, 4) = 0x00000080;
+    ACCESS(GLOBAL(0x1004A9B8), 0, 4) = 0x00000000;
 }
-Failed to find pattern for 'mov dword ptr [g1004A9AC], 000000000h'
+Failed to find pattern for 'mov dword ptr [g1004A9A8], offset g10042D7C'
 
 // address: 0x10034455
 p10034455
@@ -6035,8 +6053,13 @@ Failed to find pattern for 'call l1003DA8F'
 p1003DA8F
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    ACCESS(GLOBAL(0x1004A9D4), 0, 4) = 0x00000000;
+    ACCESS(GLOBAL(0x1004A9D8), 0, 4) = 0x00000000;
+    ACCESS(GLOBAL(0x1004A9DC), 0, 4) = 0x00000010;
+    ACCESS(GLOBAL(0x1004A9E0), 0, 4) = 0x00000000;
+    ACCESS(GLOBAL(0x1004A9E4), 0, 4) = 0x00000001;
 }
-Failed to find pattern for 'mov dword ptr [g1004A9D4], 000000000h'
+Failed to find pattern for 'mov dword ptr [g1004A9D0], offset g10042E58'
 
 // address: 0x1003DAEE
 p1003DAEE

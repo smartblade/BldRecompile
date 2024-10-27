@@ -3,6 +3,7 @@ import re
 
 import data_types
 import parser
+from procedure_declaration import ProcedureDeclaration
 
 include_regexp = re.compile(r'^#include\s+["<](?P<file>.+)[">]')
 comment_regexp = re.compile(r'^(?P<line>.*)//')
@@ -91,6 +92,7 @@ class HeaderState:
         with open(self._file_name) as f:
             lines = f.readlines()
         is_comment = False
+        class_name = None
         fields = None
         definition_chars = []
         brackets_depth = 0
@@ -121,17 +123,18 @@ class HeaderState:
                     brackets_depth -= 1
                     if brackets_depth == 0 and fields is not None:
                         definition = "".join(definition_chars)
-                        self._parse_class_definition(definition, fields)
+                        self._parse_class_definition(
+                            class_name, definition, fields)
                         fields = None
                 else:
                     if fields is not None and brackets_depth == 1:
                         definition_chars.append(c)
 
-    def _parse_class_definition(self, definition, fields):
+    def _parse_class_definition(self, class_name, definition, fields):
         offset = 0
         has_virtual_methods = False
         for field_definition in definition.split(";"):
-            decl = self._parse_field_definition(field_definition)
+            decl = self._parse_definition(class_name, field_definition)
             if decl is None:
                 # Add space for vtable if necessary
                 if (
@@ -142,20 +145,27 @@ class HeaderState:
                     offset += 4
                     has_virtual_methods = True
                 continue
+            if isinstance(decl, ProcedureDeclaration):
+                self._declared_types[class_name].add_method(decl)
+                continue
             field_type, field_name = decl
             fields[offset] = field_type, field_name
             offset += field_type.size
 
-    def _parse_field_definition(self, definition):
-        if definition.find("(") >= 0:
-            return
+    def _parse_definition(self, class_name, definition):
         definition = _strip_start(definition.strip(), "public:")
         definition = _strip_start(definition.strip(), "protected:")
         definition = _strip_start(definition.strip(), "private:")
         definition = definition.strip()
         if not definition:
             return
-        if definition.startswith("static"):
+        is_static = definition.startswith("static")
+        if definition.find("(") >= 0:
+            if is_static:
+                return parser.parse_cpp_function(
+                    class_name, definition, self._declared_types)
+            return
+        if is_static:
             return
         if definition.startswith("enum"):
             return

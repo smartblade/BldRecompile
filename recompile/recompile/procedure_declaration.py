@@ -3,15 +3,18 @@ import data_types
 import expressions
 import parser
 
+
 class ProcedureDeclaration:
     def __init__(
-        self, proc_name, convention, method_class, parameters, return_arg
+        self, proc_name, convention, method_class, parameters, return_arg,
+        is_static=False,
     ):
         self._proc_name = proc_name
         self._convention = convention
         self._method_class = method_class
         self._return_arg = return_arg
         self._parameters = parameters
+        self._is_static = is_static
 
     @property
     def proc_name(self):
@@ -30,6 +33,10 @@ class ProcedureDeclaration:
         if self._return_arg is None and self.is_constructor:
             return data_types.Pointer32(self.method_class)
         return self._return_arg
+
+    @property
+    def is_static(self):
+        return self._is_static
 
     @property
     def is_constructor(self):

@@ -36,11 +36,15 @@ def _transform_stackvar(offset, size, stack_vars):
 
 
 def _transform_access(expression, offset, size, **kwargs):
-    if not isinstance(expression.data_type, data_types.Pointer32):
+    try:
+        data_type = expression.data_type
+    except AttributeError:
+        data_type = data_types.Pointer32()
+    if not isinstance(data_type, data_types.Pointer32):
         raise Exception(
             "Data type of {} expected to be pointer but was: {}.".format(
-                expression, expression.data_type))
-    pointee = expression.data_type.pointee
+                expression, data_type))
+    pointee = data_type.pointee
     if isinstance(pointee, data_types.ClassType):
         try:
             data_type, field_name = pointee.get_field_by_offset(offset)

@@ -40,6 +40,18 @@ class ClassType(DataType):
     def add_method(self, method):
         self._methods.append(method)
 
+    def find_method(self, method_name):
+        found_method = None
+        num_methods = 0
+        for method in self._methods:
+            if method.proc_name == method_name:
+                found_method = method
+                num_methods += 1
+        if num_methods > 1:
+            raise Exception(
+                "More than 1 methods found: {}.".format(method_name))
+        return found_method
+
     def get_field_by_offset(self, offset):
         return self._fields[offset]
 
