@@ -9,7 +9,7 @@ from patterns.procedure_builder import ProcedureBuilder
 from writer import Writer
 
 command_regexp = re.compile(r'^(?P<cmd>\w+)(\s+(?P<operands>.+))?$')
-operand_regexp = re.compile(r'^(dword\s+ptr\s+)?(?P<operand>.+)$')
+operand_regexp = re.compile(r'^(?P<size>dword\s+ptr\s+)?(?P<operand>.+)$')
 
 
 def process_asm_patterns(lines, declarations):
@@ -128,6 +128,7 @@ def _match_instruction(instr_pattern, line, match_dict):
     for op_index in range(len(operands)):
         match = re.search(operand_regexp, operands[op_index].strip())
         operand = match.group("operand")
+        operand_size = _get_operand_size(match.group("size"))
         expected_operand_regexp = re.escape(expected_operands[op_index])
         expected_operand_regexp = expected_operand_regexp.replace(
             "%offset%", r"(?P<offset>[\+\-][\dABCDEF]+h)")
@@ -137,10 +138,21 @@ def _match_instruction(instr_pattern, line, match_dict):
         match = re.search(expected_operand_regexp, operand)
         if not match:
             return False
-        for param, value in match.groupdict().items():
+        operand_match_dict = match.groupdict()
+        if operand_size is not None:
+            operand_match_dict["size"] = str(operand_size)
+        for param, value in operand_match_dict.items():
             param = param.replace("_", "-")
             if param not in match_dict:
                 match_dict[param] = value
             elif match_dict[param] != value:
                 return False
     return True
+
+
+def _get_operand_size(s):
+    if s is None:
+        return None
+    if s.startswith("dword"):
+        return 4
+    raise Exception("Unknown operand size: {}.".format(s))

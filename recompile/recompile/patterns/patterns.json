@@ -31,18 +31,18 @@
 	"instructions": [
 		{"mov":  ["[ebp%offset%]", "%eax-ecx-edx%"]}
 	],
-	"action": {"assignment": {"dst": "STACKVAR(%offset%, 4)", "src": "REGVALUE(%eax-ecx-edx%)"}}
+	"action": {"assignment": {"dst": "STACKVAR(%offset%, %size%)", "src": "REGVALUE(%eax-ecx-edx%)"}}
 },
 {
 	"instructions": [
 		{"mov":  ["%eax-ecx-edx%", "[ebp%offset%]"]}
 	],
-	"action": {"tmpreg": {"dst": "%eax-ecx-edx%", "src": "STACKVAR(%offset%, 4)"}}
+	"action": {"tmpreg": {"dst": "%eax-ecx-edx%", "src": "STACKVAR(%offset%, %size%)"}}
 },
 {
 	"instructions": [
 		{"mov":  ["%eax-ecx-edx%", "[%eax-ecx-edx%%offset%]"]}
 	],
-	"action": {"tmpreg": {"dst": "%eax-ecx-edx%", "src": "ACCESS(REGVALUE(%eax-ecx-edx%), %offset%, 4)"}}
+	"action": {"tmpreg": {"dst": "%eax-ecx-edx%", "src": "ACCESS(REGVALUE(%eax-ecx-edx%), %offset%, %size%)"}}
 }
 ]
