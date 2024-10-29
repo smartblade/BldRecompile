@@ -24,7 +24,7 @@ class ProcedureCall:
             return data_types.Double()
         if self._proc_decl is not None:
             return self._proc_decl.return_type
-        raise AttributeError("Can't deduce data type for: {}".format(self))
+        raise Exception("Can't deduce data type for: {}".format(self))
 
     @property
     def name(self):
@@ -37,6 +37,9 @@ class ProcedureCall:
     @property
     def callee_address(self):
         return self._callee_addr
+
+    def set_declaration(self, proc_decl):
+        self._proc_decl = proc_decl
 
     def transform_expression(self, **kwargs):
         declarations = kwargs['declarations']

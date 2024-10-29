@@ -25,6 +25,7 @@ def _transform(e, **kwargs):
         e, **kwargs,
         on_stackvar=_transform_stackvar,
         on_access=_transform_access,
+        on_global=_transform_global,
     )
 
 
@@ -36,10 +37,7 @@ def _transform_stackvar(offset, size, stack_vars):
 
 
 def _transform_access(expression, offset, size, **kwargs):
-    try:
-        data_type = expression.data_type
-    except AttributeError:
-        data_type = data_types.Pointer32()
+    data_type = expression.data_type
     if not isinstance(data_type, data_types.Pointer32):
         raise Exception(
             "Data type of {} expected to be pointer but was: {}.".format(
@@ -55,6 +53,10 @@ def _transform_access(expression, offset, size, **kwargs):
                 "Data type size expected to be {} but was: {}.".format(
                     size, data_type.size))
         return expressions.FieldAccess(expression, field_name)
+    return None
+
+
+def _transform_global(**kwargs):
     return None
 
 
@@ -145,10 +147,7 @@ def _rewrite_return(proc_decl, regdef, return_instr):
 
 
 def _convert_expression_to_type(e, target_type):
-    try:
-        src_type = e.data_type
-    except AttributeError:
-        return expressions.ReinterpretCast(target_type, e)
+    src_type = e.data_type
     if (
         isinstance(src_type, data_types.Pointer32) and
         isinstance(target_type, data_types.Pointer32)
