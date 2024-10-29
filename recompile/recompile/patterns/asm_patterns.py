@@ -78,7 +78,7 @@ def _build_proc(writer, declarations, patterns, proc_addr, proc_lines):
         writer.write_line(str(exc))
         return exc
     else:
-        builder.make_high_level_code()
+        builder.make_high_level_code(declarations)
         builder.emit_code(writer)
 
 

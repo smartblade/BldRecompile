@@ -2,7 +2,7 @@
 // address: 0x10001000
 void B_IDataFile::ResetnOpenedFiles()
 {
-    ACCESS(GLOBAL(0x10049EFC), 0, 4) = 0x00000000;
+    ACCESS(&B_IDataFile::n_opened_files, 0, 4) = 0x00000000;
 }
 
 // address: 0x1000100F

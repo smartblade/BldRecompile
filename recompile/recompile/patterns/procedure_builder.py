@@ -85,10 +85,11 @@ class ProcedureBuilder:
                     type(first_instruction)))
         return first_instruction
 
-    def make_high_level_code(self):
+    def make_high_level_code(self, declarations):
         self._instructions = make_high_level_code(
             self._expect_first_procedure_info(),
             self._proc_decl,
+            declarations,
             self._instructions,
         )
 

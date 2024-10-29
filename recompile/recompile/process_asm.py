@@ -1270,16 +1270,15 @@ def collectVariablesFromFile(fileName):
             match = re.search(mangling_regexp, line)
             if match:
                 mangling = match.group('mangling')
-        elif (
-            len(addr_by_module) > 0 and
-            varNames[(module, addr_by_module[module])] is None
-        ):
+        elif len(addr_by_module) > 0:
             match = re.search(name_regexp, line)
             if match:
                 for module, addr in addr_by_module.items():
-                    varNames[(module, addr)] = "_{}".format(match.group('name'))
                     declarations[(module, addr)] = line
-                    nativeVariables.add((module, addr))
+                    if varNames[(module, addr)] is None:
+                        varNames[(module, addr)] = "_{}".format(
+                            match.group('name'))
+                        nativeVariables.add((module, addr))
                 addr_by_module = {}
     f.close()
     variables_dict = {}

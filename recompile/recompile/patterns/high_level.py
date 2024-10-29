@@ -1,3 +1,4 @@
+import parser
 from calling_convention import CallingConvention
 import data_types
 import instructions
@@ -5,12 +6,13 @@ import expressions
 from patterns.predefined_procedures import visit_predefined_procedures
 
 
-def make_high_level_code(proc_info, proc_decl, instrs):
+def make_high_level_code(proc_info, proc_decl, declarations, instrs):
     stack_vars = proc_info.stack_variables
     new_instructions = []
     for instr in instrs:
         instr = instr.transform(
-            lambda e: _transform(e, stack_vars=stack_vars))
+            lambda e: _transform(
+                e, stack_vars=stack_vars, declarations=declarations))
         new_instructions.append(instr)
     _validate_procedure_info(proc_info, proc_decl)
     new_instructions = _eliminate_procedure_info(proc_info, new_instructions)
@@ -29,7 +31,7 @@ def _transform(e, **kwargs):
     )
 
 
-def _transform_stackvar(offset, size, stack_vars):
+def _transform_stackvar(offset, size, stack_vars, **kwargs):
     variable = stack_vars.get(offset)
     if variable is not None and variable.data_type.size == size:
         return variable
@@ -56,7 +58,14 @@ def _transform_access(expression, offset, size, **kwargs):
     return None
 
 
-def _transform_global(**kwargs):
+def _transform_global(address, declarations, **kwargs):
+    global_var = declarations.symbols.variables.get(address)
+    if global_var is not None:
+        var_type, var_name = parser.parse_cpp_variable_declaration(
+            global_var.declaration.strip().strip(";"),
+            declarations.declared_types,
+        )
+        return expressions.AddressOf(expressions.Identifier(var_type, var_name))
     return None
 
 

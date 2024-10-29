@@ -2,7 +2,8 @@ import re
 
 import parser
 
-variable_decl_regexp = re.compile(r'^(?P<type>.*[*\s])(?P<name>[^*\s]\S*)$')
+variable_decl_regexp = re.compile(
+    r'^(?P<type>.*[*\s])(?P<name>[^\W\d]\S*)(\s*=\s*\d*\s*)?$')
 
 
 def parse_cpp_variable_declaration(s, declared_types):
