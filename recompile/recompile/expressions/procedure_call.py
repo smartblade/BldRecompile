@@ -160,17 +160,9 @@ def _transform_ptrs_to_references(proc_decl, arguments):
             isinstance(parameter.data_type, data_types.Reference) and
             isinstance(arguments[i].data_type, data_types.Pointer32)
         ):
-            argument = _dereference(arguments[i])
+            argument = expressions.do_dereference(arguments[i])
         else:
             argument = arguments[i]
         new_arguments.append(argument)
         i += 1
     return new_arguments
-
-
-def _dereference(e):
-    if isinstance(e, expressions.AddressOf):
-        return e.expression
-    if isinstance(e, expressions.Bin):
-        e = expressions.BracketsExpression(e)
-    return expressions.Dereference(e)

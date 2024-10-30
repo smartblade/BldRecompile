@@ -55,6 +55,16 @@ def _transform_access(expression, offset, size, **kwargs):
                 "Data type size expected to be {} but was: {}.".format(
                     size, data_type.size))
         return expressions.FieldAccess(expression, field_name)
+    if isinstance(pointee, (data_types.Int32, data_types.UInt32)):
+        if pointee.size != size:
+            raise Exception(
+                "Data type size expected to be {} but was: {}.".format(
+                    size, pointee.size))
+        if offset != 0:
+            raise Exception(
+                "Data access offset expected to be {} but was: {}.".format(
+                    0, offset))
+        return expressions.do_dereference(expression)
     return None
 
 
