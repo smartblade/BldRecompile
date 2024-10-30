@@ -2,7 +2,7 @@
 // address: 0x10001000
 void B_IDataFile::ResetnOpenedFiles()
 {
-    B_IDataFile::n_opened_files = 0x00000000;
+    B_IDataFile::n_opened_files = 0;
 }
 
 // address: 0x1000100F

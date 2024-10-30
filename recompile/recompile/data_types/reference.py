@@ -10,6 +10,10 @@ class Reference(DataType):
         return "ref({})".format(self._referent)
 
     @property
+    def size(self):
+        return 4
+
+    @property
     def referent(self):
         return self._referent
 

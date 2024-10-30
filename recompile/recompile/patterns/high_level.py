@@ -23,6 +23,8 @@ def make_high_level_code(proc_info, proc_decl, declarations, instrs):
 
 
 def _transform(e, **kwargs):
+    if isinstance(e, instructions.Assignment):
+        return _transform_assignment(e, **kwargs)
     return visit_predefined_procedures(
         e, **kwargs,
         on_stackvar=_transform_stackvar,
@@ -77,6 +79,11 @@ def _transform_global(address, declarations, **kwargs):
         )
         return expressions.AddressOf(expressions.Identifier(var_type, var_name))
     return None
+
+
+def _transform_assignment(ass, **kwargs):
+    src = _convert_expression_to_type(ass.src, ass.dst.data_type)
+    return instructions.Assignment(ass.dst, src)
 
 
 def _validate_procedure_info(proc_info, proc_decl):
@@ -167,6 +174,9 @@ def _rewrite_return(proc_decl, regdef, return_instr):
 
 def _convert_expression_to_type(e, target_type):
     src_type = e.data_type
+    if src_type.size != target_type.size:
+        raise Exception("Can't convert {}(size: {}) to {}(size: {}).".format(
+            src_type, src_type.size, target_type, target_type.size))
     if (
         isinstance(src_type, data_types.Pointer32) and
         isinstance(target_type, data_types.Pointer32)
@@ -184,7 +194,12 @@ def _convert_expression_to_type(e, target_type):
         isinstance(target_type, data_types.UInt32)
     ):
         return e
-    raise Exception("Can't convert {} to {}".format(src_type, target_type))
+    if (
+        isinstance(src_type, data_types.Unknown32) and
+        not isinstance(target_type, data_types.Unknown32)
+    ):
+        return expressions.do_reinterpret(target_type, e)
+    raise Exception("Can't convert {} to {}.".format(src_type, target_type))
 
 
 def _can_convert_pointees(src_type, target_type):

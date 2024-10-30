@@ -6,6 +6,7 @@ from .cast import Cast
 from .constant import Constant
 from .dereference import Dereference
 from .do_dereference import do_dereference
+from .do_reinterpret import do_reinterpret
 from .field_access import FieldAccess
 from .identifier import Identifier
 from .increment import Increment
