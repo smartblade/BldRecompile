@@ -50,5 +50,11 @@
 		{"mov":  ["%eax-ecx-edx%", "[%eax-ecx-edx%%offset%]"]}
 	],
 	"action": {"tmpreg": {"dst": "%eax-ecx-edx%", "src": "ACCESS(REGVALUE(%eax-ecx-edx%), %offset%, %size%)"}}
+},
+{
+	"instructions": [
+		{"mov":  ["%eax-ecx-edx%", "[%label%]"]}
+	],
+	"action": {"tmpreg": {"dst": "%eax-ecx-edx%", "src": "ACCESS(GLOBAL(%label%), 0, %size%)"}}
 }
 ]

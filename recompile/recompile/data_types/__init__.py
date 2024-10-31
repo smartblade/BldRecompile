@@ -1,3 +1,4 @@
+from .are_same import are_same
 from .array_type import Array
 from .class_type import ClassType
 from .data_type import DataType

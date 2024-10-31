@@ -1,0 +1,28 @@
+import data_types
+
+
+def are_same(first, second):
+    if type(first) is not type(second):
+        return False
+    standard_types = [
+        data_types.Int32,
+        data_types.UInt32,
+    ]
+    for standard_type in standard_types:
+        if (
+            isinstance(first, standard_type) and
+            isinstance(second, standard_type)
+        ):
+            return True
+    if (
+        isinstance(first, data_types.Pointer32) and
+        isinstance(second, data_types.Pointer32)
+    ):
+        return are_same(first.pointee, second.pointee)
+    if (
+        isinstance(first, data_types.ClassType) and
+        isinstance(second, data_types.ClassType)
+    ):
+        return first.class_name == second.class_name
+    raise Exception(
+        "Unimplemented comparison for {} and {}.".format(first, second))

@@ -177,6 +177,8 @@ def _convert_expression_to_type(e, target_type):
     if src_type.size != target_type.size:
         raise Exception("Can't convert {}(size: {}) to {}(size: {}).".format(
             src_type, src_type.size, target_type, target_type.size))
+    if data_types.are_same(src_type, target_type):
+        return e
     if (
         isinstance(src_type, data_types.Pointer32) and
         isinstance(target_type, data_types.Pointer32)
@@ -189,11 +191,6 @@ def _convert_expression_to_type(e, target_type):
     ):
         if _can_convert_pointees(src_type.pointee, target_type.referent):
             return expressions.Dereference(e)
-    if (
-        isinstance(src_type, data_types.UInt32) and
-        isinstance(target_type, data_types.UInt32)
-    ):
-        return e
     if (
         isinstance(src_type, data_types.Unknown32) and
         not isinstance(target_type, data_types.Unknown32)

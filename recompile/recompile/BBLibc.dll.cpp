@@ -8,16 +8,14 @@ void B_IDataFile::ResetnOpenedFiles()
 // address: 0x1000100F
 int B_IDataFile::GetnOpenedFiles()
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    return B_IDataFile::n_opened_files;
 }
-Failed to find pattern for 'mov eax, dword ptr [g10049EFC]'
 
 // address: 0x10001019
 int B_IDataFile::GetnOpenFiles()
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    return B_IDataFile::n_open_files;
 }
-Failed to find pattern for 'mov eax, dword ptr [g10049F00]'
 
 // address: 0x10001023
 int B_IDataFile::SetOnOpenFunc(PyObject *obj)
