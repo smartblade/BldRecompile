@@ -8,6 +8,7 @@ _actions = {
     "epilog-return": lambda builder, **kwargs: builder.make_epilog(**kwargs),
     "assignment": lambda builder, **kwargs: builder.make_assignment(**kwargs),
     "tmpreg": lambda builder, **kwargs: builder.update_temporary_reg(**kwargs),
+    "call": lambda builder, **kwargs: builder.make_call(**kwargs),
 }
 
 
@@ -34,7 +35,7 @@ def _evaluate_expression(expression, builder, match_dict):
                 value = str(from_hex(value[:-1]))
             else:
                 value = "0x{}".format(value[1:-1])
-        if value.startswith("g"):
+        if value.startswith("g") or value.startswith("l"):
             value = "0x{}".format(value[1:])
         expression = expression.replace("%{}%".format(key), value)
     expression = parser.parse_cpp_expression(expression, {}, {})

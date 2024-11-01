@@ -44,10 +44,7 @@ def parse_cpp_function(class_name, func, declared_types):
     is_static, return_type = _extract_static(match.group("return"))
     if is_definition:
         is_static = _get_static_from_declaration(method_class, proc_name)
-    if is_static:
-        convention = CallingConvention.CDECL
-    else:
-        convention = CallingConvention.THISCALL
+    convention = _get_calling_convention(is_static, method_class)
     return ProcedureDeclaration(
         proc_name=proc_name,
         convention=convention,
@@ -56,6 +53,12 @@ def parse_cpp_function(class_name, func, declared_types):
         return_arg=_extract_return_type(return_type, declared_types),
         is_static=is_static,
     )
+
+
+def _get_calling_convention(is_static, method_class):
+    if method_class is not None and not is_static:
+        return CallingConvention.THISCALL
+    return CallingConvention.CDECL
 
 
 def _get_static_from_declaration(method_class, proc_name):

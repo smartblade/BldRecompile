@@ -131,7 +131,7 @@ def _match_instruction(instr_pattern, line, match_dict):
         operand_size = _get_operand_size(match.group("size"))
         expected_operand_regexp = re.escape(expected_operands[op_index])
         expected_operand_regexp = expected_operand_regexp.replace(
-            "%label%", r"(?P<label>g[\dABCDEF]+)")
+            "%label%", r"(?P<label>(g|l)[\dABCDEF]+)")
         expected_operand_regexp = expected_operand_regexp.replace(
             "%hex%", r"(?P<hex>[\dABCDEF]+h)")
         expected_operand_regexp = expected_operand_regexp.replace(

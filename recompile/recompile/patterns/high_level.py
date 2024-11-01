@@ -25,12 +25,15 @@ def make_high_level_code(proc_info, proc_decl, declarations, instrs):
 def _transform(e, **kwargs):
     if isinstance(e, instructions.Assignment):
         return _transform_assignment(e, **kwargs)
-    return visit_predefined_procedures(
+    e = visit_predefined_procedures(
         e, **kwargs,
         on_stackvar=_transform_stackvar,
         on_access=_transform_access,
         on_global=_transform_global,
     )
+    if isinstance(e, expressions.ProcedureCall):
+        return _transform_procedure_call(e, **kwargs)
+    return e
 
 
 def _transform_stackvar(offset, size, stack_vars, **kwargs):
@@ -86,6 +89,39 @@ def _transform_assignment(ass, **kwargs):
     return instructions.Assignment(ass.dst, src)
 
 
+def _transform_procedure_call(pc, declarations, **kwargs):
+    if pc.callee_address is None:
+        return pc
+    cpp_declaration = declarations.symbols.procedures.get(pc.callee_address)
+    if cpp_declaration is None:
+        return pc
+    proc_decl = parser.parse_cpp_function(
+        cpp_declaration.class_name,
+        cpp_declaration.declaration,
+        declarations.declared_types,
+    )
+    arguments = _convert_arguments_to_parameters_types(pc, proc_decl)
+    return pc.copy(
+        name=proc_decl.proc_name, proc_decl=proc_decl, arguments=arguments)
+
+
+def _convert_arguments_to_parameters_types(pc, proc_decl):
+    if len(pc.arguments) != len(proc_decl.get_parameters_ids()):
+        raise Exception(
+            "Expected to be {} arguments at {} but was: {}".format(
+                len(pc.arguments),
+                proc_decl.proc_name,
+                len(proc_decl.get_parameters_ids()),
+            )
+        )
+    new_arguments = []
+    for i, parameter in enumerate(proc_decl.get_parameters_ids().values()):
+        new_argument = _convert_expression_to_type(
+            pc.arguments[i], parameter.data_type)
+        new_arguments.append(new_argument)
+    return new_arguments
+
+
 def _validate_procedure_info(proc_info, proc_decl):
     if proc_decl is None:
         return
@@ -105,8 +141,9 @@ def _validate_procedure_info(proc_info, proc_decl):
         proc_decl.convention == CallingConvention.THISCALL
     ):
         raise Exception(
-            "Convention expected to be non-'thiscall' but was: {}".format(
-                proc_decl.convention))
+            "Convention expected to be non-'thiscall'"
+            " for {} but was: {}".format(
+                proc_decl.proc_name, proc_decl.convention))
 
 
 def _eliminate_procedure_info(proc_info, instrs):
@@ -120,6 +157,7 @@ def _eliminate_unnecessary_returns(proc_info, proc_decl, instrs):
     if isinstance(ri, instructions.ReturnInstruction):
         if (
             ri.expression is None or
+            proc_decl is not None and
             proc_decl.is_constructor and
             proc_info.is_this_expression(ri.expression)
         ):
@@ -141,6 +179,12 @@ def _rewrite_returns(proc_decl, instrs):
             new_instructions.extend(updated_instrs)
             i += 2
             continue
+        updated_instrs = _rewrite_return_from_last_call(
+            proc_decl, instr, next_instr)
+        if updated_instrs:
+            new_instructions.extend(updated_instrs)
+            i += 2
+            continue
         new_instructions.append(instr)
         i += 1
     return new_instructions
@@ -151,17 +195,14 @@ def _rewrite_return(proc_decl, regdef, return_instr):
         return
     if not isinstance(return_instr, instructions.ReturnInstruction):
         return
+    if return_instr.expression is not None:
+        return
     if proc_decl is None:
         return
     if proc_decl.return_type is None:
         return
     data_type = proc_decl.return_type
-    if (
-        not isinstance(data_type, data_types.Pointer32) and
-        not isinstance(data_type, data_types.Reference) and
-        not isinstance(data_type, data_types.Int32) and
-        not isinstance(data_type, data_types.UInt32)
-    ):
+    if not _is_eax_return_type(data_type):
         return
     return_value = regdef.pop_reg_value("eax")
     return_value = _convert_expression_to_type(return_value, data_type)
@@ -170,6 +211,39 @@ def _rewrite_return(proc_decl, regdef, return_instr):
         new_instructions.append(regdef)
     new_instructions.append(instructions.ReturnInstruction(return_value))
     return new_instructions
+
+
+def _rewrite_return_from_last_call(proc_decl, instr, return_instr):
+    if not isinstance(instr, instructions.CodeInstruction):
+        return
+    pc = instr.expression
+    if not isinstance(pc, expressions.ProcedureCall):
+        return
+    if not isinstance(return_instr, instructions.ReturnInstruction):
+        return
+    if return_instr.expression is not None:
+        return
+    if proc_decl is not None:
+        return
+    if pc.proc_decl is None:
+        return
+    if pc.proc_decl.return_type is None:
+        return
+    data_type = pc.proc_decl.return_type
+    if not _is_eax_return_type(data_type):
+        return
+    return_value = _convert_expression_to_type(pc, data_type)
+    new_instructions = [instructions.ReturnInstruction(return_value)]
+    return new_instructions
+
+
+def _is_eax_return_type(data_type):
+    return (
+        isinstance(data_type, data_types.Pointer32) or
+        isinstance(data_type, data_types.Reference) or
+        isinstance(data_type, data_types.Int32) or
+        isinstance(data_type, data_types.UInt32)
+    )
 
 
 def _convert_expression_to_type(e, target_type):

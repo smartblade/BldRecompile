@@ -1,17 +1,35 @@
 import data_types
 import expressions
+from hex_conversion import to_hex
 
 
 class ProcedureCall:
     def __init__(
-        self, name, operator, arguments, callee_addr, is_method, proc_decl=None
+        self, name=None, operator=None, arguments=None, callee_addr=None,
+        is_method=False, proc_decl=None
     ):
+        if arguments is None:
+            arguments = []
         self._name = name
         self._operator = operator
         self._arguments = arguments
         self._callee_addr = callee_addr
         self._is_method = is_method
         self._proc_decl = proc_decl
+
+    def copy(self, **kwargs):
+        default_map = dict(
+            name=self._name,
+            operator=self._operator,
+            arguments=self._arguments,
+            callee_addr=self._callee_addr,
+            is_method=self._is_method,
+            proc_decl=self._proc_decl,
+        )
+        for key, value in default_map.items():
+            if key not in kwargs:
+                kwargs[key] = value
+        return ProcedureCall(**kwargs)
 
     def __repr__(self):
         return "{}({})".format(
@@ -28,6 +46,10 @@ class ProcedureCall:
 
     @property
     def name(self):
+        if self._name is None:
+            if self._is_method:
+                return "unknown_method_{}".format(to_hex(self._callee_addr))
+            return "unknown_function_{}".format(to_hex(self._callee_addr))
         return self._name
 
     @property
@@ -37,6 +59,10 @@ class ProcedureCall:
     @property
     def callee_address(self):
         return self._callee_addr
+
+    @property
+    def proc_decl(self):
+        return self._proc_decl
 
     def set_declaration(self, proc_decl):
         self._proc_decl = proc_decl
@@ -113,11 +139,15 @@ class ProcedureCall:
             )
         if self._is_method:
             call = expressions.FieldAccess(
-                self._arguments[0], self._name
+                self._arguments[0], self.name
             ).emit_code()
             arguments = self._arguments[1:]
         else:
-            call = self._name
+            if self._proc_decl is not None and self._proc_decl.is_static:
+                call = "{}::{}".format(
+                    self._proc_decl.method_class.class_name, self.name)
+            else:
+                call = self.name
             arguments = self._arguments
         return "{}({})".format(
             call, ", ".join(map(lambda a: a.emit_code(), arguments))

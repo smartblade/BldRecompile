@@ -1,4 +1,5 @@
 import expressions
+from hex_conversion import from_hex
 import instructions
 from patterns.high_level import make_high_level_code
 
@@ -36,6 +37,18 @@ class ProcedureBuilder:
                 last_instruction.define_this_offset(dst)
                 return
         self._instructions.append(instructions.Assignment(dst, src))
+
+    def make_call(self, address):
+        procedure_call = expressions.ProcedureCall(
+            callee_addr=from_hex(address.emit_code()))
+        last_instruction = self._instructions[-1]
+        if isinstance(
+            last_instruction, instructions.TemporaryRegisterDefinition
+        ):
+            this_arg = self.pop_reg_value("ecx")
+            procedure_call = procedure_call.copy(
+                is_method=True, arguments=[this_arg])
+        self._instructions.append(instructions.CodeInstruction(procedure_call))
 
     def update_temporary_reg(self, dst, src):
         reg = dst.emit_code()

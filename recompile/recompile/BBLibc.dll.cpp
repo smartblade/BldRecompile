@@ -34,9 +34,9 @@ Failed to find pattern for 'cmp dword ptr [g10049F04], 000000000h'
 // address: 0x100010E4
 p100010E4
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    unknown_function_100010F3();
+    unknown_function_10001205();
 }
-Failed to find pattern for 'call l100010F3'
 
 // address: 0x100010F3
 p100010F3
@@ -214,10 +214,8 @@ Failed to find pattern for 'push 000000008h'
 // address: 0x10001C31
 B_IDataFile::~B_IDataFile()
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(ecx=STACKVAR(-4, 4))
+    this->Close();
 }
-Failed to find pattern for 'call l100014D2'
 
 // address: 0x10001C44
 B_ODataFile::B_ODataFile(const char *file_name, int flags)
@@ -330,9 +328,10 @@ Failed to find pattern for 'push 000000008h'
 p10002060
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(ecx=STACKVAR(-4, 4))
+    STACKVAR(-4, 4)->unknown_method_10001DA0();
+    REGDEF(eax=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'call l10001DA0'
+Failed to find pattern for 'mov ecx, dword ptr [eax]'
 
 // address: 0x10002082
 B_ODataFile::~B_ODataFile()
@@ -345,23 +344,20 @@ Failed to find pattern for 'mov ecx, dword ptr [eax+004h]'
 // address: 0x100020C3
 p100020C3
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    return B_IDataFile::GetnOpenedFiles();
 }
-Failed to find pattern for 'call l1000100F'
 
 // address: 0x100020CD
 p100020CD
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    return B_IDataFile::GetnOpenFiles();
 }
-Failed to find pattern for 'call l10001019'
 
 // address: 0x100020D7
 p100020D7
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    B_IDataFile::ResetnOpenedFiles();
 }
-Failed to find pattern for 'call l10001000'
 
 // address: 0x100020E1
 p100020E1
@@ -374,9 +370,8 @@ Failed to find pattern for 'push eax'
 // address: 0x100020F2
 void RemoveOnOpenInputFileFunc()
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    B_IDataFile::RemoveOnOpenFunc();
 }
-Failed to find pattern for 'call l10001096'
 
 // address: 0x10002100
 p10002100
@@ -982,9 +977,10 @@ Failed to find pattern for 'mov eax, offset g1004A118'
 B_Resource::B_Resource()
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(ecx=STACKVAR(-4, 4))
+    STACKVAR(-4, 4)->unknown_method_100039E5();
+    REGDEF(eax=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'call l100039E5'
+Failed to find pattern for 'mov dword ptr [eax], offset g10042198'
 
 // address: 0x10003ED9
 p10003ED9
@@ -1285,9 +1281,9 @@ Failed to find pattern for 'sub esp, 000000040h'
 // address: 0x1000617B
 p1000617B
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    unknown_function_1000618A();
+    unknown_function_10006199();
 }
-Failed to find pattern for 'call l1000618A'
 
 // address: 0x1000618A
 p1000618A
@@ -1396,17 +1392,19 @@ Failed to find pattern for 'push eax'
 p10006680
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(ecx=STACKVAR(-4, 4))
+    STACKVAR(-4, 4)->unknown_method_100043CB();
+    REGDEF(eax=STACKVAR(8, 4))
 }
-Failed to find pattern for 'call l100043CB'
+Failed to find pattern for 'and eax, 000000001h'
 
 // address: 0x100066B0
 p100066B0
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(ecx=STACKVAR(-4, 4))
+    STACKVAR(-4, 4)->unknown_method_1000470A();
+    REGDEF(eax=STACKVAR(8, 4))
 }
-Failed to find pattern for 'call l1000470A'
+Failed to find pattern for 'and eax, 000000001h'
 
 // address: 0x100066E0
 B_Resource::B_Resource(const B_Resource &that)
@@ -4209,9 +4207,9 @@ Failed to find pattern for 'push edi'
 // address: 0x10026990
 p10026990
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    unknown_function_1002699F();
+    unknown_function_100269E0();
 }
-Failed to find pattern for 'call l1002699F'
 
 // address: 0x1002699F
 p1002699F
@@ -4480,9 +4478,9 @@ Failed to find pattern for 'sub esp, 000000008h'
 // address: 0x10029C15
 p10029C15
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    unknown_function_10029C24();
+    unknown_function_10029C33();
 }
-Failed to find pattern for 'call l10029C24'
 
 // address: 0x10029C24
 p10029C24
@@ -4803,9 +4801,8 @@ Failed to find pattern for 'sub esp, 000000008h'
 // address: 0x10031430
 p10031430
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    unknown_function_1003143A();
 }
-Failed to find pattern for 'call l1003143A'
 
 // address: 0x1003143A
 p1003143A
@@ -4819,9 +4816,8 @@ Failed to find pattern for 'mov eax, offset g1004A968'
 // address: 0x10031477
 p10031477
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    unknown_function_10031481();
 }
-Failed to find pattern for 'call l10031481'
 
 // address: 0x10031481
 p10031481
@@ -4835,9 +4831,8 @@ Failed to find pattern for 'mov eax, offset g1004A950'
 // address: 0x100314BE
 p100314BE
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    unknown_function_100314C8();
 }
-Failed to find pattern for 'call l100314C8'
 
 // address: 0x100314C8
 p100314C8
@@ -5206,9 +5201,9 @@ Failed to find pattern for 'sub esp, 000000014h'
 // address: 0x10034345
 p10034345
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    unknown_function_10034354();
+    unknown_function_1003438B();
 }
-Failed to find pattern for 'call l10034354'
 
 // address: 0x10034354
 p10034354
@@ -5238,9 +5233,9 @@ Failed to find pattern for 'sub esp, 00000000Ch'
 // address: 0x1003440F
 p1003440F
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    unknown_function_1003441E();
+    unknown_function_10034455();
 }
-Failed to find pattern for 'call l1003441E'
 
 // address: 0x1003441E
 p1003441E
@@ -5419,9 +5414,10 @@ Failed to find pattern for 'sub esp, 000000010h'
 p10039960
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(ecx=STACKVAR(-4, 4))
+    STACKVAR(-4, 4)->unknown_method_1003819B();
+    REGDEF(eax=STACKVAR(8, 4))
 }
-Failed to find pattern for 'call l1003819B'
+Failed to find pattern for 'and eax, 000000001h'
 
 // address: 0x10039990
 p10039990
@@ -5990,9 +5986,10 @@ Failed to find pattern for 'sub esp, 000000008h'
 p1003D7C0
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
+    STACKVAR(-4, 4)->unknown_method_100039E5();
     REGDEF(ecx=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'call l100039E5'
+Failed to find pattern for 'add ecx, 00000000Ch'
 
 // address: 0x1003D7F0
 p1003D7F0
@@ -6043,9 +6040,9 @@ Failed to find pattern for 'sub esp, 000000014h'
 // address: 0x1003DA80
 p1003DA80
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    unknown_function_1003DA8F();
+    unknown_function_1003DAEE();
 }
-Failed to find pattern for 'call l1003DA8F'
 
 // address: 0x1003DA8F
 p1003DA8F
@@ -6092,9 +6089,10 @@ Failed to find pattern for 'sub esp, 000000344h'
 p1003DED0
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(ecx=STACKVAR(-4, 4))
+    STACKVAR(-4, 4)->unknown_method_1003DBC0();
+    REGDEF(eax=STACKVAR(8, 4))
 }
-Failed to find pattern for 'call l1003DBC0'
+Failed to find pattern for 'and eax, 000000001h'
 
 // address: 0x1003DF00
 p1003DF00
@@ -6585,9 +6583,10 @@ Failed to find pattern for 'sub esp, 000000008h'
 p10041520
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(ecx=STACKVAR(-4, 4))
+    STACKVAR(-4, 4)->unknown_method_1004118F();
+    REGDEF(eax=STACKVAR(8, 4))
 }
-Failed to find pattern for 'call l1004118F'
+Failed to find pattern for 'and eax, 000000001h'
 
 // address: 0x100415A8
 p100415A8

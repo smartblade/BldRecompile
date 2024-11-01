@@ -63,7 +63,7 @@ class ProcedureDeclaration:
     def get_parameters_ids(self):
         make_id = expressions.Identifier
         param_dict = {}
-        if self._method_class is not None:
+        if self._method_class is not None and not self._is_static:
             param_name = "this"
             param_type = data_types.Pointer32(self._method_class)
             param_dict[param_name] = make_id(param_type, param_name)
