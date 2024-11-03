@@ -8,6 +8,7 @@ _actions = {
     "epilog-return": lambda builder, **kwargs: builder.make_epilog(**kwargs),
     "assignment": lambda builder, **kwargs: builder.make_assignment(**kwargs),
     "tmpreg": lambda builder, **kwargs: builder.update_temporary_reg(**kwargs),
+    "stackarg": lambda builder, **kwargs: builder.make_arg(**kwargs),
     "call": lambda builder, **kwargs: builder.make_call(**kwargs),
 }
 

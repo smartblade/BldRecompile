@@ -77,6 +77,12 @@
 },
 {
 	"instructions": [
+		{"push":  ["%label%"]}
+	],
+	"action": {"stackarg": {"arg": "ARG(GLOBAL(%label%))"}}
+},
+{
+	"instructions": [
 		{"call":  ["%label%"]}
 	],
 	"action": {"call": {"address": "%label%"}}

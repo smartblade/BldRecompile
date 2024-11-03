@@ -38,6 +38,9 @@ class ProcedureBuilder:
                 return
         self._instructions.append(instructions.Assignment(dst, src))
 
+    def make_arg(self, arg):
+        self._instructions.append(instructions.CodeInstruction(arg))
+
     def make_call(self, address):
         procedure_call = expressions.ProcedureCall(
             callee_addr=from_hex(address.emit_code()))
