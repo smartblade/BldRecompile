@@ -53,6 +53,12 @@
 },
 {
 	"instructions": [
+		{"mov":  ["%eax-ecx-edx%", "%label%"]}
+	],
+	"action": {"tmpreg": {"dst": "%eax-ecx-edx%", "src": "GLOBAL(%label%)"}}
+},
+{
+	"instructions": [
 		{"mov":  ["%eax-ecx-edx%", "[%label%]"]}
 	],
 	"action": {"tmpreg": {"dst": "%eax-ecx-edx%", "src": "ACCESS(GLOBAL(%label%), 0, %size%)"}}

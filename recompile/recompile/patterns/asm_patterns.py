@@ -9,7 +9,8 @@ from patterns.procedure_builder import ProcedureBuilder
 from writer import Writer
 
 command_regexp = re.compile(r'^(?P<cmd>\w+)(\s+(?P<operands>.+))?$')
-operand_regexp = re.compile(r'^(?P<size>dword\s+ptr\s+)?(?P<operand>.+)$')
+operand_regexp = re.compile(
+    r'^(?P<size>dword\s+ptr\s+)?(offset\s+)?(?P<operand>.+)$')
 
 
 def process_asm_patterns(lines, declarations):

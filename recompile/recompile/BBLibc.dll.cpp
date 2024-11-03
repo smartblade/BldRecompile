@@ -969,9 +969,8 @@ Failed to find pattern for 'mov ecx, dword ptr [eax]'
 // address: 0x10003EB0
 B_ResourceManager *GetResourceManager()
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    return &B_resource_manager;
 }
-Failed to find pattern for 'mov eax, offset g1004A118'
 
 // address: 0x10003EBA
 B_Resource::B_Resource()
@@ -1288,9 +1287,8 @@ p1000617B
 // address: 0x1000618A
 p1000618A
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    return B_resource_manager.B_ResourceManager();
 }
-Failed to find pattern for 'mov ecx, offset g1004A118'
 
 // address: 0x10006199
 p10006199
@@ -1302,9 +1300,8 @@ Failed to find pattern for 'push offset l100061AB'
 // address: 0x100061AB
 p100061AB
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    B_resource_manager.~B_ResourceManager();
 }
-Failed to find pattern for 'mov ecx, offset g1004A118'
 
 // address: 0x100061BA
 p100061BA
@@ -4485,9 +4482,8 @@ p10029C15
 // address: 0x10029C24
 p10029C24
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    mout.unknown_method_10029C4A();
 }
-Failed to find pattern for 'mov ecx, offset g1004A53C'
 
 // address: 0x10029C33
 p10029C33
@@ -4810,8 +4806,9 @@ p1003143A
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
     ACCESS(GLOBAL(0x1004A960), 0, 4) = 0x00000000;
     ACCESS(GLOBAL(0x1004A964), 0, 4) = 0x3FF00000;
+    REGDEF(eax=GLOBAL(0x1004A968))
 }
-Failed to find pattern for 'mov eax, offset g1004A968'
+Failed to find pattern for 'mov dword ptr [eax], 000000000h'
 
 // address: 0x10031477
 p10031477
@@ -4825,8 +4822,9 @@ p10031481
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
     ACCESS(GLOBAL(0x1004A948), 0, 4) = 0x00000000;
     ACCESS(GLOBAL(0x1004A94C), 0, 4) = 0x00000000;
+    REGDEF(eax=GLOBAL(0x1004A950))
 }
-Failed to find pattern for 'mov eax, offset g1004A950'
+Failed to find pattern for 'mov dword ptr [eax], 000000000h'
 
 // address: 0x100314BE
 p100314BE
@@ -4840,8 +4838,9 @@ p100314C8
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
     ACCESS(GLOBAL(0x1004A978), 0, 4) = 0x00000000;
     ACCESS(GLOBAL(0x1004A97C), 0, 4) = 0x00000000;
+    REGDEF(eax=GLOBAL(0x1004A980))
 }
-Failed to find pattern for 'mov eax, offset g1004A980'
+Failed to find pattern for 'mov dword ptr [eax], 000000000h'
 
 // address: 0x10031505
 p10031505
