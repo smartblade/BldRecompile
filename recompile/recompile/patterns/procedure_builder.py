@@ -53,6 +53,27 @@ class ProcedureBuilder:
                 is_method=True, arguments=[this_arg])
         self._instructions.append(instructions.CodeInstruction(procedure_call))
 
+    def add_stack_pointer(self, offset):
+        pc = self._try_pop_procedure_call()
+        if pc is None:
+            raise Exception(
+                "Stack pointer restore should be after procedure call.")
+        expected_size = from_hex(offset.emit_code())
+        size = 0
+        args = []
+        while size < expected_size:
+            arg = self._try_pop_arg_instruction()
+            if arg is None:
+                break
+            args.append(arg)
+            size += arg.data_type.size
+        if size != expected_size:
+            raise Exception(
+                "Expected arguments size: {}, but was: {}.".format(
+                    expected_size, size))
+        pc = pc.copy(arguments=args)
+        self._instructions.append(instructions.CodeInstruction(pc))
+
     def update_temporary_reg(self, dst, src):
         reg = dst.emit_code()
         tmp_def = self._instructions[-1]
@@ -76,22 +97,36 @@ class ProcedureBuilder:
             "Unexpected instruction type {}".format(type(last_instruction)))
 
     def _try_pop_restore_instruction(self, reg):
+        pc = self._try_pop_procedure_call("RESTORE", 1)
+        if pc is None:
+            return False
+        if pc.arguments[0].emit_code() != reg:
+            raise Exception(
+                "Expected restore of {} but was: {}.".format(
+                    reg, pc.arguments[0].emit_code()))
+        return True
+
+    def _try_pop_arg_instruction(self):
+        pc = self._try_pop_procedure_call("ARG", 1)
+        if pc is None:
+            return None
+        return pc.arguments[0]
+
+    def _try_pop_procedure_call(self, name=None, num_arguments=0):
         last_instruction = self._instructions[-1]
         if not isinstance(last_instruction, instructions.CodeInstruction):
-            return False
+            return None
         pc = last_instruction.expression
         if not isinstance(pc, expressions.ProcedureCall):
-            return False
-        if pc.name != "RESTORE":
-            return False
-        if len(pc.arguments) != 1:
+            return None
+        if name is not None and pc.name != name:
+            return None
+        if len(pc.arguments) != num_arguments:
             raise Exception(
                 "Expected {} argument of {} but was {}.".format(
-                    1, pc.name, len(pc.arguments)))
-        if pc.arguments[0].emit_code() != reg:
-            return False
+                    num_arguments, pc.name, len(pc.arguments)))
         self._instructions.pop()
-        return True
+        return pc
 
     def _expect_first_procedure_info(self):
         first_instruction = self._instructions[0]

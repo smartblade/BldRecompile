@@ -10,6 +10,7 @@ _actions = {
     "tmpreg": lambda builder, **kwargs: builder.update_temporary_reg(**kwargs),
     "stackarg": lambda builder, **kwargs: builder.make_arg(**kwargs),
     "call": lambda builder, **kwargs: builder.make_call(**kwargs),
+    "addsp": lambda builder, **kwargs: builder.add_stack_pointer(**kwargs),
 }
 
 
@@ -46,8 +47,15 @@ def _evaluate_expression(expression, builder, match_dict):
 
 def _evaluate_procedure_calls(expression, **kwargs):
     return visit_predefined_procedures(
-        expression, on_regvalue=_evaluate_reg_value, **kwargs)
+        expression,
+        on_regvalue=_evaluate_reg_value,
+        on_global=_keep,
+        **kwargs)
 
 
 def _evaluate_reg_value(reg, builder):
     return builder.pop_reg_value(reg)
+
+
+def _keep(**kwargs):
+    return None

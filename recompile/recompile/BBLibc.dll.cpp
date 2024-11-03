@@ -48,11 +48,8 @@ Failed to find pattern for 'sub esp, 000000028h'
 // address: 0x10001205
 p10001205
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    ARG(GLOBAL(0x10001217));
-    unknown_function_100415A8();
+    unknown_function_100415A8(GLOBAL(0x10001217));
 }
-Failed to find pattern for 'add esp, 000000004h'
 
 // address: 0x10001217
 p10001217
@@ -1298,11 +1295,8 @@ p1000618A
 // address: 0x10006199
 p10006199
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    ARG(GLOBAL(0x100061AB));
-    unknown_function_100415A8();
+    unknown_function_100415A8(GLOBAL(0x100061AB));
 }
-Failed to find pattern for 'add esp, 000000004h'
 
 // address: 0x100061AB
 p100061AB
@@ -4228,11 +4222,8 @@ Failed to find pattern for 'mov dword ptr [g1004A520], offset g10042CB8'
 // address: 0x100269E0
 p100269E0
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    ARG(GLOBAL(0x100269F2));
-    unknown_function_100415A8();
+    unknown_function_100415A8(GLOBAL(0x100269F2));
 }
-Failed to find pattern for 'add esp, 000000004h'
 
 // address: 0x100269F2
 p100269F2
@@ -4495,11 +4486,8 @@ p10029C24
 // address: 0x10029C33
 p10029C33
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    ARG(GLOBAL(0x10029C45));
-    unknown_function_100415A8();
+    unknown_function_100415A8(GLOBAL(0x10029C45));
 }
-Failed to find pattern for 'add esp, 000000004h'
 
 // address: 0x10029C45
 p10029C45
@@ -5225,11 +5213,8 @@ Failed to find pattern for 'mov dword ptr [g1004A990], offset g10042D78'
 // address: 0x1003438B
 p1003438B
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    ARG(GLOBAL(0x1003439D));
-    unknown_function_100415A8();
+    unknown_function_100415A8(GLOBAL(0x1003439D));
 }
-Failed to find pattern for 'add esp, 000000004h'
 
 // address: 0x1003439D
 p1003439D
@@ -5259,11 +5244,8 @@ Failed to find pattern for 'mov dword ptr [g1004A9A8], offset g10042D7C'
 // address: 0x10034455
 p10034455
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    ARG(GLOBAL(0x10034467));
-    unknown_function_100415A8();
+    unknown_function_100415A8(GLOBAL(0x10034467));
 }
-Failed to find pattern for 'add esp, 000000004h'
 
 // address: 0x10034467
 p10034467
@@ -6069,11 +6051,8 @@ Failed to find pattern for 'mov dword ptr [g1004A9D0], offset g10042E58'
 // address: 0x1003DAEE
 p1003DAEE
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    ARG(GLOBAL(0x1003DB00));
-    unknown_function_100415A8();
+    unknown_function_100415A8(GLOBAL(0x1003DB00));
 }
-Failed to find pattern for 'add esp, 000000004h'
 
 // address: 0x1003DB00
 p1003DB00

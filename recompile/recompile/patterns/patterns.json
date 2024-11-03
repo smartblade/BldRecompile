@@ -86,5 +86,11 @@
 		{"call":  ["%label%"]}
 	],
 	"action": {"call": {"address": "%label%"}}
+},
+{
+	"instructions": [
+		{"add":  ["esp", "%hex%"]}
+	],
+	"action": {"addsp": {"offset": "%hex%"}}
 }
 ]
