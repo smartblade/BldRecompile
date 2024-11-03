@@ -15,6 +15,11 @@ def _reinterpret_const(data_type, c):
     ):
         if c.value < 0x80000000:
             return expressions.Constant(data_type, c.value)
+    if (
+        isinstance(data_type, data_types.UInt32) and
+        isinstance(c.data_type, data_types.Unknown32)
+    ):
+        return expressions.Constant(data_type, c.value)
     raise Exception(
         "Unimplemented reinterpret cast from {} to {}".format(
             c.data_type, data_type))

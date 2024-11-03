@@ -100,9 +100,9 @@ Failed to find pattern for 'sub esp, 000000008h'
 int B_IDataFile::Length()
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(eax=STACKVAR(-4, 4))
+    REGDEF(eax=STACKVAR(-4, 4), ecx=0x00000000)
 }
-Failed to find pattern for 'xor ecx, ecx'
+Failed to find pattern for 'cmp dword ptr [eax], 0FFFFFFFFh'
 
 // address: 0x100018A6
 int B_IDataFile::Seek(int offset, int whence)
@@ -384,9 +384,9 @@ Failed to find pattern for 'sub esp, 00000000Ch'
 unsigned int B_IDataFile::OK()
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(eax=STACKVAR(-4, 4))
+    REGDEF(eax=STACKVAR(-4, 4), ecx=0x00000000)
 }
-Failed to find pattern for 'xor ecx, ecx'
+Failed to find pattern for 'cmp dword ptr [eax], 0FFFFFFFFh'
 
 // address: 0x10002200
 char *B_IDataFile::GetFileName()
@@ -405,9 +405,9 @@ Failed to find pattern for 'push esi'
 unsigned int B_ODataFile::OK()
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(eax=STACKVAR(-4, 4))
+    REGDEF(eax=STACKVAR(-4, 4), ecx=0x00000000)
 }
-Failed to find pattern for 'xor ecx, ecx'
+Failed to find pattern for 'cmp dword ptr [eax], 0FFFFFFFFh'
 
 // address: 0x10002270
 p10002270
@@ -492,8 +492,10 @@ Failed to find pattern for 'sub esp, 00000000Ch'
 p10002540
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
+    REGDEF(eax=0x00000000)
+    RESTORE(esp);
 }
-Failed to find pattern for 'xor eax, eax'
+Failed to find pattern for 'pop ebp'
 
 // address: 0x10002550
 B_MessageChannel::~B_MessageChannel()
@@ -1719,16 +1721,14 @@ Failed to find pattern for 'mov ax, 00003h'
 // address: 0x10008563
 p10008563
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
+    REGDEF(eax=0x00000000)
 }
-Failed to find pattern for 'xor eax, eax'
 
 // address: 0x10008570
 p10008570
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
+    REGDEF(eax=0x00000000)
 }
-Failed to find pattern for 'xor eax, eax'
 
 // address: 0x10008595
 p10008595
@@ -2578,9 +2578,9 @@ Failed to find pattern for 'mov ecx, dword ptr [eax+020h]'
 p10010C69
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
-    REGDEF(eax=STACKVAR(8, 4))
+    REGDEF(eax=STACKVAR(8, 4), ecx=0x00000000)
 }
-Failed to find pattern for 'xor ecx, ecx'
+Failed to find pattern for 'mov cl, byte ptr [eax+00Ch]'
 
 // address: 0x10010CD3
 p10010CD3
@@ -2608,9 +2608,9 @@ Failed to find pattern for 'sub esp, 000000008h'
 p10010ED2
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    REGDEF(eax=STACKVAR(8, 4))
+    REGDEF(eax=STACKVAR(8, 4), ecx=0x00000000)
 }
-Failed to find pattern for 'xor ecx, ecx'
+Failed to find pattern for 'mov cl, byte ptr [eax+00Ch]'
 
 // address: 0x10010F14
 p10010F14
@@ -2975,9 +2975,8 @@ Failed to find pattern for 'sub esp, 000000040h'
 // address: 0x10014AED
 p10014AED
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    REGDEF(eax=0x00000000)
 }
-Failed to find pattern for 'xor eax, eax'
 
 // address: 0x10014AF4
 p10014AF4
@@ -3388,9 +3387,9 @@ Failed to find pattern for 'sub esp, 000000014h'
 p1001C089
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    REGDEF(eax=STACKVAR(8, 4))
+    REGDEF(eax=STACKVAR(8, 4), ecx=0x00000000)
 }
-Failed to find pattern for 'xor ecx, ecx'
+Failed to find pattern for 'mov cl, byte ptr [eax+048h]'
 
 // address: 0x1001C23B
 p1001C23B
@@ -3909,9 +3908,8 @@ Failed to find pattern for 'mov ecx, dword ptr [eax]'
 // address: 0x10023A1F
 p10023A1F
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    REGDEF(eax=0x00000000)
 }
-Failed to find pattern for 'xor eax, eax'
 
 // address: 0x10023A26
 p10023A26
@@ -4556,23 +4554,23 @@ Failed to find pattern for 'sub esp, 00000000Ch'
 // address: 0x1002A26A
 unsigned int B_MessageChannel::Open()
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
+    return 0;
 }
-Failed to find pattern for 'xor eax, eax'
 
 // address: 0x1002A277
 unsigned int B_MessageChannel::Close()
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
+    return 0;
 }
-Failed to find pattern for 'xor eax, eax'
 
 // address: 0x1002A284
 unsigned int B_MessageChannel::Message(const char *message)
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
+    REGDEF(eax=0x00000000)
+    RESTORE(esp);
 }
-Failed to find pattern for 'xor eax, eax'
+Failed to find pattern for 'pop ebp'
 
 // address: 0x1002A293
 p1002A293
@@ -5165,16 +5163,14 @@ Failed to find pattern for 'mov ax, 00001h'
 // address: 0x10032ACC
 p10032ACC
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
+    REGDEF(eax=0x00000000)
 }
-Failed to find pattern for 'xor eax, eax'
 
 // address: 0x10032AD9
 p10032AD9
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
+    REGDEF(eax=0x00000000)
 }
-Failed to find pattern for 'xor eax, eax'
 
 // address: 0x10032AE6
 void B_ObjDscr::SetUpNormals()
@@ -5314,9 +5310,9 @@ Failed to find pattern for 'sub esp, 000000028h'
 p10037338
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(eax=ACCESS(STACKVAR(8, 4), 8, 4))
+    REGDEF(eax=ACCESS(STACKVAR(8, 4), 8, 4), edx=0x00000000)
 }
-Failed to find pattern for 'xor edx, edx'
+Failed to find pattern for 'mov ecx, 000000003h'
 
 // address: 0x1003737B
 p1003737B
