@@ -45,6 +45,8 @@ def _transform_stackvar(offset, size, stack_vars, **kwargs):
 
 def _transform_access(expression, offset, size, **kwargs):
     data_type = expression.data_type
+    if isinstance(data_type, data_types.Unknown32):
+        return None
     if not isinstance(data_type, data_types.Pointer32):
         raise Exception(
             "Data type of {} expected to be pointer but was: {}.".format(

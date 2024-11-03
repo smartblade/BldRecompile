@@ -77,9 +77,10 @@ Failed to find pattern for 'sub esp, 000000014h'
 B_IDataFile::B_IDataFile()
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(eax=STACKVAR(-4, 4))
+    ACCESS(STACKVAR(-4, 4), 0, 4) = 0xFFFFFFFF;
+    REGDEF(ecx=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'mov dword ptr [eax], 0FFFFFFFFh'
+Failed to find pattern for 'mov dword ptr [ecx+004h], 000000000h'
 
 // address: 0x10001788
 B_IDataFile::B_IDataFile(const char *file_name, int flags)
@@ -2520,9 +2521,10 @@ Failed to find pattern for 'sub esp, 00000000Ch'
 p100104D2
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    REGDEF(eax=STACKVAR(8, 4))
+    ACCESS(STACKVAR(8, 4), 0, 4) = 0x00000001;
+    REGDEF(ecx=STACKVAR(8, 4), edx=STACKVAR(12, 4))
 }
-Failed to find pattern for 'mov dword ptr [eax], 000000001h'
+Failed to find pattern for 'mov dword ptr [ecx+004h], edx'
 
 // address: 0x10010519
 p10010519
@@ -3596,10 +3598,8 @@ Failed to find pattern for 'mov dword ptr [eax], ecx'
 // address: 0x1001EE9B
 p1001EE9B
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    REGDEF(eax=STACKVAR(20, 4))
+    ACCESS(STACKVAR(20, 4), 0, 4) = 0x00000000;
 }
-Failed to find pattern for 'mov dword ptr [eax], 000000000h'
 
 // address: 0x1001EEA9
 p1001EEA9
@@ -4626,9 +4626,9 @@ Failed to find pattern for 'sub esp, 000000008h'
 p1002A5F0
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(eax=STACKVAR(-4, 4))
+    ACCESS(STACKVAR(-4, 4), 0, 4) = 0x00000000;
 }
-Failed to find pattern for 'mov dword ptr [eax], 000000000h'
+Failed to find pattern for 'mov dword ptr [eax+004h], 000000000h'
 
 // address: 0x1002A7F2
 p1002A7F2
@@ -4650,9 +4650,9 @@ Failed to find pattern for 'add eax, 000000018h'
 p1002DEF0
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(eax=STACKVAR(-4, 4))
+    ACCESS(STACKVAR(-4, 4), 0, 4) = 0x00000000;
 }
-Failed to find pattern for 'mov dword ptr [eax], 000000000h'
+Failed to find pattern for 'mov dword ptr [eax+004h], 000000000h'
 
 // address: 0x1002DF30
 p1002DF30
@@ -4679,9 +4679,9 @@ Failed to find pattern for 'sub esp, 000000010h'
 p1002E190
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(eax=STACKVAR(-4, 4))
+    ACCESS(STACKVAR(-4, 4), 0, 4) = 0x00000000;
 }
-Failed to find pattern for 'mov dword ptr [eax], 000000000h'
+Failed to find pattern for 'mov dword ptr [eax+004h], 03FF00000h'
 
 // address: 0x1002E2AD
 p1002E2AD
@@ -4804,9 +4804,9 @@ p1003143A
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
     ACCESS(GLOBAL(0x1004A960), 0, 4) = 0x00000000;
     ACCESS(GLOBAL(0x1004A964), 0, 4) = 0x3FF00000;
-    REGDEF(eax=GLOBAL(0x1004A968))
+    ACCESS(GLOBAL(0x1004A968), 0, 4) = 0x00000000;
 }
-Failed to find pattern for 'mov dword ptr [eax], 000000000h'
+Failed to find pattern for 'mov dword ptr [eax+004h], 000000000h'
 
 // address: 0x10031477
 p10031477
@@ -4820,9 +4820,9 @@ p10031481
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
     ACCESS(GLOBAL(0x1004A948), 0, 4) = 0x00000000;
     ACCESS(GLOBAL(0x1004A94C), 0, 4) = 0x00000000;
-    REGDEF(eax=GLOBAL(0x1004A950))
+    ACCESS(GLOBAL(0x1004A950), 0, 4) = 0x00000000;
 }
-Failed to find pattern for 'mov dword ptr [eax], 000000000h'
+Failed to find pattern for 'mov dword ptr [eax+004h], 03FF00000h'
 
 // address: 0x100314BE
 p100314BE
@@ -4836,9 +4836,9 @@ p100314C8
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
     ACCESS(GLOBAL(0x1004A978), 0, 4) = 0x00000000;
     ACCESS(GLOBAL(0x1004A97C), 0, 4) = 0x00000000;
-    REGDEF(eax=GLOBAL(0x1004A980))
+    ACCESS(GLOBAL(0x1004A980), 0, 4) = 0x00000000;
 }
-Failed to find pattern for 'mov dword ptr [eax], 000000000h'
+Failed to find pattern for 'mov dword ptr [eax+004h], 000000000h'
 
 // address: 0x10031505
 p10031505

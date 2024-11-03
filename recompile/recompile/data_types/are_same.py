@@ -5,6 +5,7 @@ def are_same(first, second):
     if type(first) is not type(second):
         return False
     standard_types = [
+        data_types.Unknown32,
         data_types.Int32,
         data_types.UInt32,
     ]

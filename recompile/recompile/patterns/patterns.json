@@ -35,6 +35,12 @@
 },
 {
 	"instructions": [
+		{"mov":  ["[%eax-ecx-edx%]", "%hex%"]}
+	],
+	"action": {"assignment": {"dst": "ACCESS(REGVALUE(%eax-ecx-edx%), 0, %size%)", "src": "%hex%"}}
+},
+{
+	"instructions": [
 		{"mov":  ["[%label%]", "%hex%"]}
 	],
 	"action": {"assignment": {"dst": "ACCESS(GLOBAL(%label%), 0, %size%)", "src": "%hex%"}}
