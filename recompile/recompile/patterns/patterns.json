@@ -53,9 +53,9 @@
 },
 {
 	"instructions": [
-		{"mov":  ["%eax-ecx-edx%", "[%eax-ecx-edx%%offset%]"]}
+		{"mov":  ["%eax-ecx-edx-dst%", "[%eax-ecx-edx-base%%offset%]"]}
 	],
-	"action": {"tmpreg": {"dst": "%eax-ecx-edx%", "src": "ACCESS(REGVALUE(%eax-ecx-edx%), %offset%, %size%)"}}
+	"action": {"tmpreg": {"dst": "%eax-ecx-edx-dst%", "src": "ACCESS(REGVALUE(%eax-ecx-edx-base%), %offset%, %size%)"}}
 },
 {
 	"instructions": [

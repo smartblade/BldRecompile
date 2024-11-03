@@ -131,14 +131,10 @@ def _match_instruction(instr_pattern, line, match_dict):
         operand = match.group("operand")
         operand_size = _get_operand_size(match.group("size"))
         expected_operand_regexp = re.escape(expected_operands[op_index])
-        expected_operand_regexp = expected_operand_regexp.replace(
-            "%label%", r"(?P<label>(g|l)[\dABCDEF]+)")
-        expected_operand_regexp = expected_operand_regexp.replace(
-            "%hex%", r"(?P<hex>[\dABCDEF]+h)")
-        expected_operand_regexp = expected_operand_regexp.replace(
-            "%offset%", r"(?P<offset>[\+\-][\dABCDEF]+h)")
-        expected_operand_regexp = expected_operand_regexp.replace(
-            re.escape("%eax-ecx-edx%"), r"(?P<eax_ecx_edx>eax|ecx|edx)")
+        expected_operand_regexp = re.sub(
+            r"%(?P<variable>[\w\\-]*)%",
+            _define_variable_regexp,
+            expected_operand_regexp)
         expected_operand_regexp = r"^{}$".format(expected_operand_regexp)
         match = re.search(expected_operand_regexp, operand)
         if not match:
@@ -161,3 +157,21 @@ def _get_operand_size(s):
     if s.startswith("dword"):
         return 4
     raise Exception("Unknown operand size: {}.".format(s))
+
+
+def _define_variable_regexp(matchobj):
+    var_name = matchobj.group("variable")
+    var_name = var_name.replace("\\-", "-")
+    for key, regexp_value in _regexp_map.items():
+        if var_name.startswith(key):
+            var_name = var_name.replace("-", "_")
+            return r"(?P<{}>{})".format(var_name, regexp_value)
+    raise Exception("Unexpected variable: %{}%".format(var_name))
+
+
+_regexp_map = {
+    "eax-ecx-edx": r"eax|ecx|edx",
+    "label": r"(g|l)[\dABCDEF]+",
+    "hex": r"[\dABCDEF]+h",
+    "offset": r"[\+\-][\dABCDEF]+h",
+}
