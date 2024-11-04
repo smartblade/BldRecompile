@@ -5,12 +5,11 @@ import re
 from hex_conversion import from_hex, to_hex
 import parser
 from patterns.apply_pattern import apply_pattern
+from patterns.match_operand import match_operand
 from patterns.procedure_builder import ProcedureBuilder
 from writer import Writer
 
 command_regexp = re.compile(r'^(?P<cmd>\w+)(\s+(?P<operands>.+))?$')
-operand_regexp = re.compile(
-    r'^(?P<size>dword\s+ptr\s+)?(offset\s+)?(?P<operand>.+)$')
 
 
 def process_asm_patterns(lines, declarations):
@@ -127,51 +126,13 @@ def _match_instruction(instr_pattern, line, match_dict):
     if len(expected_operands) != len(operands):
         return False
     for op_index in range(len(operands)):
-        match = re.search(operand_regexp, operands[op_index].strip())
-        operand = match.group("operand")
-        operand_size = _get_operand_size(match.group("size"))
-        expected_operand_regexp = re.escape(expected_operands[op_index])
-        expected_operand_regexp = re.sub(
-            r"%(?P<variable>[\w\\-]*)%",
-            _define_variable_regexp,
-            expected_operand_regexp)
-        expected_operand_regexp = r"^{}$".format(expected_operand_regexp)
-        match = re.search(expected_operand_regexp, operand)
-        if not match:
+        cur_match_dict = match_operand(
+            operands[op_index], expected_operands[op_index])
+        if cur_match_dict is None:
             return False
-        operand_match_dict = match.groupdict()
-        if operand_size is not None:
-            operand_match_dict["size"] = str(operand_size)
-        for param, value in operand_match_dict.items():
-            param = param.replace("_", "-")
+        for param, value in cur_match_dict.items():
             if param not in match_dict:
                 match_dict[param] = value
             elif match_dict[param] != value:
                 return False
     return True
-
-
-def _get_operand_size(s):
-    if s is None:
-        return None
-    if s.startswith("dword"):
-        return 4
-    raise Exception("Unknown operand size: {}.".format(s))
-
-
-def _define_variable_regexp(matchobj):
-    var_name = matchobj.group("variable")
-    var_name = var_name.replace("\\-", "-")
-    for key, regexp_value in _regexp_map.items():
-        if var_name.startswith(key):
-            var_name = var_name.replace("-", "_")
-            return r"(?P<{}>{})".format(var_name, regexp_value)
-    raise Exception("Unexpected variable: %{}%".format(var_name))
-
-
-_regexp_map = {
-    "eax-ecx-edx": r"eax|ecx|edx",
-    "label": r"(g|l)[\dABCDEF]+",
-    "hex": r"[\dABCDEF]+h",
-    "offset": r"[\+\-][\dABCDEF]+h",
-}

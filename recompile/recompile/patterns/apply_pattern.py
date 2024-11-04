@@ -1,4 +1,3 @@
-from hex_conversion import from_hex
 import parser
 from patterns.predefined_procedures import visit_predefined_procedures
 
@@ -32,13 +31,6 @@ def _evaluate_args(args, **kwargs):
 
 def _evaluate_expression(expression, builder, match_dict):
     for key, value in match_dict.items():
-        if value.endswith("h"):
-            if not value.startswith("0"):
-                value = str(from_hex(value[:-1]))
-            else:
-                value = "0x{}".format(value[1:-1])
-        if value.startswith("g") or value.startswith("l"):
-            value = "0x{}".format(value[1:])
         expression = expression.replace("%{}%".format(key), value)
     expression = parser.parse_cpp_expression(expression, {}, {})
     return expression.transform(
