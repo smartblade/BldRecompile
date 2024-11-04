@@ -10,6 +10,7 @@ class ClassType(DataType):
         self._class_name = class_name
         self._fields = fields
         self._methods = []
+        self._parent = None
         self._fields_sorted = True
 
     def __repr__(self):
@@ -36,6 +37,13 @@ class ClassType(DataType):
             if offset + field_type.size > size:
                 size = offset + field_type.size
         return size
+
+    @property
+    def parent(self):
+        return self._parent
+
+    def set_parent(self, parent):
+        self._parent = parent
 
     def add_method(self, method):
         self._methods.append(method)

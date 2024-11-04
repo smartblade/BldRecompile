@@ -446,9 +446,10 @@ unsigned int B_Name::Length()
 B_NamedObj::~B_NamedObj()
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(eax=STACKVAR(-4, 4))
+    ACCESS(STACKVAR(-4, 4), 0, 4) = GLOBAL(0x1004217C);
+    REGDEF(ecx=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'mov dword ptr [eax], offset g1004217C'
+Failed to find pattern for 'add ecx, 000000004h'
 
 // address: 0x10002320
 B_NamedObj::B_NamedObj(const B_NamedObj &that)
@@ -559,9 +560,10 @@ Failed to find pattern for 'sub esp, 000000100h'
 B_ListElement::~B_ListElement()
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(eax=STACKVAR(-4, 4))
+    ACCESS(STACKVAR(-4, 4), 0, 4) = GLOBAL(0x10042190);
+    REGDEF(ecx=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'mov dword ptr [eax], offset g10042190'
+Failed to find pattern for 'cmp dword ptr [ecx+004h], 000000000h'
 
 // address: 0x100029AE
 p100029AE
@@ -977,11 +979,9 @@ B_ResourceManager *GetResourceManager()
 // address: 0x10003EBA
 B_Resource::B_Resource()
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    STACKVAR(-4, 4)->unknown_method_100039E5();
-    REGDEF(eax=STACKVAR(-4, 4))
+    this->B_NamedObj();
+    ACCESS(this, 0, 4) = GLOBAL(0x10042198);
 }
-Failed to find pattern for 'mov dword ptr [eax], offset g10042198'
 
 // address: 0x10003ED9
 p10003ED9
@@ -995,9 +995,11 @@ Failed to find pattern for 'push eax'
 B_Resource::~B_Resource()
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(eax=STACKVAR(-4, 4))
+    ACCESS(STACKVAR(-4, 4), 0, 4) = GLOBAL(0x10042198);
+    ACCESS(STACKVAR(-4, 4), 0, 4) = GLOBAL(0x1004217C);
+    REGDEF(ecx=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'mov dword ptr [eax], offset g10042198'
+Failed to find pattern for 'add ecx, 000000004h'
 
 // address: 0x10003F26
 p10003F26
@@ -1025,9 +1027,11 @@ Failed to find pattern for 'push eax'
 p100043CB
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(eax=STACKVAR(-4, 4))
+    ACCESS(STACKVAR(-4, 4), 0, 4) = GLOBAL(0x100421DC);
+    STACKVAR(-4, 4)->unknown_method_10004606();
+    REGDEF(ecx=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'mov dword ptr [eax], offset g100421DC'
+Failed to find pattern for 'add ecx, 00000000Ch'
 
 // address: 0x10004406
 p10004406
@@ -3167,10 +3171,8 @@ Failed to find pattern for 'sub esp, 000000010h'
 // address: 0x10017C97
 p10017C97
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    REGDEF(ecx=ACCESS(STACKVAR(8, 4), 400, 4))
+    ACCESS(ACCESS(STACKVAR(8, 4), 400, 4), 0, 4) = GLOBAL(0x10017CAB);
 }
-Failed to find pattern for 'mov dword ptr [ecx], offset l10017CAB'
 
 // address: 0x10017CAB
 p10017CAB
@@ -3191,9 +3193,10 @@ p100180D6
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 400, 4);
-    REGDEF(edx=STACKVAR(-4, 4))
+    ACCESS(STACKVAR(-4, 4), 0, 4) = GLOBAL(0x10017CAB);
+    REGDEF(eax=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'mov dword ptr [edx], offset l10017CAB'
+Failed to find pattern for 'mov byte ptr [eax+010h], 000h'
 
 // address: 0x10018140
 p10018140
@@ -3664,9 +3667,10 @@ Failed to find pattern for 'mov byte ptr [eax+040h], 001h'
 p1001F6E0
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    REGDEF(eax=STACKVAR(8, 4))
+    ACCESS(STACKVAR(8, 4), 0, 4) = GLOBAL(0x1001F76C);
+    REGDEF(ecx=STACKVAR(8, 4))
 }
-Failed to find pattern for 'mov dword ptr [eax], offset l1001F76C'
+Failed to find pattern for 'mov dword ptr [ecx+004h], offset l1001F7D6'
 
 // address: 0x1001F76C
 p1001F76C
@@ -5401,9 +5405,10 @@ Failed to find pattern for 'sub esp, 00000000Ch'
 p100397F0
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(eax=STACKVAR(-4, 4))
+    ACCESS(STACKVAR(-4, 4), 0, 4) = GLOBAL(0x1004217C);
+    REGDEF(ecx=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'mov dword ptr [eax], offset g1004217C'
+Failed to find pattern for 'add ecx, 000000004h'
 
 // address: 0x10039830
 p10039830
@@ -6011,25 +6016,28 @@ Failed to find pattern for 'sub esp, 00000000Ch'
 p1003D890
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(eax=STACKVAR(-4, 4))
+    ACCESS(STACKVAR(-4, 4), 0, 4) = GLOBAL(0x1004217C);
+    REGDEF(ecx=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'mov dword ptr [eax], offset g1004217C'
+Failed to find pattern for 'add ecx, 000000004h'
 
 // address: 0x1003D8D0
 p1003D8D0
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(eax=STACKVAR(-4, 4))
+    ACCESS(STACKVAR(-4, 4), 0, 4) = GLOBAL(0x1004217C);
+    REGDEF(ecx=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'mov dword ptr [eax], offset g1004217C'
+Failed to find pattern for 'add ecx, 000000004h'
 
 // address: 0x1003D910
 p1003D910
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(eax=STACKVAR(-4, 4))
+    ACCESS(STACKVAR(-4, 4), 0, 4) = GLOBAL(0x1004217C);
+    REGDEF(ecx=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'mov dword ptr [eax], offset g1004217C'
+Failed to find pattern for 'add ecx, 000000004h'
 
 // address: 0x1003D950
 p1003D950
@@ -6082,9 +6090,10 @@ Failed to find pattern for 'sub esp, 000000018h'
 B_ElementCSV::~B_ElementCSV()
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(eax=STACKVAR(-4, 4))
+    ACCESS(STACKVAR(-4, 4), 0, 4) = GLOBAL(0x10042E5C);
+    REGDEF(ecx=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'mov dword ptr [eax], offset g10042E5C'
+Failed to find pattern for 'add ecx, 000000010h'
 
 // address: 0x1003DBF3
 unsigned int ReadCSV(const char *file_name, B_NDataBase<B_ElementCSV> *csvs)

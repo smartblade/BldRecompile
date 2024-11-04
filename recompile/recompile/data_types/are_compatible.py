@@ -1,0 +1,31 @@
+import data_types
+
+
+def are_compatible(child, parent):
+    if data_types.are_same(child, parent):
+        return True
+    if child.size != parent.size:
+        return False
+    if (
+        isinstance(child, data_types.Pointer32) and
+        isinstance(parent, data_types.Pointer32)
+    ):
+        if (
+            isinstance(child.pointee, data_types.ClassType) and
+            isinstance(parent.pointee, data_types.ClassType)
+        ):
+            return _is_instance_of(child.pointee, parent.pointee)
+    if (
+        not isinstance(child, data_types.Unknown32) and
+        isinstance(parent, data_types.Unknown32)
+    ):
+        return True
+    return False
+
+
+def _is_instance_of(child_class, parent_class):
+    while child_class.parent is not None:
+        if child_class.parent == parent_class:
+            return True
+        child_class = child_class.parent
+    return False

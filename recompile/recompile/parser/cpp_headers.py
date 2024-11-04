@@ -10,7 +10,8 @@ comment_regexp = re.compile(r'^(?P<line>.*)//')
 comment_start_regexp = re.compile(r'^(?P<line>.*)/\*')
 comment_end_regexp = re.compile(r'\*/(?P<line>.*)$')
 class_regexp = re.compile(
-    r'^(class|struct)\s+(LIB_EXP\s+)?(?P<class>\w+)(?P<semicolon>;)?')
+    r'^(class|struct)\s+(LIB_EXP\s+)?(?P<class>\w+)(?P<semicolon>;)?'
+    r'(\s*:\s*public\s*(?P<parent>\w+))?')
 
 _standard_types = {
     "bool": data_types.ClassType("char", {}),
@@ -102,6 +103,7 @@ class HeaderState:
             match = re.search(class_regexp, line)
             if match and brackets_depth == 0:
                 class_name = match.group("class")
+                parent_name = match.group("parent")
                 is_forward = bool(match.group("semicolon"))
                 if class_name in self._incomplete_types:
                     fields = self._incomplete_types[class_name]
@@ -113,6 +115,10 @@ class HeaderState:
                     self._incomplete_types[class_name] = fields
                     self._declared_types[class_name] = data_types.ClassType(
                         class_name, fields)
+                if parent_name is not None:
+                    class_type = self._declared_types[class_name]
+                    parent = self._declared_types[parent_name]
+                    class_type.set_parent(parent)
                 if is_forward:
                     fields = None
                     definition_chars = []

@@ -77,7 +77,7 @@ def _transform_access(expression, offset, size, **kwargs):
 
 def _transform_global(address, declarations, **kwargs):
     global_var = declarations.symbols.variables.get(address)
-    if global_var is not None:
+    if global_var is not None and global_var.declaration is not None:
         var_type, var_name = parser.parse_cpp_variable_declaration(
             global_var.declaration.strip().strip(";"),
             declarations.declared_types,
@@ -253,7 +253,7 @@ def _convert_expression_to_type(e, target_type):
     if src_type.size != target_type.size:
         raise Exception("Can't convert {}(size: {}) to {}(size: {}).".format(
             src_type, src_type.size, target_type, target_type.size))
-    if data_types.are_same(src_type, target_type):
+    if data_types.are_compatible(src_type, target_type):
         return e
     if (
         isinstance(src_type, data_types.Pointer32) and
