@@ -49,6 +49,8 @@ _standard_types = {
         "array_t<B_ParticleElement>", {}),
     "array_t<B_EventFunc *>": data_types.ClassType(
         "array_t<B_EventFunc *>", {}),
+    "B_Array<B_BitMap24>": data_types.ClassType(
+        "B_Array<B_BitMap24>", {}),
     "B_PtrArray<B_Atmosphere>": data_types.ClassType(
         "B_PtrArray<B_Atmosphere>", {}),
     "B_PtrArray<B_BipedAction>": data_types.ClassType(

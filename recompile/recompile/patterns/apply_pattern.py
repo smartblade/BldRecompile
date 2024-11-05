@@ -22,6 +22,12 @@ def apply_pattern(builder, pattern, match_dict):
     _actions[action_name](builder=builder, **action_args)
 
 
+def replace_variables(expression, match_dict):
+    for key, value in match_dict.items():
+        expression = expression.replace("%{}%".format(key), value)
+    return expression
+
+
 def _evaluate_args(args, **kwargs):
     evaluated_args = {}
     for arg_name, expression in args.items():
@@ -30,8 +36,7 @@ def _evaluate_args(args, **kwargs):
 
 
 def _evaluate_expression(expression, builder, match_dict):
-    for key, value in match_dict.items():
-        expression = expression.replace("%{}%".format(key), value)
+    expression = replace_variables(expression, match_dict)
     expression = parser.parse_cpp_expression(expression, {}, {})
     return expression.transform(
         lambda e: _evaluate_procedure_calls(e, builder=builder))

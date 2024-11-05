@@ -91,26 +91,32 @@ def _parse_asm_proc(builder, patterns, lines):
 
 
 def _match_patterns(patterns, first_index, lines):
-    for pattern in patterns:
-        last_index, match_dict = _match_pattern(pattern, first_index, lines)
+    instructions_patterns = patterns["instructions-patterns"]
+    operand_pattern_sets = patterns["operand-patterns"]
+    for pattern in instructions_patterns:
+        last_index, match_dict = _match_instructions_pattern(
+            pattern, operand_pattern_sets, first_index, lines)
         if last_index > first_index:
             return pattern, match_dict, last_index
     raise Exception(
         "Failed to find pattern for '{}'".format(lines[first_index]))
 
 
-def _match_pattern(pattern, first_index, lines):
+def _match_instructions_pattern(
+        pattern, operand_pattern_sets, first_index, lines):
     match_dict = dict()
     instructions = pattern["instructions"]
     cur_index = first_index
     for instr_pattern in instructions:
-        if not _match_instruction(instr_pattern, lines[cur_index], match_dict):
+        if not _match_instruction(
+            instr_pattern, operand_pattern_sets, lines[cur_index], match_dict
+        ):
             return -1, None
         cur_index += 1
     return cur_index, match_dict
 
 
-def _match_instruction(instr_pattern, line, match_dict):
+def _match_instruction(instr_pattern, operand_pattern_sets, line, match_dict):
     expected_cmd = next(iter(instr_pattern.keys()))
     expected_operands = next(iter(instr_pattern.values()))
     match = re.search(command_regexp, line)
@@ -127,7 +133,9 @@ def _match_instruction(instr_pattern, line, match_dict):
         return False
     for op_index in range(len(operands)):
         cur_match_dict = match_operand(
-            operands[op_index], expected_operands[op_index])
+            operands[op_index], expected_operands[op_index],
+            operand_pattern_sets
+        )
         if cur_match_dict is None:
             return False
         for param, value in cur_match_dict.items():

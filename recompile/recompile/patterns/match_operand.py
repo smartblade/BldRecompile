@@ -1,6 +1,7 @@
 import re
 
 from hex_conversion import from_hex
+from patterns.apply_pattern import replace_variables
 
 operand_regexp = re.compile(
     r'^(?P<size>dword\s+ptr\s+)?(offset\s+)?(?P<operand>.+)$')
@@ -13,7 +14,44 @@ _regexp_map = {
 }
 
 
-def match_operand(operand, operand_pattern):
+def match_operand(operand, operand_pattern, operand_pattern_sets):
+    operand_pattern_set_name = _get_operand_pattern_set_name(
+        operand_pattern, operand_pattern_sets)
+    if operand_pattern_set_name is not None:
+        return _match_operand_pattern_set(
+            operand, operand_pattern_set_name, operand_pattern_sets)
+    return _match_operand(operand, operand_pattern)
+
+
+def _get_operand_pattern_set_name(operand_pattern, operand_pattern_sets):
+    if not operand_pattern.startswith("%"):
+        return None
+    if not operand_pattern.endswith("%"):
+        return None
+    set_name = operand_pattern[1:-1]
+    if set_name not in operand_pattern_sets:
+        return None
+    return set_name
+
+
+def _match_operand_pattern_set(operand, set_name, operand_pattern_sets):
+    for pattern in operand_pattern_sets[set_name]:
+        operand_expression = _apply_operand_pattern(
+            operand, pattern["operand"], pattern["expression"])
+        if operand_expression is not None:
+            return {set_name: operand_expression}
+    return None
+
+
+def _apply_operand_pattern(operand, operand_pattern, expression):
+    match_dict = _match_operand(operand, operand_pattern)
+    if match_dict is None:
+        return None
+    expression = replace_variables(expression, match_dict)
+    return expression
+
+
+def _match_operand(operand, operand_pattern):
     match = re.search(operand_regexp, operand.strip())
     operand = match.group("operand")
     operand_size = _get_operand_size(match.group("size"))

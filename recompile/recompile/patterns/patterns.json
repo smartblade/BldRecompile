@@ -1,102 +1,90 @@
-[
 {
-	"instructions": [
-		{"push": ["ebp"]},
-		{"mov":  ["ebp", "esp"]},
-		{"push": ["ecx"]}
-	],
-	"action": {"prolog": {"allocated": "4"}}
-},
-{
-	"instructions": [
-		{"push": ["ebp"]},
-		{"mov":  ["ebp", "esp"]}
-	],
-	"action": {"prolog": {"allocated": "0"}}
-},
-{
-	"instructions": [
-		{"mov": ["esp", "ebp"]}
-	],
-	"action": {"epilog-restore": {"restore": "RESTORE(esp)"}}
-},
-{
-	"instructions": [
-		{"pop": ["ebp"]},
-		{"ret": []}
-	],
-	"action": {"epilog-return": {}}
-},
-{
-	"instructions": [
-		{"mov":  ["[ebp%offset%]", "%eax-ecx-edx%"]}
-	],
-	"action": {"assignment": {"dst": "STACKVAR(%offset%, %size%)", "src": "REGVALUE(%eax-ecx-edx%)"}}
-},
-{
-	"instructions": [
-		{"mov":  ["[%eax-ecx-edx%]", "%hex%"]}
-	],
-	"action": {"assignment": {"dst": "ACCESS(REGVALUE(%eax-ecx-edx%), 0, %size%)", "src": "%hex%"}}
-},
-{
-	"instructions": [
-		{"mov":  ["[%eax-ecx-edx%]", "%label%"]}
-	],
-	"action": {"assignment": {"dst": "ACCESS(REGVALUE(%eax-ecx-edx%), 0, %size%)", "src": "GLOBAL(%label%)"}}
-},
-{
-	"instructions": [
-		{"mov":  ["[%label%]", "%hex%"]}
-	],
-	"action": {"assignment": {"dst": "ACCESS(GLOBAL(%label%), 0, %size%)", "src": "%hex%"}}
-},
-{
-	"instructions": [
-		{"mov":  ["%eax-ecx-edx%", "[ebp%offset%]"]}
-	],
-	"action": {"tmpreg": {"dst": "%eax-ecx-edx%", "src": "STACKVAR(%offset%, %size%)"}}
-},
-{
-	"instructions": [
-		{"mov":  ["%eax-ecx-edx-dst%", "[%eax-ecx-edx-base%%offset%]"]}
-	],
-	"action": {"tmpreg": {"dst": "%eax-ecx-edx-dst%", "src": "ACCESS(REGVALUE(%eax-ecx-edx-base%), %offset%, %size%)"}}
-},
-{
-	"instructions": [
-		{"mov":  ["%eax-ecx-edx%", "%label%"]}
-	],
-	"action": {"tmpreg": {"dst": "%eax-ecx-edx%", "src": "GLOBAL(%label%)"}}
-},
-{
-	"instructions": [
-		{"mov":  ["%eax-ecx-edx%", "[%label%]"]}
-	],
-	"action": {"tmpreg": {"dst": "%eax-ecx-edx%", "src": "ACCESS(GLOBAL(%label%), 0, %size%)"}}
-},
+	"operand-patterns": {
+		"src-operand": [
+			{"operand": "[ebp%offset%]", "expression": "STACKVAR(%offset%, %size%)"},
+			{"operand": "[%eax-ecx-edx%%offset%]", "expression": "ACCESS(REGVALUE(%eax-ecx-edx%), %offset%, %size%)"},
+			{"operand": "%hex%", "expression": "%hex%"},
+			{"operand": "%label%", "expression": "GLOBAL(%label%)"},
+			{"operand": "[%label%]", "expression": "ACCESS(GLOBAL(%label%), 0, %size%)"},
+			{"operand": "%eax-ecx-edx%", "expression": "REGVALUE(%eax-ecx-edx%)"}
+		]
+	},
+	"instructions-patterns": [
 	{
-	"instructions": [
-		{"xor":  ["%eax-ecx-edx%", "%eax-ecx-edx%"]}
-	],
-	"action": {"tmpreg": {"dst": "%eax-ecx-edx%", "src": "0x00000000"}}
-},
-{
-	"instructions": [
-		{"push":  ["%label%"]}
-	],
-	"action": {"stackarg": {"arg": "ARG(GLOBAL(%label%))"}}
-},
-{
-	"instructions": [
-		{"call":  ["%label%"]}
-	],
-	"action": {"call": {"address": "%label%"}}
-},
-{
-	"instructions": [
-		{"add":  ["esp", "%hex%"]}
-	],
-	"action": {"addsp": {"offset": "%hex%"}}
+		"instructions": [
+			{"push": ["ebp"]},
+			{"mov":  ["ebp", "esp"]},
+			{"push": ["ecx"]}
+		],
+		"action": {"prolog": {"allocated": "4"}}
+	},
+	{
+		"instructions": [
+			{"push": ["ebp"]},
+			{"mov":  ["ebp", "esp"]}
+		],
+		"action": {"prolog": {"allocated": "0"}}
+	},
+	{
+		"instructions": [
+			{"mov": ["esp", "ebp"]}
+		],
+		"action": {"epilog-restore": {"restore": "RESTORE(esp)"}}
+	},
+	{
+		"instructions": [
+			{"pop": ["ebp"]},
+			{"ret": []}
+		],
+		"action": {"epilog-return": {}}
+	},
+	{
+		"instructions": [
+			{"mov":  ["[ebp%offset%]", "%src-operand%"]}
+		],
+		"action": {"assignment": {"dst": "STACKVAR(%offset%, %size%)", "src": "%src-operand%"}}
+	},
+	{
+		"instructions": [
+			{"mov":  ["[%eax-ecx-edx%]", "%src-operand%"]}
+		],
+		"action": {"assignment": {"dst": "ACCESS(REGVALUE(%eax-ecx-edx%), 0, %size%)", "src": "%src-operand%"}}
+	},
+	{
+		"instructions": [
+			{"mov":  ["[%label%]", "%src-operand%"]}
+		],
+		"action": {"assignment": {"dst": "ACCESS(GLOBAL(%label%), 0, %size%)", "src": "%src-operand%"}}
+	},
+	{
+		"instructions": [
+			{"mov":  ["%eax-ecx-edx%", "%src-operand%"]}
+		],
+		"action": {"tmpreg": {"dst": "%eax-ecx-edx%", "src": "%src-operand%"}}
+	},
+	{
+		"instructions": [
+			{"xor":  ["%eax-ecx-edx%", "%eax-ecx-edx%"]}
+		],
+		"action": {"tmpreg": {"dst": "%eax-ecx-edx%", "src": "0x00000000"}}
+	},
+	{
+		"instructions": [
+			{"push":  ["%label%"]}
+		],
+		"action": {"stackarg": {"arg": "ARG(GLOBAL(%label%))"}}
+	},
+	{
+		"instructions": [
+			{"call":  ["%label%"]}
+		],
+		"action": {"call": {"address": "%label%"}}
+	},
+	{
+		"instructions": [
+			{"add":  ["esp", "%hex%"]}
+		],
+		"action": {"addsp": {"offset": "%hex%"}}
+	}
+	]
 }
-]
