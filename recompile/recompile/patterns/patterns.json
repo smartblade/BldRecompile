@@ -70,9 +70,9 @@
 	},
 	{
 		"instructions": [
-			{"push":  ["%label%"]}
+			{"push":  ["%src-operand%"]}
 		],
-		"action": {"stackarg": {"arg": "ARG(GLOBAL(%label%))"}}
+		"action": {"stackarg": {"arg": "ARG(%src-operand%)"}}
 	},
 	{
 		"instructions": [

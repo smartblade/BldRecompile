@@ -33,7 +33,7 @@ class ProcedureCall:
 
     def __repr__(self):
         return "{}({})".format(
-            self._name, ", ".join(map(repr, self._arguments))
+            self.name, ", ".join(map(repr, self._arguments))
         )
 
     @property

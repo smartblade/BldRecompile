@@ -4,6 +4,8 @@ import data_types
 import instructions
 import expressions
 from patterns.predefined_procedures import visit_predefined_procedures
+from patterns.validate_procedure_declaration import \
+    validate_procedure_declaration
 
 
 def make_high_level_code(proc_info, proc_decl, declarations, instrs):
@@ -94,6 +96,7 @@ def _transform_assignment(ass, **kwargs):
 def _transform_procedure_call(pc, declarations, **kwargs):
     if pc.callee_address is None:
         return pc
+    assert pc.proc_decl is not None
     cpp_declaration = declarations.symbols.procedures.get(pc.callee_address)
     if cpp_declaration is None:
         return pc
@@ -116,6 +119,10 @@ def _convert_arguments_to_parameters_types(pc, proc_decl):
                 len(proc_decl.get_parameters_ids()),
             )
         )
+    validate_procedure_declaration(
+        proc_decl,
+        stack_delta=pc.proc_decl.stack_delta,
+        is_thiscall=pc.proc_decl.convention == CallingConvention.THISCALL)
     new_arguments = []
     for i, parameter in enumerate(proc_decl.get_parameters_ids().values()):
         new_argument = _convert_expression_to_type(
@@ -127,25 +134,8 @@ def _convert_arguments_to_parameters_types(pc, proc_decl):
 def _validate_procedure_info(proc_info, proc_decl):
     if proc_decl is None:
         return
-    if proc_info.stack_delta != proc_decl.stack_delta:
-        raise Exception(
-            "Stack delta expected to be {} but was: {}.".format(
-                proc_info.stack_delta, proc_decl.stack_delta))
-    if (
-        proc_info.is_thiscall and
-        proc_decl.convention != CallingConvention.THISCALL
-    ):
-        raise Exception(
-            "Convention expected to be 'thiscall' but was: {}".format(
-                proc_decl.convention))
-    if (
-        not proc_info.is_thiscall and
-        proc_decl.convention == CallingConvention.THISCALL
-    ):
-        raise Exception(
-            "Convention expected to be non-'thiscall'"
-            " for {} but was: {}".format(
-                proc_decl.proc_name, proc_decl.convention))
+    validate_procedure_declaration(
+        proc_decl, proc_info.stack_delta, proc_info.is_thiscall)
 
 
 def _eliminate_procedure_info(proc_info, instrs):

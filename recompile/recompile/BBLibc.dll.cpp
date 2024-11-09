@@ -144,72 +144,72 @@ Failed to find pattern for 'sub esp, 00000000Ch'
 // address: 0x10001B55
 B_IDataFile &operator >>(B_IDataFile &file, char &c)
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    reinterpret_cast<B_IDataFile *>(STACKVAR(8, 4))->Read(reinterpret_cast<void *>(STACKVAR(12, 4)), 1);
+    return reinterpret_cast<B_IDataFile &>(STACKVAR(8, 4));
 }
-Failed to find pattern for 'push 000000001h'
 
 // address: 0x10001B6B
 B_IDataFile &operator >>(B_IDataFile &file, unsigned char &c)
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    reinterpret_cast<B_IDataFile *>(STACKVAR(8, 4))->Read(reinterpret_cast<void *>(STACKVAR(12, 4)), 1);
+    return reinterpret_cast<B_IDataFile &>(STACKVAR(8, 4));
 }
-Failed to find pattern for 'push 000000001h'
 
 // address: 0x10001B81
 B_IDataFile &operator >>(B_IDataFile &file, short &s)
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    reinterpret_cast<B_IDataFile *>(STACKVAR(8, 4))->Read(reinterpret_cast<void *>(STACKVAR(12, 4)), 2);
+    return reinterpret_cast<B_IDataFile &>(STACKVAR(8, 4));
 }
-Failed to find pattern for 'push 000000002h'
 
 // address: 0x10001B97
 B_IDataFile &operator >>(B_IDataFile &file, unsigned short &s)
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    reinterpret_cast<B_IDataFile *>(STACKVAR(8, 4))->Read(reinterpret_cast<void *>(STACKVAR(12, 4)), 2);
+    return reinterpret_cast<B_IDataFile &>(STACKVAR(8, 4));
 }
-Failed to find pattern for 'push 000000002h'
 
 // address: 0x10001BAD
 B_IDataFile &operator >>(B_IDataFile &file, int &i)
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    reinterpret_cast<B_IDataFile *>(STACKVAR(8, 4))->Read(reinterpret_cast<void *>(STACKVAR(12, 4)), 4);
+    return reinterpret_cast<B_IDataFile &>(STACKVAR(8, 4));
 }
-Failed to find pattern for 'push 000000004h'
 
 // address: 0x10001BC3
 B_IDataFile &operator >>(B_IDataFile &file, int &l)
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    reinterpret_cast<B_IDataFile *>(STACKVAR(8, 4))->Read(reinterpret_cast<void *>(STACKVAR(12, 4)), 4);
+    return reinterpret_cast<B_IDataFile &>(STACKVAR(8, 4));
 }
-Failed to find pattern for 'push 000000004h'
 
 // address: 0x10001BD9
 B_IDataFile &operator >>(B_IDataFile &file, unsigned int &l)
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    reinterpret_cast<B_IDataFile *>(STACKVAR(8, 4))->Read(reinterpret_cast<void *>(STACKVAR(12, 4)), 4);
+    return reinterpret_cast<B_IDataFile &>(STACKVAR(8, 4));
 }
-Failed to find pattern for 'push 000000004h'
 
 // address: 0x10001BEF
 B_IDataFile &operator >>(B_IDataFile &file, unsigned int &i)
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    reinterpret_cast<B_IDataFile *>(STACKVAR(8, 4))->Read(reinterpret_cast<void *>(STACKVAR(12, 4)), 4);
+    return reinterpret_cast<B_IDataFile &>(STACKVAR(8, 4));
 }
-Failed to find pattern for 'push 000000004h'
 
 // address: 0x10001C05
 B_IDataFile &operator >>(B_IDataFile &file, float &f)
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    reinterpret_cast<B_IDataFile *>(STACKVAR(8, 4))->Read(reinterpret_cast<void *>(STACKVAR(12, 4)), 4);
+    return reinterpret_cast<B_IDataFile &>(STACKVAR(8, 4));
 }
-Failed to find pattern for 'push 000000004h'
 
 // address: 0x10001C1B
 B_IDataFile &operator >>(B_IDataFile &file, double &f)
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    reinterpret_cast<B_IDataFile *>(STACKVAR(8, 4))->Read(reinterpret_cast<void *>(STACKVAR(12, 4)), 8);
+    return reinterpret_cast<B_IDataFile &>(STACKVAR(8, 4));
 }
-Failed to find pattern for 'push 000000008h'
 
 // address: 0x10001C31
 B_IDataFile::~B_IDataFile()
@@ -250,9 +250,9 @@ Failed to find pattern for 'sub esp, 000000008h'
 // address: 0x10001F5E
 B_ODataFile &operator <<(B_ODataFile &file, const char &c)
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    reinterpret_cast<B_ODataFile *>(STACKVAR(8, 4))->Write(reinterpret_cast<void *>(STACKVAR(12, 4)), 1);
+    return reinterpret_cast<B_ODataFile &>(STACKVAR(8, 4));
 }
-Failed to find pattern for 'push 000000001h'
 
 // address: 0x10001F74
 B_ODataFile &operator <<(B_ODataFile &file, const char *c)
@@ -264,65 +264,65 @@ Failed to find pattern for 'push edi'
 // address: 0x10001F9A
 B_ODataFile &operator <<(B_ODataFile &file, const unsigned char &c)
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    reinterpret_cast<B_ODataFile *>(STACKVAR(8, 4))->Write(reinterpret_cast<void *>(STACKVAR(12, 4)), 1);
+    return reinterpret_cast<B_ODataFile &>(STACKVAR(8, 4));
 }
-Failed to find pattern for 'push 000000001h'
 
 // address: 0x10001FB0
 B_ODataFile &operator <<(B_ODataFile &file, const short &s)
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    reinterpret_cast<B_ODataFile *>(STACKVAR(8, 4))->Write(reinterpret_cast<void *>(STACKVAR(12, 4)), 2);
+    return reinterpret_cast<B_ODataFile &>(STACKVAR(8, 4));
 }
-Failed to find pattern for 'push 000000002h'
 
 // address: 0x10001FC6
 B_ODataFile &operator <<(B_ODataFile &file, const unsigned short &s)
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    reinterpret_cast<B_ODataFile *>(STACKVAR(8, 4))->Write(reinterpret_cast<void *>(STACKVAR(12, 4)), 2);
+    return reinterpret_cast<B_ODataFile &>(STACKVAR(8, 4));
 }
-Failed to find pattern for 'push 000000002h'
 
 // address: 0x10001FDC
 B_ODataFile &operator <<(B_ODataFile &file, const int &i)
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    reinterpret_cast<B_ODataFile *>(STACKVAR(8, 4))->Write(reinterpret_cast<void *>(STACKVAR(12, 4)), 4);
+    return reinterpret_cast<B_ODataFile &>(STACKVAR(8, 4));
 }
-Failed to find pattern for 'push 000000004h'
 
 // address: 0x10001FF2
 B_ODataFile &operator <<(B_ODataFile &file, const int &l)
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    reinterpret_cast<B_ODataFile *>(STACKVAR(8, 4))->Write(reinterpret_cast<void *>(STACKVAR(12, 4)), 4);
+    return reinterpret_cast<B_ODataFile &>(STACKVAR(8, 4));
 }
-Failed to find pattern for 'push 000000004h'
 
 // address: 0x10002008
 B_ODataFile &operator <<(B_ODataFile &file, const unsigned int &l)
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    reinterpret_cast<B_ODataFile *>(STACKVAR(8, 4))->Write(reinterpret_cast<void *>(STACKVAR(12, 4)), 4);
+    return reinterpret_cast<B_ODataFile &>(STACKVAR(8, 4));
 }
-Failed to find pattern for 'push 000000004h'
 
 // address: 0x1000201E
 B_ODataFile &operator <<(B_ODataFile &file, const unsigned int &i)
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    reinterpret_cast<B_ODataFile *>(STACKVAR(8, 4))->Write(reinterpret_cast<void *>(STACKVAR(12, 4)), 4);
+    return reinterpret_cast<B_ODataFile &>(STACKVAR(8, 4));
 }
-Failed to find pattern for 'push 000000004h'
 
 // address: 0x10002034
 B_ODataFile &operator <<(B_ODataFile &file, const float &f)
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    reinterpret_cast<B_ODataFile *>(STACKVAR(8, 4))->Write(reinterpret_cast<void *>(STACKVAR(12, 4)), 4);
+    return reinterpret_cast<B_ODataFile &>(STACKVAR(8, 4));
 }
-Failed to find pattern for 'push 000000004h'
 
 // address: 0x1000204A
 B_ODataFile &operator <<(B_ODataFile &file, const double &f)
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    reinterpret_cast<B_ODataFile *>(STACKVAR(8, 4))->Write(reinterpret_cast<void *>(STACKVAR(12, 4)), 8);
+    return reinterpret_cast<B_ODataFile &>(STACKVAR(8, 4));
 }
-Failed to find pattern for 'push 000000008h'
 
 // address: 0x10002060
 p10002060
@@ -337,9 +337,9 @@ Failed to find pattern for 'mov ecx, dword ptr [eax]'
 B_ODataFile::~B_ODataFile()
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(ecx=ACCESS(STACKVAR(-4, 4), 4, 4))
+    ARG(ACCESS(STACKVAR(-4, 4), 4, 4));
 }
-Failed to find pattern for 'push ecx'
+Failed to find pattern for 'call [__imp_free]; [BICRT.free].'
 
 // address: 0x100020C3
 p100020C3
@@ -362,10 +362,8 @@ p100020D7
 // address: 0x100020E1
 p100020E1
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    REGDEF(eax=STACKVAR(8, 4))
+    return B_IDataFile::SetOnOpenFunc(reinterpret_cast<PyObject *>(STACKVAR(8, 4)));
 }
-Failed to find pattern for 'push eax'
 
 // address: 0x100020F2
 void RemoveOnOpenInputFileFunc()
@@ -478,9 +476,10 @@ Failed to find pattern for 'sub esp, 000000010h'
 B_MessageChannel::B_MessageChannel(B_Name &name)
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(eax=STACKVAR(8, 4))
+    STACKVAR(-4, 4)->unknown_method_10003A07(STACKVAR(8, 4));
+    REGDEF(ecx=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'push eax'
+Can't parse line: ;
 
 // address: 0x100024F0
 p100024F0
@@ -833,9 +832,10 @@ Failed to find pattern for 'cmp edx, [ecx+004h]'
 unsigned int B_Name::CompareNoCase(const char *str)
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(eax=STACKVAR(8, 4))
+    ARG(STACKVAR(8, 4));
+    REGDEF(ecx=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'push eax'
+Failed to find pattern for 'mov edx, dword ptr [ecx]'
 
 // address: 0x1000378E
 B_Name &B_Name::operator =(const B_Name &src)
@@ -892,9 +892,10 @@ Failed to find pattern for 'add ecx, 000000004h'
 B_NamedObj::B_NamedObj(const B_Name &n)
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(eax=STACKVAR(8, 4))
+    ARG(STACKVAR(8, 4));
+    REGDEF(ecx=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'push eax'
+Failed to find pattern for 'add ecx, 000000004h'
 
 // address: 0x10003A2F
 B_Name &B_NamedObj::Id()
@@ -987,9 +988,12 @@ B_Resource::B_Resource()
 p10003ED9
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(eax=STACKVAR(8, 4))
+    STACKVAR(-4, 4)->unknown_method_10003A07(STACKVAR(8, 4));
+    ACCESS(STACKVAR(-4, 4), 0, 4) = GLOBAL(0x10042198);
+    REGDEF(eax=STACKVAR(-4, 4))
+    RESTORE(esp);
 }
-Failed to find pattern for 'push eax'
+Failed to find pattern for 'pop ebp'
 
 // address: 0x10003EFE
 B_Resource::~B_Resource()
@@ -1019,9 +1023,11 @@ Failed to find pattern for 'sub esp, 000000054h'
 p10004371
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(eax=STACKVAR(16, 4))
+    STACKVAR(-4, 4)->unknown_method_10003A07(STACKVAR(16, 4));
+    ARG(STACKVAR(8, 4));
+    REGDEF(ecx=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'push eax'
+Failed to find pattern for 'add ecx, 00000000Ch'
 
 // address: 0x100043CB
 p100043CB
@@ -1046,8 +1052,9 @@ B_Resource *B_ResourceManager::sub_10004425(unsigned short resourceId, const B_N
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
     REGDEF(eax=0x0000402C)
+    unknown_function_10041600();
 }
-'ecx'
+Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x100045B9
 p100045B9
@@ -1066,18 +1073,16 @@ Failed to find pattern for 'sub esp, 000000010h'
 // address: 0x10004676
 p10004676
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    REGDEF(eax=STACKVAR(12, 4))
+    operator >>(reinterpret_cast<B_IDataFile &>(STACKVAR(8, 4)), reinterpret_cast<B_NamedObj &>(STACKVAR(12, 4)));
+    REGDEF(eax=STACKVAR(8, 4))
 }
-Failed to find pattern for 'push eax'
 
 // address: 0x1000468E
 p1000468E
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    REGDEF(eax=STACKVAR(12, 4))
+    operator <<(reinterpret_cast<B_ODataFile &>(STACKVAR(8, 4)), reinterpret_cast<B_NamedObj &>(STACKVAR(12, 4)));
+    REGDEF(eax=STACKVAR(8, 4))
 }
-Failed to find pattern for 'push eax'
 
 // address: 0x100046A6
 p100046A6
@@ -1168,8 +1173,9 @@ unsigned int B_ResourceManager::LocateResourceIn(const B_Name &id, const B_Name 
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
     REGDEF(eax=0x000040A0)
+    unknown_function_10041600();
 }
-'ecx'
+Failed to find pattern for 'push esi'
 
 // address: 0x10005533
 p10005533
@@ -1221,8 +1227,9 @@ p10005C13
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
     REGDEF(eax=0x00004024)
+    unknown_function_10041600();
 }
-'ecx'
+Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x10005CCD
 int B_ResourceManager::IsResourceLoaded(int arg_1, int arg_2)
@@ -1342,56 +1349,50 @@ p1000629C
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
     REGDEF(eax=0x0000402C)
+    unknown_function_10041600();
 }
-'ecx'
+Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x1000644A
 p1000644A
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
     REGDEF(eax=0x00004048)
+    unknown_function_10041600();
 }
-'ecx'
+Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x1000660B
 p1000660B
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    REGDEF(eax=STACKVAR(8, 4))
+    B_resource_manager.unknown_method_1000629C(0x00000001, STACKVAR(8, 4));
 }
-Failed to find pattern for 'push eax'
 
 // address: 0x10006620
 p10006620
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    REGDEF(eax=STACKVAR(8, 4))
+    B_resource_manager.unknown_method_1000644A(0x00000001, STACKVAR(8, 4));
 }
-Failed to find pattern for 'push eax'
 
 // address: 0x10006635
 p10006635
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    REGDEF(eax=STACKVAR(8, 4))
+    B_resource_manager.unknown_method_1000629C(0x00000005, STACKVAR(8, 4));
 }
-Failed to find pattern for 'push eax'
 
 // address: 0x1000664A
 p1000664A
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    REGDEF(eax=STACKVAR(8, 4))
+    B_resource_manager.unknown_method_1000644A(0x00000005, STACKVAR(8, 4));
 }
-Failed to find pattern for 'push eax'
 
 // address: 0x1000665F
 p1000665F
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    REGDEF(eax=STACKVAR(12, 4))
+    ARG(STACKVAR(12, 4));
 }
-Failed to find pattern for 'push eax'
+Failed to find pattern for 'mov cx, word ptr [ebp+008h]'
 
 // address: 0x10006680
 p10006680
@@ -1926,16 +1927,16 @@ p10009633
 // address: 0x10009661
 p10009661
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    reinterpret_cast<B_IDataFile *>(STACKVAR(8, 4))->Read(reinterpret_cast<void *>(STACKVAR(12, 4)), 768);
+    REGDEF(eax=STACKVAR(8, 4))
 }
-Failed to find pattern for 'push 000000300h'
 
 // address: 0x1000967A
 p1000967A
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    reinterpret_cast<B_ODataFile *>(STACKVAR(8, 4))->Write(reinterpret_cast<void *>(STACKVAR(12, 4)), 768);
+    REGDEF(eax=STACKVAR(8, 4))
 }
-Failed to find pattern for 'push 000000300h'
 
 // address: 0x100096A0
 p100096A0
@@ -1947,10 +1948,8 @@ Failed to find pattern for 'sub esp, 00000000Ch'
 // address: 0x1000980C
 p1000980C
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    REGDEF(eax=STACKVAR(8, 4))
+    unknown_function_1000F640(STACKVAR(8, 4));
 }
-Failed to find pattern for 'push eax'
 
 // address: 0x1000982E
 p1000982E
@@ -2162,24 +2161,26 @@ p1000CD6C
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
     STACKVAR(-4, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 32, 4), 24, 4);
-    REGDEF(ecx=ACCESS(STACKVAR(8, 4), 32, 4))
+    ARG(ACCESS(STACKVAR(8, 4), 32, 4));
+    REGDEF(edx=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'push ecx'
+Failed to find pattern for 'call [edx+00Ch]'
 
 // address: 0x1000CDB5
 p1000CDB5
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
-    REGDEF(eax=STACKVAR(8, 4))
+    unknown_function_1000CEA5(STACKVAR(8, 4));
 }
-Failed to find pattern for 'push eax'
+Failed to find pattern for 'and eax, 0000000FFh'
 
 // address: 0x1000CEA5
 p1000CEA5
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    unknown_function_1000CC15(STACKVAR(8, 4), 0x0000007F, 0x00000007);
 }
-Failed to find pattern for 'push 000000007h'
+Failed to find pattern for 'and eax, 0000000FFh'
 
 // address: 0x1000CEDD
 p1000CEDD
@@ -2213,8 +2214,10 @@ Failed to find pattern for 'sub esp, 000000020h'
 p1000D320
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
+    unknown_function_1000E360(STACKVAR(8, 4), 0x00000000);
+    REGDEF(ecx=STACKVAR(8, 4), edx=0x00000000)
 }
-Failed to find pattern for 'push 000000000h'
+Failed to find pattern for 'mov dl, byte ptr [ecx+0000000ACh]'
 
 // address: 0x1000D450
 p1000D450
@@ -2242,8 +2245,12 @@ Can't parse line: ;
 p1000D6A0
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
+    ARG(0x00000020);
+    ARG(0x00000001);
+    ARG(STACKVAR(8, 4));
+    REGDEF(edx=ACCESS(STACKVAR(8, 4), 4, 4))
 }
-Failed to find pattern for 'push 000000020h'
+Failed to find pattern for 'call [edx]'
 
 // address: 0x1000D719
 p1000D719
@@ -2255,9 +2262,9 @@ Failed to find pattern for 'cmp dword ptr [ebp+010h], 00000FFFDh'
 // address: 0x1000D764
 p1000D764
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    unknown_function_1000D78A(STACKVAR(8, 4), 0x000000FF);
+    unknown_function_1000D78A(STACKVAR(8, 4), STACKVAR(12, 4));
 }
-Failed to find pattern for 'push 0000000FFh'
 
 // address: 0x1000D78A
 p1000D78A
@@ -2279,32 +2286,51 @@ Failed to find pattern for 'sar eax, 008h'
 // address: 0x1000D82D
 p1000D82D
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    REGDEF(eax=STACKVAR(12, 4))
+    unknown_function_1000D78A(STACKVAR(8, 4), STACKVAR(12, 4));
 }
-Failed to find pattern for 'push eax'
 
 // address: 0x1000D842
 p1000D842
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 328, 4);
+    unknown_function_1000D764(STACKVAR(8, 4), 0x000000D8);
+    REGDEF(eax=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'push 0000000D8h'
+Failed to find pattern for 'mov dword ptr [eax+01Ch], 000000000h'
 
 // address: 0x1000D8A7
 p1000D8A7
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    unknown_function_1000D764(STACKVAR(8, 4), 0x000000E0);
+    unknown_function_1000D7FA(STACKVAR(8, 4), 0x00000010);
+    unknown_function_1000D78A(STACKVAR(8, 4), 0x0000004A);
+    unknown_function_1000D78A(STACKVAR(8, 4), 0x00000046);
+    unknown_function_1000D78A(STACKVAR(8, 4), 0x00000049);
+    unknown_function_1000D78A(STACKVAR(8, 4), 0x00000046);
+    unknown_function_1000D78A(STACKVAR(8, 4), 0x00000000);
+    REGDEF(ecx=STACKVAR(8, 4), edx=0x00000000)
 }
-Failed to find pattern for 'push 0000000E0h'
+Failed to find pattern for 'mov dl, byte ptr [ecx+0000000C1h]'
 
 // address: 0x1000D9A7
 p1000D9A7
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
+    unknown_function_1000D764(STACKVAR(8, 4), 0x000000EE);
+    unknown_function_1000D7FA(STACKVAR(8, 4), 0x0000000E);
+    unknown_function_1000D78A(STACKVAR(8, 4), 0x00000041);
+    unknown_function_1000D78A(STACKVAR(8, 4), 0x00000064);
+    unknown_function_1000D78A(STACKVAR(8, 4), 0x0000006F);
+    unknown_function_1000D78A(STACKVAR(8, 4), 0x00000062);
+    unknown_function_1000D78A(STACKVAR(8, 4), 0x00000065);
+    unknown_function_1000D7FA(STACKVAR(8, 4), 0x00000064);
+    unknown_function_1000D7FA(STACKVAR(8, 4), 0x00000000);
+    unknown_function_1000D7FA(STACKVAR(8, 4), 0x00000000);
+    STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 60, 4);
 }
-Failed to find pattern for 'push 0000000EEh'
+Failed to find pattern for 'cmp dword ptr [ebp-004h], 000000003h'
 
 // address: 0x1000DA83
 p1000DA83
@@ -2349,9 +2375,10 @@ p1000E0E2
 // address: 0x1000E0E7
 p1000E0E7
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    unknown_function_1000D764(STACKVAR(8, 4), 0x000000DD);
+    unknown_function_1000D7FA(STACKVAR(8, 4), 0x00000004);
+    unknown_function_1000D7FA(STACKVAR(8, 4), ACCESS(STACKVAR(8, 4), 184, 4));
 }
-Failed to find pattern for 'push 0000000DDh'
 
 // address: 0x1000E121
 p1000E121
@@ -2363,23 +2390,28 @@ Failed to find pattern for 'sub esp, 000000010h'
 // address: 0x1000E27A
 p1000E27A
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    unknown_function_1000D764(STACKVAR(8, 4), 0x000000D9);
 }
-Failed to find pattern for 'push 0000000D9h'
 
 // address: 0x1000E290
 p1000E290
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
+    unknown_function_1000D764(STACKVAR(8, 4), 0x000000D8);
+    STACKVAR(-4, 4) = 0x00000000;
 }
-Failed to find pattern for 'push 0000000D8h'
+Failed to find pattern for 'jmp l1000E2B7'
 
 // address: 0x1000E360
 p1000E360
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
+    ARG(0x00000020);
+    ARG(0x00000001);
+    ARG(STACKVAR(8, 4));
+    REGDEF(edx=ACCESS(STACKVAR(8, 4), 4, 4))
 }
-Failed to find pattern for 'push 000000020h'
+Failed to find pattern for 'call [edx]'
 
 // address: 0x1000E487
 p1000E487
@@ -2451,15 +2483,23 @@ Failed to find pattern for 'cmp dword ptr [eax+004h], 000000000h'
 p1000F672
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
+    ARG(0x00000082);
+    ARG(0x00000000);
+    ARG(STACKVAR(8, 4));
+    REGDEF(edx=ACCESS(STACKVAR(8, 4), 4, 4))
 }
-Failed to find pattern for 'push 000000082h'
+Failed to find pattern for 'call [edx]'
 
 // address: 0x1000F6A0
 p1000F6A0
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
+    ARG(0x00000112);
+    ARG(0x00000000);
+    ARG(STACKVAR(8, 4));
+    REGDEF(edx=ACCESS(STACKVAR(8, 4), 4, 4))
 }
-Failed to find pattern for 'push 000000112h'
+Failed to find pattern for 'call [edx]'
 
 // address: 0x1000F6D0
 p1000F6D0
@@ -2486,9 +2526,9 @@ Failed to find pattern for 'cmp dword ptr [ebp+008h], 000000000h'
 p1000F86D
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    REGDEF(eax=STACKVAR(12, 4))
+    unknown_function_1000F828(STACKVAR(12, 4));
 }
-Failed to find pattern for 'push eax'
+Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x1000F895
 p1000F895
@@ -2587,9 +2627,10 @@ p10010C02
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
     STACKVAR(-4, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 32, 4), 24, 4);
-    REGDEF(ecx=ACCESS(STACKVAR(8, 4), 32, 4))
+    ARG(ACCESS(STACKVAR(8, 4), 32, 4));
+    REGDEF(edx=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'push ecx'
+Failed to find pattern for 'call [edx+00Ch]'
 
 // address: 0x10010C69
 p10010C69
@@ -2603,16 +2644,19 @@ Failed to find pattern for 'mov cl, byte ptr [eax+00Ch]'
 p10010CD3
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
-    REGDEF(eax=STACKVAR(8, 4))
+    unknown_function_10010E04(STACKVAR(8, 4));
+    REGDEF(ecx=STACKVAR(8, 4), edx=0x00000000)
 }
-Failed to find pattern for 'push eax'
+Failed to find pattern for 'mov dl, byte ptr [ecx+00Ch]'
 
 // address: 0x10010DDB
 p10010DDB
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    unknown_function_10010AB0(STACKVAR(8, 4), 0x0000007F, 0x00000007);
+    REGDEF(ecx=STACKVAR(8, 4))
 }
-Failed to find pattern for 'push 000000007h'
+Failed to find pattern for 'mov dword ptr [ecx+018h], 000000000h'
 
 // address: 0x10010E04
 p10010E04
@@ -2747,9 +2791,10 @@ Failed to find pattern for 'sub esp, 000000014h'
 p100123CA
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    REGDEF(ecx=ACCESS(STACKVAR(8, 4), 28, 4))
+    unknown_function_100268D1(STACKVAR(16, 4), 0x00000000, STACKVAR(20, 4), 0x00000000, ACCESS(STACKVAR(8, 4), 216, 4), ACCESS(STACKVAR(8, 4), 28, 4));
+    REGDEF(ecx=ACCESS(STACKVAR(12, 4), 28, 4))
 }
-Failed to find pattern for 'push ecx'
+Failed to find pattern for 'shl ecx, 003h'
 
 // address: 0x1001241B
 p1001241B
@@ -2828,10 +2873,8 @@ Failed to find pattern for 'sub esp, 00000000Ch'
 // address: 0x10013602
 p10013602
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    REGDEF(eax=STACKVAR(8, 4))
+    unknown_function_1000F640(STACKVAR(8, 4));
 }
-Failed to find pattern for 'push eax'
 
 // address: 0x10013624
 p10013624
@@ -2899,17 +2942,24 @@ p1001429A
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 24, 4);
+    ARG(0x00001000);
+    ARG(0x00000001);
+    ARG(STACKVAR(8, 4));
+    REGDEF(ecx=ACCESS(STACKVAR(8, 4), 4, 4))
 }
-Failed to find pattern for 'push 000001000h'
+Failed to find pattern for 'call [ecx]'
 
 // address: 0x100142DC
 p100142DC
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 24, 4);
-    REGDEF(eax=ACCESS(STACKVAR(-4, 4), 20, 4))
+    ARG(ACCESS(STACKVAR(-4, 4), 20, 4));
+    ARG(0x00001000);
+    ARG(0x00000001);
+    ARG(ACCESS(STACKVAR(-4, 4), 24, 4));
 }
-Failed to find pattern for 'push eax'
+Failed to find pattern for 'call [__imp_fwrite]; [BICRT.fwrite].'
 
 // address: 0x10014343
 p10014343
@@ -3061,9 +3111,14 @@ Failed to find pattern for 'sub esp, 000000018h'
 p10016126
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    REGDEF(ecx=ACCESS(STACKVAR(8, 4), 92, 4))
+    ARG(ACCESS(STACKVAR(8, 4), 92, 4));
+    ARG(STACKVAR(24, 4));
+    ARG(0x00000000);
+    ARG(STACKVAR(20, 4));
+    ARG(STACKVAR(16, 4));
+    REGDEF(edx=STACKVAR(12, 4))
 }
-Failed to find pattern for 'push ecx'
+Failed to find pattern for 'mov eax, dword ptr [edx]'
 
 // address: 0x1001614E
 p1001614E
@@ -3151,16 +3206,23 @@ Failed to find pattern for 'sub esp, 000000008h'
 p10017860
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
+    ARG(0x00000018);
+    ARG(0x00000000);
+    ARG(STACKVAR(8, 4));
+    REGDEF(edx=ACCESS(STACKVAR(8, 4), 4, 4))
 }
-Failed to find pattern for 'push 000000018h'
+Failed to find pattern for 'call [edx]'
 
 // address: 0x100178C6
 p100178C6
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    REGDEF(eax=STACKVAR(8, 4))
+    unknown_function_1001791E(STACKVAR(8, 4));
+    unknown_function_10017BC0(STACKVAR(8, 4));
+    ARG(STACKVAR(8, 4));
+    REGDEF(ecx=ACCESS(STACKVAR(8, 4), 408, 4))
 }
-Failed to find pattern for 'push eax'
+Failed to find pattern for 'call [ecx]'
 
 // address: 0x1001791E
 p1001791E
@@ -3266,9 +3328,16 @@ Failed to find pattern for 'sub esp, 000000020h'
 p10018A6D
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    REGDEF(eax=STACKVAR(20, 4))
+    ARG(STACKVAR(20, 4));
+    ARG(STACKVAR(16, 4));
+    ARG(STACKVAR(12, 4));
+    ARG(0x00000000);
+    ARG(0x00000000);
+    ARG(0x00000000);
+    ARG(STACKVAR(8, 4));
+    REGDEF(edx=ACCESS(STACKVAR(8, 4), 396, 4))
 }
-Failed to find pattern for 'push eax'
+Failed to find pattern for 'call [edx+004h]'
 
 // address: 0x10018AA0
 p10018AA0
@@ -3419,8 +3488,12 @@ Failed to find pattern for 'mov cl, byte ptr [eax+048h]'
 p1001C23B
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
+    ARG(0x0000001C);
+    ARG(0x00000001);
+    ARG(STACKVAR(8, 4));
+    REGDEF(edx=ACCESS(STACKVAR(8, 4), 4, 4))
 }
-Failed to find pattern for 'push 00000001Ch'
+Failed to find pattern for 'call [edx]'
 
 // address: 0x1001C28B
 p1001C28B
@@ -3458,8 +3531,12 @@ Failed to find pattern for 'mov al, byte ptr [edx+04Ah]'
 p1001C960
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
+    ARG(0x00000030);
+    ARG(0x00000001);
+    ARG(STACKVAR(8, 4));
+    REGDEF(edx=ACCESS(STACKVAR(8, 4), 4, 4))
 }
-Failed to find pattern for 'push 000000030h'
+Failed to find pattern for 'call [edx]'
 
 // address: 0x1001CA18
 p1001CA18
@@ -3560,8 +3637,12 @@ Failed to find pattern for 'sub esp, 000000158h'
 p1001E580
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
+    ARG(0x0000001C);
+    ARG(0x00000001);
+    ARG(STACKVAR(8, 4));
+    REGDEF(edx=ACCESS(STACKVAR(8, 4), 4, 4))
 }
-Failed to find pattern for 'push 00000001Ch'
+Failed to find pattern for 'call [edx]'
 
 // address: 0x1001E668
 p1001E668
@@ -3682,9 +3763,10 @@ Failed to find pattern for 'mov dword ptr [ecx+004h], offset l1001F7D6'
 p1001F76C
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    REGDEF(eax=STACKVAR(8, 4))
+    ARG(STACKVAR(8, 4));
+    REGDEF(ecx=STACKVAR(8, 4))
 }
-Failed to find pattern for 'push eax'
+Failed to find pattern for 'mov edx, dword ptr [ecx]'
 
 // address: 0x1001F794
 p1001F794
@@ -3890,33 +3972,33 @@ Failed to find pattern for 'jmp l10023964'
 p100239B0
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    REGDEF(eax=STACKVAR(12, 4))
+    ARG(STACKVAR(12, 4));
 }
-Failed to find pattern for 'push eax'
+Failed to find pattern for 'call [__imp_malloc]; [BICRT.malloc].'
 
 // address: 0x100239C2
 p100239C2
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    REGDEF(eax=STACKVAR(12, 4))
+    ARG(STACKVAR(12, 4));
 }
-Failed to find pattern for 'push eax'
+Failed to find pattern for 'call [__imp_free]; [BICRT.free].'
 
 // address: 0x100239D4
 p100239D4
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    REGDEF(eax=STACKVAR(12, 4))
+    ARG(STACKVAR(12, 4));
 }
-Failed to find pattern for 'push eax'
+Failed to find pattern for 'call [__imp_malloc]; [BICRT.malloc].'
 
 // address: 0x100239E6
 p100239E6
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    REGDEF(eax=STACKVAR(12, 4))
+    ARG(STACKVAR(12, 4));
 }
-Failed to find pattern for 'push eax'
+Failed to find pattern for 'call [__imp_free]; [BICRT.free].'
 
 // address: 0x100239F8
 p100239F8
@@ -3947,8 +4029,12 @@ p10023A26
 p10023A30
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
+    ARG(0x00000058);
+    ARG(0x00000001);
+    ARG(STACKVAR(8, 4));
+    REGDEF(edx=ACCESS(STACKVAR(8, 4), 4, 4))
 }
-Failed to find pattern for 'push 000000058h'
+Failed to find pattern for 'call [edx]'
 
 // address: 0x10023B19
 p10023B19
@@ -4299,24 +4385,27 @@ int B_BitMap24::SaveToBMP(const char *fileName)
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
     REGDEF(eax=0x00004084)
+    unknown_function_10041600();
 }
-'ecx'
+Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x1002778F
 int B_BitMap24::SaveToBMPSized(const char *fileName, int width, int height)
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
     REGDEF(eax=0x000040AC)
+    unknown_function_10041600();
 }
-'ecx'
+Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x10027D86
 p10027D86
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
     REGDEF(eax=0x00004024)
+    unknown_function_10041600();
 }
-'ecx'
+Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x10027E11
 p10027E11
@@ -4611,10 +4700,9 @@ Failed to find pattern for 'sub esp, 00000000Ch'
 // address: 0x1002A2C3
 B_MessageManager &operator<<(B_MessageManager &mout, const char *str)
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    REGDEF(eax=STACKVAR(12, 4))
+    STACKVAR(8, 4)->unknown_method_1002A13C(STACKVAR(12, 4));
+    return reinterpret_cast<B_MessageManager &>(STACKVAR(8, 4));
 }
-Failed to find pattern for 'push eax'
 
 // address: 0x1002A2D7
 p1002A2D7
@@ -4797,16 +4885,16 @@ Failed to find pattern for 'sub esp, 000000018h'
 // address: 0x10030219
 p10030219
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    reinterpret_cast<B_IDataFile *>(STACKVAR(8, 4))->Read(reinterpret_cast<void *>(STACKVAR(12, 4)), 128);
+    REGDEF(eax=STACKVAR(8, 4))
 }
-Failed to find pattern for 'push 000000080h'
 
 // address: 0x10030232
 p10030232
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    reinterpret_cast<B_ODataFile *>(STACKVAR(8, 4))->Write(reinterpret_cast<void *>(STACKVAR(12, 4)), 128);
+    REGDEF(eax=STACKVAR(8, 4))
 }
-Failed to find pattern for 'push 000000080h'
 
 // address: 0x10031284
 p10031284
@@ -4955,16 +5043,16 @@ Failed to find pattern for 'fld qword ptr [eax]'
 // address: 0x10031E6D
 p10031E6D
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    reinterpret_cast<B_IDataFile *>(STACKVAR(8, 4))->Read(reinterpret_cast<void *>(STACKVAR(12, 4)), 24);
+    REGDEF(eax=STACKVAR(8, 4))
 }
-Failed to find pattern for 'push 000000018h'
 
 // address: 0x10031E83
 p10031E83
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    reinterpret_cast<B_ODataFile *>(STACKVAR(8, 4))->Write(reinterpret_cast<void *>(STACKVAR(12, 4)), 24);
+    REGDEF(eax=STACKVAR(8, 4))
 }
-Failed to find pattern for 'push 000000018h'
 
 // address: 0x10031EA0
 p10031EA0
@@ -4977,17 +5065,19 @@ Failed to find pattern for 'sub esp, 000000008h'
 p10031F20
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    REGDEF(eax=STACKVAR(12, 4))
+    ARG(STACKVAR(12, 4));
+    REGDEF(ecx=STACKVAR(12, 4))
 }
-Failed to find pattern for 'push eax'
+Failed to find pattern for 'add ecx, 000000004h'
 
 // address: 0x10031F48
 p10031F48
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    REGDEF(eax=STACKVAR(12, 4))
+    ARG(STACKVAR(12, 4));
+    REGDEF(ecx=STACKVAR(12, 4))
 }
-Failed to find pattern for 'push eax'
+Failed to find pattern for 'add ecx, 000000004h'
 
 // address: 0x10031F82
 p10031F82
@@ -6510,8 +6600,9 @@ p100409D8
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
     STACKVAR(-4, 4) = 0x00000000;
+    ARG(0x00000014);
 }
-Failed to find pattern for 'push 000000014h'
+Failed to find pattern for 'call [__imp_malloc]; [BICRT.malloc].'
 
 // address: 0x10040A5E
 p10040A5E
@@ -6573,9 +6664,8 @@ Failed to find pattern for 'pop ebp'
 // address: 0x10040F51
 B_RDataTriangle::B_RDataTriangle()
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
+    this->unknown_method_10040F39(0x00000001);
 }
-Failed to find pattern for 'push 000000001h'
 
 // address: 0x10040F69
 B_ParticleGType::B_ParticleGType(const B_Name &new_type, const B_Name &parent_type, unsigned int operation_type, unsigned int duration)
@@ -6631,7 +6721,7 @@ Failed to find pattern for 'push dword ptr [esp+004h]'
 p10041600
 {
 }
-Failed to find pattern for 'push ecx'
+Unexpected instruction type <class 'NoneType'>
 
 // address: 0x100416B4
 p100416B4

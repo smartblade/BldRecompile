@@ -46,7 +46,9 @@ def _evaluate_procedure_calls(expression, **kwargs):
     return visit_predefined_procedures(
         expression,
         on_regvalue=_evaluate_reg_value,
+        on_access=_keep,
         on_global=_keep,
+        on_stackvar=_keep,
         **kwargs)
 
 
