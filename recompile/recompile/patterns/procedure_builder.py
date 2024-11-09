@@ -14,12 +14,12 @@ class ProcedureBuilder:
             self._method_class = None
 
     def make_prolog(self, allocated):
-        self._instructions.append(
+        self._add_instruction(
             instructions.ProcedureInfo(
                 self._method_class, int(allocated.emit_code())))
 
     def make_restore(self, restore):
-        self._instructions.append(instructions.CodeInstruction(restore))
+        self._add_instruction(instructions.CodeInstruction(restore))
 
     def make_epilog(self):
         if (
@@ -28,30 +28,28 @@ class ProcedureBuilder:
         ):
             raise Exception("Changed stack pointer was not restored.")
         self._expect_first_procedure_info().set_stack_delta(0)
-        self._instructions.append(instructions.ReturnInstruction(None))
+        self._add_instruction(instructions.ReturnInstruction(None))
 
     def make_assignment(self, dst, src):
-        last_instruction = self._instructions[-1]
-        if isinstance(last_instruction, instructions.ProcedureInfo):
-            if last_instruction.is_this_expression(src):
-                last_instruction.define_this_offset(dst)
+        if isinstance(self._last_instruction, instructions.ProcedureInfo):
+            if self._last_instruction.is_this_expression(src):
+                self._last_instruction.define_this_offset(dst)
                 return
-        self._instructions.append(instructions.Assignment(dst, src))
+        self._add_instruction(instructions.Assignment(dst, src))
 
     def make_arg(self, arg):
-        self._instructions.append(instructions.CodeInstruction(arg))
+        self._add_instruction(instructions.CodeInstruction(arg))
 
     def make_call(self, address):
         procedure_call = expressions.ProcedureCall(
             callee_addr=from_hex(address.emit_code()))
-        last_instruction = self._instructions[-1]
         if isinstance(
-            last_instruction, instructions.TemporaryRegisterDefinition
+            self._last_instruction, instructions.TemporaryRegisterDefinition
         ):
             this_arg = self.pop_reg_value("ecx")
             procedure_call = procedure_call.copy(
                 is_method=True, arguments=[this_arg])
-        self._instructions.append(instructions.CodeInstruction(procedure_call))
+        self._add_instruction(instructions.CodeInstruction(procedure_call))
 
     def add_stack_pointer(self, offset):
         pc = self._try_pop_procedure_call()
@@ -72,29 +70,29 @@ class ProcedureBuilder:
                 "Expected arguments size: {}, but was: {}.".format(
                     expected_size, size))
         pc = pc.copy(arguments=args)
-        self._instructions.append(instructions.CodeInstruction(pc))
+        self._add_instruction(instructions.CodeInstruction(pc))
 
     def update_temporary_reg(self, dst, src):
         reg = dst.emit_code()
-        tmp_def = self._instructions[-1]
+        tmp_def = self._last_instruction
         if not isinstance(tmp_def, instructions.TemporaryRegisterDefinition):
             tmp_def = instructions.TemporaryRegisterDefinition()
-            self._instructions.append(tmp_def)
+            self._add_instruction(tmp_def)
         tmp_def.define_reg_value(reg, src)
 
     def pop_reg_value(self, reg):
-        last_instruction = self._instructions[-1]
-        if isinstance(last_instruction, instructions.ProcedureInfo):
-            return last_instruction.pop_reg_value(reg)
+        if isinstance(self._last_instruction, instructions.ProcedureInfo):
+            return self._last_instruction.pop_reg_value(reg)
         if isinstance(
-            last_instruction, instructions.TemporaryRegisterDefinition
+            self._last_instruction, instructions.TemporaryRegisterDefinition
         ):
-            value = last_instruction.pop_reg_value(reg)
-            if last_instruction.is_empty():
-                self._instructions.pop()
+            value = self._last_instruction.pop_reg_value(reg)
+            if self._last_instruction.is_empty():
+                self._pop_instruction()
             return value
         raise Exception(
-            "Unexpected instruction type {}".format(type(last_instruction)))
+            "Unexpected instruction type {}".format(
+                type(self._last_instruction)))
 
     def _try_pop_restore_instruction(self, reg):
         pc = self._try_pop_procedure_call("RESTORE", 1)
@@ -113,10 +111,9 @@ class ProcedureBuilder:
         return pc.arguments[0]
 
     def _try_pop_procedure_call(self, name=None, num_arguments=0):
-        last_instruction = self._instructions[-1]
-        if not isinstance(last_instruction, instructions.CodeInstruction):
+        if not isinstance(self._last_instruction, instructions.CodeInstruction):
             return None
-        pc = last_instruction.expression
+        pc = self._last_instruction.expression
         if not isinstance(pc, expressions.ProcedureCall):
             return None
         if name is not None and pc.name != name:
@@ -125,8 +122,18 @@ class ProcedureBuilder:
             raise Exception(
                 "Expected {} argument of {} but was {}.".format(
                     num_arguments, pc.name, len(pc.arguments)))
-        self._instructions.pop()
+        self._pop_instruction()
         return pc
+
+    @property
+    def _last_instruction(self):
+        return self._instructions[-1]
+
+    def _add_instruction(self, instruction):
+        self._instructions.append(instruction)
+
+    def _pop_instruction(self):
+        self._instructions.pop()
 
     def _expect_first_procedure_info(self):
         first_instruction = self._instructions[0]
