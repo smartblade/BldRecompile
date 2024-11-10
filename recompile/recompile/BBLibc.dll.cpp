@@ -1084,7 +1084,7 @@ Failed to find pattern for 'sub esp, 000000010h'
 p10004676
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
-    operator >>(reinterpret_cast<B_IDataFile &>(STACKVAR(8, 4)), reinterpret_cast<B_NamedObj &>(STACKVAR(12, 4)));
+    reinterpret_cast<B_IDataFile &>(STACKVAR(8, 4)) >> reinterpret_cast<B_NamedObj &>(STACKVAR(12, 4));
     REGDEF(eax=STACKVAR(8, 4))
 }
 
@@ -1092,7 +1092,7 @@ p10004676
 p1000468E
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
-    operator <<(reinterpret_cast<B_ODataFile &>(STACKVAR(8, 4)), reinterpret_cast<B_NamedObj &>(STACKVAR(12, 4)));
+    reinterpret_cast<B_ODataFile &>(STACKVAR(8, 4)) << reinterpret_cast<B_NamedObj &>(STACKVAR(12, 4));
     REGDEF(eax=STACKVAR(8, 4))
 }
 

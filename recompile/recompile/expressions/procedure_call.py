@@ -1,6 +1,11 @@
+import re
+
 import data_types
 import expressions
+from expressions.operator import operators
 from hex_conversion import to_hex
+
+operator_regexp = re.compile(r'^operator\s*(?P<op>\S+)$')
 
 
 class ProcedureCall:
@@ -16,6 +21,7 @@ class ProcedureCall:
         self._callee_addr = callee_addr
         self._is_method = is_method
         self._proc_decl = proc_decl
+        self._define_operator()
 
     def copy(self, **kwargs):
         default_map = dict(
@@ -30,6 +36,17 @@ class ProcedureCall:
             if key not in kwargs:
                 kwargs[key] = value
         return ProcedureCall(**kwargs)
+
+    def _define_operator(self):
+        if self._operator is not None:
+            return
+        if self._proc_decl is None:
+            return
+        if self._proc_decl.proc_name is None:
+            return
+        match = re.search(operator_regexp, self._proc_decl.proc_name)
+        if match:
+            self._operator = operators[match.group("op")]
 
     def __repr__(self):
         return "{}({})".format(
