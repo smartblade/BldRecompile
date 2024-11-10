@@ -8,6 +8,7 @@ def are_same(first, second):
         data_types.Unknown32,
         data_types.Int32,
         data_types.UInt32,
+        data_types.Float,
     ]
     for standard_type in standard_types:
         if (

@@ -36,7 +36,14 @@
 			{"pop": ["ebp"]},
 			{"ret": []}
 		],
-		"action": {"epilog-return": {}}
+		"action": {"epilog-return": {"size": "0"}}
+	},
+	{
+		"instructions": [
+			{"pop": ["ebp"]},
+			{"ret": ["%hex%"]}
+		],
+		"action": {"epilog-return": {"size": "%hex%"}}
 	},
 	{
 		"instructions": [

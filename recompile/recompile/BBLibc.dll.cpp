@@ -498,11 +498,9 @@ Failed to find pattern for 'sub esp, 00000000Ch'
 // address: 0x10002540
 p10002540
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
+    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=4)
     REGDEF(eax=0x00000000)
-    RESTORE(esp);
 }
-Failed to find pattern for 'pop ebp'
 
 // address: 0x10002550
 B_MessageChannel::~B_MessageChannel()
@@ -997,13 +995,11 @@ B_Resource::B_Resource()
 // address: 0x10003ED9
 p10003ED9
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    STACKVAR(-4, 4)->unknown_method_10003A07(STACKVAR(8, 4));
-    ACCESS(STACKVAR(-4, 4), 0, 4) = GLOBAL(0x10042198);
-    REGDEF(eax=STACKVAR(-4, 4))
-    RESTORE(esp);
+    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=4)
+    reinterpret_cast<B_NamedObj *>(this)->B_NamedObj(reinterpret_cast<B_Name &>(STACKVAR(8, 4)));
+    ACCESS(this, 0, 4) = GLOBAL(0x10042198);
+    REGDEF(eax=this)
 }
-Failed to find pattern for 'pop ebp'
 
 // address: 0x10003EFE
 B_Resource::~B_Resource()
@@ -1592,12 +1588,10 @@ Failed to find pattern for 'sub esp, 000000034h'
 // address: 0x10007090
 p10007090
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    ACCESS(STACKVAR(8, 4), 0, 4) = ACCESS(STACKVAR(-4, 4), 4, 4);
-    ACCESS(STACKVAR(12, 4), 0, 4) = ACCESS(STACKVAR(-4, 4), 8, 4);
-    RESTORE(esp);
+    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=8)
+    ACCESS(STACKVAR(8, 4), 0, 4) = ACCESS(this, 4, 4);
+    ACCESS(STACKVAR(12, 4), 0, 4) = ACCESS(this, 8, 4);
 }
-Failed to find pattern for 'pop ebp'
 
 // address: 0x100070C0
 p100070C0
@@ -4739,11 +4733,8 @@ unsigned int B_MessageChannel::Close()
 // address: 0x1002A284
 unsigned int B_MessageChannel::Message(const char *message)
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(eax=0x00000000)
-    RESTORE(esp);
+    return 0;
 }
-Failed to find pattern for 'pop ebp'
 
 // address: 0x1002A293
 p1002A293
@@ -6692,15 +6683,11 @@ B_RDataLight::B_RDataLight()
 // address: 0x10040CBE
 B_RDataLight::B_RDataLight(float a, float b, float c, float d)
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    STACKVAR(8, 4) = STACKVAR(8, 4);
-    STACKVAR(12, 4) = STACKVAR(12, 4);
-    STACKVAR(16, 4) = STACKVAR(16, 4);
-    STACKVAR(20, 4) = STACKVAR(20, 4);
-    REGDEF(eax=STACKVAR(-4, 4))
-    RESTORE(esp);
+    a = a;
+    b = b;
+    c = c;
+    d = d;
 }
-Failed to find pattern for 'pop ebp'
 
 // address: 0x10040CE6
 void B_RDataLight::Interp(double t, B_RDataLight &start, double u, B_RDataLight &end)
@@ -6727,12 +6714,10 @@ Failed to find pattern for 'sub esp, 000000014h'
 // address: 0x10040F39
 p10040F39
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    ACCESS(STACKVAR(-4, 4), 0, 4) = STACKVAR(8, 4);
-    REGDEF(eax=STACKVAR(-4, 4))
-    RESTORE(esp);
+    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=4)
+    ACCESS(this, 0, 4) = STACKVAR(8, 4);
+    REGDEF(eax=this)
 }
-Failed to find pattern for 'pop ebp'
 
 // address: 0x10040F51
 B_RDataTriangle::B_RDataTriangle()

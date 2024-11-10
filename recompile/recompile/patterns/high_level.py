@@ -286,4 +286,6 @@ def _convert_pointees(e, src_type, target_type):
         )
     ):
         return e
+    if src_type is None:
+        return expressions.do_reinterpret(data_types.Pointer32(target_type), e)
     raise Exception("Can't convert {} to {}".format(src_type, target_type))

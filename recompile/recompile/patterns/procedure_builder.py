@@ -22,13 +22,14 @@ class ProcedureBuilder:
     def make_restore(self, restore):
         self._add_instruction(instructions.CodeInstruction(restore))
 
-    def make_epilog(self):
+    def make_epilog(self, size):
         if (
             not self._try_pop_restore_instruction("esp") and
             self._expect_first_procedure_info().is_stack_pointer_trashed
         ):
             raise Exception("Changed stack pointer was not restored.")
-        self._expect_first_procedure_info().set_stack_delta(0)
+        stack_delta = from_hex(size.emit_code())
+        self._expect_first_procedure_info().set_stack_delta(stack_delta)
         self._add_instruction(instructions.ReturnInstruction(None))
 
     def make_assignment(self, dst, src):
