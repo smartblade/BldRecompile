@@ -17,7 +17,9 @@ def make_high_level_code(proc_info, proc_decl, declarations, instrs):
                 e, stack_vars=stack_vars, declarations=declarations))
         new_instructions.append(instr)
     _validate_procedure_info(proc_info, proc_decl)
-    new_instructions = _eliminate_procedure_info(proc_info, new_instructions)
+    if proc_decl is not None:
+        new_instructions = _eliminate_procedure_info(
+            proc_info, new_instructions)
     new_instructions = _rewrite_returns(proc_decl, new_instructions)
     new_instructions = _eliminate_unnecessary_returns(
         proc_info, proc_decl, new_instructions)

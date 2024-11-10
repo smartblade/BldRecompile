@@ -34,6 +34,7 @@ Failed to find pattern for 'cmp dword ptr [g10049F04], 000000000h'
 // address: 0x100010E4
 p100010E4
 {
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
     unknown_function_100010F3();
     unknown_function_10001205();
 }
@@ -48,6 +49,7 @@ Failed to find pattern for 'sub esp, 000000028h'
 // address: 0x10001205
 p10001205
 {
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
     unknown_function_100415A8(GLOBAL(0x10001217));
 }
 
@@ -344,24 +346,28 @@ Failed to find pattern for 'call [__imp_free]; [BICRT.free].'
 // address: 0x100020C3
 p100020C3
 {
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
     return B_IDataFile::GetnOpenedFiles();
 }
 
 // address: 0x100020CD
 p100020CD
 {
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
     return B_IDataFile::GetnOpenFiles();
 }
 
 // address: 0x100020D7
 p100020D7
 {
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
     B_IDataFile::ResetnOpenedFiles();
 }
 
 // address: 0x100020E1
 p100020E1
 {
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
     return B_IDataFile::SetOnOpenFunc(reinterpret_cast<PyObject *>(STACKVAR(8, 4)));
 }
 
@@ -410,6 +416,7 @@ Failed to find pattern for 'cmp dword ptr [eax], 0FFFFFFFFh'
 // address: 0x10002270
 p10002270
 {
+    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=0)
     REGDEF(eax=ACCESS(this, 4, 4))
 }
 
@@ -696,18 +703,21 @@ Can't parse line: ;
 // address: 0x10003100
 p10003100
 {
+    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=0)
     REGDEF(eax=ACCESS(this, 4, 4))
 }
 
 // address: 0x10003120
 p10003120
 {
+    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=0)
     REGDEF(eax=ACCESS(this, 8, 4))
 }
 
 // address: 0x10003140
 p10003140
 {
+    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=0)
     REGDEF(eax=ACCESS(this, 12, 4))
 }
 
@@ -1073,6 +1083,7 @@ Failed to find pattern for 'sub esp, 000000010h'
 // address: 0x10004676
 p10004676
 {
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
     operator >>(reinterpret_cast<B_IDataFile &>(STACKVAR(8, 4)), reinterpret_cast<B_NamedObj &>(STACKVAR(12, 4)));
     REGDEF(eax=STACKVAR(8, 4))
 }
@@ -1080,6 +1091,7 @@ p10004676
 // address: 0x1000468E
 p1000468E
 {
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
     operator <<(reinterpret_cast<B_ODataFile &>(STACKVAR(8, 4)), reinterpret_cast<B_NamedObj &>(STACKVAR(12, 4)));
     REGDEF(eax=STACKVAR(8, 4))
 }
@@ -1151,6 +1163,7 @@ Failed to find pattern for 'sub esp, 00000002Ch'
 // address: 0x10004C20
 p10004C20
 {
+    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=0)
     REGDEF(eax=ACCESS(ACCESS(this, 1024, 4), 8, 4))
 }
 
@@ -1294,6 +1307,7 @@ Failed to find pattern for 'sub esp, 000000040h'
 // address: 0x1000617B
 p1000617B
 {
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
     unknown_function_1000618A();
     unknown_function_10006199();
 }
@@ -1301,18 +1315,21 @@ p1000617B
 // address: 0x1000618A
 p1000618A
 {
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
     return B_resource_manager.B_ResourceManager();
 }
 
 // address: 0x10006199
 p10006199
 {
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
     unknown_function_100415A8(GLOBAL(0x100061AB));
 }
 
 // address: 0x100061AB
 p100061AB
 {
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
     B_resource_manager.~B_ResourceManager();
 }
 
@@ -1365,24 +1382,28 @@ Unexpected instruction type <class 'instructions.code_instruction.CodeInstructio
 // address: 0x1000660B
 p1000660B
 {
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
     B_resource_manager.unknown_method_1000629C(0x00000001, STACKVAR(8, 4));
 }
 
 // address: 0x10006620
 p10006620
 {
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
     B_resource_manager.unknown_method_1000644A(0x00000001, STACKVAR(8, 4));
 }
 
 // address: 0x10006635
 p10006635
 {
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
     B_resource_manager.unknown_method_1000629C(0x00000005, STACKVAR(8, 4));
 }
 
 // address: 0x1000664A
 p1000664A
 {
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
     B_resource_manager.unknown_method_1000644A(0x00000005, STACKVAR(8, 4));
 }
 
@@ -1520,6 +1541,7 @@ Failed to find pattern for 'mov dl, byte ptr [ecx+004h]'
 // address: 0x10006BE0
 p10006BE0
 {
+    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=0)
     REGDEF(eax=this)
 }
 
@@ -1580,6 +1602,7 @@ Failed to find pattern for 'pop ebp'
 // address: 0x100070C0
 p100070C0
 {
+    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=0)
     REGDEF(eax=ACCESS(this, 12, 4))
 }
 
@@ -1730,12 +1753,14 @@ Failed to find pattern for 'mov ax, 00003h'
 // address: 0x10008563
 p10008563
 {
+    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=0)
     REGDEF(eax=0x00000000)
 }
 
 // address: 0x10008570
 p10008570
 {
+    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=0)
     REGDEF(eax=0x00000000)
 }
 
@@ -1921,12 +1946,14 @@ Failed to find pattern for 'sub esp, 000000014h'
 // address: 0x10009633
 p10009633
 {
+    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=0)
     REGDEF(eax=this)
 }
 
 // address: 0x10009661
 p10009661
 {
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
     reinterpret_cast<B_IDataFile *>(STACKVAR(8, 4))->Read(reinterpret_cast<void *>(STACKVAR(12, 4)), 768);
     REGDEF(eax=STACKVAR(8, 4))
 }
@@ -1934,6 +1961,7 @@ p10009661
 // address: 0x1000967A
 p1000967A
 {
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
     reinterpret_cast<B_ODataFile *>(STACKVAR(8, 4))->Write(reinterpret_cast<void *>(STACKVAR(12, 4)), 768);
     REGDEF(eax=STACKVAR(8, 4))
 }
@@ -1948,6 +1976,7 @@ Failed to find pattern for 'sub esp, 00000000Ch'
 // address: 0x1000980C
 p1000980C
 {
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
     unknown_function_1000F640(STACKVAR(8, 4));
 }
 
@@ -2077,6 +2106,7 @@ Failed to find pattern for 'sub esp, 000000018h'
 // address: 0x1000B2ED
 p1000B2ED
 {
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
 }
 
 // address: 0x1000B300
@@ -2262,6 +2292,7 @@ Failed to find pattern for 'cmp dword ptr [ebp+010h], 00000FFFDh'
 // address: 0x1000D764
 p1000D764
 {
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
     unknown_function_1000D78A(STACKVAR(8, 4), 0x000000FF);
     unknown_function_1000D78A(STACKVAR(8, 4), STACKVAR(12, 4));
 }
@@ -2286,6 +2317,7 @@ Failed to find pattern for 'sar eax, 008h'
 // address: 0x1000D82D
 p1000D82D
 {
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
     unknown_function_1000D78A(STACKVAR(8, 4), STACKVAR(12, 4));
 }
 
@@ -2370,11 +2402,13 @@ Failed to find pattern for 'sub esp, 00000000Ch'
 // address: 0x1000E0E2
 p1000E0E2
 {
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
 }
 
 // address: 0x1000E0E7
 p1000E0E7
 {
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
     unknown_function_1000D764(STACKVAR(8, 4), 0x000000DD);
     unknown_function_1000D7FA(STACKVAR(8, 4), 0x00000004);
     unknown_function_1000D7FA(STACKVAR(8, 4), ACCESS(STACKVAR(8, 4), 184, 4));
@@ -2390,6 +2424,7 @@ Failed to find pattern for 'sub esp, 000000010h'
 // address: 0x1000E27A
 p1000E27A
 {
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
     unknown_function_1000D764(STACKVAR(8, 4), 0x000000D9);
 }
 
@@ -2764,6 +2799,7 @@ Failed to find pattern for 'sub esp, 000000010h'
 // address: 0x10012153
 p10012153
 {
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
 }
 
 // address: 0x10012158
@@ -2873,6 +2909,7 @@ Failed to find pattern for 'sub esp, 00000000Ch'
 // address: 0x10013602
 p10013602
 {
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
     unknown_function_1000F640(STACKVAR(8, 4));
 }
 
@@ -3003,6 +3040,7 @@ Failed to find pattern for 'cmp dword ptr [ebp+00Ch], 000000000h'
 // address: 0x100145AA
 p100145AA
 {
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
 }
 
 // address: 0x100145B0
@@ -3048,6 +3086,7 @@ Failed to find pattern for 'sub esp, 000000040h'
 // address: 0x10014AED
 p10014AED
 {
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
     REGDEF(eax=0x00000000)
 }
 
@@ -3137,6 +3176,7 @@ Failed to find pattern for 'sub esp, 000000040h'
 // address: 0x1001636E
 p1001636E
 {
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
 }
 
 // address: 0x10016380
@@ -3241,6 +3281,7 @@ Failed to find pattern for 'sub esp, 000000010h'
 // address: 0x10017C97
 p10017C97
 {
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
     ACCESS(ACCESS(STACKVAR(8, 4), 400, 4), 0, 4) = GLOBAL(0x10017CAB);
 }
 
@@ -3698,12 +3739,14 @@ Failed to find pattern for 'sub esp, 000000010h'
 // address: 0x1001EE8E
 p1001EE8E
 {
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
     ACCESS(STACKVAR(20, 4), 0, 4) = STACKVAR(16, 4);
 }
 
 // address: 0x1001EE9B
 p1001EE9B
 {
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
     ACCESS(STACKVAR(20, 4), 0, 4) = 0x00000000;
 }
 
@@ -4003,6 +4046,7 @@ Failed to find pattern for 'call [__imp_free]; [BICRT.free].'
 // address: 0x100239F8
 p100239F8
 {
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
     REGDEF(eax=STACKVAR(16, 4))
 }
 
@@ -4017,12 +4061,14 @@ Failed to find pattern for 'mov ecx, dword ptr [eax]'
 // address: 0x10023A1F
 p10023A1F
 {
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
     REGDEF(eax=0x00000000)
 }
 
 // address: 0x10023A26
 p10023A26
 {
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
 }
 
 // address: 0x10023A30
@@ -4139,6 +4185,7 @@ Failed to find pattern for 'sub esp, 000000050h'
 // address: 0x10024A44
 p10024A44
 {
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
 }
 
 // address: 0x10024A49
@@ -4266,6 +4313,7 @@ Failed to find pattern for 'sub esp, 000000044h'
 // address: 0x10026874
 p10026874
 {
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
 }
 
 // address: 0x10026879
@@ -4317,6 +4365,7 @@ Failed to find pattern for 'push edi'
 // address: 0x10026990
 p10026990
 {
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
     unknown_function_1002699F();
     unknown_function_100269E0();
 }
@@ -4324,6 +4373,7 @@ p10026990
 // address: 0x1002699F
 p1002699F
 {
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
     ACCESS(GLOBAL(0x1004A524), 0, 4) = 0x00000000;
     ACCESS(GLOBAL(0x1004A528), 0, 4) = 0x00000000;
     ACCESS(GLOBAL(0x1004A52C), 0, 4) = 0x00000010;
@@ -4335,6 +4385,7 @@ p1002699F
 // address: 0x100269E0
 p100269E0
 {
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
     unknown_function_100415A8(GLOBAL(0x100269F2));
 }
 
@@ -4592,6 +4643,7 @@ Failed to find pattern for 'sub esp, 000000008h'
 // address: 0x10029C15
 p10029C15
 {
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
     unknown_function_10029C24();
     unknown_function_10029C33();
 }
@@ -4599,18 +4651,21 @@ p10029C15
 // address: 0x10029C24
 p10029C24
 {
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
     mout.unknown_method_10029C4A();
 }
 
 // address: 0x10029C33
 p10029C33
 {
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
     unknown_function_100415A8(GLOBAL(0x10029C45));
 }
 
 // address: 0x10029C45
 p10029C45
 {
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
 }
 
 // address: 0x10029C4A
@@ -4885,6 +4940,7 @@ Failed to find pattern for 'sub esp, 000000018h'
 // address: 0x10030219
 p10030219
 {
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
     reinterpret_cast<B_IDataFile *>(STACKVAR(8, 4))->Read(reinterpret_cast<void *>(STACKVAR(12, 4)), 128);
     REGDEF(eax=STACKVAR(8, 4))
 }
@@ -4892,6 +4948,7 @@ p10030219
 // address: 0x10030232
 p10030232
 {
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
     reinterpret_cast<B_ODataFile *>(STACKVAR(8, 4))->Write(reinterpret_cast<void *>(STACKVAR(12, 4)), 128);
     REGDEF(eax=STACKVAR(8, 4))
 }
@@ -4913,6 +4970,7 @@ Failed to find pattern for 'sub esp, 000000008h'
 // address: 0x10031430
 p10031430
 {
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
     unknown_function_1003143A();
 }
 
@@ -4929,6 +4987,7 @@ Failed to find pattern for 'mov dword ptr [eax+004h], 000000000h'
 // address: 0x10031477
 p10031477
 {
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
     unknown_function_10031481();
 }
 
@@ -4945,6 +5004,7 @@ Failed to find pattern for 'mov dword ptr [eax+004h], 03FF00000h'
 // address: 0x100314BE
 p100314BE
 {
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
     unknown_function_100314C8();
 }
 
@@ -5043,6 +5103,7 @@ Failed to find pattern for 'fld qword ptr [eax]'
 // address: 0x10031E6D
 p10031E6D
 {
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
     reinterpret_cast<B_IDataFile *>(STACKVAR(8, 4))->Read(reinterpret_cast<void *>(STACKVAR(12, 4)), 24);
     REGDEF(eax=STACKVAR(8, 4))
 }
@@ -5050,6 +5111,7 @@ p10031E6D
 // address: 0x10031E83
 p10031E83
 {
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
     reinterpret_cast<B_ODataFile *>(STACKVAR(8, 4))->Write(reinterpret_cast<void *>(STACKVAR(12, 4)), 24);
     REGDEF(eax=STACKVAR(8, 4))
 }
@@ -5283,12 +5345,14 @@ Failed to find pattern for 'mov ax, 00001h'
 // address: 0x10032ACC
 p10032ACC
 {
+    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=0)
     REGDEF(eax=0x00000000)
 }
 
 // address: 0x10032AD9
 p10032AD9
 {
+    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=0)
     REGDEF(eax=0x00000000)
 }
 
@@ -5316,6 +5380,7 @@ Failed to find pattern for 'sub esp, 000000014h'
 // address: 0x10034345
 p10034345
 {
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
     unknown_function_10034354();
     unknown_function_1003438B();
 }
@@ -5323,6 +5388,7 @@ p10034345
 // address: 0x10034354
 p10034354
 {
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
     ACCESS(GLOBAL(0x1004A994), 0, 4) = 0x00000000;
     ACCESS(GLOBAL(0x1004A998), 0, 4) = 0x00000000;
     ACCESS(GLOBAL(0x1004A99C), 0, 4) = 0x00000080;
@@ -5333,6 +5399,7 @@ p10034354
 // address: 0x1003438B
 p1003438B
 {
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
     unknown_function_100415A8(GLOBAL(0x1003439D));
 }
 
@@ -5346,6 +5413,7 @@ Failed to find pattern for 'sub esp, 00000000Ch'
 // address: 0x1003440F
 p1003440F
 {
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
     unknown_function_1003441E();
     unknown_function_10034455();
 }
@@ -5353,6 +5421,7 @@ p1003440F
 // address: 0x1003441E
 p1003441E
 {
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
     ACCESS(GLOBAL(0x1004A9AC), 0, 4) = 0x00000000;
     ACCESS(GLOBAL(0x1004A9B0), 0, 4) = 0x00000000;
     ACCESS(GLOBAL(0x1004A9B4), 0, 4) = 0x00000080;
@@ -5363,6 +5432,7 @@ p1003441E
 // address: 0x10034455
 p10034455
 {
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
     unknown_function_100415A8(GLOBAL(0x10034467));
 }
 
@@ -6156,6 +6226,7 @@ Failed to find pattern for 'sub esp, 000000014h'
 // address: 0x1003DA80
 p1003DA80
 {
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
     unknown_function_1003DA8F();
     unknown_function_1003DAEE();
 }
@@ -6163,6 +6234,7 @@ p1003DA80
 // address: 0x1003DA8F
 p1003DA8F
 {
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
     ACCESS(GLOBAL(0x1004A9D4), 0, 4) = 0x00000000;
     ACCESS(GLOBAL(0x1004A9D8), 0, 4) = 0x00000000;
     ACCESS(GLOBAL(0x1004A9DC), 0, 4) = 0x00000010;
@@ -6177,6 +6249,7 @@ p1003DA8F
 // address: 0x1003DAEE
 p1003DAEE
 {
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
     unknown_function_100415A8(GLOBAL(0x1003DB00));
 }
 
