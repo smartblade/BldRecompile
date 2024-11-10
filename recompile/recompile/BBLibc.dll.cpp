@@ -1703,9 +1703,9 @@ Failed to find pattern for 'sub esp, 00000001Ch'
 // address: 0x10008374
 p10008374
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
+    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=0)
+    REGDEF(ax=0x0002)
 }
-Failed to find pattern for 'mov ax, 00002h'
 
 // address: 0x10008383
 p10008383
@@ -1740,9 +1740,9 @@ Failed to find pattern for 'add eax, 00000000Ch'
 // address: 0x10008554
 p10008554
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
+    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=0)
+    REGDEF(ax=0x0003)
 }
-Failed to find pattern for 'mov ax, 00003h'
 
 // address: 0x10008563
 p10008563
@@ -1769,9 +1769,9 @@ Failed to find pattern for 'add eax, 00000000Ch'
 // address: 0x100085AD
 p100085AD
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
+    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=0)
+    REGDEF(ax=0x0004)
 }
-Failed to find pattern for 'mov ax, 00004h'
 
 // address: 0x100085D4
 p100085D4
@@ -5329,9 +5329,9 @@ Failed to find pattern for 'add eax, 000000028h'
 // address: 0x10032ABD
 p10032ABD
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
+    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=0)
+    REGDEF(ax=0x0001)
 }
-Failed to find pattern for 'mov ax, 00001h'
 
 // address: 0x10032ACC
 p10032ACC

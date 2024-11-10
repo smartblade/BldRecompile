@@ -98,7 +98,9 @@ def _new_token(state, s):
         if s.startswith("0x"):
             if len(s) == 4:
                 data_type = data_types.UnknownByte()
-            elif len(s) == 6 or len(s) == 10:
+            elif len(s) == 6:
+                data_type = data_types.AnyInt16()
+            elif len(s) == 10:
                 data_type = data_types.Unknown32()
             else:
                 raise Exception("Can't define type for '{}'".format(s))

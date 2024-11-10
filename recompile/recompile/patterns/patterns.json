@@ -65,6 +65,12 @@
 	},
 	{
 		"instructions": [
+			{"mov":  ["%ax-cx-dx%", "%src-operand%"]}
+		],
+		"action": {"tmpreg": {"dst": "%ax-cx-dx%", "src": "%src-operand%"}}
+	},
+	{
+		"instructions": [
 			{"mov":  ["%eax-ecx-edx%", "%src-operand%"]}
 		],
 		"action": {"tmpreg": {"dst": "%eax-ecx-edx%", "src": "%src-operand%"}}

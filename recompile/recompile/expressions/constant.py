@@ -35,4 +35,7 @@ class Constant:
             return "0x{:02X}".format(self._value)
         if isinstance(self._data_type, data_types.Unknown32):
             return "0x{:08X}".format(self._value)
+        if isinstance(self._data_type, data_types.AnyInt):
+            return "0x{:0{}X}".format(
+                self._value, self._data_type.size * 2)
         return "{}".format(self._value)

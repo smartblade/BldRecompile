@@ -7,6 +7,7 @@ operand_regexp = re.compile(
     r'^(?P<size>dword\s+ptr\s+)?(offset\s+)?(?P<operand>.+)$')
 
 _regexp_map = {
+    "ax-cx-dx": r"ax|cx|dx",
     "eax-ecx-edx": r"eax|ecx|edx",
     "label": r"(g|l)[\dABCDEF]+",
     "hex": r"[\dABCDEF]+h",
