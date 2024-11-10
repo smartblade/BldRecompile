@@ -146,71 +146,71 @@ Failed to find pattern for 'sub esp, 00000000Ch'
 // address: 0x10001B55
 B_IDataFile &operator >>(B_IDataFile &file, char &c)
 {
-    reinterpret_cast<B_IDataFile *>(STACKVAR(8, 4))->Read(reinterpret_cast<void *>(STACKVAR(12, 4)), 1);
-    return reinterpret_cast<B_IDataFile &>(STACKVAR(8, 4));
+    file.Read(&c, 1);
+    return file;
 }
 
 // address: 0x10001B6B
 B_IDataFile &operator >>(B_IDataFile &file, unsigned char &c)
 {
-    reinterpret_cast<B_IDataFile *>(STACKVAR(8, 4))->Read(reinterpret_cast<void *>(STACKVAR(12, 4)), 1);
-    return reinterpret_cast<B_IDataFile &>(STACKVAR(8, 4));
+    file.Read(&c, 1);
+    return file;
 }
 
 // address: 0x10001B81
 B_IDataFile &operator >>(B_IDataFile &file, short &s)
 {
-    reinterpret_cast<B_IDataFile *>(STACKVAR(8, 4))->Read(reinterpret_cast<void *>(STACKVAR(12, 4)), 2);
-    return reinterpret_cast<B_IDataFile &>(STACKVAR(8, 4));
+    file.Read(&s, 2);
+    return file;
 }
 
 // address: 0x10001B97
 B_IDataFile &operator >>(B_IDataFile &file, unsigned short &s)
 {
-    reinterpret_cast<B_IDataFile *>(STACKVAR(8, 4))->Read(reinterpret_cast<void *>(STACKVAR(12, 4)), 2);
-    return reinterpret_cast<B_IDataFile &>(STACKVAR(8, 4));
+    file.Read(&s, 2);
+    return file;
 }
 
 // address: 0x10001BAD
 B_IDataFile &operator >>(B_IDataFile &file, int &i)
 {
-    reinterpret_cast<B_IDataFile *>(STACKVAR(8, 4))->Read(reinterpret_cast<void *>(STACKVAR(12, 4)), 4);
-    return reinterpret_cast<B_IDataFile &>(STACKVAR(8, 4));
+    file.Read(&i, 4);
+    return file;
 }
 
 // address: 0x10001BC3
 B_IDataFile &operator >>(B_IDataFile &file, int &l)
 {
-    reinterpret_cast<B_IDataFile *>(STACKVAR(8, 4))->Read(reinterpret_cast<void *>(STACKVAR(12, 4)), 4);
-    return reinterpret_cast<B_IDataFile &>(STACKVAR(8, 4));
+    file.Read(&l, 4);
+    return file;
 }
 
 // address: 0x10001BD9
 B_IDataFile &operator >>(B_IDataFile &file, unsigned int &l)
 {
-    reinterpret_cast<B_IDataFile *>(STACKVAR(8, 4))->Read(reinterpret_cast<void *>(STACKVAR(12, 4)), 4);
-    return reinterpret_cast<B_IDataFile &>(STACKVAR(8, 4));
+    file.Read(&l, 4);
+    return file;
 }
 
 // address: 0x10001BEF
 B_IDataFile &operator >>(B_IDataFile &file, unsigned int &i)
 {
-    reinterpret_cast<B_IDataFile *>(STACKVAR(8, 4))->Read(reinterpret_cast<void *>(STACKVAR(12, 4)), 4);
-    return reinterpret_cast<B_IDataFile &>(STACKVAR(8, 4));
+    file.Read(&i, 4);
+    return file;
 }
 
 // address: 0x10001C05
 B_IDataFile &operator >>(B_IDataFile &file, float &f)
 {
-    reinterpret_cast<B_IDataFile *>(STACKVAR(8, 4))->Read(reinterpret_cast<void *>(STACKVAR(12, 4)), 4);
-    return reinterpret_cast<B_IDataFile &>(STACKVAR(8, 4));
+    file.Read(&f, 4);
+    return file;
 }
 
 // address: 0x10001C1B
 B_IDataFile &operator >>(B_IDataFile &file, double &f)
 {
-    reinterpret_cast<B_IDataFile *>(STACKVAR(8, 4))->Read(reinterpret_cast<void *>(STACKVAR(12, 4)), 8);
-    return reinterpret_cast<B_IDataFile &>(STACKVAR(8, 4));
+    file.Read(&f, 8);
+    return file;
 }
 
 // address: 0x10001C31
@@ -252,8 +252,8 @@ Failed to find pattern for 'sub esp, 000000008h'
 // address: 0x10001F5E
 B_ODataFile &operator <<(B_ODataFile &file, const char &c)
 {
-    reinterpret_cast<B_ODataFile *>(STACKVAR(8, 4))->Write(reinterpret_cast<void *>(STACKVAR(12, 4)), 1);
-    return reinterpret_cast<B_ODataFile &>(STACKVAR(8, 4));
+    file.Write(&c, 1);
+    return file;
 }
 
 // address: 0x10001F74
@@ -266,64 +266,64 @@ Failed to find pattern for 'push edi'
 // address: 0x10001F9A
 B_ODataFile &operator <<(B_ODataFile &file, const unsigned char &c)
 {
-    reinterpret_cast<B_ODataFile *>(STACKVAR(8, 4))->Write(reinterpret_cast<void *>(STACKVAR(12, 4)), 1);
-    return reinterpret_cast<B_ODataFile &>(STACKVAR(8, 4));
+    file.Write(&c, 1);
+    return file;
 }
 
 // address: 0x10001FB0
 B_ODataFile &operator <<(B_ODataFile &file, const short &s)
 {
-    reinterpret_cast<B_ODataFile *>(STACKVAR(8, 4))->Write(reinterpret_cast<void *>(STACKVAR(12, 4)), 2);
-    return reinterpret_cast<B_ODataFile &>(STACKVAR(8, 4));
+    file.Write(&s, 2);
+    return file;
 }
 
 // address: 0x10001FC6
 B_ODataFile &operator <<(B_ODataFile &file, const unsigned short &s)
 {
-    reinterpret_cast<B_ODataFile *>(STACKVAR(8, 4))->Write(reinterpret_cast<void *>(STACKVAR(12, 4)), 2);
-    return reinterpret_cast<B_ODataFile &>(STACKVAR(8, 4));
+    file.Write(&s, 2);
+    return file;
 }
 
 // address: 0x10001FDC
 B_ODataFile &operator <<(B_ODataFile &file, const int &i)
 {
-    reinterpret_cast<B_ODataFile *>(STACKVAR(8, 4))->Write(reinterpret_cast<void *>(STACKVAR(12, 4)), 4);
-    return reinterpret_cast<B_ODataFile &>(STACKVAR(8, 4));
+    file.Write(&i, 4);
+    return file;
 }
 
 // address: 0x10001FF2
 B_ODataFile &operator <<(B_ODataFile &file, const int &l)
 {
-    reinterpret_cast<B_ODataFile *>(STACKVAR(8, 4))->Write(reinterpret_cast<void *>(STACKVAR(12, 4)), 4);
-    return reinterpret_cast<B_ODataFile &>(STACKVAR(8, 4));
+    file.Write(&l, 4);
+    return file;
 }
 
 // address: 0x10002008
 B_ODataFile &operator <<(B_ODataFile &file, const unsigned int &l)
 {
-    reinterpret_cast<B_ODataFile *>(STACKVAR(8, 4))->Write(reinterpret_cast<void *>(STACKVAR(12, 4)), 4);
-    return reinterpret_cast<B_ODataFile &>(STACKVAR(8, 4));
+    file.Write(&l, 4);
+    return file;
 }
 
 // address: 0x1000201E
 B_ODataFile &operator <<(B_ODataFile &file, const unsigned int &i)
 {
-    reinterpret_cast<B_ODataFile *>(STACKVAR(8, 4))->Write(reinterpret_cast<void *>(STACKVAR(12, 4)), 4);
-    return reinterpret_cast<B_ODataFile &>(STACKVAR(8, 4));
+    file.Write(&i, 4);
+    return file;
 }
 
 // address: 0x10002034
 B_ODataFile &operator <<(B_ODataFile &file, const float &f)
 {
-    reinterpret_cast<B_ODataFile *>(STACKVAR(8, 4))->Write(reinterpret_cast<void *>(STACKVAR(12, 4)), 4);
-    return reinterpret_cast<B_ODataFile &>(STACKVAR(8, 4));
+    file.Write(&f, 4);
+    return file;
 }
 
 // address: 0x1000204A
 B_ODataFile &operator <<(B_ODataFile &file, const double &f)
 {
-    reinterpret_cast<B_ODataFile *>(STACKVAR(8, 4))->Write(reinterpret_cast<void *>(STACKVAR(12, 4)), 8);
-    return reinterpret_cast<B_ODataFile &>(STACKVAR(8, 4));
+    file.Write(&f, 8);
+    return file;
 }
 
 // address: 0x10002060
@@ -4755,8 +4755,8 @@ Failed to find pattern for 'sub esp, 00000000Ch'
 // address: 0x1002A2C3
 B_MessageManager &operator<<(B_MessageManager &mout, const char *str)
 {
-    STACKVAR(8, 4)->unknown_method_1002A13C(STACKVAR(12, 4));
-    return reinterpret_cast<B_MessageManager &>(STACKVAR(8, 4));
+    mout->unknown_method_1002A13C(str);
+    return mout;
 }
 
 // address: 0x1002A2D7

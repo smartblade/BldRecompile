@@ -15,6 +15,8 @@ def are_compatible(child, parent):
             isinstance(parent.pointee, data_types.ClassType)
         ):
             return _is_instance_of(child.pointee, parent.pointee)
+        if parent.pointee is None:
+            return True
     if (
         not isinstance(child, data_types.Unknown32) and
         isinstance(parent, data_types.Unknown32)

@@ -10,6 +10,8 @@ from patterns.validate_procedure_declaration import \
 
 def make_high_level_code(proc_info, proc_decl, declarations, instrs):
     stack_vars = proc_info.stack_variables
+    if proc_decl is not None:
+        stack_vars.update(proc_decl.stack_variables)
     new_instructions = []
     for instr in instrs:
         instr = instr.transform(
@@ -251,14 +253,23 @@ def _convert_expression_to_type(e, target_type):
         isinstance(src_type, data_types.Pointer32) and
         isinstance(target_type, data_types.Pointer32)
     ):
-        if _can_convert_pointees(src_type.pointee, target_type.pointee):
-            return e
+        converted = _convert_pointees(e, src_type.pointee, target_type.pointee)
+        if converted is not None:
+            return converted
     if (
         isinstance(src_type, data_types.Pointer32) and
         isinstance(target_type, data_types.Reference)
     ):
-        if _can_convert_pointees(src_type.pointee, target_type.referent):
-            return expressions.Dereference(e)
+        converted = _convert_pointees(e, src_type.pointee, target_type.referent)
+        if converted is not None:
+            return expressions.Dereference(converted)
+    if (
+        isinstance(src_type, data_types.Reference) and
+        isinstance(target_type, data_types.Pointer32)
+    ):
+        converted = _convert_pointees(e, src_type.referent, target_type.pointee)
+        if converted is not None:
+            return expressions.AddressOf(converted)
     if (
         isinstance(src_type, data_types.Unknown32) and
         not isinstance(target_type, data_types.Unknown32)
@@ -267,10 +278,12 @@ def _convert_expression_to_type(e, target_type):
     raise Exception("Can't convert {} to {}.".format(src_type, target_type))
 
 
-def _can_convert_pointees(src_type, target_type):
+def _convert_pointees(e, src_type, target_type):
     if (
-        isinstance(src_type, data_types.ClassType) and
-        isinstance(target_type, data_types.ClassType)
+        data_types.are_compatible(
+            data_types.Pointer32(src_type),
+            data_types.Pointer32(target_type),
+        )
     ):
-        return src_type.class_name == target_type.class_name
+        return e
     raise Exception("Can't convert {} to {}".format(src_type, target_type))

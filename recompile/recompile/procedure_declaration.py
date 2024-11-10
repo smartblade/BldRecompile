@@ -57,6 +57,18 @@ class ProcedureDeclaration:
             stack_delta += parameter_type.size
         return stack_delta
 
+    @property
+    def stack_variables(self):
+        param_ids = list(self.get_parameters_ids().values())
+        if self._method_class is not None and not self._is_static:
+            param_ids = param_ids[1:]
+        offset = 8
+        stack_dict = {}
+        for param_id in param_ids:
+            stack_dict[offset] = param_id
+            offset += param_id.data_type.size
+        return stack_dict
+
     def change_return_type(self, return_type):
         self._return_arg = return_type
 

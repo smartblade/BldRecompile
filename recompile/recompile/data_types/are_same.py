@@ -21,6 +21,11 @@ def are_same(first, second):
     ):
         return are_same(first.pointee, second.pointee)
     if (
+        isinstance(first, data_types.Reference) and
+        isinstance(second, data_types.Reference)
+    ):
+        return are_same(first.referent, second.referent)
+    if (
         isinstance(first, data_types.ClassType) and
         isinstance(second, data_types.ClassType)
     ):
