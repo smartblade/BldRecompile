@@ -12,6 +12,19 @@
 	"instructions-patterns": [
 	{
 		"instructions": [
+			{"push": ["[esp+004h]"]},
+			{"call": ["%label%"]},
+			{"neg":  ["eax"]},
+			{"sbb":  ["eax", "eax"]},
+			{"pop":  ["ecx"]},
+			{"neg":  ["eax"]},
+			{"dec":  ["eax"]},
+			{"ret":  []}
+		],
+		"action": {"standard-proc": {"name": "atexit_%label%"}}
+	},
+	{
+		"instructions": [
 			{"push": ["ebp"]},
 			{"mov":  ["ebp", "esp"]},
 			{"push": ["ecx"]}

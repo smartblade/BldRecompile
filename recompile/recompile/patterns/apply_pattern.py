@@ -2,6 +2,7 @@ import parser
 from patterns.predefined_procedures import visit_predefined_procedures
 
 _actions = {
+    "standard-proc": lambda builder, **kwargs: builder.make_standard(**kwargs),
     "prolog": lambda builder, **kwargs: builder.make_prolog(**kwargs),
     "epilog-restore": lambda builder, **kwargs: builder.make_restore(**kwargs),
     "epilog-return": lambda builder, **kwargs: builder.make_epilog(**kwargs),

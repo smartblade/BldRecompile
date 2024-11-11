@@ -6766,8 +6766,9 @@ Failed to find pattern for 'and eax, 000000001h'
 // address: 0x100415A8
 p100415A8
 {
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    atexit_0x1004157C();
 }
-Failed to find pattern for 'push dword ptr [esp+004h]'
 
 // address: 0x10041600
 p10041600

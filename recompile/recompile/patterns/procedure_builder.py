@@ -1,3 +1,4 @@
+import data_types
 import expressions
 from hex_conversion import from_hex
 import instructions
@@ -13,6 +14,10 @@ class ProcedureBuilder:
             self._method_class = self._proc_decl.method_class
         else:
             self._method_class = None
+
+    def make_standard(self, name):
+        self.make_prolog(allocated=expressions.Constant(data_types.UInt32, 0))
+        self.make_call(name=name)
 
     def make_prolog(self, allocated):
         self._add_instruction(
