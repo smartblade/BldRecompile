@@ -42,9 +42,14 @@ class ProcedureBuilder:
     def make_arg(self, arg):
         self._add_instruction(instructions.CodeInstruction(arg))
 
-    def make_call(self, address):
-        procedure_call = expressions.ProcedureCall(
-            callee_addr=from_hex(address.emit_code()))
+    def make_call(self, address=None, name=None):
+        assert address is not None or name is not None
+        pc_args = {}
+        if address is not None:
+            pc_args["callee_addr"] = from_hex(address.emit_code())
+        if name is not None:
+            pc_args["name"] = name.emit_code()
+        procedure_call = expressions.ProcedureCall(**pc_args)
         self._add_instruction(instructions.CodeInstruction(procedure_call))
 
     def add_stack_pointer(self, offset):

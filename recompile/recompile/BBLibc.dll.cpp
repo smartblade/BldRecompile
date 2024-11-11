@@ -339,9 +339,10 @@ Failed to find pattern for 'mov ecx, dword ptr [eax]'
 B_ODataFile::~B_ODataFile()
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    ARG(ACCESS(STACKVAR(-4, 4), 4, 4));
+    free(ACCESS(STACKVAR(-4, 4), 4, 4));
+    REGDEF(edx=STACKVAR(-4, 4), eax=0x00000000)
 }
-Failed to find pattern for 'call [__imp_free]; [BICRT.free].'
+Failed to find pattern for 'cmp dword ptr [edx], 0FFFFFFFFh'
 
 // address: 0x100020C3
 p100020C3
@@ -2985,12 +2986,9 @@ p100142DC
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 24, 4);
-    ARG(ACCESS(STACKVAR(-4, 4), 20, 4));
-    ARG(0x00001000);
-    ARG(0x00000001);
-    ARG(ACCESS(STACKVAR(-4, 4), 24, 4));
+    fwrite(ACCESS(STACKVAR(-4, 4), 24, 4), 0x00000001, 0x00001000, ACCESS(STACKVAR(-4, 4), 20, 4));
 }
-Failed to find pattern for 'call [__imp_fwrite]; [BICRT.fwrite].'
+Failed to find pattern for 'cmp eax, 000001000h'
 
 // address: 0x10014343
 p10014343
@@ -4008,34 +4006,30 @@ Failed to find pattern for 'jmp l10023964'
 // address: 0x100239B0
 p100239B0
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    ARG(STACKVAR(12, 4));
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
+    malloc(STACKVAR(12, 4));
 }
-Failed to find pattern for 'call [__imp_malloc]; [BICRT.malloc].'
 
 // address: 0x100239C2
 p100239C2
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    ARG(STACKVAR(12, 4));
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
+    free(STACKVAR(12, 4));
 }
-Failed to find pattern for 'call [__imp_free]; [BICRT.free].'
 
 // address: 0x100239D4
 p100239D4
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    ARG(STACKVAR(12, 4));
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
+    malloc(STACKVAR(12, 4));
 }
-Failed to find pattern for 'call [__imp_malloc]; [BICRT.malloc].'
 
 // address: 0x100239E6
 p100239E6
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    ARG(STACKVAR(12, 4));
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
+    free(STACKVAR(12, 4));
 }
-Failed to find pattern for 'call [__imp_free]; [BICRT.free].'
 
 // address: 0x100239F8
 p100239F8
@@ -6664,9 +6658,9 @@ p100409D8
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
     STACKVAR(-4, 4) = 0x00000000;
-    ARG(0x00000014);
+    malloc(0x00000014);
 }
-Failed to find pattern for 'call [__imp_malloc]; [BICRT.malloc].'
+Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x10040A5E
 p10040A5E

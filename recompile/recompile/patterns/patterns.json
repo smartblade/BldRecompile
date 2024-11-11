@@ -95,6 +95,12 @@
 	},
 	{
 		"instructions": [
+			{"call":  ["%external%"]}
+		],
+		"action": {"call": {"name": "%external%"}}
+	},
+	{
+		"instructions": [
 			{"add":  ["esp", "%hex%"]}
 		],
 		"action": {"addsp": {"offset": "%hex%"}}
