@@ -16,6 +16,7 @@ class Operator(Enum):
     NE = "!="
     AND = "&&"
     ASS = "="
+    ADD_ASS = "+="
     DIV_ASS = "/="
 
 
@@ -36,6 +37,7 @@ priorities = {
     Operator.NE: 9,
     Operator.AND: 13,
     Operator.ASS: 15,
+    Operator.ADD_ASS: 15,
     Operator.DIV_ASS: 15,
 }
 

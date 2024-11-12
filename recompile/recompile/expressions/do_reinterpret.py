@@ -20,6 +20,12 @@ def _reinterpret_const(data_type, c):
         isinstance(c.data_type, data_types.Unknown32)
     ):
         return expressions.Constant(data_type, c.value)
+    if (
+        isinstance(data_type, data_types.AnyInt) and
+        isinstance(c.data_type, data_types.Unknown32) and
+        data_type.size == c.data_type.size
+    ):
+        return expressions.Constant(data_type, c.value)
     raise Exception(
         "Unimplemented reinterpret cast from {} to {}".format(
             c.data_type, data_type))

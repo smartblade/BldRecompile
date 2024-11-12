@@ -3,6 +3,7 @@ from calling_convention import CallingConvention
 import data_types
 import instructions
 import expressions
+from expressions.operator import Operator
 from patterns.predefined_procedures import visit_predefined_procedures
 from patterns.validate_procedure_declaration import \
     validate_procedure_declaration
@@ -31,6 +32,8 @@ def make_high_level_code(proc_info, proc_decl, declarations, instrs):
 def _transform(e, **kwargs):
     if isinstance(e, instructions.Assignment):
         return _transform_assignment(e, **kwargs)
+    if isinstance(e, expressions.Bin):
+        return _transform_binary(e, **kwargs)
     e = visit_predefined_procedures(
         e, **kwargs,
         on_stackvar=_transform_stackvar,
@@ -50,20 +53,21 @@ def _transform_stackvar(offset, size, stack_vars, **kwargs):
 
 
 def _transform_access(expression, offset, size, **kwargs):
-    data_type = expression.data_type
-    if isinstance(data_type, data_types.Unknown32):
+    if isinstance(expression.data_type, data_types.Unknown32):
         return None
-    if not isinstance(data_type, data_types.Pointer32):
+    if isinstance(expression.data_type, data_types.Reference):
+        expression = expressions.AddressOf(expression)
+    if not isinstance(expression.data_type, data_types.Pointer32):
         raise Exception(
             "Data type of {} expected to be pointer but was: {}.".format(
-                expression, data_type))
-    pointee = data_type.pointee
+                expression, expression.data_type))
+    pointee = expression.data_type.pointee
     if isinstance(pointee, data_types.ClassType):
         try:
             data_type, field_name = pointee.get_field_by_offset(offset)
         except KeyError:
             return None
-        if data_type.size != size:
+        if size is not None and data_type.size != size:
             raise Exception(
                 "Data type size expected to be {} but was: {}.".format(
                     size, data_type.size))
@@ -97,6 +101,27 @@ def _transform_assignment(ass, **kwargs):
     return instructions.Assignment(ass.dst, src)
 
 
+def _transform_binary(bin_exp, **kwargs):
+    if bin_exp.operator == Operator.ADD:
+        return _transform_sum(bin_exp.left, bin_exp.right) or bin_exp
+    return bin_exp
+
+
+def _transform_sum(left, right):
+    if not isinstance(left.data_type, data_types.AnyInt):
+        return None
+    if not isinstance(right.data_type, data_types.AnyInt):
+        return None
+    if not isinstance(left, expressions.ReinterpretCast):
+        return None
+    if not isinstance(right, expressions.Constant):
+        return None
+    e = _transform_access(left.expression, right.value, None)
+    if e is None:
+        return None
+    return expressions.AddressOf(e)
+
+
 def _transform_procedure_call(pc, declarations, **kwargs):
     if pc.callee_address is None:
         return pc
@@ -128,7 +153,8 @@ def _convert_arguments_to_parameters_types(pc, proc_decl):
         stack_delta=pc.proc_decl.stack_delta,
         is_thiscall=pc.proc_decl.convention == CallingConvention.THISCALL)
     new_arguments = []
-    for i, parameter in enumerate(proc_decl.get_parameters_ids().values()):
+    expected_args = proc_decl.get_parameters_ids(expected_args_types=True)
+    for i, parameter in enumerate(expected_args.values()):
         new_argument = _convert_expression_to_type(
             pc.arguments[i], parameter.data_type)
         new_arguments.append(new_argument)
@@ -262,7 +288,7 @@ def _convert_expression_to_type(e, target_type):
     ):
         converted = _convert_pointees(e, src_type.pointee, target_type.referent)
         if converted is not None:
-            return expressions.Dereference(converted)
+            return expressions.do_dereference(converted)
     if (
         isinstance(src_type, data_types.Reference) and
         isinstance(target_type, data_types.Pointer32)
@@ -273,6 +299,11 @@ def _convert_expression_to_type(e, target_type):
     if (
         isinstance(src_type, data_types.Unknown32) and
         not isinstance(target_type, data_types.Unknown32)
+    ):
+        return expressions.do_reinterpret(target_type, e)
+    if (
+        isinstance(src_type, data_types.AnyInt) and
+        not isinstance(target_type, data_types.AnyInt)
     ):
         return expressions.do_reinterpret(target_type, e)
     raise Exception("Can't convert {} to {}.".format(src_type, target_type))

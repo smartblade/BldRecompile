@@ -1,7 +1,12 @@
+import re
+
 from calling_convention import CallingConvention
 import data_types
 import expressions
+from expressions.operator import operators
 import parser
+
+operator_regexp = re.compile(r'^operator\s*(?P<op>\S+)$')
 
 
 class ProcedureDeclaration:
@@ -15,6 +20,7 @@ class ProcedureDeclaration:
         self._return_arg = return_arg
         self._parameters = parameters
         self._is_static = is_static
+        self._operator = self._get_operator()
 
     @property
     def proc_name(self):
@@ -39,6 +45,10 @@ class ProcedureDeclaration:
         return self._is_static
 
     @property
+    def is_instance_method(self):
+        return not self._is_static and self._method_class is not None
+
+    @property
     def is_constructor(self):
         if self._method_class is None:
             return False
@@ -60,7 +70,7 @@ class ProcedureDeclaration:
     @property
     def stack_variables(self):
         param_ids = list(self.get_parameters_ids().values())
-        if self._method_class is not None and not self._is_static:
+        if self.is_instance_method:
             param_ids = param_ids[1:]
         offset = 8
         stack_dict = {}
@@ -69,19 +79,37 @@ class ProcedureDeclaration:
             offset += param_id.data_type.size
         return stack_dict
 
+    @property
+    def operator(self):
+        return self._operator
+
+    def _get_operator(self):
+        if self._proc_name is None:
+            return None
+        match = re.search(operator_regexp, self._proc_name)
+        if match:
+            return operators[match.group("op")]
+        return None
+
     def change_return_type(self, return_type):
         self._return_arg = return_type
 
-    def get_parameters_ids(self):
+    def get_parameters_ids(self, expected_args_types=False):
         make_id = expressions.Identifier
         param_dict = {}
-        if self._method_class is not None and not self._is_static:
+        if self.is_instance_method:
             param_name = "this"
-            param_type = data_types.Pointer32(self._method_class)
+            reference_to = self._reference_to_this(expected_args_types)
+            param_type = reference_to(self._method_class)
             param_dict[param_name] = make_id(param_type, param_name)
         for param_type, param_name in self._parameters:
             param_dict[param_name] = make_id(param_type, param_name)
         return param_dict
+
+    def _reference_to_this(self, expected_args_types):
+        if expected_args_types and self.operator is not None:
+            return data_types.Reference
+        return data_types.Pointer32
 
     def get_used_types(self):
         types = {}

@@ -96,6 +96,7 @@ class HeaderState:
             lines = f.readlines()
         is_comment = False
         class_name = None
+        parent_size = 0
         fields = None
         definition_chars = []
         brackets_depth = 0
@@ -117,10 +118,12 @@ class HeaderState:
                     self._incomplete_types[class_name] = fields
                     self._declared_types[class_name] = data_types.ClassType(
                         class_name, fields)
+                parent_size = 0
                 if parent_name is not None:
                     class_type = self._declared_types[class_name]
                     parent = self._declared_types[parent_name]
                     class_type.set_parent(parent)
+                    parent_size = parent.size
                 if is_forward:
                     fields = None
                     definition_chars = []
@@ -132,14 +135,16 @@ class HeaderState:
                     if brackets_depth == 0 and fields is not None:
                         definition = "".join(definition_chars)
                         self._parse_class_definition(
-                            class_name, definition, fields)
+                            class_name, definition, parent_size, fields)
                         fields = None
                 else:
                     if fields is not None and brackets_depth == 1:
                         definition_chars.append(c)
 
-    def _parse_class_definition(self, class_name, definition, fields):
-        offset = 0
+    def _parse_class_definition(
+        self, class_name, definition, parent_size, fields
+    ):
+        offset = parent_size
         has_virtual_methods = False
         for field_definition in definition.split(";"):
             decl = self._parse_definition(class_name, field_definition)

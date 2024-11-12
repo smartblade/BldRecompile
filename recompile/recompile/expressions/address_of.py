@@ -13,7 +13,10 @@ class AddressOf:
 
     @property
     def data_type(self):
-        return data_types.Pointer32(self._expression.data_type)
+        data_type = self._expression.data_type
+        if isinstance(data_type, data_types.Reference):
+            data_type = data_type.referent
+        return data_types.Pointer32(data_type)
 
     def transform_expression(self, **kwargs):
         expression = self._expression.transform_expression(**kwargs)

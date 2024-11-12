@@ -61,12 +61,16 @@ class ClassType(DataType):
         return found_method
 
     def get_field_by_offset(self, offset):
+        if offset not in self._fields and self._parent is not None:
+            return self._parent.get_field_by_offset(offset)
         return self._fields[offset]
 
     def find_data_type_by_field(self, field_name):
         for field_type, name in self._fields.values():
             if name == field_name:
                 return field_type
+        if self._parent is not None:
+            return self._parent.find_data_type_by_field(field_name)
         raise Exception(
             "Field {} was not found at {}.".format(field_name, self)
         )

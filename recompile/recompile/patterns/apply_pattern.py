@@ -1,3 +1,5 @@
+import data_types
+import expressions
 import parser
 from patterns.predefined_procedures import visit_predefined_procedures
 
@@ -50,11 +52,17 @@ def _evaluate_procedure_calls(expression, **kwargs):
         on_access=_keep,
         on_global=_keep,
         on_stackvar=_keep,
+        on_i=_evaluate_any_int_conversion,
         **kwargs)
 
 
 def _evaluate_reg_value(reg, builder):
     return builder.pop_reg_value(reg)
+
+
+def _evaluate_any_int_conversion(expression, **kwargs):
+    size = expression.data_type.size
+    return expressions.do_reinterpret(data_types.AnyInt(size), expression)
 
 
 def _keep(**kwargs):

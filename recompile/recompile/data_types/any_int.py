@@ -11,6 +11,9 @@ class AnyInt(DataType):
     def __repr__(self):
         return "AnyInt{}".format(self._size * 8)
 
+    def get_type_name(self, is_metafile):
+        return "any_int{}".format(self._size * 8)
+
     @property
     def size(self):
         return self._size

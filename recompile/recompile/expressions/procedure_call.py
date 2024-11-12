@@ -1,11 +1,6 @@
-import re
-
 import data_types
 import expressions
-from expressions.operator import operators
 from hex_conversion import to_hex
-
-operator_regexp = re.compile(r'^operator\s*(?P<op>\S+)$')
 
 
 class ProcedureCall:
@@ -42,11 +37,7 @@ class ProcedureCall:
             return
         if self._proc_decl is None:
             return
-        if self._proc_decl.proc_name is None:
-            return
-        match = re.search(operator_regexp, self._proc_decl.proc_name)
-        if match:
-            self._operator = operators[match.group("op")]
+        self._operator = self._proc_decl.operator
 
     def __repr__(self):
         return "{}({})".format(

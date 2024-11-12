@@ -91,6 +91,12 @@
 	},
 	{
 		"instructions": [
+			{"add":  ["%eax-ecx-edx%", "%hex%"]}
+		],
+		"action": {"tmpreg": {"dst": "%eax-ecx-edx%", "src": "I(REGVALUE(%eax-ecx-edx%)) + I(%hex%)"}}
+	},
+	{
+		"instructions": [
 			{"xor":  ["%eax-ecx-edx%", "%eax-ecx-edx%"]}
 		],
 		"action": {"tmpreg": {"dst": "%eax-ecx-edx%", "src": "0x00000000"}}

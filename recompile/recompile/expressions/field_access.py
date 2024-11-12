@@ -36,4 +36,6 @@ class FieldAccess:
             sep = "."
         else:
             sep = "->"
+        if isinstance(expression, expressions.Bin):
+            expression = expressions.BracketsExpression(expression)
         return "{}{}{}".format(expression.emit_code(), sep, self._field_name)

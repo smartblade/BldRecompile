@@ -33,6 +33,12 @@ class BinaryExpression:
         ):
             return left_type
         if (
+            isinstance(left_type, data_types.AnyInt) and
+            isinstance(right_type, data_types.AnyInt) and
+            left_type.size == right_type.size
+        ):
+            return left_type
+        if (
             self._operator == Operator.ADD and
             isinstance(left_type, data_types.Pointer32) and
             isinstance(right_type, data_types.Int32)
@@ -61,6 +67,12 @@ class BinaryExpression:
         on_expression_visited(self, **kwargs)
         self._left.visit(on_expression_visited, **kwargs)
         self._right.visit(on_expression_visited, **kwargs)
+
+    def transform(self, transform_callback, **kwargs):
+        left = self._left.transform(transform_callback, **kwargs)
+        right = self._right.transform(transform_callback, **kwargs)
+        bin_exp = BinaryExpression(self._operator, left, right)
+        return transform_callback(bin_exp, **kwargs)
 
     def emit_code(self):
         return "{} {} {}".format(
