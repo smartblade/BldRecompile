@@ -4083,9 +4083,9 @@ Failed to find pattern for 'sub esp, 000000024h'
 p10024015
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    REGDEF(eax=STACKVAR(16, 4))
+    REGDEF(eax=2 * reinterpret_cast<any_int32>(STACKVAR(16, 4)) + 1)
 }
-Failed to find pattern for 'lea eax, [eax+eax+001h]'
+Failed to find pattern for 'imul eax, eax, 0000000FFh'
 
 // address: 0x10024032
 p10024032
@@ -4297,17 +4297,18 @@ Failed to find pattern for 'mov byte ptr [edx+01Ch], 001h'
 p100268A0
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    REGDEF(eax=STACKVAR(12, 4), ecx=STACKVAR(8, 4))
+    REGDEF(eax=reinterpret_cast<any_int32>(STACKVAR(8, 4)) + reinterpret_cast<any_int32>(STACKVAR(12, 4)) - 1)
 }
-Failed to find pattern for 'lea eax, [ecx+eax-001h]'
+Failed to find pattern for 'cdq'
 
 // address: 0x100268B3
 p100268B3
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    REGDEF(eax=STACKVAR(12, 4), ecx=STACKVAR(8, 4))
+    STACKVAR(8, 4) = reinterpret_cast<any_int32>(STACKVAR(8, 4)) + reinterpret_cast<any_int32>(STACKVAR(12, 4)) - 1;
+    REGDEF(eax=STACKVAR(8, 4))
 }
-Failed to find pattern for 'lea edx, [ecx+eax-001h]'
+Failed to find pattern for 'cdq'
 
 // address: 0x100268D1
 p100268D1

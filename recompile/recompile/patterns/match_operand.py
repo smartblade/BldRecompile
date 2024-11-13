@@ -65,10 +65,11 @@ def _match_operand(operand, operand_pattern):
     match = re.search(operand_regexp, operand.strip())
     operand = match.group("operand")
     operand_size = _get_operand_size(match.group("size"))
+    defined_groups = set()
     expected_operand_regexp = re.escape(operand_pattern)
     expected_operand_regexp = re.sub(
         r"%(?P<variable>[\w\\-]*)%",
-        _define_variable_regexp,
+        lambda matchobj: _define_variable_regexp(matchobj, defined_groups),
         expected_operand_regexp)
     expected_operand_regexp = r"^{}$".format(expected_operand_regexp)
     match = re.search(expected_operand_regexp, operand)
@@ -93,13 +94,17 @@ def _get_operand_size(s):
     raise Exception("Unknown operand size: {}.".format(s))
 
 
-def _define_variable_regexp(matchobj):
+def _define_variable_regexp(matchobj, defined_groups):
     var_name = matchobj.group("variable")
     var_name = var_name.replace("\\-", "-")
     regexp_value, convertor = _find_pattern_variable_by_name(var_name)
     if regexp_value is not None:
         var_name = var_name.replace("-", "_")
-        return r"(?P<{}>{})".format(var_name, regexp_value)
+        if var_name not in defined_groups:
+            defined_groups.add(var_name)
+            return r"(?P<{}>{})".format(var_name, regexp_value)
+        else:
+            return r"(?P={})".format(var_name)
     raise Exception("Unexpected variable: %{}%".format(var_name))
 
 

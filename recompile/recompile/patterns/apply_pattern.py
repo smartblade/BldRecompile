@@ -1,6 +1,7 @@
 import data_types
 import expressions
 import parser
+from expressions.operator import Operator
 from patterns.predefined_procedures import visit_predefined_procedures
 
 _actions = {
@@ -46,6 +47,8 @@ def _evaluate_expression(expression, builder, match_dict):
 
 
 def _evaluate_procedure_calls(expression, **kwargs):
+    if isinstance(expression, expressions.Bin):
+        return _evaluate_binary(expression)
     return visit_predefined_procedures(
         expression,
         on_regvalue=_evaluate_reg_value,
@@ -67,3 +70,15 @@ def _evaluate_any_int_conversion(expression, **kwargs):
 
 def _keep(**kwargs):
     return None
+
+
+def _evaluate_binary(b):
+    if (
+        b.operator == Operator.ADD and
+        isinstance(b.right, expressions.Constant) and
+        isinstance(b.right.data_type, data_types.Int32) and
+        b.right.value < 0
+    ):
+        right = expressions.Constant(b.right.data_type, -b.right.value)
+        return expressions.Bin(Operator.SUB, b.left, right)
+    return b

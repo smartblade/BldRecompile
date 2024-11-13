@@ -91,6 +91,18 @@
 	},
 	{
 		"instructions": [
+			{"lea":  ["%eax-ecx-edx-dst%", "[%eax-ecx-edx-index%+%eax-ecx-edx-index%%offset%]"]}
+		],
+		"action": {"tmpreg": {"dst": "%eax-ecx-edx-dst%", "src": "2 * I(REGVALUE(%eax-ecx-edx-index%)) + %offset%"}}
+	},
+	{
+		"instructions": [
+			{"lea":  ["%eax-ecx-edx-dst%", "[%eax-ecx-edx-base%+%eax-ecx-edx-index%%offset%]"]}
+		],
+		"action": {"tmpreg": {"dst": "%eax-ecx-edx-dst%", "src": "I(REGVALUE(%eax-ecx-edx-base%)) + I(REGVALUE(%eax-ecx-edx-index%)) + %offset%"}}
+	},
+	{
+		"instructions": [
 			{"add":  ["%eax-ecx-edx%", "%hex%"]}
 		],
 		"action": {"tmpreg": {"dst": "%eax-ecx-edx%", "src": "I(REGVALUE(%eax-ecx-edx%)) + I(%hex%)"}}
