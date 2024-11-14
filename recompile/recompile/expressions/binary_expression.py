@@ -1,5 +1,6 @@
 import data_types
-from expressions.operator import Operator
+import expressions
+from expressions.operator import Operator, priorities
 
 
 class BinaryExpression:
@@ -34,7 +35,7 @@ class BinaryExpression:
             return left_type
         if (
             isinstance(left_type, data_types.AnyInt) and
-            isinstance(right_type, data_types.AnyInt) and
+            right_type.is_any_int and
             left_type.size == right_type.size
         ):
             return left_type
@@ -74,9 +75,16 @@ class BinaryExpression:
         bin_exp = BinaryExpression(self._operator, left, right)
         return transform_callback(bin_exp, **kwargs)
 
+    def _emit_left(self):
+        if not isinstance(self._left, BinaryExpression):
+            return self._left
+        if priorities[self.operator] >= priorities[self._left.operator]:
+            return self._left
+        return expressions.BracketsExpression(self._left)
+
     def emit_code(self):
         return "{} {} {}".format(
-            self._left.emit_code(),
+            self._emit_left().emit_code(),
             self._operator.value,
             self._right.emit_code(),
         )

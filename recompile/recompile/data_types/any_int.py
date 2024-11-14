@@ -18,6 +18,10 @@ class AnyInt(DataType):
     def size(self):
         return self._size
 
+    @property
+    def is_any_int(self):
+        return True
+
 
 class AnyInt16(AnyInt):
     def __init__(self):

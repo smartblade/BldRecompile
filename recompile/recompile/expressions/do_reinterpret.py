@@ -1,10 +1,16 @@
 import data_types
 import expressions
+from expressions.operator import Operator
 
 
 def do_reinterpret(data_type, e):
     if isinstance(e, expressions.Constant):
         return _reinterpret_const(data_type, e)
+    if isinstance(e, expressions.ReinterpretCast):
+        return _eliminate_reinterpret(data_type, e)
+    result = _reinterpret_bin(data_type, e)
+    if result is not None:
+        return result
     return expressions.ReinterpretCast(data_type, e)
 
 
@@ -29,3 +35,31 @@ def _reinterpret_const(data_type, c):
     raise Exception(
         "Unimplemented reinterpret cast from {} to {}".format(
             c.data_type, data_type))
+
+
+def _eliminate_reinterpret(data_type, cast):
+    return do_reinterpret(data_type, cast.expression)
+
+
+def _reinterpret_bin(data_type, b):
+    if not isinstance(b, expressions.Bin):
+        return None
+    if not data_type.is_any_int:
+        return None
+    if not b.left.data_type.is_any_int:
+        return None
+    if not b.right.data_type.is_any_int:
+        return None
+    if b.operator != Operator.ADD and  b.operator != Operator.SUB:
+        return None
+    if isinstance(b.right, expressions.Constant):
+        left = do_reinterpret(data_type, b.left)
+        return expressions.Bin(b.operator, left, b.right)
+    if (
+        isinstance(b.left, expressions.ReinterpretCast) and
+        isinstance(b.right, expressions.ReinterpretCast)
+    ):
+        left = do_reinterpret(data_type, b.left)
+        right = do_reinterpret(data_type, b.right)
+        return expressions.Bin(b.operator, left, right)
+    return None

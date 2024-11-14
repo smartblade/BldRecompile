@@ -11,6 +11,7 @@ _procedures = {
         *args, expression=None, offset=int, size=int),
     "GLOBAL": lambda *args: _unpack_args(*args, address=from_hex),
     "I": lambda *args: _unpack_args(*args, expression=None),
+    "S": lambda *args: _unpack_args(*args, expression=None),
 }
 
 

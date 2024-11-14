@@ -109,6 +109,13 @@
 	},
 	{
 		"instructions": [
+			{"cdq":   []},
+			{"idiv":  ["%src-operand%"]}
+		],
+		"action": {"tmpreg": {"dst": "eax", "src": "S(REGVALUE(eax)) / S(%src-operand%)"}}
+	},
+	{
+		"instructions": [
 			{"xor":  ["%eax-ecx-edx%", "%eax-ecx-edx%"]}
 		],
 		"action": {"tmpreg": {"dst": "%eax-ecx-edx%", "src": "0x00000000"}}

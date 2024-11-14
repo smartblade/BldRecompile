@@ -3,6 +3,10 @@ class DataType:
         self._qualifiers = []
 
     @property
+    def is_any_int(self):
+        return False
+
+    @property
     def qualifiers(self):
         return self._qualifiers
 

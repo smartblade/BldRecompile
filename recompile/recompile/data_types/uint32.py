@@ -8,3 +8,7 @@ class UInt32(DataType):
     @property
     def size(self):
         return 4
+
+    @property
+    def is_any_int(self):
+        return True

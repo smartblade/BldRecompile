@@ -4296,19 +4296,18 @@ Failed to find pattern for 'mov byte ptr [edx+01Ch], 001h'
 // address: 0x100268A0
 p100268A0
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    REGDEF(eax=reinterpret_cast<any_int32>(STACKVAR(8, 4)) + reinterpret_cast<any_int32>(STACKVAR(12, 4)) - 1)
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
+    REGDEF(eax=(reinterpret_cast<int>(STACKVAR(8, 4)) + reinterpret_cast<int>(STACKVAR(12, 4)) - 1) / reinterpret_cast<int>(STACKVAR(12, 4)))
 }
-Failed to find pattern for 'cdq'
 
 // address: 0x100268B3
 p100268B3
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
     STACKVAR(8, 4) = reinterpret_cast<any_int32>(STACKVAR(8, 4)) + reinterpret_cast<any_int32>(STACKVAR(12, 4)) - 1;
-    REGDEF(eax=STACKVAR(8, 4))
+    REGDEF(eax=reinterpret_cast<int>(STACKVAR(8, 4)) / reinterpret_cast<int>(STACKVAR(12, 4)))
 }
-Failed to find pattern for 'cdq'
+Redeclaration of eax
 
 // address: 0x100268D1
 p100268D1
