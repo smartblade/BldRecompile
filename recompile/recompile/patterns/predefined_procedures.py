@@ -28,6 +28,8 @@ class DataTypeDefiner:
     def unknown_type(size):
         if size == 1:
             return data_types.UnknownByte()
+        if size == 2:
+            return data_types.AnyInt(2)
         if size == 4:
             return data_types.Unknown32()
         raise Exception("Undefined type for size: {}".format(size))

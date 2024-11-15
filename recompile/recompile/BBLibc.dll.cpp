@@ -1390,8 +1390,9 @@ p1000665F
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
     ARG(STACKVAR(12, 4));
+    REGDEF(cx=STACKVAR(8, 2))
 }
-Failed to find pattern for 'mov cx, word ptr [ebp+008h]'
+'ecx'
 
 // address: 0x10006680
 p10006680
@@ -2315,7 +2316,7 @@ Failed to find pattern for 'mov dword ptr [eax+01Ch], 000000000h'
 // address: 0x1000D8A7
 p1000D8A7
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
     unknown_function_1000D764(STACKVAR(8, 4), 0x000000E0);
     unknown_function_1000D7FA(STACKVAR(8, 4), 0x00000010);
     unknown_function_1000D78A(STACKVAR(8, 4), 0x0000004A);
@@ -2326,9 +2327,13 @@ p1000D8A7
     unknown_function_1000D78A(STACKVAR(8, 4), static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 193, 1)));
     unknown_function_1000D78A(STACKVAR(8, 4), static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 194, 1)));
     unknown_function_1000D78A(STACKVAR(8, 4), static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 195, 1)));
-    REGDEF(ecx=STACKVAR(8, 4), edx=0x00000000)
+    REGDEF(dx=ACCESS(STACKVAR(8, 4), 196, 2))
+    unknown_function_1000D7FA(STACKVAR(8, 4), 0x00000000);
+    REGDEF(dx=ACCESS(STACKVAR(8, 4), 198, 2))
+    unknown_function_1000D7FA(STACKVAR(8, 4), 0x00000000);
+    unknown_function_1000D78A(STACKVAR(8, 4), 0x00000000);
+    unknown_function_1000D78A(STACKVAR(8, 4), 0x00000000);
 }
-Failed to find pattern for 'mov dx, word ptr [ecx+0000000C4h]'
 
 // address: 0x1000D9A7
 p1000D9A7
