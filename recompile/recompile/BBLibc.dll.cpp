@@ -2323,9 +2323,15 @@ p1000D8A7
     unknown_function_1000D78A(STACKVAR(8, 4), 0x00000049);
     unknown_function_1000D78A(STACKVAR(8, 4), 0x00000046);
     unknown_function_1000D78A(STACKVAR(8, 4), 0x00000000);
+    REGDEF(edx=0x00000000)
+    unknown_function_1000D78A(STACKVAR(8, 4), ACCESS(STACKVAR(8, 4), 193, 1));
+    REGDEF(edx=0x00000000)
+    unknown_function_1000D78A(STACKVAR(8, 4), ACCESS(STACKVAR(8, 4), 194, 1));
+    REGDEF(edx=0x00000000)
+    unknown_function_1000D78A(STACKVAR(8, 4), ACCESS(STACKVAR(8, 4), 195, 1));
     REGDEF(ecx=STACKVAR(8, 4), edx=0x00000000)
 }
-Failed to find pattern for 'mov dl, byte ptr [ecx+0000000C1h]'
+Failed to find pattern for 'mov dx, word ptr [ecx+0000000C4h]'
 
 // address: 0x1000D9A7
 p1000D9A7
@@ -2527,9 +2533,10 @@ Failed to find pattern for 'sub esp, 00000000Ch'
 // address: 0x1000F7ED
 p1000F7ED
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
+    unknown_function_1000F6D0(STACKVAR(8, 4), 0x00000000, GLOBAL(0x100422D4), STACKVAR(12, 4), STACKVAR(16, 1));
+    unknown_function_1000F6D0(STACKVAR(8, 4), 0x00000001, GLOBAL(0x100423D4), STACKVAR(12, 4), STACKVAR(16, 1));
 }
-Failed to find pattern for 'mov al, byte ptr [ebp+010h]'
 
 // address: 0x1000F828
 p1000F828
@@ -4736,9 +4743,10 @@ B_MessageManager &operator<<(B_MessageManager &mout, const char *str)
 // address: 0x1002A2D7
 p1002A2D7
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
+    STACKVAR(8, 4)->unknown_method_1002A23E(STACKVAR(12, 1));
+    REGDEF(eax=STACKVAR(8, 4))
 }
-Failed to find pattern for 'mov al, byte ptr [ebp+00Ch]'
 
 // address: 0x1002A2F0
 p1002A2F0

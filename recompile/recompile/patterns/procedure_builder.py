@@ -71,6 +71,7 @@ class ProcedureBuilder:
                 break
             args.append(arg)
             size += arg.data_type.size
+            size = ((size + 3) // 4) * 4
         if size != expected_size:
             raise Exception(
                 "Expected arguments size: {}, but was: {}.".format(
