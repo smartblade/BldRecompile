@@ -2327,10 +2327,8 @@ p1000D8A7
     unknown_function_1000D78A(STACKVAR(8, 4), static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 193, 1)));
     unknown_function_1000D78A(STACKVAR(8, 4), static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 194, 1)));
     unknown_function_1000D78A(STACKVAR(8, 4), static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 195, 1)));
-    REGDEF(dx=ACCESS(STACKVAR(8, 4), 196, 2))
-    unknown_function_1000D7FA(STACKVAR(8, 4), 0x00000000);
-    REGDEF(dx=ACCESS(STACKVAR(8, 4), 198, 2))
-    unknown_function_1000D7FA(STACKVAR(8, 4), 0x00000000);
+    unknown_function_1000D7FA(STACKVAR(8, 4), static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 196, 2)));
+    unknown_function_1000D7FA(STACKVAR(8, 4), static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 198, 2)));
     unknown_function_1000D78A(STACKVAR(8, 4), 0x00000000);
     unknown_function_1000D78A(STACKVAR(8, 4), 0x00000000);
 }

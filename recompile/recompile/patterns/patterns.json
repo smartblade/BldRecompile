@@ -68,6 +68,13 @@
 	},
 	{
 		"instructions": [
+			{"xor":  ["e%a-c-d%x", "e%a-c-d%x"]},
+			{"mov":  ["%a-c-d%x", "%src-operand%"]}
+		],
+		"action": {"tmpreg": {"dst": "e%a-c-d%x", "src": "(uint32)%src-operand%"}}
+	},
+	{
+		"instructions": [
 			{"mov":  ["%a-c-d%l", "%src-operand%"]},
 			{"push":  ["e%a-c-d%x"]}
 		],
