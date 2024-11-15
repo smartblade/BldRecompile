@@ -2226,9 +2226,9 @@ p1000D320
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
     unknown_function_1000E360(STACKVAR(8, 4), 0x00000000);
-    REGDEF(ecx=STACKVAR(8, 4), edx=0x00000000)
+    REGDEF(edx=static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 172, 1)))
 }
-Failed to find pattern for 'mov dl, byte ptr [ecx+0000000ACh]'
+Failed to find pattern for 'test edx, edx'
 
 // address: 0x1000D450
 p1000D450
@@ -2323,12 +2323,9 @@ p1000D8A7
     unknown_function_1000D78A(STACKVAR(8, 4), 0x00000049);
     unknown_function_1000D78A(STACKVAR(8, 4), 0x00000046);
     unknown_function_1000D78A(STACKVAR(8, 4), 0x00000000);
-    REGDEF(edx=0x00000000)
-    unknown_function_1000D78A(STACKVAR(8, 4), ACCESS(STACKVAR(8, 4), 193, 1));
-    REGDEF(edx=0x00000000)
-    unknown_function_1000D78A(STACKVAR(8, 4), ACCESS(STACKVAR(8, 4), 194, 1));
-    REGDEF(edx=0x00000000)
-    unknown_function_1000D78A(STACKVAR(8, 4), ACCESS(STACKVAR(8, 4), 195, 1));
+    unknown_function_1000D78A(STACKVAR(8, 4), static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 193, 1)));
+    unknown_function_1000D78A(STACKVAR(8, 4), static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 194, 1)));
+    unknown_function_1000D78A(STACKVAR(8, 4), static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 195, 1)));
     REGDEF(ecx=STACKVAR(8, 4), edx=0x00000000)
 }
 Failed to find pattern for 'mov dx, word ptr [ecx+0000000C4h]'
@@ -2659,18 +2656,18 @@ Failed to find pattern for 'call [edx+00Ch]'
 p10010C69
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
-    REGDEF(eax=STACKVAR(8, 4), ecx=0x00000000)
+    REGDEF(ecx=static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 12, 1)))
 }
-Failed to find pattern for 'mov cl, byte ptr [eax+00Ch]'
+Failed to find pattern for 'test ecx, ecx'
 
 // address: 0x10010CD3
 p10010CD3
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
     unknown_function_10010E04(STACKVAR(8, 4));
-    REGDEF(ecx=STACKVAR(8, 4), edx=0x00000000)
+    REGDEF(edx=static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 12, 1)))
 }
-Failed to find pattern for 'mov dl, byte ptr [ecx+00Ch]'
+Failed to find pattern for 'test edx, edx'
 
 // address: 0x10010DDB
 p10010DDB
@@ -2692,9 +2689,9 @@ Failed to find pattern for 'sub esp, 000000008h'
 p10010ED2
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    REGDEF(eax=STACKVAR(8, 4), ecx=0x00000000)
+    REGDEF(ecx=static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 12, 1)))
 }
-Failed to find pattern for 'mov cl, byte ptr [eax+00Ch]'
+Failed to find pattern for 'test ecx, ecx'
 
 // address: 0x10010F14
 p10010F14
@@ -3500,9 +3497,9 @@ Failed to find pattern for 'sub esp, 000000014h'
 p1001C089
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    REGDEF(eax=STACKVAR(8, 4), ecx=0x00000000)
+    REGDEF(ecx=static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 72, 1)))
 }
-Failed to find pattern for 'mov cl, byte ptr [eax+048h]'
+Failed to find pattern for 'test ecx, ecx'
 
 // address: 0x1001C23B
 p1001C23B
@@ -3534,18 +3531,18 @@ p1001C6F1
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 384, 4);
-    REGDEF(edx=STACKVAR(-4, 4), eax=0x00000000)
+    REGDEF(eax=static_cast<unsigned int>(ACCESS(STACKVAR(-4, 4), 8, 1)))
 }
-Failed to find pattern for 'mov al, byte ptr [edx+008h]'
+Failed to find pattern for 'test eax, eax'
 
 // address: 0x1001C912
 p1001C912
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 384, 4);
-    REGDEF(edx=STACKVAR(8, 4), eax=0x00000000)
+    REGDEF(eax=static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 74, 1)))
 }
-Failed to find pattern for 'mov al, byte ptr [edx+04Ah]'
+Failed to find pattern for 'test eax, eax'
 
 // address: 0x1001C960
 p1001C960

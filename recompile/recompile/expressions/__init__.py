@@ -13,5 +13,6 @@ from .increment import Increment
 from .null import Null
 from .procedure_call import ProcedureCall
 from .reinterpret_cast import ReinterpretCast
+from .static_cast import StaticCast
 from .unparsed_token import UnparsedToken
 from .unparsed_tokens import UnparsedTokens

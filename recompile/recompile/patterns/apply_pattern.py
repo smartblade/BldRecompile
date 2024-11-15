@@ -49,6 +49,8 @@ def _evaluate_expression(expression, builder, match_dict):
 def _evaluate_procedure_calls(expression, **kwargs):
     if isinstance(expression, expressions.Bin):
         return _evaluate_binary(expression)
+    if isinstance(expression, expressions.Cast):
+        return _evaluate_cast(expression)
     return visit_predefined_procedures(
         expression,
         on_regvalue=_evaluate_reg_value,
@@ -91,3 +93,7 @@ def _evaluate_binary(b):
         right = expressions.Constant(b.right.data_type, -b.right.value)
         return expressions.Bin(Operator.SUB, b.left, right)
     return b
+
+
+def _evaluate_cast(cast):
+    return expressions.StaticCast(cast.data_type, cast.expression)

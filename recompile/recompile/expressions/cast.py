@@ -29,6 +29,11 @@ class Cast:
         on_expression_visited(self, **kwargs)
         self._expression.visit(on_expression_visited, **kwargs)
 
+    def transform(self, transform_callback, **kwargs):
+        expression = self._expression.transform(transform_callback, **kwargs)
+        cast = Cast(self._data_type, expression)
+        return transform_callback(cast, **kwargs)
+
     def emit_code(self):
         expression_code = self._expression.emit_code()
         type_name = self._data_type.get_type_name(is_metafile=False)
