@@ -1388,11 +1388,9 @@ p1000664A
 // address: 0x1000665F
 p1000665F
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    ARG(STACKVAR(12, 4));
-    REGDEF(cx=STACKVAR(8, 2))
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
+    B_resource_manager.unknown_method_10005BB2(STACKVAR(8, 2), STACKVAR(12, 4));
 }
-'ecx'
 
 // address: 0x10006680
 p10006680

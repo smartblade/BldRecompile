@@ -82,6 +82,13 @@
 	},
 	{
 		"instructions": [
+			{"mov":  ["%a-c-d%x", "%src-operand%"]},
+			{"push":  ["e%a-c-d%x"]}
+		],
+		"action": {"stackarg": {"arg": "ARG(%src-operand%)"}}
+	},
+	{
+		"instructions": [
 			{"mov":  ["[ebp%offset%]", "%src-operand%"]}
 		],
 		"action": {"assignment": {"dst": "STACKVAR(%offset%, %size%)", "src": "%src-operand%"}}
