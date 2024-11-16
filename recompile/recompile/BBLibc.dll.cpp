@@ -120,7 +120,7 @@ int B_IDataFile::Tell()
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
     REGDEF(eax=ACCESS(STACKVAR(-4, 4), 16396, 4), ecx=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'add eax, [ecx+000004010h]'
+Failed to find pattern for 'add eax, dword ptr [ecx+000004010h]'
 
 // address: 0x100019CC
 unsigned char B_IDataFile::Peek()
@@ -135,7 +135,7 @@ int B_IDataFile::Eof()
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
     REGDEF(ecx=ACCESS(STACKVAR(-4, 4), 16396, 4), edx=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'add ecx, [edx+000004010h]'
+Failed to find pattern for 'add ecx, dword ptr [edx+000004010h]'
 
 // address: 0x10001A33
 void B_IDataFile::Read(void *data, unsigned int size)
@@ -241,7 +241,7 @@ p10001E01
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
     REGDEF(eax=STACKVAR(-4, 4), ecx=STACKVAR(8, 4))
 }
-Failed to find pattern for 'cmp ecx, [eax+000004008h]'
+Failed to find pattern for 'cmp ecx, dword ptr [eax+000004008h]'
 
 // address: 0x10001E86
 void B_ODataFile::Write(const void *data, unsigned int size)
@@ -843,7 +843,7 @@ p10003730
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
     REGDEF(ecx=STACKVAR(8, 4), edx=ACCESS(STACKVAR(-4, 4), 4, 4))
 }
-Failed to find pattern for 'cmp edx, [ecx+004h]'
+Failed to find pattern for 'cmp edx, dword ptr [ecx+004h]'
 
 // address: 0x10003769
 unsigned int B_Name::CompareNoCase(const char *str)
