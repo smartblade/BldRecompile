@@ -117,10 +117,8 @@ Failed to find pattern for 'sub esp, 000000010h'
 // address: 0x100019AF
 int B_IDataFile::Tell()
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(eax=ACCESS(STACKVAR(-4, 4), 16396, 4), ecx=STACKVAR(-4, 4))
+    return reinterpret_cast<int>(this->cacheBlockBytesRead) + reinterpret_cast<int>(this->cacheBlockPos);
 }
-Failed to find pattern for 'add eax, dword ptr [ecx+000004010h]'
 
 // address: 0x100019CC
 unsigned char B_IDataFile::Peek()
@@ -133,9 +131,9 @@ Failed to find pattern for 'sub esp, 000000008h'
 int B_IDataFile::Eof()
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(ecx=ACCESS(STACKVAR(-4, 4), 16396, 4), edx=STACKVAR(-4, 4))
+    REGDEF(ecx=reinterpret_cast<any_int32>(ACCESS(STACKVAR(-4, 4), 16396, 4)) + reinterpret_cast<any_int32>(ACCESS(STACKVAR(-4, 4), 16400, 4)), eax=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'add ecx, dword ptr [edx+000004010h]'
+Failed to find pattern for 'cmp ecx, dword ptr [eax+008h]'
 
 // address: 0x10001A33
 void B_IDataFile::Read(void *data, unsigned int size)

@@ -137,9 +137,9 @@
 	},
 	{
 		"instructions": [
-			{"add":  ["%eax-ecx-edx%", "%hex%"]}
+			{"add":  ["%eax-ecx-edx%", "%src-operand%"]}
 		],
-		"action": {"tmpreg": {"dst": "%eax-ecx-edx%", "src": "I(REGVALUE(%eax-ecx-edx%)) + I(%hex%)"}}
+		"action": {"tmpreg": {"dst": "%eax-ecx-edx%", "src": "I(REGVALUE(%eax-ecx-edx%)) + I(%src-operand%)"}}
 	},
 	{
 		"instructions": [
