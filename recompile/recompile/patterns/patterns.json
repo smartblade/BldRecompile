@@ -101,6 +101,12 @@
 	},
 	{
 		"instructions": [
+			{"mov":  ["[%eax-ecx-edx%%offset%]", "%src-operand%"]}
+		],
+		"action": {"assignment": {"dst": "ACCESS(REGVALUE(%eax-ecx-edx%), %offset%, %size%)", "src": "%src-operand%"}}
+	},
+	{
+		"instructions": [
 			{"mov":  ["[%label%]", "%src-operand%"]}
 		],
 		"action": {"assignment": {"dst": "ACCESS(GLOBAL(%label%), 0, %size%)", "src": "%src-operand%"}}

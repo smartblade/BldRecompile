@@ -14,8 +14,8 @@ class_regexp = re.compile(
     r'(\s*:\s*public\s*(?P<parent>\w+))?')
 
 _standard_types = {
-    "bool": data_types.ClassType("char", {}),
-    "char": data_types.ClassType("char", {}),
+    "bool": data_types.ClassType("bool", {}),
+    "char": data_types.Char(),
     "unsigned char": data_types.ClassType("unsigned char", {}),
     "short": data_types.ClassType("short", {}),
     "unsigned short": data_types.ClassType("unsigned short", {}),
@@ -63,6 +63,10 @@ _standard_types = {
         "B_PtrArray<B_AfterFrameFunc>", {}),
     "B_PtrArray<B_StringValue>": data_types.ClassType(
         "B_PtrArray<B_StringValue>", {}),
+    "B_PtrArray<B_CameraMovement>": data_types.ClassType(
+        "B_PtrArray<B_CameraMovement>", {}),
+    "B_PtrArray<B_TriggerSector>": data_types.ClassType(
+        "B_PtrArray<B_TriggerSector>", {}),
     "B_PtrArray<B_SubscriptionList>": data_types.ClassType(
         "B_PtrArray<B_SubscriptionList>", {}),
     "B_PtrArray<B_VideoMode>": data_types.ClassType(
@@ -74,6 +78,7 @@ _standard_types = {
     "B_PtrArray<void>": data_types.ClassType("B_PtrArray<void>", {}),
     "B_PtrArray<T>": data_types.ClassType("B_PtrArray<T>", {}),
     "T": data_types.ClassType("T", {}),
+    "TYPE": data_types.ClassType("TYPE", {}),
     "B_Hash<B_Entity>": data_types.ClassType("B_Hash<B_Entity>", {}),
 }
 
@@ -126,7 +131,7 @@ class HeaderState:
                     parent_size = parent.size
                 if is_forward:
                     fields = None
-                    definition_chars = []
+                definition_chars = []
             for c in line:
                 if c == "{":
                     brackets_depth += 1
@@ -137,16 +142,15 @@ class HeaderState:
                         self._parse_class_definition(
                             class_name, definition, parent_size, fields)
                         fields = None
-                else:
-                    if fields is not None and brackets_depth == 1:
-                        definition_chars.append(c)
+                if fields is not None and brackets_depth == 1:
+                    definition_chars.append(c)
 
     def _parse_class_definition(
         self, class_name, definition, parent_size, fields
     ):
         offset = parent_size
         has_virtual_methods = False
-        for field_definition in definition.split(";"):
+        for field_definition in re.split(r'[{};]', definition):
             decl = self._parse_definition(class_name, field_definition)
             if decl is None:
                 # Add space for vtable if necessary

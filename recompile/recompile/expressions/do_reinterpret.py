@@ -21,6 +21,8 @@ def _reinterpret_const(data_type, c):
     ):
         if c.value < 0x80000000:
             return expressions.Constant(data_type, c.value)
+        else:
+            return expressions.Constant(data_type, c.value - 0x100000000)
     if (
         isinstance(data_type, data_types.UInt32) and
         isinstance(c.data_type, data_types.Unknown32)
@@ -32,6 +34,12 @@ def _reinterpret_const(data_type, c):
         data_type.size == c.data_type.size
     ):
         return expressions.Constant(data_type, c.value)
+    if (
+        isinstance(data_type, data_types.Pointer32) and
+        isinstance(c.data_type, data_types.Unknown32) and
+        c.value == 0
+    ):
+        return expressions.Null
     raise Exception(
         "Unimplemented reinterpret cast from {} to {}".format(
             c.data_type, data_type))

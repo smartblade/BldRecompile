@@ -4,7 +4,11 @@ import data_types
 def are_same(first, second):
     if type(first) is not type(second):
         return False
+    if first is None and second is None:
+        return True
     standard_types = [
+        data_types.UnknownByte,
+        data_types.Char,
         data_types.Unknown32,
         data_types.Int32,
         data_types.UInt32,
