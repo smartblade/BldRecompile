@@ -143,6 +143,12 @@
 	},
 	{
 		"instructions": [
+			{"imul":  ["%eax-ecx-edx%", "%src-operand%", "%hex%"]}
+		],
+		"action": {"tmpreg": {"dst": "%eax-ecx-edx%", "src": "I(%hex%) * I(%src-operand%)"}}
+	},
+	{
+		"instructions": [
 			{"cdq":   []},
 			{"idiv":  ["%src-operand%"]}
 		],

@@ -40,6 +40,12 @@ class BinaryExpression:
         ):
             return left_type
         if (
+            isinstance(right_type, data_types.AnyInt) and
+            left_type.is_any_int and
+            left_type.size == right_type.size
+        ):
+            return right_type
+        if (
             self._operator == Operator.ADD and
             isinstance(left_type, data_types.Pointer32) and
             isinstance(right_type, data_types.Int32)
@@ -82,9 +88,18 @@ class BinaryExpression:
             return self._left
         return expressions.BracketsExpression(self._left)
 
+    def _emit_right(self):
+        if not isinstance(self._right, BinaryExpression):
+            return self._right
+        if priorities[self.operator] >= priorities[self._right.operator]:
+            return self._right
+        if priorities[self.operator] < priorities[self._right.operator]:
+            return expressions.BracketsExpression(self._right)
+        raise Exception("Not implemented: {}".format(self._right))
+
     def emit_code(self):
         return "{} {} {}".format(
             self._emit_left().emit_code(),
             self._operator.value,
-            self._right.emit_code(),
+            self._emit_right().emit_code(),
         )

@@ -21,6 +21,11 @@ def are_same(first, second):
         ):
             return True
     if (
+        isinstance(first, data_types.AnyInt) and
+        isinstance(second, data_types.AnyInt)
+    ):
+        return first.size == second.size
+    if (
         isinstance(first, data_types.Pointer32) and
         isinstance(second, data_types.Pointer32)
     ):

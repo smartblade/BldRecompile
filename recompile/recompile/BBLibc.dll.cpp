@@ -1905,49 +1905,49 @@ Failed to find pattern for 'push esi'
 unsigned char B_Pal::GetRed(unsigned int val)
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(eax=STACKVAR(8, 4))
+    REGDEF(eax=0x00000003 * reinterpret_cast<any_int32>(STACKVAR(8, 4)), ecx=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'imul eax, eax, 000000003h'
+Failed to find pattern for 'mov al, byte ptr [ecx+eax]'
 
 // address: 0x100093E1
 unsigned char B_Pal::GetGreen(unsigned int val)
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(eax=STACKVAR(8, 4))
+    REGDEF(eax=0x00000003 * reinterpret_cast<any_int32>(STACKVAR(8, 4)), ecx=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'imul eax, eax, 000000003h'
+Failed to find pattern for 'mov al, byte ptr [ecx+eax+001h]'
 
 // address: 0x100093FB
 unsigned char B_Pal::GetBlue(unsigned int val)
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(eax=STACKVAR(8, 4))
+    REGDEF(eax=0x00000003 * reinterpret_cast<any_int32>(STACKVAR(8, 4)), ecx=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'imul eax, eax, 000000003h'
+Failed to find pattern for 'mov al, byte ptr [ecx+eax+002h]'
 
 // address: 0x10009415
 p10009415
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(eax=STACKVAR(8, 4))
+    REGDEF(eax=0x00000003 * reinterpret_cast<any_int32>(STACKVAR(8, 4)), ecx=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'imul eax, eax, 000000003h'
+Failed to find pattern for 'mov dl, byte ptr [ebp+00Ch]'
 
 // address: 0x10009431
 p10009431
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(eax=STACKVAR(8, 4))
+    REGDEF(eax=0x00000003 * reinterpret_cast<any_int32>(STACKVAR(8, 4)), ecx=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'imul eax, eax, 000000003h'
+Failed to find pattern for 'mov dl, byte ptr [ebp+00Ch]'
 
 // address: 0x1000944E
 p1000944E
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(eax=STACKVAR(8, 4))
+    REGDEF(eax=0x00000003 * reinterpret_cast<any_int32>(STACKVAR(8, 4)), ecx=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'imul eax, eax, 000000003h'
+Failed to find pattern for 'mov dl, byte ptr [ebp+00Ch]'
 
 // address: 0x1000946B
 p1000946B
@@ -4148,9 +4148,9 @@ Failed to find pattern for 'sub esp, 000000024h'
 p10023E52
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    REGDEF(ecx=STACKVAR(16, 4))
+    REGDEF(ecx=0x000000FF * reinterpret_cast<any_int32>(STACKVAR(16, 4)), eax=STACKVAR(20, 4))
 }
-Failed to find pattern for 'imul ecx, ecx, 0000000FFh'
+Failed to find pattern for 'cdq'
 
 // address: 0x10023E6E
 p10023E6E
@@ -4163,9 +4163,9 @@ Failed to find pattern for 'sub esp, 000000024h'
 p10024015
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    REGDEF(eax=2 * reinterpret_cast<any_int32>(STACKVAR(16, 4)) + 1)
+    REGDEF(eax=0x000000FF * (2 * reinterpret_cast<any_int32>(STACKVAR(16, 4)) + 1) + reinterpret_cast<any_int32>(STACKVAR(20, 4)), ecx=STACKVAR(20, 4))
 }
-Failed to find pattern for 'imul eax, eax, 0000000FFh'
+Failed to find pattern for 'shl ecx, 001h'
 
 // address: 0x10024032
 p10024032

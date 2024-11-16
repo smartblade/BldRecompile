@@ -4,6 +4,8 @@ from expressions.operator import Operator
 
 
 def do_reinterpret(data_type, e):
+    if data_types.are_compatible(e.data_type, data_type):
+        return e
     if isinstance(e, expressions.Constant):
         return _reinterpret_const(data_type, e)
     if isinstance(e, expressions.ReinterpretCast):
