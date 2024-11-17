@@ -34,6 +34,12 @@ class BinaryExpression:
         ):
             return left_type
         if (
+            left_type.is_any_int and
+            right_type.is_any_int and
+            data_types.are_same(left_type, right_type)
+        ):
+            return left_type
+        if (
             isinstance(left_type, data_types.AnyInt) and
             right_type.is_any_int and
             left_type.size == right_type.size

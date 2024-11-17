@@ -5,6 +5,7 @@ from patterns.validate_procedure_declaration import \
     validate_procedure_declaration
 
 from .transform_access import transform_access
+from .transform_arrptr import transform_arrptr
 from .transform_assignment import transform_assignment
 from .transform_binary import transform_binary
 from .transform_global import transform_global
@@ -36,11 +37,14 @@ def _transform(e, **kwargs):
         return transform_assignment(e, **kwargs)
     if isinstance(e, expressions.Bin):
         return transform_binary(e, **kwargs)
+    if isinstance(e, expressions.ReinterpretCast):
+        return expressions.do_reinterpret(e.data_type, e.expression)
     e = visit_predefined_procedures(
         e, **kwargs,
         on_stackvar=transform_stackvar,
         on_access=transform_access,
         on_global=transform_global,
+        on_arrptr=transform_arrptr,
     )
     if isinstance(e, expressions.ProcedureCall):
         return transform_procedure_call(e, **kwargs)

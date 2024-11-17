@@ -117,7 +117,7 @@ Failed to find pattern for 'sub esp, 000000010h'
 // address: 0x100019AF
 int B_IDataFile::Tell()
 {
-    return reinterpret_cast<int>(this->cacheBlockBytesRead) + reinterpret_cast<int>(this->cacheBlockPos);
+    return reinterpret_cast<int>(this->cacheBlockBytesRead + this->cacheBlockPos);
 }
 
 // address: 0x100019CC
@@ -1904,10 +1904,8 @@ Failed to find pattern for 'push esi'
 // address: 0x100093C8
 unsigned char B_Pal::GetRed(unsigned int val)
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(eax=0x00000003 * reinterpret_cast<any_int32>(STACKVAR(8, 4)), ecx=STACKVAR(-4, 4))
+    return reinterpret_cast<unsigned char>(this->data[3 * val]);
 }
-Failed to find pattern for 'mov al, byte ptr [ecx+eax]'
 
 // address: 0x100093E1
 unsigned char B_Pal::GetGreen(unsigned int val)

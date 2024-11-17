@@ -31,13 +31,18 @@ def convert_expression_to_type(e, target_type):
         if converted is not None:
             return expressions.AddressOf(converted)
     if (
-        isinstance(src_type, data_types.Unknown32) and
-        not isinstance(target_type, data_types.Unknown32)
+        isinstance(src_type, data_types.UnknownTypes) and
+        not isinstance(target_type, data_types.UnknownTypes)
     ):
         return expressions.do_reinterpret(target_type, e)
     if (
         isinstance(src_type, data_types.AnyInt) and
         not isinstance(target_type, data_types.AnyInt)
+    ):
+        return expressions.do_reinterpret(target_type, e)
+    if (
+        src_type.is_any_int and
+        target_type.is_any_int
     ):
         return expressions.do_reinterpret(target_type, e)
     raise Exception("Can't convert {} to {}.".format(src_type, target_type))

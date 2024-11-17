@@ -10,6 +10,8 @@ _procedures = {
     "ACCESS": lambda *args: _unpack_args(
         *args, expression=None, offset=int, size=int),
     "GLOBAL": lambda *args: _unpack_args(*args, address=from_hex),
+    "ARRPTR": lambda *args: _unpack_args(
+        *args, base=None, scale=int, index=None, offset=int),
     "I": lambda *args: _unpack_args(*args, expression=None),
     "S": lambda *args: _unpack_args(*args, expression=None),
 }
@@ -37,6 +39,10 @@ class DataTypeDefiner:
     @staticmethod
     def on_access(size, **kwargs):
         return DataTypeDefiner.unknown_type(size)
+
+    @staticmethod
+    def on_arrptr(**kwargs):
+        return data_types.Pointer32()
 
     @staticmethod
     def on_global(**kwargs):

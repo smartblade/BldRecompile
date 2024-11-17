@@ -7,6 +7,10 @@ class Array:
         return "{}[{}]".format(self._element_type, self._size)
 
     @property
+    def element_type(self):
+        return self._element_type
+
+    @property
     def size(self):
         return self._size * self._element_type.size
 

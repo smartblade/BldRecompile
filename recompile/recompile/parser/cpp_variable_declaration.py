@@ -6,7 +6,7 @@ import parser
 
 variable_decl_regexp = re.compile(
     r'^(?P<type>.*[*\s])(?P<name>[^\W\d]\S*)(\s*=\s*\d*\s*)?$')
-array_size_regexp = re.compile(r'(?P<name>.+)\[(?P<size>0x[\dABCDEF]+)]$')
+array_size_regexp = re.compile(r'(?P<name>.+)\[(?P<size>(0x[\dABCDEF]+)|\d+)]$')
 
 
 def parse_cpp_variable_declaration(s, declared_types):
@@ -24,5 +24,9 @@ def _extract_array_size(field_type, field_name):
     match = re.search(array_size_regexp, field_name)
     if not match:
         return field_type, field_name
-    size = from_hex(match.group("size"))
+    size_str = match.group("size")
+    if size_str.startswith("0x"):
+        size = from_hex(size_str)
+    else:
+        size = int(size_str)
     return data_types.Array(field_type, size), match.group("name")

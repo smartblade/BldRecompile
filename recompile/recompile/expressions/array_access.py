@@ -3,6 +3,10 @@ class ArrayAccess:
         self._array = array
         self._index = index
 
+    @property
+    def data_type(self):
+        return self._array.data_type.element_type
+
     def transform_expression(self, **kwargs):
         array = self._array.transform_expression(**kwargs)
         index = self._index.transform_expression(**kwargs)

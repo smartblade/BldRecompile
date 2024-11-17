@@ -22,6 +22,11 @@ def are_compatible(child, parent):
         isinstance(parent, data_types.Unknown32)
     ):
         return True
+    if (
+        child.is_any_int and
+        isinstance(parent, data_types.AnyInt)
+    ):
+        return True
     return False
 
 

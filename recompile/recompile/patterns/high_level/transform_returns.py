@@ -61,9 +61,12 @@ def _rewrite_return(proc_decl, regdef, return_instr):
     if proc_decl.return_type is None:
         return
     data_type = proc_decl.return_type
-    if not _is_eax_return_type(data_type):
+    if _is_eax_return_type(data_type):
+        return_value = regdef.pop_reg_value("eax")
+    elif _is_al_return_type(data_type):
+        return_value = regdef.pop_reg_value("al")
+    else:
         return
-    return_value = regdef.pop_reg_value("eax")
     return_value = convert_expression_to_type(return_value, data_type)
     new_instructions = []
     if not regdef.is_empty():
@@ -102,4 +105,11 @@ def _is_eax_return_type(data_type):
         isinstance(data_type, data_types.Reference) or
         isinstance(data_type, data_types.Int32) or
         isinstance(data_type, data_types.UInt32)
+    )
+
+
+def _is_al_return_type(data_type):
+    return (
+        isinstance(data_type, data_types.Char) or
+        isinstance(data_type, data_types.UChar)
     )
