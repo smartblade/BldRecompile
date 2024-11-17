@@ -8,6 +8,7 @@ operand_regexp = re.compile(
 
 _regexp_map = {
     "a-c-d": (r"a|c|d", None),
+    "al-cl-dl": (r"al|cl|dl", None),
     "ax-cx-dx": (r"ax|cx|dx", None),
     "eax-ecx-edx": (r"eax|ecx|edx", None),
     "label": (
