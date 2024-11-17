@@ -1910,18 +1910,14 @@ unsigned char B_Pal::GetRed(unsigned int val)
 // address: 0x100093E1
 unsigned char B_Pal::GetGreen(unsigned int val)
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(eax=0x00000003 * reinterpret_cast<any_int32>(STACKVAR(8, 4)), ecx=STACKVAR(-4, 4))
+    return this->data[3 * val + 1];
 }
-Failed to find pattern for 'mov al, byte ptr [ecx+eax+001h]'
 
 // address: 0x100093FB
 unsigned char B_Pal::GetBlue(unsigned int val)
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(eax=0x00000003 * reinterpret_cast<any_int32>(STACKVAR(8, 4)), ecx=STACKVAR(-4, 4))
+    return this->data[3 * val + 2];
 }
-Failed to find pattern for 'mov al, byte ptr [ecx+eax+002h]'
 
 // address: 0x10009415
 p10009415
