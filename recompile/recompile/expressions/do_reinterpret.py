@@ -26,8 +26,9 @@ def _reinterpret_const(data_type, c):
         else:
             return expressions.Constant(data_type, c.value - 0x100000000)
     if (
-        isinstance(data_type, data_types.UInt32) and
-        isinstance(c.data_type, (data_types.AnyInt, data_types.Unknown32)) and
+        isinstance(data_type, (data_types.UInt32, data_types.UChar)) and
+        isinstance(
+            c.data_type, (data_types.AnyInt, data_types.UnknownTypes)) and
         data_type.size == c.data_type.size
     ):
         return expressions.Constant(data_type, c.value)
@@ -61,7 +62,7 @@ def _reinterpret_bin(data_type, b):
         return None
     if not b.right.data_type.is_any_int:
         return None
-    if b.operator != Operator.ADD and  b.operator != Operator.SUB:
+    if b.operator != Operator.ADD and b.operator != Operator.SUB:
         return None
     if isinstance(b.right, expressions.Constant):
         left = do_reinterpret(data_type, b.left)

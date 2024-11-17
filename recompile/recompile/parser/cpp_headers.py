@@ -17,6 +17,7 @@ _standard_types = {
     "bool": data_types.ClassType("bool", {}),
     "char": data_types.Char(),
     "unsigned char": data_types.UChar(),
+    "byte": data_types.UChar(),
     "short": data_types.ClassType("short", {}),
     "unsigned short": data_types.ClassType("unsigned short", {}),
     "int": data_types.Int32(),

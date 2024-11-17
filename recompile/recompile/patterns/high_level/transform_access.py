@@ -23,7 +23,7 @@ def transform_access(expression, offset, size, **kwargs):
                     size, data_type.size))
         return expressions.FieldAccess(expression, field_name)
     if isinstance(
-        pointee, (data_types.UnknownByte, data_types.Int32, data_types.UInt32)
+        pointee, (data_types.UChar, data_types.Int32, data_types.UInt32)
     ):
         if pointee.size != size:
             raise Exception(

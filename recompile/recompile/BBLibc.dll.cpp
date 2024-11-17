@@ -1473,7 +1473,7 @@ B_Color::B_Color()
 }
 
 // address: 0x10006890
-B_Color::B_Color(unknown_byte r, unknown_byte g, unknown_byte b)
+B_Color::B_Color(unsigned char r, unsigned char g, unsigned char b)
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
     REGDEF(eax=STACKVAR(-4, 4), cl=STACKVAR(8, 1))
@@ -1904,7 +1904,7 @@ Failed to find pattern for 'push esi'
 // address: 0x100093C8
 unsigned char B_Pal::GetRed(unsigned int val)
 {
-    return reinterpret_cast<unsigned char>(this->data[3 * val]);
+    return this->data[3 * val];
 }
 
 // address: 0x100093E1

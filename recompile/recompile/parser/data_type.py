@@ -3,7 +3,7 @@ from exceptions import UnknownTypeException
 
 
 def parse_data_type(s, classes):
-    if s == "byte":
+    if s == "byte" and s not in classes:
         return data_types.UnknownByte()
     if s == "word32":
         return data_types.Unknown32()
