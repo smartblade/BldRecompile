@@ -1,15 +1,23 @@
 {
 	"operand-patterns": {
-		"src-operand": [
+		"mem-operand": [
 			{"operand": "[ebp%offset%]", "expression": "STACKVAR(%offset%, %size%)"},
 			{"operand": "[%eax-ecx-edx%]", "expression": "ACCESS(REGVALUE(%eax-ecx-edx%), 0, %size%)"},
 			{"operand": "[%eax-ecx-edx%%offset%]", "expression": "ACCESS(REGVALUE(%eax-ecx-edx%), %offset%, %size%)"},
-			{"operand": "[%eax-ecx-edx-base%+%eax-ecx-edx-index%]", "expression": "ACCESS(ARRPTR(REGVALUE(%eax-ecx-edx-base%), 1, REGVALUE(%eax-ecx-edx-index%), 0), 0, %size%)"},
-			{"operand": "[%eax-ecx-edx-base%+%eax-ecx-edx-index%%offset%]", "expression": "ACCESS(ARRPTR(REGVALUE(%eax-ecx-edx-base%), 1, REGVALUE(%eax-ecx-edx-index%), %offset%), 0, %size%)"},
-			{"operand": "%hex%", "expression": "%hex%"},
-			{"operand": "%label%", "expression": "GLOBAL(%label%)"},
 			{"operand": "[%label%]", "expression": "ACCESS(GLOBAL(%label%), 0, %size%)"},
-			{"operand": "%eax-ecx-edx%", "expression": "REGVALUE(%eax-ecx-edx%)"}
+			{"operand": "[%eax-ecx-edx-base%+%eax-ecx-edx-index%]", "expression": "ACCESS(ARRPTR(REGVALUE(%eax-ecx-edx-base%), 1, REGVALUE(%eax-ecx-edx-index%), 0), 0, %size%)"},
+			{"operand": "[%eax-ecx-edx-base%+%eax-ecx-edx-index%%offset%]", "expression": "ACCESS(ARRPTR(REGVALUE(%eax-ecx-edx-base%), 1, REGVALUE(%eax-ecx-edx-index%), %offset%), 0, %size%)"}
+		],
+		"reg-operand": [
+			{"operand": "%al-cl-dl%", "expression": "%al-cl-dl%"},
+			{"operand": "%ax-cx-dx%", "expression": "%ax-cx-dx%"},
+			{"operand": "%eax-ecx-edx%", "expression": "%eax-ecx-edx%"}
+		],
+		"src-operand": [
+			{"operand": "%mem-operand%", "expression": "%mem-operand%"},
+			{"operand": "%reg-operand%", "expression": "REGVALUE(%reg-operand%)"},
+			{"operand": "%hex%", "expression": "%hex%"},
+			{"operand": "%label%", "expression": "GLOBAL(%label%)"}
 		]
 	},
 	"instructions-patterns": [
@@ -91,45 +99,15 @@
 	},
 	{
 		"instructions": [
-			{"mov":  ["[ebp%offset%]", "%src-operand%"]}
+			{"mov":  ["%mem-operand%", "%src-operand%"]}
 		],
-		"action": {"assignment": {"dst": "STACKVAR(%offset%, %size%)", "src": "%src-operand%"}}
+		"action": {"assignment": {"dst": "%mem-operand%", "src": "%src-operand%"}}
 	},
 	{
 		"instructions": [
-			{"mov":  ["[%eax-ecx-edx%]", "%src-operand%"]}
+			{"mov":  ["%reg-operand%", "%src-operand%"]}
 		],
-		"action": {"assignment": {"dst": "ACCESS(REGVALUE(%eax-ecx-edx%), 0, %size%)", "src": "%src-operand%"}}
-	},
-	{
-		"instructions": [
-			{"mov":  ["[%eax-ecx-edx%%offset%]", "%src-operand%"]}
-		],
-		"action": {"assignment": {"dst": "ACCESS(REGVALUE(%eax-ecx-edx%), %offset%, %size%)", "src": "%src-operand%"}}
-	},
-	{
-		"instructions": [
-			{"mov":  ["[%label%]", "%src-operand%"]}
-		],
-		"action": {"assignment": {"dst": "ACCESS(GLOBAL(%label%), 0, %size%)", "src": "%src-operand%"}}
-	},
-	{
-		"instructions": [
-			{"mov":  ["%al-cl-dl%", "%src-operand%"]}
-		],
-		"action": {"tmpreg": {"dst": "%al-cl-dl%", "src": "%src-operand%"}}
-	},
-	{
-		"instructions": [
-			{"mov":  ["%ax-cx-dx%", "%src-operand%"]}
-		],
-		"action": {"tmpreg": {"dst": "%ax-cx-dx%", "src": "%src-operand%"}}
-	},
-	{
-		"instructions": [
-			{"mov":  ["%eax-ecx-edx%", "%src-operand%"]}
-		],
-		"action": {"tmpreg": {"dst": "%eax-ecx-edx%", "src": "%src-operand%"}}
+		"action": {"tmpreg": {"dst": "%reg-operand%", "src": "%src-operand%"}}
 	},
 	{
 		"instructions": [

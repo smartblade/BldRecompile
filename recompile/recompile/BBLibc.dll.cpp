@@ -537,10 +537,9 @@ B_MessageManager::~B_MessageManager()
 // address: 0x10002720
 B_MessageManager &B_MessageManager::operator=(const B_MessageManager &that)
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(cl=ACCESS(STACKVAR(8, 4), 0, 1), edx=STACKVAR(-4, 4))
+    this->unknown00 = that.unknown00;
+    return *this;
 }
-Failed to find pattern for 'mov byte ptr [edx], cl'
 
 // address: 0x10002740
 char *GetConfigDirectory()
@@ -1475,10 +1474,12 @@ B_Color::B_Color()
 // address: 0x10006890
 B_Color::B_Color(unsigned char r, unsigned char g, unsigned char b)
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(eax=STACKVAR(-4, 4), cl=STACKVAR(8, 1))
+    this->r = r;
+    this->g = g;
+    this->b = b;
+    ACCESS(this, 0, 4) = GLOBAL(0x100421F0);
+    this->MakeCons();
 }
-Failed to find pattern for 'mov byte ptr [eax+004h], cl'
 
 // address: 0x100068D0
 B_Color B_Color::operator +(const B_Color &color)
@@ -1518,26 +1519,29 @@ Failed to find pattern for 'sub esp, 000000008h'
 // address: 0x10006B30
 p10006B30
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(eax=STACKVAR(-4, 4), cl=STACKVAR(8, 1))
+    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=12)
+    ACCESS(this, 4, 1) = STACKVAR(8, 1);
+    ACCESS(this, 6, 1) = STACKVAR(16, 1);
+    ACCESS(this, 5, 1) = STACKVAR(12, 1);
 }
-Failed to find pattern for 'mov byte ptr [eax+004h], cl'
 
 // address: 0x10006B60
 B_Color::B_Color(const B_Color &that)
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(eax=STACKVAR(-4, 4), dl=ACCESS(STACKVAR(8, 4), 4, 1))
+    this->r = that.r;
+    this->g = that.g;
+    this->b = that.b;
+    ACCESS(this, 0, 4) = GLOBAL(0x100421F0);
 }
-Failed to find pattern for 'mov byte ptr [eax+004h], dl'
 
 // address: 0x10006BA0
 B_Color &B_Color::operator =(const B_Color &that)
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(eax=STACKVAR(-4, 4), dl=ACCESS(STACKVAR(8, 4), 4, 1))
+    this->r = that.r;
+    this->g = that.g;
+    this->b = that.b;
+    return *this;
 }
-Failed to find pattern for 'mov byte ptr [eax+004h], dl'
 
 // address: 0x10006BE0
 p10006BE0
@@ -1922,26 +1926,23 @@ unsigned char B_Pal::GetBlue(unsigned int val)
 // address: 0x10009415
 p10009415
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(eax=0x00000003 * reinterpret_cast<any_int32>(STACKVAR(8, 4)), ecx=STACKVAR(-4, 4), dl=STACKVAR(12, 1))
+    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=8)
+    ACCESS(ARRPTR(this, 1, 0x00000003 * reinterpret_cast<any_int32>(STACKVAR(8, 4)), 0), 0, 1) = STACKVAR(12, 1);
 }
-Failed to find pattern for 'mov byte ptr [ecx+eax], dl'
 
 // address: 0x10009431
 p10009431
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(eax=0x00000003 * reinterpret_cast<any_int32>(STACKVAR(8, 4)), ecx=STACKVAR(-4, 4), dl=STACKVAR(12, 1))
+    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=8)
+    ACCESS(ARRPTR(this, 1, 0x00000003 * reinterpret_cast<any_int32>(STACKVAR(8, 4)), 1), 0, 1) = STACKVAR(12, 1);
 }
-Failed to find pattern for 'mov byte ptr [ecx+eax+001h], dl'
 
 // address: 0x1000944E
 p1000944E
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(eax=0x00000003 * reinterpret_cast<any_int32>(STACKVAR(8, 4)), ecx=STACKVAR(-4, 4), dl=STACKVAR(12, 1))
+    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=8)
+    ACCESS(ARRPTR(this, 1, 0x00000003 * reinterpret_cast<any_int32>(STACKVAR(8, 4)), 2), 0, 1) = STACKVAR(12, 1);
 }
-Failed to find pattern for 'mov byte ptr [ecx+eax+002h], dl'
 
 // address: 0x1000946B
 p1000946B
@@ -2309,9 +2310,11 @@ p1000D78A
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 24, 4);
-    REGDEF(eax=ACCESS(STACKVAR(-4, 4), 0, 4), cl=STACKVAR(12, 1))
+    ACCESS(ACCESS(STACKVAR(-4, 4), 0, 4), 0, 1) = STACKVAR(12, 1);
+    ACCESS(STACKVAR(-4, 4), 0, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-4, 4), 0, 4)) + 0x00000001;
+    REGDEF(eax=ACCESS(STACKVAR(-4, 4), 4, 4))
 }
-Failed to find pattern for 'mov byte ptr [eax], cl'
+Failed to find pattern for 'sub eax, 000000001h'
 
 // address: 0x1000D7FA
 p1000D7FA

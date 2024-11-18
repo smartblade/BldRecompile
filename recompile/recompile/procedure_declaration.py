@@ -65,6 +65,7 @@ class ProcedureDeclaration:
         stack_delta = 0
         for parameter_type, parameter_name in self._parameters:
             stack_delta += parameter_type.size
+            stack_delta = ((stack_delta + 3) // 4) * 4
         return stack_delta
 
     @property
@@ -77,6 +78,7 @@ class ProcedureDeclaration:
         for param_id in param_ids:
             stack_dict[offset] = param_id
             offset += param_id.data_type.size
+            offset = ((offset + 3) // 4) * 4
         return stack_dict
 
     @property
