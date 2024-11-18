@@ -103,9 +103,9 @@ Failed to find pattern for 'sub esp, 000000008h'
 int B_IDataFile::Length()
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(eax=STACKVAR(-4, 4), ecx=0x00000000)
+    REGDEF(ecx=static_cast<unsigned int>(reinterpret_cast<any_int32>(ACCESS(STACKVAR(-4, 4), 0, 4)) != 0xFFFFFFFF))
 }
-Failed to find pattern for 'cmp dword ptr [eax], 0FFFFFFFFh'
+Failed to find pattern for 'test ecx, ecx'
 
 // address: 0x100018A6
 int B_IDataFile::Seek(int offset, int whence)
@@ -338,9 +338,9 @@ B_ODataFile::~B_ODataFile()
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
     free(ACCESS(STACKVAR(-4, 4), 4, 4));
-    REGDEF(edx=STACKVAR(-4, 4), eax=0x00000000)
+    REGDEF(eax=static_cast<unsigned int>(reinterpret_cast<any_int32>(ACCESS(STACKVAR(-4, 4), 0, 4)) != 0xFFFFFFFF))
 }
-Failed to find pattern for 'cmp dword ptr [edx], 0FFFFFFFFh'
+Failed to find pattern for 'test eax, eax'
 
 // address: 0x100020C3
 p100020C3
@@ -386,10 +386,8 @@ Failed to find pattern for 'sub esp, 00000000Ch'
 // address: 0x100021E0
 unsigned int B_IDataFile::OK()
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(eax=STACKVAR(-4, 4), ecx=0x00000000)
+    return static_cast<unsigned int>(this->fd != -1);
 }
-Failed to find pattern for 'cmp dword ptr [eax], 0FFFFFFFFh'
 
 // address: 0x10002200
 char *B_IDataFile::GetFileName()
@@ -407,10 +405,8 @@ Failed to find pattern for 'push esi'
 // address: 0x10002250
 unsigned int B_ODataFile::OK()
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(eax=STACKVAR(-4, 4), ecx=0x00000000)
+    return static_cast<unsigned int>(this->fd != -1);
 }
-Failed to find pattern for 'cmp dword ptr [eax], 0FFFFFFFFh'
 
 // address: 0x10002270
 p10002270

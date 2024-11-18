@@ -11,6 +11,8 @@ def transform_binary(bin_exp, **kwargs):
             return _transform_int_sum(bin_exp.left, bin_exp.right) or bin_exp
         if bin_exp.operator == Operator.MUL:
             return _transform_int_mul(bin_exp.left, bin_exp.right) or bin_exp
+        if bin_exp.operator == Operator.NE:
+            return _transform_int_ne(bin_exp.left, bin_exp.right) or bin_exp
     return bin_exp
 
 
@@ -43,3 +45,10 @@ def _transform_int_mul(left, right):
         left = expressions.do_reinterpret(right.data_type, left)
         return expressions.Bin(Operator.MUL, left, right)
     return None
+
+
+def _transform_int_ne(left, right):
+    if not isinstance(right, expressions.Constant):
+        return None
+    right = expressions.do_reinterpret(left.data_type, right)
+    return expressions.Bin(Operator.NE, left, right)

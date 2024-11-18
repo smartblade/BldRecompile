@@ -18,6 +18,12 @@
 			{"operand": "%reg-operand%", "expression": "REGVALUE(%reg-operand%)"},
 			{"operand": "%hex%", "expression": "%hex%"},
 			{"operand": "%label%", "expression": "GLOBAL(%label%)"}
+		],
+		"src-operand-left": [
+			{"operand": "%src-operand%", "expression": "%src-operand%"}
+		],
+		"src-operand-right": [
+			{"operand": "%src-operand%", "expression": "%src-operand%"}
 		]
 	},
 	"instructions-patterns": [
@@ -82,6 +88,14 @@
 			{"mov":  ["%a-c-d%x", "%src-operand%"]}
 		],
 		"action": {"tmpreg": {"dst": "e%a-c-d%x", "src": "(uint32)%src-operand%"}}
+	},
+	{
+		"instructions": [
+			{"xor":  ["e%a-c-d%x", "e%a-c-d%x"]},
+			{"cmp":  ["%src-operand-left%", "%src-operand-right%"]},
+			{"setne":  ["%a-c-d%l"]}
+		],
+		"action": {"tmpreg": {"dst": "e%a-c-d%x", "src": "(uint32)(I(%src-operand-left%) != I(%src-operand-right%))"}}
 	},
 	{
 		"instructions": [

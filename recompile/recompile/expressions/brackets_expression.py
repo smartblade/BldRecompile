@@ -21,5 +21,10 @@ class BracketsExpression:
         on_expression_visited(self, **kwargs)
         self._expression.visit(on_expression_visited, **kwargs)
 
+    def transform(self, transform_callback, **kwargs):
+        expression = self._expression.transform(transform_callback, **kwargs)
+        cast = BracketsExpression(expression)
+        return transform_callback(cast, **kwargs)
+
     def emit_code(self):
         return "({})".format(self._expression.emit_code())

@@ -96,4 +96,7 @@ def _evaluate_binary(b):
 
 
 def _evaluate_cast(cast):
-    return expressions.StaticCast(cast.data_type, cast.expression)
+    expression = cast.expression
+    if isinstance(expression, expressions.BracketsExpression):
+        expression = expression.expression
+    return expressions.StaticCast(cast.data_type, expression)
