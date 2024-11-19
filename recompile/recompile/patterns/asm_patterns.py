@@ -108,12 +108,19 @@ def _match_instructions_pattern(
     instructions = pattern["instructions"]
     cur_index = first_index
     for instr_pattern in instructions:
+        cur_index = _skip_comments(cur_index, lines)
         if not _match_instruction(
             instr_pattern, operand_pattern_sets, lines[cur_index], match_dict
         ):
             return -1, None
         cur_index += 1
     return cur_index, match_dict
+
+
+def _skip_comments(cur_index, lines):
+    while lines[cur_index].startswith(";"):
+        cur_index += 1
+    return cur_index
 
 
 def _match_instruction(instr_pattern, operand_pattern_sets, line, match_dict):

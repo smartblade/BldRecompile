@@ -471,11 +471,10 @@ Failed to find pattern for 'sub esp, 000000010h'
 // address: 0x100024C0
 B_MessageChannel::B_MessageChannel(B_Name &name)
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    STACKVAR(-4, 4)->unknown_method_10003A07(STACKVAR(8, 4));
-    REGDEF(ecx=STACKVAR(-4, 4))
+    this->B_NamedObj(name);
+    ACCESS(this, 0, 4) = GLOBAL(0x10042180);
+    this->unknown0Ch = 1;
 }
-Can't parse line: ;
 
 // address: 0x100024F0
 p100024F0
@@ -494,21 +493,19 @@ p10002540
 // address: 0x10002550
 B_MessageChannel::~B_MessageChannel()
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(eax=STACKVAR(-4, 4))
+    ACCESS(this, 0, 4) = GLOBAL(0x10042180);
+    ACCESS(this, 0, 4) = GLOBAL(0x1004217C);
+    this->name.~B_Name();
 }
-Can't parse line: ;
 
 // address: 0x10002580
 B_MessageChannel::B_MessageChannel(const B_MessageChannel &that)
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    (reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000004)->unknown_method_100033A4(reinterpret_cast<any_int32>(STACKVAR(8, 4)) + 0x00000004);
-    ACCESS(STACKVAR(-4, 4), 0, 4) = GLOBAL(0x1004217C);
-    ACCESS(STACKVAR(-4, 4), 12, 4) = ACCESS(STACKVAR(8, 4), 12, 4);
-    REGDEF(edx=STACKVAR(-4, 4))
+    this->name.B_Name(that.name);
+    ACCESS(this, 0, 4) = GLOBAL(0x1004217C);
+    this->unknown0Ch = that.unknown0Ch;
+    ACCESS(this, 0, 4) = GLOBAL(0x10042180);
 }
-Can't parse line: ;
 
 // address: 0x100025C0
 B_MessageChannel &B_MessageChannel::operator=(const B_MessageChannel &that)
@@ -679,21 +676,17 @@ Failed to find pattern for 'sub esp, 000000010h'
 // address: 0x100030A0
 B_List::B_List(B_ListElement *element)
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    ACCESS(STACKVAR(-4, 4), 4, 4) = 0x00000000;
-    ACCESS(STACKVAR(-4, 4), 8, 4) = 0x00000000;
-    ACCESS(STACKVAR(-4, 4), 12, 4) = 0x00000000;
-    REGDEF(eax=STACKVAR(-4, 4))
+    this->numElements = 0;
+    this->tail = NULL;
+    this->head = NULL;
+    ACCESS(this, 0, 4) = GLOBAL(0x10042194);
 }
-Can't parse line: ;
 
 // address: 0x100030E0
 B_List::~B_List()
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(eax=STACKVAR(-4, 4))
+    ACCESS(this, 0, 4) = GLOBAL(0x10042194);
 }
-Can't parse line: ;
 
 // address: 0x10003100
 p10003100
@@ -719,13 +712,11 @@ p10003140
 // address: 0x10003160
 B_List::B_List(const B_List &arg_1)
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    ACCESS(STACKVAR(-4, 4), 4, 4) = ACCESS(STACKVAR(8, 4), 4, 4);
-    ACCESS(STACKVAR(-4, 4), 8, 4) = ACCESS(STACKVAR(8, 4), 8, 4);
-    ACCESS(STACKVAR(-4, 4), 12, 4) = ACCESS(STACKVAR(8, 4), 12, 4);
-    REGDEF(eax=STACKVAR(-4, 4))
+    this->numElements = arg_1.numElements;
+    this->tail = arg_1.tail;
+    this->head = arg_1.head;
+    ACCESS(this, 0, 4) = GLOBAL(0x10042194);
 }
-Can't parse line: ;
 
 // address: 0x100031A0
 B_List &B_List::operator=(const B_List &that)
@@ -739,13 +730,12 @@ B_List &B_List::operator=(const B_List &that)
 // address: 0x100031E0
 p100031E0
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    ACCESS(STACKVAR(-4, 4), 4, 4) = 0x00000000;
-    ACCESS(STACKVAR(-4, 4), 8, 4) = 0x00000000;
-    ACCESS(STACKVAR(-4, 4), 12, 4) = 0x00000000;
-    REGDEF(eax=STACKVAR(-4, 4))
+    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=0)
+    ACCESS(this, 4, 4) = 0x00000000;
+    ACCESS(this, 8, 4) = 0x00000000;
+    ACCESS(this, 12, 4) = 0x00000000;
+    ACCESS(this, 0, 4) = GLOBAL(0x10042194);
 }
-Can't parse line: ;
 
 // address: 0x10003250
 p10003250
@@ -2273,7 +2263,7 @@ p1000D5A2
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 316, 4);
 }
-Can't parse line: ;
+Can't parse line: l1000D5B2: mov edx, dword ptr [ebp-004h]
 
 // address: 0x1000D6A0
 p1000D6A0
@@ -3454,7 +3444,7 @@ p10019770
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
 }
-Can't parse line: ;
+Can't parse line: l10019774: mov eax, dword ptr [ebp+008h]
 
 // address: 0x10019BF8
 p10019BF8
@@ -4662,13 +4652,15 @@ Failed to find pattern for 'cmp dword ptr [eax+00Ch], 000000000h'
 // address: 0x10029A60
 p10029A60
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    (reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000004)->unknown_method_100033A4(reinterpret_cast<any_int32>(STACKVAR(8, 4)) + 0x00000004);
-    ACCESS(STACKVAR(-4, 4), 0, 4) = GLOBAL(0x1004217C);
-    ACCESS(STACKVAR(-4, 4), 12, 4) = ACCESS(STACKVAR(8, 4), 12, 4);
-    REGDEF(edx=STACKVAR(-4, 4))
+    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=4)
+    reinterpret_cast<B_Name *>(reinterpret_cast<any_int32>(this) + 0x00000004)->B_Name(reinterpret_cast<B_Name &>(reinterpret_cast<any_int32>(STACKVAR(8, 4)) + 0x00000004));
+    ACCESS(this, 0, 4) = GLOBAL(0x1004217C);
+    ACCESS(this, 12, 4) = ACCESS(STACKVAR(8, 4), 12, 4);
+    ACCESS(this, 0, 4) = GLOBAL(0x10042180);
+    ACCESS(this, 16, 4) = ACCESS(STACKVAR(8, 4), 16, 4);
+    ACCESS(this, 0, 4) = GLOBAL(0x10042CBC);
+    REGDEF(eax=this)
 }
-Can't parse line: ;
 
 // address: 0x10029AC0
 p10029AC0
@@ -5653,7 +5645,7 @@ Failed to find pattern for 'sub esp, 00000014Ch'
 p100395E0
 {
 }
-Can't parse line: ;
+Can't parse line: l100395E3: mov eax, dword ptr [ebp+010h]
 
 // address: 0x10039610
 p10039610
@@ -6503,10 +6495,10 @@ Failed to find pattern for 'sub esp, 000000018h'
 // address: 0x1003E660
 p1003E660
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
     STACKVAR(8, 4) = STACKVAR(8, 4);
+    PyString_FromString(GLOBAL(0x10048CD8));
 }
-Can't parse line: ;
 
 // address: 0x1003E679
 p1003E679
@@ -6514,8 +6506,9 @@ p1003E679
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
     STACKVAR(-4, 4) = 0x00000000;
     STACKVAR(16, 4) = STACKVAR(16, 4);
+    fprintf(STACKVAR(12, 4), GLOBAL(0x10048CEC));
 }
-Can't parse line: ;
+Can't parse line: l1003E69C: mov edx, dword ptr [ebp+008h]
 
 // address: 0x1003E710
 p1003E710
@@ -6550,8 +6543,9 @@ p1003E9F0
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
     STACKVAR(8, 4) = STACKVAR(8, 4);
+    PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048DCC));
 }
-Can't parse line: ;
+Failed to find pattern for 'test eax, eax'
 
 // address: 0x1003EA3C
 p1003EA3C
@@ -6565,8 +6559,9 @@ p1003EAB8
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
     STACKVAR(8, 4) = STACKVAR(8, 4);
+    PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048E04));
 }
-Can't parse line: ;
+Failed to find pattern for 'test eax, eax'
 
 // address: 0x1003EB04
 p1003EB04
