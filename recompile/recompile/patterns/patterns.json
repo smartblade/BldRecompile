@@ -162,6 +162,12 @@
 	},
 	{
 		"instructions": [
+			{"shl":  ["%eax-ecx-edx%", "001h"]}
+		],
+		"action": {"tmpreg": {"dst": "%eax-ecx-edx%", "src": "2 * I(REGVALUE(%eax-ecx-edx%))"}}
+	},
+	{
+		"instructions": [
 			{"push":  ["%src-operand%"]}
 		],
 		"action": {"stackarg": {"arg": "ARG(%src-operand%)"}}

@@ -4145,10 +4145,9 @@ Failed to find pattern for 'sub esp, 000000024h'
 // address: 0x10024015
 p10024015
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    REGDEF(eax=0x000000FF * (2 * reinterpret_cast<any_int32>(STACKVAR(16, 4)) + 1) + reinterpret_cast<any_int32>(STACKVAR(20, 4)), ecx=STACKVAR(20, 4))
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
+    REGDEF(eax=(255 * (2 * reinterpret_cast<int>(STACKVAR(16, 4)) + 1) + reinterpret_cast<int>(STACKVAR(20, 4))) / 2 * reinterpret_cast<int>(STACKVAR(20, 4)))
 }
-Failed to find pattern for 'shl ecx, 001h'
 
 // address: 0x10024032
 p10024032

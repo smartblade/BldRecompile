@@ -63,16 +63,33 @@ def _reinterpret_bin(data_type, b):
         return None
     if not b.right.data_type.is_any_int:
         return None
-    if b.operator != Operator.ADD and b.operator != Operator.SUB:
-        return None
-    if isinstance(b.right, expressions.Constant):
-        left = do_reinterpret(data_type, b.left)
-        return expressions.Bin(b.operator, left, b.right)
     if (
-        isinstance(b.left, expressions.ReinterpretCast) and
-        isinstance(b.right, expressions.ReinterpretCast)
+        b.operator != Operator.ADD and
+        b.operator != Operator.SUB and
+        b.operator != Operator.MUL
     ):
-        left = do_reinterpret(data_type, b.left)
-        right = do_reinterpret(data_type, b.right)
+        return None
+    left = b.left
+    right = b.right
+    if isinstance(right, expressions.Constant):
+        left = do_reinterpret(data_type, left)
+        return expressions.Bin(b.operator, left, right)
+    if isinstance(left, expressions.Constant):
+        right = do_reinterpret(data_type, right)
+        return expressions.Bin(b.operator, left, right)
+    if isinstance(left, expressions.Bin):
+        left = _reinterpret_bin(data_type, left)
+        if left is None:
+            return None
+    if isinstance(right, expressions.Bin):
+        right = _reinterpret_bin(data_type, right)
+        if right is None:
+            return None
+    if (
+        isinstance(left, (expressions.Bin, expressions.ReinterpretCast)) and
+        isinstance(right, (expressions.Bin, expressions.ReinterpretCast))
+    ):
+        left = do_reinterpret(data_type, left)
+        right = do_reinterpret(data_type, right)
         return expressions.Bin(b.operator, left, right)
     return None
