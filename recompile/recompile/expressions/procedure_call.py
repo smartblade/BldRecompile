@@ -6,13 +6,14 @@ from hex_conversion import to_hex
 class ProcedureCall:
     def __init__(
         self, name=None, operator=None, arguments=None, callee_addr=None,
-        is_method=False, proc_decl=None
+        is_method=False, proc_decl=None, callee=None
     ):
         if arguments is None:
             arguments = []
         self._name = name
         self._operator = operator
         self._arguments = arguments
+        self._callee = callee
         self._callee_addr = callee_addr
         self._is_method = is_method
         self._proc_decl = proc_decl
@@ -23,6 +24,7 @@ class ProcedureCall:
             name=self._name,
             operator=self._operator,
             arguments=self._arguments,
+            callee=self._callee,
             callee_addr=self._callee_addr,
             is_method=self._is_method,
             proc_decl=self._proc_decl,
@@ -41,7 +43,7 @@ class ProcedureCall:
 
     def __repr__(self):
         return "{}({})".format(
-            self.name, ", ".join(map(repr, self._arguments))
+            self.callee_code, ", ".join(map(repr, self._arguments))
         )
 
     @property
@@ -54,11 +56,17 @@ class ProcedureCall:
 
     @property
     def name(self):
-        if self._name is None:
+        if self._name is None and self._callee_addr is not None:
             if self._is_method:
                 return "unknown_method_{}".format(to_hex(self._callee_addr))
             return "unknown_function_{}".format(to_hex(self._callee_addr))
         return self._name
+
+    @property
+    def callee_code(self):
+        if self._callee is not None:
+            return self._callee.emit_code()
+        return self.name
 
     @property
     def arguments(self):
@@ -122,6 +130,8 @@ class ProcedureCall:
 
     def visit(self, on_expression_visited, **kwargs):
         on_expression_visited(self, **kwargs)
+        if self._callee is not None:
+            self._callee.visit(on_expression_visited, **kwargs)
         for arg in self._arguments:
             arg.visit(on_expression_visited, **kwargs)
 
@@ -132,9 +142,13 @@ class ProcedureCall:
                 self._arguments,
             )
         )
-        pc = ProcedureCall(
-            self._name, self._operator, arguments, self._callee_addr,
-            self._is_method, self._proc_decl
+        if self._callee is not None:
+            callee = self._callee.transform(transform_callback, **kwargs)
+        else:
+            callee = None
+        pc = self.copy(
+            callee=callee,
+            arguments=arguments,
         )
         return transform_callback(pc, **kwargs)
 
@@ -155,7 +169,7 @@ class ProcedureCall:
                 call = "{}::{}".format(
                     self._proc_decl.method_class.class_name, self.name)
             else:
-                call = self.name
+                call = self.callee_code
             arguments = self._arguments
         return "{}({})".format(
             call, ", ".join(map(lambda a: a.emit_code(), arguments))

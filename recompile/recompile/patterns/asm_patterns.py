@@ -124,6 +124,7 @@ def _skip_comments(cur_index, lines):
 
 
 def _match_instruction(instr_pattern, operand_pattern_sets, line, match_dict):
+    line = _add_size_to_call_operand(line)
     expected_cmd = next(iter(instr_pattern.keys()))
     expected_operands = next(iter(instr_pattern.values()))
     match = re.search(command_regexp, line)
@@ -151,3 +152,9 @@ def _match_instruction(instr_pattern, operand_pattern_sets, line, match_dict):
             elif match_dict[param] != value:
                 return False
     return True
+
+
+def _add_size_to_call_operand(line):
+    if not line.startswith("call"):
+        return line
+    return line.replace("call [", "call dword ptr [")

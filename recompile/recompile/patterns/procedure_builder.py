@@ -47,13 +47,15 @@ class ProcedureBuilder:
     def make_arg(self, arg):
         self._add_instruction(instructions.CodeInstruction(arg))
 
-    def make_call(self, address=None, name=None):
-        assert address is not None or name is not None
+    def make_call(self, address=None, name=None, expression=None):
+        assert address is not None or name is not None or expression is not None
         pc_args = {}
         if address is not None:
             pc_args["callee_addr"] = from_hex(address.emit_code())
         if name is not None:
             pc_args["name"] = name.emit_code()
+        if expression is not None:
+            pc_args["callee"] = expression
         procedure_call = expressions.ProcedureCall(**pc_args)
         self._add_instruction(instructions.CodeInstruction(procedure_call))
 

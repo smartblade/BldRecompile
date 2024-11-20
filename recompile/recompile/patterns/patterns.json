@@ -193,6 +193,12 @@
 	},
 	{
 		"instructions": [
+			{"call":  ["%src-operand%"]}
+		],
+		"action": {"call": {"expression": "%src-operand%"}}
+	},
+	{
+		"instructions": [
 			{"add":  ["esp", "%hex%"]}
 		],
 		"action": {"addsp": {"offset": "%hex%"}}
