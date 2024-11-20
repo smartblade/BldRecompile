@@ -1,5 +1,8 @@
+import struct
+
 import data_types
 import expressions
+from hex_conversion import to_hex
 import parser
 from expressions.operator import Operator
 from patterns.predefined_procedures import visit_predefined_procedures
@@ -58,6 +61,7 @@ def _evaluate_procedure_calls(expression, **kwargs):
         on_global=_keep,
         on_stackvar=_keep,
         on_arrptr=_keep,
+        on_real64=_evaluate_real64,
         on_i=_evaluate_any_int_conversion,
         on_s=_evaluate_int_conversion,
         **kwargs)
@@ -65,6 +69,14 @@ def _evaluate_procedure_calls(expression, **kwargs):
 
 def _evaluate_reg_value(reg, builder):
     return builder.pop_reg_value(reg)
+
+
+def _evaluate_real64(high, low, **kwargs):
+    (double, ) = struct.unpack(
+        '>d',
+        bytes.fromhex(to_hex(high) + to_hex(low)),
+    )
+    return expressions.Constant(data_types.Double(), double)
 
 
 def _evaluate_any_int_conversion(expression, **kwargs):

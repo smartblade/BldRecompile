@@ -12,6 +12,7 @@ _procedures = {
     "GLOBAL": lambda *args: _unpack_args(*args, address=from_hex),
     "ARRPTR": lambda *args: _unpack_args(
         *args, base=None, scale=int, index=None, offset=int),
+    "REAL64": lambda *args: _unpack_args(*args, high=from_hex, low=from_hex),
     "I": lambda *args: _unpack_args(*args, expression=None),
     "S": lambda *args: _unpack_args(*args, expression=None),
 }
@@ -34,6 +35,8 @@ class DataTypeDefiner:
             return data_types.AnyInt(2)
         if size == 4:
             return data_types.Unknown32()
+        if size == 8:
+            return data_types.Double()
         raise Exception("Undefined type for size: {}".format(size))
 
     @staticmethod

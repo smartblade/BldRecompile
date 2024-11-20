@@ -113,6 +113,13 @@
 	},
 	{
 		"instructions": [
+			{"mov":  ["[%eax-ecx-edx%]", "%hex-low%"]},
+			{"mov":  ["[%eax-ecx-edx%+004h]", "%hex-high%"]}
+		],
+		"action": {"assignment": {"dst": "ACCESS(REGVALUE(%eax-ecx-edx%), 0, 8)", "src": "REAL64(%hex-high%, %hex-low%)"}}
+	},
+	{
+		"instructions": [
 			{"mov":  ["%mem-operand%", "%src-operand%"]}
 		],
 		"action": {"assignment": {"dst": "%mem-operand%", "src": "%src-operand%"}}

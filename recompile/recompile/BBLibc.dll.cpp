@@ -4841,7 +4841,8 @@ Failed to find pattern for 'sub esp, 000000008h'
 p1002A5F0
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    ACCESS(STACKVAR(-4, 4), 0, 4) = 0x00000000;
+    ACCESS(STACKVAR(-4, 4), 0, 8) = 0.0;
+    ACCESS(STACKVAR(-4, 4), 8, 4) = 0x00000000;
 }
 Unexpected instruction type <class 'instructions.assignment.Assignment'>
 
@@ -4867,7 +4868,8 @@ Unexpected instruction type <class 'instructions.code_instruction.CodeInstructio
 p1002DEF0
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    ACCESS(STACKVAR(-4, 4), 0, 4) = 0x00000000;
+    ACCESS(STACKVAR(-4, 4), 0, 8) = 0.0;
+    ACCESS(STACKVAR(-4, 4), 8, 4) = 0x00000000;
 }
 Unexpected instruction type <class 'instructions.assignment.Assignment'>
 
@@ -4896,7 +4898,8 @@ Failed to find pattern for 'sub esp, 000000010h'
 p1002E190
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    ACCESS(STACKVAR(-4, 4), 0, 4) = 0x00000000;
+    ACCESS(STACKVAR(-4, 4), 0, 8) = 1.0;
+    ACCESS(STACKVAR(-4, 4), 8, 4) = 0x00000000;
 }
 Unexpected instruction type <class 'instructions.assignment.Assignment'>
 
@@ -5022,12 +5025,12 @@ p10031430
 // address: 0x1003143A
 p1003143A
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
     ACCESS(GLOBAL(0x1004A960), 0, 4) = 0x00000000;
     ACCESS(GLOBAL(0x1004A964), 0, 4) = 0x3FF00000;
-    ACCESS(GLOBAL(0x1004A968), 0, 4) = 0x00000000;
+    ACCESS(GLOBAL(0x1004A968), 0, 8) = 0.0;
+    ACCESS(GLOBAL(0x1004A970), 0, 8) = 0.0;
 }
-Unexpected instruction type <class 'instructions.assignment.Assignment'>
 
 // address: 0x10031477
 p10031477
@@ -5039,12 +5042,12 @@ p10031477
 // address: 0x10031481
 p10031481
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
     ACCESS(GLOBAL(0x1004A948), 0, 4) = 0x00000000;
     ACCESS(GLOBAL(0x1004A94C), 0, 4) = 0x00000000;
-    ACCESS(GLOBAL(0x1004A950), 0, 4) = 0x00000000;
+    ACCESS(GLOBAL(0x1004A950), 0, 8) = 1.0;
+    ACCESS(GLOBAL(0x1004A958), 0, 8) = 0.0;
 }
-Unexpected instruction type <class 'instructions.assignment.Assignment'>
 
 // address: 0x100314BE
 p100314BE
@@ -5056,12 +5059,12 @@ p100314BE
 // address: 0x100314C8
 p100314C8
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
     ACCESS(GLOBAL(0x1004A978), 0, 4) = 0x00000000;
     ACCESS(GLOBAL(0x1004A97C), 0, 4) = 0x00000000;
-    ACCESS(GLOBAL(0x1004A980), 0, 4) = 0x00000000;
+    ACCESS(GLOBAL(0x1004A980), 0, 8) = 0.0;
+    ACCESS(GLOBAL(0x1004A988), 0, 8) = 1.0;
 }
-Unexpected instruction type <class 'instructions.assignment.Assignment'>
 
 // address: 0x10031505
 p10031505
