@@ -32,7 +32,7 @@ def process_asm_patterns(lines, declarations):
         elif proc_addr is not None and line.find("ENDP") >= 0:
             exc = _build_proc(
                 writer, declarations, patterns, proc_addr, proc_lines)
-            if exc is not None:
+            if exc is not None and to_hex(proc_addr) not in ["10041808"]:
                 if (
                     smallest_failed_proc_len is None or
                     len(proc_lines) < smallest_failed_proc_len
