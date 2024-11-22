@@ -163,6 +163,14 @@
 	},
 	{
 		"instructions": [
+			{"cdq":   []},
+			{"sub":   ["eax", "edx"]},
+			{"sar":   ["eax", "001h"]}
+		],
+		"action": {"tmpreg": {"dst": "eax", "src": "S(REGVALUE(eax)) / S(2)"}}
+	},
+	{
+		"instructions": [
 			{"xor":  ["%eax-ecx-edx%", "%eax-ecx-edx%"]}
 		],
 		"action": {"tmpreg": {"dst": "%eax-ecx-edx%", "src": "0x00000000"}}

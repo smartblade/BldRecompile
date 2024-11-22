@@ -4084,10 +4084,9 @@ Failed to find pattern for 'sub esp, 000000024h'
 // address: 0x10023E52
 p10023E52
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    REGDEF(ecx=0x000000FF * reinterpret_cast<any_int32>(STACKVAR(16, 4)), eax=STACKVAR(20, 4))
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
+    REGDEF(eax=(reinterpret_cast<int>(STACKVAR(20, 4)) / 2 + 255 * reinterpret_cast<int>(STACKVAR(16, 4))) / reinterpret_cast<int>(STACKVAR(20, 4)))
 }
-Failed to find pattern for 'cdq'
 
 // address: 0x10023E6E
 p10023E6E

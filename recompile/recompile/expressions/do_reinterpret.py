@@ -57,6 +57,8 @@ def _eliminate_reinterpret(data_type, cast):
 def _reinterpret_bin(data_type, b):
     if not isinstance(b, expressions.Bin):
         return None
+    if data_types.are_compatible(b.data_type, data_type):
+        return b
     if not data_type.is_any_int:
         return None
     if not b.left.data_type.is_any_int:
