@@ -4318,11 +4318,10 @@ p100268A0
 // address: 0x100268B3
 p100268B3
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
     STACKVAR(8, 4) = reinterpret_cast<any_int32>(STACKVAR(8, 4)) + reinterpret_cast<any_int32>(STACKVAR(12, 4)) - 1;
-    REGDEF(eax=reinterpret_cast<int>(STACKVAR(8, 4)) / reinterpret_cast<int>(STACKVAR(12, 4)))
+    REGDEF(eax=reinterpret_cast<int>(STACKVAR(8, 4)) - reinterpret_cast<int>(STACKVAR(8, 4)) % reinterpret_cast<int>(STACKVAR(12, 4)))
 }
-Redeclaration of eax
 
 // address: 0x100268D1
 p100268D1

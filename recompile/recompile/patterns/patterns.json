@@ -157,6 +157,15 @@
 	{
 		"instructions": [
 			{"cdq":   []},
+			{"idiv":  ["%src-operand%"]},
+			{"mov":   ["eax", "%src-operand-left%"]},
+			{"sub":   ["eax", "edx"]}
+		],
+		"action": {"tmpreg": {"dst": "eax", "src": "S(%src-operand-left%) - S(REGVALUE(eax)) % S(%src-operand%)"}}
+	},
+	{
+		"instructions": [
+			{"cdq":   []},
 			{"idiv":  ["%src-operand%"]}
 		],
 		"action": {"tmpreg": {"dst": "eax", "src": "S(REGVALUE(eax)) / S(%src-operand%)"}}

@@ -6,6 +6,7 @@ class Operator(Enum):
     SUB = "-"
     MUL = "*"
     DIV = "/"
+    MOD = "%"
     SHL = "<<"
     SHR = ">>"
     LT = "<"
@@ -25,6 +26,7 @@ class Operator(Enum):
 priorities = {
     Operator.MUL: 5,
     Operator.DIV: 5,
+    Operator.MOD: 5,
     Operator.ADD: 6,
     Operator.SUB: 6,
     Operator.SHL: 7,
