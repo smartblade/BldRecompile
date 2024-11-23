@@ -43,6 +43,16 @@ priorities = {
     Operator.DIV_ASS: 15,
 }
 
+logical = {
+    Operator.LT,
+    Operator.GT,
+    Operator.LE,
+    Operator.GE,
+    Operator.EQ,
+    Operator.NE,
+    Operator.AND,
+}
+
 operators = dict(
     (o.value, o) for o in Operator
 )

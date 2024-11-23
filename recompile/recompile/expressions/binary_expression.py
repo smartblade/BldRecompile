@@ -1,6 +1,6 @@
 import data_types
 import expressions
-from expressions.operator import Operator, priorities
+from expressions.operator import logical, Operator, priorities
 
 
 class BinaryExpression:
@@ -16,6 +16,8 @@ class BinaryExpression:
 
     @property
     def data_type(self):
+        if self._operator in logical:
+            return data_types.Bool()
         left_type = self._left.data_type
         right_type = self._right.data_type
         if (

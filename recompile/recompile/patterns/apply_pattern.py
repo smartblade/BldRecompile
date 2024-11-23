@@ -72,6 +72,7 @@ def _evaluate_procedure_calls(expression, **kwargs):
         on_real64=_evaluate_real64,
         on_i=_evaluate_any_int_conversion,
         on_s=_evaluate_int_conversion,
+        on_u=_evaluate_uint_conversion,
         **kwargs)
 
 
@@ -90,6 +91,13 @@ def _evaluate_real64(high, low, **kwargs):
 def _evaluate_any_int_conversion(expression, **kwargs):
     size = expression.data_type.size
     return expressions.do_reinterpret(data_types.AnyInt(size), expression)
+
+
+def _evaluate_uint_conversion(expression, **kwargs):
+    if expression.data_type.size == 4:
+        return expressions.do_reinterpret(data_types.UInt32(), expression)
+    raise Exception("Conversion to uint{} is not supported.".format(
+        expression.data_type.size * 8))
 
 
 def _evaluate_int_conversion(expression, **kwargs):

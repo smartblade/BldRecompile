@@ -2,6 +2,7 @@ from .any_int import AnyInt, AnyInt16
 from .are_compatible import are_compatible
 from .are_same import are_same
 from .array_type import Array
+from .bool import Bool
 from .char import Char
 from .class_type import ClassType
 from .data_type import DataType

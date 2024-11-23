@@ -132,10 +132,8 @@ Failed to find pattern for 'sub esp, 000000008h'
 // address: 0x10001A0D
 int B_IDataFile::Eof()
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(cmpl=reinterpret_cast<any_int32>(ACCESS(STACKVAR(-4, 4), 16396, 4)) + reinterpret_cast<any_int32>(ACCESS(STACKVAR(-4, 4), 16400, 4)), cmpr=ACCESS(STACKVAR(-4, 4), 8, 4))
+    return static_cast<int>(this->cacheBlockBytesRead + this->cacheBlockPos >= this->file_size);
 }
-Failed to find pattern for 'sbb eax, eax'
 
 // address: 0x10001A33
 void B_IDataFile::Read(void *data, unsigned int size)

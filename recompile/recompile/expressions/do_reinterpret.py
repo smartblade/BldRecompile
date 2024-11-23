@@ -10,6 +10,9 @@ def do_reinterpret(data_type, e):
         return _reinterpret_const(data_type, e)
     if isinstance(e, expressions.ReinterpretCast):
         return _eliminate_reinterpret(data_type, e)
+    result = _reinterpret_static_cast(data_type, e)
+    if result is not None:
+        return result
     result = _reinterpret_bin(data_type, e)
     if result is not None:
         return result
@@ -94,4 +97,17 @@ def _reinterpret_bin(data_type, b):
         left = do_reinterpret(data_type, left)
         right = do_reinterpret(data_type, right)
         return expressions.Bin(b.operator, left, right)
+    return None
+
+
+def _reinterpret_static_cast(data_type, cast):
+    if not isinstance(cast, expressions.StaticCast):
+        return None
+    if not isinstance(cast.expression.data_type, data_types.Bool):
+        return None
+    if (
+        isinstance(data_type, (data_types.Int32, data_types.UInt32)) and
+        isinstance(cast.data_type, (data_types.Int32, data_types.UInt32))
+    ):
+        return expressions.StaticCast(data_type, cast.expression)
     return None

@@ -15,6 +15,7 @@ _procedures = {
     "REAL64": lambda *args: _unpack_args(*args, high=from_hex, low=from_hex),
     "I": lambda *args: _unpack_args(*args, expression=None),
     "S": lambda *args: _unpack_args(*args, expression=None),
+    "U": lambda *args: _unpack_args(*args, expression=None),
 }
 
 

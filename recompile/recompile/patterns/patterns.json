@@ -201,6 +201,13 @@
 	},
 	{
 		"instructions": [
+			{"sbb":  ["%eax-ecx-edx%", "%eax-ecx-edx%"]},
+			{"inc":  ["%eax-ecx-edx%"]}
+		],
+		"action": {"tmpreg": {"dst": "%eax-ecx-edx%", "src": "(uint32)(U(REGVALUE(cmpl)) >= U(REGVALUE(cmpr)))"}}
+	},
+	{
+		"instructions": [
 			{"push":  ["%src-operand%"]}
 		],
 		"action": {"stackarg": {"arg": "ARG(%src-operand%)"}}
