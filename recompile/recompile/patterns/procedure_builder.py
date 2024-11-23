@@ -24,6 +24,14 @@ class ProcedureBuilder:
             instructions.ProcedureInfo(
                 self._method_class, int(allocated.emit_code())))
 
+    def make_preserved(self, reg):
+        if isinstance(self._last_instruction, instructions.ProcedureInfo):
+            self._last_instruction.preserve(reg.emit_code())
+            return
+        raise Exception(
+            "Unexpected instruction type {}".format(
+                type(self._last_instruction)))
+
     def make_restore(self, restore):
         self._add_instruction(instructions.CodeInstruction(restore))
 

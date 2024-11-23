@@ -9,6 +9,7 @@ class ProcedureInfo:
         self._this_offset = None
         self._method_class = method_class
         self._local_size = local_size
+        self._preserved = []
 
     @property
     def stack_variables(self):
@@ -58,6 +59,9 @@ class ProcedureInfo:
         raise Exception(
             "Unexpected expression found when defining 'this' variable "
             "offset: {}".format(e))
+
+    def preserve(self, reg):
+        self._preserved.append(reg)
 
     def set_stack_delta(self, stack_delta):
         self._stack_delta = stack_delta

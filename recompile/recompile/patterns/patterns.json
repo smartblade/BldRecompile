@@ -57,6 +57,12 @@
 	},
 	{
 		"instructions": [
+			{"push": ["edi"]}
+		],
+		"action": {"prolog-preserved": {"reg": "edi"}}
+	},
+	{
+		"instructions": [
 			{"mov": ["esp", "ebp"]}
 		],
 		"action": {"epilog-restore": {"restore": "RESTORE(esp)"}}
