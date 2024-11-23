@@ -21,15 +21,17 @@ int B_IDataFile::GetnOpenFiles()
 int B_IDataFile::SetOnOpenFunc(PyObject *obj)
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    REGDEF(cmpl=STACKVAR(8, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'cmp dword ptr [ebp+008h], 000000000h'
+Failed to find pattern for 'je l1000108B'
 
 // address: 0x10001096
 void B_IDataFile::RemoveOnOpenFunc()
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    REGDEF(cmpl=ACCESS(GLOBAL(0x10049F04), 0, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'cmp dword ptr [g10049F04], 000000000h'
+Failed to find pattern for 'jne l100010A4'
 
 // address: 0x100010E4
 p100010E4
@@ -131,9 +133,9 @@ Failed to find pattern for 'sub esp, 000000008h'
 int B_IDataFile::Eof()
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(ecx=reinterpret_cast<any_int32>(ACCESS(STACKVAR(-4, 4), 16396, 4)) + reinterpret_cast<any_int32>(ACCESS(STACKVAR(-4, 4), 16400, 4)), eax=STACKVAR(-4, 4))
+    REGDEF(cmpl=reinterpret_cast<any_int32>(ACCESS(STACKVAR(-4, 4), 16396, 4)) + reinterpret_cast<any_int32>(ACCESS(STACKVAR(-4, 4), 16400, 4)), cmpr=ACCESS(STACKVAR(-4, 4), 8, 4))
 }
-Failed to find pattern for 'cmp ecx, dword ptr [eax+008h]'
+Failed to find pattern for 'sbb eax, eax'
 
 // address: 0x10001A33
 void B_IDataFile::Read(void *data, unsigned int size)
@@ -229,17 +231,17 @@ Failed to find pattern for 'sub esp, 000000008h'
 p10001DA0
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(eax=STACKVAR(-4, 4))
+    REGDEF(cmpl=ACCESS(STACKVAR(-4, 4), 16396, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'cmp dword ptr [eax+00000400Ch], 000000000h'
+Failed to find pattern for 'jne l10001DB5'
 
 // address: 0x10001E01
 p10001E01
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(eax=STACKVAR(-4, 4), ecx=STACKVAR(8, 4))
+    REGDEF(cmpl=STACKVAR(8, 4), cmpr=ACCESS(STACKVAR(-4, 4), 16392, 4))
 }
-Failed to find pattern for 'cmp ecx, dword ptr [eax+000004008h]'
+Failed to find pattern for 'jbe l10001E40'
 
 // address: 0x10001E86
 void B_ODataFile::Write(const void *data, unsigned int size)
@@ -553,24 +555,25 @@ B_ListElement::~B_ListElement()
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
     ACCESS(STACKVAR(-4, 4), 0, 4) = GLOBAL(0x10042190);
-    REGDEF(ecx=STACKVAR(-4, 4))
+    REGDEF(cmpl=ACCESS(STACKVAR(-4, 4), 4, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'cmp dword ptr [ecx+004h], 000000000h'
+Failed to find pattern for 'je l100029AA'
 
 // address: 0x100029AE
 p100029AE
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
+    REGDEF(cmpl=STACKVAR(8, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'cmp dword ptr [ebp+008h], 000000000h'
+Failed to find pattern for 'je l100029F0'
 
 // address: 0x10002A14
 unsigned int B_List::Add(B_ListElement *element)
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(eax=STACKVAR(-4, 4))
+    REGDEF(cmpl=ACCESS(STACKVAR(-4, 4), 8, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'cmp dword ptr [eax+008h], 000000000h'
+Failed to find pattern for 'je l10002A51'
 
 // address: 0x10002A86
 unsigned int B_List::AddAfter(B_ListElement *existing, B_ListElement *newElement)
@@ -824,9 +827,9 @@ Failed to find pattern for 'sub esp, 000000018h'
 p10003730
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(ecx=STACKVAR(8, 4), edx=ACCESS(STACKVAR(-4, 4), 4, 4))
+    REGDEF(cmpl=ACCESS(STACKVAR(-4, 4), 4, 4), cmpr=ACCESS(STACKVAR(8, 4), 4, 4))
 }
-Failed to find pattern for 'cmp edx, dword ptr [ecx+004h]'
+Failed to find pattern for 'jne l10003761'
 
 // address: 0x10003769
 unsigned int B_Name::CompareNoCase(const char *str)
@@ -1032,9 +1035,9 @@ p100043CB
 p10004406
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(eax=STACKVAR(-4, 4))
+    REGDEF(cmpl=ACCESS(STACKVAR(-4, 4), 28, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'cmp dword ptr [eax+01Ch], 000000000h'
+Failed to find pattern for 'je l1000441D'
 
 // address: 0x10004425
 B_Resource *B_ResourceManager::sub_10004425(unsigned short resourceId, const B_Name &name)
@@ -1158,8 +1161,9 @@ p10004C20
 p10004C37
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
+    REGDEF(cmpl=STACKVAR(8, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'cmp dword ptr [ebp+008h], 000000000h'
+Failed to find pattern for 'jbe l10004C6E'
 
 // address: 0x10004C76
 p10004C76
@@ -1273,8 +1277,9 @@ Failed to find pattern for 'and eax, 00000FFFFh'
 void B_ResourceManager::FreeResource(B_Resource *resource)
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
+    REGDEF(cmpl=STACKVAR(8, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'cmp dword ptr [ebp+008h], 000000000h'
+Failed to find pattern for 'jne l10005EF2'
 
 // address: 0x10005F32
 unsigned int B_ResourceManager::NResources(unsigned short arg_1)
@@ -1985,17 +1990,17 @@ Failed to find pattern for 'sub esp, 00000000Ch'
 p100098C9
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
-    REGDEF(eax=STACKVAR(8, 4))
+    REGDEF(cmpl=ACCESS(STACKVAR(8, 4), 20, 4), cmpr=0x00000065)
 }
-Failed to find pattern for 'cmp dword ptr [eax+014h], 000000065h'
+Failed to find pattern for 'je l100098DF'
 
 // address: 0x10009C20
 p10009C20
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    REGDEF(eax=STACKVAR(8, 4))
+    REGDEF(cmpl=ACCESS(STACKVAR(8, 4), 20, 4), cmpr=0x00000064)
 }
-Failed to find pattern for 'cmp dword ptr [eax+014h], 000000064h'
+Failed to find pattern for 'je l10009C54'
 
 // address: 0x10009CD5
 p10009CD5
@@ -2023,9 +2028,9 @@ p1000A14E
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 324, 4);
-    REGDEF(edx=STACKVAR(8, 4))
+    REGDEF(cmpl=ACCESS(STACKVAR(8, 4), 224, 4), cmpr=0x00000001)
 }
-Failed to find pattern for 'cmp dword ptr [edx+0000000E0h], 000000001h'
+Failed to find pattern for 'jle l1000A176'
 
 // address: 0x1000A1C8
 p1000A1C8
@@ -2276,8 +2281,9 @@ Unexpected instruction type <class 'instructions.code_instruction.CodeInstructio
 p1000D719
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    REGDEF(cmpl=STACKVAR(16, 4), cmpr=0x0000FFFD)
 }
-Failed to find pattern for 'cmp dword ptr [ebp+010h], 00000FFFDh'
+Failed to find pattern for 'jbe l1000D73F'
 
 // address: 0x1000D764
 p1000D764
@@ -2359,8 +2365,9 @@ p1000D9A7
     unknown_function_1000D7FA(STACKVAR(8, 4), 0x00000000);
     unknown_function_1000D7FA(STACKVAR(8, 4), 0x00000000);
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 60, 4);
+    REGDEF(cmpl=STACKVAR(-4, 4), cmpr=0x00000003)
 }
-Failed to find pattern for 'cmp dword ptr [ebp-004h], 000000003h'
+Failed to find pattern for 'je l1000DA51'
 
 // address: 0x1000DA83
 p1000DA83
@@ -2498,17 +2505,17 @@ Failed to find pattern for 'sub esp, 000000008h'
 p1000F5D0
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
-    REGDEF(eax=STACKVAR(8, 4))
+    REGDEF(cmpl=ACCESS(STACKVAR(8, 4), 4, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'cmp dword ptr [eax+004h], 000000000h'
+Failed to find pattern for 'jne l1000F5DF'
 
 // address: 0x1000F640
 p1000F640
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    REGDEF(eax=STACKVAR(8, 4))
+    REGDEF(cmpl=ACCESS(STACKVAR(8, 4), 4, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'cmp dword ptr [eax+004h], 000000000h'
+Failed to find pattern for 'je l1000F65C'
 
 // address: 0x1000F672
 p1000F672
@@ -2545,8 +2552,9 @@ p1000F7ED
 p1000F828
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    REGDEF(cmpl=STACKVAR(8, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'cmp dword ptr [ebp+008h], 000000000h'
+Failed to find pattern for 'jg l1000F838'
 
 // address: 0x1000F86D
 p1000F86D
@@ -2560,9 +2568,9 @@ Unexpected instruction type <class 'instructions.code_instruction.CodeInstructio
 p1000F895
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
-    REGDEF(eax=STACKVAR(8, 4))
+    REGDEF(cmpl=ACCESS(STACKVAR(8, 4), 20, 4), cmpr=0x00000064)
 }
-Failed to find pattern for 'cmp dword ptr [eax+014h], 000000064h'
+Failed to find pattern for 'je l1000F8CA'
 
 // address: 0x1000FA22
 p1000FA22
@@ -2586,8 +2594,9 @@ p1000FB6A
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 40, 4);
+    REGDEF(cmpl=STACKVAR(-4, 4), cmpr=0x00000005)
 }
-Failed to find pattern for 'cmp dword ptr [ebp-004h], 000000005h'
+Failed to find pattern for 'ja l1000FBE7'
 
 // address: 0x1000FC1D
 p1000FC1D
@@ -2622,8 +2631,9 @@ Failed to find pattern for 'jmp l1001052F'
 p1001057F
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
+    REGDEF(cmpl=STACKVAR(12, 4), cmpr=0x00000004)
 }
-Failed to find pattern for 'cmp dword ptr [ebp+00Ch], 000000004h'
+Failed to find pattern for 'jg l100105EB'
 
 // address: 0x10010620
 p10010620
@@ -2756,8 +2766,9 @@ p100118C1
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 320, 4);
+    REGDEF(cmpl=STACKVAR(12, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'cmp dword ptr [ebp+00Ch], 000000000h'
+Failed to find pattern for 'je l100118F1'
 
 // address: 0x10011926
 p10011926
@@ -2881,17 +2892,18 @@ p1001311D
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 324, 4);
+    REGDEF(cmpl=STACKVAR(12, 4), cmpr=0x00000002)
 }
-Failed to find pattern for 'cmp dword ptr [ebp+00Ch], 000000002h'
+Failed to find pattern for 'je l1001314D'
 
 // address: 0x10013167
 p10013167
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 324, 4);
-    REGDEF(edx=STACKVAR(8, 4))
+    REGDEF(cmpl=ACCESS(STACKVAR(8, 4), 224, 4), cmpr=0x00000001)
 }
-Failed to find pattern for 'cmp dword ptr [edx+0000000E0h], 000000001h'
+Failed to find pattern for 'jle l1001318F'
 
 // address: 0x100131E1
 p100131E1
@@ -2939,41 +2951,41 @@ Failed to find pattern for 'sub esp, 00000001Ch'
 p10013B69
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    REGDEF(eax=STACKVAR(8, 4))
+    REGDEF(cmpl=ACCESS(STACKVAR(8, 4), 20, 4), cmpr=0x000000CD)
 }
-Failed to find pattern for 'cmp dword ptr [eax+014h], 0000000CDh'
+Failed to find pattern for 'je l10013B84'
 
 // address: 0x10013C80
 p10013C80
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
-    REGDEF(eax=STACKVAR(8, 4))
+    REGDEF(cmpl=ACCESS(STACKVAR(8, 4), 20, 4), cmpr=0x000000CA)
 }
-Failed to find pattern for 'cmp dword ptr [eax+014h], 0000000CAh'
+Failed to find pattern for 'jne l10013CC3'
 
 // address: 0x10013DDE
 p10013DDE
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
-    REGDEF(eax=STACKVAR(8, 4))
+    REGDEF(cmpl=ACCESS(STACKVAR(8, 4), 20, 4), cmpr=0x000000CC)
 }
-Failed to find pattern for 'cmp dword ptr [eax+014h], 0000000CCh'
+Failed to find pattern for 'je l10013E14'
 
 // address: 0x10013EFA
 p10013EFA
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
-    REGDEF(eax=STACKVAR(8, 4))
+    REGDEF(cmpl=ACCESS(STACKVAR(8, 4), 20, 4), cmpr=0x000000CD)
 }
-Failed to find pattern for 'cmp dword ptr [eax+014h], 0000000CDh'
+Failed to find pattern for 'je l10013F32'
 
 // address: 0x10014240
 p10014240
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
-    REGDEF(eax=STACKVAR(8, 4))
+    REGDEF(cmpl=ACCESS(STACKVAR(8, 4), 24, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'cmp dword ptr [eax+018h], 000000000h'
+Failed to find pattern for 'jne l10014266'
 
 // address: 0x1001429A
 p1001429A
@@ -2991,7 +3003,7 @@ p100142DC
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 24, 4);
     fwrite(ACCESS(STACKVAR(-4, 4), 24, 4), 0x00000001, 0x00001000, ACCESS(STACKVAR(-4, 4), 20, 4));
 }
-Failed to find pattern for 'cmp eax, 000001000h'
+Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x10014343
 p10014343
@@ -3004,9 +3016,9 @@ Failed to find pattern for 'sub esp, 000000008h'
 p100143E0
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
-    REGDEF(eax=STACKVAR(8, 4))
+    REGDEF(cmpl=ACCESS(STACKVAR(8, 4), 24, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'cmp dword ptr [eax+018h], 000000000h'
+Failed to find pattern for 'jne l1001442B'
 
 // address: 0x10014486
 p10014486
@@ -3028,8 +3040,9 @@ p10014552
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 24, 4);
+    REGDEF(cmpl=STACKVAR(12, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'cmp dword ptr [ebp+00Ch], 000000000h'
+Failed to find pattern for 'jle l100145A6'
 
 // address: 0x100145AA
 p100145AA
@@ -3057,18 +3070,18 @@ p10014759
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 392, 4);
-    REGDEF(edx=STACKVAR(8, 4))
+    REGDEF(cmpl=ACCESS(STACKVAR(8, 4), 292, 4), cmpr=0x00000001)
 }
-Failed to find pattern for 'cmp dword ptr [edx+000000124h], 000000001h'
+Failed to find pattern for 'jle l10014781'
 
 // address: 0x100147D6
 p100147D6
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 392, 4);
-    REGDEF(edx=STACKVAR(-4, 4))
+    REGDEF(cmpl=ACCESS(STACKVAR(-4, 4), 16, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'cmp dword ptr [edx+010h], 000000000h'
+Failed to find pattern for 'je l10014826'
 
 // address: 0x10014837
 p10014837
@@ -3473,9 +3486,9 @@ Failed to find pattern for 'sub esp, 000000014h'
 p1001B6C6
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    REGDEF(eax=STACKVAR(8, 4))
+    REGDEF(cmpl=ACCESS(STACKVAR(8, 4), 380, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'cmp dword ptr [eax+00000017Ch], 000000000h'
+Failed to find pattern for 'jne l1001B6F1'
 
 // address: 0x1001B79A
 p1001B79A
@@ -3814,8 +3827,9 @@ p1001F7D6
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 0, 4);
+    REGDEF(cmpl=STACKVAR(12, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'cmp dword ptr [ebp+00Ch], 000000000h'
+Failed to find pattern for 'jnl l1001F818'
 
 // address: 0x1001F834
 p1001F834
@@ -4578,9 +4592,9 @@ Failed to find pattern for 'sub esp, 000000010h'
 p100299E1
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(eax=STACKVAR(-4, 4))
+    REGDEF(cmpl=ACCESS(STACKVAR(-4, 4), 16, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'cmp dword ptr [eax+010h], 000000000h'
+Failed to find pattern for 'je l10029A02'
 
 // address: 0x10029A08
 p10029A08
@@ -4594,9 +4608,9 @@ p10029A08
 p10029A22
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(eax=STACKVAR(-4, 4))
+    REGDEF(cmpl=ACCESS(STACKVAR(-4, 4), 12, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'cmp dword ptr [eax+00Ch], 000000000h'
+Failed to find pattern for 'jne l10029A57'
 
 // address: 0x10029A60
 p10029A60
@@ -5491,8 +5505,9 @@ p10034467
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
     ACCESS(GLOBAL(0x1004A9A8), 0, 4) = GLOBAL(0x10042D7C);
+    REGDEF(cmpl=ACCESS(GLOBAL(0x1004A9B8), 0, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'cmp dword ptr [g1004A9B8], 000000000h'
+Failed to find pattern for 'je l100344BB'
 
 // address: 0x100344BF
 p100344BF
@@ -6666,8 +6681,9 @@ Failed to find pattern for 'sub esp, 000000010h'
 p1003FD8A
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
+    REGDEF(cmpl=STACKVAR(8, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'cmp dword ptr [ebp+008h], 000000000h'
+Failed to find pattern for 'je l1003FDA2'
 
 // address: 0x1003FDA8
 p1003FDA8

@@ -192,6 +192,15 @@
 	},
 	{
 		"instructions": [
+			{"cmp":  ["%src-operand-left%", "%src-operand-right%"]}
+		],
+		"actions": [
+			{"tmpreg": {"dst": "cmpl", "src": "%src-operand-left%"}},
+			{"tmpreg": {"dst": "cmpr", "src": "%src-operand-right%"}}
+		]
+	},
+	{
+		"instructions": [
 			{"push":  ["%src-operand%"]}
 		],
 		"action": {"stackarg": {"arg": "ARG(%src-operand%)"}}

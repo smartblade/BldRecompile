@@ -21,7 +21,15 @@ _actions = {
 
 
 def apply_pattern(builder, pattern, match_dict):
-    action = pattern["action"]
+    actions = pattern.get("actions")
+    if actions is None:
+        apply_action(builder, pattern["action"], match_dict)
+        return
+    for action in actions:
+        apply_action(builder, action, match_dict)
+
+
+def apply_action(builder, action, match_dict):
     action_name = next(iter(action.keys()))
     action_args = next(iter(action.values()))
     action_args = _evaluate_args(
