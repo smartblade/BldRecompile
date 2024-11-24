@@ -22,7 +22,7 @@ class ProcedureBuilder:
     def make_prolog(self, allocated):
         self._add_instruction(
             instructions.ProcedureInfo(
-                self._method_class, int(allocated.emit_code())))
+                self._method_class, from_hex(allocated.emit_code())))
 
     def make_preserved(self, reg):
         if isinstance(self._last_instruction, instructions.ProcedureInfo):

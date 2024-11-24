@@ -52,6 +52,14 @@
 	{
 		"instructions": [
 			{"push": ["ebp"]},
+			{"mov":  ["ebp", "esp"]},
+			{"sub":  ["esp", "%hex%"]}
+		],
+		"action": {"prolog": {"allocated": "%hex%"}}
+	},
+	{
+		"instructions": [
+			{"push": ["ebp"]},
 			{"mov":  ["ebp", "esp"]}
 		],
 		"action": {"prolog": {"allocated": "0"}}
