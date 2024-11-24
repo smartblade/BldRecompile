@@ -10,6 +10,7 @@
 		],
 		"reg-operand": [
 			{"operand": "edi", "expression": "edi"},
+			{"operand": "esi", "expression": "esi"},
 			{"operand": "%al-cl-dl%", "expression": "%al-cl-dl%"},
 			{"operand": "%ax-cx-dx%", "expression": "%ax-cx-dx%"},
 			{"operand": "%eax-ecx-edx%", "expression": "%eax-ecx-edx%"}
