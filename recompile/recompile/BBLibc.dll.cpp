@@ -4353,10 +4353,9 @@ Failed to find pattern for 'push esi'
 // address: 0x10026972
 p10026972
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
     memset(STACKVAR(8, 4), 0x00000000, STACKVAR(12, 4));
 }
-Failed to find pattern for 'pop edi'
 
 // address: 0x10026990
 p10026990

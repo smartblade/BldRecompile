@@ -29,6 +29,10 @@ class ProcedureInfo:
     def is_stack_pointer_trashed(self):
         return self._local_size != 0
 
+    @property
+    def preserved_regs(self):
+        return self._preserved
+
     def __repr__(self):
         return (
             "ProcedureInfo("

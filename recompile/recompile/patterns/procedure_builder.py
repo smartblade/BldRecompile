@@ -36,11 +36,7 @@ class ProcedureBuilder:
         self._add_instruction(instructions.CodeInstruction(restore))
 
     def make_epilog(self, size):
-        if (
-            not self._try_pop_restore_instruction("esp") and
-            self._expect_first_procedure_info().is_stack_pointer_trashed
-        ):
-            raise Exception("Changed stack pointer was not restored.")
+        self._pop_restore_instructions()
         stack_delta = from_hex(size.emit_code())
         self._expect_first_procedure_info().set_stack_delta(stack_delta)
         self._add_instruction(instructions.ReturnInstruction(None))
@@ -178,6 +174,17 @@ class ProcedureBuilder:
         assert pc.proc_decl is None
         pc = pc.copy(arguments=args, proc_decl=proc_decl)
         self._add_instruction(instructions.CodeInstruction(pc))
+
+    def _pop_restore_instructions(self):
+        proc_info = self._expect_first_procedure_info()
+        if (
+            proc_info.is_stack_pointer_trashed and
+            not self._try_pop_restore_instruction("esp")
+        ):
+            raise Exception("Changed stack pointer was not restored.")
+        for preserved_reg in proc_info.preserved_regs:
+            if not self._try_pop_restore_instruction(preserved_reg):
+                raise Exception("{} was not restored.", preserved_reg)
 
     @property
     def _last_instruction(self):
