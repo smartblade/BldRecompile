@@ -85,6 +85,12 @@
 	},
 	{
 		"instructions": [
+			{"pop": ["esi"]}
+		],
+		"action": {"epilog-restore": {"restore": "RESTORE(esi)"}}
+	},
+	{
+		"instructions": [
 			{"mov": ["esp", "ebp"]}
 		],
 		"action": {"epilog-restore": {"restore": "RESTORE(esp)"}}

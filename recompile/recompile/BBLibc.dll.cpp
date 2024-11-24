@@ -420,12 +420,9 @@ char *B_IDataFile::GetFileName()
 // address: 0x10002220
 B_IDataFile &B_IDataFile::operator =(const B_IDataFile &file)
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    memcpy(STACKVAR(-4, 4), STACKVAR(8, 4), 0x00004018); // TODO improve emitting of memcpy instructions
-    REGDEF(eax=STACKVAR(-4, 4))
-    RESTORE(edi);
+    memcpy(this, file, 0x00004018); // TODO improve emitting of memcpy instructions
+    return *this;
 }
-Failed to find pattern for 'pop esi'
 
 // address: 0x10002250
 unsigned int B_ODataFile::OK()
@@ -443,12 +440,10 @@ p10002270
 // address: 0x10002290
 p10002290
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    memcpy(STACKVAR(-4, 4), STACKVAR(8, 4), 0x00004010); // TODO improve emitting of memcpy instructions
-    REGDEF(eax=STACKVAR(-4, 4))
-    RESTORE(edi);
+    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=4)
+    memcpy(this, STACKVAR(8, 4), 0x00004010); // TODO improve emitting of memcpy instructions
+    REGDEF(eax=this)
 }
-Failed to find pattern for 'pop esi'
 
 // address: 0x100022C0
 B_Name &B_Name::Id()
@@ -1577,12 +1572,9 @@ Failed to find pattern for 'and eax, 000000002h'
 // address: 0x10006830
 B_ResourceManager &B_ResourceManager::operator =(const B_ResourceManager &that)
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    memcpy(STACKVAR(-4, 4), STACKVAR(8, 4), 0x00000404); // TODO improve emitting of memcpy instructions
-    REGDEF(eax=STACKVAR(-4, 4))
-    RESTORE(edi);
+    memcpy(this, that, 0x00000404); // TODO improve emitting of memcpy instructions
+    return *this;
 }
-Failed to find pattern for 'pop esi'
 
 // address: 0x10006860
 B_Color::B_Color()
@@ -1680,12 +1672,10 @@ p10006BE0
 // address: 0x10006BF0
 p10006BF0
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    memcpy(STACKVAR(-4, 4), STACKVAR(8, 4), 0x00000300); // TODO improve emitting of memcpy instructions
-    REGDEF(eax=STACKVAR(-4, 4))
-    RESTORE(edi);
+    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=4)
+    memcpy(this, STACKVAR(8, 4), 0x00000300); // TODO improve emitting of memcpy instructions
+    REGDEF(eax=this)
 }
-Failed to find pattern for 'pop esi'
 
 // address: 0x10006C20
 B_BitMap &B_BitMap::operator=(const B_BitMap &that)
@@ -1821,22 +1811,16 @@ p10007F20
 // address: 0x10007F40
 B_RDataTriangle &B_RDataTriangle::operator=(const B_RDataTriangle &other)
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    memcpy(STACKVAR(-4, 4), STACKVAR(8, 4), 0x0000001C); // TODO improve emitting of memcpy instructions
-    REGDEF(eax=STACKVAR(-4, 4))
-    RESTORE(edi);
+    memcpy(this, other, 0x0000001C); // TODO improve emitting of memcpy instructions
+    return *this;
 }
-Failed to find pattern for 'pop esi'
 
 // address: 0x10007F70
 B_MeshEdge &B_MeshEdge::operator=(const B_MeshEdge &other)
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    memcpy(STACKVAR(-4, 4), STACKVAR(8, 4), 0x00000018); // TODO improve emitting of memcpy instructions
-    REGDEF(eax=STACKVAR(-4, 4))
-    RESTORE(edi);
+    memcpy(this, other, 0x00000018); // TODO improve emitting of memcpy instructions
+    return *this;
 }
-Failed to find pattern for 'pop esi'
 
 // address: 0x10007FA0
 p10007FA0
@@ -2096,12 +2080,10 @@ Failed to find pattern for 'jle l1000923C'
 // address: 0x100093A7
 p100093A7
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    memcpy(STACKVAR(-4, 4), STACKVAR(8, 4), 0x00000300); // TODO improve emitting of memcpy instructions
-    REGDEF(eax=STACKVAR(-4, 4))
-    RESTORE(edi);
+    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=4)
+    memcpy(this, STACKVAR(8, 4), 0x00000300); // TODO improve emitting of memcpy instructions
+    REGDEF(eax=this)
 }
-Failed to find pattern for 'pop esi'
 
 // address: 0x100093C8
 unsigned char B_Pal::GetRed(unsigned int val)
