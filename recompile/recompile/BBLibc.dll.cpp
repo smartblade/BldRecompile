@@ -153,9 +153,10 @@ int B_IDataFile::Eof()
 // address: 0x10001A33
 void B_IDataFile::Read(void *data, unsigned int size)
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=None)
+    ProcedureInfo(this=Id(this), this_offset=-8, local_size=12, stack_delta=None)
+    REGDEF(ecx=STACKVAR(-8, 4), edx=ACCESS(STACKVAR(-8, 4), 8, 4))
 }
-Failed to find pattern for 'push esi'
+Failed to find pattern for 'sub edx, dword ptr [ecx+000004010h]'
 
 // address: 0x10001B55
 B_IDataFile &operator >>(B_IDataFile &file, char &c)
@@ -262,9 +263,10 @@ Failed to find pattern for 'jbe l10001E40'
 // address: 0x10001E86
 void B_ODataFile::Write(const void *data, unsigned int size)
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=8, stack_delta=None)
+    ProcedureInfo(this=Id(this), this_offset=-8, local_size=8, stack_delta=None)
+    REGDEF(cmpl=STACKVAR(12, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'push esi'
+Failed to find pattern for 'jne l10001E9C'
 
 // address: 0x10001F5E
 B_ODataFile &operator <<(B_ODataFile &file, const char &c)
@@ -418,9 +420,10 @@ char *B_IDataFile::GetFileName()
 // address: 0x10002220
 B_IDataFile &B_IDataFile::operator =(const B_IDataFile &file)
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
+    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
+    REGDEF(edi=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'push esi'
+Failed to find pattern for 'mov esi, dword ptr [ebp+008h]'
 
 // address: 0x10002250
 unsigned int B_ODataFile::OK()
@@ -438,9 +441,10 @@ p10002270
 // address: 0x10002290
 p10002290
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
+    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
+    REGDEF(edi=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'push esi'
+Failed to find pattern for 'mov esi, dword ptr [ebp+008h]'
 
 // address: 0x100022C0
 B_Name &B_Name::Id()
@@ -573,8 +577,9 @@ Failed to find pattern for 'test eax, eax'
 char *GetCurrentLanguage()
 {
     ProcedureInfo(this=None, this_offset=None, local_size=256, stack_delta=None)
+    unknown_function_10002740();
 }
-Failed to find pattern for 'push esi'
+Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x10002980
 B_ListElement::~B_ListElement()
@@ -793,16 +798,20 @@ Unexpected instruction type <class 'instructions.code_instruction.CodeInstructio
 // address: 0x10003337
 B_Name::B_Name(const char *str)
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=8, stack_delta=None)
+    ProcedureInfo(this=Id(this), this_offset=-8, local_size=8, stack_delta=None)
+    REGDEF(edi=STACKVAR(8, 4))
 }
-Failed to find pattern for 'push esi'
+Failed to find pattern for 'or ecx, 0FFFFFFFFh'
 
 // address: 0x100033A4
 B_Name::B_Name(const B_Name &src)
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=None)
+    ProcedureInfo(this=Id(this), this_offset=-12, local_size=12, stack_delta=None)
+    STACKVAR(-8, 4) = ACCESS(STACKVAR(8, 4), 4, 4);
+    ACCESS(STACKVAR(-12, 4), 4, 4) = STACKVAR(-8, 4);
+    ??2@YAPAXI@Z(reinterpret_cast<any_int32>(ACCESS(STACKVAR(-12, 4), 4, 4)) + 0x00000001);
 }
-Failed to find pattern for 'push esi'
+Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x10003410
 B_Name::B_Name(unsigned int len)
@@ -890,9 +899,10 @@ Failed to find pattern for 'neg eax'
 // address: 0x1000378E
 B_Name &B_Name::operator =(const B_Name &src)
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=None)
+    ProcedureInfo(this=Id(this), this_offset=-12, local_size=12, stack_delta=None)
+    REGDEF(cmpl=ACCESS(STACKVAR(-12, 4), 4, 4), cmpr=ACCESS(STACKVAR(8, 4), 4, 4))
 }
-Failed to find pattern for 'push esi'
+Failed to find pattern for 'je l100037EF'
 
 // address: 0x10003821
 B_Name B_Name::Right(unsigned int count)
@@ -998,9 +1008,11 @@ Failed to find pattern for 'push ebx'
 // address: 0x10003D30
 B_Name &B_Name::operator+=(char c)
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=16, stack_delta=None)
+    ProcedureInfo(this=Id(this), this_offset=-16, local_size=16, stack_delta=None)
+    ACCESS(STACKVAR(-16, 4), 4, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-16, 4), 4, 4)) + 0x00000001;
+    ??2@YAPAXI@Z(reinterpret_cast<any_int32>(ACCESS(STACKVAR(-16, 4), 4, 4)) + 0x00000001);
 }
-Failed to find pattern for 'push esi'
+Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x10003DCE
 B_Name &B_Name::operator +=(const B_Name &other)
@@ -1058,8 +1070,11 @@ Unexpected instruction type <class 'instructions.code_instruction.CodeInstructio
 p10003FCE
 {
     ProcedureInfo(this=None, this_offset=None, local_size=84, stack_delta=None)
+    STACKVAR(-12, 4) = 0x00000000;
+    STACKVAR(-8, 4) = 0x00000000;
+    REGDEF(eax=STACKVAR(12, 4))
 }
-Failed to find pattern for 'push esi'
+Failed to find pattern for 'and eax, 00000FFFFh'
 
 // address: 0x10004371
 p10004371
@@ -1238,9 +1253,10 @@ Failed to find pattern for 'jbe l10004C6E'
 // address: 0x10004C76
 p10004C76
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=40, stack_delta=None)
+    ProcedureInfo(this=Id(this), this_offset=-40, local_size=40, stack_delta=None)
+    STACKVAR(-4, 4) = 0x00000000;
 }
-Failed to find pattern for 'push esi'
+Failed to find pattern for 'jmp l10004C92'
 
 // address: 0x10004E0B
 unsigned int B_ResourceManager::LocateResourceIn(const B_Name &id, const B_Name *arg_2, int arg_3)
@@ -1249,21 +1265,30 @@ unsigned int B_ResourceManager::LocateResourceIn(const B_Name &id, const B_Name 
     REGDEF(eax=0x000040A0)
     unknown_function_10041600();
 }
-Failed to find pattern for 'push esi'
+Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x10005533
 p10005533
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=100, stack_delta=None)
+    ProcedureInfo(this=Id(this), this_offset=-96, local_size=100, stack_delta=None)
+    STACKVAR(-4, 4) = 0x00000000;
+    LOCAL(-28)->unknown_method_10003300();
+    STACKVAR(-36, 2) = 0x0000;
+    STACKVAR(-20, 4) = 0x00000000;
+    STACKVAR(-8, 4) = 0x00000000;
+    unknown_function_10001BEF(STACKVAR(12, 4), LOCAL(-16));
+    STACKVAR(-12, 4) = 0x00000000;
 }
-Failed to find pattern for 'push esi'
+Failed to find pattern for 'jmp l10005582'
 
 // address: 0x1000582E
 unsigned int B_ResourceManager::AddAutoResource(const B_Name &arg_1, B_Resource *arg_2, int arg_3)
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=72, stack_delta=None)
+    ProcedureInfo(this=Id(this), this_offset=-64, local_size=72, stack_delta=None)
+    STACKVAR(-36, 4) = 0x00000000;
+    REGDEF(cmpl=STACKVAR(12, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'push esi'
+Failed to find pattern for 'jne l1000585D'
 
 // address: 0x10005AF0
 B_Resource *B_ResourceManager::GetResource(unsigned short resourceId, const B_Name &name)
@@ -1365,9 +1390,11 @@ Failed to find pattern for 'and eax, 00000FFFFh'
 // address: 0x10005F66
 void B_ResourceManager::AddBodLink(const char *c, int i, const char *pc, int i1)
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=64, stack_delta=None)
+    ProcedureInfo(this=Id(this), this_offset=-60, local_size=64, stack_delta=None)
+    STACKVAR(-28, 4) = 0x00000000;
+    REGDEF(cmpl=ACCESS(STACKVAR(-60, 4), 4, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'push esi'
+Failed to find pattern for 'jne l10005FB0'
 
 // address: 0x1000617B
 p1000617B
@@ -1546,9 +1573,9 @@ Failed to find pattern for 'and eax, 000000002h'
 // address: 0x10006830
 B_ResourceManager &B_ResourceManager::operator =(const B_ResourceManager &that)
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
+    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
 }
-Failed to find pattern for 'push esi'
+Failed to find pattern for 'mov esi, dword ptr [ebp+008h]'
 
 // address: 0x10006860
 B_Color::B_Color()
@@ -1646,9 +1673,9 @@ p10006BE0
 // address: 0x10006BF0
 p10006BF0
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
+    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
 }
-Failed to find pattern for 'push esi'
+Failed to find pattern for 'mov esi, dword ptr [ebp+008h]'
 
 // address: 0x10006C20
 B_BitMap &B_BitMap::operator=(const B_BitMap &that)
@@ -1674,9 +1701,11 @@ Failed to find pattern for 'and eax, 000000001h'
 // address: 0x10006CB0
 B_BitMap24::B_BitMap24(int width, int height)
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=28, stack_delta=None)
+    ProcedureInfo(this=Id(this), this_offset=-28, local_size=28, stack_delta=None)
+    ACCESS(STACKVAR(-28, 4), 0, 4) = GLOBAL(0x100421C8);
+    REGDEF(cmpl=ACCESS(GLOBAL(0x1004A530), 0, 4), cmpr=ACCESS(GLOBAL(0x1004A528), 0, 4))
 }
-Failed to find pattern for 'push esi'
+Failed to find pattern for 'jbe l10006CF6'
 
 // address: 0x10006E20
 p10006E20
@@ -1689,9 +1718,11 @@ Failed to find pattern for 'je l10006E51'
 // address: 0x10006E70
 B_BitMap24::~B_BitMap24()
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=52, stack_delta=None)
+    ProcedureInfo(this=Id(this), this_offset=-48, local_size=52, stack_delta=None)
+    ACCESS(STACKVAR(-48, 4), 0, 4) = GLOBAL(0x100421C8);
+    STACKVAR(-8, 4) = 0x00000000;
 }
-Failed to find pattern for 'push esi'
+Failed to find pattern for 'jmp l10006E95'
 
 // address: 0x10007090
 p10007090
@@ -1711,44 +1742,55 @@ p100070C0
 // address: 0x100070E0
 p100070E0
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=28, stack_delta=None)
+    ProcedureInfo(this=Id(this), this_offset=-28, local_size=28, stack_delta=None)
+    ACCESS(STACKVAR(-28, 4), 0, 4) = GLOBAL(0x100421C8);
+    REGDEF(cmpl=ACCESS(GLOBAL(0x1004A530), 0, 4), cmpr=ACCESS(GLOBAL(0x1004A528), 0, 4))
 }
-Failed to find pattern for 'push esi'
+Failed to find pattern for 'jbe l10007126'
 
 // address: 0x10007470
 p10007470
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=76, stack_delta=None)
+    ProcedureInfo(this=Id(this), this_offset=-72, local_size=76, stack_delta=None)
+    REGDEF(eax=STACKVAR(8, 4))
 }
-Failed to find pattern for 'push esi'
+Failed to find pattern for 'and eax, 000000002h'
 
 // address: 0x10007790
 p10007790
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=56, stack_delta=None)
+    ProcedureInfo(this=Id(this), this_offset=-52, local_size=56, stack_delta=None)
+    STACKVAR(-48, 4) = reinterpret_cast<any_int32>(STACKVAR(-52, 4)) + 0x0000000C;
+    ACCESS(STACKVAR(-48, 4), 0, 4) = GLOBAL(0x100421C8);
+    STACKVAR(-8, 4) = 0x00000000;
 }
-Failed to find pattern for 'push esi'
+Failed to find pattern for 'jmp l100077BE'
 
 // address: 0x100079D0
 p100079D0
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=56, stack_delta=None)
+    ProcedureInfo(this=Id(this), this_offset=-52, local_size=56, stack_delta=None)
+    STACKVAR(-48, 4) = reinterpret_cast<any_int32>(STACKVAR(-52, 4)) + 0x0000000C;
+    ACCESS(STACKVAR(-48, 4), 0, 4) = GLOBAL(0x100421C8);
+    STACKVAR(-8, 4) = 0x00000000;
 }
-Failed to find pattern for 'push esi'
+Failed to find pattern for 'jmp l100079FE'
 
 // address: 0x10007C10
 p10007C10
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=24, stack_delta=None)
+    ProcedureInfo(this=Id(this), this_offset=-24, local_size=24, stack_delta=None)
+    REGDEF(cmpl=ACCESS(STACKVAR(-24, 4), 16, 4), cmpr=ACCESS(STACKVAR(-24, 4), 8, 4))
 }
-Failed to find pattern for 'push esi'
+Failed to find pattern for 'jbe l10007C4E'
 
 // address: 0x10007D30
 p10007D30
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=40, stack_delta=None)
+    ProcedureInfo(this=Id(this), this_offset=-36, local_size=40, stack_delta=None)
+    REGDEF(cmpl=STACKVAR(8, 4), cmpr=ACCESS(STACKVAR(-36, 4), 8, 4))
 }
-Failed to find pattern for 'push esi'
+Failed to find pattern for 'jb l10007D4A'
 
 // address: 0x10007EF0
 B_RDataLight &B_RDataLight::operator=(const B_RDataLight &other)
@@ -1769,16 +1811,16 @@ p10007F20
 // address: 0x10007F40
 B_RDataTriangle &B_RDataTriangle::operator=(const B_RDataTriangle &other)
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
+    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
 }
-Failed to find pattern for 'push esi'
+Failed to find pattern for 'mov esi, dword ptr [ebp+008h]'
 
 // address: 0x10007F70
 B_MeshEdge &B_MeshEdge::operator=(const B_MeshEdge &other)
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
+    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
 }
-Failed to find pattern for 'push esi'
+Failed to find pattern for 'mov esi, dword ptr [ebp+008h]'
 
 // address: 0x10007FA0
 p10007FA0
@@ -1933,16 +1975,27 @@ Unexpected instruction type <class 'instructions.code_instruction.CodeInstructio
 // address: 0x100086E3
 B_BitMap::B_BitMap(const B_BitMap &src)
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=44, stack_delta=None)
+    ProcedureInfo(this=Id(this), this_offset=-32, local_size=44, stack_delta=None)
+    ACCESS(STACKVAR(-32, 4), 4, 4) = ACCESS(STACKVAR(8, 4), 4, 4);
+    ACCESS(STACKVAR(-32, 4), 8, 4) = ACCESS(STACKVAR(8, 4), 8, 4);
+    ACCESS(STACKVAR(-32, 4), 12, 4) = ACCESS(STACKVAR(8, 4), 12, 4);
+    ACCESS(STACKVAR(-32, 4), 0, 4) = GLOBAL(0x100421F8);
+    ACCESS(STACKVAR(-32, 4), 20, 4) = 0x00000000;
+    STACKVAR(-36, 4) = ACCESS(STACKVAR(-32, 4), 4, 4);
+    REGDEF(ecx=STACKVAR(-36, 4))
 }
-Failed to find pattern for 'push esi'
+Failed to find pattern for 'sub ecx, 000000001h'
 
 // address: 0x10008974
 p10008974
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=28, stack_delta=None)
+    ProcedureInfo(this=Id(this), this_offset=-24, local_size=28, stack_delta=None)
+    ACCESS(STACKVAR(-24, 4), 0, 4) = GLOBAL(0x100421F8);
+    ACCESS(STACKVAR(-24, 4), 20, 4) = 0x00000000;
+    STACKVAR(-28, 4) = STACKVAR(8, 4);
+    REGDEF(cmpl=STACKVAR(-28, 4), cmpr=0x00000002)
 }
-Failed to find pattern for 'push esi'
+Failed to find pattern for 'je l100089AD'
 
 // address: 0x10008AF0
 p10008AF0
@@ -2027,9 +2080,10 @@ Failed to find pattern for 'jle l1000923C'
 // address: 0x100093A7
 p100093A7
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
+    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
+    REGDEF(ecx=0x000000C0)
 }
-Failed to find pattern for 'push esi'
+Failed to find pattern for 'mov esi, dword ptr [ebp+008h]'
 
 // address: 0x100093C8
 unsigned char B_Pal::GetRed(unsigned int val)
@@ -2190,8 +2244,10 @@ Failed to find pattern for 'sub eax, 000000001h'
 p1000A47B
 {
     ProcedureInfo(this=None, this_offset=None, local_size=64, stack_delta=None)
+    STACKVAR(-12, 4) = ACCESS(STACKVAR(8, 4), 324, 4);
+    REGDEF(eax=ACCESS(STACKVAR(8, 4), 220, 4))
 }
-Failed to find pattern for 'push esi'
+Failed to find pattern for 'sub eax, 000000001h'
 
 // address: 0x1000A72E
 p1000A72E
@@ -2339,15 +2395,20 @@ Unexpected instruction type <class 'instructions.code_instruction.CodeInstructio
 p1000C607
 {
     ProcedureInfo(this=None, this_offset=None, local_size=20, stack_delta=None)
+    STACKVAR(-8, 4) = ACCESS(STACKVAR(8, 4), 344, 4);
+    REGDEF(edx=STACKVAR(12, 4))
 }
-Failed to find pattern for 'push esi'
+Failed to find pattern for 'and edx, 0000000FFh'
 
 // address: 0x1000C80D
 p1000C80D
 {
     ProcedureInfo(this=None, this_offset=None, local_size=52, stack_delta=None)
+    STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 344, 4);
+    STACKVAR(-40, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 24, 4), 0, 4);
+    STACKVAR(-36, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 24, 4), 4, 4);
 }
-Failed to find pattern for 'push esi'
+Failed to find pattern for 'mov esi, dword ptr [ebp-004h]'
 
 // address: 0x1000C9AC
 p1000C9AC
@@ -2396,8 +2457,11 @@ Failed to find pattern for 'and eax, 0000000FFh'
 p1000CEDD
 {
     ProcedureInfo(this=None, this_offset=None, local_size=40, stack_delta=None)
+    STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 344, 4);
+    STACKVAR(-40, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 24, 4), 0, 4);
+    STACKVAR(-36, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 24, 4), 4, 4);
 }
-Failed to find pattern for 'push esi'
+Failed to find pattern for 'mov esi, dword ptr [ebp-004h]'
 
 // address: 0x1000CF7A
 p1000CF7A
@@ -2694,8 +2758,9 @@ Failed to find pattern for 'je l1000F13E'
 p1000F1FC
 {
     ProcedureInfo(this=None, this_offset=None, local_size=24, stack_delta=None)
+    REGDEF(cmpl=ACCESS(STACKVAR(8, 4), 224, 4), cmpr=0x00000001)
 }
-Failed to find pattern for 'push esi'
+Failed to find pattern for 'jne l1000F2B7'
 
 // address: 0x1000F4DE
 p1000F4DE
@@ -2803,8 +2868,9 @@ p1000FA22
 p1000FA9B
 {
     ProcedureInfo(this=None, this_offset=None, local_size=8, stack_delta=None)
+    REGDEF(cmpl=ACCESS(STACKVAR(12, 4), 0, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'push esi'
+Failed to find pattern for 'jne l1000FABC'
 
 // address: 0x1000FB6A
 p1000FB6A
@@ -2865,8 +2931,12 @@ Unexpected instruction type <class 'instructions.code_instruction.CodeInstructio
 p10010695
 {
     ProcedureInfo(this=None, this_offset=None, local_size=20, stack_delta=None)
+    STACKVAR(-12, 4) = ACCESS(STACKVAR(8, 4), 344, 4);
+    ACCESS(STACKVAR(-12, 4), 32, 4) = STACKVAR(8, 4);
+    ACCESS(STACKVAR(-12, 4), 12, 1) = STACKVAR(12, 1);
+    REGDEF(ecx=0x00000000, cmpl=ACCESS(STACKVAR(8, 4), 296, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'push esi'
+Failed to find pattern for 'sete  cl'
 
 // address: 0x100108CB
 p100108CB
@@ -3048,8 +3118,11 @@ Can't parse line: l10011B9A: mov ecx, dword ptr [ebp+01Ch]
 p10011DDE
 {
     ProcedureInfo(this=None, this_offset=None, local_size=28, stack_delta=None)
+    STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 320, 4);
+    STACKVAR(-28, 4) = ACCESS(STACKVAR(8, 4), 216, 4);
+    REGDEF(edx=0x00000005 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 56, 4)))
 }
-Failed to find pattern for 'push esi'
+Failed to find pattern for 'imul edx, dword ptr [ebp-01Ch]'
 
 // address: 0x10011F30
 p10011F30
@@ -3399,15 +3472,20 @@ Failed to find pattern for 'sub eax, 000000001h'
 p10014F46
 {
     ProcedureInfo(this=None, this_offset=None, local_size=32, stack_delta=None)
+    STACKVAR(-12, 4) = ACCESS(STACKVAR(8, 4), 392, 4);
+    STACKVAR(-16, 1) = 0;
+    REGDEF(eax=static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 200, 1)))
 }
-Failed to find pattern for 'push esi'
+Failed to find pattern for 'test eax, eax'
 
 // address: 0x100150C1
 p100150C1
 {
     ProcedureInfo(this=None, this_offset=None, local_size=284, stack_delta=None)
+    STACKVAR(-24, 4) = ACCESS(STACKVAR(8, 4), 392, 4);
+    REGDEF(eax=ACCESS(STACKVAR(8, 4), 284, 4))
 }
-Failed to find pattern for 'push esi'
+Failed to find pattern for 'sub eax, 000000001h'
 
 // address: 0x10015B20
 p10015B20
@@ -3527,8 +3605,10 @@ Failed to find pattern for 'jne l10016D2E'
 p10016DB2
 {
     ProcedureInfo(this=None, this_offset=None, local_size=8, stack_delta=None)
+    STACKVAR(-4, 4) = STACKVAR(24, 4);
+    REGDEF(cmpl=STACKVAR(16, 4), cmpr=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'push esi'
+Failed to find pattern for 'jnl l10016E02'
 
 // address: 0x10016F06
 p10016F06
@@ -3542,8 +3622,10 @@ Unexpected instruction type <class 'instructions.code_instruction.CodeInstructio
 p10016F7E
 {
     ProcedureInfo(this=None, this_offset=None, local_size=24, stack_delta=None)
+    STACKVAR(-8, 4) = ACCESS(STACKVAR(8, 4), 408, 4);
+    REGDEF(cmpl=ACCESS(STACKVAR(8, 4), 364, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'push esi'
+Failed to find pattern for 'jne l10016FC1'
 
 // address: 0x10017160
 p10017160
@@ -3586,15 +3668,17 @@ p100178C6
 p1001791E
 {
     ProcedureInfo(this=None, this_offset=None, local_size=16, stack_delta=None)
+    REGDEF(cmpl=ACCESS(STACKVAR(8, 4), 292, 4), cmpr=0x00000001)
 }
-Failed to find pattern for 'push esi'
+Failed to find pattern for 'jne l100179DB'
 
 // address: 0x10017BC0
 p10017BC0
 {
     ProcedureInfo(this=None, this_offset=None, local_size=16, stack_delta=None)
+    STACKVAR(-16, 4) = 0x00000000;
 }
-Failed to find pattern for 'push esi'
+Failed to find pattern for 'jmp l10017BDA'
 
 // address: 0x10017C97
 p10017C97
@@ -3638,15 +3722,19 @@ p100180D6
 p10018140
 {
     ProcedureInfo(this=None, this_offset=None, local_size=20, stack_delta=None)
+    ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x00000050);
 }
-Failed to find pattern for 'push esi'
+Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x10018280
 p10018280
 {
     ProcedureInfo(this=None, this_offset=None, local_size=24, stack_delta=None)
+    STACKVAR(-8, 4) = ACCESS(STACKVAR(8, 4), 388, 4);
+    STACKVAR(-20, 4) = ACCESS(STACKVAR(8, 4), 280, 4);
+    REGDEF(edx=2 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 36, 4)))
 }
-Failed to find pattern for 'push esi'
+Failed to find pattern for 'shl edx, 002h'
 
 // address: 0x10018398
 p10018398
@@ -3662,8 +3750,12 @@ Failed to find pattern for 'je l100183BE'
 p1001844D
 {
     ProcedureInfo(this=None, this_offset=None, local_size=36, stack_delta=None)
+    STACKVAR(-16, 4) = ACCESS(STACKVAR(8, 4), 388, 4);
+    STACKVAR(-32, 4) = ACCESS(STACKVAR(8, 4), 280, 4);
+    STACKVAR(-28, 4) = 0x00000000;
+    STACKVAR(-24, 4) = ACCESS(STACKVAR(8, 4), 196, 4);
 }
-Failed to find pattern for 'push esi'
+Failed to find pattern for 'jmp l10018493'
 
 // address: 0x100185CF
 p100185CF
@@ -3687,15 +3779,22 @@ Failed to find pattern for 'test eax, eax'
 p10018845
 {
     ProcedureInfo(this=None, this_offset=None, local_size=32, stack_delta=None)
+    STACKVAR(-12, 4) = ACCESS(STACKVAR(8, 4), 388, 4);
+    STACKVAR(-28, 4) = ACCESS(STACKVAR(8, 4), 280, 4);
+    STACKVAR(-24, 4) = 0x00000000;
+    STACKVAR(-20, 4) = ACCESS(STACKVAR(8, 4), 196, 4);
 }
-Failed to find pattern for 'push esi'
+Failed to find pattern for 'jmp l1001888B'
 
 // address: 0x1001897D
 p1001897D
 {
     ProcedureInfo(this=None, this_offset=None, local_size=32, stack_delta=None)
+    STACKVAR(-12, 4) = ACCESS(STACKVAR(8, 4), 388, 4);
+    STACKVAR(-28, 4) = 0x00000000;
+    STACKVAR(-24, 4) = ACCESS(STACKVAR(8, 4), 196, 4);
 }
-Failed to find pattern for 'push esi'
+Failed to find pattern for 'jmp l100189B7'
 
 // address: 0x10018A6D
 p10018A6D
@@ -3816,8 +3915,11 @@ Failed to find pattern for 'test edx, edx'
 p1001A86C
 {
     ProcedureInfo(this=None, this_offset=None, local_size=316, stack_delta=None)
+    STACKVAR(-288, 4) = ACCESS(STACKVAR(8, 4), 24, 4);
+    STACKVAR(-304, 4) = ACCESS(STACKVAR(-288, 4), 0, 4);
+    STACKVAR(-296, 4) = ACCESS(STACKVAR(-288, 4), 4, 4);
 }
-Failed to find pattern for 'push esi'
+Can't parse line: l1001A8A0: cmp dword ptr [ebp-000000128h], 000000000h
 
 // address: 0x1001AF2C
 p1001AF2C
@@ -3924,8 +4026,9 @@ Failed to find pattern for 'imul eax, dword ptr [edx+064h]'
 p1001C61D
 {
     ProcedureInfo(this=None, this_offset=None, local_size=8, stack_delta=None)
+    ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x00000580);
 }
-Failed to find pattern for 'push esi'
+Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x1001C6F1
 p1001C6F1
@@ -4038,8 +4141,11 @@ Failed to find pattern for 'sete  al'
 p1001D69E
 {
     ProcedureInfo(this=None, this_offset=None, local_size=96, stack_delta=None)
+    STACKVAR(-24, 4) = ACCESS(STACKVAR(8, 4), 408, 4);
+    STACKVAR(-20, 4) = ACCESS(STACKVAR(8, 4), 376, 4);
+    REGDEF(cmpl=ACCESS(STACKVAR(8, 4), 252, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'push esi'
+Failed to find pattern for 'je l1001D6EF'
 
 // address: 0x1001D97A
 p1001D97A
@@ -4129,8 +4235,9 @@ Failed to find pattern for 'jne l1001E96E'
 p1001EA30
 {
     ProcedureInfo(this=None, this_offset=None, local_size=40, stack_delta=None)
+    ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x000000A0);
 }
-Failed to find pattern for 'push esi'
+Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x1001ED04
 p1001ED04
@@ -4382,8 +4489,11 @@ Failed to find pattern for 'jmp l10022319'
 p1002257C
 {
     ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=None)
+    STACKVAR(-8, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 288, 4)) + 0x00000080;
+    STACKVAR(-4, 4) = ACCESS(STACKVAR(12, 4), 80, 4);
+    REGDEF(ecx=STACKVAR(16, 4))
 }
-Failed to find pattern for 'push esi'
+Failed to find pattern for 'movsx edx, word ptr [ecx]'
 
 // address: 0x100225E0
 p100225E0
@@ -4597,8 +4707,11 @@ Unexpected instruction type <class 'instructions.code_instruction.CodeInstructio
 p10023CDA
 {
     ProcedureInfo(this=None, this_offset=None, local_size=36, stack_delta=None)
+    STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 100, 4);
+    STACKVAR(-12, 4) = ACCESS(STACKVAR(8, 4), 84, 4);
+    STACKVAR(-28, 4) = 0x00000001;
 }
-Failed to find pattern for 'push esi'
+Can't parse line: l10023CFA: mov ecx, dword ptr [ebp-01Ch]
 
 // address: 0x10023E52
 p10023E52
@@ -4947,15 +5060,18 @@ p100268B3
 p100268D1
 {
     ProcedureInfo(this=None, this_offset=None, local_size=16, stack_delta=None)
+    STACKVAR(-8, 4) = STACKVAR(28, 4);
+    REGDEF(ecx=STACKVAR(12, 4), edx=STACKVAR(8, 4))
 }
-Failed to find pattern for 'push esi'
+Failed to find pattern for 'lea eax, [edx+ecx*04h]'
 
 // address: 0x1002694F
 p1002694F
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    REGDEF(ecx=STACKVAR(16, 4))
 }
-Failed to find pattern for 'push esi'
+Failed to find pattern for 'shl ecx, 007h'
 
 // address: 0x10026972
 p10026972
@@ -5002,9 +5118,11 @@ Failed to find pattern for 'and eax, 000000001h'
 // address: 0x10026AD5
 B_BitMap24::B_BitMap24(const B_BitMap24 &that)
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=28, stack_delta=None)
+    ProcedureInfo(this=Id(this), this_offset=-28, local_size=28, stack_delta=None)
+    ACCESS(STACKVAR(-28, 4), 0, 4) = GLOBAL(0x100421C8);
+    REGDEF(cmpl=ACCESS(GLOBAL(0x1004A530), 0, 4), cmpr=ACCESS(GLOBAL(0x1004A528), 0, 4))
 }
-Failed to find pattern for 'push esi'
+Failed to find pattern for 'jbe l10026B1C'
 
 // address: 0x10026C70
 void B_BitMap24::SetBits(int arg_1, int arg_2, const char *arg_3, const char *arg_4)
@@ -5017,23 +5135,27 @@ Failed to find pattern for 'jmp l10026C88'
 // address: 0x10026D6D
 p10026D6D
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=72, stack_delta=None)
+    ProcedureInfo(this=Id(this), this_offset=-68, local_size=72, stack_delta=None)
+    ACCESS(STACKVAR(-68, 4), 0, 4) = GLOBAL(0x100421C8);
+    REGDEF(cmpl=ACCESS(GLOBAL(0x1004A530), 0, 4), cmpr=ACCESS(GLOBAL(0x1004A528), 0, 4))
 }
-Failed to find pattern for 'push esi'
+Failed to find pattern for 'jbe l10026DB4'
 
 // address: 0x100271BE
 B_BitMap24 &B_BitMap24::operator=(const B_BitMap24 &that)
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=None)
+    ProcedureInfo(this=Id(this), this_offset=-12, local_size=12, stack_delta=None)
+    REGDEF(cmpl=ACCESS(STACKVAR(-12, 4), 4, 4), cmpr=ACCESS(STACKVAR(8, 4), 4, 4))
 }
-Failed to find pattern for 'push esi'
+Failed to find pattern for 'jne l100271E9'
 
 // address: 0x100272A5
 p100272A5
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=None)
+    ProcedureInfo(this=Id(this), this_offset=-12, local_size=12, stack_delta=None)
+    REGDEF(edi=GLOBAL(0x100487C8))
 }
-Failed to find pattern for 'push esi'
+Failed to find pattern for 'mov esi, dword ptr [ebp+014h]'
 
 // address: 0x10027382
 int B_BitMap24::SaveToBMP(const char *fileName)
@@ -5189,8 +5311,10 @@ Failed to find pattern for 'sub ecx, 000000001h'
 p10029170
 {
     ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=None)
+    STACKVAR(12, 4) = 0x00000003 * reinterpret_cast<any_int32>(STACKVAR(12, 4));
+    STACKVAR(-8, 4) = 0x00000000;
 }
-Failed to find pattern for 'push esi'
+Failed to find pattern for 'jmp l10029192'
 
 // address: 0x10029217
 p10029217
@@ -5342,9 +5466,11 @@ Failed to find pattern for 'jne l10029CF5'
 // address: 0x10029CFC
 unsigned int B_MessageManager::Add(B_MessageChannel *channel)
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=28, stack_delta=None)
+    ProcedureInfo(this=Id(this), this_offset=-28, local_size=28, stack_delta=None)
+    STACKVAR(-24, 4) = ACCESS(GLOBAL(0x1004A944), 0, 4);
+    REGDEF(cmpl=ACCESS(STACKVAR(-24, 4), 16, 4), cmpr=ACCESS(STACKVAR(-24, 4), 8, 4))
 }
-Failed to find pattern for 'push esi'
+Failed to find pattern for 'jbe l10029D42'
 
 // address: 0x10029E17
 unsigned int B_MessageManager::OpenChannel(const B_Name &channel_name)
@@ -5367,9 +5493,10 @@ Failed to find pattern for 'jmp l10029EBB'
 // address: 0x10029F19
 B_MessageChannel *B_MessageManager::DisconnectChannel(const B_Name &channel_name)
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=52, stack_delta=None)
+    ProcedureInfo(this=Id(this), this_offset=-48, local_size=52, stack_delta=None)
+    STACKVAR(-4, 4) = 0x00000000;
 }
-Failed to find pattern for 'push esi'
+Failed to find pattern for 'jmp l10029F35'
 
 // address: 0x1002A13C
 p1002A13C
@@ -5524,9 +5651,9 @@ Failed to find pattern for 'fld qword ptr [eax+004h]'
 // address: 0x1002E0B0
 p1002E0B0
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
+    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
 }
-Failed to find pattern for 'push esi'
+Failed to find pattern for 'mov esi, dword ptr [ebp+008h]'
 
 // address: 0x1002E0F0
 p1002E0F0
@@ -5607,23 +5734,28 @@ Failed to find pattern for 'fstp qword ptr [ebp-008h]'
 // address: 0x1002F052
 p1002F052
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=84, stack_delta=None)
+    ProcedureInfo(this=Id(this), this_offset=-84, local_size=84, stack_delta=None)
+    STACKVAR(-4, 4) = 0x00000000;
 }
-Failed to find pattern for 'push esi'
+Failed to find pattern for 'jmp l1002F06F'
 
 // address: 0x1002F159
 p1002F159
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=212, stack_delta=None)
+    ProcedureInfo(this=Id(this), this_offset=-212, local_size=212, stack_delta=None)
+    LOCAL(-128)->unknown_method_1002E190();
+    REGDEF(eax=STACKVAR(-212, 4), ecx=STACKVAR(-212, 4))
 }
-Failed to find pattern for 'push esi'
+Failed to find pattern for 'fld qword ptr [ecx]'
 
 // address: 0x1002F537
 p1002F537
 {
     ProcedureInfo(this=None, this_offset=None, local_size=128, stack_delta=None)
+    LOCAL(-128)->unknown_method_1002E190();
+    REGDEF(eax=STACKVAR(12, 4), ecx=STACKVAR(16, 4))
 }
-Failed to find pattern for 'push esi'
+Failed to find pattern for 'fld qword ptr [eax]'
 
 // address: 0x1002FEB3
 p1002FEB3
@@ -5660,9 +5792,13 @@ p10030232
 // address: 0x10031284
 p10031284
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=52, stack_delta=None)
+    ProcedureInfo(this=Id(this), this_offset=-52, local_size=52, stack_delta=None)
+    ARG(STACKVAR(16, 4));
+    ARG(LOCAL(-24));
+    REGDEF(ecx=STACKVAR(12, 4))
+    unknown_function_10031882();
 }
-Failed to find pattern for 'push esi'
+Failed to find pattern for 'mov esi, eax'
 
 // address: 0x100312FC
 p100312FC
@@ -6137,16 +6273,19 @@ p10032AD9
 // address: 0x10032AE6
 void B_ObjDscr::SetUpNormals()
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=648, stack_delta=None)
+    ProcedureInfo(this=Id(this), this_offset=-628, local_size=648, stack_delta=None)
+    STACKVAR(-28, 4) = ACCESS(STACKVAR(-628, 4), 44, 4);
+    ??2@YAPAXI@Z(0x00000018 * reinterpret_cast<any_int32>(STACKVAR(-28, 4)));
 }
-Failed to find pattern for 'push esi'
+Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x100335C3
 void B_ObjDscr::SetUpInertialT()
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=680, stack_delta=None)
+    ProcedureInfo(this=Id(this), this_offset=-660, local_size=680, stack_delta=None)
+    REGDEF(ecx=ACCESS(STACKVAR(-660, 4), 44, 4))
 }
-Failed to find pattern for 'push esi'
+Failed to find pattern for 'shl ecx, 003h'
 
 // address: 0x100342BD
 int B_ObjDscr::GetVtxNode(unsigned int arg_1)
@@ -6229,9 +6368,12 @@ Failed to find pattern for 'je l100344BB'
 // address: 0x100344BF
 p100344BF
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=192, stack_delta=None)
+    ProcedureInfo(this=Id(this), this_offset=-168, local_size=192, stack_delta=None)
+    ARG(STACKVAR(8, 4));
+    REGDEF(ecx=STACKVAR(-168, 4))
+    unknown_function_100342BD();
 }
-Failed to find pattern for 'push esi'
+Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x10034A8A
 void B_ObjDscr::SetUpEdges()
@@ -6244,16 +6386,17 @@ Failed to find pattern for 'jne l10034AA4'
 // address: 0x10034D5A
 void B_ObjDscr::Draw(B_3DRasterDevice *raster, float x1, float y1, float x2, float y2, float scale, int i_unknown)
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=1164, stack_delta=None)
+    ProcedureInfo(this=Id(this), this_offset=-1036, local_size=1164, stack_delta=None)
 }
-Failed to find pattern for 'push esi'
+Failed to find pattern for 'fld dword ptr [ebp+00Ch]'
 
 // address: 0x1003590B
 p1003590B
 {
     ProcedureInfo(this=None, this_offset=None, local_size=708, stack_delta=None)
+    unknown_function_10004676(STACKVAR(8, 4), STACKVAR(12, 4));
 }
-Failed to find pattern for 'push esi'
+Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x100369F0
 p100369F0
@@ -6266,9 +6409,11 @@ Failed to find pattern for 'jbe l10036A0B'
 // address: 0x10036E0D
 void B_ObjDscr::SetUpBSP()
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=168, stack_delta=None)
+    ProcedureInfo(this=Id(this), this_offset=-160, local_size=168, stack_delta=None)
+    STACKVAR(-24, 4) = ACCESS(STACKVAR(-160, 4), 64, 4);
+    ??2@YAPAXI@Z(0x00000024 * reinterpret_cast<any_int32>(STACKVAR(-24, 4)) + 0x00000004);
 }
-Failed to find pattern for 'push esi'
+Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x100371B3
 p100371B3
@@ -6290,9 +6435,20 @@ Failed to find pattern for 'div ecx'
 // address: 0x1003737B
 p1003737B
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=480, stack_delta=None)
+    ProcedureInfo(this=Id(this), this_offset=-464, local_size=480, stack_delta=None)
+    STACKVAR(-16, 4) = 0x00000000;
+    STACKVAR(-12, 4) = 0x00000000;
+    STACKVAR(-8, 4) = 0x00000001;
+    STACKVAR(-4, 4) = 0x00000000;
+    STACKVAR(-20, 4) = GLOBAL(0x10042D7C);
+    STACKVAR(-40, 4) = 0x00000000;
+    STACKVAR(-36, 4) = 0x00000000;
+    STACKVAR(-32, 4) = 0x00000001;
+    STACKVAR(-28, 4) = 0x00000000;
+    STACKVAR(-44, 4) = GLOBAL(0x10042D7C);
+    STACKVAR(-464, 4)->unknown_method_10037338(STACKVAR(8, 4), STACKVAR(12, 4));
 }
-Failed to find pattern for 'push esi'
+Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x10037E84
 unsigned char B_ObjDscr::EdgeFaceGrp(unsigned int arg_1)
@@ -6397,9 +6553,15 @@ Failed to find pattern for 'jmp l10038525'
 // address: 0x1003896F
 p1003896F
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=332, stack_delta=None)
+    ProcedureInfo(this=Id(this), this_offset=-312, local_size=332, stack_delta=None)
+    ACCESS(GLOBAL(0x100488B8), 0, 4) = 0x40000000;
+    ACCESS(GLOBAL(0x100488B4), 0, 4) = 0x00000002;
+    ACCESS(GLOBAL(0x1004BF6C), 0, 4) = 0x00000001;
+    unknown_function_10004676(STACKVAR(8, 4), STACKVAR(-312, 4));
+    STACKVAR(-220, 4) = reinterpret_cast<any_int32>(STACKVAR(-312, 4)) + 0x0000000C;
+    REGDEF(cmpl=ACCESS(STACKVAR(-220, 4), 16, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'push esi'
+Failed to find pattern for 'je l100389D9'
 
 // address: 0x100395E0
 p100395E0
@@ -6635,9 +6797,10 @@ Failed to find pattern for 'jmp l1003A1FB'
 // address: 0x1003A240
 p1003A240
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=24, stack_delta=None)
+    ProcedureInfo(this=Id(this), this_offset=-24, local_size=24, stack_delta=None)
+    REGDEF(cmpl=ACCESS(STACKVAR(-24, 4), 16, 4), cmpr=ACCESS(STACKVAR(-24, 4), 8, 4))
 }
-Failed to find pattern for 'push esi'
+Failed to find pattern for 'jbe l1003A27E'
 
 // address: 0x1003A360
 p1003A360
@@ -6650,9 +6813,10 @@ Failed to find pattern for 'jmp l1003A37B'
 // address: 0x1003A3C0
 p1003A3C0
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=24, stack_delta=None)
+    ProcedureInfo(this=Id(this), this_offset=-24, local_size=24, stack_delta=None)
+    REGDEF(cmpl=ACCESS(STACKVAR(-24, 4), 16, 4), cmpr=ACCESS(STACKVAR(-24, 4), 8, 4))
 }
-Failed to find pattern for 'push esi'
+Failed to find pattern for 'jbe l1003A400'
 
 // address: 0x1003A4E0
 p1003A4E0
@@ -6864,9 +7028,9 @@ Failed to find pattern for 'je l1003B761'
 // address: 0x1003B780
 p1003B780
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
+    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
 }
-Failed to find pattern for 'push esi'
+Failed to find pattern for 'mov esi, dword ptr [ebp+008h]'
 
 // address: 0x1003B7C0
 p1003B7C0
@@ -7334,8 +7498,10 @@ B_ElementCSV::~B_ElementCSV()
 unsigned int ReadCSV(const char *file_name, B_NDataBase<B_ElementCSV> *csvs)
 {
     ProcedureInfo(this=None, this_offset=None, local_size=836, stack_delta=None)
+    STACKVAR(-264, 4) = 0x00000000;
+    fopen(STACKVAR(8, 4), GLOBAL(0x1004893C));
 }
-Failed to find pattern for 'push esi'
+Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x1003DED0
 p1003DED0
@@ -7590,15 +7756,22 @@ Failed to find pattern for 'test eax, eax'
 p1003EF05
 {
     ProcedureInfo(this=None, this_offset=None, local_size=32, stack_delta=None)
+    STACKVAR(-8, 4) = LOCAL(-32);
+    STACKVAR(-4, 4) = STACKVAR(12, 4);
+    REGDEF(cmpl=STACKVAR(-4, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'push esi'
+Failed to find pattern for 'jbe l1003EF80'
 
 // address: 0x1003EFD4
 p1003EFD4
 {
     ProcedureInfo(this=None, this_offset=None, local_size=184, stack_delta=None)
+    STACKVAR(-8, 4) = 0x00000000;
+    STACKVAR(-12, 4) = 0x00000000;
+    STACKVAR(8, 4) = STACKVAR(8, 4);
+    PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048F38), LOCAL(-8), LOCAL(-12));
 }
-Failed to find pattern for 'push esi'
+Failed to find pattern for 'test eax, eax'
 
 // address: 0x1003F24C
 p1003F24C
@@ -7614,8 +7787,10 @@ Failed to find pattern for 'test eax, eax'
 p1003F305
 {
     ProcedureInfo(this=None, this_offset=None, local_size=372, stack_delta=None)
+    STACKVAR(-4, 4) = 0x00000000;
+    REGDEF(eax=STACKVAR(8, 4))
 }
-Failed to find pattern for 'push esi'
+Failed to find pattern for 'movsx ecx, byte ptr [eax]'
 
 // address: 0x1003FA24
 p1003FA24
@@ -7919,9 +8094,22 @@ B_RDataTriangle::B_RDataTriangle()
 // address: 0x10040F69
 B_ParticleGType::B_ParticleGType(const B_Name &new_type, const B_Name &parent_type, unsigned int operation_type, unsigned int duration)
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=48, stack_delta=None)
+    ProcedureInfo(this=Id(this), this_offset=-44, local_size=48, stack_delta=None)
+    STACKVAR(-44, 4)->unknown_method_10003A07(STACKVAR(8, 4));
+    STACKVAR(-8, 4) = reinterpret_cast<any_int32>(STACKVAR(-44, 4)) + 0x0000000C;
+    ACCESS(STACKVAR(-8, 4), 4, 4) = 0x00000000;
+    ACCESS(STACKVAR(-8, 4), 8, 4) = 0x00000000;
+    ACCESS(STACKVAR(-8, 4), 12, 4) = 0x00000001;
+    ACCESS(STACKVAR(-8, 4), 16, 4) = 0x00000000;
+    ACCESS(STACKVAR(-8, 4), 0, 4) = GLOBAL(0x10042E68);
+    ACCESS(STACKVAR(-44, 4), 32, 4) = STACKVAR(20, 4);
+    ACCESS(STACKVAR(-44, 4), 40, 4) = STACKVAR(16, 4);
+    ACCESS(STACKVAR(-44, 4), 0, 4) = GLOBAL(0x10042E64);
+    ACCESS(STACKVAR(-44, 4), 12, 4) = GLOBAL(0x10042E60);
+    REGDEF(ecx=STACKVAR(12, 4))
+    unknown_function_10003457();
 }
-Failed to find pattern for 'push esi'
+Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x1004118F
 B_ParticleGType::~B_ParticleGType()
@@ -7937,8 +8125,13 @@ Failed to find pattern for 'je l100411BC'
 B_IDataFile &operator >>(B_IDataFile &file, B_ParticleGType &particleType)
 {
     ProcedureInfo(this=None, this_offset=None, local_size=52, stack_delta=None)
+    unknown_function_10003A40(STACKVAR(8, 4), STACKVAR(12, 4));
+    LOCAL(-8)->unknown_method_10003300();
+    ARG(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000028);
+    ARG(LOCAL(-8));
+    unknown_function_10001BEF(STACKVAR(8, 4), reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000020);
 }
-Failed to find pattern for 'push esi'
+Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x100413EE
 B_ODataFile &operator <<(B_ODataFile &file, const B_ParticleGType &particleType)

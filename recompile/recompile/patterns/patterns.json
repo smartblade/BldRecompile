@@ -72,6 +72,12 @@
 	},
 	{
 		"instructions": [
+			{"push": ["esi"]}
+		],
+		"action": {"prolog-preserved": {"reg": "esi"}}
+	},
+	{
+		"instructions": [
 			{"pop": ["edi"]}
 		],
 		"action": {"epilog-restore": {"restore": "RESTORE(edi)"}}
