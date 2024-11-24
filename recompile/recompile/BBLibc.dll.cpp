@@ -500,10 +500,14 @@ B_MessageChannel::B_MessageChannel(B_Name &name)
 // address: 0x100024F0
 p100024F0
 {
-    ProcedureInfo(this=Id(this), this_offset=-12, local_size=12, stack_delta=None)
-    ARG(GLOBAL(0x10049F08));
+    ProcedureInfo(this=Id(this), this_offset=-12, local_size=12, stack_delta=0)
+    reinterpret_cast<B_Name *>(LOCAL(-8))->B_Name(reinterpret_cast<char *>(GLOBAL(0x10049F08)));
+    reinterpret_cast<B_NamedObj *>(this)->B_NamedObj(*reinterpret_cast<B_Name *>(LOCAL(-8)));
+    reinterpret_cast<B_Name *>(LOCAL(-8))->~B_Name();
+    ACCESS(this, 0, 4) = GLOBAL(0x10042180);
+    ACCESS(this, 12, 4) = 0x00000001;
+    REGDEF(eax=this)
 }
-Failed to find pattern for 'lea ecx, [ebp-008h]'
 
 // address: 0x10002540
 p10002540
@@ -910,8 +914,10 @@ Failed to find pattern for 'jnb l100038B0'
 B_IDataFile &operator >>(B_IDataFile &file, B_Name &name)
 {
     ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=None)
+    unknown_function_10001BEF(STACKVAR(8, 4), LOCAL(-4));
+    REGDEF(cmpl=STACKVAR(-4, 4), cmpr=ACCESS(STACKVAR(12, 4), 4, 4))
 }
-Failed to find pattern for 'lea eax, [ebp-004h]'
+Failed to find pattern for 'je l1000395F'
 
 // address: 0x1000398A
 B_ODataFile &operator <<(B_ODataFile &file, const B_Name &name)
@@ -1396,33 +1402,52 @@ p100061AB
 p100061BA
 {
     ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=None)
-    ARG(STACKVAR(8, 4));
+    LOCAL(-12)->unknown_method_10003337(STACKVAR(8, 4));
+    ARG(0x00000001);
+    ARG(0x00000000);
+    ARG(LOCAL(-12));
+    REGDEF(ecx=GLOBAL(0x1004A118))
+    unknown_function_10004E0B();
 }
-Failed to find pattern for 'lea ecx, [ebp-00Ch]'
+Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x100061F0
 p100061F0
 {
     ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=None)
-    ARG(STACKVAR(8, 4));
+    LOCAL(-12)->unknown_method_10003337(STACKVAR(8, 4));
+    ARG(LOCAL(-12));
+    ARG(0x00000001);
+    REGDEF(ecx=GLOBAL(0x1004A118))
+    unknown_function_10005AF0();
 }
-Failed to find pattern for 'lea ecx, [ebp-00Ch]'
+Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x10006230
 p10006230
 {
     ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=None)
-    ARG(STACKVAR(8, 4));
+    LOCAL(-12)->unknown_method_10003337(STACKVAR(8, 4));
+    ARG(0x00000002);
+    ARG(0x00000000);
+    ARG(LOCAL(-12));
+    REGDEF(ecx=GLOBAL(0x1004A118))
+    unknown_function_10004E0B();
 }
-Failed to find pattern for 'lea ecx, [ebp-00Ch]'
+Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x10006266
 p10006266
 {
     ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=None)
-    ARG(STACKVAR(8, 4));
+    LOCAL(-12)->unknown_method_10003337(STACKVAR(8, 4));
+    ARG(0x00000005);
+    ARG(0x00000000);
+    ARG(LOCAL(-12));
+    REGDEF(ecx=GLOBAL(0x1004A118))
+    unknown_function_10004E0B();
 }
-Failed to find pattern for 'lea ecx, [ebp-00Ch]'
+Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x1000629C
 p1000629C
@@ -1935,8 +1960,9 @@ B_ODataFile &operator <<(B_ODataFile &file, const B_BitMap &bitMap)
     STACKVAR(-4, 4) = ACCESS(STACKVAR(12, 4), 4, 4);
     ARG(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x0000000C);
     ARG(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000008);
+    unknown_function_10002008(STACKVAR(8, 4), LOCAL(-4));
 }
-Failed to find pattern for 'lea ecx, [ebp-004h]'
+Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x10008C9B
 B_IDataFile &operator >>(B_IDataFile &file, B_BitMap &bitMap)
@@ -4231,8 +4257,11 @@ p1001F76C
 p1001F794
 {
     ProcedureInfo(this=None, this_offset=None, local_size=200, stack_delta=None)
+    ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 12, 4)(STACKVAR(8, 4), LOCAL(-200));
+    ARG(LOCAL(-200));
+    ARG(GLOBAL(0x100487B4));
 }
-Failed to find pattern for 'lea eax, [ebp-0000000C8h]'
+Failed to find pattern for 'mov edx, dword ptr [__imp__iob]; [BICRT._iob].'
 
 // address: 0x1001F7D6
 p1001F7D6
@@ -4296,8 +4325,10 @@ p10020550
     STACKVAR(-48, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 288, 4)) + 0x00000080;
     STACKVAR(-324, 4) = STACKVAR(16, 4);
     STACKVAR(-24, 4) = ACCESS(STACKVAR(12, 4), 80, 4);
+    STACKVAR(-56, 4) = LOCAL(-312);
+    STACKVAR(-316, 4) = 0x00000008;
 }
-Failed to find pattern for 'lea edx, [ebp-000000138h]'
+Failed to find pattern for 'jmp l100205A1'
 
 // address: 0x10020C70
 p10020C70
@@ -4306,8 +4337,10 @@ p10020C70
     STACKVAR(-48, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 288, 4)) + 0x00000080;
     STACKVAR(-324, 4) = STACKVAR(16, 4);
     STACKVAR(-24, 4) = ACCESS(STACKVAR(12, 4), 80, 4);
+    STACKVAR(-56, 4) = LOCAL(-312);
+    STACKVAR(-316, 4) = 0x00000008;
 }
-Failed to find pattern for 'lea edx, [ebp-000000138h]'
+Failed to find pattern for 'jmp l10020CC1'
 
 // address: 0x10021410
 p10021410
@@ -4316,8 +4349,10 @@ p10021410
     STACKVAR(-44, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 288, 4)) + 0x00000080;
     STACKVAR(-316, 4) = STACKVAR(16, 4);
     STACKVAR(-24, 4) = ACCESS(STACKVAR(12, 4), 80, 4);
+    STACKVAR(-48, 4) = LOCAL(-304);
+    STACKVAR(-308, 4) = 0x00000008;
 }
-Failed to find pattern for 'lea edx, [ebp-000000130h]'
+Failed to find pattern for 'jmp l10021461'
 
 // address: 0x10021D80
 p10021D80
@@ -4326,8 +4361,10 @@ p10021D80
     STACKVAR(-32, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 288, 4)) + 0x00000080;
     STACKVAR(-176, 4) = STACKVAR(16, 4);
     STACKVAR(-20, 4) = ACCESS(STACKVAR(12, 4), 80, 4);
+    STACKVAR(-36, 4) = LOCAL(-164);
+    STACKVAR(-168, 4) = 0x00000008;
 }
-Failed to find pattern for 'lea edx, [ebp-0000000A4h]'
+Failed to find pattern for 'jmp l10021DF2'
 
 // address: 0x100222BF
 p100222BF
@@ -4336,8 +4373,10 @@ p100222BF
     STACKVAR(-16, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 288, 4)) + 0x00000080;
     STACKVAR(-96, 4) = STACKVAR(16, 4);
     STACKVAR(-12, 4) = ACCESS(STACKVAR(12, 4), 80, 4);
+    STACKVAR(-20, 4) = LOCAL(-84);
+    STACKVAR(-88, 4) = 0x00000008;
 }
-Failed to find pattern for 'lea edx, [ebp-054h]'
+Failed to find pattern for 'jmp l10022319'
 
 // address: 0x1002257C
 p1002257C
@@ -4771,8 +4810,10 @@ Failed to find pattern for 'sar eax, 001h'
 p100257D0
 {
     ProcedureInfo(this=None, this_offset=None, local_size=576, stack_delta=None)
+    STACKVAR(-40, 4) = LOCAL(-556);
+    STACKVAR(-560, 4) = 0x0000007F;
 }
-Failed to find pattern for 'lea eax, [ebp-00000022Ch]'
+Failed to find pattern for 'jmp l100257FD'
 
 // address: 0x10025A2F
 p10025A2F
@@ -5025,17 +5066,25 @@ Unexpected instruction type <class 'instructions.code_instruction.CodeInstructio
 p10027E11
 {
     ProcedureInfo(this=Id(this), this_offset=-44, local_size=44, stack_delta=None)
-    ARG(STACKVAR(8, 4));
+    LOCAL(-8)->unknown_method_10003337(STACKVAR(8, 4));
+    LOCAL(-8)->unknown_method_10003821(LOCAL(-16), 0x00000004);
+    ARG(GLOBAL(0x100487F4));
+    REGDEF(ecx=LOCAL(-16))
+    unknown_function_10003769();
 }
-Failed to find pattern for 'lea ecx, [ebp-008h]'
+Failed to find pattern for 'test eax, eax'
 
 // address: 0x10027F15
 int B_BitMap24::SaveToFile(const char *arg_1, int arg_2)
 {
     ProcedureInfo(this=Id(this), this_offset=-44, local_size=44, stack_delta=None)
-    ARG(STACKVAR(8, 4));
+    LOCAL(-8)->unknown_method_10003337(STACKVAR(8, 4));
+    LOCAL(-8)->unknown_method_10003821(LOCAL(-16), 0x00000004);
+    ARG(GLOBAL(0x1004880C));
+    REGDEF(ecx=LOCAL(-16))
+    unknown_function_10003769();
 }
-Failed to find pattern for 'lea ecx, [ebp-008h]'
+Failed to find pattern for 'test eax, eax'
 
 // address: 0x10028021
 B_IDataFile &operator >>(B_IDataFile &file, B_BitMap24 &bitMap)
@@ -5056,8 +5105,13 @@ B_ODataFile &operator <<(B_ODataFile &file, const B_BitMap24 &bitMap)
     STACKVAR(-52, 2) = 0x0000;
     STACKVAR(-56, 4) = 0x00000000;
     STACKVAR(-60, 2) = 0x4D42;
+    ARG(LOCAL(-44));
+    ARG(LOCAL(-48));
+    ARG(LOCAL(-52));
+    ARG(LOCAL(-56));
+    unknown_function_10001FC6(STACKVAR(8, 4), LOCAL(-60));
 }
-Failed to find pattern for 'lea eax, [ebp-02Ch]'
+Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x10028353
 void B_BitMap24::EscribeArchivoRAW(const char *arg_1)
@@ -5143,29 +5197,38 @@ p10029217
 {
     ProcedureInfo(this=None, this_offset=None, local_size=144, stack_delta=None)
     STACKVAR(-24, 4) = 0x00000000;
+    unknown_function_100285A0(STACKVAR(8, 4), LOCAL(-104));
+    REGDEF(edx=STACKVAR(-104, 4))
 }
-Failed to find pattern for 'lea eax, [ebp-068h]'
+Failed to find pattern for 'and edx, 00000FFFFh'
 
 // address: 0x10029510
 p10029510
 {
     ProcedureInfo(this=Id(this), this_offset=-580, local_size=580, stack_delta=None)
+    unknown_function_1001F6E0(LOCAL(-564));
 }
-Failed to find pattern for 'lea eax, [ebp-000000234h]'
+Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x10029700
 int B_BitMap24::SaveToJPEG(const char *arg_1, int arg_2)
 {
     ProcedureInfo(this=Id(this), this_offset=-508, local_size=508, stack_delta=None)
+    unknown_function_1001F6E0(LOCAL(-500));
 }
-Failed to find pattern for 'lea eax, [ebp-0000001F4h]'
+Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x100298B0
 p100298B0
 {
     ProcedureInfo(this=Id(this), this_offset=-8, local_size=12, stack_delta=None)
+    STACKVAR(-8, 4)->unknown_method_10003A07(LOCAL(8));
+    ACCESS(STACKVAR(-8, 4), 0, 4) = GLOBAL(0x10042180);
+    ACCESS(STACKVAR(-8, 4), 12, 4) = 0x00000001;
+    ACCESS(STACKVAR(-8, 4), 0, 4) = GLOBAL(0x10042CBC);
+    ??2@YAPAXI@Z(0x00004010);
 }
-Failed to find pattern for 'lea eax, [ebp+008h]'
+Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x1002994D
 p1002994D
@@ -5235,8 +5298,10 @@ Failed to find pattern for 'and eax, 000000002h'
 char *vararg(const char *format)
 {
     ProcedureInfo(this=None, this_offset=None, local_size=8, stack_delta=None)
+    STACKVAR(-8, 4) = LOCAL(12);
+    vsprintf(GLOBAL(0x1004A540), STACKVAR(8, 4), STACKVAR(-8, 4));
 }
-Failed to find pattern for 'lea eax, [ebp+00Ch]'
+Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x10029C15
 p10029C15
@@ -5327,12 +5392,12 @@ Failed to find pattern for 'jmp l1002A1DC'
 // address: 0x1002A23E
 p1002A23E
 {
-    ProcedureInfo(this=Id(this), this_offset=-12, local_size=12, stack_delta=None)
+    ProcedureInfo(this=Id(this), this_offset=-12, local_size=12, stack_delta=4)
     STACKVAR(-8, 4) = 0x00000000;
     STACKVAR(-4, 1) = STACKVAR(8, 1);
     STACKVAR(-3, 1) = 0;
+    this->unknown_method_1002A13C(LOCAL(-4));
 }
-Failed to find pattern for 'lea ecx, [ebp-004h]'
 
 // address: 0x1002A26A
 unsigned int B_MessageChannel::Open()
@@ -5355,13 +5420,12 @@ unsigned int B_MessageChannel::Message(const char *message)
 // address: 0x1002A293
 p1002A293
 {
-    ProcedureInfo(this=Id(this), this_offset=-12, local_size=12, stack_delta=None)
+    ProcedureInfo(this=Id(this), this_offset=-12, local_size=12, stack_delta=8)
     STACKVAR(-8, 4) = 0x00000000;
     STACKVAR(-4, 1) = STACKVAR(8, 1);
     STACKVAR(-3, 1) = 0;
-    ARG(STACKVAR(12, 4));
+    this->unknown_method_1002A1B9(LOCAL(-4), STACKVAR(12, 4));
 }
-Failed to find pattern for 'lea edx, [ebp-004h]'
 
 // address: 0x1002A2C3
 B_MessageManager &operator<<(B_MessageManager &mout, const char *str)
@@ -7401,8 +7465,9 @@ p1003EA3C
     ProcedureInfo(this=None, this_offset=None, local_size=16, stack_delta=None)
     STACKVAR(-12, 4) = 0x00000000;
     STACKVAR(8, 4) = STACKVAR(8, 4);
+    PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048DE4), LOCAL(-12));
 }
-Failed to find pattern for 'lea ecx, [ebp-00Ch]'
+Failed to find pattern for 'test eax, eax'
 
 // address: 0x1003EAB8
 p1003EAB8
@@ -7418,72 +7483,81 @@ p1003EB04
 {
     ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=None)
     STACKVAR(8, 4) = STACKVAR(8, 4);
+    PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048E20), LOCAL(-8));
 }
-Failed to find pattern for 'lea ecx, [ebp-008h]'
+Failed to find pattern for 'test eax, eax'
 
 // address: 0x1003EB59
 p1003EB59
 {
     ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=None)
     STACKVAR(8, 4) = STACKVAR(8, 4);
+    PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048E30), LOCAL(-8));
 }
-Failed to find pattern for 'lea ecx, [ebp-008h]'
+Failed to find pattern for 'test eax, eax'
 
 // address: 0x1003EBAE
 p1003EBAE
 {
     ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=None)
     STACKVAR(8, 4) = STACKVAR(8, 4);
+    PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048E40), LOCAL(-8));
 }
-Failed to find pattern for 'lea ecx, [ebp-008h]'
+Failed to find pattern for 'test eax, eax'
 
 // address: 0x1003EC03
 p1003EC03
 {
     ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=None)
     STACKVAR(8, 4) = STACKVAR(8, 4);
+    PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048E54), LOCAL(-8));
 }
-Failed to find pattern for 'lea ecx, [ebp-008h]'
+Failed to find pattern for 'test eax, eax'
 
 // address: 0x1003EC58
 p1003EC58
 {
     ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=None)
     STACKVAR(8, 4) = STACKVAR(8, 4);
+    PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048E64), LOCAL(-8));
 }
-Failed to find pattern for 'lea ecx, [ebp-008h]'
+Failed to find pattern for 'test eax, eax'
 
 // address: 0x1003ECAD
 p1003ECAD
 {
     ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=None)
     STACKVAR(8, 4) = STACKVAR(8, 4);
+    PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048E78), LOCAL(-8));
 }
-Failed to find pattern for 'lea ecx, [ebp-008h]'
+Failed to find pattern for 'test eax, eax'
 
 // address: 0x1003ED02
 p1003ED02
 {
     ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=None)
     STACKVAR(8, 4) = STACKVAR(8, 4);
+    PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048E8C), LOCAL(-8));
 }
-Failed to find pattern for 'lea ecx, [ebp-008h]'
+Failed to find pattern for 'test eax, eax'
 
 // address: 0x1003ED57
 p1003ED57
 {
     ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=None)
     STACKVAR(8, 4) = STACKVAR(8, 4);
+    PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048EA4), LOCAL(-8));
 }
-Failed to find pattern for 'lea ecx, [ebp-008h]'
+Failed to find pattern for 'test eax, eax'
 
 // address: 0x1003EDAC
 p1003EDAC
 {
     ProcedureInfo(this=None, this_offset=None, local_size=16, stack_delta=None)
     STACKVAR(8, 4) = STACKVAR(8, 4);
+    PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048EBC), LOCAL(-8), LOCAL(-12));
 }
-Failed to find pattern for 'lea ecx, [ebp-00Ch]'
+Failed to find pattern for 'test eax, eax'
 
 // address: 0x1003EE09
 p1003EE09
@@ -7532,8 +7606,9 @@ p1003F24C
     ProcedureInfo(this=None, this_offset=None, local_size=24, stack_delta=None)
     STACKVAR(-12, 4) = 0x00000000;
     STACKVAR(8, 4) = STACKVAR(8, 4);
+    PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048F60), LOCAL(-12));
 }
-Failed to find pattern for 'lea ecx, [ebp-00Ch]'
+Failed to find pattern for 'test eax, eax'
 
 // address: 0x1003F305
 p1003F305
@@ -7568,8 +7643,11 @@ p1003FAC8
     ProcedureInfo(this=None, this_offset=None, local_size=40, stack_delta=None)
     STACKVAR(-24, 4) = 0x00000000;
     STACKVAR(8, 4) = STACKVAR(8, 4);
+    STACKVAR(-16, 4) = LOCAL(-28);
+    STACKVAR(-20, 4) = LOCAL(-4);
+    PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048FCC), LOCAL(-24));
 }
-Failed to find pattern for 'lea ecx, [ebp-01Ch]'
+Failed to find pattern for 'test eax, eax'
 
 // address: 0x1003FBCD
 p1003FBCD
@@ -7585,8 +7663,9 @@ p1003FCF4
     ProcedureInfo(this=None, this_offset=None, local_size=16, stack_delta=None)
     STACKVAR(-12, 4) = 0x00000000;
     STACKVAR(8, 4) = STACKVAR(8, 4);
+    PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10049048), LOCAL(-12));
 }
-Failed to find pattern for 'lea ecx, [ebp-00Ch]'
+Failed to find pattern for 'test eax, eax'
 
 // address: 0x1003FD8A
 p1003FD8A
@@ -7602,8 +7681,9 @@ p1003FDA8
     ProcedureInfo(this=None, this_offset=None, local_size=20, stack_delta=None)
     STACKVAR(-12, 4) = 0x00000000;
     STACKVAR(8, 4) = STACKVAR(8, 4);
+    PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x100490BC), LOCAL(-12));
 }
-Failed to find pattern for 'lea ecx, [ebp-00Ch]'
+Failed to find pattern for 'test eax, eax'
 
 // address: 0x1003FE79
 p1003FE79
@@ -7611,8 +7691,9 @@ p1003FE79
     ProcedureInfo(this=None, this_offset=None, local_size=20, stack_delta=None)
     STACKVAR(-16, 4) = 0x00000000;
     STACKVAR(8, 4) = STACKVAR(8, 4);
+    PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10049128), LOCAL(-16), LOCAL(-12));
 }
-Failed to find pattern for 'lea ecx, [ebp-00Ch]'
+Failed to find pattern for 'test eax, eax'
 
 // address: 0x1003FF12
 p1003FF12
@@ -7620,8 +7701,9 @@ p1003FF12
     ProcedureInfo(this=None, this_offset=None, local_size=20, stack_delta=None)
     STACKVAR(-16, 4) = 0x00000000;
     STACKVAR(8, 4) = STACKVAR(8, 4);
+    PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x100491A0), LOCAL(-16), LOCAL(-12));
 }
-Failed to find pattern for 'lea ecx, [ebp-00Ch]'
+Failed to find pattern for 'test eax, eax'
 
 // address: 0x1003FFAB
 p1003FFAB
@@ -7630,8 +7712,9 @@ p1003FFAB
     STACKVAR(-16, 4) = 0x00000032;
     STACKVAR(-20, 4) = 0x00000000;
     STACKVAR(8, 4) = STACKVAR(8, 4);
+    PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x1004921C), LOCAL(-20), LOCAL(-12), LOCAL(-16));
 }
-Failed to find pattern for 'lea ecx, [ebp-010h]'
+Failed to find pattern for 'test eax, eax'
 
 // address: 0x10040054
 p10040054
@@ -7639,8 +7722,9 @@ p10040054
     ProcedureInfo(this=None, this_offset=None, local_size=20, stack_delta=None)
     STACKVAR(-16, 4) = 0x00000000;
     STACKVAR(8, 4) = STACKVAR(8, 4);
+    PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10049298), LOCAL(-16), LOCAL(-12));
 }
-Failed to find pattern for 'lea ecx, [ebp-00Ch]'
+Failed to find pattern for 'test eax, eax'
 
 // address: 0x100400ED
 p100400ED
@@ -7648,8 +7732,9 @@ p100400ED
     ProcedureInfo(this=None, this_offset=None, local_size=20, stack_delta=None)
     STACKVAR(-16, 4) = 0x00000000;
     STACKVAR(8, 4) = STACKVAR(8, 4);
+    PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10049318), LOCAL(-16), LOCAL(-12));
 }
-Failed to find pattern for 'lea ecx, [ebp-00Ch]'
+Failed to find pattern for 'test eax, eax'
 
 // address: 0x10040186
 p10040186
@@ -7658,8 +7743,9 @@ p10040186
     STACKVAR(-16, 4) = 0x00000032;
     STACKVAR(-20, 4) = 0x00000000;
     STACKVAR(8, 4) = STACKVAR(8, 4);
+    PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10049398), LOCAL(-20), LOCAL(-12), LOCAL(-16));
 }
-Failed to find pattern for 'lea ecx, [ebp-010h]'
+Failed to find pattern for 'test eax, eax'
 
 // address: 0x1004022F
 p1004022F
@@ -7667,8 +7753,9 @@ p1004022F
     ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=None)
     STACKVAR(-12, 4) = 0x00000000;
     STACKVAR(8, 4) = STACKVAR(8, 4);
+    PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10049414), LOCAL(-12));
 }
-Failed to find pattern for 'lea ecx, [ebp-00Ch]'
+Failed to find pattern for 'test eax, eax'
 
 // address: 0x100402C4
 p100402C4
@@ -7676,8 +7763,9 @@ p100402C4
     ProcedureInfo(this=None, this_offset=None, local_size=20, stack_delta=None)
     STACKVAR(-16, 4) = 0x00000000;
     STACKVAR(8, 4) = STACKVAR(8, 4);
+    PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10049490), LOCAL(-16), LOCAL(-12));
 }
-Failed to find pattern for 'lea ecx, [ebp-00Ch]'
+Failed to find pattern for 'test eax, eax'
 
 // address: 0x1004035E
 p1004035E
@@ -7685,8 +7773,9 @@ p1004035E
     ProcedureInfo(this=None, this_offset=None, local_size=24, stack_delta=None)
     STACKVAR(-20, 4) = 0x00000000;
     STACKVAR(8, 4) = STACKVAR(8, 4);
+    PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10049528), LOCAL(-20), LOCAL(-12), LOCAL(-16));
 }
-Failed to find pattern for 'lea ecx, [ebp-010h]'
+Failed to find pattern for 'test eax, eax'
 
 // address: 0x10040401
 p10040401
@@ -7694,8 +7783,9 @@ p10040401
     ProcedureInfo(this=None, this_offset=None, local_size=24, stack_delta=None)
     STACKVAR(-20, 4) = 0x00000000;
     STACKVAR(8, 4) = STACKVAR(8, 4);
+    PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x100495CC), LOCAL(-20), LOCAL(-12), LOCAL(-16));
 }
-Failed to find pattern for 'lea ecx, [ebp-010h]'
+Failed to find pattern for 'test eax, eax'
 
 // address: 0x100404A4
 p100404A4
@@ -7703,8 +7793,9 @@ p100404A4
     ProcedureInfo(this=None, this_offset=None, local_size=24, stack_delta=None)
     STACKVAR(-20, 4) = 0x00000000;
     STACKVAR(8, 4) = STACKVAR(8, 4);
+    PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10049670), LOCAL(-20), LOCAL(-12), LOCAL(-16));
 }
-Failed to find pattern for 'lea ecx, [ebp-010h]'
+Failed to find pattern for 'test eax, eax'
 
 // address: 0x10040546
 p10040546
@@ -7712,8 +7803,9 @@ p10040546
     ProcedureInfo(this=None, this_offset=None, local_size=28, stack_delta=None)
     STACKVAR(-20, 4) = 0x00000000;
     STACKVAR(8, 4) = STACKVAR(8, 4);
+    PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10049714), LOCAL(-20), LOCAL(-12), LOCAL(-16), LOCAL(-24));
 }
-Failed to find pattern for 'lea ecx, [ebp-018h]'
+Failed to find pattern for 'test eax, eax'
 
 // address: 0x100405F1
 p100405F1
@@ -7721,8 +7813,9 @@ p100405F1
     ProcedureInfo(this=None, this_offset=None, local_size=24, stack_delta=None)
     STACKVAR(-20, 4) = 0x00000000;
     STACKVAR(8, 4) = STACKVAR(8, 4);
+    PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x100497B0), LOCAL(-20), LOCAL(-12), LOCAL(-16));
 }
-Failed to find pattern for 'lea ecx, [ebp-010h]'
+Failed to find pattern for 'test eax, eax'
 
 // address: 0x10040694
 p10040694
@@ -7730,8 +7823,9 @@ p10040694
     ProcedureInfo(this=None, this_offset=None, local_size=16, stack_delta=None)
     STACKVAR(-12, 4) = 0x00000000;
     STACKVAR(8, 4) = STACKVAR(8, 4);
+    PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x1004985C), LOCAL(-12));
 }
-Failed to find pattern for 'lea ecx, [ebp-00Ch]'
+Failed to find pattern for 'test eax, eax'
 
 // address: 0x10040726
 p10040726
@@ -7739,8 +7833,9 @@ p10040726
     ProcedureInfo(this=None, this_offset=None, local_size=20, stack_delta=None)
     STACKVAR(-16, 4) = 0x00000000;
     STACKVAR(8, 4) = STACKVAR(8, 4);
+    PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x100498F0), LOCAL(-16), LOCAL(-12));
 }
-Failed to find pattern for 'lea ecx, [ebp-00Ch]'
+Failed to find pattern for 'test eax, eax'
 
 // address: 0x100407BF
 p100407BF
@@ -7794,8 +7889,10 @@ Failed to find pattern for 'fld dword ptr [eax]'
 p10040D58
 {
     ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=None)
+    LOCAL(-8)->unknown_method_10003300();
+    unknown_function_10003904(STACKVAR(8, 4), LOCAL(-8));
 }
-Failed to find pattern for 'lea ecx, [ebp-008h]'
+Failed to find pattern for 'mov edx, dword ptr [__imp_?B_3D_raster_device@@3PAVB_3DRasterDevice@@A]; [Raster.?B_3D_raster_device@@3PAVB_3DRasterDevice@@A].'
 
 // address: 0x10040E61
 p10040E61

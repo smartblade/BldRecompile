@@ -176,6 +176,12 @@
 	},
 	{
 		"instructions": [
+			{"lea":  ["%eax-ecx-edx%", "[ebp%offset%]"]}
+		],
+		"action": {"tmpreg": {"dst": "%eax-ecx-edx%", "src": "LOCAL(%offset%)"}}
+	},
+	{
+		"instructions": [
 			{"add":  ["%eax-ecx-edx%", "%src-operand%"]}
 		],
 		"action": {"tmpreg": {"dst": "%eax-ecx-edx%", "src": "I(REGVALUE(%eax-ecx-edx%)) + I(%src-operand%)"}}

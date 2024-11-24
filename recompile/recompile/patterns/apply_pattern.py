@@ -70,6 +70,7 @@ def _evaluate_procedure_calls(expression, **kwargs):
         on_regvalue=_evaluate_reg_value,
         on_access=_keep,
         on_global=_keep,
+        on_local=_keep,
         on_stackvar=_keep,
         on_arrptr=_keep,
         on_real64=_evaluate_real64,

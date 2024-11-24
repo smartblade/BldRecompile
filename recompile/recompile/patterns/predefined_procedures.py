@@ -10,6 +10,7 @@ _procedures = {
     "ACCESS": lambda *args: _unpack_args(
         *args, expression=None, offset=int, size=int),
     "GLOBAL": lambda *args: _unpack_args(*args, address=from_hex),
+    "LOCAL": lambda *args: _unpack_args(*args, offset=int),
     "ARRPTR": lambda *args: _unpack_args(
         *args, base=None, scale=int, index=None, offset=int),
     "REAL64": lambda *args: _unpack_args(*args, high=from_hex, low=from_hex),
@@ -51,6 +52,10 @@ class DataTypeDefiner:
 
     @staticmethod
     def on_global(**kwargs):
+        return data_types.Pointer32()
+
+    @staticmethod
+    def on_local(**kwargs):
         return data_types.Pointer32()
 
     @staticmethod
