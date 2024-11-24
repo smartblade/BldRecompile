@@ -14,6 +14,7 @@ _actions = {
         **kwargs),
     "epilog-restore": lambda builder, **kwargs: builder.make_restore(**kwargs),
     "epilog-return": lambda builder, **kwargs: builder.make_epilog(**kwargs),
+    "instruction": lambda builder, **kwargs: builder.make_instruction(**kwargs),
     "assignment": lambda builder, **kwargs: builder.make_assignment(**kwargs),
     "tmpreg": lambda builder, **kwargs: builder.update_temporary_reg(**kwargs),
     "stackarg": lambda builder, **kwargs: builder.make_arg(**kwargs),
@@ -72,6 +73,7 @@ def _evaluate_procedure_calls(expression, **kwargs):
         on_stackvar=_keep,
         on_arrptr=_keep,
         on_real64=_evaluate_real64,
+        on_expect=_evaluate_expect,
         on_i=_evaluate_any_int_conversion,
         on_s=_evaluate_int_conversion,
         on_u=_evaluate_uint_conversion,
@@ -88,6 +90,15 @@ def _evaluate_real64(high, low, **kwargs):
         bytes.fromhex(to_hex(high) + to_hex(low)),
     )
     return expressions.Constant(data_types.Double(), double)
+
+
+def _evaluate_expect(expression, const, **kwargs):
+    if (
+        isinstance(expression, expressions.Constant) and
+        expression.value == const
+    ):
+        return expression
+    raise Exception("Expected {} but was: {}".format(const, expression))
 
 
 def _evaluate_any_int_conversion(expression, **kwargs):

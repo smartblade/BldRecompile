@@ -4354,9 +4354,9 @@ Failed to find pattern for 'push esi'
 p10026972
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    REGDEF(eax=0x00000000, edi=STACKVAR(8, 4), edx=STACKVAR(12, 4))
+    memset(STACKVAR(8, 4), 0x00000000, STACKVAR(12, 4));
 }
-Failed to find pattern for 'shr ecx, 002h'
+Failed to find pattern for 'pop edi'
 
 // address: 0x10026990
 p10026990

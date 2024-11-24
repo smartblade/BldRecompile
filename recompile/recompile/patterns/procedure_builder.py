@@ -45,6 +45,9 @@ class ProcedureBuilder:
         self._expect_first_procedure_info().set_stack_delta(stack_delta)
         self._add_instruction(instructions.ReturnInstruction(None))
 
+    def make_instruction(self, expression):
+        self._add_instruction(instructions.CodeInstruction(expression))
+
     def make_assignment(self, dst, src):
         if isinstance(self._last_instruction, instructions.ProcedureInfo):
             if self._last_instruction.is_this_expression(src):

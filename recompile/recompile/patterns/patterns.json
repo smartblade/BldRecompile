@@ -84,6 +84,17 @@
 	},
 	{
 		"instructions": [
+			{"mov": ["edx", "ecx"]},
+			{"shr": ["ecx", "002h"]},
+			{"rep": ["stosd"]},
+			{"mov": ["ecx", "edx"]},
+			{"and": ["ecx", "000000003h"]},
+			{"rep": ["stosb"]}
+		],
+		"action": {"instruction": {"expression": "memset(REGVALUE(edi), EXPECT(REGVALUE(eax), 0), REGVALUE(ecx))"}}
+	},
+	{
+		"instructions": [
 			{"xor":  ["e%a-c-d%x", "e%a-c-d%x"]},
 			{"mov":  ["%a-c-d%l", "%src-operand%"]}
 		],
