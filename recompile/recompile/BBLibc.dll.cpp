@@ -421,9 +421,11 @@ char *B_IDataFile::GetFileName()
 B_IDataFile &B_IDataFile::operator =(const B_IDataFile &file)
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(edi=STACKVAR(-4, 4), esi=STACKVAR(8, 4), ecx=0x00001006)
+    memcpy(STACKVAR(-4, 4), STACKVAR(8, 4), 0x00004018); // TODO improve emitting of memcpy instructions
+    REGDEF(eax=STACKVAR(-4, 4))
+    RESTORE(edi);
 }
-Failed to find pattern for 'rep movsd'
+Failed to find pattern for 'pop esi'
 
 // address: 0x10002250
 unsigned int B_ODataFile::OK()
@@ -442,9 +444,11 @@ p10002270
 p10002290
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(edi=STACKVAR(-4, 4), esi=STACKVAR(8, 4), ecx=0x00001004)
+    memcpy(STACKVAR(-4, 4), STACKVAR(8, 4), 0x00004010); // TODO improve emitting of memcpy instructions
+    REGDEF(eax=STACKVAR(-4, 4))
+    RESTORE(edi);
 }
-Failed to find pattern for 'rep movsd'
+Failed to find pattern for 'pop esi'
 
 // address: 0x100022C0
 B_Name &B_Name::Id()
@@ -1574,9 +1578,11 @@ Failed to find pattern for 'and eax, 000000002h'
 B_ResourceManager &B_ResourceManager::operator =(const B_ResourceManager &that)
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(esi=STACKVAR(8, 4), ecx=0x00000101, edi=STACKVAR(-4, 4))
+    memcpy(STACKVAR(-4, 4), STACKVAR(8, 4), 0x00000404); // TODO improve emitting of memcpy instructions
+    REGDEF(eax=STACKVAR(-4, 4))
+    RESTORE(edi);
 }
-Failed to find pattern for 'rep movsd'
+Failed to find pattern for 'pop esi'
 
 // address: 0x10006860
 B_Color::B_Color()
@@ -1675,9 +1681,11 @@ p10006BE0
 p10006BF0
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(esi=STACKVAR(8, 4), ecx=0x000000C0, edi=STACKVAR(-4, 4))
+    memcpy(STACKVAR(-4, 4), STACKVAR(8, 4), 0x00000300); // TODO improve emitting of memcpy instructions
+    REGDEF(eax=STACKVAR(-4, 4))
+    RESTORE(edi);
 }
-Failed to find pattern for 'rep movsd'
+Failed to find pattern for 'pop esi'
 
 // address: 0x10006C20
 B_BitMap &B_BitMap::operator=(const B_BitMap &that)
@@ -1814,17 +1822,21 @@ p10007F20
 B_RDataTriangle &B_RDataTriangle::operator=(const B_RDataTriangle &other)
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(esi=STACKVAR(8, 4), ecx=0x00000007, edi=STACKVAR(-4, 4))
+    memcpy(STACKVAR(-4, 4), STACKVAR(8, 4), 0x0000001C); // TODO improve emitting of memcpy instructions
+    REGDEF(eax=STACKVAR(-4, 4))
+    RESTORE(edi);
 }
-Failed to find pattern for 'rep movsd'
+Failed to find pattern for 'pop esi'
 
 // address: 0x10007F70
 B_MeshEdge &B_MeshEdge::operator=(const B_MeshEdge &other)
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(esi=STACKVAR(8, 4), ecx=0x00000006, edi=STACKVAR(-4, 4))
+    memcpy(STACKVAR(-4, 4), STACKVAR(8, 4), 0x00000018); // TODO improve emitting of memcpy instructions
+    REGDEF(eax=STACKVAR(-4, 4))
+    RESTORE(edi);
 }
-Failed to find pattern for 'rep movsd'
+Failed to find pattern for 'pop esi'
 
 // address: 0x10007FA0
 p10007FA0
@@ -2085,9 +2097,11 @@ Failed to find pattern for 'jle l1000923C'
 p100093A7
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(ecx=0x000000C0, esi=STACKVAR(8, 4), edi=STACKVAR(-4, 4))
+    memcpy(STACKVAR(-4, 4), STACKVAR(8, 4), 0x00000300); // TODO improve emitting of memcpy instructions
+    REGDEF(eax=STACKVAR(-4, 4))
+    RESTORE(edi);
 }
-Failed to find pattern for 'rep movsd'
+Failed to find pattern for 'pop esi'
 
 // address: 0x100093C8
 unsigned char B_Pal::GetRed(unsigned int val)
@@ -5658,9 +5672,10 @@ Failed to find pattern for 'fld qword ptr [eax+004h]'
 p1002E0B0
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(esi=STACKVAR(8, 4), ecx=0x00000006, edi=STACKVAR(-4, 4))
+    memcpy(STACKVAR(-4, 4), STACKVAR(8, 4), 0x00000018); // TODO improve emitting of memcpy instructions
+    REGDEF(esi=STACKVAR(12, 4), edi=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'rep movsd'
+Failed to find pattern for 'add edi, 000000018h'
 
 // address: 0x1002E0F0
 p1002E0F0

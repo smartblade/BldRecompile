@@ -116,6 +116,12 @@
 	},
 	{
 		"instructions": [
+			{"rep": ["movsd"]}
+		],
+		"action": {"instruction": {"expression": "memcpy(REGVALUE(edi), REGVALUE(esi), EVAL(4 * REGVALUE(ecx)))"}}
+	},
+	{
+		"instructions": [
 			{"xor":  ["e%a-c-d%x", "e%a-c-d%x"]},
 			{"mov":  ["%a-c-d%l", "%src-operand%"]}
 		],

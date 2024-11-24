@@ -5,6 +5,7 @@ import expressions
 from hex_conversion import to_hex
 import parser
 from expressions.operator import Operator
+from patterns.evaluate_expression import evaluate_expression
 from patterns.predefined_procedures import visit_predefined_procedures
 
 _actions = {
@@ -75,6 +76,7 @@ def _evaluate_procedure_calls(expression, **kwargs):
         on_arrptr=_keep,
         on_real64=_evaluate_real64,
         on_expect=_evaluate_expect,
+        on_eval=_evaluate_constants,
         on_i=_evaluate_any_int_conversion,
         on_s=_evaluate_int_conversion,
         on_u=_evaluate_uint_conversion,
@@ -100,6 +102,10 @@ def _evaluate_expect(expression, const, **kwargs):
     ):
         return expression
     raise Exception("Expected {} but was: {}".format(const, expression))
+
+
+def _evaluate_constants(expression, **kwargs):
+    return evaluate_expression(expression)
 
 
 def _evaluate_any_int_conversion(expression, **kwargs):
