@@ -259,8 +259,9 @@ B_ODataFile &operator <<(B_ODataFile &file, const char &c)
 B_ODataFile &operator <<(B_ODataFile &file, const char *c)
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    REGDEF(edi=STACKVAR(12, 4))
 }
-Failed to find pattern for 'mov edi, dword ptr [ebp+00Ch]'
+Failed to find pattern for 'or ecx, 0FFFFFFFFh'
 
 // address: 0x10001F9A
 B_ODataFile &operator <<(B_ODataFile &file, const unsigned char &c)
@@ -4353,9 +4354,9 @@ Failed to find pattern for 'push esi'
 p10026972
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    REGDEF(ecx=STACKVAR(12, 4), eax=0x00000000)
+    REGDEF(eax=0x00000000, edi=STACKVAR(8, 4), edx=STACKVAR(12, 4))
 }
-Failed to find pattern for 'mov edi, dword ptr [ebp+008h]'
+Failed to find pattern for 'shr ecx, 002h'
 
 // address: 0x10026990
 p10026990

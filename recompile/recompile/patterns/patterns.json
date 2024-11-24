@@ -9,6 +9,7 @@
 			{"operand": "[%eax-ecx-edx-base%+%eax-ecx-edx-index%%offset%]", "expression": "ACCESS(ARRPTR(REGVALUE(%eax-ecx-edx-base%), 1, REGVALUE(%eax-ecx-edx-index%), %offset%), 0, %size%)"}
 		],
 		"reg-operand": [
+			{"operand": "edi", "expression": "edi"},
 			{"operand": "%al-cl-dl%", "expression": "%al-cl-dl%"},
 			{"operand": "%ax-cx-dx%", "expression": "%ax-cx-dx%"},
 			{"operand": "%eax-ecx-edx%", "expression": "%eax-ecx-edx%"}
