@@ -160,9 +160,7 @@ class ProcedureCall:
                 self._arguments[1].emit_code(),
             )
         if self._is_method:
-            call = expressions.FieldAccess(
-                self._arguments[0], self.name
-            ).emit_code()
+            call = self._method_access_code(self._arguments[0])
             arguments = self._arguments[1:]
         else:
             if self._proc_decl is not None and self._proc_decl.is_static:
@@ -174,6 +172,13 @@ class ProcedureCall:
         return "{}({})".format(
             call, ", ".join(map(lambda a: a.emit_code(), arguments))
         )
+
+    def _method_access_code(self, obj):
+        if self._callee is not None:
+            method_code = "({})".format(self.callee_code)
+        else:
+            method_code = self.name
+        return expressions.FieldAccess(obj, method_code).emit_code()
 
 
 def _make_compatible_arguments(proc_decl, arguments):

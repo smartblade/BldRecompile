@@ -11,9 +11,12 @@ def transform_arrptr(base, scale, index, offset, **kwargs):
     e = transform_access(base, 0, None)
     if e is None:
         return None
-    if not isinstance(e.data_type, data_types.Array):
-        return None
-    assert e.data_type.element_type.size == 1
+    if isinstance(e.data_type, data_types.Array):
+        element_type = e.data_type.element_type
+    else:
+        e = base
+        element_type = e.data_type.pointee
+    assert element_type.size == 1
     if offset > 0:
         index = expressions.Bin(
             Operator.ADD, index, expressions.Constant(index.data_type, offset))

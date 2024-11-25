@@ -109,6 +109,8 @@ class ProcedureBuilder:
             if self._last_instruction.is_empty():
                 self._pop_instruction()
             return value
+        if isinstance(self._last_instruction, instructions.CodeInstruction):
+            return self._extract_call_return(reg)
         raise Exception(
             "Unexpected instruction type {}".format(
                 type(self._last_instruction)))
@@ -185,6 +187,22 @@ class ProcedureBuilder:
         for preserved_reg in proc_info.preserved_regs:
             if not self._try_pop_restore_instruction(preserved_reg):
                 raise Exception("{} was not restored.", preserved_reg)
+
+    def _extract_call_return(self, reg):
+        return_types = {
+            "ax": data_types.AnyInt16(),
+            "eax": data_types.AnyInt32(),
+        }
+        return_type = return_types[reg]
+        self._try_merge_args_into_procedure_call()
+        assert isinstance(self._last_instruction, instructions.CodeInstruction)
+        pc = self._last_instruction.expression
+        assert isinstance(pc, expressions.ProcedureCall)
+        assert pc.proc_decl is not None
+        self._pop_instruction()
+        assert pc.proc_decl.return_type is None
+        pc.proc_decl.change_return_type(return_type)
+        return pc
 
     @property
     def _last_instruction(self):

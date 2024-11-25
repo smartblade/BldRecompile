@@ -26,3 +26,8 @@ class AnyInt(DataType):
 class AnyInt16(AnyInt):
     def __init__(self):
         super().__init__(2)
+
+
+class AnyInt32(AnyInt):
+    def __init__(self):
+        super().__init__(4)

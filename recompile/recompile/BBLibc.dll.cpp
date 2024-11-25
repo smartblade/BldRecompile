@@ -47,9 +47,10 @@ p100010F3
     ProcedureInfo(this=None, this_offset=None, local_size=40, stack_delta=None)
     ACCESS(GLOBAL(0x10049EF4), 0, 4) = GLOBAL(0x10047040);
     ACCESS(GLOBAL(0x10049EEC), 0, 4) = 0xFFFFFFFF;
-    _open(GLOBAL(0x1004704C), 0x00008000);
+    ACCESS(GLOBAL(0x10049EE8), 0, 4) = _open(GLOBAL(0x1004704C), 0x00008000);
+    REGDEF(cmpl=ACCESS(GLOBAL(0x10049EE8), 0, 4), cmpr=0xFFFFFFFF)
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
+Failed to find pattern for 'jne l10001133'
 
 // address: 0x10001205
 p10001205
@@ -83,9 +84,11 @@ Failed to find pattern for 'je l10001518'
 void B_IDataFile::Open(const char *src, int flags)
 {
     ProcedureInfo(this=Id(this), this_offset=-20, local_size=20, stack_delta=None)
-    _strdup(STACKVAR(8, 4));
+    ACCESS(STACKVAR(-20, 4), 4, 4) = _strdup(STACKVAR(8, 4));
+    ACCESS(STACKVAR(-20, 4), 16404, 4) = 0x00000000;
+    REGDEF(cmpl=ACCESS(STACKVAR(-20, 4), 16404, 4), cmpr=0x00000000)
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
+Failed to find pattern for 'jne l10001732'
 
 // address: 0x10001740
 B_IDataFile::B_IDataFile()
@@ -240,9 +243,11 @@ B_ODataFile::B_ODataFile(const char *file_name, int flags)
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=8, stack_delta=None)
     ACCESS(STACKVAR(-4, 4), 16392, 4) = 0x00000000;
     ACCESS(STACKVAR(-4, 4), 16396, 4) = 0x00000000;
-    _strdup(STACKVAR(8, 4));
+    ACCESS(STACKVAR(-4, 4), 4, 4) = _strdup(STACKVAR(8, 4));
+    ARG(0x00000180);
+    REGDEF(edx=STACKVAR(12, 4))
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
+Failed to find pattern for 'or edx, 000000301h'
 
 // address: 0x10001DA0
 p10001DA0
@@ -576,9 +581,9 @@ Failed to find pattern for 'test eax, eax'
 char *GetCurrentLanguage()
 {
     ProcedureInfo(this=None, this_offset=None, local_size=256, stack_delta=None)
-    unknown_function_10002740();
+    REGDEF(edi=unknown_function_10002740(), edx=LOCAL(-256))
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
+Failed to find pattern for 'or ecx, 0FFFFFFFFh'
 
 // address: 0x10002980
 B_ListElement::~B_ListElement()
@@ -789,10 +794,11 @@ Failed to find pattern for 'and eax, 000000002h'
 // address: 0x10003300
 B_Name::B_Name()
 {
-    ProcedureInfo(this=Id(this), this_offset=-8, local_size=8, stack_delta=None)
-    ??2@YAPAXI@Z(0x00000001);
+    STACKVAR(-4, 4) = ??2@YAPAXI@Z(0x00000001);
+    this->string = reinterpret_cast<char *>(STACKVAR(-4, 4));
+    *this->string = '\0';
+    this->len = 0;
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x10003337
 B_Name::B_Name(const char *str)
@@ -808,18 +814,20 @@ B_Name::B_Name(const B_Name &src)
     ProcedureInfo(this=Id(this), this_offset=-12, local_size=12, stack_delta=None)
     STACKVAR(-8, 4) = ACCESS(STACKVAR(8, 4), 4, 4);
     ACCESS(STACKVAR(-12, 4), 4, 4) = STACKVAR(-8, 4);
-    ??2@YAPAXI@Z(reinterpret_cast<any_int32>(ACCESS(STACKVAR(-12, 4), 4, 4)) + 0x00000001);
+    STACKVAR(-4, 4) = ??2@YAPAXI@Z(reinterpret_cast<any_int32>(ACCESS(STACKVAR(-12, 4), 4, 4)) + 0x00000001);
+    ACCESS(STACKVAR(-12, 4), 0, 4) = STACKVAR(-4, 4);
+    REGDEF(edi=ACCESS(STACKVAR(8, 4), 0, 4), edx=ACCESS(STACKVAR(-12, 4), 0, 4))
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
+Failed to find pattern for 'or ecx, 0FFFFFFFFh'
 
 // address: 0x10003410
 B_Name::B_Name(unsigned int len)
 {
-    ProcedureInfo(this=Id(this), this_offset=-8, local_size=8, stack_delta=None)
-    ACCESS(STACKVAR(-8, 4), 4, 4) = STACKVAR(8, 4);
-    ??2@YAPAXI@Z(reinterpret_cast<any_int32>(ACCESS(STACKVAR(-8, 4), 4, 4)) + 0x00000001);
+    this->len = len;
+    STACKVAR(-4, 4) = ??2@YAPAXI@Z(this->len + 0x00000001);
+    this->string = reinterpret_cast<char *>(STACKVAR(-4, 4));
+    this->string[this->len] = '\0';
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x10003457
 char *B_Name::String()
@@ -1009,9 +1017,11 @@ B_Name &B_Name::operator+=(char c)
 {
     ProcedureInfo(this=Id(this), this_offset=-16, local_size=16, stack_delta=None)
     ACCESS(STACKVAR(-16, 4), 4, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-16, 4), 4, 4)) + 0x00000001;
-    ??2@YAPAXI@Z(reinterpret_cast<any_int32>(ACCESS(STACKVAR(-16, 4), 4, 4)) + 0x00000001);
+    STACKVAR(-8, 4) = ??2@YAPAXI@Z(reinterpret_cast<any_int32>(ACCESS(STACKVAR(-16, 4), 4, 4)) + 0x00000001);
+    STACKVAR(-4, 4) = STACKVAR(-8, 4);
+    REGDEF(edi=ACCESS(STACKVAR(-16, 4), 0, 4), edx=STACKVAR(-4, 4))
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
+Failed to find pattern for 'or ecx, 0FFFFFFFFh'
 
 // address: 0x10003DCE
 B_Name &B_Name::operator +=(const B_Name &other)
@@ -1060,10 +1070,16 @@ B_Resource::~B_Resource()
 p10003F26
 {
     ProcedureInfo(this=None, this_offset=None, local_size=16, stack_delta=None)
+    STACKVAR(-4, 2) = STACKVAR(12, 4)->(ACCESS(ACCESS(STACKVAR(12, 4), 0, 4), 4, 4))();
+    unknown_function_10001FC6(STACKVAR(8, 4), LOCAL(-4));
+    STACKVAR(-8, 4) = STACKVAR(12, 4)->(ACCESS(ACCESS(STACKVAR(12, 4), 0, 4), 8, 4))();
+    unknown_function_10002008(STACKVAR(8, 4), LOCAL(-8));
+    STACKVAR(-12, 4) = STACKVAR(12, 4)->(ACCESS(ACCESS(STACKVAR(12, 4), 0, 4), 12, 4))();
+    unknown_function_1000201E(STACKVAR(8, 4), LOCAL(-12));
     REGDEF(ecx=STACKVAR(12, 4))
     ACCESS(ACCESS(STACKVAR(12, 4), 0, 4), 4, 4)();
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
+Failed to find pattern for 'and eax, 00000FFFFh'
 
 // address: 0x10003FCE
 p10003FCE
@@ -1115,7 +1131,7 @@ B_Resource *B_ResourceManager::sub_10004425(unsigned short resourceId, const B_N
     REGDEF(eax=0x0000402C)
     unknown_function_10041600();
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
+'ecx'
 
 // address: 0x100045B9
 p100045B9
@@ -1328,7 +1344,7 @@ p10005C13
     REGDEF(eax=0x00004024)
     unknown_function_10041600();
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
+'ecx'
 
 // address: 0x10005CCD
 int B_ResourceManager::IsResourceLoaded(int arg_1, int arg_2)
@@ -1427,53 +1443,43 @@ p100061AB
 // address: 0x100061BA
 p100061BA
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=None)
-    LOCAL(-12)->unknown_method_10003337(STACKVAR(8, 4));
-    ARG(0x00000001);
-    ARG(0x00000000);
-    ARG(LOCAL(-12));
-    REGDEF(ecx=GLOBAL(0x1004A118))
-    unknown_function_10004E0B();
+    ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=0)
+    reinterpret_cast<B_Name *>(LOCAL(-12))->B_Name(reinterpret_cast<char *>(STACKVAR(8, 4)));
+    STACKVAR(-4, 4) = B_resource_manager.LocateResourceIn(*reinterpret_cast<B_Name *>(LOCAL(-12)), NULL, 1);
+    reinterpret_cast<B_Name *>(LOCAL(-12))->~B_Name();
+    REGDEF(eax=STACKVAR(-4, 4))
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x100061F0
 p100061F0
 {
     ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=None)
     LOCAL(-12)->unknown_method_10003337(STACKVAR(8, 4));
-    ARG(LOCAL(-12));
-    ARG(0x00000001);
-    REGDEF(ecx=GLOBAL(0x1004A118))
-    unknown_function_10005AF0();
+    STACKVAR(-4, 4) = GLOBAL(0x1004A118)->unknown_method_10005AF0(0x00000001, LOCAL(-12));
+    LOCAL(-12)->unknown_method_100039BA();
+    REGDEF(cmpl=STACKVAR(-4, 4), cmpr=0x00000000)
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
+Failed to find pattern for 'je l1000622A'
 
 // address: 0x10006230
 p10006230
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=None)
-    LOCAL(-12)->unknown_method_10003337(STACKVAR(8, 4));
-    ARG(0x00000002);
-    ARG(0x00000000);
-    ARG(LOCAL(-12));
-    REGDEF(ecx=GLOBAL(0x1004A118))
-    unknown_function_10004E0B();
+    ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=0)
+    reinterpret_cast<B_Name *>(LOCAL(-12))->B_Name(reinterpret_cast<char *>(STACKVAR(8, 4)));
+    STACKVAR(-4, 4) = B_resource_manager.LocateResourceIn(*reinterpret_cast<B_Name *>(LOCAL(-12)), NULL, 2);
+    reinterpret_cast<B_Name *>(LOCAL(-12))->~B_Name();
+    REGDEF(eax=STACKVAR(-4, 4))
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x10006266
 p10006266
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=None)
-    LOCAL(-12)->unknown_method_10003337(STACKVAR(8, 4));
-    ARG(0x00000005);
-    ARG(0x00000000);
-    ARG(LOCAL(-12));
-    REGDEF(ecx=GLOBAL(0x1004A118))
-    unknown_function_10004E0B();
+    ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=0)
+    reinterpret_cast<B_Name *>(LOCAL(-12))->B_Name(reinterpret_cast<char *>(STACKVAR(8, 4)));
+    STACKVAR(-4, 4) = B_resource_manager.LocateResourceIn(*reinterpret_cast<B_Name *>(LOCAL(-12)), NULL, 5);
+    reinterpret_cast<B_Name *>(LOCAL(-12))->~B_Name();
+    REGDEF(eax=STACKVAR(-4, 4))
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x1000629C
 p1000629C
@@ -1482,7 +1488,7 @@ p1000629C
     REGDEF(eax=0x0000402C)
     unknown_function_10041600();
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
+'ecx'
 
 // address: 0x1000644A
 p1000644A
@@ -1491,7 +1497,7 @@ p1000644A
     REGDEF(eax=0x00004048)
     unknown_function_10041600();
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
+'ecx'
 
 // address: 0x1000660B
 p1000660B
@@ -1881,28 +1887,24 @@ p10008483
 {
     ProcedureInfo(this=Id(this), this_offset=-12, local_size=12, stack_delta=None)
     STACKVAR(-8, 4) = 0x0000000C;
-    REGDEF(ecx=reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + 0x0000000C)
-    unknown_function_10008AF0();
+    STACKVAR(-4, 4) = (reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + 0x0000000C)->unknown_method_10008AF0();
+    REGDEF(ecx=STACKVAR(-12, 4), edx=ACCESS(STACKVAR(-12, 4), 20, 4))
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
+Failed to find pattern for 'imul edx, dword ptr [ecx+018h]'
 
 // address: 0x100084D6
 p100084D6
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    ARG(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x0000000C);
-    unknown_function_1000468E(STACKVAR(8, 4), STACKVAR(12, 4));
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
+    return reinterpret_cast<B_ODataFile &>(unknown_function_1000468E(STACKVAR(8, 4), STACKVAR(12, 4))) << reinterpret_cast<B_BitMap &>(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x0000000C);
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x100084FB
 p100084FB
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    ARG(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x0000000C);
-    unknown_function_10004676(STACKVAR(8, 4), STACKVAR(12, 4));
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
+    return reinterpret_cast<B_IDataFile &>(unknown_function_10004676(STACKVAR(8, 4), STACKVAR(12, 4))) >> reinterpret_cast<B_BitMap &>(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x0000000C);
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x10008554
 p10008554
@@ -1967,10 +1969,10 @@ B_BitMap::B_BitMap(int type, unsigned int arg_2, unsigned int arg_3, const B_Pal
     ACCESS(STACKVAR(-16, 4), 8, 4) = STACKVAR(12, 4);
     ACCESS(STACKVAR(-16, 4), 12, 4) = STACKVAR(16, 4);
     ACCESS(STACKVAR(-16, 4), 0, 4) = GLOBAL(0x100421F8);
-    REGDEF(ecx=STACKVAR(-16, 4))
-    unknown_function_10008AF0();
+    STACKVAR(-4, 4) = STACKVAR(-16, 4)->unknown_method_10008AF0();
+    REGDEF(ecx=STACKVAR(12, 4))
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
+Failed to find pattern for 'imul ecx, dword ptr [ebp+010h]'
 
 // address: 0x100086E3
 B_BitMap::B_BitMap(const B_BitMap &src)
@@ -2011,11 +2013,11 @@ B_ODataFile &operator <<(B_ODataFile &file, const B_BitMap &bitMap)
 {
     ProcedureInfo(this=None, this_offset=None, local_size=8, stack_delta=None)
     STACKVAR(-4, 4) = ACCESS(STACKVAR(12, 4), 4, 4);
-    ARG(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x0000000C);
-    ARG(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000008);
-    unknown_function_10002008(STACKVAR(8, 4), LOCAL(-4));
+    unknown_function_1000201E(unknown_function_1000201E(unknown_function_10002008(STACKVAR(8, 4), LOCAL(-4)), reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000008), reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x0000000C);
+    STACKVAR(-8, 4) = ACCESS(STACKVAR(12, 4), 4, 4);
+    REGDEF(edx=STACKVAR(-8, 4))
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
+Failed to find pattern for 'sub edx, 000000001h'
 
 // address: 0x10008C9B
 B_IDataFile &operator >>(B_IDataFile &file, B_BitMap &bitMap)
@@ -2052,22 +2054,16 @@ Failed to find pattern for 'push ebx'
 // address: 0x100091A4
 B_IDataFile &operator >>(B_IDataFile &file, B_Color &color)
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    ARG(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000006);
-    ARG(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000005);
-    unknown_function_10001B6B(STACKVAR(8, 4), reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000004);
+    file >> color.r >> color.g >> color.b;
+    return file;
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x100091DF
 B_ODataFile &operator <<(B_ODataFile &file, const B_Color &color)
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    ARG(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000006);
-    ARG(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000005);
-    unknown_function_10001F9A(STACKVAR(8, 4), reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000004);
+    file << color.r << color.g << color.b;
+    return file;
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x1000921A
 void B_Color::MakeCons()
@@ -2206,9 +2202,12 @@ Failed to find pattern for 'je l10009D0C'
 p10009F40
 {
     ProcedureInfo(this=None, this_offset=None, local_size=20, stack_delta=None)
-    ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x00000068);
+    STACKVAR(-4, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x00000068);
+    ACCESS(STACKVAR(8, 4), 324, 4) = STACKVAR(-4, 4);
+    ACCESS(STACKVAR(-4, 4), 0, 4) = GLOBAL(0x1000A05E);
+    REGDEF(eax=STACKVAR(12, 4))
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
+Failed to find pattern for 'and eax, 0000000FFh'
 
 // address: 0x1000A05E
 p1000A05E
@@ -2262,18 +2261,24 @@ Failed to find pattern for 'jmp l1000A752'
 p1000A930
 {
     ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=None)
-    ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x0000000C);
+    STACKVAR(-4, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x0000000C);
+    ACCESS(STACKVAR(8, 4), 332, 4) = STACKVAR(-4, 4);
+    ACCESS(STACKVAR(-4, 4), 0, 4) = GLOBAL(0x1000B2ED);
+    STACKVAR(-8, 4) = ACCESS(STACKVAR(8, 4), 40, 4);
+    REGDEF(edx=STACKVAR(-8, 4))
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
+Failed to find pattern for 'sub edx, 000000001h'
 
 // address: 0x1000ACCF
 p1000ACCF
 {
     ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=None)
     STACKVAR(-12, 4) = ACCESS(STACKVAR(8, 4), 332, 4);
-    ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x00002000);
+    STACKVAR(-4, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x00002000);
+    ACCESS(STACKVAR(-12, 4), 8, 4) = STACKVAR(-4, 4);
+    STACKVAR(-8, 4) = 0x00000000;
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
+Failed to find pattern for 'jmp l1000AD15'
 
 // address: 0x1000ADE0
 p1000ADE0
@@ -2333,9 +2338,13 @@ p1000B2ED
 p1000B300
 {
     ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=None)
-    ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x00000030);
+    STACKVAR(-4, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x00000030);
+    ACCESS(STACKVAR(8, 4), 340, 4) = STACKVAR(-4, 4);
+    ACCESS(STACKVAR(-4, 4), 0, 4) = GLOBAL(0x1000B3E7);
+    STACKVAR(-12, 4) = ACCESS(STACKVAR(8, 4), 180, 4);
+    REGDEF(cmpl=STACKVAR(-12, 4), cmpr=0x00000000)
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
+Failed to find pattern for 'je l1000B351'
 
 // address: 0x1000B3E7
 p1000B3E7
@@ -2387,9 +2396,12 @@ Failed to find pattern for 'lea edi, [ebp-000000434h]'
 p1000C580
 {
     ProcedureInfo(this=None, this_offset=None, local_size=8, stack_delta=None)
-    ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x0000006C);
+    STACKVAR(-4, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x0000006C);
+    ACCESS(STACKVAR(8, 4), 344, 4) = STACKVAR(-4, 4);
+    ACCESS(STACKVAR(-4, 4), 0, 4) = GLOBAL(0x1000C607);
+    STACKVAR(-8, 4) = 0x00000000;
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
+Failed to find pattern for 'jmp l1000C5C3'
 
 // address: 0x1000C607
 p1000C607
@@ -2506,9 +2518,12 @@ Failed to find pattern for 'test edx, edx'
 p1000D450
 {
     ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=None)
-    ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x00000040);
+    STACKVAR(-4, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x00000040);
+    ACCESS(STACKVAR(8, 4), 316, 4) = STACKVAR(-4, 4);
+    ACCESS(STACKVAR(-4, 4), 0, 4) = GLOBAL(0x1000D523);
+    REGDEF(ecx=static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 172, 1)))
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
+Failed to find pattern for 'test ecx, ecx'
 
 // address: 0x1000D523
 p1000D523
@@ -2530,10 +2545,18 @@ Can't parse line: l1000D5B2: mov edx, dword ptr [ebp-004h]
 // address: 0x1000D6A0
 p1000D6A0
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
-    ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x00000020);
+    ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=0)
+    STACKVAR(-4, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x00000020);
+    ACCESS(STACKVAR(8, 4), 328, 4) = STACKVAR(-4, 4);
+    ACCESS(STACKVAR(-4, 4), 0, 4) = GLOBAL(0x1000D842);
+    ACCESS(STACKVAR(-4, 4), 4, 4) = GLOBAL(0x1000DA83);
+    ACCESS(STACKVAR(-4, 4), 8, 4) = GLOBAL(0x1000DE6D);
+    ACCESS(STACKVAR(-4, 4), 12, 4) = GLOBAL(0x1000E27A);
+    ACCESS(STACKVAR(-4, 4), 16, 4) = GLOBAL(0x1000E290);
+    ACCESS(STACKVAR(-4, 4), 20, 4) = GLOBAL(0x1000D719);
+    ACCESS(STACKVAR(-4, 4), 24, 4) = GLOBAL(0x1000D82D);
+    ACCESS(STACKVAR(-4, 4), 28, 4) = 0x00000000;
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x1000D719
 p1000D719
@@ -2718,9 +2741,16 @@ Failed to find pattern for 'jmp l1000E2B7'
 p1000E360
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
-    ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x00000020);
+    STACKVAR(-4, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x00000020);
+    ACCESS(STACKVAR(8, 4), 312, 4) = STACKVAR(-4, 4);
+    ACCESS(STACKVAR(-4, 4), 0, 4) = GLOBAL(0x1000EDE2);
+    ACCESS(STACKVAR(-4, 4), 4, 4) = GLOBAL(0x1000F4DE);
+    ACCESS(STACKVAR(-4, 4), 8, 4) = GLOBAL(0x1000F516);
+    ACCESS(STACKVAR(-4, 4), 13, 1) = 0;
+    unknown_function_1000E487(STACKVAR(8, 4));
+    REGDEF(cmpl=ACCESS(STACKVAR(8, 4), 168, 4), cmpr=0x00000000)
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
+Failed to find pattern for 'je l1000E3D0'
 
 // address: 0x1000E487
 p1000E487
@@ -2803,18 +2833,20 @@ Failed to find pattern for 'je l1000F65C'
 // address: 0x1000F672
 p1000F672
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
-    ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000000, 0x00000082);
+    ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=0)
+    STACKVAR(-4, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000000, 0x00000082);
+    ACCESS(STACKVAR(-4, 4), 128, 1) = 0;
+    REGDEF(eax=STACKVAR(-4, 4))
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x1000F6A0
 p1000F6A0
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
-    ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000000, 0x00000112);
+    ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=0)
+    STACKVAR(-4, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000000, 0x00000112);
+    ACCESS(STACKVAR(-4, 4), 273, 1) = 0;
+    REGDEF(eax=STACKVAR(-4, 4))
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x1000F6D0
 p1000F6D0
@@ -2843,10 +2875,10 @@ Failed to find pattern for 'jg l1000F838'
 // address: 0x1000F86D
 p1000F86D
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    unknown_function_1000F828(STACKVAR(12, 4));
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
+    STACKVAR(12, 4) = unknown_function_1000F828(STACKVAR(12, 4));
+    unknown_function_1000F7ED(STACKVAR(8, 4), STACKVAR(12, 4), STACKVAR(16, 1));
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x1000F895
 p1000F895
@@ -2925,9 +2957,12 @@ Failed to find pattern for 'jg l100105EB'
 p10010620
 {
     ProcedureInfo(this=None, this_offset=None, local_size=8, stack_delta=None)
-    ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x0000006C);
+    STACKVAR(-4, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x0000006C);
+    ACCESS(STACKVAR(8, 4), 344, 4) = STACKVAR(-4, 4);
+    ACCESS(STACKVAR(-4, 4), 0, 4) = GLOBAL(0x10010695);
+    STACKVAR(-8, 4) = 0x00000000;
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
+Failed to find pattern for 'jmp l10010663'
 
 // address: 0x10010695
 p10010695
@@ -3131,9 +3166,14 @@ p10011F30
 {
     ProcedureInfo(this=None, this_offset=None, local_size=16, stack_delta=None)
     STACKVAR(-8, 1) = 0x01;
-    ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x00000034);
+    STACKVAR(-4, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x00000034);
+    ACCESS(STACKVAR(8, 4), 336, 4) = STACKVAR(-4, 4);
+    ACCESS(STACKVAR(-4, 4), 0, 4) = GLOBAL(0x10012153);
+    ACCESS(STACKVAR(-4, 4), 4, 4) = GLOBAL(0x10012158);
+    ACCESS(STACKVAR(-4, 4), 8, 1) = 0;
+    REGDEF(eax=static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 175, 1)))
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
+Failed to find pattern for 'test eax, eax'
 
 // address: 0x10012153
 p10012153
@@ -3221,9 +3261,16 @@ Failed to find pattern for 'test eax, eax'
 p1001307B
 {
     ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=None)
-    ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x00000044);
+    STACKVAR(-4, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x00000044);
+    ACCESS(STACKVAR(8, 4), 324, 4) = STACKVAR(-4, 4);
+    ACCESS(STACKVAR(-4, 4), 0, 4) = GLOBAL(0x1001311D);
+    ACCESS(STACKVAR(-4, 4), 4, 4) = GLOBAL(0x100131E1);
+    ACCESS(STACKVAR(-4, 4), 24, 4) = STACKVAR(12, 4);
+    STACKVAR(-12, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 4, 4)(STACKVAR(8, 4), 0x00000001, 0x00000500);
+    unknown_function_10026972(STACKVAR(-12, 4), 0x00000500);
+    STACKVAR(-8, 4) = 0x00000000;
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
+Failed to find pattern for 'jmp l100130FC'
 
 // address: 0x1001311D
 p1001311D
@@ -3338,20 +3385,21 @@ Failed to find pattern for 'jne l10014266'
 // address: 0x1001429A
 p1001429A
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=0)
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 24, 4);
-    ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x00001000);
+    ACCESS(STACKVAR(-4, 4), 24, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x00001000);
+    ACCESS(STACKVAR(-4, 4), 0, 4) = ACCESS(STACKVAR(-4, 4), 24, 4);
+    ACCESS(STACKVAR(-4, 4), 4, 4) = 0x00001000;
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x100142DC
 p100142DC
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 24, 4);
-    fwrite(ACCESS(STACKVAR(-4, 4), 24, 4), 0x00000001, 0x00001000, ACCESS(STACKVAR(-4, 4), 20, 4));
+    REGDEF(cmpl=fwrite(ACCESS(STACKVAR(-4, 4), 24, 4), 0x00000001, 0x00001000, ACCESS(STACKVAR(-4, 4), 20, 4)), cmpr=0x00001000)
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
+Failed to find pattern for 'je l10014328'
 
 // address: 0x10014343
 p10014343
@@ -3383,9 +3431,10 @@ p1001449E
 {
     ProcedureInfo(this=None, this_offset=None, local_size=8, stack_delta=None)
     STACKVAR(-8, 4) = ACCESS(STACKVAR(8, 4), 24, 4);
-    fread(ACCESS(STACKVAR(-8, 4), 32, 4), 0x00000001, 0x00001000, ACCESS(STACKVAR(-8, 4), 28, 4));
+    STACKVAR(-4, 4) = fread(ACCESS(STACKVAR(-8, 4), 32, 4), 0x00000001, 0x00001000, ACCESS(STACKVAR(-8, 4), 28, 4));
+    REGDEF(cmpl=STACKVAR(-4, 4), cmpr=0x00000000)
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
+Failed to find pattern for 'ja l10014531'
 
 // address: 0x10014552
 p10014552
@@ -3406,9 +3455,14 @@ p100145AA
 p100145B0
 {
     ProcedureInfo(this=None, this_offset=None, local_size=24, stack_delta=None)
-    ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x00000074);
+    STACKVAR(-4, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x00000074);
+    ACCESS(STACKVAR(8, 4), 392, 4) = STACKVAR(-4, 4);
+    ACCESS(STACKVAR(-4, 4), 0, 4) = GLOBAL(0x1001473B);
+    ACCESS(STACKVAR(-4, 4), 8, 4) = GLOBAL(0x100147D6);
+    ACCESS(STACKVAR(-4, 4), 112, 4) = 0x00000000;
+    REGDEF(edx=STACKVAR(12, 4))
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
+Failed to find pattern for 'and edx, 0000000FFh'
 
 // address: 0x1001473B
 p1001473B
@@ -3493,18 +3547,27 @@ Failed to find pattern for 'sub eax, 000000001h'
 p10015B20
 {
     ProcedureInfo(this=None, this_offset=None, local_size=16, stack_delta=None)
-    ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x00000018);
+    STACKVAR(-4, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x00000018);
+    ACCESS(STACKVAR(8, 4), 420, 4) = STACKVAR(-4, 4);
+    ACCESS(STACKVAR(-4, 4), 0, 4) = GLOBAL(0x1001636E);
+    STACKVAR(-12, 4) = ACCESS(STACKVAR(8, 4), 40, 4);
+    REGDEF(edx=STACKVAR(-12, 4))
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
+Failed to find pattern for 'sub edx, 000000001h'
 
 // address: 0x10015DFC
 p10015DFC
 {
     ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=None)
     STACKVAR(-12, 4) = ACCESS(STACKVAR(8, 4), 420, 4);
-    ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x00000400);
+    ACCESS(STACKVAR(-12, 4), 8, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x00000400);
+    ACCESS(STACKVAR(-12, 4), 12, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x00000400);
+    ACCESS(STACKVAR(-12, 4), 16, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x00000400);
+    ACCESS(STACKVAR(-12, 4), 20, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x00000400);
+    STACKVAR(-8, 4) = 0x00000000;
+    STACKVAR(-4, 4) = 0xFFFFFF80;
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
+Failed to find pattern for 'jmp l10015EA0'
 
 // address: 0x10015F1D
 p10015F1D
@@ -3568,9 +3631,13 @@ p1001636E
 p10016380
 {
     ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=None)
-    ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x00000054);
+    STACKVAR(-12, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x00000054);
+    ACCESS(STACKVAR(8, 4), 412, 4) = STACKVAR(-12, 4);
+    ACCESS(STACKVAR(-12, 4), 0, 4) = GLOBAL(0x10016424);
+    STACKVAR(-8, 4) = 0x00000000;
+    STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 196, 4);
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
+Failed to find pattern for 'jmp l100163D9'
 
 // address: 0x10016424
 p10016424
@@ -3616,9 +3683,13 @@ Failed to find pattern for 'jnl l10016E02'
 p10016F06
 {
     ProcedureInfo(this=None, this_offset=None, local_size=8, stack_delta=None)
-    ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x000000AC);
+    STACKVAR(-4, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x000000AC);
+    ACCESS(STACKVAR(8, 4), 408, 4) = STACKVAR(-4, 4);
+    ACCESS(STACKVAR(-4, 4), 0, 4) = GLOBAL(0x10016F7E);
+    ACCESS(STACKVAR(-4, 4), 4, 4) = GLOBAL(0x10017160);
+    STACKVAR(-8, 4) = 0x00000000;
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
+Failed to find pattern for 'jmp l10016F56'
 
 // address: 0x10016F7E
 p10016F7E
@@ -3650,10 +3721,17 @@ Failed to find pattern for 'cdq'
 // address: 0x10017860
 p10017860
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
-    ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000000, 0x00000018);
+    ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=0)
+    STACKVAR(-4, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000000, 0x00000018);
+    ACCESS(STACKVAR(8, 4), 400, 4) = STACKVAR(-4, 4);
+    ACCESS(STACKVAR(-4, 4), 0, 4) = GLOBAL(0x10017CAB);
+    ACCESS(STACKVAR(-4, 4), 4, 4) = GLOBAL(0x100180D6);
+    ACCESS(STACKVAR(-4, 4), 8, 4) = GLOBAL(0x100178C6);
+    ACCESS(STACKVAR(-4, 4), 12, 4) = GLOBAL(0x10017C97);
+    ACCESS(STACKVAR(-4, 4), 16, 1) = 0;
+    ACCESS(STACKVAR(-4, 4), 17, 1) = 0;
+    ACCESS(STACKVAR(-4, 4), 20, 1) = 0x01;
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x100178C6
 p100178C6
@@ -3724,9 +3802,12 @@ p100180D6
 p10018140
 {
     ProcedureInfo(this=None, this_offset=None, local_size=20, stack_delta=None)
-    ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x00000050);
+    STACKVAR(-8, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x00000050);
+    ACCESS(STACKVAR(8, 4), 388, 4) = STACKVAR(-8, 4);
+    ACCESS(STACKVAR(-8, 4), 0, 4) = GLOBAL(0x10018398);
+    REGDEF(eax=STACKVAR(12, 4))
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
+Failed to find pattern for 'and eax, 0000000FFh'
 
 // address: 0x10018280
 p10018280
@@ -3832,9 +3913,16 @@ Can't parse line: l10018C36: cmp dword ptr [ebp-00Ch], 000000000h
 p10018E36
 {
     ProcedureInfo(this=None, this_offset=None, local_size=8, stack_delta=None)
-    ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000000, 0x000000A8);
+    STACKVAR(-4, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000000, 0x000000A8);
+    ACCESS(STACKVAR(8, 4), 404, 4) = STACKVAR(-4, 4);
+    ACCESS(STACKVAR(-4, 4), 0, 4) = GLOBAL(0x1001B79A);
+    ACCESS(STACKVAR(-4, 4), 4, 4) = GLOBAL(0x10019770);
+    ACCESS(STACKVAR(-4, 4), 8, 4) = GLOBAL(0x1001B6C6);
+    ACCESS(STACKVAR(-4, 4), 24, 4) = GLOBAL(0x1001962B);
+    ACCESS(STACKVAR(-4, 4), 92, 4) = 0x00000000;
+    STACKVAR(-8, 4) = 0x00000000;
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
+Failed to find pattern for 'jmp l10018EA4'
 
 // address: 0x10018EEC
 p10018EEC
@@ -4008,10 +4096,14 @@ Failed to find pattern for 'test ecx, ecx'
 // address: 0x1001C23B
 p1001C23B
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
-    ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x0000001C);
+    ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=0)
+    STACKVAR(-4, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x0000001C);
+    ACCESS(STACKVAR(8, 4), 384, 4) = STACKVAR(-4, 4);
+    ACCESS(STACKVAR(-4, 4), 0, 4) = GLOBAL(0x1001C6F1);
+    ACCESS(STACKVAR(-4, 4), 4, 4) = GLOBAL(0x1001C912);
+    ACCESS(STACKVAR(-4, 4), 8, 1) = 0;
+    unknown_function_1001C28B(STACKVAR(8, 4));
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x1001C28B
 p1001C28B
@@ -4028,9 +4120,12 @@ Failed to find pattern for 'imul eax, dword ptr [edx+064h]'
 p1001C61D
 {
     ProcedureInfo(this=None, this_offset=None, local_size=8, stack_delta=None)
-    ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x00000580);
+    STACKVAR(-4, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x00000580);
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000100;
+    ACCESS(STACKVAR(8, 4), 288, 4) = STACKVAR(-4, 4);
+    REGDEF(ecx=0x00000040, eax=0x00000000, edi=STACKVAR(-4, 4))
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
+Failed to find pattern for 'sub edi, 000000100h'
 
 // address: 0x1001C6F1
 p1001C6F1
@@ -4054,18 +4149,27 @@ Failed to find pattern for 'test eax, eax'
 p1001C960
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
-    ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x00000030);
+    STACKVAR(-4, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x00000030);
+    ACCESS(STACKVAR(8, 4), 416, 4) = STACKVAR(-4, 4);
+    ACCESS(STACKVAR(-4, 4), 0, 4) = GLOBAL(0x1001CB39);
+    ACCESS(STACKVAR(-4, 4), 8, 1) = 0;
+    REGDEF(edx=STACKVAR(8, 4), eax=ACCESS(STACKVAR(8, 4), 92, 4))
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
+Failed to find pattern for 'imul eax, dword ptr [edx+064h]'
 
 // address: 0x1001CA18
 p1001CA18
 {
     ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=None)
     STACKVAR(-12, 4) = ACCESS(STACKVAR(8, 4), 416, 4);
-    ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x00000400);
+    ACCESS(STACKVAR(-12, 4), 16, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x00000400);
+    ACCESS(STACKVAR(-12, 4), 20, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x00000400);
+    ACCESS(STACKVAR(-12, 4), 24, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x00000400);
+    ACCESS(STACKVAR(-12, 4), 28, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x00000400);
+    STACKVAR(-8, 4) = 0x00000000;
+    STACKVAR(-4, 4) = 0xFFFFFF80;
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
+Failed to find pattern for 'jmp l1001CABC'
 
 // address: 0x1001CB39
 p1001CB39
@@ -4126,9 +4230,12 @@ Failed to find pattern for 'mov eax, dword ptr [edx+eax*04h]'
 p1001D220
 {
     ProcedureInfo(this=None, this_offset=None, local_size=16, stack_delta=None)
-    ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x00000040);
+    STACKVAR(-4, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x00000040);
+    ACCESS(STACKVAR(8, 4), 408, 4) = STACKVAR(-4, 4);
+    ACCESS(STACKVAR(-4, 4), 0, 4) = GLOBAL(0x1001D2FB);
+    STACKVAR(-8, 4) = 0x00000000;
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
+Failed to find pattern for 'jmp l1001D263'
 
 // address: 0x1001D2FB
 p1001D2FB
@@ -4192,9 +4299,14 @@ Failed to find pattern for 'shl edx, cl'
 p1001E580
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
-    ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x0000001C);
+    STACKVAR(-4, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x0000001C);
+    ACCESS(STACKVAR(8, 4), 396, 4) = STACKVAR(-4, 4);
+    ACCESS(STACKVAR(-4, 4), 0, 4) = GLOBAL(0x1001E668);
+    ACCESS(STACKVAR(-4, 4), 8, 4) = 0x00000000;
+    ACCESS(STACKVAR(-4, 4), 12, 4) = 0x00000000;
+    REGDEF(eax=static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 74, 1)))
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
+Failed to find pattern for 'test eax, eax'
 
 // address: 0x1001E668
 p1001E668
@@ -4237,9 +4349,14 @@ Failed to find pattern for 'jne l1001E96E'
 p1001EA30
 {
     ProcedureInfo(this=None, this_offset=None, local_size=40, stack_delta=None)
-    ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x000000A0);
+    STACKVAR(-20, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x000000A0);
+    ACCESS(STACKVAR(8, 4), 416, 4) = STACKVAR(-20, 4);
+    ACCESS(STACKVAR(-20, 4), 0, 4) = GLOBAL(0x1001ED04);
+    ACCESS(STACKVAR(-20, 4), 4, 4) = GLOBAL(0x1001ED33);
+    ACCESS(STACKVAR(-20, 4), 8, 1) = 0;
+    REGDEF(eax=static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 266, 1)))
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
+Failed to find pattern for 'test eax, eax'
 
 // address: 0x1001ED04
 p1001ED04
@@ -4692,18 +4809,26 @@ p10023A26
 p10023A30
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
-    ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x00000058);
+    STACKVAR(-4, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x00000058);
+    ACCESS(STACKVAR(8, 4), 424, 4) = STACKVAR(-4, 4);
+    ACCESS(STACKVAR(-4, 4), 0, 4) = GLOBAL(0x10024094);
+    ACCESS(STACKVAR(-4, 4), 8, 4) = GLOBAL(0x10024A44);
+    ACCESS(STACKVAR(-4, 4), 12, 4) = GLOBAL(0x10024A49);
+    ACCESS(STACKVAR(-4, 4), 68, 4) = 0x00000000;
+    ACCESS(STACKVAR(-4, 4), 52, 4) = 0x00000000;
+    REGDEF(cmpl=ACCESS(STACKVAR(8, 4), 100, 4), cmpr=0x00000004)
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
+Failed to find pattern for 'jle l10023AB6'
 
 // address: 0x10023B19
 p10023B19
 {
     ProcedureInfo(this=None, this_offset=None, local_size=48, stack_delta=None)
     STACKVAR(-28, 4) = ACCESS(STACKVAR(8, 4), 424, 4);
-    unknown_function_10023CDA(STACKVAR(8, 4), reinterpret_cast<any_int32>(STACKVAR(-28, 4)) + 0x00000020);
+    STACKVAR(-44, 4) = unknown_function_10023CDA(STACKVAR(8, 4), reinterpret_cast<any_int32>(STACKVAR(-28, 4)) + 0x00000020);
+    REGDEF(cmpl=ACCESS(STACKVAR(8, 4), 100, 4), cmpr=0x00000003)
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
+Failed to find pattern for 'jne l10023BA6'
 
 // address: 0x10023CDA
 p10023CDA
@@ -4773,9 +4898,10 @@ Failed to find pattern for 'jmp l1002420E'
 p10024296
 {
     ProcedureInfo(this=None, this_offset=None, local_size=24, stack_delta=None)
-    ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x00000400);
+    STACKVAR(-20, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x00000400);
+    REGDEF(eax=STACKVAR(12, 4))
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
+Failed to find pattern for 'sub eax, 000000001h'
 
 // address: 0x10024357
 p10024357
@@ -4856,18 +4982,28 @@ p10024A49
 p10024A70
 {
     ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=None)
-    ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x0000002C);
+    STACKVAR(-8, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x0000002C);
+    ACCESS(STACKVAR(8, 4), 424, 4) = STACKVAR(-8, 4);
+    ACCESS(STACKVAR(-8, 4), 0, 4) = GLOBAL(0x10024D38);
+    ACCESS(STACKVAR(-8, 4), 12, 4) = GLOBAL(0x10026879);
+    ACCESS(STACKVAR(-8, 4), 32, 4) = 0x00000000;
+    ACCESS(STACKVAR(-8, 4), 40, 4) = 0x00000000;
+    REGDEF(cmpl=ACCESS(STACKVAR(8, 4), 100, 4), cmpr=0x00000003)
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
+Failed to find pattern for 'je l10024AE2'
 
 // address: 0x10024C3A
 p10024C3A
 {
     ProcedureInfo(this=None, this_offset=None, local_size=16, stack_delta=None)
     STACKVAR(-16, 4) = ACCESS(STACKVAR(8, 4), 424, 4);
-    ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x000007FC);
+    STACKVAR(-8, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x000007FC);
+    STACKVAR(-8, 4) = reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + 0x000003FC;
+    ACCESS(STACKVAR(-16, 4), 40, 4) = STACKVAR(-8, 4);
+    STACKVAR(-4, 4) = 0x00000000;
+    STACKVAR(-12, 4) = 0x00000000;
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
+Failed to find pattern for 'jmp l10024C9C'
 
 // address: 0x10024D38
 p10024D38
@@ -5166,7 +5302,7 @@ int B_BitMap24::SaveToBMP(const char *fileName)
     REGDEF(eax=0x00004084)
     unknown_function_10041600();
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
+'ecx'
 
 // address: 0x1002778F
 int B_BitMap24::SaveToBMPSized(const char *fileName, int width, int height)
@@ -5175,7 +5311,7 @@ int B_BitMap24::SaveToBMPSized(const char *fileName, int width, int height)
     REGDEF(eax=0x000040AC)
     unknown_function_10041600();
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
+'ecx'
 
 // address: 0x10027D86
 p10027D86
@@ -5184,7 +5320,7 @@ p10027D86
     REGDEF(eax=0x00004024)
     unknown_function_10041600();
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
+'ecx'
 
 // address: 0x10027E11
 p10027E11
@@ -5229,13 +5365,22 @@ B_ODataFile &operator <<(B_ODataFile &file, const B_BitMap24 &bitMap)
     STACKVAR(-52, 2) = 0x0000;
     STACKVAR(-56, 4) = 0x00000000;
     STACKVAR(-60, 2) = 0x4D42;
-    ARG(LOCAL(-44));
-    ARG(LOCAL(-48));
-    ARG(LOCAL(-52));
-    ARG(LOCAL(-56));
-    unknown_function_10001FC6(STACKVAR(8, 4), LOCAL(-60));
+    unknown_function_10002008(unknown_function_10001FC6(unknown_function_10001FC6(unknown_function_10002008(unknown_function_10001FC6(STACKVAR(8, 4), LOCAL(-60)), LOCAL(-56)), LOCAL(-52)), LOCAL(-48)), LOCAL(-44));
+    STACKVAR(-64, 2) = 0x0018;
+    STACKVAR(-68, 2) = 0x0001;
+    STACKVAR(-72, 2) = ACCESS(STACKVAR(12, 4), 8, 2);
+    STACKVAR(-76, 2) = ACCESS(STACKVAR(12, 4), 4, 2);
+    STACKVAR(-80, 4) = 0x0000000C;
+    unknown_function_10001FC6(unknown_function_10001FC6(unknown_function_10001FC6(unknown_function_10001FC6(unknown_function_10002008(STACKVAR(8, 4), LOCAL(-80)), LOCAL(-76)), LOCAL(-72)), LOCAL(-68)), LOCAL(-64));
+    STACKVAR(-84, 1) = 0;
+    STACKVAR(-88, 1) = 0;
+    STACKVAR(-92, 1) = 0;
+    unknown_function_10001F9A(unknown_function_10001F9A(unknown_function_10001F9A(STACKVAR(8, 4), LOCAL(-92)), LOCAL(-88)), LOCAL(-84));
+    STACKVAR(-96, 4) = ??2@YAPAXI@Z(0x00000003 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(12, 4), 4, 4)));
+    STACKVAR(-8, 4) = STACKVAR(-96, 4);
+    REGDEF(eax=ACCESS(STACKVAR(12, 4), 4, 4))
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
+Failed to find pattern for 'and eax, 080000003h'
 
 // address: 0x10028353
 void B_BitMap24::EscribeArchivoRAW(const char *arg_1)
@@ -5273,14 +5418,9 @@ Failed to find pattern for 'je l10028581'
 // address: 0x100285A0
 p100285A0
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    ARG(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x0000000C);
-    ARG(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x0000000A);
-    ARG(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000008);
-    ARG(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000004);
-    unknown_function_10001B97(STACKVAR(8, 4), STACKVAR(12, 4));
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
+    return reinterpret_cast<B_IDataFile &>(STACKVAR(8, 4)) >> reinterpret_cast<unsigned short &>(STACKVAR(12, 4)) >> reinterpret_cast<unsigned int &>(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000004) >> reinterpret_cast<short &>(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000008) >> reinterpret_cast<short &>(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x0000000A) >> reinterpret_cast<unsigned int &>(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x0000000C);
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x100285F5
 p100285F5
@@ -5293,12 +5433,9 @@ Failed to find pattern for 'rep stosd'
 // address: 0x100289E4
 p100289E4
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    ARG(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000002);
-    ARG(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000001);
-    unknown_function_10001B6B(STACKVAR(8, 4), STACKVAR(12, 4));
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
+    return reinterpret_cast<B_IDataFile &>(STACKVAR(8, 4)) >> reinterpret_cast<unsigned char &>(STACKVAR(12, 4)) >> reinterpret_cast<unsigned char &>(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000001) >> reinterpret_cast<unsigned char &>(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000002);
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x10028A19
 p10028A19
@@ -5332,17 +5469,23 @@ Failed to find pattern for 'and edx, 00000FFFFh'
 p10029510
 {
     ProcedureInfo(this=Id(this), this_offset=-580, local_size=580, stack_delta=None)
-    unknown_function_1001F6E0(LOCAL(-564));
+    STACKVAR(-428, 4) = unknown_function_1001F6E0(LOCAL(-564));
+    unknown_function_10013490(LOCAL(-428), 0x0000003E, 0x000001AC);
+    STACKVAR(-432, 4) = fopen(STACKVAR(8, 4), GLOBAL(0x10048828));
+    REGDEF(cmpl=STACKVAR(-432, 4), cmpr=0x00000000)
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
+Failed to find pattern for 'jne l10029591'
 
 // address: 0x10029700
 int B_BitMap24::SaveToJPEG(const char *arg_1, int arg_2)
 {
     ProcedureInfo(this=Id(this), this_offset=-508, local_size=508, stack_delta=None)
-    unknown_function_1001F6E0(LOCAL(-500));
+    STACKVAR(-356, 4) = unknown_function_1001F6E0(LOCAL(-500));
+    unknown_function_100096A0(LOCAL(-356), 0x0000003E, 0x00000164);
+    STACKVAR(-368, 4) = fopen(STACKVAR(8, 4), GLOBAL(0x10048870));
+    REGDEF(cmpl=STACKVAR(-368, 4), cmpr=0x00000000)
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
+Failed to find pattern for 'jne l10029781'
 
 // address: 0x100298B0
 p100298B0
@@ -5352,9 +5495,10 @@ p100298B0
     ACCESS(STACKVAR(-8, 4), 0, 4) = GLOBAL(0x10042180);
     ACCESS(STACKVAR(-8, 4), 12, 4) = 0x00000001;
     ACCESS(STACKVAR(-8, 4), 0, 4) = GLOBAL(0x10042CBC);
-    ??2@YAPAXI@Z(0x00004010);
+    STACKVAR(-4, 4) = ??2@YAPAXI@Z(0x00004010);
+    REGDEF(cmpl=STACKVAR(-4, 4), cmpr=0x00000000)
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
+Failed to find pattern for 'je l1002990D'
 
 // address: 0x1002994D
 p1002994D
@@ -5423,11 +5567,11 @@ Failed to find pattern for 'and eax, 000000002h'
 // address: 0x10029BE0
 char *vararg(const char *format)
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=8, stack_delta=None)
     STACKVAR(-8, 4) = LOCAL(12);
-    vsprintf(GLOBAL(0x1004A540), STACKVAR(8, 4), STACKVAR(-8, 4));
+    STACKVAR(-4, 4) = vsprintf(GLOBAL(0x1004A540), format, STACKVAR(-8, 4));
+    STACKVAR(-8, 4) = 0x00000000;
+    return reinterpret_cast<char *>(GLOBAL(0x1004A540));
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x10029C15
 p10029C15
@@ -5601,10 +5745,12 @@ Failed to find pattern for 'je l1002A571'
 // address: 0x1002A590
 void OutputWin32Error(const char *message)
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=8, stack_delta=None)
-    GetLastError();
+    STACKVAR(-4, 4) = GetLastError();
+    mout << message;
+    FormatMessageA(0x00001100, 0x00000000, STACKVAR(-4, 4), 0x00000400, LOCAL(-8), 0x00000000, 0x00000000);
+    mout << reinterpret_cast<char *>(STACKVAR(-8, 4));
+    LocalFree(STACKVAR(-8, 4));
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x1002A5F0
 p1002A5F0
@@ -5618,20 +5764,18 @@ Unexpected instruction type <class 'instructions.assignment.Assignment'>
 // address: 0x1002A7F2
 p1002A7F2
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    ARG(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000018);
-    unknown_function_10031E6D(STACKVAR(8, 4), STACKVAR(12, 4));
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
+    reinterpret_cast<B_IDataFile &>(unknown_function_10031E6D(STACKVAR(8, 4), STACKVAR(12, 4))) >> reinterpret_cast<double &>(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000018);
+    REGDEF(eax=STACKVAR(8, 4))
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x1002A81A
 p1002A81A
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    ARG(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000018);
-    unknown_function_10031E83(STACKVAR(8, 4), STACKVAR(12, 4));
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
+    reinterpret_cast<B_ODataFile &>(unknown_function_10031E83(STACKVAR(8, 4), STACKVAR(12, 4))) << reinterpret_cast<double &>(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000018);
+    REGDEF(eax=STACKVAR(8, 4))
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x1002DEF0
 p1002DEF0
@@ -5797,12 +5941,9 @@ p10030232
 p10031284
 {
     ProcedureInfo(this=Id(this), this_offset=-52, local_size=52, stack_delta=None)
-    ARG(STACKVAR(16, 4));
-    ARG(LOCAL(-24));
-    REGDEF(ecx=STACKVAR(12, 4))
-    unknown_function_10031882();
+    REGDEF(esi=STACKVAR(12, 4)->unknown_method_10031882(LOCAL(-24), STACKVAR(16, 4)), edi=STACKVAR(-52, 4))
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
+Failed to find pattern for 'add edi, 000000004h'
 
 // address: 0x100312FC
 p100312FC
@@ -5983,20 +6124,19 @@ Unexpected instruction type <class 'instructions.assignment.Assignment'>
 // address: 0x10031F20
 p10031F20
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    ARG(STACKVAR(12, 4));
-    unknown_function_10031E83(STACKVAR(8, 4), reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000004);
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
+    reinterpret_cast<B_ODataFile &>(unknown_function_10031E83(STACKVAR(8, 4), reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000004)) << reinterpret_cast<int &>(STACKVAR(12, 4));
+    REGDEF(eax=STACKVAR(8, 4))
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x10031F48
 p10031F48
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    ARG(STACKVAR(12, 4));
-    unknown_function_10031E6D(STACKVAR(8, 4), reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000004);
+    unknown_function_10001BAD(unknown_function_10031E6D(STACKVAR(8, 4), reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000004), STACKVAR(12, 4));
+    REGDEF(eax=STACKVAR(12, 4))
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
+Failed to find pattern for 'fld qword ptr [eax+014h]'
 
 // address: 0x10031F82
 p10031F82
@@ -6020,20 +6160,18 @@ Failed to find pattern for 'je l100320A0'
 // address: 0x100321A0
 p100321A0
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    ARG(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000018);
-    unknown_function_10031E6D(STACKVAR(8, 4), STACKVAR(12, 4));
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
+    unknown_function_10031E6D(unknown_function_10031E6D(STACKVAR(8, 4), STACKVAR(12, 4)), reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000018);
+    REGDEF(eax=STACKVAR(8, 4))
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x100321C8
 p100321C8
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    ARG(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000018);
-    unknown_function_10031E83(STACKVAR(8, 4), STACKVAR(12, 4));
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
+    unknown_function_10031E83(unknown_function_10031E83(STACKVAR(8, 4), STACKVAR(12, 4)), reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000018);
+    REGDEF(eax=STACKVAR(8, 4))
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x100321F0
 B_MeshEdge::B_MeshEdge()
@@ -6064,70 +6202,52 @@ Failed to find pattern for 'jne l100322AC'
 // address: 0x100322BC
 p100322BC
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    ARG(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000014);
-    ARG(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x0000000C);
-    ARG(STACKVAR(12, 4));
-    ARG(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000008);
-    unknown_function_10001BEF(STACKVAR(8, 4), reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000004);
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
+    reinterpret_cast<B_IDataFile &>(STACKVAR(8, 4)) >> reinterpret_cast<unsigned int &>(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000004) >> reinterpret_cast<unsigned int &>(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000008) >> reinterpret_cast<unsigned int &>(STACKVAR(12, 4)) >> reinterpret_cast<double &>(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x0000000C) >> reinterpret_cast<unsigned int &>(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000014);
+    REGDEF(eax=STACKVAR(8, 4))
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x10032314
 p10032314
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    ARG(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000014);
-    ARG(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x0000000C);
-    ARG(STACKVAR(12, 4));
-    ARG(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000008);
-    unknown_function_1000201E(STACKVAR(8, 4), reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000004);
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
+    reinterpret_cast<B_ODataFile &>(STACKVAR(8, 4)) << reinterpret_cast<unsigned int &>(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000004) << reinterpret_cast<unsigned int &>(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000008) << reinterpret_cast<unsigned int &>(STACKVAR(12, 4)) << reinterpret_cast<double &>(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x0000000C) << reinterpret_cast<unsigned int &>(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000014);
+    REGDEF(eax=STACKVAR(8, 4))
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x1003236C
 p1003236C
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    ARG(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000034);
-    ARG(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000018);
-    ARG(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000008);
-    ARG(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000004);
-    unknown_function_10001BEF(STACKVAR(8, 4), STACKVAR(12, 4));
+    unknown_function_10001BD9(unknown_function_10040D58(unknown_function_10001BEF(unknown_function_10001BEF(unknown_function_10001BEF(STACKVAR(8, 4), STACKVAR(12, 4)), reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000004), reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000008), reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000018), reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000034);
+    REGDEF(cmpl=ACCESS(GLOBAL(0x100488B4), 0, 4), cmpr=0x00000001)
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
+Failed to find pattern for 'jbe l100323FD'
 
 // address: 0x10032420
 p10032420
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    ARG(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000034);
-    ARG(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000018);
-    ARG(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000008);
-    ARG(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000004);
-    unknown_function_1000201E(STACKVAR(8, 4), STACKVAR(12, 4));
+    unknown_function_10002008(unknown_function_10040E61(unknown_function_1000201E(unknown_function_1000201E(unknown_function_1000201E(STACKVAR(8, 4), STACKVAR(12, 4)), reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000004), reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000008), reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000018), reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000034);
+    REGDEF(cmpl=ACCESS(GLOBAL(0x100488B4), 0, 4), cmpr=0x00000001)
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
+Failed to find pattern for 'jbe l100324AF'
 
 // address: 0x100324B4
 p100324B4
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    ARG(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000024);
-    ARG(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000020);
-    unknown_function_1002A7F2(STACKVAR(8, 4), STACKVAR(12, 4));
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
+    reinterpret_cast<B_IDataFile &>(unknown_function_1002A7F2(STACKVAR(8, 4), STACKVAR(12, 4))) >> reinterpret_cast<unsigned int &>(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000020) >> reinterpret_cast<unsigned int &>(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000024);
+    REGDEF(eax=STACKVAR(8, 4))
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x100324EC
 p100324EC
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    ARG(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000024);
-    ARG(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000020);
-    unknown_function_1002A81A(STACKVAR(8, 4), STACKVAR(12, 4));
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
+    reinterpret_cast<B_ODataFile &>(unknown_function_1002A81A(STACKVAR(8, 4), STACKVAR(12, 4))) << reinterpret_cast<unsigned int &>(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000020) << reinterpret_cast<unsigned int &>(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000024);
+    REGDEF(eax=STACKVAR(8, 4))
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x10032524
 p10032524
@@ -6146,112 +6266,82 @@ Failed to find pattern for 'fld dword ptr [g100488B8]'
 // address: 0x100327E1
 p100327E1
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    ARG(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000020);
-    ARG(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000008);
-    ARG(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000004);
-    unknown_function_10001C05(STACKVAR(8, 4), STACKVAR(12, 4));
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
+    reinterpret_cast<B_IDataFile &>(unknown_function_10031E6D(reinterpret_cast<B_IDataFile &>(STACKVAR(8, 4)) >> reinterpret_cast<float &>(STACKVAR(12, 4)) >> reinterpret_cast<float &>(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000004), reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000008)) >> reinterpret_cast<int &>(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000020);
+    REGDEF(eax=STACKVAR(8, 4))
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x10032829
 p10032829
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    ARG(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000020);
-    ARG(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000008);
-    ARG(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000004);
-    unknown_function_10002034(STACKVAR(8, 4), STACKVAR(12, 4));
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
+    reinterpret_cast<B_ODataFile &>(unknown_function_10031E83(reinterpret_cast<B_ODataFile &>(STACKVAR(8, 4)) << reinterpret_cast<float &>(STACKVAR(12, 4)) << reinterpret_cast<float &>(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000004), reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000008)) << reinterpret_cast<int &>(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000020);
+    REGDEF(eax=STACKVAR(8, 4))
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x10032871
 p10032871
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    ARG(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x0000008C);
-    ARG(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x0000000C);
-    unknown_function_10003A40(STACKVAR(8, 4), STACKVAR(12, 4));
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
+    reinterpret_cast<B_IDataFile &>(unknown_function_10030219(reinterpret_cast<B_IDataFile &>(STACKVAR(8, 4)) >> reinterpret_cast<B_NamedObj &>(STACKVAR(12, 4)), reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x0000000C)) >> reinterpret_cast<int &>(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x0000008C);
+    (reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x0000000C)->unknown_method_1002EF9F();
+    REGDEF(eax=STACKVAR(8, 4))
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x100328B6
 p100328B6
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    ARG(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x0000008C);
-    ARG(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x0000000C);
-    unknown_function_10003A58(STACKVAR(8, 4), STACKVAR(12, 4));
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
+    return reinterpret_cast<B_ODataFile &>(unknown_function_10030232(reinterpret_cast<B_ODataFile &>(STACKVAR(8, 4)) << reinterpret_cast<B_NamedObj &>(STACKVAR(12, 4)), reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x0000000C)) << reinterpret_cast<int &>(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x0000008C);
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x100328ED
 p100328ED
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    ARG(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000040);
-    ARG(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000028);
-    ARG(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000010);
-    ARG(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x0000000C);
-    unknown_function_10003A40(STACKVAR(8, 4), STACKVAR(12, 4));
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
+    unknown_function_10031E6D(unknown_function_10031E6D(unknown_function_10031E6D(reinterpret_cast<B_IDataFile &>(STACKVAR(8, 4)) >> reinterpret_cast<B_NamedObj &>(STACKVAR(12, 4)) >> reinterpret_cast<unsigned int &>(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x0000000C), reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000010), reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000028), reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000040);
+    REGDEF(eax=STACKVAR(8, 4))
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x10032945
 p10032945
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    ARG(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000040);
-    ARG(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000028);
-    ARG(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000010);
-    ARG(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x0000000C);
-    unknown_function_10003A58(STACKVAR(8, 4), STACKVAR(12, 4));
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
+    unknown_function_10031E83(unknown_function_10031E83(unknown_function_10031E83(reinterpret_cast<B_ODataFile &>(STACKVAR(8, 4)) << reinterpret_cast<B_NamedObj &>(STACKVAR(12, 4)) << reinterpret_cast<unsigned int &>(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x0000000C), reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000010), reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000028), reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000040);
+    REGDEF(eax=STACKVAR(8, 4))
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x1003299D
 p1003299D
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    ARG(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000028);
-    ARG(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000010);
-    ARG(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x0000000C);
-    unknown_function_10003A40(STACKVAR(8, 4), STACKVAR(12, 4));
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
+    unknown_function_10031E6D(unknown_function_10031E6D(reinterpret_cast<B_IDataFile &>(STACKVAR(8, 4)) >> reinterpret_cast<B_NamedObj &>(STACKVAR(12, 4)) >> reinterpret_cast<unsigned int &>(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x0000000C), reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000010), reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000028);
+    REGDEF(eax=STACKVAR(8, 4))
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x100329E5
 p100329E5
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    ARG(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000028);
-    ARG(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000010);
-    ARG(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x0000000C);
-    unknown_function_10003A58(STACKVAR(8, 4), STACKVAR(12, 4));
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
+    unknown_function_10031E83(unknown_function_10031E83(reinterpret_cast<B_ODataFile &>(STACKVAR(8, 4)) << reinterpret_cast<B_NamedObj &>(STACKVAR(12, 4)) << reinterpret_cast<unsigned int &>(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x0000000C), reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000010), reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000028);
+    REGDEF(eax=STACKVAR(8, 4))
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x10032A2D
 p10032A2D
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    ARG(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000028);
-    ARG(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000010);
-    ARG(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x0000000C);
-    unknown_function_10003A40(STACKVAR(8, 4), STACKVAR(12, 4));
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
+    unknown_function_10031E6D(unknown_function_10031E6D(reinterpret_cast<B_IDataFile &>(STACKVAR(8, 4)) >> reinterpret_cast<B_NamedObj &>(STACKVAR(12, 4)) >> reinterpret_cast<unsigned int &>(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x0000000C), reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000010), reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000028);
+    REGDEF(eax=STACKVAR(8, 4))
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x10032A75
 p10032A75
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    ARG(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000028);
-    ARG(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000010);
-    ARG(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x0000000C);
-    unknown_function_10003A58(STACKVAR(8, 4), STACKVAR(12, 4));
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
+    unknown_function_10031E83(unknown_function_10031E83(reinterpret_cast<B_ODataFile &>(STACKVAR(8, 4)) << reinterpret_cast<B_NamedObj &>(STACKVAR(12, 4)) << reinterpret_cast<unsigned int &>(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x0000000C), reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000010), reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000028);
+    REGDEF(eax=STACKVAR(8, 4))
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x10032ABD
 p10032ABD
@@ -6279,9 +6369,10 @@ void B_ObjDscr::SetUpNormals()
 {
     ProcedureInfo(this=Id(this), this_offset=-628, local_size=648, stack_delta=None)
     STACKVAR(-28, 4) = ACCESS(STACKVAR(-628, 4), 44, 4);
-    ??2@YAPAXI@Z(0x00000018 * reinterpret_cast<any_int32>(STACKVAR(-28, 4)));
+    STACKVAR(-204, 4) = ??2@YAPAXI@Z(0x00000018 * reinterpret_cast<any_int32>(STACKVAR(-28, 4)));
+    REGDEF(cmpl=STACKVAR(-204, 4), cmpr=0x00000000)
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
+Failed to find pattern for 'je l10032BB9'
 
 // address: 0x100335C3
 void B_ObjDscr::SetUpInertialT()
@@ -6373,11 +6464,11 @@ Failed to find pattern for 'je l100344BB'
 p100344BF
 {
     ProcedureInfo(this=Id(this), this_offset=-168, local_size=192, stack_delta=None)
-    ARG(STACKVAR(8, 4));
-    REGDEF(ecx=STACKVAR(-168, 4))
-    unknown_function_100342BD();
+    STACKVAR(-4, 4) = STACKVAR(-168, 4)->unknown_method_100342BD(STACKVAR(8, 4));
+    LOCAL(-28)->unknown_method_1003221C(STACKVAR(8, 4), STACKVAR(12, 4), STACKVAR(-4, 4));
+    STACKVAR(-32, 4) = 0x00000000;
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
+Failed to find pattern for 'jmp l10034508'
 
 // address: 0x10034A8A
 void B_ObjDscr::SetUpEdges()
@@ -6398,9 +6489,11 @@ Failed to find pattern for 'fld dword ptr [ebp+00Ch]'
 p1003590B
 {
     ProcedureInfo(this=None, this_offset=None, local_size=708, stack_delta=None)
-    unknown_function_10004676(STACKVAR(8, 4), STACKVAR(12, 4));
+    STACKVAR(-528, 4) = unknown_function_10004676(STACKVAR(8, 4), STACKVAR(12, 4));
+    STACKVAR(-532, 4) = reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000024;
+    REGDEF(cmpl=ACCESS(STACKVAR(-532, 4), 16, 4), cmpr=0x00000000)
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
+Failed to find pattern for 'je l10035997'
 
 // address: 0x100369F0
 p100369F0
@@ -6415,9 +6508,10 @@ void B_ObjDscr::SetUpBSP()
 {
     ProcedureInfo(this=Id(this), this_offset=-160, local_size=168, stack_delta=None)
     STACKVAR(-24, 4) = ACCESS(STACKVAR(-160, 4), 64, 4);
-    ??2@YAPAXI@Z(0x00000024 * reinterpret_cast<any_int32>(STACKVAR(-24, 4)) + 0x00000004);
+    STACKVAR(-36, 4) = ??2@YAPAXI@Z(0x00000024 * reinterpret_cast<any_int32>(STACKVAR(-24, 4)) + 0x00000004);
+    REGDEF(cmpl=STACKVAR(-36, 4), cmpr=0x00000000)
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
+Failed to find pattern for 'je l10036ED2'
 
 // address: 0x100371B3
 p100371B3
@@ -6450,9 +6544,16 @@ p1003737B
     STACKVAR(-32, 4) = 0x00000001;
     STACKVAR(-28, 4) = 0x00000000;
     STACKVAR(-44, 4) = GLOBAL(0x10042D7C);
-    STACKVAR(-464, 4)->unknown_method_10037338(STACKVAR(8, 4), STACKVAR(12, 4));
+    ACCESS(STACKVAR(16, 4), 0, 4) = STACKVAR(-464, 4)->unknown_method_10037338(STACKVAR(8, 4), STACKVAR(12, 4));
+    ACCESS(STACKVAR(16, 4), 20, 4) = 0x00000000;
+    STACKVAR(-280, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-464, 4), 60, 4)) + 0x00000038 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(16, 4), 0, 4));
+    STACKVAR(-284, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-464, 4), 40, 4)) + 0x00000030 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-280, 4), 0, 4));
+    STACKVAR(-288, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-464, 4), 60, 4)) + 0x00000038 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(16, 4), 0, 4));
+    STACKVAR(-292, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-464, 4), 40, 4)) + 0x00000030 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-288, 4), 4, 4));
+    REGDEF(ecx=STACKVAR(-292, 4)->unknown_method_10031760(LOCAL(-72), STACKVAR(-284, 4), LOCAL(-120), (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-464, 4), 40, 4)) + 0x00000030 * reinterpret_cast<any_int32>(ACCESS(ARRPTR(ACCESS(STACKVAR(-464, 4), 60, 4), 1, 0x00000038 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(16, 4), 0, 4)), 8), 0, 4)))->unknown_method_10031760(LOCAL(-96), reinterpret_cast<any_int32>(ACCESS(STACKVAR(-464, 4), 40, 4)) + 0x00000030 * reinterpret_cast<any_int32>(ACCESS(ARRPTR(ACCESS(STACKVAR(-464, 4), 60, 4), 1, 0x00000038 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(16, 4), 0, 4)), 0), 0, 4))))->unknown_method_10031882())
+    unknown_function_10031913();
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
+Failed to find pattern for 'fdivr qword ptr [g100422C0]'
 
 // address: 0x10037E84
 unsigned char B_ObjDscr::EdgeFaceGrp(unsigned int arg_1)
@@ -7504,9 +7605,10 @@ unsigned int ReadCSV(const char *file_name, B_NDataBase<B_ElementCSV> *csvs)
 {
     ProcedureInfo(this=None, this_offset=None, local_size=836, stack_delta=None)
     STACKVAR(-264, 4) = 0x00000000;
-    fopen(STACKVAR(8, 4), GLOBAL(0x1004893C));
+    STACKVAR(-4, 4) = fopen(STACKVAR(8, 4), GLOBAL(0x1004893C));
+    REGDEF(cmpl=STACKVAR(-4, 4), cmpr=0x00000000)
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
+Failed to find pattern for 'jne l1003DC48'
 
 // address: 0x1003DED0
 p1003DED0
@@ -8020,19 +8122,41 @@ Failed to find pattern for 'test eax, eax'
 // address: 0x100407BF
 p100407BF
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=8, stack_delta=None)
-    unknown_function_100409D8();
+    ProcedureInfo(this=None, this_offset=None, local_size=8, stack_delta=0)
+    ACCESS(GLOBAL(0x1004AB10), 0, 4) = unknown_function_100409D8();
+    STACKVAR(-8, 4) = Py_InitModule4(GLOBAL(0x10049CC8), GLOBAL(0x10048A78), 0x00000000, 0x00000000, 0x000003EF);
+    STACKVAR(-4, 4) = PyModule_GetDict(STACKVAR(-8, 4));
+    PyDict_SetItemString(STACKVAR(-4, 4), GLOBAL(0x10049CD0), PyInt_FromLong(0x00000001));
+    PyDict_SetItemString(STACKVAR(-4, 4), GLOBAL(0x10049CE0), PyInt_FromLong(0x00000002));
+    PyDict_SetItemString(STACKVAR(-4, 4), GLOBAL(0x10049CF0), PyInt_FromLong(0x00000003));
+    PyDict_SetItemString(STACKVAR(-4, 4), GLOBAL(0x10049CFC), PyInt_FromLong(0x00000004));
+    PyDict_SetItemString(STACKVAR(-4, 4), GLOBAL(0x10049D0C), PyInt_FromLong(0x00000005));
+    unknown_function_10040A5E(GLOBAL(0x10049D28), GLOBAL(0x10049D20), 0x00000000);
+    unknown_function_10040A5E(GLOBAL(0x10049D48), GLOBAL(0x10049D38), 0x00000000);
+    unknown_function_10040A5E(GLOBAL(0x10049D60), GLOBAL(0x10049D50), 0x00000000);
+    unknown_function_10040A5E(GLOBAL(0x10049D7C), GLOBAL(0x10049D68), 0x00000000);
+    unknown_function_10040A5E(GLOBAL(0x10049DA4), GLOBAL(0x10049D88), 0x00000000);
+    unknown_function_10040A5E(GLOBAL(0x10049DC0), GLOBAL(0x10049DB8), 0x00000000);
+    unknown_function_10040A5E(GLOBAL(0x10049DDC), GLOBAL(0x10049DD0), 0x00000000);
+    unknown_function_10040A5E(GLOBAL(0x10049DF8), GLOBAL(0x10049DF0), 0x00000000);
+    unknown_function_10040A5E(GLOBAL(0x10049E0C), GLOBAL(0x10049E04), 0x00000000);
+    unknown_function_10040A5E(GLOBAL(0x10049E24), GLOBAL(0x10049E1C), 0x00000000);
+    unknown_function_10040A5E(GLOBAL(0x10049E3C), GLOBAL(0x10049E34), 0x00000000);
+    unknown_function_10040A5E(GLOBAL(0x10049E5C), GLOBAL(0x10049E4C), 0x00000000);
+    unknown_function_10040A5E(GLOBAL(0x10049E74), GLOBAL(0x10049E64), 0x00000000);
+    unknown_function_10040A5E(GLOBAL(0x10049E8C), GLOBAL(0x10049E7C), 0x00000000);
+    unknown_function_10040A5E(GLOBAL(0x10049EA0), GLOBAL(0x10049E94), 0x00000000);
+    unknown_function_10040A5E(GLOBAL(0x10049EBC), GLOBAL(0x10049EA8), 0x00000000);
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
 
 // address: 0x100409D8
 p100409D8
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
     STACKVAR(-4, 4) = 0x00000000;
-    malloc(0x00000014);
+    STACKVAR(-4, 4) = malloc(0x00000014);
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
+Failed to find pattern for 'mov eax, dword ptr [__imp__PyType_Type]; [python15.PyType_Type].'
 
 // address: 0x10040A5E
 p10040A5E
@@ -8111,10 +8235,9 @@ B_ParticleGType::B_ParticleGType(const B_Name &new_type, const B_Name &parent_ty
     ACCESS(STACKVAR(-44, 4), 40, 4) = STACKVAR(16, 4);
     ACCESS(STACKVAR(-44, 4), 0, 4) = GLOBAL(0x10042E64);
     ACCESS(STACKVAR(-44, 4), 12, 4) = GLOBAL(0x10042E60);
-    REGDEF(ecx=STACKVAR(12, 4))
-    unknown_function_10003457();
+    ARG(STACKVAR(12, 4)->unknown_method_10003457());
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
+Failed to find pattern for 'mov ecx, dword ptr [__imp_?B_3D_raster_device@@3PAVB_3DRasterDevice@@A]; [Raster.?B_3D_raster_device@@3PAVB_3DRasterDevice@@A].'
 
 // address: 0x1004118F
 B_ParticleGType::~B_ParticleGType()
@@ -8132,11 +8255,10 @@ B_IDataFile &operator >>(B_IDataFile &file, B_ParticleGType &particleType)
     ProcedureInfo(this=None, this_offset=None, local_size=52, stack_delta=None)
     unknown_function_10003A40(STACKVAR(8, 4), STACKVAR(12, 4));
     LOCAL(-8)->unknown_method_10003300();
-    ARG(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000028);
-    ARG(LOCAL(-8));
-    unknown_function_10001BEF(STACKVAR(8, 4), reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000020);
+    unknown_function_10001BD9(unknown_function_10003904(unknown_function_10001BEF(STACKVAR(8, 4), reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000020), LOCAL(-8)), reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000028);
+    ARG(STACKVAR(-8, 4));
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
+Failed to find pattern for 'mov ecx, dword ptr [__imp_?B_3D_raster_device@@3PAVB_3DRasterDevice@@A]; [Raster.?B_3D_raster_device@@3PAVB_3DRasterDevice@@A].'
 
 // address: 0x100413EE
 B_ODataFile &operator <<(B_ODataFile &file, const B_ParticleGType &particleType)

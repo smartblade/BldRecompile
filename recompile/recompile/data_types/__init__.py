@@ -1,4 +1,4 @@
-from .any_int import AnyInt, AnyInt16
+from .any_int import AnyInt, AnyInt16, AnyInt32
 from .are_compatible import are_compatible
 from .are_same import are_same
 from .array_type import Array

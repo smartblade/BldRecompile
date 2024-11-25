@@ -48,6 +48,12 @@ def _reinterpret_const(data_type, c):
         c.value == 0
     ):
         return expressions.Null
+    if (
+        isinstance(data_type, data_types.Char) and
+        isinstance(c.data_type, data_types.UnknownByte) and
+        c.value == 0
+    ):
+        return expressions.Constant(data_type, "'\\0'")
     raise Exception(
         "Unimplemented reinterpret cast from {} to {}".format(
             c.data_type, data_type))

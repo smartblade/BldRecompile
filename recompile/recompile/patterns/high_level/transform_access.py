@@ -23,9 +23,12 @@ def transform_access(expression, offset, size, **kwargs):
                     size, data_type.size))
         return expressions.FieldAccess(expression, field_name)
     if isinstance(
-        pointee, (data_types.UChar, data_types.Int32, data_types.UInt32)
+        pointee, (
+            data_types.Char, data_types.UChar,
+            data_types.Int32, data_types.UInt32
+        )
     ):
-        if pointee.size != size:
+        if size is not None and pointee.size != size:
             raise Exception(
                 "Data type size expected to be {} but was: {}.".format(
                     size, pointee.size))

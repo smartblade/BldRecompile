@@ -1,3 +1,6 @@
+import data_types
+
+
 class ArrayAccess:
     def __init__(self, array, index):
         self._array = array
@@ -5,6 +8,8 @@ class ArrayAccess:
 
     @property
     def data_type(self):
+        if isinstance(self._array.data_type, data_types.Pointer32):
+            return self._array.data_type.pointee
         return self._array.data_type.element_type
 
     def transform_expression(self, **kwargs):
