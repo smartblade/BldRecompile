@@ -14,7 +14,8 @@ _procedures = {
     "ARRPTR": lambda *args: _unpack_args(
         *args, base=None, scale=int, index=None, offset=int),
     "REAL64": lambda *args: _unpack_args(*args, high=from_hex, low=from_hex),
-    "EXPECT": lambda *args: _unpack_args(*args, expression=None, const=int),
+    "EXPECT": lambda *args: _unpack_args(
+        *args, expression=None, const=from_hex),
     "EVAL": lambda *args: _unpack_args(*args, expression=None),
     "I": lambda *args: _unpack_args(*args, expression=None),
     "S": lambda *args: _unpack_args(*args, expression=None),

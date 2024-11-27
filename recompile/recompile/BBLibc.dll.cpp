@@ -5753,11 +5753,13 @@ void OutputWin32Error(const char *message)
 // address: 0x1002A5F0
 p1002A5F0
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    ACCESS(STACKVAR(-4, 4), 0, 8) = 0.0;
-    ACCESS(STACKVAR(-4, 4), 8, 4) = 0x00000000;
+    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=0)
+    ACCESS(this, 0, 8) = 0.0;
+    ACCESS(this, 8, 8) = 0.0;
+    ACCESS(this, 16, 8) = 0.0;
+    ACCESS(this, 24, 8) = 0.0;
+    REGDEF(eax=this)
 }
-Unexpected instruction type <class 'instructions.assignment.Assignment'>
 
 // address: 0x1002A7F2
 p1002A7F2
@@ -5778,11 +5780,12 @@ p1002A81A
 // address: 0x1002DEF0
 p1002DEF0
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    ACCESS(STACKVAR(-4, 4), 0, 8) = 0.0;
-    ACCESS(STACKVAR(-4, 4), 8, 4) = 0x00000000;
+    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=0)
+    ACCESS(this, 0, 8) = 0.0;
+    ACCESS(this, 8, 8) = 0.0;
+    ACCESS(this, 16, 8) = 0.0;
+    REGDEF(eax=this)
 }
-Unexpected instruction type <class 'instructions.assignment.Assignment'>
 
 // address: 0x1002DF30
 p1002DF30
@@ -5822,11 +5825,25 @@ p1002E0F0
 // address: 0x1002E190
 p1002E190
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    ACCESS(STACKVAR(-4, 4), 0, 8) = 1.0;
-    ACCESS(STACKVAR(-4, 4), 8, 4) = 0x00000000;
+    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=0)
+    ACCESS(this, 0, 8) = 1.0;
+    ACCESS(this, 8, 8) = 0.0;
+    ACCESS(this, 16, 8) = 0.0;
+    ACCESS(this, 24, 8) = 0.0;
+    ACCESS(this, 32, 8) = 0.0;
+    ACCESS(this, 40, 8) = 1.0;
+    ACCESS(this, 48, 8) = 0.0;
+    ACCESS(this, 56, 8) = 0.0;
+    ACCESS(this, 64, 8) = 0.0;
+    ACCESS(this, 72, 8) = 0.0;
+    ACCESS(this, 80, 8) = 1.0;
+    ACCESS(this, 88, 8) = 0.0;
+    ACCESS(this, 96, 8) = 0.0;
+    ACCESS(this, 104, 8) = 0.0;
+    ACCESS(this, 112, 8) = 0.0;
+    ACCESS(this, 120, 8) = 1.0;
+    REGDEF(eax=this)
 }
-Unexpected instruction type <class 'instructions.assignment.Assignment'>
 
 // address: 0x1002E2AD
 p1002E2AD
@@ -6111,13 +6128,14 @@ p10031E83
 // address: 0x10031EA0
 p10031EA0
 {
-    ProcedureInfo(this=Id(this), this_offset=-8, local_size=8, stack_delta=None)
-    ACCESS(STACKVAR(-8, 4), 0, 4) = 0x00000000;
-    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + 0x00000004;
+    ProcedureInfo(this=Id(this), this_offset=-8, local_size=8, stack_delta=0)
+    ACCESS(this, 0, 4) = 0x00000000;
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(this) + 0x00000004;
     ACCESS(STACKVAR(-4, 4), 0, 8) = 0.0;
-    ACCESS(STACKVAR(-4, 4), 8, 4) = 0x00000000;
+    ACCESS(STACKVAR(-4, 4), 8, 8) = 0.0;
+    ACCESS(STACKVAR(-4, 4), 16, 8) = 0.0;
+    REGDEF(eax=this)
 }
-Unexpected instruction type <class 'instructions.assignment.Assignment'>
 
 // address: 0x10031F20
 p10031F20
@@ -6565,9 +6583,8 @@ Failed to find pattern for 'jmp l10037EA8'
 // address: 0x10037EF5
 B_ObjDscr::B_ObjDscr()
 {
-    ProcedureInfo(this=Id(this), this_offset=-60, local_size=60, stack_delta=None)
-    STACKVAR(-60, 4)->unknown_method_10003EBA();
-    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-60, 4)) + 0x0000000C;
+    this->B_Resource();
+    STACKVAR(-4, 4) = &this->data;
     ACCESS(STACKVAR(-4, 4), 4, 4) = 0x00000000;
     ACCESS(STACKVAR(-4, 4), 8, 4) = 0x00000000;
     ACCESS(STACKVAR(-4, 4), 12, 4) = 0x00000010;
@@ -6575,59 +6592,61 @@ B_ObjDscr::B_ObjDscr()
     ACCESS(STACKVAR(-4, 4), 20, 4) = 0x00000001;
     ACCESS(STACKVAR(-4, 4), 0, 4) = GLOBAL(0x10042DE8);
     ACCESS(STACKVAR(-4, 4), 0, 4) = GLOBAL(0x10042DE4);
-    STACKVAR(-8, 4) = reinterpret_cast<any_int32>(STACKVAR(-60, 4)) + 0x00000024;
+    STACKVAR(-8, 4) = reinterpret_cast<any_int32>(this) + 0x00000024;
     ACCESS(STACKVAR(-8, 4), 4, 4) = 0x00000000;
     ACCESS(STACKVAR(-8, 4), 8, 4) = 0x00000000;
     ACCESS(STACKVAR(-8, 4), 12, 4) = 0x00000001;
     ACCESS(STACKVAR(-8, 4), 16, 4) = 0x00000000;
     ACCESS(STACKVAR(-8, 4), 0, 4) = GLOBAL(0x10042DE0);
     ACCESS(STACKVAR(-8, 4), 0, 4) = GLOBAL(0x10042DDC);
-    STACKVAR(-12, 4) = reinterpret_cast<any_int32>(STACKVAR(-60, 4)) + 0x00000038;
+    STACKVAR(-12, 4) = reinterpret_cast<any_int32>(this) + 0x00000038;
     ACCESS(STACKVAR(-12, 4), 4, 4) = 0x00000000;
     ACCESS(STACKVAR(-12, 4), 8, 4) = 0x00000000;
     ACCESS(STACKVAR(-12, 4), 12, 4) = 0x00000001;
     ACCESS(STACKVAR(-12, 4), 16, 4) = 0x00000000;
     ACCESS(STACKVAR(-12, 4), 0, 4) = GLOBAL(0x10042DD8);
     ACCESS(STACKVAR(-12, 4), 0, 4) = GLOBAL(0x10042DD4);
-    STACKVAR(-16, 4) = reinterpret_cast<any_int32>(STACKVAR(-60, 4)) + 0x0000004C;
+    STACKVAR(-16, 4) = reinterpret_cast<any_int32>(this) + 0x0000004C;
     STACKVAR(-16, 4)->unknown_method_1003B920(0x00000010, 0x00000001);
     ACCESS(STACKVAR(-16, 4), 0, 4) = GLOBAL(0x10042DD0);
-    STACKVAR(-20, 4) = reinterpret_cast<any_int32>(STACKVAR(-60, 4)) + 0x00000064;
+    STACKVAR(-20, 4) = reinterpret_cast<any_int32>(this) + 0x00000064;
     STACKVAR(-20, 4)->unknown_method_1003A010(0x00000001);
     ACCESS(STACKVAR(-20, 4), 0, 4) = GLOBAL(0x10042DCC);
-    STACKVAR(-24, 4) = reinterpret_cast<any_int32>(STACKVAR(-60, 4)) + 0x00000078;
+    STACKVAR(-24, 4) = reinterpret_cast<any_int32>(this) + 0x00000078;
     STACKVAR(-24, 4)->unknown_method_1003A160(0x00000001);
     ACCESS(STACKVAR(-24, 4), 0, 4) = GLOBAL(0x10042DC8);
-    STACKVAR(-28, 4) = reinterpret_cast<any_int32>(STACKVAR(-60, 4)) + 0x0000008C;
+    STACKVAR(-28, 4) = reinterpret_cast<any_int32>(this) + 0x0000008C;
     STACKVAR(-28, 4)->unknown_method_1003BA20(0x00000010, 0x00000001);
     ACCESS(STACKVAR(-28, 4), 0, 4) = GLOBAL(0x10042DC4);
-    STACKVAR(-32, 4) = reinterpret_cast<any_int32>(STACKVAR(-60, 4)) + 0x000000A4;
+    STACKVAR(-32, 4) = reinterpret_cast<any_int32>(this) + 0x000000A4;
     ACCESS(STACKVAR(-32, 4), 0, 4) = 0x00000000;
     ACCESS(STACKVAR(-32, 4), 12, 4) = 0x00000000;
     ACCESS(STACKVAR(-32, 4), 16, 4) = 0x00000000;
     ACCESS(STACKVAR(-32, 4), 20, 4) = 0x00000000;
-    STACKVAR(-36, 4) = reinterpret_cast<any_int32>(STACKVAR(-60, 4)) + 0x000000BC;
+    STACKVAR(-36, 4) = reinterpret_cast<any_int32>(this) + 0x000000BC;
     STACKVAR(-36, 4)->unknown_method_1003A1A0(0x00000001);
     ACCESS(STACKVAR(-36, 4), 0, 4) = GLOBAL(0x10042DC0);
-    STACKVAR(-40, 4) = reinterpret_cast<any_int32>(STACKVAR(-60, 4)) + 0x000000D0;
+    STACKVAR(-40, 4) = reinterpret_cast<any_int32>(this) + 0x000000D0;
     STACKVAR(-40, 4)->unknown_method_1003BB80(0x00000010, 0x00000001);
     ACCESS(STACKVAR(-40, 4), 0, 4) = GLOBAL(0x10042DBC);
-    STACKVAR(-44, 4) = reinterpret_cast<any_int32>(STACKVAR(-60, 4)) + 0x000000E8;
+    STACKVAR(-44, 4) = reinterpret_cast<any_int32>(this) + 0x000000E8;
     STACKVAR(-44, 4)->unknown_method_1003BC90(0x00000010, 0x00000001);
     ACCESS(STACKVAR(-44, 4), 0, 4) = GLOBAL(0x10042DB8);
-    STACKVAR(-48, 4) = reinterpret_cast<any_int32>(STACKVAR(-60, 4)) + 0x00000100;
+    STACKVAR(-48, 4) = reinterpret_cast<any_int32>(this) + 0x00000100;
     STACKVAR(-48, 4)->unknown_method_1003BE50(0x00000010, 0x00000001);
     ACCESS(STACKVAR(-48, 4), 0, 4) = GLOBAL(0x10042DB4);
-    STACKVAR(-52, 4) = reinterpret_cast<any_int32>(STACKVAR(-60, 4)) + 0x00000118;
+    STACKVAR(-52, 4) = reinterpret_cast<any_int32>(this) + 0x00000118;
     STACKVAR(-52, 4)->unknown_method_1003BF60(0x00000010, 0x00000001);
     ACCESS(STACKVAR(-52, 4), 0, 4) = GLOBAL(0x10042DB0);
-    (reinterpret_cast<any_int32>(STACKVAR(-60, 4)) + 0x00000130)->unknown_method_1002E190();
-    (reinterpret_cast<any_int32>(STACKVAR(-60, 4)) + 0x000001B0)->unknown_method_1002E190();
-    STACKVAR(-56, 4) = reinterpret_cast<any_int32>(STACKVAR(-60, 4)) + 0x00000240;
+    (reinterpret_cast<any_int32>(this) + 0x00000130)->unknown_method_1002E190();
+    (reinterpret_cast<any_int32>(this) + 0x000001B0)->unknown_method_1002E190();
+    STACKVAR(-56, 4) = reinterpret_cast<any_int32>(this) + 0x00000240;
     ACCESS(STACKVAR(-56, 4), 0, 8) = 0.0;
-    ACCESS(STACKVAR(-56, 4), 8, 4) = 0x00000000;
+    ACCESS(STACKVAR(-56, 4), 8, 8) = 0.0;
+    ACCESS(STACKVAR(-56, 4), 16, 8) = 0.0;
+    (reinterpret_cast<any_int32>(this) + 0x00000258)->unknown_method_1002A5F0();
+    ACCESS(this, 0, 4) = GLOBAL(0x10042DA0);
 }
-Unexpected instruction type <class 'instructions.assignment.Assignment'>
 
 // address: 0x1003819B
 B_ObjDscr::~B_ObjDscr()
@@ -6675,23 +6694,35 @@ Can't parse line: l100395E3: mov eax, dword ptr [ebp+010h]
 // address: 0x10039610
 p10039610
 {
-    ProcedureInfo(this=Id(this), this_offset=-8, local_size=8, stack_delta=None)
-    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + 0x00000004;
+    ProcedureInfo(this=Id(this), this_offset=-8, local_size=8, stack_delta=0)
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(this) + 0x00000004;
     ACCESS(STACKVAR(-4, 4), 0, 8) = 0.0;
-    ACCESS(STACKVAR(-4, 4), 8, 4) = 0x00000000;
+    ACCESS(STACKVAR(-4, 4), 8, 8) = 0.0;
+    ACCESS(STACKVAR(-4, 4), 16, 8) = 0.0;
+    ACCESS(this, 0, 4) = GLOBAL(0x10042D3C);
+    REGDEF(eax=this)
 }
-Unexpected instruction type <class 'instructions.assignment.Assignment'>
 
 // address: 0x10039670
 p10039670
 {
-    ProcedureInfo(this=Id(this), this_offset=-16, local_size=16, stack_delta=None)
-    STACKVAR(-16, 4)->unknown_method_100039E5();
-    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000010;
+    ProcedureInfo(this=Id(this), this_offset=-16, local_size=16, stack_delta=0)
+    reinterpret_cast<B_NamedObj *>(this)->B_NamedObj();
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(this) + 0x00000010;
     ACCESS(STACKVAR(-4, 4), 0, 8) = 0.0;
-    ACCESS(STACKVAR(-4, 4), 8, 4) = 0x00000000;
+    ACCESS(STACKVAR(-4, 4), 8, 8) = 0.0;
+    ACCESS(STACKVAR(-4, 4), 16, 8) = 0.0;
+    STACKVAR(-8, 4) = reinterpret_cast<any_int32>(this) + 0x00000028;
+    ACCESS(STACKVAR(-8, 4), 0, 8) = 0.0;
+    ACCESS(STACKVAR(-8, 4), 8, 8) = 0.0;
+    ACCESS(STACKVAR(-8, 4), 16, 8) = 0.0;
+    STACKVAR(-12, 4) = reinterpret_cast<any_int32>(this) + 0x00000040;
+    ACCESS(STACKVAR(-12, 4), 0, 8) = 0.0;
+    ACCESS(STACKVAR(-12, 4), 8, 8) = 0.0;
+    ACCESS(STACKVAR(-12, 4), 16, 8) = 0.0;
+    ACCESS(this, 0, 4) = GLOBAL(0x10042D98);
+    REGDEF(eax=this)
 }
-Unexpected instruction type <class 'instructions.assignment.Assignment'>
 
 // address: 0x10039750
 p10039750
@@ -7470,11 +7501,16 @@ Failed to find pattern for 'je l1003D63D'
 // address: 0x1003D740
 p1003D740
 {
-    ProcedureInfo(this=Id(this), this_offset=-8, local_size=8, stack_delta=None)
-    ACCESS(STACKVAR(-8, 4), 0, 8) = 0.0;
-    ACCESS(STACKVAR(-8, 4), 8, 4) = 0x00000000;
+    ProcedureInfo(this=Id(this), this_offset=-8, local_size=8, stack_delta=0)
+    ACCESS(this, 0, 8) = 0.0;
+    ACCESS(this, 8, 8) = 0.0;
+    ACCESS(this, 16, 8) = 0.0;
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(this) + 0x00000018;
+    ACCESS(STACKVAR(-4, 4), 0, 8) = 0.0;
+    ACCESS(STACKVAR(-4, 4), 8, 8) = 0.0;
+    ACCESS(STACKVAR(-4, 4), 16, 8) = 0.0;
+    REGDEF(eax=this)
 }
-Unexpected instruction type <class 'instructions.assignment.Assignment'>
 
 // address: 0x1003D7C0
 p1003D7C0
@@ -7489,13 +7525,19 @@ p1003D7C0
 // address: 0x1003D7F0
 p1003D7F0
 {
-    ProcedureInfo(this=Id(this), this_offset=-12, local_size=12, stack_delta=None)
-    STACKVAR(-12, 4)->unknown_method_100039E5();
-    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + 0x00000010;
+    ProcedureInfo(this=Id(this), this_offset=-12, local_size=12, stack_delta=0)
+    reinterpret_cast<B_NamedObj *>(this)->B_NamedObj();
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(this) + 0x00000010;
     ACCESS(STACKVAR(-4, 4), 0, 8) = 0.0;
-    ACCESS(STACKVAR(-4, 4), 8, 4) = 0x00000000;
+    ACCESS(STACKVAR(-4, 4), 8, 8) = 0.0;
+    ACCESS(STACKVAR(-4, 4), 16, 8) = 0.0;
+    STACKVAR(-8, 4) = reinterpret_cast<any_int32>(this) + 0x00000028;
+    ACCESS(STACKVAR(-8, 4), 0, 8) = 0.0;
+    ACCESS(STACKVAR(-8, 4), 8, 8) = 0.0;
+    ACCESS(STACKVAR(-8, 4), 16, 8) = 0.0;
+    ACCESS(this, 0, 4) = GLOBAL(0x10042E44);
+    REGDEF(eax=this)
 }
-Unexpected instruction type <class 'instructions.assignment.Assignment'>
 
 // address: 0x1003D890
 p1003D890

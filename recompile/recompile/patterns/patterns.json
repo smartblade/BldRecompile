@@ -186,6 +186,13 @@
 	},
 	{
 		"instructions": [
+			{"mov":  ["[%eax-ecx-edx%%offset-low%]", "%hex-low%"]},
+			{"mov":  ["[%eax-ecx-edx%%offset-high%]", "%hex-high%"]}
+		],
+		"action": {"assignment": {"dst": "ACCESS(REGVALUE(%eax-ecx-edx%), EXPECT(%offset-low%, EVAL(%offset-high% - 4)), 8)", "src": "REAL64(%hex-high%, %hex-low%)"}}
+	},
+	{
+		"instructions": [
 			{"mov":  ["%mem-operand%", "%src-operand%"]}
 		],
 		"action": {"assignment": {"dst": "%mem-operand%", "src": "%src-operand%"}}
