@@ -50,6 +50,8 @@ class ProcedureCall:
     def data_type(self):
         if self._name == "sqrt":
             return data_types.Double()
+        if self._name == "strlen":
+            return data_types.UInt32()
         if self._proc_decl is not None:
             return self._proc_decl.return_type
         raise Exception("Can't deduce data type for: {}".format(self))

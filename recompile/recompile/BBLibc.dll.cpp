@@ -283,10 +283,9 @@ B_ODataFile &operator <<(B_ODataFile &file, const char &c)
 // address: 0x10001F74
 B_ODataFile &operator <<(B_ODataFile &file, const char *c)
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    REGDEF(edi=STACKVAR(12, 4))
+    file.Write(c, strlen(c));
+    return file;
 }
-Failed to find pattern for 'or ecx, 0FFFFFFFFh'
 
 // address: 0x10001F9A
 B_ODataFile &operator <<(B_ODataFile &file, const unsigned char &c)
@@ -804,7 +803,10 @@ B_Name::B_Name()
 B_Name::B_Name(const char *str)
 {
     ProcedureInfo(this=Id(this), this_offset=-8, local_size=8, stack_delta=None)
-    REGDEF(edi=STACKVAR(8, 4))
+    ACCESS(STACKVAR(-8, 4), 4, 4) = strlen(STACKVAR(8, 4));
+    STACKVAR(-4, 4) = ??2@YAPAXI@Z(reinterpret_cast<any_int32>(ACCESS(STACKVAR(-8, 4), 4, 4)) + 0x00000001);
+    ACCESS(STACKVAR(-8, 4), 0, 4) = STACKVAR(-4, 4);
+    REGDEF(edi=STACKVAR(8, 4), edx=ACCESS(STACKVAR(-8, 4), 0, 4))
 }
 Failed to find pattern for 'or ecx, 0FFFFFFFFh'
 
