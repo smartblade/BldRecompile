@@ -898,10 +898,8 @@ Failed to find pattern for 'jne l10003761'
 // address: 0x10003769
 unsigned int B_Name::CompareNoCase(const char *str)
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    _stricmp(ACCESS(STACKVAR(-4, 4), 0, 4), STACKVAR(8, 4));
+    return static_cast<unsigned int>(_stricmp(this->string, str) == 0);
 }
-Failed to find pattern for 'neg eax'
 
 // address: 0x1000378E
 B_Name &B_Name::operator =(const B_Name &src)
