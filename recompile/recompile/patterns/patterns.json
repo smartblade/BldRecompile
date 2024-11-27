@@ -44,6 +44,19 @@
 	},
 	{
 		"instructions": [
+			{"mov": ["edx", "[eax]"]},
+			{"mov": ["[ecx]", "edx"]},
+			{"mov": ["edx", "[eax+004h]"]},
+			{"mov": ["[ecx+004h]", "edx"]},
+			{"mov": ["edx", "[eax+008h]"]},
+			{"mov": ["[ecx+008h]", "edx"]},
+			{"mov": ["eax", "[eax+00Ch]"]},
+			{"mov": ["[ecx+00Ch]", "eax"]}
+		],
+		"action": {"instruction": {"expression": "memcpy(REGVALUE(ecx), REGVALUE(eax), 16)"}}
+	},
+	{
+		"instructions": [
 			{"push": ["ebp"]},
 			{"mov":  ["ebp", "esp"]},
 			{"push": ["ecx"]}

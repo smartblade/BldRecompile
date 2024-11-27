@@ -1801,10 +1801,9 @@ Failed to find pattern for 'jb l10007D4A'
 // address: 0x10007EF0
 B_RDataLight &B_RDataLight::operator=(const B_RDataLight &other)
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    ACCESS(STACKVAR(-4, 4), 0, 4) = ACCESS(STACKVAR(8, 4), 0, 4);
+    memcpy(this, other, 16); // TODO improve emitting of memcpy instructions
+    return *this;
 }
-Unexpected instruction type <class 'instructions.assignment.Assignment'>
 
 // address: 0x10007F20
 p10007F20
