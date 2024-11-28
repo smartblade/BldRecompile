@@ -117,7 +117,11 @@ def _new_token(state, s):
             data_type = data_types.Double()
             value = float(s)
         return expressions.Constant(data_type, value)
-    if s.startswith("&") and s != Operator.AND.value:
+    if (
+        s.startswith("&") and
+        s != Operator.BIT_AND.value and
+        s != Operator.AND.value
+    ):
         return expressions.AddressOf(_new_token(state, s[1:]))
     match = re.search(field_access_regexp, s)
     if match:

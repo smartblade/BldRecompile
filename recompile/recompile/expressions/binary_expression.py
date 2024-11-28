@@ -20,6 +20,8 @@ class BinaryExpression:
             return data_types.Bool()
         left_type = self._left.data_type
         right_type = self._right.data_type
+        if self._operator in [Operator.SHL, Operator.SHR]:
+            return left_type
         if (
             isinstance(left_type, data_types.Double) and
             isinstance(right_type, data_types.Double)

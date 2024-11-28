@@ -293,6 +293,12 @@
 	},
 	{
 		"instructions": [
+			{"and":  ["%eax-ecx-edx%", "%src-operand%"]}
+		],
+		"action": {"tmpreg": {"dst": "%eax-ecx-edx%", "src": "I(REGVALUE(%eax-ecx-edx%)) & I(%src-operand%)"}}
+	},
+	{
+		"instructions": [
 			{"xor":  ["%eax-ecx-edx%", "%eax-ecx-edx%"]}
 		],
 		"action": {"tmpreg": {"dst": "%eax-ecx-edx%", "src": "0x00000000"}}
