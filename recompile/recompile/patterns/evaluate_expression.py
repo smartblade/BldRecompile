@@ -35,4 +35,6 @@ def _evaluate_binary(b):
         return expressions.Constant(data_type, left.value * right.value)
     if b.operator == Operator.SUB:
         return expressions.Constant(data_type, left.value - right.value)
+    if b.operator == Operator.SHL:
+        return expressions.Constant(data_type, left.value << right.value)
     return None

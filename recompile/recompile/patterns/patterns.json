@@ -288,9 +288,9 @@
 	},
 	{
 		"instructions": [
-			{"shl":  ["%eax-ecx-edx%", "001h"]}
+			{"shl":  ["%eax-ecx-edx%", "%hex%"]}
 		],
-		"action": {"tmpreg": {"dst": "%eax-ecx-edx%", "src": "2 * I(REGVALUE(%eax-ecx-edx%))"}}
+		"action": {"tmpreg": {"dst": "%eax-ecx-edx%", "src": "EVAL(1 << %hex%) * I(REGVALUE(%eax-ecx-edx%))"}}
 	},
 	{
 		"instructions": [
