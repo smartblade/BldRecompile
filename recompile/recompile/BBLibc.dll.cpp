@@ -2588,9 +2588,9 @@ Failed to find pattern for 'sub eax, 000000001h'
 p1000D7FA
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    REGDEF(eax=STACKVAR(12, 4))
+    REGDEF(eax=reinterpret_cast<int>(STACKVAR(12, 4)) >> 0x08)
 }
-Failed to find pattern for 'sar eax, 008h'
+Failed to find pattern for 'and eax, 0000000FFh'
 
 // address: 0x1000D82D
 p1000D82D
@@ -5056,9 +5056,21 @@ p100250C5
     ProcedureInfo(this=None, this_offset=None, local_size=428, stack_delta=None)
     STACKVAR(-424, 4) = ACCESS(STACKVAR(8, 4), 424, 4);
     STACKVAR(-284, 4) = ACCESS(STACKVAR(-424, 4), 24, 4);
-    REGDEF(ecx=STACKVAR(12, 4))
+    STACKVAR(12, 4) = reinterpret_cast<int>(STACKVAR(12, 4)) >> 0x02;
+    STACKVAR(16, 4) = reinterpret_cast<int>(STACKVAR(16, 4)) >> 0x03;
+    STACKVAR(20, 4) = reinterpret_cast<int>(STACKVAR(20, 4)) >> 0x02;
+    STACKVAR(-272, 4) = 0x00000020 * reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000004;
+    STACKVAR(-276, 4) = 0x00000020 * reinterpret_cast<any_int32>(STACKVAR(16, 4)) + 0x00000002;
+    STACKVAR(-280, 4) = 0x00000020 * reinterpret_cast<any_int32>(STACKVAR(20, 4)) + 0x00000004;
+    STACKVAR(-416, 4) = unknown_function_100252A3(STACKVAR(8, 4), STACKVAR(-272, 4), STACKVAR(-276, 4), STACKVAR(-280, 4), LOCAL(-256));
+    unknown_function_100257D0(STACKVAR(8, 4), STACKVAR(-272, 4), STACKVAR(-276, 4), STACKVAR(-280, 4), STACKVAR(-416, 4), LOCAL(-256), LOCAL(-412));
+    STACKVAR(12, 4) = 0x00000004 * reinterpret_cast<any_int32>(STACKVAR(12, 4));
+    STACKVAR(16, 4) = 0x00000008 * reinterpret_cast<any_int32>(STACKVAR(16, 4));
+    STACKVAR(20, 4) = 0x00000004 * reinterpret_cast<any_int32>(STACKVAR(20, 4));
+    STACKVAR(-420, 4) = LOCAL(-412);
+    STACKVAR(-260, 4) = 0x00000000;
 }
-Failed to find pattern for 'sar ecx, 002h'
+Failed to find pattern for 'jmp l100251DA'
 
 // address: 0x100252A3
 p100252A3
@@ -5066,9 +5078,15 @@ p100252A3
     ProcedureInfo(this=None, this_offset=None, local_size=1080, stack_delta=None)
     STACKVAR(-1052, 4) = ACCESS(STACKVAR(8, 4), 112, 4);
     STACKVAR(-1060, 4) = reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000018;
-    REGDEF(eax=reinterpret_cast<any_int32>(STACKVAR(12, 4)) + reinterpret_cast<any_int32>(STACKVAR(-1060, 4)))
+    STACKVAR(-1072, 4) = reinterpret_cast<int>(STACKVAR(12, 4)) + reinterpret_cast<int>(STACKVAR(-1060, 4)) >> 0x01;
+    STACKVAR(-1068, 4) = reinterpret_cast<any_int32>(STACKVAR(16, 4)) + 0x0000001C;
+    STACKVAR(-1080, 4) = reinterpret_cast<int>(STACKVAR(16, 4)) + reinterpret_cast<int>(STACKVAR(-1068, 4)) >> 0x01;
+    STACKVAR(-1076, 4) = reinterpret_cast<any_int32>(STACKVAR(20, 4)) + 0x00000018;
+    STACKVAR(-1040, 4) = reinterpret_cast<int>(STACKVAR(20, 4)) + reinterpret_cast<int>(STACKVAR(-1076, 4)) >> 0x01;
+    STACKVAR(-1064, 4) = 0x7FFFFFFF;
+    STACKVAR(-1044, 4) = 0x00000000;
 }
-Failed to find pattern for 'sar eax, 001h'
+Failed to find pattern for 'jmp l10025334'
 
 // address: 0x100257D0
 p100257D0

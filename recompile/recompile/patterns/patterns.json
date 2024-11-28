@@ -305,6 +305,12 @@
 	},
 	{
 		"instructions": [
+			{"sar":  ["%eax-ecx-edx%", "%hex%"]}
+		],
+		"action": {"tmpreg": {"dst": "%eax-ecx-edx%", "src": "S(REGVALUE(%eax-ecx-edx%)) >> %hex%"}}
+	},
+	{
+		"instructions": [
 			{"cmp":  ["%src-operand-left%", "%src-operand-right%"]}
 		],
 		"actions": [
