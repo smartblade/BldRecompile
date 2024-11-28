@@ -135,6 +135,17 @@
 	},
 	{
 		"instructions": [
+			{"mov": ["eax", "ecx"]},
+			{"shr": ["ecx", "002h"]},
+			{"rep": ["movsd"]},
+			{"mov": ["ecx", "eax"]},
+			{"and": ["ecx", "000000003h"]},
+			{"rep": ["movsb"]}
+		],
+		"action": {"instruction": {"expression": "memcpy(REGVALUE(edi), REGVALUE(esi), REGVALUE(ecx))"}}
+	},
+	{
+		"instructions": [
 			{"rep": ["movsd"]}
 		],
 		"action": {"instruction": {"expression": "memcpy(REGVALUE(edi), REGVALUE(esi), EVAL(4 * REGVALUE(ecx)))"}}

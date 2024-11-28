@@ -5229,10 +5229,9 @@ Failed to find pattern for 'lea eax, [edx+ecx*04h]'
 // address: 0x1002694F
 p1002694F
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    REGDEF(esi=STACKVAR(8, 4), edi=STACKVAR(12, 4), eax=0x00000080 * reinterpret_cast<any_int32>(STACKVAR(16, 4)))
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
+    memcpy(STACKVAR(12, 4), STACKVAR(8, 4), 0x00000080 * reinterpret_cast<any_int32>(STACKVAR(16, 4))); // TODO improve emitting of memcpy instructions
 }
-Failed to find pattern for 'shr ecx, 002h'
 
 // address: 0x10026972
 p10026972
