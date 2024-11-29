@@ -313,7 +313,7 @@
 		"instructions": [
 			{"sar":  ["%eax-ecx-edx%", "%hex%"]}
 		],
-		"action": {"tmpreg": {"dst": "%eax-ecx-edx%", "src": "S(REGVALUE(%eax-ecx-edx%)) >> %hex%"}}
+		"action": {"tmpreg": {"dst": "%eax-ecx-edx%", "src": "S(REGVALUE(%eax-ecx-edx%)) >> U(%hex%)"}}
 	},
 	{
 		"instructions": [

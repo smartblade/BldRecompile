@@ -114,6 +114,8 @@ def _evaluate_any_int_conversion(expression, **kwargs):
 
 
 def _evaluate_uint_conversion(expression, **kwargs):
+    if expression.data_type.size == 1:
+        return expressions.do_reinterpret(data_types.UChar(), expression)
     if expression.data_type.size == 4:
         return expressions.do_reinterpret(data_types.UInt32(), expression)
     raise Exception("Conversion to uint{} is not supported.".format(

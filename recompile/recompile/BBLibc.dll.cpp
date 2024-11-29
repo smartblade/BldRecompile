@@ -2589,7 +2589,7 @@ Failed to find pattern for 'sub eax, 000000001h'
 p1000D7FA
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
-    unknown_function_1000D78A(STACKVAR(8, 4), reinterpret_cast<int>(STACKVAR(12, 4)) >> 0x08 & 0x000000FF);
+    unknown_function_1000D78A(STACKVAR(8, 4), reinterpret_cast<int>(STACKVAR(12, 4)) >> 8 & 0x000000FF);
     unknown_function_1000D78A(STACKVAR(8, 4), reinterpret_cast<any_int32>(STACKVAR(12, 4)) & 0x000000FF);
 }
 
@@ -5057,9 +5057,9 @@ p100250C5
     ProcedureInfo(this=None, this_offset=None, local_size=428, stack_delta=None)
     STACKVAR(-424, 4) = ACCESS(STACKVAR(8, 4), 424, 4);
     STACKVAR(-284, 4) = ACCESS(STACKVAR(-424, 4), 24, 4);
-    STACKVAR(12, 4) = reinterpret_cast<int>(STACKVAR(12, 4)) >> 0x02;
-    STACKVAR(16, 4) = reinterpret_cast<int>(STACKVAR(16, 4)) >> 0x03;
-    STACKVAR(20, 4) = reinterpret_cast<int>(STACKVAR(20, 4)) >> 0x02;
+    STACKVAR(12, 4) = reinterpret_cast<int>(STACKVAR(12, 4)) >> 2;
+    STACKVAR(16, 4) = reinterpret_cast<int>(STACKVAR(16, 4)) >> 3;
+    STACKVAR(20, 4) = reinterpret_cast<int>(STACKVAR(20, 4)) >> 2;
     STACKVAR(-272, 4) = 0x00000020 * reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000004;
     STACKVAR(-276, 4) = 0x00000020 * reinterpret_cast<any_int32>(STACKVAR(16, 4)) + 0x00000002;
     STACKVAR(-280, 4) = 0x00000020 * reinterpret_cast<any_int32>(STACKVAR(20, 4)) + 0x00000004;
@@ -5079,11 +5079,11 @@ p100252A3
     ProcedureInfo(this=None, this_offset=None, local_size=1080, stack_delta=None)
     STACKVAR(-1052, 4) = ACCESS(STACKVAR(8, 4), 112, 4);
     STACKVAR(-1060, 4) = reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000018;
-    STACKVAR(-1072, 4) = reinterpret_cast<int>(STACKVAR(12, 4)) + reinterpret_cast<int>(STACKVAR(-1060, 4)) >> 0x01;
+    STACKVAR(-1072, 4) = reinterpret_cast<int>(STACKVAR(12, 4)) + reinterpret_cast<int>(STACKVAR(-1060, 4)) >> 1;
     STACKVAR(-1068, 4) = reinterpret_cast<any_int32>(STACKVAR(16, 4)) + 0x0000001C;
-    STACKVAR(-1080, 4) = reinterpret_cast<int>(STACKVAR(16, 4)) + reinterpret_cast<int>(STACKVAR(-1068, 4)) >> 0x01;
+    STACKVAR(-1080, 4) = reinterpret_cast<int>(STACKVAR(16, 4)) + reinterpret_cast<int>(STACKVAR(-1068, 4)) >> 1;
     STACKVAR(-1076, 4) = reinterpret_cast<any_int32>(STACKVAR(20, 4)) + 0x00000018;
-    STACKVAR(-1040, 4) = reinterpret_cast<int>(STACKVAR(20, 4)) + reinterpret_cast<int>(STACKVAR(-1076, 4)) >> 0x01;
+    STACKVAR(-1040, 4) = reinterpret_cast<int>(STACKVAR(20, 4)) + reinterpret_cast<int>(STACKVAR(-1076, 4)) >> 1;
     STACKVAR(-1064, 4) = 0x7FFFFFFF;
     STACKVAR(-1044, 4) = 0x00000000;
 }
