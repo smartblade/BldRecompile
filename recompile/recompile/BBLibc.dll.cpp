@@ -150,8 +150,9 @@ int B_IDataFile::Seek(int offset, int whence)
     {
         goto l100018E3;
     }
+    goto l100018EF;
 }
-Failed to find pattern for 'jmp l100018EF'
+Can't parse line: l100018C9: mov ecx, dword ptr [ebp+008h]
 
 // address: 0x100019AF
 int B_IDataFile::Tell()
@@ -643,8 +644,9 @@ unsigned int B_List::Add(B_ListElement *element)
     ACCESS(STACKVAR(8, 4), 8, 4) = ACCESS(STACKVAR(-4, 4), 8, 4);
     ACCESS(STACKVAR(8, 4), 12, 4) = 0x00000000;
     ACCESS(STACKVAR(-4, 4), 8, 4) = STACKVAR(8, 4);
+    goto l10002A63;
 }
-Failed to find pattern for 'jmp l10002A63'
+Can't parse line: l10002A51: mov ecx, dword ptr [ebp-004h]
 
 // address: 0x10002A86
 unsigned int B_List::AddAfter(B_ListElement *existing, B_ListElement *newElement)
@@ -918,8 +920,9 @@ unsigned int B_Name::operator !=(const B_Name &rhs)
         goto l10003661;
     }
     REGDEF(eax=0x00000001)
+    goto l100036BF;
 }
-Failed to find pattern for 'jmp l100036BF'
+Can't parse line: l10003661: mov eax, dword ptr [ebp+008h]
 
 // address: 0x100036C5
 unsigned int B_Name::operator !=(const char *str)
@@ -1142,8 +1145,9 @@ p10003F26
     {
         goto l10003FBA;
     }
+    goto l10003FCA;
 }
-Failed to find pattern for 'jmp l10003FCA'
+Can't parse line: l10003FA8: mov ecx, dword ptr [ebp+00Ch]
 
 // address: 0x10003FCE
 p10003FCE
@@ -1190,8 +1194,9 @@ p10004406
         goto l1000441D;
     }
     REGDEF(eax=0x00000001)
+    goto l1000441F;
 }
-Failed to find pattern for 'jmp l1000441F'
+Can't parse line: l1000441D: xor eax, eax
 
 // address: 0x10004425
 B_Resource *B_ResourceManager::sub_10004425(unsigned short resourceId, const B_Name &name)
@@ -1217,8 +1222,9 @@ p100045B9
         goto l100045F1;
     }
     STACKVAR(-16, 4) = STACKVAR(-4, 4)->(ACCESS(ACCESS(STACKVAR(-4, 4), 0, 4), 0, 4))(0x00000001);
+    goto l100045F8;
 }
-Failed to find pattern for 'jmp l100045F8'
+Can't parse line: l100045F1: mov dword ptr [ebp-010h], 000000000h
 
 // address: 0x10004606
 p10004606
@@ -1274,16 +1280,18 @@ p10004874
 {
     ProcedureInfo(this=Id(this), this_offset=-12, local_size=12, stack_delta=None)
     STACKVAR(-8, 4) = 0x00000000;
+    goto l1000488F;
 }
-Failed to find pattern for 'jmp l1000488F'
+Can't parse line: l10004886: mov eax, dword ptr [ebp-008h]
 
 // address: 0x100048EF
 p100048EF
 {
     ProcedureInfo(this=Id(this), this_offset=-12, local_size=12, stack_delta=None)
     STACKVAR(-4, 4) = 0x00000000;
+    goto l1000490A;
 }
-Failed to find pattern for 'jmp l1000490A'
+Can't parse line: l10004901: mov eax, dword ptr [ebp-004h]
 
 // address: 0x1000494D
 p1000494D
@@ -1291,24 +1299,27 @@ p1000494D
     ProcedureInfo(this=Id(this), this_offset=-12, local_size=12, stack_delta=None)
     STACKVAR(-8, 4) = 0x00000000;
     STACKVAR(-4, 4) = 0x00000000;
+    goto l1000496F;
 }
-Failed to find pattern for 'jmp l1000496F'
+Can't parse line: l10004966: mov eax, dword ptr [ebp-004h]
 
 // address: 0x100049BB
 p100049BB
 {
     ProcedureInfo(this=Id(this), this_offset=-8, local_size=8, stack_delta=None)
     STACKVAR(-4, 4) = 0x00000000;
+    goto l100049D6;
 }
-Failed to find pattern for 'jmp l100049D6'
+Can't parse line: l100049CD: mov eax, dword ptr [ebp-004h]
 
 // address: 0x100049F8
 B_ResourceManager::B_ResourceManager()
 {
     ProcedureInfo(this=Id(this), this_offset=-12, local_size=16, stack_delta=None)
     STACKVAR(-4, 4) = 0x00000000;
+    goto l10004A13;
 }
-Failed to find pattern for 'jmp l10004A13'
+Can't parse line: l10004A0A: mov eax, dword ptr [ebp-004h]
 
 // address: 0x10004A9B
 B_ResourceManager::~B_ResourceManager()
@@ -1322,16 +1333,18 @@ B_ResourceManager::~B_ResourceManager()
         goto l10004AD5;
     }
     STACKVAR(-16, 4) = STACKVAR(-4, 4)->(ACCESS(ACCESS(STACKVAR(-4, 4), 0, 4), 0, 4))(0x00000001);
+    goto l10004ADC;
 }
-Failed to find pattern for 'jmp l10004ADC'
+Can't parse line: l10004AD5: mov dword ptr [ebp-010h], 000000000h
 
 // address: 0x10004AE0
 void B_ResourceManager::Clean()
 {
     ProcedureInfo(this=Id(this), this_offset=-36, local_size=44, stack_delta=None)
     STACKVAR(-4, 4) = 0x00000000;
+    goto l10004AFB;
 }
-Failed to find pattern for 'jmp l10004AFB'
+Can't parse line: l10004AF2: mov eax, dword ptr [ebp-004h]
 
 // address: 0x10004C20
 p10004C20
@@ -1353,8 +1366,9 @@ p10004C76
 {
     ProcedureInfo(this=Id(this), this_offset=-40, local_size=40, stack_delta=None)
     STACKVAR(-4, 4) = 0x00000000;
+    goto l10004C92;
 }
-Failed to find pattern for 'jmp l10004C92'
+Can't parse line: l10004C89: mov eax, dword ptr [ebp-004h]
 
 // address: 0x10004E0B
 unsigned int B_ResourceManager::LocateResourceIn(const B_Name &id, const B_Name *arg_2, int arg_3)
@@ -1376,8 +1390,9 @@ p10005533
     STACKVAR(-8, 4) = 0x00000000;
     unknown_function_10001BEF(STACKVAR(12, 4), LOCAL(-16));
     STACKVAR(-12, 4) = 0x00000000;
+    goto l10005582;
 }
-Failed to find pattern for 'jmp l10005582'
+Can't parse line: l10005579: mov edx, dword ptr [ebp-00Ch]
 
 // address: 0x1000582E
 unsigned int B_ResourceManager::AddAutoResource(const B_Name &arg_1, B_Resource *arg_2, int arg_3)
@@ -1545,8 +1560,9 @@ p100061F0
         goto l1000622A;
     }
     REGDEF(eax=0x00000001)
+    goto l1000622C;
 }
-Failed to find pattern for 'jmp l1000622C'
+Can't parse line: l1000622A: xor eax, eax
 
 // address: 0x10006230
 p10006230
@@ -1820,8 +1836,9 @@ B_BitMap24::~B_BitMap24()
     ProcedureInfo(this=Id(this), this_offset=-48, local_size=52, stack_delta=None)
     ACCESS(STACKVAR(-48, 4), 0, 4) = GLOBAL(0x100421C8);
     STACKVAR(-8, 4) = 0x00000000;
+    goto l10006E95;
 }
-Failed to find pattern for 'jmp l10006E95'
+Can't parse line: l10006E8C: mov ecx, dword ptr [ebp-008h]
 
 // address: 0x10007090
 p10007090
@@ -1862,8 +1879,9 @@ p10007790
     STACKVAR(-48, 4) = reinterpret_cast<any_int32>(STACKVAR(-52, 4)) + 0x0000000C;
     ACCESS(STACKVAR(-48, 4), 0, 4) = GLOBAL(0x100421C8);
     STACKVAR(-8, 4) = 0x00000000;
+    goto l100077BE;
 }
-Failed to find pattern for 'jmp l100077BE'
+Can't parse line: l100077B5: mov edx, dword ptr [ebp-008h]
 
 // address: 0x100079D0
 p100079D0
@@ -1872,8 +1890,9 @@ p100079D0
     STACKVAR(-48, 4) = reinterpret_cast<any_int32>(STACKVAR(-52, 4)) + 0x0000000C;
     ACCESS(STACKVAR(-48, 4), 0, 4) = GLOBAL(0x100421C8);
     STACKVAR(-8, 4) = 0x00000000;
+    goto l100079FE;
 }
-Failed to find pattern for 'jmp l100079FE'
+Can't parse line: l100079F5: mov edx, dword ptr [ebp-008h]
 
 // address: 0x10007C10
 p10007C10
@@ -2308,8 +2327,9 @@ p1000982E
 {
     ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=None)
     STACKVAR(-12, 4) = 0x00000000;
+    goto l10009846;
 }
-Failed to find pattern for 'jmp l10009846'
+Can't parse line: l1000983D: mov eax, dword ptr [ebp-00Ch]
 
 // address: 0x100098C9
 p100098C9
@@ -2418,8 +2438,9 @@ p1000A72E
     ProcedureInfo(this=None, this_offset=None, local_size=56, stack_delta=None)
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 324, 4);
     STACKVAR(-36, 4) = 0x00000000;
+    goto l1000A752;
 }
-Failed to find pattern for 'jmp l1000A752'
+Can't parse line: l1000A749: mov edx, dword ptr [ebp-024h]
 
 // address: 0x1000A930
 p1000A930
@@ -2441,8 +2462,9 @@ p1000ACCF
     STACKVAR(-4, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x00002000);
     ACCESS(STACKVAR(-12, 4), 8, 4) = STACKVAR(-4, 4);
     STACKVAR(-8, 4) = 0x00000000;
+    goto l1000AD15;
 }
-Failed to find pattern for 'jmp l1000AD15'
+Can't parse line: l1000AD0C: mov ecx, dword ptr [ebp-008h]
 
 // address: 0x1000ADE0
 p1000ADE0
@@ -2518,8 +2540,9 @@ p1000B300
     {
         goto l1000B37D;
     }
+    goto l1000B393;
 }
-Failed to find pattern for 'jmp l1000B393'
+Can't parse line: l1000B351: mov edx, dword ptr [ebp-004h]
 
 // address: 0x1000B3E7
 p1000B3E7
@@ -2528,8 +2551,9 @@ p1000B3E7
     STACKVAR(-12, 4) = ACCESS(STACKVAR(8, 4), 340, 4);
     STACKVAR(-24, 4) = 0x00000000;
     STACKVAR(-20, 4) = ACCESS(STACKVAR(8, 4), 64, 4);
+    goto l1000B41D;
 }
-Failed to find pattern for 'jmp l1000B41D'
+Can't parse line: l1000B40B: mov ecx, dword ptr [ebp-018h]
 
 // address: 0x1000B67F
 p1000B67F
@@ -2575,8 +2599,9 @@ p1000C580
     ACCESS(STACKVAR(8, 4), 344, 4) = STACKVAR(-4, 4);
     ACCESS(STACKVAR(-4, 4), 0, 4) = GLOBAL(0x1000C607);
     STACKVAR(-8, 4) = 0x00000000;
+    goto l1000C5C3;
 }
-Failed to find pattern for 'jmp l1000C5C3'
+Can't parse line: l1000C5BA: mov eax, dword ptr [ebp-008h]
 
 // address: 0x1000C607
 p1000C607
@@ -2681,8 +2706,9 @@ p1000D205
     STACKVAR(-28, 4) = 0x00000000;
     STACKVAR(-4, 4) = 0x00000000;
     STACKVAR(-20, 4) = 0x00000000;
+    goto l1000D233;
 }
-Failed to find pattern for 'jmp l1000D233'
+Can't parse line: l1000D22A: mov ecx, dword ptr [ebp-014h]
 
 // address: 0x1000D320
 p1000D320
@@ -2833,8 +2859,9 @@ p1000D9A7
     {
         goto l1000DA61;
     }
+    goto l1000DA71;
 }
-Failed to find pattern for 'jmp l1000DA71'
+Can't parse line: l1000DA51: push 000000001h
 
 // address: 0x1000DA83
 p1000DA83
@@ -2843,8 +2870,9 @@ p1000DA83
     STACKVAR(-8, 4) = 0x00000000;
     STACKVAR(-16, 4) = 0x00000000;
     STACKVAR(-12, 4) = ACCESS(STACKVAR(8, 4), 64, 4);
+    goto l1000DAB4;
 }
-Failed to find pattern for 'jmp l1000DAB4'
+Can't parse line: l1000DAA2: mov edx, dword ptr [ebp-010h]
 
 // address: 0x1000DBFF
 p1000DBFF
@@ -2904,8 +2932,9 @@ p1000E121
     unknown_function_1000D7FA(STACKVAR(8, 4), 2 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 224, 4)) + 6);
     unknown_function_1000D78A(STACKVAR(8, 4), ACCESS(STACKVAR(8, 4), 224, 4));
     STACKVAR(-8, 4) = 0x00000000;
+    goto l1000E17A;
 }
-Failed to find pattern for 'jmp l1000E17A'
+Can't parse line: l1000E171: mov edx, dword ptr [ebp-008h]
 
 // address: 0x1000E27A
 p1000E27A
@@ -2920,8 +2949,9 @@ p1000E290
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
     unknown_function_1000D764(STACKVAR(8, 4), 0x000000D8);
     STACKVAR(-4, 4) = 0x00000000;
+    goto l1000E2B7;
 }
-Failed to find pattern for 'jmp l1000E2B7'
+Can't parse line: l1000E2AE: mov ecx, dword ptr [ebp-004h]
 
 // address: 0x1000E360
 p1000E360
@@ -2939,8 +2969,9 @@ p1000E360
         goto l1000E3D0;
     }
     unknown_function_1000E7C0(STACKVAR(8, 4));
+    goto l1000E3E7;
 }
-Failed to find pattern for 'jmp l1000E3E7'
+Can't parse line: l1000E3D0: mov eax, dword ptr [ebp+008h]
 
 // address: 0x1000E487
 p1000E487
@@ -2991,8 +3022,9 @@ p1000F076
     STACKVAR(-12, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 168, 4)) + 0x00000024 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-8, 4), 28, 4));
     ACCESS(STACKVAR(8, 4), 224, 4) = ACCESS(STACKVAR(-12, 4), 0, 4);
     STACKVAR(-4, 4) = 0x00000000;
+    goto l1000F0CF;
 }
-Failed to find pattern for 'jmp l1000F0CF'
+Can't parse line: l1000F0C6: mov ecx, dword ptr [ebp-004h]
 
 // address: 0x1000F1FC
 p1000F1FC
@@ -3030,8 +3062,9 @@ p1000F516
     {
         goto l1000F58E;
     }
+    goto l1000F5B6;
 }
-Failed to find pattern for 'jmp l1000F5B6'
+Can't parse line: l1000F558: mov ecx, dword ptr [ebp-004h]
 
 // address: 0x1000F5D0
 p1000F5D0
@@ -3183,8 +3216,9 @@ p10010519
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
     STACKVAR(-4, 4) = 0x00000000;
+    goto l1001052F;
 }
-Failed to find pattern for 'jmp l1001052F'
+Can't parse line: l10010526: mov eax, dword ptr [ebp-004h]
 
 // address: 0x1001057F
 p1001057F
@@ -3202,8 +3236,9 @@ p10010620
     ACCESS(STACKVAR(8, 4), 344, 4) = STACKVAR(-4, 4);
     ACCESS(STACKVAR(-4, 4), 0, 4) = GLOBAL(0x10010695);
     STACKVAR(-8, 4) = 0x00000000;
+    goto l10010663;
 }
-Failed to find pattern for 'jmp l10010663'
+Can't parse line: l1001065A: mov eax, dword ptr [ebp-008h]
 
 // address: 0x10010695
 p10010695
@@ -3401,8 +3436,9 @@ p10011B35
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
     STACKVAR(-4, 4) = STACKVAR(16, 4);
+    goto l10011B4A;
 }
-Failed to find pattern for 'jmp l10011B4A'
+Can't parse line: l10011B41: mov ecx, dword ptr [ebp-004h]
 
 // address: 0x10011B79
 p10011B79
@@ -3450,8 +3486,9 @@ p10012158
     STACKVAR(-8, 4) = ACCESS(STACKVAR(8, 4), 336, 4);
     STACKVAR(-20, 4) = 0x00000000;
     STACKVAR(-16, 4) = ACCESS(STACKVAR(8, 4), 64, 4);
+    goto l1001218E;
 }
-Failed to find pattern for 'jmp l1001218E'
+Can't parse line: l1001217C: mov ecx, dword ptr [ebp-014h]
 
 // address: 0x100121E7
 p100121E7
@@ -3487,8 +3524,9 @@ p1001241B
     STACKVAR(-4, 4) = 0x00000008 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(12, 4), 28, 4));
     unknown_function_10012353(STACKVAR(16, 4), ACCESS(STACKVAR(8, 4), 216, 4), ACCESS(STACKVAR(8, 4), 28, 4), 0x00000002 * reinterpret_cast<any_int32>(STACKVAR(-4, 4)));
     STACKVAR(-16, 4) = 0x00000000;
+    goto l10012462;
 }
-Failed to find pattern for 'jmp l10012462'
+Can't parse line: l10012459: mov edx, dword ptr [ebp-010h]
 
 // address: 0x100124E9
 p100124E9
@@ -3543,8 +3581,9 @@ p1001307B
     STACKVAR(-12, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 4, 4)(STACKVAR(8, 4), 0x00000001, 0x00000500);
     unknown_function_10026972(STACKVAR(-12, 4), 0x00000500);
     STACKVAR(-8, 4) = 0x00000000;
+    goto l100130FC;
 }
-Failed to find pattern for 'jmp l100130FC'
+Can't parse line: l100130F3: mov ecx, dword ptr [ebp-008h]
 
 // address: 0x1001311D
 p1001311D
@@ -3844,8 +3883,9 @@ p10014AF4
     ProcedureInfo(this=None, this_offset=None, local_size=56, stack_delta=None)
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 392, 4);
     STACKVAR(-36, 4) = 0x00000000;
+    goto l10014B18;
 }
-Failed to find pattern for 'jmp l10014B18'
+Can't parse line: l10014B0F: mov edx, dword ptr [ebp-024h]
 
 // address: 0x10014D2D
 p10014D2D
@@ -3898,8 +3938,9 @@ p10015DFC
     ACCESS(STACKVAR(-12, 4), 20, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x00000400);
     STACKVAR(-8, 4) = 0x00000000;
     STACKVAR(-4, 4) = 0xFFFFFF80;
+    goto l10015EA0;
 }
-Failed to find pattern for 'jmp l10015EA0'
+Can't parse line: l10015E8E: mov edx, dword ptr [ebp-008h]
 
 // address: 0x10015F1D
 p10015F1D
@@ -3968,8 +4009,9 @@ p10016380
     ACCESS(STACKVAR(-12, 4), 0, 4) = GLOBAL(0x10016424);
     STACKVAR(-8, 4) = 0x00000000;
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 196, 4);
+    goto l100163D9;
 }
-Failed to find pattern for 'jmp l100163D9'
+Can't parse line: l100163C7: mov edx, dword ptr [ebp-008h]
 
 // address: 0x10016424
 p10016424
@@ -3980,8 +4022,9 @@ p10016424
     STACKVAR(-28, 4) = 0x00000000;
     STACKVAR(-20, 4) = 0x00000000;
     STACKVAR(-16, 4) = ACCESS(STACKVAR(8, 4), 196, 4);
+    goto l1001646B;
 }
-Failed to find pattern for 'jmp l1001646B'
+Can't parse line: l10016459: mov ecx, dword ptr [ebp-014h]
 
 // address: 0x10016730
 p10016730
@@ -4020,8 +4063,9 @@ p10016F06
     ACCESS(STACKVAR(-4, 4), 0, 4) = GLOBAL(0x10016F7E);
     ACCESS(STACKVAR(-4, 4), 4, 4) = GLOBAL(0x10017160);
     STACKVAR(-8, 4) = 0x00000000;
+    goto l10016F56;
 }
-Failed to find pattern for 'jmp l10016F56'
+Can't parse line: l10016F4D: mov ecx, dword ptr [ebp-008h]
 
 // address: 0x10016F7E
 p10016F7E
@@ -4093,8 +4137,9 @@ p10017BC0
 {
     ProcedureInfo(this=None, this_offset=None, local_size=16, stack_delta=None)
     STACKVAR(-16, 4) = 0x00000000;
+    goto l10017BDA;
 }
-Failed to find pattern for 'jmp l10017BDA'
+Can't parse line: l10017BD1: mov eax, dword ptr [ebp-010h]
 
 // address: 0x10017C97
 p10017C97
@@ -4170,8 +4215,9 @@ p10018398
     {
         goto l10018423;
     }
+    goto l1001842F;
 }
-Failed to find pattern for 'jmp l1001842F'
+Can't parse line: l100183BE: mov eax, dword ptr [ebp+008h]
 
 // address: 0x1001844D
 p1001844D
@@ -4181,8 +4227,9 @@ p1001844D
     STACKVAR(-32, 4) = ACCESS(STACKVAR(8, 4), 280, 4);
     STACKVAR(-28, 4) = 0x00000000;
     STACKVAR(-24, 4) = ACCESS(STACKVAR(8, 4), 196, 4);
+    goto l10018493;
 }
-Failed to find pattern for 'jmp l10018493'
+Can't parse line: l10018481: mov eax, dword ptr [ebp-01Ch]
 
 // address: 0x100185CF
 p100185CF
@@ -4210,8 +4257,9 @@ p10018845
     STACKVAR(-28, 4) = ACCESS(STACKVAR(8, 4), 280, 4);
     STACKVAR(-24, 4) = 0x00000000;
     STACKVAR(-20, 4) = ACCESS(STACKVAR(8, 4), 196, 4);
+    goto l1001888B;
 }
-Failed to find pattern for 'jmp l1001888B'
+Can't parse line: l10018879: mov eax, dword ptr [ebp-018h]
 
 // address: 0x1001897D
 p1001897D
@@ -4220,8 +4268,9 @@ p1001897D
     STACKVAR(-12, 4) = ACCESS(STACKVAR(8, 4), 388, 4);
     STACKVAR(-28, 4) = 0x00000000;
     STACKVAR(-24, 4) = ACCESS(STACKVAR(8, 4), 196, 4);
+    goto l100189B7;
 }
-Failed to find pattern for 'jmp l100189B7'
+Can't parse line: l100189A5: mov ecx, dword ptr [ebp-01Ch]
 
 // address: 0x10018A6D
 p10018A6D
@@ -4265,8 +4314,9 @@ p10018E36
     ACCESS(STACKVAR(-4, 4), 24, 4) = GLOBAL(0x1001962B);
     ACCESS(STACKVAR(-4, 4), 92, 4) = 0x00000000;
     STACKVAR(-8, 4) = 0x00000000;
+    goto l10018EA4;
 }
-Failed to find pattern for 'jmp l10018EA4'
+Can't parse line: l10018E9B: mov ecx, dword ptr [ebp-008h]
 
 // address: 0x10018EEC
 p10018EEC
@@ -4518,8 +4568,9 @@ p1001CA18
     ACCESS(STACKVAR(-12, 4), 28, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x00000400);
     STACKVAR(-8, 4) = 0x00000000;
     STACKVAR(-4, 4) = 0xFFFFFF80;
+    goto l1001CABC;
 }
-Failed to find pattern for 'jmp l1001CABC'
+Can't parse line: l1001CAAA: mov edx, dword ptr [ebp-008h]
 
 // address: 0x1001CB39
 p1001CB39
@@ -4584,8 +4635,9 @@ p1001D220
     ACCESS(STACKVAR(8, 4), 408, 4) = STACKVAR(-4, 4);
     ACCESS(STACKVAR(-4, 4), 0, 4) = GLOBAL(0x1001D2FB);
     STACKVAR(-8, 4) = 0x00000000;
+    goto l1001D263;
 }
-Failed to find pattern for 'jmp l1001D263'
+Can't parse line: l1001D25A: mov eax, dword ptr [ebp-008h]
 
 // address: 0x1001D2FB
 p1001D2FB
@@ -4778,8 +4830,9 @@ p1001EFBF
     ProcedureInfo(this=None, this_offset=None, local_size=24, stack_delta=None)
     STACKVAR(-20, 4) = ACCESS(STACKVAR(20, 4), 0, 4);
     STACKVAR(-24, 4) = 0x00000000;
+    goto l1001EFDF;
 }
-Failed to find pattern for 'jmp l1001EFDF'
+Can't parse line: l1001EFD6: mov edx, dword ptr [ebp-018h]
 
 // address: 0x1001F054
 p1001F054
@@ -4797,8 +4850,9 @@ p1001F121
     ProcedureInfo(this=None, this_offset=None, local_size=24, stack_delta=None)
     STACKVAR(-16, 4) = ACCESS(STACKVAR(20, 4), 0, 4);
     STACKVAR(-20, 4) = 0x00000000;
+    goto l1001F141;
 }
-Failed to find pattern for 'jmp l1001F141'
+Can't parse line: l1001F138: mov edx, dword ptr [ebp-014h]
 
 // address: 0x1001F26C
 p1001F26C
@@ -4892,8 +4946,9 @@ p1001F9A0
     ProcedureInfo(this=None, this_offset=None, local_size=84, stack_delta=None)
     STACKVAR(-76, 4) = STACKVAR(8, 4);
     STACKVAR(-56, 4) = 0x00000007;
+    goto l1001F9BE;
 }
-Failed to find pattern for 'jmp l1001F9BE'
+Can't parse line: l1001F9B5: mov ecx, dword ptr [ebp-038h]
 
 // address: 0x1001FD10
 p1001FD10
@@ -4901,8 +4956,9 @@ p1001FD10
     ProcedureInfo(this=None, this_offset=None, local_size=84, stack_delta=None)
     STACKVAR(-76, 4) = STACKVAR(8, 4);
     STACKVAR(-56, 4) = 0x00000007;
+    goto l1001FD2E;
 }
-Failed to find pattern for 'jmp l1001FD2E'
+Can't parse line: l1001FD25: mov ecx, dword ptr [ebp-038h]
 
 // address: 0x100200A0
 p100200A0
@@ -4910,8 +4966,9 @@ p100200A0
     ProcedureInfo(this=None, this_offset=None, local_size=76, stack_delta=None)
     STACKVAR(-68, 4) = STACKVAR(8, 4);
     STACKVAR(-48, 4) = 0x00000007;
+    goto l100200BE;
 }
-Failed to find pattern for 'jmp l100200BE'
+Can't parse line: l100200B5: mov ecx, dword ptr [ebp-030h]
 
 // address: 0x10020550
 p10020550
@@ -4922,8 +4979,9 @@ p10020550
     STACKVAR(-24, 4) = ACCESS(STACKVAR(12, 4), 80, 4);
     STACKVAR(-56, 4) = LOCAL(-312);
     STACKVAR(-316, 4) = 0x00000008;
+    goto l100205A1;
 }
-Failed to find pattern for 'jmp l100205A1'
+Can't parse line: l10020592: mov eax, dword ptr [ebp-00000013Ch]
 
 // address: 0x10020C70
 p10020C70
@@ -4934,8 +4992,9 @@ p10020C70
     STACKVAR(-24, 4) = ACCESS(STACKVAR(12, 4), 80, 4);
     STACKVAR(-56, 4) = LOCAL(-312);
     STACKVAR(-316, 4) = 0x00000008;
+    goto l10020CC1;
 }
-Failed to find pattern for 'jmp l10020CC1'
+Can't parse line: l10020CB2: mov eax, dword ptr [ebp-00000013Ch]
 
 // address: 0x10021410
 p10021410
@@ -4946,8 +5005,9 @@ p10021410
     STACKVAR(-24, 4) = ACCESS(STACKVAR(12, 4), 80, 4);
     STACKVAR(-48, 4) = LOCAL(-304);
     STACKVAR(-308, 4) = 0x00000008;
+    goto l10021461;
 }
-Failed to find pattern for 'jmp l10021461'
+Can't parse line: l10021452: mov eax, dword ptr [ebp-000000134h]
 
 // address: 0x10021D80
 p10021D80
@@ -4958,8 +5018,9 @@ p10021D80
     STACKVAR(-20, 4) = ACCESS(STACKVAR(12, 4), 80, 4);
     STACKVAR(-36, 4) = LOCAL(-164);
     STACKVAR(-168, 4) = 0x00000008;
+    goto l10021DF2;
 }
-Failed to find pattern for 'jmp l10021DF2'
+Can't parse line: l10021DC2: mov eax, dword ptr [ebp-0000000B0h]
 
 // address: 0x100222BF
 p100222BF
@@ -4970,8 +5031,9 @@ p100222BF
     STACKVAR(-12, 4) = ACCESS(STACKVAR(12, 4), 80, 4);
     STACKVAR(-20, 4) = LOCAL(-84);
     STACKVAR(-88, 4) = 0x00000008;
+    goto l10022319;
 }
-Failed to find pattern for 'jmp l10022319'
+Can't parse line: l100222F5: mov eax, dword ptr [ebp-060h]
 
 // address: 0x1002257C
 p1002257C
@@ -5075,8 +5137,9 @@ p10022E15
     STACKVAR(-4, 4) = 0x00000000;
     STACKVAR(-12, 4) = 0x00000000;
     STACKVAR(-24, 4) = ACCESS(STACKVAR(-16, 4), 68, 4);
+    goto l10022E46;
 }
-Failed to find pattern for 'jmp l10022E46'
+Can't parse line: l10022E3D: mov ecx, dword ptr [ebp-018h]
 
 // address: 0x100230E4
 p100230E4
@@ -5128,8 +5191,9 @@ p1002394E
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
     STACKVAR(-4, 4) = 0x00000001;
+    goto l10023964;
 }
-Failed to find pattern for 'jmp l10023964'
+Can't parse line: l1002395B: mov eax, dword ptr [ebp-004h]
 
 // address: 0x100239B0
 p100239B0
@@ -5252,8 +5316,9 @@ p10024032
     STACKVAR(-12, 4) = ACCESS(STACKVAR(8, 4), 424, 4);
     STACKVAR(-4, 4) = 2 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 92, 4)) + 4;
     STACKVAR(-8, 4) = 0x00000000;
+    goto l10024063;
 }
-Failed to find pattern for 'jmp l10024063'
+Can't parse line: l1002405A: mov edx, dword ptr [ebp-008h]
 
 // address: 0x10024094
 p10024094
@@ -5284,8 +5349,9 @@ p100241EA
     ProcedureInfo(this=None, this_offset=None, local_size=20, stack_delta=None)
     STACKVAR(-12, 4) = ACCESS(STACKVAR(8, 4), 424, 4);
     STACKVAR(-4, 4) = 0x00000000;
+    goto l1002420E;
 }
-Failed to find pattern for 'jmp l1002420E'
+Can't parse line: l10024205: mov edx, dword ptr [ebp-004h]
 
 // address: 0x10024296
 p10024296
@@ -5305,8 +5371,9 @@ p10024357
     STACKVAR(-12, 4) = ACCESS(STACKVAR(8, 4), 92, 4);
     STACKVAR(-8, 4) = ACCESS(STACKVAR(8, 4), 100, 4);
     STACKVAR(-16, 4) = 0x00000000;
+    goto l10024396;
 }
-Failed to find pattern for 'jmp l10024396'
+Can't parse line: l1002438D: mov edx, dword ptr [ebp-010h]
 
 // address: 0x10024436
 p10024436
@@ -5318,8 +5385,9 @@ p10024436
     STACKVAR(-28, 4) = ACCESS(ACCESS(STACKVAR(-40, 4), 24, 4), 8, 4);
     STACKVAR(-8, 4) = ACCESS(STACKVAR(8, 4), 92, 4);
     STACKVAR(-12, 4) = 0x00000000;
+    goto l10024486;
 }
-Failed to find pattern for 'jmp l10024486'
+Can't parse line: l1002447D: mov ecx, dword ptr [ebp-00Ch]
 
 // address: 0x10024538
 p10024538
@@ -5329,8 +5397,9 @@ p10024538
     STACKVAR(-12, 4) = ACCESS(STACKVAR(8, 4), 100, 4);
     STACKVAR(-20, 4) = ACCESS(STACKVAR(8, 4), 92, 4);
     STACKVAR(-24, 4) = 0x00000000;
+    goto l1002456E;
 }
-Failed to find pattern for 'jmp l1002456E'
+Can't parse line: l10024565: mov eax, dword ptr [ebp-018h]
 
 // address: 0x10024677
 p10024677
@@ -5342,8 +5411,9 @@ p10024677
     STACKVAR(-48, 4) = ACCESS(ACCESS(STACKVAR(-60, 4), 24, 4), 8, 4);
     STACKVAR(-12, 4) = ACCESS(STACKVAR(8, 4), 92, 4);
     STACKVAR(-16, 4) = 0x00000000;
+    goto l100246C7;
 }
-Failed to find pattern for 'jmp l100246C7'
+Can't parse line: l100246BE: mov ecx, dword ptr [ebp-010h]
 
 // address: 0x100247FF
 p100247FF
@@ -5354,8 +5424,9 @@ p100247FF
     STACKVAR(-20, 4) = ACCESS(STACKVAR(8, 4), 92, 4);
     STACKVAR(-40, 4) = ACCESS(STACKVAR(8, 4), 288, 4);
     STACKVAR(-24, 4) = 0x00000000;
+    goto l10024841;
 }
-Failed to find pattern for 'jmp l10024841'
+Can't parse line: l10024838: mov edx, dword ptr [ebp-018h]
 
 // address: 0x10024A44
 p10024A44
@@ -5400,8 +5471,9 @@ p10024C3A
     ACCESS(STACKVAR(-16, 4), 40, 4) = STACKVAR(-8, 4);
     STACKVAR(-4, 4) = 0x00000000;
     STACKVAR(-12, 4) = 0x00000000;
+    goto l10024C9C;
 }
-Failed to find pattern for 'jmp l10024C9C'
+Can't parse line: l10024C8A: mov edx, dword ptr [ebp-00Ch]
 
 // address: 0x10024D38
 p10024D38
@@ -5425,8 +5497,9 @@ p10024ED3
     STACKVAR(-24, 4) = ACCESS(STACKVAR(-28, 4), 24, 4);
     STACKVAR(-12, 4) = ACCESS(STACKVAR(8, 4), 92, 4);
     STACKVAR(-16, 4) = 0x00000000;
+    goto l10024F09;
 }
-Failed to find pattern for 'jmp l10024F09'
+Can't parse line: l10024F00: mov eax, dword ptr [ebp-010h]
 
 // address: 0x10024FA9
 p10024FA9
@@ -5436,8 +5509,9 @@ p10024FA9
     STACKVAR(-36, 4) = ACCESS(STACKVAR(-40, 4), 24, 4);
     STACKVAR(-8, 4) = ACCESS(STACKVAR(8, 4), 92, 4);
     STACKVAR(-12, 4) = 0x00000000;
+    goto l10024FDF;
 }
-Failed to find pattern for 'jmp l10024FDF'
+Can't parse line: l10024FD6: mov eax, dword ptr [ebp-00Ch]
 
 // address: 0x100250C5
 p100250C5
@@ -5458,8 +5532,9 @@ p100250C5
     STACKVAR(20, 4) = 0x00000004 * reinterpret_cast<any_int32>(STACKVAR(20, 4));
     STACKVAR(-420, 4) = LOCAL(-412);
     STACKVAR(-260, 4) = 0x00000000;
+    goto l100251DA;
 }
-Failed to find pattern for 'jmp l100251DA'
+Can't parse line: l100251CB: mov edx, dword ptr [ebp-000000104h]
 
 // address: 0x100252A3
 p100252A3
@@ -5474,8 +5549,9 @@ p100252A3
     STACKVAR(-1040, 4) = reinterpret_cast<int>(STACKVAR(20, 4)) + reinterpret_cast<int>(STACKVAR(-1076, 4)) >> 1;
     STACKVAR(-1064, 4) = 0x7FFFFFFF;
     STACKVAR(-1044, 4) = 0x00000000;
+    goto l10025334;
 }
-Failed to find pattern for 'jmp l10025334'
+Can't parse line: l10025325: mov edx, dword ptr [ebp-000000414h]
 
 // address: 0x100257D0
 p100257D0
@@ -5483,8 +5559,9 @@ p100257D0
     ProcedureInfo(this=None, this_offset=None, local_size=576, stack_delta=None)
     STACKVAR(-40, 4) = LOCAL(-556);
     STACKVAR(-560, 4) = 0x0000007F;
+    goto l100257FD;
 }
-Failed to find pattern for 'jmp l100257FD'
+Can't parse line: l100257EE: mov ecx, dword ptr [ebp-000000230h]
 
 // address: 0x10025A2F
 p10025A2F
@@ -5499,8 +5576,9 @@ p10025A2F
     STACKVAR(-80, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 116, 4), 4, 4);
     STACKVAR(-92, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 116, 4), 8, 4);
     STACKVAR(-16, 4) = 0x00000000;
+    goto l10025A9D;
 }
-Failed to find pattern for 'jmp l10025A9D'
+Can't parse line: l10025A94: mov ecx, dword ptr [ebp-010h]
 
 // address: 0x10025E00
 p10025E00
@@ -5527,8 +5605,9 @@ p10025E3A
     unknown_function_10025F35(STACKVAR(8, 4), STACKVAR(-8, 4));
     STACKVAR(-4, 4) = unknown_function_1002642C(STACKVAR(8, 4), STACKVAR(-8, 4), STACKVAR(-4, 4), STACKVAR(12, 4));
     STACKVAR(-12, 4) = 0x00000000;
+    goto l10025EDA;
 }
-Failed to find pattern for 'jmp l10025EDA'
+Can't parse line: l10025ED1: mov ecx, dword ptr [ebp-00Ch]
 
 // address: 0x10025F35
 p10025F35
@@ -5561,8 +5640,9 @@ p10026606
     STACKVAR(-16, 4) = 0x00000000;
     STACKVAR(-12, 4) = 0x00000000;
     STACKVAR(-4, 4) = STACKVAR(8, 4);
+    goto l1002663B;
 }
-Failed to find pattern for 'jmp l1002663B'
+Can't parse line: l10026629: mov ecx, dword ptr [ebp-00Ch]
 
 // address: 0x1002666F
 p1002666F
@@ -5572,8 +5652,9 @@ p1002666F
     STACKVAR(-16, 4) = 0x00000000;
     STACKVAR(-8, 4) = 0x00000000;
     STACKVAR(-4, 4) = STACKVAR(8, 4);
+    goto l100266A4;
 }
-Failed to find pattern for 'jmp l100266A4'
+Can't parse line: l10026692: mov ecx, dword ptr [ebp-008h]
 
 // address: 0x100266CF
 p100266CF
@@ -5592,8 +5673,9 @@ p100266CF
     STACKVAR(-56, 4) = ACCESS(STACKVAR(12, 4), 16, 4);
     STACKVAR(-24, 4) = ACCESS(STACKVAR(12, 4), 20, 4);
     STACKVAR(-20, 4) = STACKVAR(-48, 4);
+    goto l1002674C;
 }
-Failed to find pattern for 'jmp l1002674C'
+Can't parse line: l10026743: mov edx, dword ptr [ebp-014h]
 
 // address: 0x10026874
 p10026874
@@ -5696,8 +5778,9 @@ void B_BitMap24::SetBits(int arg_1, int arg_2, const char *arg_3, const char *ar
 {
     ProcedureInfo(this=None, this_offset=None, local_size=36, stack_delta=None)
     STACKVAR(-4, 4) = 0x00000000;
+    goto l10026C88;
 }
-Failed to find pattern for 'jmp l10026C88'
+Can't parse line: l10026C7F: mov eax, dword ptr [ebp-004h]
 
 // address: 0x10026D6D
 p10026D6D
@@ -5892,8 +5975,9 @@ p10029170
     ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=None)
     STACKVAR(12, 4) = 0x00000003 * reinterpret_cast<any_int32>(STACKVAR(12, 4));
     STACKVAR(-8, 4) = 0x00000000;
+    goto l10029192;
 }
-Failed to find pattern for 'jmp l10029192'
+Can't parse line: l10029189: mov ecx, dword ptr [ebp-008h]
 
 // address: 0x10029217
 p10029217
@@ -5953,8 +6037,9 @@ p100298B0
         goto l1002990D;
     }
     STACKVAR(-12, 4) = STACKVAR(-4, 4)->unknown_method_10001C44(STACKVAR(16, 4), 0x00004000);
+    goto l10029914;
 }
-Failed to find pattern for 'jmp l10029914'
+Can't parse line: l1002990D: mov dword ptr [ebp-00Ch], 000000000h
 
 // address: 0x1002994D
 p1002994D
@@ -5986,8 +6071,9 @@ p100299E1
     }
     ACCESS(STACKVAR(-4, 4), 12, 4) = 0x00000000;
     REGDEF(eax=0x00000001)
+    goto l10029A04;
 }
-Failed to find pattern for 'jmp l10029A04'
+Can't parse line: l10029A02: xor eax, eax
 
 // address: 0x10029A08
 p10029A08
@@ -6096,8 +6182,9 @@ unsigned int B_MessageManager::OpenChannel(const B_Name &channel_name)
     ProcedureInfo(this=Id(this), this_offset=-16, local_size=16, stack_delta=None)
     STACKVAR(-12, 4) = ACCESS(GLOBAL(0x1004A944), 0, 4);
     STACKVAR(-8, 4) = 0x00000000;
+    goto l10029E3A;
 }
-Failed to find pattern for 'jmp l10029E3A'
+Can't parse line: l10029E31: mov ecx, dword ptr [ebp-008h]
 
 // address: 0x10029E98
 unsigned int B_MessageManager::CloseChannel(const B_Name &channel_name)
@@ -6105,16 +6192,18 @@ unsigned int B_MessageManager::CloseChannel(const B_Name &channel_name)
     ProcedureInfo(this=Id(this), this_offset=-16, local_size=16, stack_delta=None)
     STACKVAR(-12, 4) = ACCESS(GLOBAL(0x1004A944), 0, 4);
     STACKVAR(-8, 4) = 0x00000000;
+    goto l10029EBB;
 }
-Failed to find pattern for 'jmp l10029EBB'
+Can't parse line: l10029EB2: mov ecx, dword ptr [ebp-008h]
 
 // address: 0x10029F19
 B_MessageChannel *B_MessageManager::DisconnectChannel(const B_Name &channel_name)
 {
     ProcedureInfo(this=Id(this), this_offset=-48, local_size=52, stack_delta=None)
     STACKVAR(-4, 4) = 0x00000000;
+    goto l10029F35;
 }
-Failed to find pattern for 'jmp l10029F35'
+Can't parse line: l10029F2C: mov eax, dword ptr [ebp-004h]
 
 // address: 0x1002A13C
 p1002A13C
@@ -6126,8 +6215,9 @@ p1002A13C
         goto l1002A1B0;
     }
     STACKVAR(-8, 4) = 0x00000000;
+    goto l1002A169;
 }
-Failed to find pattern for 'jmp l1002A169'
+Can't parse line: l1002A160: mov ecx, dword ptr [ebp-008h]
 
 // address: 0x1002A1B9
 p1002A1B9
@@ -6135,8 +6225,9 @@ p1002A1B9
     ProcedureInfo(this=Id(this), this_offset=-16, local_size=16, stack_delta=None)
     STACKVAR(-12, 4) = ACCESS(GLOBAL(0x1004A944), 0, 4);
     STACKVAR(-8, 4) = 0x00000000;
+    goto l1002A1DC;
 }
-Failed to find pattern for 'jmp l1002A1DC'
+Can't parse line: l1002A1D3: mov ecx, dword ptr [ebp-008h]
 
 // address: 0x1002A23E
 p1002A23E
@@ -6392,8 +6483,9 @@ p1002F052
 {
     ProcedureInfo(this=Id(this), this_offset=-84, local_size=84, stack_delta=None)
     STACKVAR(-4, 4) = 0x00000000;
+    goto l1002F06F;
 }
-Failed to find pattern for 'jmp l1002F06F'
+Can't parse line: l1002F066: mov eax, dword ptr [ebp-004h]
 
 // address: 0x1002F159
 p1002F159
@@ -6654,8 +6746,9 @@ p10031F82
     STACKVAR(-8, 4) = reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000008;
     unknown_function_1000201E(STACKVAR(8, 4), reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + 0x00000008);
     STACKVAR(-4, 4) = 0x00000000;
+    goto l10031FB6;
 }
-Failed to find pattern for 'jmp l10031FB6'
+Can't parse line: l10031FAD: mov eax, dword ptr [ebp-004h]
 
 // address: 0x10032003
 p10032003
@@ -6916,8 +7009,9 @@ int B_ObjDscr::GetVtxNode(unsigned int arg_1)
 {
     ProcedureInfo(this=Id(this), this_offset=-20, local_size=20, stack_delta=None)
     STACKVAR(-4, 4) = 0x00000000;
+    goto l100342D8;
 }
-Failed to find pattern for 'jmp l100342D8'
+Can't parse line: l100342CF: mov eax, dword ptr [ebp-004h]
 
 // address: 0x10034345
 p10034345
@@ -7004,8 +7098,9 @@ p100344BF
     STACKVAR(-4, 4) = STACKVAR(-168, 4)->unknown_method_100342BD(STACKVAR(8, 4));
     LOCAL(-28)->unknown_method_1003221C(STACKVAR(8, 4), STACKVAR(12, 4), STACKVAR(-4, 4));
     STACKVAR(-32, 4) = 0x00000000;
+    goto l10034508;
 }
-Failed to find pattern for 'jmp l10034508'
+Can't parse line: l100344FF: mov ecx, dword ptr [ebp-020h]
 
 // address: 0x10034A8A
 void B_ObjDscr::SetUpEdges()
@@ -7109,8 +7204,9 @@ unsigned char B_ObjDscr::EdgeFaceGrp(unsigned int arg_1)
     ProcedureInfo(this=Id(this), this_offset=-12, local_size=12, stack_delta=None)
     STACKVAR(-4, 4) = ACCESS(STACKVAR(-12, 4), 60, 4);
     STACKVAR(-8, 4) = 0x00000000;
+    goto l10037EA8;
 }
-Failed to find pattern for 'jmp l10037EA8'
+Can't parse line: l10037E9F: mov edx, dword ptr [ebp-008h]
 
 // address: 0x10037EF5
 B_ObjDscr::B_ObjDscr()
@@ -7207,8 +7303,9 @@ p100384CA
     STACKVAR(-8, 4) = reinterpret_cast<any_int32>(STACKVAR(-100, 4)) + 0x0000000C;
     unknown_function_1000201E(STACKVAR(8, 4), reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + 0x00000008);
     STACKVAR(-4, 4) = 0x00000000;
+    goto l10038525;
 }
-Failed to find pattern for 'jmp l10038525'
+Can't parse line: l1003851C: mov edx, dword ptr [ebp-004h]
 
 // address: 0x1003896F
 p1003896F
@@ -7421,8 +7518,9 @@ p10039D30
         goto l10039D66;
     }
     STACKVAR(-16, 4) = STACKVAR(-4, 4)->unknown_method_10039D30(0x00000001);
+    goto l10039D6D;
 }
-Failed to find pattern for 'jmp l10039D6D'
+Can't parse line: l10039D66: mov dword ptr [ebp-010h], 000000000h
 
 // address: 0x10039D90
 p10039D90
@@ -7439,8 +7537,9 @@ p10039D90
         goto l10039DC6;
     }
     STACKVAR(-40, 4) = STACKVAR(-4, 4)->unknown_method_10039D90(0x00000001);
+    goto l10039DCD;
 }
-Failed to find pattern for 'jmp l10039DCD'
+Can't parse line: l10039DC6: mov dword ptr [ebp-028h], 000000000h
 
 // address: 0x10039EA0
 p10039EA0
@@ -7528,8 +7627,9 @@ p1003A1E0
 {
     ProcedureInfo(this=Id(this), this_offset=-8, local_size=8, stack_delta=None)
     STACKVAR(-4, 4) = 0x00000000;
+    goto l1003A1FB;
 }
-Failed to find pattern for 'jmp l1003A1FB'
+Can't parse line: l1003A1F2: mov eax, dword ptr [ebp-004h]
 
 // address: 0x1003A240
 p1003A240
@@ -7544,8 +7644,9 @@ p1003A360
 {
     ProcedureInfo(this=Id(this), this_offset=-8, local_size=8, stack_delta=None)
     STACKVAR(-4, 4) = 0x00000000;
+    goto l1003A37B;
 }
-Failed to find pattern for 'jmp l1003A37B'
+Can't parse line: l1003A372: mov eax, dword ptr [ebp-004h]
 
 // address: 0x1003A3C0
 p1003A3C0
@@ -8825,8 +8926,9 @@ p1003FD8A
     }
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 12, 4);
     REGDEF(eax=STACKVAR(-4, 4))
+    goto l1003FDA4;
 }
-Failed to find pattern for 'jmp l1003FDA4'
+Can't parse line: l1003FDA2: xor eax, eax
 
 // address: 0x1003FDA8
 p1003FDA8
@@ -9121,8 +9223,9 @@ B_ParticleGType::~B_ParticleGType()
         goto l100411BC;
     }
     STACKVAR(-8, 4) = reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + 0x0000000C;
+    goto l100411C3;
 }
-Failed to find pattern for 'jmp l100411C3'
+Can't parse line: l100411BC: mov dword ptr [ebp-008h], 000000000h
 
 // address: 0x1004122B
 B_IDataFile &operator >>(B_IDataFile &file, B_ParticleGType &particleType)

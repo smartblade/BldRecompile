@@ -326,6 +326,12 @@
 	},
 	{
 		"instructions": [
+			{"jmp":  ["%label%"]}
+		],
+		"action": {"jump": {"address": "%label%"}}
+	},
+	{
+		"instructions": [
 			{"je":  ["%label%"]}
 		],
 		"action": {"jump": {"condition": "I(REGVALUE(cmpl)) == I(REGVALUE(cmpr))", "address": "%label%"}}

@@ -51,11 +51,14 @@ class ProcedureBuilder:
                 return
         self._add_instruction(instructions.Assignment(dst, src))
 
-    def make_jump(self, address, condition):
+    def make_jump(self, address, condition=None):
         hex_addr = address.emit_code()
         assert hex_addr.startswith("0x")
         label = "l{}".format(hex_addr[2:])
         goto = instructions.Goto(label)
+        if condition is None:
+            self._add_instruction(goto)
+            return
         self._add_instruction(instructions.IfInstruction(condition, [goto]))
 
     def make_arg(self, arg):
