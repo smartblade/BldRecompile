@@ -4,6 +4,7 @@ from .empty import empty
 from .for_instruction import ForInstruction
 from .goto import Goto
 from .if_instruction import IfInstruction
+from .labeled_block import LabeledBlock
 from .procedure_info import ProcedureInfo
 from .return_instruction import ReturnInstruction
 from .temporary_register_definition import TemporaryRegisterDefinition

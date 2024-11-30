@@ -4,6 +4,7 @@ from patterns.validate_procedure_declaration import \
     validate_procedure_declaration
 
 from .convert_expression_to_type import convert_expression_to_type
+from .narrow_constant import narrow_constant
 
 
 def transform_procedure_call(pc, declarations, **kwargs):
@@ -39,7 +40,8 @@ def _convert_arguments_to_parameters_types(pc, proc_decl):
     new_arguments = []
     expected_args = proc_decl.get_parameters_ids(expected_args_types=True)
     for i, parameter in enumerate(expected_args.values()):
-        new_argument = convert_expression_to_type(
+        c = narrow_constant(pc.arguments[i], parameter.data_type)
+        new_argument = c or convert_expression_to_type(
             pc.arguments[i], parameter.data_type)
         new_arguments.append(new_argument)
     return new_arguments

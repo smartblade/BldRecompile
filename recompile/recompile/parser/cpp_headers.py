@@ -19,7 +19,7 @@ _standard_types = {
     "unsigned char": data_types.UChar(),
     "byte": data_types.UChar(),
     "short": data_types.ClassType("short", {}),
-    "unsigned short": data_types.ClassType("unsigned short", {}),
+    "unsigned short": data_types.UShort(),
     "int": data_types.Int32(),
     "long": data_types.Int32(),
     "unsigned int": data_types.UInt32(),

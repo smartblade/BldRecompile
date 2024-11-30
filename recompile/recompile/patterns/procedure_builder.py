@@ -125,6 +125,13 @@ class ProcedureBuilder:
             "Unexpected instruction type {}".format(
                 type(self._last_instruction)))
 
+    def start_labeled_block(self, address):
+        hex_addr = address.emit_code()
+        assert hex_addr.startswith("0x")
+        label = "l{}".format(hex_addr[2:])
+        instrs = []
+        self._add_instruction(instructions.LabeledBlock(label, instrs))
+
     def _try_pop_restore_instruction(self, reg):
         pc = self._try_pop_procedure_call("RESTORE", 1)
         if pc is None:

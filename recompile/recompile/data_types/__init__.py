@@ -12,6 +12,7 @@ from .int32 import Int32
 from .pointer32 import Pointer32
 from .reference import Reference
 from .uchar import UChar
+from .ushort import UShort
 from .uint32 import UInt32
 from .unknown32 import Unknown32
 from .unknown_byte import UnknownByte

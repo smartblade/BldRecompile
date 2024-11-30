@@ -326,6 +326,12 @@
 	},
 	{
 		"instructions": [
+			{"label":  ["%label%"]}
+		],
+		"action": {"label": {"address": "%label%"}}
+	},
+	{
+		"instructions": [
 			{"jmp":  ["%label%"]}
 		],
 		"action": {"jump": {"address": "%label%"}}
