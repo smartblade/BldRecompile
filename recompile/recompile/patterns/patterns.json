@@ -326,6 +326,12 @@
 	},
 	{
 		"instructions": [
+			{"je":  ["%label%"]}
+		],
+		"action": {"jump": {"condition": "I(REGVALUE(cmpl)) == I(REGVALUE(cmpr))", "address": "%label%"}}
+	},
+	{
+		"instructions": [
 			{"push":  ["%src-operand%"]}
 		],
 		"action": {"stackarg": {"arg": "ARG(%src-operand%)"}}

@@ -21,6 +21,7 @@ _actions = {
     "stackarg": lambda builder, **kwargs: builder.make_arg(**kwargs),
     "call": lambda builder, **kwargs: builder.make_call(**kwargs),
     "addsp": lambda builder, **kwargs: builder.add_stack_pointer(**kwargs),
+    "jump": lambda builder, **kwargs: builder.make_jump(**kwargs),
 }
 
 
