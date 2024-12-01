@@ -21,7 +21,7 @@ int B_IDataFile::GetnOpenFiles()
 int B_IDataFile::SetOnOpenFunc(PyObject *obj)
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    if (reinterpret_cast<any_int32>(STACKVAR(8, 4)) == 0x00000000)
+    if (STACKVAR(8, 4) == 0x00000000)
     {
         goto l1000108B;
     }
@@ -80,24 +80,24 @@ void B_IDataFile::Close()
     ProcedureInfo(this=Id(this), this_offset=-12, local_size=16, stack_delta=None)
     ACCESS(STACKVAR(-12, 4), 16396, 4) = 0xFFFFC000;
     ACCESS(STACKVAR(-12, 4), 16400, 4) = 0x00000000;
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-12, 4), 4, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-12, 4), 4, 4) == 0x00000000)
     {
         goto l10001518;
     }
     free(ACCESS(STACKVAR(-12, 4), 4, 4));
     ACCESS(STACKVAR(-12, 4), 4, 4) = 0x00000000;
 l10001518:
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-12, 4), 16404, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-12, 4), 16404, 4) == 0x00000000)
     {
         goto l100015A8;
     }
     STACKVAR(-8, 4) = ACCESS(STACKVAR(-12, 4), 16404, 4);
     STACKVAR(-4, 4) = STACKVAR(-8, 4);
-    if (reinterpret_cast<any_int32>(STACKVAR(-4, 4)) == 0x00000000)
+    if (STACKVAR(-4, 4) == 0x00000000)
     {
         goto l10001589;
     }
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-4, 4), 8, 4)) == 0xFFFFFFFF)
+    if (ACCESS(STACKVAR(-4, 4), 8, 4) == 0xFFFFFFFF)
     {
         goto l10001569;
     }
@@ -140,7 +140,7 @@ B_IDataFile::B_IDataFile(const char *file_name, int flags)
 unsigned int B_IDataFile::ReadCacheBlock()
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=8, stack_delta=None)
-    REGDEF(ecx=static_cast<unsigned int>(reinterpret_cast<any_int32>(ACCESS(STACKVAR(-4, 4), 0, 4)) != 0xFFFFFFFF))
+    REGDEF(ecx=static_cast<unsigned int>(ACCESS(STACKVAR(-4, 4), 0, 4) != 0xFFFFFFFF))
 }
 Failed to find pattern for 'test ecx, ecx'
 
@@ -148,7 +148,7 @@ Failed to find pattern for 'test ecx, ecx'
 int B_IDataFile::Length()
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(ecx=static_cast<unsigned int>(reinterpret_cast<any_int32>(ACCESS(STACKVAR(-4, 4), 0, 4)) != 0xFFFFFFFF))
+    REGDEF(ecx=static_cast<unsigned int>(ACCESS(STACKVAR(-4, 4), 0, 4) != 0xFFFFFFFF))
 }
 Failed to find pattern for 'test ecx, ecx'
 
@@ -157,15 +157,15 @@ int B_IDataFile::Seek(int offset, int whence)
 {
     ProcedureInfo(this=Id(this), this_offset=-12, local_size=16, stack_delta=None)
     STACKVAR(-16, 4) = STACKVAR(12, 4);
-    if (reinterpret_cast<any_int32>(STACKVAR(-16, 4)) == 0x00000000)
+    if (STACKVAR(-16, 4) == 0x00000000)
     {
         goto l100018C9;
     }
-    if (reinterpret_cast<any_int32>(STACKVAR(-16, 4)) == 0x00000001)
+    if (STACKVAR(-16, 4) == 0x00000001)
     {
         goto l100018D1;
     }
-    if (reinterpret_cast<any_int32>(STACKVAR(-16, 4)) == 0x00000002)
+    if (STACKVAR(-16, 4) == 0x00000002)
     {
         goto l100018E3;
     }
@@ -413,7 +413,7 @@ B_ODataFile::~B_ODataFile()
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
     free(ACCESS(STACKVAR(-4, 4), 4, 4));
-    REGDEF(eax=static_cast<unsigned int>(reinterpret_cast<any_int32>(ACCESS(STACKVAR(-4, 4), 0, 4)) != 0xFFFFFFFF))
+    REGDEF(eax=static_cast<unsigned int>(ACCESS(STACKVAR(-4, 4), 0, 4) != 0xFFFFFFFF))
 }
 Failed to find pattern for 'test eax, eax'
 
@@ -462,7 +462,7 @@ Failed to find pattern for 'jle l10002119'
 // address: 0x100021E0
 unsigned int B_IDataFile::OK()
 {
-    return static_cast<unsigned int>(this->fd != -1);
+    return static_cast<unsigned int>(this->fd != 0xFFFFFFFF);
 }
 
 // address: 0x10002200
@@ -481,7 +481,7 @@ B_IDataFile &B_IDataFile::operator =(const B_IDataFile &file)
 // address: 0x10002250
 unsigned int B_ODataFile::OK()
 {
-    return static_cast<unsigned int>(this->fd != -1);
+    return static_cast<unsigned int>(this->fd != 0xFFFFFFFF);
 }
 
 // address: 0x10002270
@@ -638,7 +638,7 @@ Failed to find pattern for 'or ecx, 0FFFFFFFFh'
 B_ListElement::~B_ListElement()
 {
     ACCESS(this, 0, 4) = GLOBAL(0x10042190);
-    if (reinterpret_cast<any_int32>(this->list) == 0x00000000)
+    if (this->list == 0x00000000)
     {
         goto l100029AA;
     }
@@ -650,12 +650,12 @@ l100029AA:
 p100029AE
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=4)
-    if (reinterpret_cast<any_int32>(STACKVAR(8, 4)) == 0x00000000)
+    if (STACKVAR(8, 4) == 0x00000000)
     {
         goto l100029F0;
     }
 l100029BB:
-    if (reinterpret_cast<any_int32>(ACCESS(this, 4, 4)) == 0x00000000)
+    if (ACCESS(this, 4, 4) == 0x00000000)
     {
         goto l100029D0;
     }
@@ -676,7 +676,7 @@ l10002A0E:
 // address: 0x10002A14
 unsigned int B_List::Add(B_ListElement *element)
 {
-    if (reinterpret_cast<any_int32>(this->tail) == 0x00000000)
+    if (this->tail == 0x00000000)
     {
         goto l10002A51;
     }
@@ -748,7 +748,7 @@ unsigned int B_List::Exists(const B_ListElement *element)
     ProcedureInfo(this=Id(this), this_offset=-8, local_size=8, stack_delta=None)
     STACKVAR(-4, 4) = ACCESS(STACKVAR(-8, 4), 8, 4);
 l10002E6F:
-    if (reinterpret_cast<any_int32>(STACKVAR(-4, 4)) == 0x00000000)
+    if (STACKVAR(-4, 4) == 0x00000000)
     {
         goto l10002E8F;
     }
@@ -976,7 +976,7 @@ l100035E9:
 unsigned int B_Name::operator !=(const B_Name &rhs)
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=24, stack_delta=None)
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-4, 4), 4, 4)) == reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 4, 4)))
+    if (ACCESS(STACKVAR(-4, 4), 4, 4) == ACCESS(STACKVAR(8, 4), 4, 4))
     {
         goto l10003661;
     }
@@ -1014,14 +1014,14 @@ Failed to find pattern for 'jne l10003761'
 // address: 0x10003769
 unsigned int B_Name::CompareNoCase(const char *str)
 {
-    return static_cast<unsigned int>(_stricmp(this->string, str) == 0);
+    return static_cast<unsigned int>(_stricmp(this->string, str) == 0x00000000);
 }
 
 // address: 0x1000378E
 B_Name &B_Name::operator =(const B_Name &src)
 {
     ProcedureInfo(this=Id(this), this_offset=-12, local_size=12, stack_delta=None)
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-12, 4), 4, 4)) == reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 4, 4)))
+    if (ACCESS(STACKVAR(-12, 4), 4, 4) == ACCESS(STACKVAR(8, 4), 4, 4))
     {
         goto l100037EF;
     }
@@ -1055,7 +1055,7 @@ Failed to find pattern for 'jnb l100038B0'
 B_IDataFile &operator >>(B_IDataFile &file, B_Name &name)
 {
     file >> *reinterpret_cast<unsigned int *>(LOCAL(-4));
-    if (reinterpret_cast<any_int32>(STACKVAR(-4, 4)) == name.len)
+    if (STACKVAR(-4, 4) == name.len)
     {
         goto l1000395F;
     }
@@ -1211,11 +1211,11 @@ p10003F26
     STACKVAR(-12, 4) = STACKVAR(12, 4)->(ACCESS(ACCESS(STACKVAR(12, 4), 0, 4), 12, 4))();
     reinterpret_cast<B_ODataFile &>(STACKVAR(8, 4)) << *reinterpret_cast<unsigned int *>(LOCAL(-12));
     STACKVAR(-16, 4) = STACKVAR(12, 4)->(ACCESS(ACCESS(STACKVAR(12, 4), 0, 4), 4, 4))() & 0x0000FFFF;
-    if (reinterpret_cast<any_int32>(STACKVAR(-16, 4)) == 0x00000001)
+    if (STACKVAR(-16, 4) == 0x00000001)
     {
         goto l10003FA8;
     }
-    if (reinterpret_cast<any_int32>(STACKVAR(-16, 4)) == 0x00000002)
+    if (STACKVAR(-16, 4) == 0x00000002)
     {
         goto l10003FBA;
     }
@@ -1268,7 +1268,7 @@ p100043CB
 p10004406
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=4)
-    if (reinterpret_cast<any_int32>(ACCESS(this, 28, 4)) == 0x00000000)
+    if (ACCESS(this, 28, 4) == 0x00000000)
     {
         goto l1000441D;
     }
@@ -1292,13 +1292,13 @@ B_Resource *B_ResourceManager::sub_10004425(unsigned short resourceId, const B_N
 p100045B9
 {
     ProcedureInfo(this=Id(this), this_offset=-12, local_size=16, stack_delta=0)
-    if (reinterpret_cast<any_int32>(ACCESS(this, 28, 4)) == 0x00000000)
+    if (ACCESS(this, 28, 4) == 0x00000000)
     {
         goto l10004602;
     }
     STACKVAR(-8, 4) = ACCESS(this, 28, 4);
     STACKVAR(-4, 4) = STACKVAR(-8, 4);
-    if (reinterpret_cast<any_int32>(STACKVAR(-4, 4)) == 0x00000000)
+    if (STACKVAR(-4, 4) == 0x00000000)
     {
         goto l100045F1;
     }
@@ -1432,7 +1432,7 @@ B_ResourceManager::~B_ResourceManager()
     this->Clean();
     STACKVAR(-8, 4) = ACCESS(this, 1024, 4);
     STACKVAR(-4, 4) = STACKVAR(-8, 4);
-    if (reinterpret_cast<any_int32>(STACKVAR(-4, 4)) == 0x00000000)
+    if (STACKVAR(-4, 4) == 0x00000000)
     {
         goto l10004AD5;
     }
@@ -1673,7 +1673,7 @@ p100061F0
     reinterpret_cast<B_Name *>(LOCAL(-12))->B_Name(reinterpret_cast<char *>(STACKVAR(8, 4)));
     STACKVAR(-4, 4) = B_resource_manager.GetResource(1, *reinterpret_cast<B_Name *>(LOCAL(-12)));
     reinterpret_cast<B_Name *>(LOCAL(-12))->~B_Name();
-    if (reinterpret_cast<any_int32>(STACKVAR(-4, 4)) == 0x00000000)
+    if (STACKVAR(-4, 4) == 0x00000000)
     {
         goto l1000622A;
     }
@@ -1940,7 +1940,7 @@ Failed to find pattern for 'jbe l10006CF6'
 p10006E20
 {
     ProcedureInfo(this=Id(this), this_offset=-8, local_size=8, stack_delta=0)
-    if (reinterpret_cast<any_int32>(ACCESS(this, 12, 4)) == 0x00000000)
+    if (ACCESS(this, 12, 4) == 0x00000000)
     {
         goto l10006E51;
     }
@@ -2078,7 +2078,7 @@ p10007FA0
 {
     ProcedureInfo(this=Id(this), this_offset=-24, local_size=28, stack_delta=None)
     ACCESS(STACKVAR(-24, 4), 0, 4) = GLOBAL(0x100421EC);
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-24, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-24, 4), 16, 4) == 0x00000000)
     {
         goto l10008061;
     }
@@ -2092,7 +2092,7 @@ p10008080
 {
     ProcedureInfo(this=Id(this), this_offset=-24, local_size=28, stack_delta=None)
     ACCESS(STACKVAR(-24, 4), 0, 4) = GLOBAL(0x100421EC);
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-24, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-24, 4), 16, 4) == 0x00000000)
     {
         goto l10008141;
     }
@@ -2106,7 +2106,7 @@ p10008160
 {
     ProcedureInfo(this=Id(this), this_offset=-24, local_size=28, stack_delta=None)
     ACCESS(STACKVAR(-24, 4), 0, 4) = GLOBAL(0x100421F4);
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-24, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-24, 4), 16, 4) == 0x00000000)
     {
         goto l10008238;
     }
@@ -2120,7 +2120,7 @@ p10008260
 {
     ProcedureInfo(this=Id(this), this_offset=-24, local_size=28, stack_delta=None)
     ACCESS(STACKVAR(-24, 4), 0, 4) = GLOBAL(0x100421EC);
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-24, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-24, 4), 16, 4) == 0x00000000)
     {
         goto l10008321;
     }
@@ -2260,11 +2260,11 @@ p10008974
     ACCESS(STACKVAR(-24, 4), 0, 4) = GLOBAL(0x100421F8);
     ACCESS(STACKVAR(-24, 4), 20, 4) = 0x00000000;
     STACKVAR(-28, 4) = STACKVAR(8, 4);
-    if (reinterpret_cast<any_int32>(STACKVAR(-28, 4)) == 0x00000002)
+    if (STACKVAR(-28, 4) == 0x00000002)
     {
         goto l100089AD;
     }
-    if (reinterpret_cast<any_int32>(STACKVAR(-28, 4)) == 0x00000004)
+    if (STACKVAR(-28, 4) == 0x00000004)
     {
         goto l10008A4A;
     }
@@ -2295,7 +2295,7 @@ Failed to find pattern for 'sub edx, 000000001h'
 B_IDataFile &operator >>(B_IDataFile &file, B_BitMap &bitMap)
 {
     ProcedureInfo(this=None, this_offset=None, local_size=56, stack_delta=None)
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(12, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(12, 4), 16, 4) == 0x00000000)
     {
         goto l10008CC9;
     }
@@ -2303,7 +2303,7 @@ B_IDataFile &operator >>(B_IDataFile &file, B_BitMap &bitMap)
     ??3@YAXPAX@Z(STACKVAR(-8, 4));
     ACCESS(STACKVAR(12, 4), 16, 4) = 0x00000000;
 l10008CC9:
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(12, 4), 20, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(12, 4), 20, 4) == 0x00000000)
     {
         goto l10008CF1;
     }
@@ -2321,14 +2321,14 @@ Failed to find pattern for 'sub eax, 000000001h'
 B_BitMap::~B_BitMap()
 {
     ACCESS(this, 0, 4) = GLOBAL(0x100421F8);
-    if (reinterpret_cast<any_int32>(this->data) == 0x00000000)
+    if (this->data == 0x00000000)
     {
         goto l1000900A;
     }
     STACKVAR(-4, 4) = this->data;
     ??3@YAXPAX@Z(STACKVAR(-4, 4));
 l1000900A:
-    if (reinterpret_cast<any_int32>(this->pal) == 0x00000000)
+    if (this->pal == 0x00000000)
     {
         goto l10009028;
     }
@@ -2456,7 +2456,7 @@ p100096A0
 {
     ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=None)
     ACCESS(STACKVAR(8, 4), 4, 4) = 0x00000000;
-    if (reinterpret_cast<any_int32>(STACKVAR(12, 4)) == 0x0000003E)
+    if (STACKVAR(12, 4) == 0x0000003E)
     {
         goto l100096E8;
     }
@@ -2465,7 +2465,7 @@ p100096A0
     ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 28, 4) = STACKVAR(12, 4);
     ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 0, 4)(STACKVAR(8, 4));
 l100096E8:
-    if (reinterpret_cast<any_int32>(STACKVAR(16, 4)) == 0x00000164)
+    if (STACKVAR(16, 4) == 0x00000164)
     {
         goto l10009722;
     }
@@ -2504,7 +2504,7 @@ Failed to find pattern for 'jnl l1000986D'
 p100098C9
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 20, 4)) == 0x00000065)
+    if (ACCESS(STACKVAR(8, 4), 20, 4) == 0x00000065)
     {
         goto l100098DF;
     }
@@ -2516,7 +2516,7 @@ Failed to find pattern for 'jne l1000991F'
 p10009C20
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 20, 4)) == 0x00000064)
+    if (ACCESS(STACKVAR(8, 4), 20, 4) == 0x00000064)
     {
         goto l10009C54;
     }
@@ -2532,7 +2532,7 @@ Failed to find pattern for 'test ecx, ecx'
 p10009CD5
 {
     ProcedureInfo(this=None, this_offset=None, local_size=8, stack_delta=None)
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 20, 4)) == 0x00000065)
+    if (ACCESS(STACKVAR(8, 4), 20, 4) == 0x00000065)
     {
         goto l10009D0C;
     }
@@ -2563,15 +2563,15 @@ p1000A05E
     ACCESS(STACKVAR(-4, 4), 8, 4) = 0x00000000;
     unknown_function_1000A14E(STACKVAR(8, 4));
     STACKVAR(-8, 4) = STACKVAR(12, 4);
-    if (reinterpret_cast<any_int32>(STACKVAR(-8, 4)) == 0x00000000)
+    if (STACKVAR(-8, 4) == 0x00000000)
     {
         goto l1000A0A3;
     }
-    if (reinterpret_cast<any_int32>(STACKVAR(-8, 4)) == 0x00000002)
+    if (STACKVAR(-8, 4) == 0x00000002)
     {
         goto l1000A101;
     }
-    if (reinterpret_cast<any_int32>(STACKVAR(-8, 4)) == 0x00000003)
+    if (STACKVAR(-8, 4) == 0x00000003)
     {
         goto l1000A0D2;
     }
@@ -2719,15 +2719,15 @@ p1000B300
     ACCESS(STACKVAR(8, 4), 340, 4) = STACKVAR(-4, 4);
     ACCESS(STACKVAR(-4, 4), 0, 4) = GLOBAL(0x1000B3E7);
     STACKVAR(-12, 4) = ACCESS(STACKVAR(8, 4), 180, 4);
-    if (reinterpret_cast<any_int32>(STACKVAR(-12, 4)) == 0x00000000)
+    if (STACKVAR(-12, 4) == 0x00000000)
     {
         goto l1000B351;
     }
-    if (reinterpret_cast<any_int32>(STACKVAR(-12, 4)) == 0x00000001)
+    if (STACKVAR(-12, 4) == 0x00000001)
     {
         goto l1000B367;
     }
-    if (reinterpret_cast<any_int32>(STACKVAR(-12, 4)) == 0x00000002)
+    if (STACKVAR(-12, 4) == 0x00000002)
     {
         goto l1000B37D;
     }
@@ -2904,7 +2904,7 @@ p1000CF7A
 {
     ProcedureInfo(this=None, this_offset=None, local_size=16, stack_delta=None)
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 344, 4);
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 184, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(8, 4), 184, 4) == 0x00000000)
     {
         goto l1000CFEF;
     }
@@ -3079,11 +3079,11 @@ p1000D9A7
     unknown_function_1000D7FA(STACKVAR(8, 4), 0x00000000);
     unknown_function_1000D7FA(STACKVAR(8, 4), 0x00000000);
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 60, 4);
-    if (reinterpret_cast<any_int32>(STACKVAR(-4, 4)) == 0x00000003)
+    if (STACKVAR(-4, 4) == 0x00000003)
     {
         goto l1000DA51;
     }
-    if (reinterpret_cast<any_int32>(STACKVAR(-4, 4)) == 0x00000005)
+    if (STACKVAR(-4, 4) == 0x00000005)
     {
         goto l1000DA61;
     }
@@ -3213,7 +3213,7 @@ p1000E360
     ACCESS(STACKVAR(-4, 4), 8, 4) = GLOBAL(0x1000F516);
     ACCESS(STACKVAR(-4, 4), 13, 1) = 0;
     unknown_function_1000E487(STACKVAR(8, 4));
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 168, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(8, 4), 168, 4) == 0x00000000)
     {
         goto l1000E3D0;
     }
@@ -3249,15 +3249,15 @@ p1000EDE2
     ProcedureInfo(this=None, this_offset=None, local_size=8, stack_delta=None)
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 312, 4);
     STACKVAR(-8, 4) = ACCESS(STACKVAR(-4, 4), 16, 4);
-    if (reinterpret_cast<any_int32>(STACKVAR(-8, 4)) == 0x00000000)
+    if (STACKVAR(-8, 4) == 0x00000000)
     {
         goto l1000EE1C;
     }
-    if (reinterpret_cast<any_int32>(STACKVAR(-8, 4)) == 0x00000001)
+    if (STACKVAR(-8, 4) == 0x00000001)
     {
         goto l1000EF04;
     }
-    if (reinterpret_cast<any_int32>(STACKVAR(-8, 4)) == 0x00000002)
+    if (STACKVAR(-8, 4) == 0x00000002)
     {
         goto l1000EF90;
     }
@@ -3268,7 +3268,7 @@ Failed to find pattern for 'jmp near ptr l1000F017'
 p1000F076
 {
     ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=None)
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 168, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(8, 4), 168, 4) == 0x00000000)
     {
         goto l1000F13E;
     }
@@ -3308,15 +3308,15 @@ p1000F516
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 312, 4);
     ACCESS(ACCESS(STACKVAR(8, 4), 344, 4), 8, 4)(STACKVAR(8, 4));
     STACKVAR(-8, 4) = ACCESS(STACKVAR(-4, 4), 16, 4);
-    if (reinterpret_cast<any_int32>(STACKVAR(-8, 4)) == 0x00000000)
+    if (STACKVAR(-8, 4) == 0x00000000)
     {
         goto l1000F558;
     }
-    if (reinterpret_cast<any_int32>(STACKVAR(-8, 4)) == 0x00000001)
+    if (STACKVAR(-8, 4) == 0x00000001)
     {
         goto l1000F582;
     }
-    if (reinterpret_cast<any_int32>(STACKVAR(-8, 4)) == 0x00000002)
+    if (STACKVAR(-8, 4) == 0x00000002)
     {
         goto l1000F58E;
     }
@@ -3339,7 +3339,7 @@ Failed to find pattern for 'jne l1000F5DF'
 p1000F640
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 4, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(8, 4), 4, 4) == 0x00000000)
     {
         goto l1000F65C;
     }
@@ -3371,7 +3371,7 @@ p1000F6A0
 p1000F6D0
 {
     ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=None)
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 20, 4)) == 0x00000064)
+    if (ACCESS(STACKVAR(8, 4), 20, 4) == 0x00000064)
     {
         goto l1000F707;
     }
@@ -3411,7 +3411,7 @@ p1000F86D
 p1000F895
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 20, 4)) == 0x00000064)
+    if (ACCESS(STACKVAR(8, 4), 20, 4) == 0x00000064)
     {
         goto l1000F8CA;
     }
@@ -3454,7 +3454,7 @@ Failed to find pattern for 'ja l1000FBE7'
 p1000FC1D
 {
     ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=None)
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 20, 4)) == 0x00000064)
+    if (ACCESS(STACKVAR(8, 4), 20, 4) == 0x00000064)
     {
         goto l1000FC54;
     }
@@ -3540,7 +3540,7 @@ p100108CB
     STACKVAR(-8, 4) = ACCESS(STACKVAR(8, 4), 308, 4);
     ACCESS(STACKVAR(-12, 4), 16, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 24, 4), 0, 4);
     ACCESS(STACKVAR(-12, 4), 20, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 24, 4), 4, 4);
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 184, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(8, 4), 184, 4) == 0x00000000)
     {
         goto l1001092E;
     }
@@ -3618,7 +3618,7 @@ p10010F14
     STACKVAR(-12, 4) = ACCESS(STACKVAR(8, 4), 308, 4);
     ACCESS(STACKVAR(-16, 4), 16, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 24, 4), 0, 4);
     ACCESS(STACKVAR(-16, 4), 20, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 24, 4), 4, 4);
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 184, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(8, 4), 184, 4) == 0x00000000)
     {
         goto l10010F83;
     }
@@ -3634,7 +3634,7 @@ p1001117B
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 308, 4);
     ACCESS(STACKVAR(-8, 4), 16, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 24, 4), 0, 4);
     ACCESS(STACKVAR(-8, 4), 20, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 24, 4), 4, 4);
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 184, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(8, 4), 184, 4) == 0x00000000)
     {
         goto l100111DE;
     }
@@ -3651,7 +3651,7 @@ p100112A0
     STACKVAR(-8, 4) = ACCESS(STACKVAR(8, 4), 308, 4);
     ACCESS(STACKVAR(-16, 4), 16, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 24, 4), 0, 4);
     ACCESS(STACKVAR(-16, 4), 20, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 24, 4), 4, 4);
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 184, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(8, 4), 184, 4) == 0x00000000)
     {
         goto l10011312;
     }
@@ -3695,7 +3695,7 @@ p100118C1
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=0)
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 320, 4);
-    if (reinterpret_cast<any_int32>(STACKVAR(12, 4)) == 0x00000000)
+    if (STACKVAR(12, 4) == 0x00000000)
     {
         goto l100118F1;
     }
@@ -3896,7 +3896,7 @@ p1001311D
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=0)
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 324, 4);
-    if (reinterpret_cast<any_int32>(STACKVAR(12, 4)) == 0x00000002)
+    if (STACKVAR(12, 4) == 0x00000002)
     {
         goto l1001314D;
     }
@@ -3930,7 +3930,7 @@ p10013490
 {
     ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=None)
     ACCESS(STACKVAR(8, 4), 4, 4) = 0x00000000;
-    if (reinterpret_cast<any_int32>(STACKVAR(12, 4)) == 0x0000003E)
+    if (STACKVAR(12, 4) == 0x0000003E)
     {
         goto l100134D8;
     }
@@ -3939,7 +3939,7 @@ p10013490
     ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 28, 4) = STACKVAR(12, 4);
     ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 0, 4)(STACKVAR(8, 4));
 l100134D8:
-    if (reinterpret_cast<any_int32>(STACKVAR(16, 4)) == 0x000001AC)
+    if (STACKVAR(16, 4) == 0x000001AC)
     {
         goto l10013512;
     }
@@ -3965,11 +3965,11 @@ p10013602
 p10013624
 {
     ProcedureInfo(this=None, this_offset=None, local_size=8, stack_delta=None)
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 20, 4)) == 0x000000C8)
+    if (ACCESS(STACKVAR(8, 4), 20, 4) == 0x000000C8)
     {
         goto l1001366A;
     }
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 20, 4)) == 0x000000C9)
+    if (ACCESS(STACKVAR(8, 4), 20, 4) == 0x000000C9)
     {
         goto l1001366A;
     }
@@ -3979,11 +3979,11 @@ p10013624
 l1001366A:
     STACKVAR(-4, 4) = unknown_function_100136D7(STACKVAR(8, 4));
     STACKVAR(-8, 4) = STACKVAR(-4, 4);
-    if (reinterpret_cast<any_int32>(STACKVAR(-8, 4)) == 0x00000001)
+    if (STACKVAR(-8, 4) == 0x00000001)
     {
         goto l1001368D;
     }
-    if (reinterpret_cast<any_int32>(STACKVAR(-8, 4)) == 0x00000002)
+    if (STACKVAR(-8, 4) == 0x00000002)
     {
         goto l10013696;
     }
@@ -4011,15 +4011,15 @@ p100137E3
 {
     ProcedureInfo(this=None, this_offset=None, local_size=28, stack_delta=None)
     STACKVAR(-20, 4) = ACCESS(STACKVAR(8, 4), 36, 4);
-    if (reinterpret_cast<any_int32>(STACKVAR(-20, 4)) == 0x00000001)
+    if (STACKVAR(-20, 4) == 0x00000001)
     {
         goto l1001380D;
     }
-    if (reinterpret_cast<any_int32>(STACKVAR(-20, 4)) == 0x00000003)
+    if (STACKVAR(-20, 4) == 0x00000003)
     {
         goto l10013826;
     }
-    if (reinterpret_cast<any_int32>(STACKVAR(-20, 4)) == 0x00000004)
+    if (STACKVAR(-20, 4) == 0x00000004)
     {
         goto l10013990;
     }
@@ -4030,7 +4030,7 @@ Failed to find pattern for 'jmp near ptr l10013A23'
 p10013B69
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 20, 4)) == 0x000000CD)
+    if (ACCESS(STACKVAR(8, 4), 20, 4) == 0x000000CD)
     {
         goto l10013B84;
     }
@@ -4050,7 +4050,7 @@ Failed to find pattern for 'jne l10013CC3'
 p10013DDE
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 20, 4)) == 0x000000CC)
+    if (ACCESS(STACKVAR(8, 4), 20, 4) == 0x000000CC)
     {
         goto l10013E14;
     }
@@ -4066,7 +4066,7 @@ Failed to find pattern for 'test edx, edx'
 p10013EFA
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 20, 4)) == 0x000000CD)
+    if (ACCESS(STACKVAR(8, 4), 20, 4) == 0x000000CD)
     {
         goto l10013F32;
     }
@@ -4198,7 +4198,7 @@ p100147D6
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 392, 4);
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-4, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-4, 4), 16, 4) == 0x00000000)
     {
         goto l10014826;
     }
@@ -4457,7 +4457,7 @@ p10017160
 {
     ProcedureInfo(this=None, this_offset=None, local_size=112, stack_delta=None)
     STACKVAR(-8, 4) = ACCESS(STACKVAR(8, 4), 408, 4);
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 252, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(8, 4), 252, 4) == 0x00000000)
     {
         goto l100171A3;
     }
@@ -4587,11 +4587,11 @@ p10018398
     ProcedureInfo(this=None, this_offset=None, local_size=8, stack_delta=None)
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 388, 4);
     STACKVAR(-8, 4) = STACKVAR(12, 4);
-    if (reinterpret_cast<any_int32>(STACKVAR(-8, 4)) == 0x00000000)
+    if (STACKVAR(-8, 4) == 0x00000000)
     {
         goto l100183BE;
     }
-    if (reinterpret_cast<any_int32>(STACKVAR(-8, 4)) == 0x00000002)
+    if (STACKVAR(-8, 4) == 0x00000002)
     {
         goto l10018423;
     }
@@ -4896,7 +4896,7 @@ Failed to find pattern for 'jne l1001BAE2'
 p1001BD40
 {
     ProcedureInfo(this=None, this_offset=None, local_size=20, stack_delta=None)
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 20, 4)) == 0x000000CA)
+    if (ACCESS(STACKVAR(8, 4), 20, 4) == 0x000000CA)
     {
         goto l1001BD7A;
     }
@@ -5086,7 +5086,7 @@ p1001D69E
     ProcedureInfo(this=None, this_offset=None, local_size=96, stack_delta=None)
     STACKVAR(-24, 4) = ACCESS(STACKVAR(8, 4), 408, 4);
     STACKVAR(-20, 4) = ACCESS(STACKVAR(8, 4), 376, 4);
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 252, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(8, 4), 252, 4) == 0x00000000)
     {
         goto l1001D6EF;
     }
@@ -5110,7 +5110,7 @@ p1001DA41
     STACKVAR(-28, 4) = ACCESS(STACKVAR(8, 4), 408, 4);
     STACKVAR(-32, 4) = ACCESS(STACKVAR(8, 4), 368, 4);
     STACKVAR(-24, 4) = ACCESS(STACKVAR(8, 4), 376, 4);
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 252, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(8, 4), 252, 4) == 0x00000000)
     {
         goto l1001DA9C;
     }
@@ -5156,15 +5156,15 @@ p1001E668
     ProcedureInfo(this=None, this_offset=None, local_size=8, stack_delta=None)
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 396, 4);
     STACKVAR(-8, 4) = STACKVAR(12, 4);
-    if (reinterpret_cast<any_int32>(STACKVAR(-8, 4)) == 0x00000000)
+    if (STACKVAR(-8, 4) == 0x00000000)
     {
         goto l1001E69B;
     }
-    if (reinterpret_cast<any_int32>(STACKVAR(-8, 4)) == 0x00000002)
+    if (STACKVAR(-8, 4) == 0x00000002)
     {
         goto l1001E727;
     }
-    if (reinterpret_cast<any_int32>(STACKVAR(-8, 4)) == 0x00000003)
+    if (STACKVAR(-8, 4) == 0x00000003)
     {
         goto l1001E6F8;
     }
@@ -5572,7 +5572,7 @@ p10022CD7
 {
     ProcedureInfo(this=None, this_offset=None, local_size=8, stack_delta=0)
     STACKVAR(-8, 4) = ACCESS(STACKVAR(8, 4), 4, 4);
-    if (reinterpret_cast<any_int32>(STACKVAR(12, 4)) == 0x00000001)
+    if (STACKVAR(12, 4) == 0x00000001)
     {
         goto l10022D11;
     }
@@ -5597,7 +5597,7 @@ p10022D76
 {
     ProcedureInfo(this=None, this_offset=None, local_size=8, stack_delta=0)
     STACKVAR(-8, 4) = ACCESS(STACKVAR(8, 4), 4, 4);
-    if (reinterpret_cast<any_int32>(STACKVAR(12, 4)) == 0x00000001)
+    if (STACKVAR(12, 4) == 0x00000001)
     {
         goto l10022DB0;
     }
@@ -5629,7 +5629,7 @@ p10022E15
 l10022E3D:
     STACKVAR(-24, 4) = ACCESS(STACKVAR(-24, 4), 36, 4);
 l10022E46:
-    if (reinterpret_cast<any_int32>(STACKVAR(-24, 4)) == 0x00000000)
+    if (STACKVAR(-24, 4) == 0x00000000)
     {
         goto l10022E80;
     }
@@ -5839,15 +5839,15 @@ p10024094
     ACCESS(STACKVAR(8, 4), 116, 4) = ACCESS(STACKVAR(-12, 4), 16, 4);
     ACCESS(STACKVAR(8, 4), 112, 4) = ACCESS(STACKVAR(-12, 4), 20, 4);
     STACKVAR(-16, 4) = ACCESS(STACKVAR(8, 4), 76, 4);
-    if (reinterpret_cast<any_int32>(STACKVAR(-16, 4)) == 0x00000000)
+    if (STACKVAR(-16, 4) == 0x00000000)
     {
         goto l100240E2;
     }
-    if (reinterpret_cast<any_int32>(STACKVAR(-16, 4)) == 0x00000001)
+    if (STACKVAR(-16, 4) == 0x00000001)
     {
         goto l10024106;
     }
-    if (reinterpret_cast<any_int32>(STACKVAR(-16, 4)) == 0x00000002)
+    if (STACKVAR(-16, 4) == 0x00000002)
     {
         goto l10024161;
     }
@@ -5987,7 +5987,7 @@ p10024A70
     ACCESS(STACKVAR(-8, 4), 12, 4) = GLOBAL(0x10026879);
     ACCESS(STACKVAR(-8, 4), 32, 4) = 0x00000000;
     ACCESS(STACKVAR(-8, 4), 40, 4) = 0x00000000;
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 100, 4)) == 0x00000003)
+    if (ACCESS(STACKVAR(8, 4), 100, 4) == 0x00000003)
     {
         goto l10024AE2;
     }
@@ -6029,7 +6029,7 @@ p10024D38
     ProcedureInfo(this=None, this_offset=None, local_size=16, stack_delta=None)
     STACKVAR(-12, 4) = ACCESS(STACKVAR(8, 4), 424, 4);
     STACKVAR(-8, 4) = ACCESS(STACKVAR(-12, 4), 24, 4);
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 76, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(8, 4), 76, 4) == 0x00000000)
     {
         goto l10024D66;
     }
@@ -6460,7 +6460,7 @@ B_IDataFile &operator >>(B_IDataFile &file, B_BitMap24 &bitMap)
     ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=None)
     ACCESS(STACKVAR(12, 4), 8, 4) = 0x00000000;
     ACCESS(STACKVAR(12, 4), 4, 4) = 0x00000000;
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(12, 4), 12, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(12, 4), 12, 4) == 0x00000000)
     {
         goto l10028063;
     }
@@ -6530,7 +6530,7 @@ p100284C0
 {
     ProcedureInfo(this=Id(this), this_offset=-24, local_size=28, stack_delta=None)
     ACCESS(STACKVAR(-24, 4), 0, 4) = GLOBAL(0x10042CB8);
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-24, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-24, 4), 16, 4) == 0x00000000)
     {
         goto l10028581;
     }
@@ -6637,7 +6637,7 @@ p100298B0
     ACCESS(this, 12, 4) = 0x00000001;
     ACCESS(this, 0, 4) = GLOBAL(0x10042CBC);
     STACKVAR(-4, 4) = ??2@YAPAXI@Z(0x00004010);
-    if (reinterpret_cast<any_int32>(STACKVAR(-4, 4)) == 0x00000000)
+    if (STACKVAR(-4, 4) == 0x00000000)
     {
         goto l1002990D;
     }
@@ -6647,7 +6647,7 @@ l1002990D:
     STACKVAR(-12, 4) = 0x00000000;
 l10029914:
     ACCESS(this, 16, 4) = STACKVAR(-12, 4);
-    if (reinterpret_cast<any_int32>(ACCESS(this, 16, 4)) == 0x00000000)
+    if (ACCESS(this, 16, 4) == 0x00000000)
     {
         goto l10029932;
     }
@@ -6665,13 +6665,13 @@ p1002994D
 {
     ProcedureInfo(this=Id(this), this_offset=-12, local_size=16, stack_delta=None)
     ACCESS(STACKVAR(-12, 4), 0, 4) = GLOBAL(0x10042CBC);
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-12, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-12, 4), 16, 4) == 0x00000000)
     {
         goto l100299C0;
     }
     STACKVAR(-8, 4) = ACCESS(STACKVAR(-12, 4), 16, 4);
     STACKVAR(-4, 4) = STACKVAR(-8, 4);
-    if (reinterpret_cast<any_int32>(STACKVAR(-4, 4)) == 0x00000000)
+    if (STACKVAR(-4, 4) == 0x00000000)
     {
         goto l100299A5;
     }
@@ -6684,7 +6684,7 @@ Failed to find pattern for 'test edx, edx'
 p100299E1
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=0)
-    if (reinterpret_cast<any_int32>(ACCESS(this, 16, 4)) == 0x00000000)
+    if (ACCESS(this, 16, 4) == 0x00000000)
     {
         goto l10029A02;
     }
@@ -6843,7 +6843,7 @@ p1002A13C
 {
     ProcedureInfo(this=Id(this), this_offset=-16, local_size=16, stack_delta=None)
     STACKVAR(-4, 4) = 0x00000000;
-    if (reinterpret_cast<any_int32>(ACCESS(ACCESS(GLOBAL(0x1004A944), 0, 4), 8, 4)) == 0x00000000)
+    if (ACCESS(ACCESS(GLOBAL(0x1004A944), 0, 4), 8, 4) == 0x00000000)
     {
         goto l1002A1B0;
     }
@@ -6928,7 +6928,7 @@ p1002A2F0
 {
     ProcedureInfo(this=Id(this), this_offset=-24, local_size=28, stack_delta=None)
     ACCESS(STACKVAR(-24, 4), 0, 4) = GLOBAL(0x10042CD4);
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-24, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-24, 4), 16, 4) == 0x00000000)
     {
         goto l1002A3B1;
     }
@@ -6942,7 +6942,7 @@ p1002A3D0
 {
     ProcedureInfo(this=Id(this), this_offset=-24, local_size=28, stack_delta=None)
     ACCESS(STACKVAR(-24, 4), 0, 4) = GLOBAL(0x10042CD4);
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-24, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-24, 4), 16, 4) == 0x00000000)
     {
         goto l1002A491;
     }
@@ -6956,7 +6956,7 @@ p1002A4B0
 {
     ProcedureInfo(this=Id(this), this_offset=-24, local_size=28, stack_delta=None)
     ACCESS(STACKVAR(-24, 4), 0, 4) = GLOBAL(0x10042CD4);
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-24, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-24, 4), 16, 4) == 0x00000000)
     {
         goto l1002A571;
     }
@@ -7404,7 +7404,7 @@ p10032003
 {
     ProcedureInfo(this=None, this_offset=None, local_size=32, stack_delta=None)
     STACKVAR(-28, 4) = reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000008;
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-28, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-28, 4), 16, 4) == 0x00000000)
     {
         goto l100320A0;
     }
@@ -7625,7 +7625,7 @@ void B_ObjDscr::SetUpNormals()
     ProcedureInfo(this=Id(this), this_offset=-628, local_size=648, stack_delta=None)
     STACKVAR(-28, 4) = ACCESS(STACKVAR(-628, 4), 44, 4);
     STACKVAR(-204, 4) = ??2@YAPAXI@Z(0x00000018 * reinterpret_cast<any_int32>(STACKVAR(-28, 4)));
-    if (reinterpret_cast<any_int32>(STACKVAR(-204, 4)) == 0x00000000)
+    if (STACKVAR(-204, 4) == 0x00000000)
     {
         goto l10032BB9;
     }
@@ -7645,7 +7645,7 @@ void B_ObjDscr::SetUpInertialT()
     STACKVAR(-24, 4) = STACKVAR(-120, 4);
     STACKVAR(-32, 4) = ACCESS(STACKVAR(-660, 4), 44, 4);
     STACKVAR(-124, 4) = ??2@YAPAXI@Z(0x00000018 * reinterpret_cast<any_int32>(STACKVAR(-32, 4)));
-    if (reinterpret_cast<any_int32>(STACKVAR(-124, 4)) == 0x00000000)
+    if (STACKVAR(-124, 4) == 0x00000000)
     {
         goto l100336A8;
     }
@@ -7701,7 +7701,7 @@ p1003439D
 {
     ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=None)
     ACCESS(GLOBAL(0x1004A990), 0, 4) = GLOBAL(0x10042D78);
-    if (reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A9A0), 0, 4)) == 0x00000000)
+    if (ACCESS(GLOBAL(0x1004A9A0), 0, 4) == 0x00000000)
     {
         goto l1003440B;
     }
@@ -7740,7 +7740,7 @@ p10034467
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
     ACCESS(GLOBAL(0x1004A9A8), 0, 4) = GLOBAL(0x10042D7C);
-    if (reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A9B8), 0, 4)) == 0x00000000)
+    if (ACCESS(GLOBAL(0x1004A9B8), 0, 4) == 0x00000000)
     {
         goto l100344BB;
     }
@@ -7784,7 +7784,7 @@ p1003590B
     ProcedureInfo(this=None, this_offset=None, local_size=708, stack_delta=None)
     STACKVAR(-528, 4) = unknown_function_10004676(STACKVAR(8, 4), STACKVAR(12, 4));
     STACKVAR(-532, 4) = reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000024;
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-532, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-532, 4), 16, 4) == 0x00000000)
     {
         goto l10035997;
     }
@@ -7806,7 +7806,7 @@ void B_ObjDscr::SetUpBSP()
     ProcedureInfo(this=Id(this), this_offset=-160, local_size=168, stack_delta=None)
     STACKVAR(-24, 4) = ACCESS(STACKVAR(-160, 4), 64, 4);
     STACKVAR(-36, 4) = ??2@YAPAXI@Z(0x00000024 * reinterpret_cast<any_int32>(STACKVAR(-24, 4)) + 0x00000004);
-    if (reinterpret_cast<any_int32>(STACKVAR(-36, 4)) == 0x00000000)
+    if (STACKVAR(-36, 4) == 0x00000000)
     {
         goto l10036ED2;
     }
@@ -7950,7 +7950,7 @@ B_ObjDscr::~B_ObjDscr()
     ACCESS(STACKVAR(-88, 4), 0, 4) = GLOBAL(0x10042DA0);
     STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-88, 4)) + 0x00000118;
     ACCESS(STACKVAR(-4, 4), 0, 4) = GLOBAL(0x10042E0C);
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-4, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-4, 4), 16, 4) == 0x00000000)
     {
         goto l100381DA;
     }
@@ -7958,7 +7958,7 @@ B_ObjDscr::~B_ObjDscr()
 l100381DA:
     STACKVAR(-8, 4) = reinterpret_cast<any_int32>(STACKVAR(-88, 4)) + 0x00000100;
     ACCESS(STACKVAR(-8, 4), 0, 4) = GLOBAL(0x10042E08);
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-8, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-8, 4), 16, 4) == 0x00000000)
     {
         goto l10038206;
     }
@@ -7966,7 +7966,7 @@ l100381DA:
 l10038206:
     STACKVAR(-12, 4) = reinterpret_cast<any_int32>(STACKVAR(-88, 4)) + 0x000000E8;
     ACCESS(STACKVAR(-12, 4), 0, 4) = GLOBAL(0x10042E04);
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-12, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-12, 4), 16, 4) == 0x00000000)
     {
         goto l10038233;
     }
@@ -7974,7 +7974,7 @@ l10038206:
 l10038233:
     STACKVAR(-16, 4) = reinterpret_cast<any_int32>(STACKVAR(-88, 4)) + 0x000000D0;
     ACCESS(STACKVAR(-16, 4), 0, 4) = GLOBAL(0x10042E00);
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-16, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-16, 4), 16, 4) == 0x00000000)
     {
         goto l10038260;
     }
@@ -7982,20 +7982,20 @@ l10038233:
 l10038260:
     STACKVAR(-20, 4) = reinterpret_cast<any_int32>(STACKVAR(-88, 4)) + 0x000000BC;
     ACCESS(STACKVAR(-20, 4), 0, 4) = GLOBAL(0x10042DF4);
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-20, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-20, 4), 16, 4) == 0x00000000)
     {
         goto l10038285;
     }
     STACKVAR(-20, 4)->unknown_method_1003BB30();
 l10038285:
     STACKVAR(-48, 4) = reinterpret_cast<any_int32>(STACKVAR(-88, 4)) + 0x000000A4;
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-48, 4), 12, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-48, 4), 12, 4) == 0x00000000)
     {
         goto l100382DD;
     }
     STACKVAR(-28, 4) = ACCESS(STACKVAR(-48, 4), 12, 4);
     STACKVAR(-24, 4) = STACKVAR(-28, 4);
-    if (reinterpret_cast<any_int32>(STACKVAR(-24, 4)) == 0x00000000)
+    if (STACKVAR(-24, 4) == 0x00000000)
     {
         goto l100382D6;
     }
@@ -8031,7 +8031,7 @@ p1003896F
     ACCESS(GLOBAL(0x1004BF6C), 0, 4) = 0x00000001;
     unknown_function_10004676(STACKVAR(8, 4), STACKVAR(-312, 4));
     STACKVAR(-220, 4) = reinterpret_cast<any_int32>(STACKVAR(-312, 4)) + 0x0000000C;
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-220, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-220, 4), 16, 4) == 0x00000000)
     {
         goto l100389D9;
     }
@@ -8090,7 +8090,7 @@ p10039750
     ProcedureInfo(this=Id(this), this_offset=-12, local_size=12, stack_delta=None)
     STACKVAR(-8, 4) = reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + 0x00000090;
     ACCESS(STACKVAR(-8, 4), 0, 4) = GLOBAL(0x10042D9C);
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-8, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-8, 4), 16, 4) == 0x00000000)
     {
         goto l100397B4;
     }
@@ -8113,7 +8113,7 @@ p10039830
 {
     ProcedureInfo(this=Id(this), this_offset=-8, local_size=8, stack_delta=None)
     ACCESS(STACKVAR(-8, 4), 0, 4) = GLOBAL(0x10042D9C);
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-8, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-8, 4), 16, 4) == 0x00000000)
     {
         goto l10039889;
     }
@@ -8143,7 +8143,7 @@ p10039990
 {
     ProcedureInfo(this=Id(this), this_offset=-8, local_size=8, stack_delta=None)
     ACCESS(STACKVAR(-8, 4), 0, 4) = GLOBAL(0x10042DE0);
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-8, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-8, 4), 16, 4) == 0x00000000)
     {
         goto l100399E9;
     }
@@ -8156,7 +8156,7 @@ p10039A10
 {
     ProcedureInfo(this=Id(this), this_offset=-8, local_size=8, stack_delta=None)
     ACCESS(STACKVAR(-8, 4), 0, 4) = GLOBAL(0x10042DD8);
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-8, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-8, 4), 16, 4) == 0x00000000)
     {
         goto l10039A69;
     }
@@ -8169,7 +8169,7 @@ p10039A90
 {
     ProcedureInfo(this=Id(this), this_offset=-8, local_size=8, stack_delta=None)
     ACCESS(STACKVAR(-8, 4), 0, 4) = GLOBAL(0x10042DEC);
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-8, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-8, 4), 16, 4) == 0x00000000)
     {
         goto l10039AE9;
     }
@@ -8182,7 +8182,7 @@ p10039B10
 {
     ProcedureInfo(this=Id(this), this_offset=-8, local_size=8, stack_delta=None)
     ACCESS(STACKVAR(-8, 4), 0, 4) = GLOBAL(0x10042DF0);
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-8, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-8, 4), 16, 4) == 0x00000000)
     {
         goto l10039B69;
     }
@@ -8195,7 +8195,7 @@ p10039B90
 {
     ProcedureInfo(this=Id(this), this_offset=-8, local_size=8, stack_delta=None)
     ACCESS(STACKVAR(-8, 4), 0, 4) = GLOBAL(0x10042DF4);
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-8, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-8, 4), 16, 4) == 0x00000000)
     {
         goto l10039BE9;
     }
@@ -8207,13 +8207,13 @@ Failed to find pattern for 'jne l10039BB6'
 p10039C10
 {
     ProcedureInfo(this=Id(this), this_offset=-36, local_size=52, stack_delta=None)
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-36, 4), 12, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-36, 4), 12, 4) == 0x00000000)
     {
         goto l10039C66;
     }
     STACKVAR(-8, 4) = ACCESS(STACKVAR(-36, 4), 12, 4);
     STACKVAR(-4, 4) = STACKVAR(-8, 4);
-    if (reinterpret_cast<any_int32>(STACKVAR(-4, 4)) == 0x00000000)
+    if (STACKVAR(-4, 4) == 0x00000000)
     {
         goto l10039C5F;
     }
@@ -8226,13 +8226,13 @@ Failed to find pattern for 'test ecx, ecx'
 p10039D30
 {
     ProcedureInfo(this=Id(this), this_offset=-12, local_size=16, stack_delta=None)
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-12, 4), 4, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-12, 4), 4, 4) == 0x00000000)
     {
         goto l10039D6D;
     }
     STACKVAR(-8, 4) = ACCESS(STACKVAR(-12, 4), 4, 4);
     STACKVAR(-4, 4) = STACKVAR(-8, 4);
-    if (reinterpret_cast<any_int32>(STACKVAR(-4, 4)) == 0x00000000)
+    if (STACKVAR(-4, 4) == 0x00000000)
     {
         goto l10039D66;
     }
@@ -8249,13 +8249,13 @@ Failed to find pattern for 'test ecx, ecx'
 p10039D90
 {
     ProcedureInfo(this=Id(this), this_offset=-36, local_size=52, stack_delta=None)
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-36, 4), 12, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-36, 4), 12, 4) == 0x00000000)
     {
         goto l10039DCD;
     }
     STACKVAR(-8, 4) = ACCESS(STACKVAR(-36, 4), 12, 4);
     STACKVAR(-4, 4) = STACKVAR(-8, 4);
-    if (reinterpret_cast<any_int32>(STACKVAR(-4, 4)) == 0x00000000)
+    if (STACKVAR(-4, 4) == 0x00000000)
     {
         goto l10039DC6;
     }
@@ -8264,13 +8264,13 @@ p10039D90
 l10039DC6:
     STACKVAR(-40, 4) = 0x00000000;
 l10039DCD:
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-36, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-36, 4), 16, 4) == 0x00000000)
     {
         goto l10039E01;
     }
     STACKVAR(-16, 4) = ACCESS(STACKVAR(-36, 4), 16, 4);
     STACKVAR(-12, 4) = STACKVAR(-16, 4);
-    if (reinterpret_cast<any_int32>(STACKVAR(-12, 4)) == 0x00000000)
+    if (STACKVAR(-12, 4) == 0x00000000)
     {
         goto l10039DFA;
     }
@@ -8279,23 +8279,23 @@ l10039DCD:
 l10039DFA:
     STACKVAR(-44, 4) = 0x00000000;
 l10039E01:
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-36, 4), 20, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-36, 4), 20, 4) == 0x00000000)
     {
         goto l10039E7A;
     }
     STACKVAR(-24, 4) = ACCESS(STACKVAR(-36, 4), 20, 4);
     STACKVAR(-20, 4) = STACKVAR(-24, 4);
-    if (reinterpret_cast<any_int32>(STACKVAR(-20, 4)) == 0x00000000)
+    if (STACKVAR(-20, 4) == 0x00000000)
     {
         goto l10039E73;
     }
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-20, 4), 4, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-20, 4), 4, 4) == 0x00000000)
     {
         goto l10039E53;
     }
     STACKVAR(-32, 4) = ACCESS(STACKVAR(-20, 4), 4, 4);
     STACKVAR(-28, 4) = STACKVAR(-32, 4);
-    if (reinterpret_cast<any_int32>(STACKVAR(-28, 4)) == 0x00000000)
+    if (STACKVAR(-28, 4) == 0x00000000)
     {
         goto l10039E4C;
     }
@@ -8436,7 +8436,7 @@ p1003A4E0
 {
     ProcedureInfo(this=Id(this), this_offset=-8, local_size=8, stack_delta=None)
     ACCESS(STACKVAR(-8, 4), 0, 4) = GLOBAL(0x10042D9C);
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-8, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-8, 4), 16, 4) == 0x00000000)
     {
         goto l1003A539;
     }
@@ -8449,7 +8449,7 @@ p1003A560
 {
     ProcedureInfo(this=Id(this), this_offset=-20, local_size=20, stack_delta=None)
     ACCESS(STACKVAR(-20, 4), 0, 4) = GLOBAL(0x10042DE8);
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-20, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-20, 4), 16, 4) == 0x00000000)
     {
         goto l1003A606;
     }
@@ -8463,7 +8463,7 @@ p1003A630
 {
     ProcedureInfo(this=Id(this), this_offset=-20, local_size=20, stack_delta=None)
     ACCESS(STACKVAR(-20, 4), 0, 4) = GLOBAL(0x10042DE8);
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-20, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-20, 4), 16, 4) == 0x00000000)
     {
         goto l1003A6D6;
     }
@@ -8477,7 +8477,7 @@ p1003A700
 {
     ProcedureInfo(this=Id(this), this_offset=-8, local_size=8, stack_delta=None)
     ACCESS(STACKVAR(-8, 4), 0, 4) = GLOBAL(0x10042DE0);
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-8, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-8, 4), 16, 4) == 0x00000000)
     {
         goto l1003A759;
     }
@@ -8490,7 +8490,7 @@ p1003A780
 {
     ProcedureInfo(this=Id(this), this_offset=-8, local_size=8, stack_delta=None)
     ACCESS(STACKVAR(-8, 4), 0, 4) = GLOBAL(0x10042DD8);
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-8, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-8, 4), 16, 4) == 0x00000000)
     {
         goto l1003A7D9;
     }
@@ -8503,7 +8503,7 @@ p1003A800
 {
     ProcedureInfo(this=Id(this), this_offset=-24, local_size=28, stack_delta=None)
     ACCESS(STACKVAR(-24, 4), 0, 4) = GLOBAL(0x10042DF8);
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-24, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-24, 4), 16, 4) == 0x00000000)
     {
         goto l1003A8C1;
     }
@@ -8517,7 +8517,7 @@ p1003A8E0
 {
     ProcedureInfo(this=Id(this), this_offset=-24, local_size=28, stack_delta=None)
     ACCESS(STACKVAR(-24, 4), 0, 4) = GLOBAL(0x10042DF8);
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-24, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-24, 4), 16, 4) == 0x00000000)
     {
         goto l1003A9A1;
     }
@@ -8531,7 +8531,7 @@ p1003A9C0
 {
     ProcedureInfo(this=Id(this), this_offset=-8, local_size=8, stack_delta=None)
     ACCESS(STACKVAR(-8, 4), 0, 4) = GLOBAL(0x10042DEC);
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-8, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-8, 4), 16, 4) == 0x00000000)
     {
         goto l1003AA19;
     }
@@ -8544,7 +8544,7 @@ p1003AA40
 {
     ProcedureInfo(this=Id(this), this_offset=-8, local_size=8, stack_delta=None)
     ACCESS(STACKVAR(-8, 4), 0, 4) = GLOBAL(0x10042DF0);
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-8, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-8, 4), 16, 4) == 0x00000000)
     {
         goto l1003AA99;
     }
@@ -8557,7 +8557,7 @@ p1003AAC0
 {
     ProcedureInfo(this=Id(this), this_offset=-24, local_size=28, stack_delta=None)
     ACCESS(STACKVAR(-24, 4), 0, 4) = GLOBAL(0x10042DFC);
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-24, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-24, 4), 16, 4) == 0x00000000)
     {
         goto l1003AB81;
     }
@@ -8571,7 +8571,7 @@ p1003ABA0
 {
     ProcedureInfo(this=Id(this), this_offset=-24, local_size=28, stack_delta=None)
     ACCESS(STACKVAR(-24, 4), 0, 4) = GLOBAL(0x10042DFC);
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-24, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-24, 4), 16, 4) == 0x00000000)
     {
         goto l1003AC61;
     }
@@ -8585,7 +8585,7 @@ p1003AC80
 {
     ProcedureInfo(this=Id(this), this_offset=-8, local_size=8, stack_delta=None)
     ACCESS(STACKVAR(-8, 4), 0, 4) = GLOBAL(0x10042DF4);
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-8, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-8, 4), 16, 4) == 0x00000000)
     {
         goto l1003ACD9;
     }
@@ -8598,7 +8598,7 @@ p1003AD00
 {
     ProcedureInfo(this=Id(this), this_offset=-24, local_size=28, stack_delta=None)
     ACCESS(STACKVAR(-24, 4), 0, 4) = GLOBAL(0x10042E00);
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-24, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-24, 4), 16, 4) == 0x00000000)
     {
         goto l1003ADC1;
     }
@@ -8612,7 +8612,7 @@ p1003ADE0
 {
     ProcedureInfo(this=Id(this), this_offset=-24, local_size=28, stack_delta=None)
     ACCESS(STACKVAR(-24, 4), 0, 4) = GLOBAL(0x10042E00);
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-24, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-24, 4), 16, 4) == 0x00000000)
     {
         goto l1003AEA1;
     }
@@ -8626,7 +8626,7 @@ p1003AEC0
 {
     ProcedureInfo(this=Id(this), this_offset=-44, local_size=48, stack_delta=None)
     ACCESS(STACKVAR(-44, 4), 0, 4) = GLOBAL(0x10042E04);
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-44, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-44, 4), 16, 4) == 0x00000000)
     {
         goto l1003B045;
     }
@@ -8640,7 +8640,7 @@ p1003B070
 {
     ProcedureInfo(this=Id(this), this_offset=-20, local_size=20, stack_delta=None)
     ACCESS(STACKVAR(-20, 4), 0, 4) = GLOBAL(0x10042E10);
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-20, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-20, 4), 16, 4) == 0x00000000)
     {
         goto l1003B116;
     }
@@ -8654,7 +8654,7 @@ p1003B140
 {
     ProcedureInfo(this=Id(this), this_offset=-44, local_size=48, stack_delta=None)
     ACCESS(STACKVAR(-44, 4), 0, 4) = GLOBAL(0x10042E04);
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-44, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-44, 4), 16, 4) == 0x00000000)
     {
         goto l1003B2C5;
     }
@@ -8668,7 +8668,7 @@ p1003B2F0
 {
     ProcedureInfo(this=Id(this), this_offset=-24, local_size=28, stack_delta=None)
     ACCESS(STACKVAR(-24, 4), 0, 4) = GLOBAL(0x10042E08);
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-24, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-24, 4), 16, 4) == 0x00000000)
     {
         goto l1003B3B1;
     }
@@ -8682,7 +8682,7 @@ p1003B3D0
 {
     ProcedureInfo(this=Id(this), this_offset=-24, local_size=28, stack_delta=None)
     ACCESS(STACKVAR(-24, 4), 0, 4) = GLOBAL(0x10042E08);
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-24, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-24, 4), 16, 4) == 0x00000000)
     {
         goto l1003B491;
     }
@@ -8696,7 +8696,7 @@ p1003B4B0
 {
     ProcedureInfo(this=Id(this), this_offset=-24, local_size=28, stack_delta=None)
     ACCESS(STACKVAR(-24, 4), 0, 4) = GLOBAL(0x10042E0C);
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-24, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-24, 4), 16, 4) == 0x00000000)
     {
         goto l1003B571;
     }
@@ -8710,7 +8710,7 @@ p1003B590
 {
     ProcedureInfo(this=Id(this), this_offset=-24, local_size=28, stack_delta=None)
     ACCESS(STACKVAR(-24, 4), 0, 4) = GLOBAL(0x10042E0C);
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-24, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-24, 4), 16, 4) == 0x00000000)
     {
         goto l1003B651;
     }
@@ -8724,7 +8724,7 @@ p1003B670
 {
     ProcedureInfo(this=Id(this), this_offset=-8, local_size=8, stack_delta=None)
     ACCESS(STACKVAR(-8, 4), 0, 4) = GLOBAL(0x10042D68);
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-8, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-8, 4), 16, 4) == 0x00000000)
     {
         goto l1003B6C9;
     }
@@ -8737,7 +8737,7 @@ p1003B6F0
 {
     ProcedureInfo(this=Id(this), this_offset=-12, local_size=16, stack_delta=None)
     ACCESS(STACKVAR(-12, 4), 0, 4) = GLOBAL(0x10042D78);
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-12, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-12, 4), 16, 4) == 0x00000000)
     {
         goto l1003B761;
     }
@@ -8758,7 +8758,7 @@ p1003B7C0
 {
     ProcedureInfo(this=Id(this), this_offset=-8, local_size=8, stack_delta=None)
     ACCESS(STACKVAR(-8, 4), 0, 4) = GLOBAL(0x10042D7C);
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-8, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-8, 4), 16, 4) == 0x00000000)
     {
         goto l1003B819;
     }
@@ -8939,7 +8939,7 @@ p1003C070
 {
     ProcedureInfo(this=Id(this), this_offset=-24, local_size=28, stack_delta=None)
     ACCESS(STACKVAR(-24, 4), 0, 4) = GLOBAL(0x10042DF8);
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-24, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-24, 4), 16, 4) == 0x00000000)
     {
         goto l1003C131;
     }
@@ -8953,7 +8953,7 @@ p1003C150
 {
     ProcedureInfo(this=Id(this), this_offset=-24, local_size=28, stack_delta=None)
     ACCESS(STACKVAR(-24, 4), 0, 4) = GLOBAL(0x10042DFC);
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-24, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-24, 4), 16, 4) == 0x00000000)
     {
         goto l1003C211;
     }
@@ -8967,7 +8967,7 @@ p1003C230
 {
     ProcedureInfo(this=Id(this), this_offset=-24, local_size=28, stack_delta=None)
     ACCESS(STACKVAR(-24, 4), 0, 4) = GLOBAL(0x10042E00);
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-24, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-24, 4), 16, 4) == 0x00000000)
     {
         goto l1003C2F1;
     }
@@ -8981,7 +8981,7 @@ p1003C310
 {
     ProcedureInfo(this=Id(this), this_offset=-24, local_size=28, stack_delta=None)
     ACCESS(STACKVAR(-24, 4), 0, 4) = GLOBAL(0x10042E08);
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-24, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-24, 4), 16, 4) == 0x00000000)
     {
         goto l1003C3D1;
     }
@@ -8995,7 +8995,7 @@ p1003C3F0
 {
     ProcedureInfo(this=Id(this), this_offset=-24, local_size=28, stack_delta=None)
     ACCESS(STACKVAR(-24, 4), 0, 4) = GLOBAL(0x10042E0C);
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-24, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-24, 4), 16, 4) == 0x00000000)
     {
         goto l1003C4B1;
     }
@@ -9009,7 +9009,7 @@ p1003C4D0
 {
     ProcedureInfo(this=Id(this), this_offset=-24, local_size=28, stack_delta=None)
     ACCESS(STACKVAR(-24, 4), 0, 4) = GLOBAL(0x10042DF8);
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-24, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-24, 4), 16, 4) == 0x00000000)
     {
         goto l1003C591;
     }
@@ -9023,7 +9023,7 @@ p1003C5B0
 {
     ProcedureInfo(this=Id(this), this_offset=-24, local_size=28, stack_delta=None)
     ACCESS(STACKVAR(-24, 4), 0, 4) = GLOBAL(0x10042DFC);
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-24, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-24, 4), 16, 4) == 0x00000000)
     {
         goto l1003C671;
     }
@@ -9037,7 +9037,7 @@ p1003C690
 {
     ProcedureInfo(this=Id(this), this_offset=-24, local_size=28, stack_delta=None)
     ACCESS(STACKVAR(-24, 4), 0, 4) = GLOBAL(0x10042E00);
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-24, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-24, 4), 16, 4) == 0x00000000)
     {
         goto l1003C751;
     }
@@ -9051,7 +9051,7 @@ p1003C770
 {
     ProcedureInfo(this=Id(this), this_offset=-24, local_size=28, stack_delta=None)
     ACCESS(STACKVAR(-24, 4), 0, 4) = GLOBAL(0x10042E08);
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-24, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-24, 4), 16, 4) == 0x00000000)
     {
         goto l1003C831;
     }
@@ -9065,7 +9065,7 @@ p1003C850
 {
     ProcedureInfo(this=Id(this), this_offset=-24, local_size=28, stack_delta=None)
     ACCESS(STACKVAR(-24, 4), 0, 4) = GLOBAL(0x10042E0C);
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-24, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-24, 4), 16, 4) == 0x00000000)
     {
         goto l1003C911;
     }
@@ -9078,7 +9078,7 @@ Failed to find pattern for 'jne l1003C886'
 p1003C930
 {
     ProcedureInfo(this=None, this_offset=None, local_size=60, stack_delta=None)
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(12, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(12, 4), 16, 4) == 0x00000000)
     {
         goto l1003CAA3;
     }
@@ -9090,7 +9090,7 @@ Failed to find pattern for 'jne l1003C951'
 p1003CBD0
 {
     ProcedureInfo(this=None, this_offset=None, local_size=36, stack_delta=None)
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(12, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(12, 4), 16, 4) == 0x00000000)
     {
         goto l1003CC7F;
     }
@@ -9102,7 +9102,7 @@ Failed to find pattern for 'jne l1003CBF1'
 p1003CD80
 {
     ProcedureInfo(this=None, this_offset=None, local_size=48, stack_delta=None)
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(12, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(12, 4), 16, 4) == 0x00000000)
     {
         goto l1003CE2F;
     }
@@ -9114,7 +9114,7 @@ Failed to find pattern for 'jne l1003CDA1'
 p1003CFD0
 {
     ProcedureInfo(this=None, this_offset=None, local_size=44, stack_delta=None)
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(12, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(12, 4), 16, 4) == 0x00000000)
     {
         goto l1003D07F;
     }
@@ -9126,7 +9126,7 @@ Failed to find pattern for 'jne l1003CFF1'
 p1003D1F0
 {
     ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=None)
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(12, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(12, 4), 16, 4) == 0x00000000)
     {
         goto l1003D23D;
     }
@@ -9138,7 +9138,7 @@ Failed to find pattern for 'jne l1003D20A'
 p1003D2E0
 {
     ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=None)
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(12, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(12, 4), 16, 4) == 0x00000000)
     {
         goto l1003D32D;
     }
@@ -9150,7 +9150,7 @@ Failed to find pattern for 'jne l1003D2FA'
 p1003D3D0
 {
     ProcedureInfo(this=None, this_offset=None, local_size=44, stack_delta=None)
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(12, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(12, 4), 16, 4) == 0x00000000)
     {
         goto l1003D47F;
     }
@@ -9162,7 +9162,7 @@ Failed to find pattern for 'jne l1003D3F1'
 p1003D5F0
 {
     ProcedureInfo(this=None, this_offset=None, local_size=32, stack_delta=None)
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(12, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(12, 4), 16, 4) == 0x00000000)
     {
         goto l1003D63D;
     }
@@ -9260,7 +9260,7 @@ p1003D9B0
 {
     ProcedureInfo(this=Id(this), this_offset=-20, local_size=20, stack_delta=None)
     ACCESS(STACKVAR(-20, 4), 0, 4) = GLOBAL(0x10042E10);
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-20, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-20, 4), 16, 4) == 0x00000000)
     {
         goto l1003DA56;
     }
@@ -9304,7 +9304,7 @@ p1003DB00
 {
     ProcedureInfo(this=None, this_offset=None, local_size=24, stack_delta=None)
     ACCESS(GLOBAL(0x1004A9D0), 0, 4) = GLOBAL(0x10042E58);
-    if (reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A9E0), 0, 4)) == 0x00000000)
+    if (ACCESS(GLOBAL(0x1004A9E0), 0, 4) == 0x00000000)
     {
         goto l1003DBBC;
     }
@@ -9346,7 +9346,7 @@ p1003DF00
 {
     ProcedureInfo(this=Id(this), this_offset=-24, local_size=28, stack_delta=None)
     ACCESS(STACKVAR(-24, 4), 0, 4) = GLOBAL(0x10042E58);
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-24, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-24, 4), 16, 4) == 0x00000000)
     {
         goto l1003DFC1;
     }
@@ -9360,7 +9360,7 @@ p1003DFE0
 {
     ProcedureInfo(this=Id(this), this_offset=-24, local_size=28, stack_delta=None)
     ACCESS(STACKVAR(-24, 4), 0, 4) = GLOBAL(0x10042E58);
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-24, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-24, 4), 16, 4) == 0x00000000)
     {
         goto l1003E0A1;
     }
@@ -9374,7 +9374,7 @@ p1003E0C0
 {
     ProcedureInfo(this=Id(this), this_offset=-24, local_size=28, stack_delta=None)
     ACCESS(STACKVAR(-24, 4), 0, 4) = GLOBAL(0x10042E58);
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-24, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-24, 4), 16, 4) == 0x00000000)
     {
         goto l1003E181;
     }
@@ -9388,7 +9388,7 @@ p1003E1A0
 {
     ProcedureInfo(this=Id(this), this_offset=-24, local_size=28, stack_delta=None)
     ACCESS(STACKVAR(-24, 4), 0, 4) = GLOBAL(0x10042E58);
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-24, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-24, 4), 16, 4) == 0x00000000)
     {
         goto l1003E261;
     }
@@ -9704,7 +9704,7 @@ Failed to find pattern for 'test eax, eax'
 p1003FD8A
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=0)
-    if (reinterpret_cast<any_int32>(STACKVAR(8, 4)) == 0x00000000)
+    if (STACKVAR(8, 4) == 0x00000000)
     {
         goto l1003FDA2;
     }
@@ -10004,7 +10004,7 @@ B_ParticleGType::~B_ParticleGType()
     ProcedureInfo(this=Id(this), this_offset=-12, local_size=12, stack_delta=None)
     ACCESS(STACKVAR(-12, 4), 0, 4) = GLOBAL(0x10042E64);
     ACCESS(STACKVAR(-12, 4), 12, 4) = GLOBAL(0x10042E60);
-    if (reinterpret_cast<any_int32>(STACKVAR(-12, 4)) == 0x00000000)
+    if (STACKVAR(-12, 4) == 0x00000000)
     {
         goto l100411BC;
     }
@@ -10014,7 +10014,7 @@ l100411BC:
     STACKVAR(-8, 4) = 0x00000000;
 l100411C3:
     ACCESS(STACKVAR(-8, 4), 0, 4) = GLOBAL(0x10042E68);
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-8, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-8, 4), 16, 4) == 0x00000000)
     {
         goto l10041213;
     }
@@ -10047,7 +10047,7 @@ p100414A0
 {
     ProcedureInfo(this=Id(this), this_offset=-8, local_size=8, stack_delta=None)
     ACCESS(STACKVAR(-8, 4), 0, 4) = GLOBAL(0x10042E68);
-    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-8, 4), 16, 4)) == 0x00000000)
+    if (ACCESS(STACKVAR(-8, 4), 16, 4) == 0x00000000)
     {
         goto l100414F9;
     }

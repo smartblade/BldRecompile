@@ -180,7 +180,7 @@
 			{"cmp":  ["%src-operand-left%", "%src-operand-right%"]},
 			{"setne":  ["%a-c-d%l"]}
 		],
-		"action": {"tmpreg": {"dst": "e%a-c-d%x", "src": "(uint32)(I(%src-operand-left%) != I(%src-operand-right%))"}}
+		"action": {"tmpreg": {"dst": "e%a-c-d%x", "src": "(uint32)(%src-operand-left% != %src-operand-right%)"}}
 	},
 	{
 		"instructions": [
@@ -188,7 +188,7 @@
 			{"sbb":  ["%eax-ecx-edx%", "%eax-ecx-edx%"]},
 			{"inc":  ["%eax-ecx-edx%"]}
 		],
-		"action": {"tmpreg": {"dst": "%eax-ecx-edx%", "src": "(uint32)(REGVALUE(%eax-ecx-edx%) == 0)"}}
+		"action": {"tmpreg": {"dst": "%eax-ecx-edx%", "src": "(uint32)(REGVALUE(%eax-ecx-edx%) == 0x00000000)"}}
 	},
 	{
 		"instructions": [
@@ -340,7 +340,7 @@
 		"instructions": [
 			{"je":  ["%label%"]}
 		],
-		"action": {"jump": {"condition": "I(REGVALUE(cmpl)) == I(REGVALUE(cmpr))", "address": "%label%"}}
+		"action": {"jump": {"condition": "REGVALUE(cmpl) == REGVALUE(cmpr)", "address": "%label%"}}
 	},
 	{
 		"instructions": [
