@@ -6,6 +6,14 @@ class LabeledBlock:
         self._label = label
         self._instructions = instructions
 
+    @property
+    def label(self):
+        return self._label
+
+    @property
+    def instructions(self):
+        return list(self._instructions)
+
     def transform(self, transform_callback, **kwargs):
         instructions = transform_block(
             self._instructions, transform_callback, **kwargs)

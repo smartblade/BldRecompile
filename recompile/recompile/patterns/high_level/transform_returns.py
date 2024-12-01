@@ -21,6 +21,11 @@ def _eliminate_unnecessary_returns(proc_info, proc_decl, instrs):
             proc_info.is_this_expression(ri.expression)
         ):
             instrs.pop()
+    elif isinstance(instrs[-1], instructions.LabeledBlock):
+        block_instructions = _eliminate_unnecessary_returns(
+            proc_info, proc_decl, instrs[-1].instructions)
+        instrs[-1] = instructions.LabeledBlock(
+            instrs[-1].label, block_instructions)
     return instrs
 
 
@@ -44,6 +49,9 @@ def _rewrite_returns(proc_decl, instrs):
             new_instructions.extend(updated_instrs)
             i += 2
             continue
+        if next_instr is None and isinstance(instr, instructions.LabeledBlock):
+            instr = instructions.LabeledBlock(
+                instr.label, _rewrite_returns(proc_decl, instr.instructions))
         new_instructions.append(instr)
         i += 1
     return new_instructions
