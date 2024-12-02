@@ -462,7 +462,7 @@ Failed to find pattern for 'jle l10002119'
 // address: 0x100021E0
 unsigned int B_IDataFile::OK()
 {
-    return static_cast<unsigned int>(this->fd != 0xFFFFFFFF);
+    return static_cast<unsigned int>(this->fd != -1);
 }
 
 // address: 0x10002200
@@ -481,7 +481,7 @@ B_IDataFile &B_IDataFile::operator =(const B_IDataFile &file)
 // address: 0x10002250
 unsigned int B_ODataFile::OK()
 {
-    return static_cast<unsigned int>(this->fd != 0xFFFFFFFF);
+    return static_cast<unsigned int>(this->fd != -1);
 }
 
 // address: 0x10002270
@@ -638,7 +638,7 @@ Failed to find pattern for 'or ecx, 0FFFFFFFFh'
 B_ListElement::~B_ListElement()
 {
     ACCESS(this, 0, 4) = GLOBAL(0x10042190);
-    if (this->list == 0x00000000)
+    if (this->list == NULL)
     {
         goto l100029AA;
     }
@@ -676,7 +676,7 @@ l10002A0E:
 // address: 0x10002A14
 unsigned int B_List::Add(B_ListElement *element)
 {
-    if (this->tail == 0x00000000)
+    if (this->tail == NULL)
     {
         goto l10002A51;
     }
@@ -1055,7 +1055,7 @@ Failed to find pattern for 'jnb l100038B0'
 B_IDataFile &operator >>(B_IDataFile &file, B_Name &name)
 {
     file >> *reinterpret_cast<unsigned int *>(LOCAL(-4));
-    if (STACKVAR(-4, 4) == name.len)
+    if (reinterpret_cast<unsigned int>(STACKVAR(-4, 4)) == name.len)
     {
         goto l1000395F;
     }
@@ -2321,14 +2321,14 @@ Failed to find pattern for 'sub eax, 000000001h'
 B_BitMap::~B_BitMap()
 {
     ACCESS(this, 0, 4) = GLOBAL(0x100421F8);
-    if (this->data == 0x00000000)
+    if (this->data == NULL)
     {
         goto l1000900A;
     }
     STACKVAR(-4, 4) = this->data;
     ??3@YAXPAX@Z(STACKVAR(-4, 4));
 l1000900A:
-    if (this->pal == 0x00000000)
+    if (this->pal == NULL)
     {
         goto l10009028;
     }

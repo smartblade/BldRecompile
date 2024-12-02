@@ -16,3 +16,4 @@ from .reinterpret_cast import ReinterpretCast
 from .static_cast import StaticCast
 from .unparsed_token import UnparsedToken
 from .unparsed_tokens import UnparsedTokens
+ConstantTypes = (Constant, type(Null))
