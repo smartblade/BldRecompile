@@ -1,5 +1,6 @@
 import instructions
 import expressions
+import patterns.high_level.goto_eliminator as goto_eliminator
 from patterns.predefined_procedures import visit_predefined_procedures
 from patterns.validate_procedure_declaration import \
     validate_procedure_declaration
@@ -15,6 +16,7 @@ from .transform_returns import transform_returns
 
 
 def make_high_level_code(proc_info, proc_decl, declarations, instrs):
+    instrs = goto_eliminator.transform(instrs)
     stack_vars = proc_info.stack_variables
     if proc_decl is not None:
         stack_vars.update(proc_decl.stack_variables)

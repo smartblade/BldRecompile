@@ -5,12 +5,17 @@ from block_visitor import visit_block
 
 class IfInstruction:
     def __init__(self, if_clause, if_block, else_block=None):
+        assert if_block is not None
         self._if_clause = if_clause
         self._if_block = if_block
         self._else_block = else_block
 
     def __repr__(self):
         return "IfInstruction({})".format(self._if_block)
+
+    @property
+    def if_clause(self):
+        return self._if_clause
 
     def if_block(self):
         return self._if_block

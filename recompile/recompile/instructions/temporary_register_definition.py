@@ -20,6 +20,11 @@ class TemporaryRegisterDefinition:
     def is_empty(self):
         return not bool(self._values)
 
+    def visit(self, on_expression_visited, **kwargs):
+        on_expression_visited(self, **kwargs)
+        for value in self._values.values():
+            value.visit(on_expression_visited, **kwargs)
+
     def transform(self, transform_callback, **kwargs):
         regdef = TemporaryRegisterDefinition()
         for reg, value in self._values.items():

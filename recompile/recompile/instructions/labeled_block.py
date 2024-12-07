@@ -1,4 +1,5 @@
 from custom_block_transformer import transform_block
+from block_visitor import visit_block
 
 
 class LabeledBlock:
@@ -13,6 +14,14 @@ class LabeledBlock:
     @property
     def instructions(self):
         return list(self._instructions)
+
+    @property
+    def last_instruction(self):
+        return self._instructions[-1]
+
+    def visit(self, on_expression_visited, **kwargs):
+        on_expression_visited(self, **kwargs)
+        visit_block(self._instructions, on_expression_visited, **kwargs)
 
     def transform(self, transform_callback, **kwargs):
         instructions = transform_block(

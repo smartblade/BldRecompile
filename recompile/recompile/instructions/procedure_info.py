@@ -70,6 +70,9 @@ class ProcedureInfo:
     def set_stack_delta(self, stack_delta):
         self._stack_delta = stack_delta
 
+    def visit(self, on_expression_visited, **kwargs):
+        on_expression_visited(self, **kwargs)
+
     def transform(self, transform_callback, **kwargs):
         return transform_callback(self, **kwargs)
 
