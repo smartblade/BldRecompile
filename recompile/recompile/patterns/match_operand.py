@@ -4,7 +4,7 @@ from hex_conversion import from_hex
 from patterns.apply_pattern import replace_variables
 
 operand_regexp = re.compile(
-    r'^(?P<size>(byte|word|dword)\s+ptr\s+)?(offset\s+)?(?P<operand>.+)$')
+    r'^(?P<size>(byte|word|dword|qword)\s+ptr\s+)?(offset\s+)?(?P<operand>.+)$')
 
 _regexp_map = {
     "a-c-d": (r"a|c|d", None),
@@ -103,6 +103,8 @@ def _get_operand_size(s):
         return 2
     if s.startswith("dword"):
         return 4
+    if s.startswith("qword"):
+        return 8
     raise Exception("Unknown operand size: {}.".format(s))
 
 

@@ -6967,9 +6967,9 @@ p1002DEF0
 p1002DF30
 {
     ProcedureInfo(this=Id(this), this_offset=-44, local_size=44, stack_delta=None)
-    REGDEF(eax=STACKVAR(-44, 4), ecx=STACKVAR(12, 4))
+    REGDEF(ST(0)=reinterpret_cast<double>(ACCESS(STACKVAR(-44, 4), 4, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 0, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(-44, 4), 12, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 8, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(-44, 4), 20, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 16, 8)))
 }
-Failed to find pattern for 'fld qword ptr [eax+004h]'
+Failed to find pattern for 'fstp qword ptr [ebp-010h]'
 
 // address: 0x1002E0B0
 p1002E0B0
@@ -7034,32 +7034,34 @@ p1002E2AD
 p1002E600
 {
     ProcedureInfo(this=Id(this), this_offset=-44, local_size=44, stack_delta=None)
+    REGDEF(ST(0)=reinterpret_cast<double>(STACKVAR(12, 8)))
+    _CIcos();
 }
-Failed to find pattern for 'fld qword ptr [ebp+00Ch]'
+Failed to find pattern for 'fstp qword ptr [ebp-010h]'
 
 // address: 0x1002ED7C
 p1002ED7C
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(eax=STACKVAR(-4, 4), ecx=STACKVAR(-4, 4))
+    REGDEF(ST(0)=reinterpret_cast<double>(ACCESS(STACKVAR(-4, 4), 0, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(-4, 4), 0, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(-4, 4), 8, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(-4, 4), 8, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(-4, 4), 16, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(-4, 4), 16, 8)))
 }
-Failed to find pattern for 'fld qword ptr [eax]'
+'ecx'
 
 // address: 0x1002EDB2
 p1002EDB2
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(eax=STACKVAR(-4, 4), ecx=STACKVAR(-4, 4))
+    REGDEF(ST(0)=reinterpret_cast<double>(ACCESS(STACKVAR(-4, 4), 32, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(-4, 4), 32, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(-4, 4), 40, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(-4, 4), 40, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(-4, 4), 48, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(-4, 4), 48, 8)))
 }
-Failed to find pattern for 'fld qword ptr [eax+020h]'
+'ecx'
 
 // address: 0x1002EDEA
 p1002EDEA
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(eax=STACKVAR(-4, 4), ecx=STACKVAR(-4, 4))
+    REGDEF(ST(0)=reinterpret_cast<double>(ACCESS(STACKVAR(-4, 4), 64, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(-4, 4), 64, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(-4, 4), 72, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(-4, 4), 72, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(-4, 4), 80, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(-4, 4), 80, 8)))
 }
-Failed to find pattern for 'fld qword ptr [eax+040h]'
+'ecx'
 
 // address: 0x1002EF9F
 p1002EF9F
@@ -7088,34 +7090,34 @@ p1002F159
 {
     ProcedureInfo(this=Id(this), this_offset=-212, local_size=212, stack_delta=None)
     LOCAL(-128)->unknown_method_1002E190();
-    REGDEF(eax=STACKVAR(-212, 4), ecx=STACKVAR(-212, 4))
+    REGDEF(ST(0)=reinterpret_cast<double>(ACCESS(STACKVAR(-212, 4), 16, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(-212, 4), 40, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(-212, 4), 64, 8)), ST(1)=reinterpret_cast<double>(ACCESS(STACKVAR(-212, 4), 0, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(-212, 4), 40, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(-212, 4), 80, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(-212, 4), 8, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(-212, 4), 48, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(-212, 4), 64, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(-212, 4), 32, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(-212, 4), 72, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(-212, 4), 16, 8)))
 }
-Failed to find pattern for 'fld qword ptr [ecx]'
+Failed to find pattern for 'fsubp st(01h), st(00h)'
 
 // address: 0x1002F537
 p1002F537
 {
     ProcedureInfo(this=None, this_offset=None, local_size=128, stack_delta=None)
     LOCAL(-128)->unknown_method_1002E190();
-    REGDEF(eax=STACKVAR(12, 4), ecx=STACKVAR(16, 4))
+    REGDEF(ST(0)=reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 0, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 0, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 8, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 32, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 16, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 64, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 24, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 96, 8)))
 }
-Failed to find pattern for 'fld qword ptr [eax]'
+Failed to find pattern for 'fstp qword ptr [ebp-080h]'
 
 // address: 0x1002FEB3
 p1002FEB3
 {
     ProcedureInfo(this=None, this_offset=None, local_size=24, stack_delta=None)
-    REGDEF(eax=STACKVAR(16, 4), ecx=STACKVAR(12, 4))
+    REGDEF(eax=STACKVAR(16, 4), ST(0)=reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 0, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 16, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 8, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 48, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 16, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 80, 8)))
 }
-Failed to find pattern for 'fld qword ptr [ecx]'
+Failed to find pattern for 'fadd qword ptr [eax+070h]'
 
 // address: 0x100300A1
 p100300A1
 {
     ProcedureInfo(this=None, this_offset=None, local_size=24, stack_delta=None)
-    REGDEF(eax=STACKVAR(16, 4), ecx=STACKVAR(12, 4))
+    REGDEF(ST(0)=reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 0, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 16, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 8, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 48, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 16, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 80, 8)))
 }
-Failed to find pattern for 'fld qword ptr [ecx]'
+Failed to find pattern for 'fstp qword ptr [ebp-018h]'
 
 // address: 0x10030219
 p10030219
@@ -7206,89 +7208,88 @@ p100314C8
 p10031505
 {
     ProcedureInfo(this=None, this_offset=None, local_size=24, stack_delta=None)
-    REGDEF(eax=STACKVAR(20, 4))
+    REGDEF(ST(0)=reinterpret_cast<double>(STACKVAR(12, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(20, 4), 16, 8)))
 }
-Failed to find pattern for 'fld qword ptr [ebp+00Ch]'
+Failed to find pattern for 'fstp qword ptr [ebp-018h]'
 
 // address: 0x10031561
 p10031561
 {
     ProcedureInfo(this=Id(this), this_offset=-28, local_size=28, stack_delta=None)
-    REGDEF(eax=STACKVAR(-28, 4))
+    REGDEF(ST(0)=reinterpret_cast<double>(STACKVAR(12, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(-28, 4), 16, 8)))
 }
-Failed to find pattern for 'fld qword ptr [ebp+00Ch]'
+Failed to find pattern for 'fstp qword ptr [ebp-018h]'
 
 // address: 0x100315C2
 p100315C2
 {
     ProcedureInfo(this=Id(this), this_offset=-28, local_size=28, stack_delta=None)
-    REGDEF(eax=STACKVAR(-28, 4))
+    REGDEF(ST(0)=reinterpret_cast<double>(ACCESS(STACKVAR(-28, 4), 16, 8)))
 }
-Failed to find pattern for 'fld qword ptr [eax+010h]'
+Failed to find pattern for 'fdiv qword ptr [ebp+00Ch]'
 
 // address: 0x10031623
 p10031623
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(eax=STACKVAR(-4, 4))
+    REGDEF(ecx=STACKVAR(-4, 4), ST(0)=reinterpret_cast<double>(STACKVAR(8, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(-4, 4), 0, 8)))
 }
-Failed to find pattern for 'fld qword ptr [ebp+008h]'
+Failed to find pattern for 'fstp qword ptr [ecx]'
 
 // address: 0x1003165E
 p1003165E
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(eax=STACKVAR(-4, 4))
+    REGDEF(ST(0)=reinterpret_cast<double>(ACCESS(STACKVAR(-4, 4), 0, 8)))
 }
-Failed to find pattern for 'fld qword ptr [eax]'
+Failed to find pattern for 'fdiv qword ptr [ebp+008h]'
 
 // address: 0x100316F7
 p100316F7
 {
     ProcedureInfo(this=Id(this), this_offset=-28, local_size=28, stack_delta=None)
-    REGDEF(eax=STACKVAR(-28, 4), ecx=STACKVAR(12, 4))
+    REGDEF(ecx=STACKVAR(12, 4), ST(0)=reinterpret_cast<double>(ACCESS(STACKVAR(-28, 4), 16, 8)))
 }
-Failed to find pattern for 'fld qword ptr [eax+010h]'
+Failed to find pattern for 'fadd qword ptr [ecx+010h]'
 
 // address: 0x10031760
 p10031760
 {
     ProcedureInfo(this=Id(this), this_offset=-28, local_size=28, stack_delta=None)
-    REGDEF(eax=STACKVAR(-28, 4), ecx=STACKVAR(12, 4))
+    REGDEF(ecx=STACKVAR(12, 4), ST(0)=reinterpret_cast<double>(ACCESS(STACKVAR(-28, 4), 16, 8)))
 }
-Failed to find pattern for 'fld qword ptr [eax+010h]'
+Failed to find pattern for 'fsub qword ptr [ecx+010h]'
 
 // address: 0x100317C9
 p100317C9
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(eax=STACKVAR(-4, 4), ecx=STACKVAR(8, 4))
+    REGDEF(ecx=STACKVAR(8, 4), ST(0)=reinterpret_cast<double>(ACCESS(STACKVAR(-4, 4), 0, 8)))
 }
-Failed to find pattern for 'fld qword ptr [eax]'
+Failed to find pattern for 'fadd qword ptr [ecx]'
 
 // address: 0x1003184F
 p1003184F
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(eax=STACKVAR(-4, 4), ecx=STACKVAR(8, 4))
+    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=4)
+    REGDEF(ST(0)=reinterpret_cast<double>(ACCESS(this, 0, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(8, 4), 0, 8)) + reinterpret_cast<double>(ACCESS(this, 8, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(8, 4), 8, 8)) + reinterpret_cast<double>(ACCESS(this, 16, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(8, 4), 16, 8)))
 }
-Failed to find pattern for 'fld qword ptr [eax]'
 
 // address: 0x10031882
 p10031882
 {
     ProcedureInfo(this=Id(this), this_offset=-28, local_size=28, stack_delta=None)
-    REGDEF(eax=STACKVAR(12, 4), ecx=STACKVAR(-28, 4))
+    REGDEF(ST(0)=reinterpret_cast<double>(ACCESS(STACKVAR(-28, 4), 8, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 0, 8)), ST(1)=reinterpret_cast<double>(ACCESS(STACKVAR(-28, 4), 0, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 8, 8)))
 }
-Failed to find pattern for 'fld qword ptr [ecx]'
+Failed to find pattern for 'fsubp st(01h), st(00h)'
 
 // address: 0x10031913
 p10031913
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(eax=STACKVAR(-4, 4), ecx=STACKVAR(-4, 4))
+    REGDEF(ST(0)=reinterpret_cast<double>(ACCESS(STACKVAR(-4, 4), 0, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(-4, 4), 0, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(-4, 4), 8, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(-4, 4), 8, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(-4, 4), 16, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(-4, 4), 16, 8)))
 }
-Failed to find pattern for 'fld qword ptr [eax]'
+'ecx'
 
 // address: 0x10031E6D
 p10031E6D
@@ -7331,9 +7332,9 @@ p10031F48
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
     unknown_function_10001BAD(unknown_function_10031E6D(STACKVAR(8, 4), reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000004), STACKVAR(12, 4));
-    REGDEF(eax=STACKVAR(12, 4))
+    REGDEF(ST(0)=reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 20, 8)))
 }
-Failed to find pattern for 'fld qword ptr [eax+014h]'
+Failed to find pattern for 'fadd qword ptr [g10042D60]'
 
 // address: 0x10031F82
 p10031F82
@@ -7459,15 +7460,17 @@ p100324EC
 p10032524
 {
     ProcedureInfo(this=None, this_offset=None, local_size=48, stack_delta=None)
+    REGDEF(ST(0)=reinterpret_cast<float>(ACCESS(GLOBAL(0x100488B8), 0, 4)))
 }
-Failed to find pattern for 'fld dword ptr [g100488B8]'
+Failed to find pattern for 'fcomp qword ptr [g10042CD8]'
 
 // address: 0x1003270D
 p1003270D
 {
     ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=None)
+    REGDEF(ST(0)=reinterpret_cast<float>(ACCESS(GLOBAL(0x100488B8), 0, 4)))
 }
-Failed to find pattern for 'fld dword ptr [g100488B8]'
+Failed to find pattern for 'fcomp qword ptr [g10042CD8]'
 
 // address: 0x100327E1
 p100327E1
@@ -7726,8 +7729,9 @@ Failed to find pattern for 'jne l10034AA4'
 void B_ObjDscr::Draw(B_3DRasterDevice *raster, float x1, float y1, float x2, float y2, float scale, int i_unknown)
 {
     ProcedureInfo(this=Id(this), this_offset=-1036, local_size=1164, stack_delta=None)
+    REGDEF(ST(0)=reinterpret_cast<float>(STACKVAR(12, 4)))
 }
-Failed to find pattern for 'fld dword ptr [ebp+00Ch]'
+Failed to find pattern for 'fcomp dword ptr [ebp+014h]'
 
 // address: 0x1003590B
 p1003590B
@@ -7775,9 +7779,9 @@ p100371B3
 {
     ProcedureInfo(this=Id(this), this_offset=-40, local_size=40, stack_delta=None)
     STACKVAR(-28, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-40, 4), 40, 4)) + 0x00000030 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 0, 4));
-    REGDEF(ecx=STACKVAR(12, 4), edx=STACKVAR(12, 4), eax=STACKVAR(-28, 4))
+    REGDEF(ecx=STACKVAR(12, 4), ST(0)=reinterpret_cast<double>(ACCESS(STACKVAR(-28, 4), 16, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 20, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(-28, 4), 8, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 12, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(-28, 4), 0, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 4, 8)))
 }
-Failed to find pattern for 'fld qword ptr [eax+010h]'
+Failed to find pattern for 'fadd qword ptr [ecx+01Ch]'
 
 // address: 0x10037338
 p10037338
@@ -9892,9 +9896,9 @@ B_RDataLight::B_RDataLight(float a, float b, float c, float d)
 void B_RDataLight::Interp(double t, B_RDataLight &start, double u, B_RDataLight &end)
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(eax=STACKVAR(16, 4))
+    REGDEF(edx=STACKVAR(-4, 4), ST(0)=reinterpret_cast<float>(ACCESS(STACKVAR(16, 4), 0, 4)) * reinterpret_cast<double>(STACKVAR(8, 8)) + reinterpret_cast<float>(ACCESS(STACKVAR(28, 4), 0, 4)) * reinterpret_cast<double>(STACKVAR(20, 8)))
 }
-Failed to find pattern for 'fld dword ptr [eax]'
+Failed to find pattern for 'fstp dword ptr [edx]'
 
 // address: 0x10040D58
 p10040D58

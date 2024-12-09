@@ -83,14 +83,18 @@ class ProcedureBuilder:
 
     def update_temporary_reg(self, dst, src):
         reg = dst.emit_code()
-        tmp_def = self._last_instruction
-        if not isinstance(tmp_def, instructions.TemporaryRegisterDefinition):
-            tmp_def = instructions.TemporaryRegisterDefinition()
-            self._add_instruction(tmp_def)
+        tmp_def = self._current_block.ensure_tmp_reg_def()
         tmp_def.define_reg_value(reg, src)
+
+    def push_fpu(self, src):
+        tmp_def = self._current_block.ensure_tmp_reg_def()
+        tmp_def.push_fpu(src)
 
     def pop_reg_value(self, reg):
         return self._current_block.pop_reg_value(reg)
+
+    def pop_fpu(self):
+        return self._current_block.pop_reg_value("fpu")
 
     def start_labeled_block(self, address):
         hex_addr = address.emit_code()

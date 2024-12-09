@@ -116,6 +116,13 @@ class BlockBuilder:
         pc.proc_decl.change_return_type(return_type)
         return pc
 
+    def ensure_tmp_reg_def(self):
+        tmp_def = self.last_instruction
+        if not isinstance(tmp_def, instructions.TemporaryRegisterDefinition):
+            tmp_def = instructions.TemporaryRegisterDefinition()
+            self.add_instruction(tmp_def)
+        return tmp_def
+
     @property
     def last_instruction(self):
         if not self._instructions:

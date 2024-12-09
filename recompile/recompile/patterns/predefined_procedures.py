@@ -6,6 +6,7 @@ from procedure_declaration import ProcedureDeclaration
 
 _procedures = {
     "REGVALUE": lambda *args: _unpack_args(*args, reg=str),
+    "POPFPU": lambda *args: _unpack_args(*args),
     "STACKVAR": lambda *args: _unpack_args(*args, offset=int, size=int),
     "ACCESS": lambda *args: _unpack_args(
         *args, expression=None, offset=int, size=int),
@@ -20,6 +21,7 @@ _procedures = {
     "I": lambda *args: _unpack_args(*args, expression=None),
     "S": lambda *args: _unpack_args(*args, expression=None),
     "U": lambda *args: _unpack_args(*args, expression=None),
+    "F": lambda *args: _unpack_args(*args, expression=None),
 }
 
 
@@ -37,11 +39,11 @@ class DataTypeDefiner:
         if size == 1:
             return data_types.UnknownByte()
         if size == 2:
-            return data_types.AnyInt(2)
+            return data_types.AnyInt16()
         if size == 4:
             return data_types.Unknown32()
         if size == 8:
-            return data_types.Double()
+            return data_types.Unknown64()
         raise Exception("Undefined type for size: {}".format(size))
 
     @staticmethod

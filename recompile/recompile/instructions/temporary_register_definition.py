@@ -1,6 +1,7 @@
 class TemporaryRegisterDefinition:
     def __init__(self):
-        self._values = {}
+        self._reg_values = {}
+        self._fpu_stack = []
 
     def __repr__(self):
         return "REGDEF({})".format(
@@ -9,16 +10,33 @@ class TemporaryRegisterDefinition:
                 for (name, value) in self._values.items())
         )
 
+    @property
+    def _values(self):
+        values = dict(self._reg_values)
+        values.update(
+            ("ST({})".format(i), value)
+            for i, value in enumerate(reversed(self._fpu_stack))
+        )
+        return values
+
     def define_reg_value(self, reg, value):
-        if reg in self._values:
+        if reg in self._reg_values:
             raise Exception("Redeclaration of {}".format(reg))
-        self._values[reg] = value
+        self._reg_values[reg] = value
 
     def pop_reg_value(self, reg):
-        return self._values.pop(reg)
+        if reg == "fpu":
+            return self.pop_fpu()
+        return self._reg_values.pop(reg)
+
+    def push_fpu(self, value):
+        self._fpu_stack.append(value)
+
+    def pop_fpu(self):
+        return self._fpu_stack.pop()
 
     def is_empty(self):
-        return not bool(self._values)
+        return not self._reg_values and not self._fpu_stack
 
     def visit(self, on_expression_visited, **kwargs):
         on_expression_visited(self, **kwargs)
@@ -27,9 +45,11 @@ class TemporaryRegisterDefinition:
 
     def transform(self, transform_callback, **kwargs):
         regdef = TemporaryRegisterDefinition()
-        for reg, value in self._values.items():
+        for reg, value in self._reg_values.items():
             regdef.define_reg_value(
                 reg, value.transform(transform_callback, **kwargs))
+        for value in self._fpu_stack:
+            regdef.push_fpu(value.transform(transform_callback, **kwargs))
         return transform_callback(regdef, **kwargs)
 
     def emit_code(self, writer):

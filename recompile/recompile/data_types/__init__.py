@@ -15,6 +15,7 @@ from .uchar import UChar
 from .ushort import UShort
 from .uint32 import UInt32
 from .unknown32 import Unknown32
+from .unknown64 import Unknown64
 from .unknown_byte import UnknownByte
 from .unknown_class import UnknownClass
-UnknownTypes = (UnknownByte, Unknown32)
+UnknownTypes = (UnknownByte, Unknown32, Unknown64)

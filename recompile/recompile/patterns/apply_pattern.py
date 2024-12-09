@@ -18,6 +18,7 @@ _actions = {
     "instruction": lambda builder, **kwargs: builder.make_instruction(**kwargs),
     "assignment": lambda builder, **kwargs: builder.make_assignment(**kwargs),
     "tmpreg": lambda builder, **kwargs: builder.update_temporary_reg(**kwargs),
+    "pushfpu": lambda builder, **kwargs: builder.push_fpu(**kwargs),
     "stackarg": lambda builder, **kwargs: builder.make_arg(**kwargs),
     "call": lambda builder, **kwargs: builder.make_call(**kwargs),
     "addsp": lambda builder, **kwargs: builder.add_stack_pointer(**kwargs),
@@ -71,6 +72,7 @@ def _evaluate_procedure_calls(expression, **kwargs):
     return visit_predefined_procedures(
         expression,
         on_regvalue=_evaluate_reg_value,
+        on_popfpu=_evaluate_pop_fpu,
         on_access=_keep,
         on_global=_keep,
         on_local=_keep,
@@ -82,11 +84,16 @@ def _evaluate_procedure_calls(expression, **kwargs):
         on_i=_evaluate_any_int_conversion,
         on_s=_evaluate_int_conversion,
         on_u=_evaluate_uint_conversion,
+        on_f=evaluate_float_conversion,
         **kwargs)
 
 
 def _evaluate_reg_value(reg, builder):
     return builder.pop_reg_value(reg)
+
+
+def _evaluate_pop_fpu(builder):
+    return builder.pop_fpu()
 
 
 def _evaluate_real64(high, low, **kwargs):
@@ -128,6 +135,15 @@ def _evaluate_int_conversion(expression, **kwargs):
     if expression.data_type.size == 4:
         return expressions.do_reinterpret(data_types.Int32(), expression)
     raise Exception("Conversion to int{} is not supported.".format(
+        expression.data_type.size * 8))
+
+
+def evaluate_float_conversion(expression, **kwargs):
+    if expression.data_type.size == 4:
+        return expressions.do_reinterpret(data_types.Float(), expression)
+    if expression.data_type.size == 8:
+        return expressions.do_reinterpret(data_types.Double(), expression)
+    raise Exception("Conversion to real{} is not supported.".format(
         expression.data_type.size * 8))
 
 

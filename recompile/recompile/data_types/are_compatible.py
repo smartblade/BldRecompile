@@ -18,8 +18,8 @@ def are_compatible(child, parent):
         if parent.pointee is None:
             return True
     if (
-        not isinstance(child, data_types.Unknown32) and
-        isinstance(parent, data_types.Unknown32)
+        not isinstance(child, data_types.UnknownTypes) and
+        isinstance(parent, data_types.UnknownTypes)
     ):
         return True
     if (
