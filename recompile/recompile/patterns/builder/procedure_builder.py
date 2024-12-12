@@ -2,8 +2,9 @@ import data_types
 import expressions
 from hex_conversion import from_hex
 import instructions
-from patterns.block_builder import BlockBuilder
 from patterns.high_level import make_high_level_code
+
+from .block_builder import BlockBuilder
 
 
 class ProcedureBuilder:

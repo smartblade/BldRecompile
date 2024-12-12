@@ -7,7 +7,7 @@ import parser
 from patterns.apply_pattern import apply_pattern
 from patterns.match_operand import match_operand
 from patterns.parse_asm_lines import parse_asm_lines
-from patterns.procedure_builder import ProcedureBuilder
+from patterns.builder import ProcedureBuilder
 from writer import Writer
 
 command_regexp = re.compile(r'^(?P<cmd>\w+)(\s+(?P<operands>.+))?$')
