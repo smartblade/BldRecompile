@@ -5,6 +5,7 @@ import instructions
 from patterns.high_level import make_high_level_code
 
 from .block_builder import BlockBuilder
+from .ensure_tmp_reg_def import ensure_tmp_reg_def
 
 
 class ProcedureBuilder:
@@ -84,11 +85,11 @@ class ProcedureBuilder:
 
     def update_temporary_reg(self, dst, src):
         reg = dst.emit_code()
-        tmp_def = self._current_block.ensure_tmp_reg_def()
+        tmp_def = ensure_tmp_reg_def(self._current_block)
         tmp_def.define_reg_value(reg, src)
 
     def push_fpu(self, src):
-        tmp_def = self._current_block.ensure_tmp_reg_def()
+        tmp_def = ensure_tmp_reg_def(self._current_block)
         tmp_def.push_fpu(src)
 
     def pop_reg_value(self, reg):
