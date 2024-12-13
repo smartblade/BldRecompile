@@ -348,6 +348,13 @@
 	},
 	{
 		"instructions": [
+			{"test": ["%eax-ecx-edx%", "%eax-ecx-edx%"]},
+			{"je": ["%label%"]}
+		],
+		"action": {"jump": {"condition": "REGVALUE(%eax-ecx-edx%) == 0x00000000", "address": "%label%"}}
+	},
+	{
+		"instructions": [
 			{"label":  ["%label%"]}
 		],
 		"action": {"label": {"address": "%label%"}}

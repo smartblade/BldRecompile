@@ -38,6 +38,7 @@ def _rewrite_returns(proc_decl, instrs):
             next_instr = instrs[i + 1]
         else:
             next_instr = None
+        instr = _rewrite_if(proc_decl, instr)
         updated_instrs = _rewrite_return(proc_decl, instr, next_instr)
         if updated_instrs:
             new_instructions.extend(updated_instrs)
@@ -55,6 +56,17 @@ def _rewrite_returns(proc_decl, instrs):
         new_instructions.append(instr)
         i += 1
     return new_instructions
+
+
+def _rewrite_if(proc_decl, instr):
+    if isinstance(instr, instructions.IfInstruction):
+        if_block = _rewrite_returns(proc_decl, instr.if_block())
+        else_block = None
+        if instr.else_block() is not None:
+            else_block = _rewrite_returns(proc_decl, instr.else_block())
+        return instructions.IfInstruction(
+            instr.if_clause, if_block, else_block)
+    return instr
 
 
 def _rewrite_return(proc_decl, regdef, return_instr):
