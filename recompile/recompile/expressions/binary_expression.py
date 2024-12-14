@@ -61,6 +61,12 @@ class BinaryExpression:
             isinstance(right_type, data_types.Int32)
         ):
             return left_type
+        if (
+            left_type.is_any_int and
+            right_type.is_any_int and
+            isinstance(self._right, expressions.Constant)
+        ):
+            return left_type
         raise Exception("Can't union {} and {}".format(left_type, right_type))
 
     @property

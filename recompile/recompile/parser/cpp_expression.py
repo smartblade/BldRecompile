@@ -96,7 +96,7 @@ def _new_token(state, s):
     match = re.search(const_regexp, s)
     if match:
         if s.startswith("0x"):
-            if len(s) == 4:
+            if len(s) == 3 or len(s) == 4:
                 data_type = data_types.UnknownByte()
             elif len(s) == 6:
                 data_type = data_types.AnyInt16()

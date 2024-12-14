@@ -1560,33 +1560,33 @@ Failed to find pattern for 'jne l1000585D'
 B_Resource *B_ResourceManager::GetResource(unsigned short resourceId, const B_Name &name)
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(eax=reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x0000FFFF, ecx=STACKVAR(-4, 4))
+    REGDEF(cmpl=ACCESS(ARRPTR(STACKVAR(-4, 4), 0x04, reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x0000FFFF, 0), 0, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'cmp dword ptr [ecx+eax*04h], 000000000h'
+Failed to find pattern for 'jne l10005B0C'
 
 // address: 0x10005B2F
 p10005B2F
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(eax=reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x0000FFFF, ecx=STACKVAR(-4, 4))
+    REGDEF(cmpl=ACCESS(ARRPTR(STACKVAR(-4, 4), 0x04, reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x0000FFFF, 0), 0, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'cmp dword ptr [ecx+eax*04h], 000000000h'
+Failed to find pattern for 'jne l10005B4C'
 
 // address: 0x10005B6F
 p10005B6F
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(eax=reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x0000FFFF, ecx=STACKVAR(-4, 4))
+    REGDEF(cmpl=ACCESS(ARRPTR(STACKVAR(-4, 4), 0x04, reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x0000FFFF, 0), 0, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'cmp dword ptr [ecx+eax*04h], 000000000h'
+Failed to find pattern for 'jne l10005B8B'
 
 // address: 0x10005BB2
 p10005BB2
 {
     ProcedureInfo(this=Id(this), this_offset=-16, local_size=16, stack_delta=None)
-    REGDEF(eax=reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x0000FFFF, ecx=STACKVAR(-16, 4))
+    REGDEF(cmpl=ACCESS(ARRPTR(STACKVAR(-16, 4), 0x04, reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x0000FFFF, 0), 0, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'cmp dword ptr [ecx+eax*04h], 000000000h'
+Failed to find pattern for 'jne l10005BD0'
 
 // address: 0x10005C13
 p10005C13
@@ -1601,41 +1601,41 @@ p10005C13
 int B_ResourceManager::IsResourceLoaded(int arg_1, int arg_2)
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(eax=STACKVAR(8, 4), ecx=STACKVAR(-4, 4))
+    REGDEF(cmpl=ACCESS(ARRPTR(STACKVAR(-4, 4), 0x04, STACKVAR(8, 4), 0), 0, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'cmp dword ptr [ecx+eax*04h], 000000000h'
+Failed to find pattern for 'jne l10005CE4'
 
 // address: 0x10005D06
 p10005D06
 {
     ProcedureInfo(this=Id(this), this_offset=-24, local_size=24, stack_delta=None)
-    REGDEF(eax=STACKVAR(8, 4), ecx=STACKVAR(-24, 4))
+    REGDEF(cmpl=ACCESS(ARRPTR(STACKVAR(-24, 4), 0x04, STACKVAR(8, 4), 0), 0, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'cmp dword ptr [ecx+eax*04h], 000000000h'
+Failed to find pattern for 'jne l10005D22'
 
 // address: 0x10005DAE
 p10005DAE
 {
     ProcedureInfo(this=Id(this), this_offset=-24, local_size=24, stack_delta=None)
-    REGDEF(eax=STACKVAR(8, 4), ecx=STACKVAR(-24, 4))
+    REGDEF(cmpl=ACCESS(ARRPTR(STACKVAR(-24, 4), 0x04, STACKVAR(8, 4), 0), 0, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'cmp dword ptr [ecx+eax*04h], 000000000h'
+Failed to find pattern for 'jne l10005DC7'
 
 // address: 0x10005E42
 p10005E42
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(eax=reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x0000FFFF, ecx=STACKVAR(-4, 4))
+    REGDEF(cmpl=ACCESS(ARRPTR(STACKVAR(-4, 4), 0x04, reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x0000FFFF, 0), 0, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'cmp dword ptr [ecx+eax*04h], 000000000h'
+Failed to find pattern for 'jne l10005E5E'
 
 // address: 0x10005E8F
 p10005E8F
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(eax=reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x0000FFFF, ecx=STACKVAR(-4, 4))
+    REGDEF(cmpl=ACCESS(ARRPTR(STACKVAR(-4, 4), 0x04, reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x0000FFFF, 0), 0, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'cmp dword ptr [ecx+eax*04h], 000000000h'
+Failed to find pattern for 'jne l10005EAB'
 
 // address: 0x10005ED1
 void B_ResourceManager::FreeResource(B_Resource *resource)
@@ -1648,10 +1648,12 @@ Failed to find pattern for 'jne l10005EF2'
 // address: 0x10005F32
 unsigned int B_ResourceManager::NResources(unsigned short arg_1)
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(eax=reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x0000FFFF, ecx=STACKVAR(-4, 4))
+    if (ACCESS(ARRPTR(this, 0x04, reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x0000FFFF, 0), 0, 4) != 0x00000000)
+    {
+        return reinterpret_cast<unsigned int>(ACCESS(ACCESS(ARRPTR(this, 0x04, reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x0000FFFF, 0), 0, 4), 8, 4));
+    }
+    return 0;
 }
-Failed to find pattern for 'cmp dword ptr [ecx+eax*04h], 000000000h'
 
 // address: 0x10005F66
 void B_ResourceManager::AddBodLink(const char *c, int i, const char *pc, int i1)
@@ -5340,9 +5342,13 @@ p1001CCC7
     STACKVAR(-12, 4) = ACCESS(STACKVAR(-60, 4), 20, 4);
     STACKVAR(-4, 4) = ACCESS(STACKVAR(-60, 4), 24, 4);
     STACKVAR(-68, 4) = ACCESS(STACKVAR(-60, 4), 28, 4);
-    REGDEF(ecx=ACCESS(STACKVAR(12, 4), 0, 4), edx=STACKVAR(16, 4))
+    STACKVAR(-44, 4) = ACCESS(ARRPTR(ACCESS(STACKVAR(12, 4), 0, 4), 0x04, STACKVAR(16, 4), 0), 0, 4);
+    STACKVAR(-24, 4) = ACCESS(ARRPTR(ACCESS(STACKVAR(12, 4), 4, 4), 0x04, STACKVAR(16, 4), 0), 0, 4);
+    STACKVAR(-40, 4) = ACCESS(ARRPTR(ACCESS(STACKVAR(12, 4), 8, 4), 0x04, STACKVAR(16, 4), 0), 0, 4);
+    STACKVAR(-64, 4) = ACCESS(STACKVAR(20, 4), 0, 4);
+    REGDEF(eax=ACCESS(STACKVAR(8, 4), 92, 4))
 }
-Failed to find pattern for 'mov eax, dword ptr [ecx+edx*04h]'
+Failed to find pattern for 'shr eax, 001h'
 
 // address: 0x1001CEF2
 p1001CEF2
@@ -5354,9 +5360,10 @@ p1001CEF2
     STACKVAR(-12, 4) = ACCESS(STACKVAR(-56, 4), 20, 4);
     STACKVAR(-4, 4) = ACCESS(STACKVAR(-56, 4), 24, 4);
     STACKVAR(-76, 4) = ACCESS(STACKVAR(-56, 4), 28, 4);
-    REGDEF(eax=0x00000002 * reinterpret_cast<any_int32>(STACKVAR(16, 4)), edx=ACCESS(STACKVAR(12, 4), 0, 4))
+    STACKVAR(-60, 4) = ACCESS(ARRPTR(ACCESS(STACKVAR(12, 4), 0, 4), 0x04, 0x00000002 * reinterpret_cast<any_int32>(STACKVAR(16, 4)), 0), 0, 4);
+    REGDEF(ecx=0x00000002 * reinterpret_cast<any_int32>(STACKVAR(16, 4)), eax=ACCESS(STACKVAR(12, 4), 0, 4))
 }
-Failed to find pattern for 'mov eax, dword ptr [edx+eax*04h]'
+Failed to find pattern for 'mov ecx, dword ptr [eax+ecx*04h+004h]'
 
 // address: 0x1001D220
 p1001D220
@@ -8277,11 +8284,10 @@ Failed to find pattern for 'fabs'
 // address: 0x10037338
 p10037338
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
+    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=8)
     ACCESS(GLOBAL(0x1004A9C4), 0, 4) = (reinterpret_cast<unsigned int>(ACCESS(GLOBAL(0x1004A9C4), 0, 4)) + reinterpret_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 8, 4)) / 3 + 1) % reinterpret_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 8, 4));
-    REGDEF(eax=ACCESS(STACKVAR(8, 4), 4, 4), ecx=ACCESS(GLOBAL(0x1004A9C4), 0, 4))
+    REGDEF(eax=ACCESS(ARRPTR(ACCESS(STACKVAR(8, 4), 4, 4), 0x04, ACCESS(GLOBAL(0x1004A9C4), 0, 4), 0), 0, 4))
 }
-Failed to find pattern for 'mov eax, dword ptr [eax+ecx*04h]'
 
 // address: 0x1003737B
 p1003737B
@@ -10054,14 +10060,22 @@ p1003E660
 // address: 0x1003E679
 p1003E679
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=0)
     STACKVAR(-4, 4) = 0x00000000;
     STACKVAR(16, 4) = STACKVAR(16, 4);
     fprintf(STACKVAR(12, 4), GLOBAL(0x10048CEC));
-l1003E69C:
-    REGDEF(eax=ACCESS(STACKVAR(8, 4), 8, 4), ecx=STACKVAR(-4, 4))
+    while (ACCESS(ARRPTR(ACCESS(STACKVAR(8, 4), 8, 4), 0x04, STACKVAR(-4, 4), 0), 0, 4) != 0x00000000)
+    {
+        fprintf(STACKVAR(12, 4), GLOBAL(0x10048D00), ACCESS(ACCESS(ARRPTR(ACCESS(STACKVAR(8, 4), 8, 4), 0x04, STACKVAR(-4, 4), 0), 0, 4), 0, 4));
+        STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000001;
+        if (ACCESS(ARRPTR(ACCESS(STACKVAR(8, 4), 8, 4), 0x04, STACKVAR(-4, 4), 0), 0, 4) != 0x00000000)
+        {
+            fprintf(STACKVAR(12, 4), GLOBAL(0x10048D04));
+        }
+    }
+    fprintf(STACKVAR(12, 4), GLOBAL(0x10048D08));
+    REGDEF(eax=0x00000000)
 }
-Failed to find pattern for 'cmp dword ptr [eax+ecx*04h], 000000000h'
 
 // address: 0x1003E710
 p1003E710
@@ -10069,9 +10083,17 @@ p1003E710
     ProcedureInfo(this=None, this_offset=None, local_size=152, stack_delta=None)
     STACKVAR(-132, 4) = 0x00000000;
 l1003E723:
-    REGDEF(ecx=ACCESS(STACKVAR(8, 4), 8, 4), edx=STACKVAR(-132, 4))
+    if (ACCESS(ARRPTR(ACCESS(STACKVAR(8, 4), 8, 4), 0x04, STACKVAR(-132, 4), 0), 0, 4) == 0x00000000)
+    {
+        goto l1003E7FF;
+    }
+    STACKVAR(-136, 4) = STACKVAR(12, 4);
+    STACKVAR(-140, 4) = ACCESS(ACCESS(ARRPTR(ACCESS(STACKVAR(8, 4), 8, 4), 0x04, STACKVAR(-132, 4), 0), 0, 4), 0, 4);
+l1003E759:
+    STACKVAR(-141, 1) = ACCESS(STACKVAR(-140, 4), 0, 1);
+    REGDEF(edx=STACKVAR(-136, 4))
 }
-Failed to find pattern for 'cmp dword ptr [ecx+edx*04h], 000000000h'
+'cl'
 
 // address: 0x1003E831
 p1003E831
@@ -10079,9 +10101,17 @@ p1003E831
     ProcedureInfo(this=None, this_offset=None, local_size=152, stack_delta=None)
     STACKVAR(-132, 4) = 0x00000000;
 l1003E844:
-    REGDEF(ecx=ACCESS(STACKVAR(8, 4), 8, 4), edx=STACKVAR(-132, 4))
+    if (ACCESS(ARRPTR(ACCESS(STACKVAR(8, 4), 8, 4), 0x04, STACKVAR(-132, 4), 0), 0, 4) == 0x00000000)
+    {
+        goto l1003E927;
+    }
+    STACKVAR(-136, 4) = STACKVAR(12, 4);
+    STACKVAR(-140, 4) = ACCESS(ACCESS(ARRPTR(ACCESS(STACKVAR(8, 4), 8, 4), 0x04, STACKVAR(-132, 4), 0), 0, 4), 0, 4);
+l1003E87A:
+    STACKVAR(-141, 1) = ACCESS(STACKVAR(-140, 4), 0, 1);
+    REGDEF(edx=STACKVAR(-136, 4))
 }
-Failed to find pattern for 'cmp dword ptr [ecx+edx*04h], 000000000h'
+'cl'
 
 // address: 0x1003E95C
 p1003E95C
