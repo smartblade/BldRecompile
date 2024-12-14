@@ -285,6 +285,25 @@
 	},
 	{
 		"instructions": [
+			{"div":  ["%src-operand%"]},
+			{"mov":   ["%mem-operand%", "edx"]}
+		],
+		"actions": [
+			{"validate": {"expect": "EXPECT(REGVALUE(edx), 0)"}},
+			{"assignment": {"dst": "%mem-operand%", "src": "U(REGVALUE(eax)) % U(%src-operand%)"}}
+		]
+	},
+	{
+		"instructions": [
+			{"div":  ["%src-operand%"]}
+		],
+		"actions": [
+			{"validate": {"expect": "EXPECT(REGVALUE(edx), 0)"}},
+			{"tmpreg": {"dst": "eax", "src": "U(REGVALUE(eax)) / U(%src-operand%)"}}
+		]
+	},
+	{
+		"instructions": [
 			{"cdq":   []},
 			{"sub":   ["eax", "edx"]},
 			{"sar":   ["eax", "001h"]}

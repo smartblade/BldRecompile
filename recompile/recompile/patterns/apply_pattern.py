@@ -16,6 +16,7 @@ _actions = {
     "epilog-restore": lambda builder, **kwargs: builder.make_restore(**kwargs),
     "epilog-return": lambda builder, **kwargs: builder.make_epilog(**kwargs),
     "instruction": lambda builder, **kwargs: builder.make_instruction(**kwargs),
+    "validate": lambda builder, **kwargs: builder.validate(**kwargs),
     "assignment": lambda builder, **kwargs: builder.make_assignment(**kwargs),
     "fassignment": lambda builder, **kwargs: builder.make_float_assignment(
         **kwargs),

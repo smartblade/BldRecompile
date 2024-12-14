@@ -48,6 +48,10 @@ class ProcedureBuilder:
     def make_instruction(self, expression):
         self._add_instruction(instructions.CodeInstruction(expression))
 
+    @staticmethod
+    def validate(expect):
+        assert isinstance(expect, expressions.Constant)
+
     def make_assignment(self, dst, src):
         if isinstance(self._last_instruction, instructions.ProcedureInfo):
             if self._last_instruction.is_this_expression(src):

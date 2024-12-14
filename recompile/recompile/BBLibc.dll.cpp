@@ -5928,18 +5928,20 @@ p10022AC1
 {
     ProcedureInfo(this=None, this_offset=None, local_size=32, stack_delta=None)
     STACKVAR(-28, 4) = ACCESS(STACKVAR(8, 4), 4, 4);
-    REGDEF(eax=0x3B9AC9F4, edx=0x00000000)
+    STACKVAR(-12, 4) = 999999988 / reinterpret_cast<unsigned int>(STACKVAR(16, 4));
+    REGDEF(cmpl=STACKVAR(-12, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'div dword ptr [ebp+010h]'
+Failed to find pattern for 'jg l10022AFD'
 
 // address: 0x10022BC2
 p10022BC2
 {
     ProcedureInfo(this=None, this_offset=None, local_size=32, stack_delta=None)
     STACKVAR(-28, 4) = ACCESS(STACKVAR(8, 4), 4, 4);
-    REGDEF(ecx=0x00000080 * reinterpret_cast<any_int32>(STACKVAR(16, 4)), eax=0x3B9AC9F4, edx=0x00000000)
+    STACKVAR(-12, 4) = 999999988 / (0x00000080 * reinterpret_cast<unsigned int>(STACKVAR(16, 4)));
+    REGDEF(cmpl=STACKVAR(-12, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'div ecx'
+Failed to find pattern for 'jg l10022C03'
 
 // address: 0x10022CD7
 p10022CD7
@@ -8276,9 +8278,10 @@ Failed to find pattern for 'fabs'
 p10037338
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(eax=ACCESS(STACKVAR(8, 4), 8, 4), edx=0x00000000, ecx=0x00000003)
+    ACCESS(GLOBAL(0x1004A9C4), 0, 4) = (reinterpret_cast<unsigned int>(ACCESS(GLOBAL(0x1004A9C4), 0, 4)) + reinterpret_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 8, 4)) / 3 + 1) % reinterpret_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 8, 4));
+    REGDEF(eax=ACCESS(STACKVAR(8, 4), 4, 4), ecx=ACCESS(GLOBAL(0x1004A9C4), 0, 4))
 }
-Failed to find pattern for 'div ecx'
+Failed to find pattern for 'mov eax, dword ptr [eax+ecx*04h]'
 
 // address: 0x1003737B
 p1003737B
@@ -8561,9 +8564,9 @@ p1003896F
     STACKVAR(-220, 4)->unknown_method_1003B840(0x00000001);
 l100389D9:
     unknown_function_10001BEF(STACKVAR(8, 4), reinterpret_cast<any_int32>(STACKVAR(-220, 4)) + 0x00000008);
-    REGDEF(eax=reinterpret_cast<any_int32>(ACCESS(STACKVAR(-220, 4), 8, 4)) + reinterpret_cast<any_int32>(ACCESS(STACKVAR(-220, 4), 12, 4)) - 1, ecx=STACKVAR(-220, 4), edx=0x00000000)
+    REGDEF(eax=(reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-220, 4), 8, 4)) + reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-220, 4), 12, 4)) - 1) / reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-220, 4), 12, 4)), edx=STACKVAR(-220, 4))
 }
-Failed to find pattern for 'div dword ptr [ecx+00Ch]'
+Failed to find pattern for 'imul eax, dword ptr [edx+00Ch]'
 
 // address: 0x100395E0
 p100395E0
@@ -8953,9 +8956,9 @@ p1003A010
 p1003A050
 {
     ProcedureInfo(this=Id(this), this_offset=-28, local_size=32, stack_delta=None)
-    REGDEF(eax=reinterpret_cast<any_int32>(STACKVAR(8, 4)) + reinterpret_cast<any_int32>(ACCESS(STACKVAR(-28, 4), 12, 4)) - 1, ecx=STACKVAR(-28, 4), edx=0x00000000)
+    REGDEF(eax=(reinterpret_cast<unsigned int>(STACKVAR(8, 4)) + reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-28, 4), 12, 4)) - 1) / reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-28, 4), 12, 4)), edx=STACKVAR(-28, 4))
 }
-Failed to find pattern for 'div dword ptr [ecx+00Ch]'
+Failed to find pattern for 'imul eax, dword ptr [edx+00Ch]'
 
 // address: 0x1003A160
 p1003A160
