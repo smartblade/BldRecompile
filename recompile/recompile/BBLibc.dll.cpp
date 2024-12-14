@@ -7414,9 +7414,10 @@ p1002DEF0
 p1002DF30
 {
     ProcedureInfo(this=Id(this), this_offset=-44, local_size=44, stack_delta=None)
-    REGDEF(ST(0)=reinterpret_cast<double>(ACCESS(STACKVAR(-44, 4), 4, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 0, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(-44, 4), 12, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 8, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(-44, 4), 20, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 16, 8)))
+    STACKVAR(-16, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(-44, 4), 4, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 0, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(-44, 4), 12, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 8, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(-44, 4), 20, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 16, 8));
+    REGDEF(ST(0)=reinterpret_cast<double>(STACKVAR(-16, 8)))
 }
-Failed to find pattern for 'fstp qword ptr [ebp-010h]'
+Failed to find pattern for 'fcomp qword ptr [g10042CF0]'
 
 // address: 0x1002E0B0
 p1002E0B0
@@ -7484,7 +7485,7 @@ p1002E600
     REGDEF(ST(0)=reinterpret_cast<double>(STACKVAR(12, 8)))
     _CIcos();
 }
-Failed to find pattern for 'fstp qword ptr [ebp-010h]'
+'fpu'
 
 // address: 0x1002ED7C
 p1002ED7C
@@ -7514,7 +7515,7 @@ p1002EF9F
     REGDEF(ecx=STACKVAR(-28, 4))
     unknown_function_1002ED7C();
 }
-Failed to find pattern for 'fstp qword ptr [ebp-008h]'
+'fpu'
 
 // address: 0x1002F052
 p1002F052
@@ -7543,25 +7544,49 @@ p1002F537
 {
     ProcedureInfo(this=None, this_offset=None, local_size=128, stack_delta=None)
     LOCAL(-128)->unknown_method_1002E190();
-    REGDEF(ST(0)=reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 0, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 0, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 8, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 32, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 16, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 64, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 24, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 96, 8)))
+    STACKVAR(-128, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 0, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 0, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 8, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 32, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 16, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 64, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 24, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 96, 8));
+    STACKVAR(-120, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 0, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 8, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 8, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 40, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 16, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 72, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 24, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 104, 8));
+    STACKVAR(-112, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 0, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 16, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 8, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 48, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 16, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 80, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 24, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 112, 8));
+    STACKVAR(-104, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 0, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 24, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 8, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 56, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 16, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 88, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 24, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 120, 8));
+    STACKVAR(-96, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 32, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 0, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 40, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 32, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 48, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 64, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 56, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 96, 8));
+    STACKVAR(-88, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 32, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 8, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 40, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 40, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 48, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 72, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 56, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 104, 8));
+    STACKVAR(-80, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 32, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 16, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 40, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 48, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 48, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 80, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 56, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 112, 8));
+    STACKVAR(-72, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 32, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 24, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 40, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 56, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 48, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 88, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 56, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 120, 8));
+    STACKVAR(-64, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 64, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 0, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 72, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 32, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 80, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 64, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 88, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 96, 8));
+    STACKVAR(-56, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 64, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 8, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 72, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 40, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 80, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 72, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 88, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 104, 8));
+    STACKVAR(-48, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 64, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 16, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 72, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 48, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 80, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 80, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 88, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 112, 8));
+    STACKVAR(-40, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 64, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 24, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 72, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 56, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 80, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 88, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 88, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 120, 8));
+    STACKVAR(-32, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 96, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 0, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 104, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 32, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 112, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 64, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 120, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 96, 8));
+    STACKVAR(-24, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 96, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 8, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 104, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 40, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 112, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 72, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 120, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 104, 8));
+    STACKVAR(-16, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 96, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 16, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 104, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 48, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 112, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 80, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 120, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 112, 8));
+    STACKVAR(-8, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 96, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 24, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 104, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 56, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 112, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 88, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 120, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 120, 8));
+    REGDEF(ecx=0x00000020)
 }
-Failed to find pattern for 'fstp qword ptr [ebp-080h]'
+Failed to find pattern for 'lea esi, [ebp-080h]'
 
 // address: 0x1002FEB3
 p1002FEB3
 {
     ProcedureInfo(this=None, this_offset=None, local_size=24, stack_delta=None)
-    REGDEF(eax=STACKVAR(16, 4), ST(0)=reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 0, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 16, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 8, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 48, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 16, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 80, 8)))
+    STACKVAR(-24, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 0, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 16, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 8, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 48, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 16, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 80, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 112, 8));
+    STACKVAR(-16, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 0, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 8, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 8, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 40, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 16, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 72, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 104, 8));
+    STACKVAR(-8, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 0, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 0, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 8, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 32, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 16, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 64, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 96, 8));
+    ACCESS(STACKVAR(8, 4), 0, 4) = STACKVAR(-8, 4);
+    REGDEF(edx=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'fadd qword ptr [eax+070h]'
+'eax'
 
 // address: 0x100300A1
 p100300A1
 {
     ProcedureInfo(this=None, this_offset=None, local_size=24, stack_delta=None)
-    REGDEF(ST(0)=reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 0, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 16, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 8, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 48, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 16, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 80, 8)))
+    STACKVAR(-24, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 0, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 16, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 8, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 48, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 16, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 80, 8));
+    STACKVAR(-16, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 0, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 8, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 8, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 40, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 16, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 72, 8));
+    STACKVAR(-8, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 0, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 0, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 8, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 32, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 16, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 64, 8));
+    ACCESS(STACKVAR(8, 4), 0, 4) = STACKVAR(-8, 4);
+    REGDEF(edx=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'fstp qword ptr [ebp-018h]'
+'eax'
 
 // address: 0x10030219
 p10030219
@@ -7652,17 +7677,25 @@ p100314C8
 p10031505
 {
     ProcedureInfo(this=None, this_offset=None, local_size=24, stack_delta=None)
-    REGDEF(ST(0)=reinterpret_cast<double>(STACKVAR(12, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(20, 4), 16, 8)))
+    STACKVAR(-24, 8) = reinterpret_cast<double>(STACKVAR(12, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(20, 4), 16, 8));
+    STACKVAR(-16, 8) = reinterpret_cast<double>(STACKVAR(12, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(20, 4), 8, 8));
+    STACKVAR(-8, 8) = reinterpret_cast<double>(STACKVAR(12, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(20, 4), 0, 8));
+    ACCESS(STACKVAR(8, 4), 0, 4) = STACKVAR(-8, 4);
+    REGDEF(edx=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'fstp qword ptr [ebp-018h]'
+'eax'
 
 // address: 0x10031561
 p10031561
 {
     ProcedureInfo(this=Id(this), this_offset=-28, local_size=28, stack_delta=None)
-    REGDEF(ST(0)=reinterpret_cast<double>(STACKVAR(12, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(-28, 4), 16, 8)))
+    STACKVAR(-24, 8) = reinterpret_cast<double>(STACKVAR(12, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(-28, 4), 16, 8));
+    STACKVAR(-16, 8) = reinterpret_cast<double>(STACKVAR(12, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(-28, 4), 8, 8));
+    STACKVAR(-8, 8) = reinterpret_cast<double>(STACKVAR(12, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(-28, 4), 0, 8));
+    ACCESS(STACKVAR(8, 4), 0, 4) = STACKVAR(-8, 4);
+    REGDEF(edx=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'fstp qword ptr [ebp-018h]'
+'eax'
 
 // address: 0x100315C2
 p100315C2
@@ -7675,10 +7708,12 @@ Failed to find pattern for 'fdiv qword ptr [ebp+00Ch]'
 // address: 0x10031623
 p10031623
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(ecx=STACKVAR(-4, 4), ST(0)=reinterpret_cast<double>(STACKVAR(8, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(-4, 4), 0, 8)))
+    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=8)
+    ACCESS(this, 0, 8) = reinterpret_cast<double>(STACKVAR(8, 8)) * reinterpret_cast<double>(ACCESS(this, 0, 8));
+    ACCESS(this, 8, 8) = reinterpret_cast<double>(STACKVAR(8, 8)) * reinterpret_cast<double>(ACCESS(this, 8, 8));
+    ACCESS(this, 16, 8) = reinterpret_cast<double>(STACKVAR(8, 8)) * reinterpret_cast<double>(ACCESS(this, 16, 8));
+    REGDEF(eax=this)
 }
-Failed to find pattern for 'fstp qword ptr [ecx]'
 
 // address: 0x1003165E
 p1003165E
@@ -7692,9 +7727,13 @@ Failed to find pattern for 'fdiv qword ptr [ebp+008h]'
 p100316F7
 {
     ProcedureInfo(this=Id(this), this_offset=-28, local_size=28, stack_delta=None)
-    REGDEF(ecx=STACKVAR(12, 4), ST(0)=reinterpret_cast<double>(ACCESS(STACKVAR(-28, 4), 16, 8)))
+    STACKVAR(-24, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(-28, 4), 16, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 16, 8));
+    STACKVAR(-16, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(-28, 4), 8, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 8, 8));
+    STACKVAR(-8, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(-28, 4), 0, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 0, 8));
+    ACCESS(STACKVAR(8, 4), 0, 4) = STACKVAR(-8, 4);
+    REGDEF(edx=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'fadd qword ptr [ecx+010h]'
+'eax'
 
 // address: 0x10031760
 p10031760
@@ -7707,10 +7746,12 @@ Failed to find pattern for 'fsub qword ptr [ecx+010h]'
 // address: 0x100317C9
 p100317C9
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(ecx=STACKVAR(8, 4), ST(0)=reinterpret_cast<double>(ACCESS(STACKVAR(-4, 4), 0, 8)))
+    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=4)
+    ACCESS(this, 0, 8) = reinterpret_cast<double>(ACCESS(this, 0, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(8, 4), 0, 8));
+    ACCESS(this, 8, 8) = reinterpret_cast<double>(ACCESS(this, 8, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(8, 4), 8, 8));
+    ACCESS(this, 16, 8) = reinterpret_cast<double>(ACCESS(this, 16, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(8, 4), 16, 8));
+    REGDEF(eax=this)
 }
-Failed to find pattern for 'fadd qword ptr [ecx]'
 
 // address: 0x1003184F
 p1003184F
@@ -7773,11 +7814,11 @@ p10031F20
 // address: 0x10031F48
 p10031F48
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    unknown_function_10001BAD(unknown_function_10031E6D(STACKVAR(8, 4), reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000004), STACKVAR(12, 4));
-    REGDEF(ST(0)=reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 20, 8)))
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
+    reinterpret_cast<B_IDataFile &>(unknown_function_10031E6D(STACKVAR(8, 4), reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000004)) >> reinterpret_cast<int &>(STACKVAR(12, 4));
+    ACCESS(STACKVAR(12, 4), 20, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 20, 8)) + reinterpret_cast<double>(ACCESS(GLOBAL(0x10042D60), 0, 8));
+    REGDEF(eax=STACKVAR(8, 4))
 }
-Failed to find pattern for 'fadd qword ptr [g10042D60]'
 
 // address: 0x10031F82
 p10031F82
@@ -8222,9 +8263,14 @@ p100371B3
 {
     ProcedureInfo(this=Id(this), this_offset=-40, local_size=40, stack_delta=None)
     STACKVAR(-28, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-40, 4), 40, 4)) + 0x00000030 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 0, 4));
-    REGDEF(ecx=STACKVAR(12, 4), ST(0)=reinterpret_cast<double>(ACCESS(STACKVAR(-28, 4), 16, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 20, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(-28, 4), 8, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 12, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(-28, 4), 0, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 4, 8)))
+    STACKVAR(-8, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(-28, 4), 16, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 20, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(-28, 4), 8, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 12, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(-28, 4), 0, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 4, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 28, 8));
+    STACKVAR(-32, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-40, 4), 40, 4)) + 0x00000030 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 4, 4));
+    STACKVAR(-16, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(-32, 4), 16, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 20, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(-32, 4), 8, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 12, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(-32, 4), 0, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 4, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 28, 8));
+    STACKVAR(-36, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-40, 4), 40, 4)) + 0x00000030 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 8, 4));
+    STACKVAR(-24, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(-36, 4), 16, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 20, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(-36, 4), 8, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 12, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(-36, 4), 0, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 4, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 28, 8));
+    REGDEF(ST(0)=reinterpret_cast<double>(STACKVAR(-8, 8)))
 }
-Failed to find pattern for 'fadd qword ptr [ecx+01Ch]'
+Failed to find pattern for 'fabs'
 
 // address: 0x10037338
 p10037338
@@ -10521,10 +10567,11 @@ B_RDataLight::B_RDataLight(float a, float b, float c, float d)
 // address: 0x10040CE6
 void B_RDataLight::Interp(double t, B_RDataLight &start, double u, B_RDataLight &end)
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(edx=STACKVAR(-4, 4), ST(0)=reinterpret_cast<float>(ACCESS(STACKVAR(16, 4), 0, 4)) * reinterpret_cast<double>(STACKVAR(8, 8)) + reinterpret_cast<float>(ACCESS(STACKVAR(28, 4), 0, 4)) * reinterpret_cast<double>(STACKVAR(20, 8)))
+    ACCESS(this, 0, 4) = static_cast<float>(reinterpret_cast<float>(ACCESS(start, 0, 4)) * t + reinterpret_cast<float>(ACCESS(end, 0, 4)) * u);
+    ACCESS(this, 4, 4) = static_cast<float>(reinterpret_cast<float>(ACCESS(start, 4, 4)) * t + reinterpret_cast<float>(ACCESS(end, 4, 4)) * u);
+    ACCESS(this, 8, 4) = static_cast<float>(reinterpret_cast<float>(ACCESS(start, 8, 4)) * t + reinterpret_cast<float>(ACCESS(end, 8, 4)) * u);
+    ACCESS(this, 12, 4) = static_cast<float>(reinterpret_cast<float>(ACCESS(start, 12, 4)) * t + reinterpret_cast<float>(ACCESS(end, 12, 4)) * u);
 }
-Failed to find pattern for 'fstp dword ptr [edx]'
 
 // address: 0x10040D58
 p10040D58

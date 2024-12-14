@@ -17,6 +17,8 @@ _actions = {
     "epilog-return": lambda builder, **kwargs: builder.make_epilog(**kwargs),
     "instruction": lambda builder, **kwargs: builder.make_instruction(**kwargs),
     "assignment": lambda builder, **kwargs: builder.make_assignment(**kwargs),
+    "fassignment": lambda builder, **kwargs: builder.make_float_assignment(
+        **kwargs),
     "tmpreg": lambda builder, **kwargs: builder.update_temporary_reg(**kwargs),
     "pushfpu": lambda builder, **kwargs: builder.push_fpu(**kwargs),
     "stackarg": lambda builder, **kwargs: builder.make_arg(**kwargs),

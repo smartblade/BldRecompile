@@ -6,6 +6,7 @@ from patterns.high_level import make_high_level_code
 
 from .block_builder import BlockBuilder
 from .ensure_tmp_reg_def import ensure_tmp_reg_def
+from .make_float_assignment import make_float_assignment
 
 
 class ProcedureBuilder:
@@ -53,6 +54,9 @@ class ProcedureBuilder:
                 self._last_instruction.define_this_offset(dst)
                 return
         self._add_instruction(instructions.Assignment(dst, src))
+
+    def make_float_assignment(self, dst, src):
+        make_float_assignment(self._current_block, dst, src)
 
     def make_jump(self, address, condition=None):
         hex_addr = address.emit_code()
