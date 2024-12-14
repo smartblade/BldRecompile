@@ -1,6 +1,6 @@
 import data_types
 import expressions
-from expressions.operator import logical, Operator, priorities
+from expressions.operator import logical, Operator, priorities, is_associative
 
 
 class BinaryExpression:
@@ -101,11 +101,14 @@ class BinaryExpression:
     def _emit_right(self):
         if not isinstance(self._right, BinaryExpression):
             return self._right
-        if priorities[self.operator] >= priorities[self._right.operator]:
+        if priorities[self.operator] > priorities[self._right.operator]:
             return self._right
         if priorities[self.operator] < priorities[self._right.operator]:
             return expressions.BracketsExpression(self._right)
-        raise Exception("Not implemented: {}".format(self._right))
+        if is_associative[self.operator]:
+            return self._right
+        else:
+            return expressions.BracketsExpression(self._right)
 
     def emit_code(self):
         return "{} {} {}".format(

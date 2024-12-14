@@ -55,6 +55,12 @@ logical = {
     Operator.AND,
 }
 
+is_associative = {
+    Operator.MUL: True,
+    Operator.DIV: False,
+    Operator.ADD: True,
+}
+
 operators = dict(
     (o.value, o) for o in Operator
 )

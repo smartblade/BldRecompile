@@ -6183,7 +6183,7 @@ Failed to find pattern for 'jne l10023E99'
 p10024015
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
-    REGDEF(eax=(255 * (2 * reinterpret_cast<int>(STACKVAR(16, 4)) + 1) + reinterpret_cast<int>(STACKVAR(20, 4))) / 2 * reinterpret_cast<int>(STACKVAR(20, 4)))
+    REGDEF(eax=(255 * (2 * reinterpret_cast<int>(STACKVAR(16, 4)) + 1) + reinterpret_cast<int>(STACKVAR(20, 4))) / (2 * reinterpret_cast<int>(STACKVAR(20, 4))))
 }
 
 // address: 0x10024032
