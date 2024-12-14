@@ -3,6 +3,8 @@ import expressions
 import instructions
 from patterns.make_proc_decl_from_args import make_proc_decl_from_args
 
+from .try_make_fpu_call import try_make_fpu_call
+
 
 class BlockBuilder:
     def __init__(self, instrs):
@@ -83,6 +85,8 @@ class BlockBuilder:
     def _try_merge_args_into_procedure_call(self):
         pc = self.try_pop_procedure_call()
         if pc is None:
+            return
+        if try_make_fpu_call(self, pc):
             return
         args = []
         this_arg = self._try_pop_this_arg()

@@ -7489,26 +7489,23 @@ Failed to find pattern for 'fstp qword ptr [ebp-010h]'
 // address: 0x1002ED7C
 p1002ED7C
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(ST(0)=reinterpret_cast<double>(ACCESS(STACKVAR(-4, 4), 0, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(-4, 4), 0, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(-4, 4), 8, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(-4, 4), 8, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(-4, 4), 16, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(-4, 4), 16, 8)))
+    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=0)
+    REGDEF(ST(0)=sqrt(reinterpret_cast<double>(ACCESS(this, 0, 8)) * reinterpret_cast<double>(ACCESS(this, 0, 8)) + reinterpret_cast<double>(ACCESS(this, 8, 8)) * reinterpret_cast<double>(ACCESS(this, 8, 8)) + reinterpret_cast<double>(ACCESS(this, 16, 8)) * reinterpret_cast<double>(ACCESS(this, 16, 8))))
 }
-'ecx'
 
 // address: 0x1002EDB2
 p1002EDB2
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(ST(0)=reinterpret_cast<double>(ACCESS(STACKVAR(-4, 4), 32, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(-4, 4), 32, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(-4, 4), 40, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(-4, 4), 40, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(-4, 4), 48, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(-4, 4), 48, 8)))
+    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=0)
+    REGDEF(ST(0)=sqrt(reinterpret_cast<double>(ACCESS(this, 32, 8)) * reinterpret_cast<double>(ACCESS(this, 32, 8)) + reinterpret_cast<double>(ACCESS(this, 40, 8)) * reinterpret_cast<double>(ACCESS(this, 40, 8)) + reinterpret_cast<double>(ACCESS(this, 48, 8)) * reinterpret_cast<double>(ACCESS(this, 48, 8))))
 }
-'ecx'
 
 // address: 0x1002EDEA
 p1002EDEA
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(ST(0)=reinterpret_cast<double>(ACCESS(STACKVAR(-4, 4), 64, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(-4, 4), 64, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(-4, 4), 72, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(-4, 4), 72, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(-4, 4), 80, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(-4, 4), 80, 8)))
+    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=0)
+    REGDEF(ST(0)=sqrt(reinterpret_cast<double>(ACCESS(this, 64, 8)) * reinterpret_cast<double>(ACCESS(this, 64, 8)) + reinterpret_cast<double>(ACCESS(this, 72, 8)) * reinterpret_cast<double>(ACCESS(this, 72, 8)) + reinterpret_cast<double>(ACCESS(this, 80, 8)) * reinterpret_cast<double>(ACCESS(this, 80, 8))))
 }
-'ecx'
 
 // address: 0x1002EF9F
 p1002EF9F
@@ -7733,10 +7730,9 @@ Failed to find pattern for 'fsubp st(01h), st(00h)'
 // address: 0x10031913
 p10031913
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(ST(0)=reinterpret_cast<double>(ACCESS(STACKVAR(-4, 4), 0, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(-4, 4), 0, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(-4, 4), 8, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(-4, 4), 8, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(-4, 4), 16, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(-4, 4), 16, 8)))
+    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=0)
+    REGDEF(ST(0)=sqrt(reinterpret_cast<double>(ACCESS(this, 0, 8)) * reinterpret_cast<double>(ACCESS(this, 0, 8)) + reinterpret_cast<double>(ACCESS(this, 8, 8)) * reinterpret_cast<double>(ACCESS(this, 8, 8)) + reinterpret_cast<double>(ACCESS(this, 16, 8)) * reinterpret_cast<double>(ACCESS(this, 16, 8))))
 }
-'ecx'
 
 // address: 0x10031E6D
 p10031E6D
