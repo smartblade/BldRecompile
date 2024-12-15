@@ -15,6 +15,7 @@ def are_same(first, second):
         data_types.UInt32,
         data_types.Float,
         data_types.Double,
+        data_types.Unknown64,
     ]
     for standard_type in standard_types:
         if (

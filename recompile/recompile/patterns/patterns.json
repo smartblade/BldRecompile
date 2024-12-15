@@ -228,6 +228,15 @@
 	},
 	{
 		"instructions": [
+			{"mov": ["edx", "[eax%offset-right-low%]"]},
+			{"mov": ["[ecx%offset-left-low%]", "edx"]},
+			{"mov": ["eax", "[eax%offset-right-high%]"]},
+			{"mov": ["[ecx%offset-left-high%]", "eax"]}
+		],
+		"action": {"assignment": {"dst": "ACCESS(REGVALUE(ecx), EXPECT(%offset-left-low%, EVAL(%offset-left-high% - 4)), 8)", "src": "ACCESS(REGVALUE(eax), EXPECT(%offset-right-low%, EVAL(%offset-right-high% - 4)), 8)"}}
+	},
+	{
+		"instructions": [
 			{"mov":  ["%mem-operand%", "%src-operand%"]}
 		],
 		"action": {"assignment": {"dst": "%mem-operand%", "src": "%src-operand%"}}

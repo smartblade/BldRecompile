@@ -9792,11 +9792,11 @@ Failed to find pattern for 'jne l1003B716'
 // address: 0x1003B780
 p1003B780
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    memcpy(reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000004, reinterpret_cast<any_int32>(STACKVAR(8, 4)) + 0x00000004, 0x00000018); // TODO improve emitting of memcpy instructions
-    ACCESS(STACKVAR(-4, 4), 28, 4) = ACCESS(STACKVAR(8, 4), 28, 4);
+    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=4)
+    memcpy(reinterpret_cast<any_int32>(this) + 0x00000004, reinterpret_cast<any_int32>(STACKVAR(8, 4)) + 0x00000004, 0x00000018); // TODO improve emitting of memcpy instructions
+    ACCESS(this, 28, 8) = ACCESS(STACKVAR(8, 4), 28, 8);
+    REGDEF(eax=this)
 }
-Unexpected instruction type <class 'instructions.assignment.Assignment'>
 
 // address: 0x1003B7C0
 p1003B7C0
