@@ -361,6 +361,12 @@
 	},
 	{
 		"instructions": [
+			{"fdiv":  ["%mem-operand%"]}
+		],
+		"action": {"pushfpu": {"src": "F(POPFPU()) / F(%mem-operand%)"}}
+	},
+	{
+		"instructions": [
 			{"faddp":  ["st(01h)", "st(00h)"]}
 		],
 		"actions": [

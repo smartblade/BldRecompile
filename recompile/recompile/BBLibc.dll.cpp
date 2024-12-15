@@ -7710,9 +7710,13 @@ p10031561
 p100315C2
 {
     ProcedureInfo(this=Id(this), this_offset=-28, local_size=28, stack_delta=None)
-    REGDEF(ST(0)=reinterpret_cast<double>(ACCESS(STACKVAR(-28, 4), 16, 8)))
+    STACKVAR(-24, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(-28, 4), 16, 8)) / reinterpret_cast<double>(STACKVAR(12, 8));
+    STACKVAR(-16, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(-28, 4), 8, 8)) / reinterpret_cast<double>(STACKVAR(12, 8));
+    STACKVAR(-8, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(-28, 4), 0, 8)) / reinterpret_cast<double>(STACKVAR(12, 8));
+    ACCESS(STACKVAR(8, 4), 0, 4) = STACKVAR(-8, 4);
+    REGDEF(edx=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'fdiv qword ptr [ebp+00Ch]'
+'eax'
 
 // address: 0x10031623
 p10031623
@@ -7727,10 +7731,12 @@ p10031623
 // address: 0x1003165E
 p1003165E
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(ST(0)=reinterpret_cast<double>(ACCESS(STACKVAR(-4, 4), 0, 8)))
+    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=8)
+    ACCESS(this, 0, 8) = reinterpret_cast<double>(ACCESS(this, 0, 8)) / reinterpret_cast<double>(STACKVAR(8, 8));
+    ACCESS(this, 8, 8) = reinterpret_cast<double>(ACCESS(this, 8, 8)) / reinterpret_cast<double>(STACKVAR(8, 8));
+    ACCESS(this, 16, 8) = reinterpret_cast<double>(ACCESS(this, 16, 8)) / reinterpret_cast<double>(STACKVAR(8, 8));
+    REGDEF(eax=this)
 }
-Failed to find pattern for 'fdiv qword ptr [ebp+008h]'
 
 // address: 0x100316F7
 p100316F7
