@@ -5959,12 +5959,10 @@ p1001F76C
 // address: 0x1001F794
 p1001F794
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=200, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=200, stack_delta=0)
     ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 12, 4)(STACKVAR(8, 4), LOCAL(-200));
-    ARG(LOCAL(-200));
-    ARG(GLOBAL(0x100487B4));
+    fprintf(reinterpret_cast<any_int32>(&_iob) + 0x00000040, GLOBAL(0x100487B4), LOCAL(-200));
 }
-Failed to find pattern for 'mov edx, dword ptr [__imp__iob]; [BICRT._iob].'
 
 // address: 0x1001F7D6
 p1001F7D6
@@ -10458,9 +10456,9 @@ Failed to find pattern for 'jne l1003E1D6'
 p1003E280
 {
     ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=None)
-    REGDEF(ecx=ACCESS(STACKVAR(8, 4), 4, 4))
+    REGDEF(cmpl=ACCESS(STACKVAR(8, 4), 4, 4), cmpr=&PyTuple_Type)
 }
-Failed to find pattern for 'cmp ecx, dword ptr [__imp__PyTuple_Type]; [python15.PyTuple_Type].'
+Failed to find pattern for 'jne l1003E330'
 
 // address: 0x1003E436
 PyObject *CallPythonObject(PyObject *func, PyObject *args)
@@ -11015,8 +11013,16 @@ p100409D8
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
     STACKVAR(-4, 4) = 0x00000000;
     STACKVAR(-4, 4) = malloc(0x00000014);
+    ACCESS(GLOBAL(0x100489FC), 0, 4) = &PyType_Type;
+    ACCESS(STACKVAR(-4, 4), 4, 4) = GLOBAL(0x100489F8);
+    ACCESS(STACKVAR(-4, 4), 12, 4) = 0x00000000;
+    ACCESS(STACKVAR(-4, 4), 16, 4) = 0x00000040;
+    ACCESS(STACKVAR(-4, 4), 8, 4) = malloc(0x00000100);
+    ACCESS(ACCESS(STACKVAR(-4, 4), 8, 4), 0, 4) = 0x00000000;
+    ACCESS(STACKVAR(-4, 4), 0, 4) = 0x00000000;
+    REGDEF(cmpl=STACKVAR(-4, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'mov eax, dword ptr [__imp__PyType_Type]; [python15.PyType_Type].'
+Failed to find pattern for 'jne l10040A4A'
 
 // address: 0x10040A5E
 p10040A5E
@@ -11056,16 +11062,38 @@ p10040D58
     ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=None)
     LOCAL(-8)->unknown_method_10003300();
     unknown_function_10003904(STACKVAR(8, 4), LOCAL(-8));
+    if (ACCESS(&?B_3D_raster_device@@3PAVB_3DRasterDevice@@A, 0, 4) == 0x00000000)
+    {
+        goto l10040DA1;
+    }
+    ACCESS(STACKVAR(12, 4), 0, 4) = ACCESS(&?B_3D_raster_device@@3PAVB_3DRasterDevice@@A, 0, 4)->(ACCESS(ACCESS(ACCESS(&?B_3D_raster_device@@3PAVB_3DRasterDevice@@A, 0, 4), 0, 4), 64, 4))(STACKVAR(-8, 4));
+    goto l10040DAA;
+l10040DA1:
+    ACCESS(STACKVAR(12, 4), 0, 4) = 0xFFFFFFFF;
+l10040DAA:
+    unknown_function_10001C05(unknown_function_10001C05(unknown_function_10001C05(unknown_function_10001C05(unknown_function_10001C05(unknown_function_10001C05(STACKVAR(8, 4), reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000004), reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000008), reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x0000000C), reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000010), reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000014), reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000018);
+    REGDEF(cmpl=ACCESS(GLOBAL(0x1004BF6C), 0, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'mov edx, dword ptr [__imp_?B_3D_raster_device@@3PAVB_3DRasterDevice@@A]; [Raster.?B_3D_raster_device@@3PAVB_3DRasterDevice@@A].'
+Failed to find pattern for 'jne l10040E4C'
 
 // address: 0x10040E61
 p10040E61
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=20, stack_delta=None)
-    ARG(ACCESS(STACKVAR(12, 4), 0, 4));
+    ProcedureInfo(this=None, this_offset=None, local_size=20, stack_delta=0)
+    STACKVAR(-4, 4) = ACCESS(&?B_3D_raster_device@@3PAVB_3DRasterDevice@@A, 0, 4)->(ACCESS(ACCESS(ACCESS(&?B_3D_raster_device@@3PAVB_3DRasterDevice@@A, 0, 4), 0, 4), 72, 4))(ACCESS(STACKVAR(12, 4), 0, 4));
+    if (STACKVAR(-4, 4) != 0x00000000)
+    {
+        reinterpret_cast<B_ODataFile &>(STACKVAR(8, 4)) << *reinterpret_cast<B_Name *>(LOCAL(-12))->B_Name(reinterpret_cast<char *>(STACKVAR(-4, 4)));
+        reinterpret_cast<B_Name *>(LOCAL(-12))->~B_Name();
+    }
+    else
+    {
+        reinterpret_cast<B_ODataFile &>(STACKVAR(8, 4)) << *reinterpret_cast<B_Name *>(LOCAL(-20))->B_Name(reinterpret_cast<char *>(GLOBAL(0x1004BF70)));
+        reinterpret_cast<B_Name *>(LOCAL(-20))->~B_Name();
+    }
+    reinterpret_cast<B_ODataFile &>(STACKVAR(8, 4)) << reinterpret_cast<float &>(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000004) << reinterpret_cast<float &>(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000008) << reinterpret_cast<float &>(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x0000000C) << reinterpret_cast<float &>(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000010) << reinterpret_cast<float &>(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000014) << reinterpret_cast<float &>(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000018);
+    REGDEF(eax=STACKVAR(8, 4))
 }
-Failed to find pattern for 'mov edx, dword ptr [__imp_?B_3D_raster_device@@3PAVB_3DRasterDevice@@A]; [Raster.?B_3D_raster_device@@3PAVB_3DRasterDevice@@A].'
 
 // address: 0x10040F39
 p10040F39
@@ -11096,9 +11124,12 @@ B_ParticleGType::B_ParticleGType(const B_Name &new_type, const B_Name &parent_ty
     ACCESS(STACKVAR(-44, 4), 40, 4) = STACKVAR(16, 4);
     ACCESS(STACKVAR(-44, 4), 0, 4) = GLOBAL(0x10042E64);
     ACCESS(STACKVAR(-44, 4), 12, 4) = GLOBAL(0x10042E60);
-    ARG(STACKVAR(12, 4)->unknown_method_10003457());
+    ACCESS(STACKVAR(-44, 4), 36, 4) = ACCESS(&?B_3D_raster_device@@3PAVB_3DRasterDevice@@A, 0, 4)->(ACCESS(ACCESS(ACCESS(&?B_3D_raster_device@@3PAVB_3DRasterDevice@@A, 0, 4), 0, 4), 64, 4))(STACKVAR(12, 4)->unknown_method_10003457());
+    STACKVAR(-40, 4) = reinterpret_cast<any_int32>(STACKVAR(20, 4)) + 0x00000001;
+    STACKVAR(-36, 4) = reinterpret_cast<any_int32>(STACKVAR(-44, 4)) + 0x0000000C;
+    REGDEF(eax=(reinterpret_cast<unsigned int>(STACKVAR(-40, 4)) + reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-36, 4), 12, 4)) - 1) / reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-36, 4), 12, 4)), edx=STACKVAR(-36, 4))
 }
-Failed to find pattern for 'mov ecx, dword ptr [__imp_?B_3D_raster_device@@3PAVB_3DRasterDevice@@A]; [Raster.?B_3D_raster_device@@3PAVB_3DRasterDevice@@A].'
+Failed to find pattern for 'imul eax, dword ptr [edx+00Ch]'
 
 // address: 0x1004118F
 B_ParticleGType::~B_ParticleGType()
@@ -11131,18 +11162,26 @@ B_IDataFile &operator >>(B_IDataFile &file, B_ParticleGType &particleType)
     unknown_function_10003A40(STACKVAR(8, 4), STACKVAR(12, 4));
     LOCAL(-8)->unknown_method_10003300();
     unknown_function_10001BD9(unknown_function_10003904(unknown_function_10001BEF(STACKVAR(8, 4), reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000020), LOCAL(-8)), reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000028);
-    ARG(STACKVAR(-8, 4));
+    ACCESS(STACKVAR(12, 4), 36, 4) = ACCESS(&?B_3D_raster_device@@3PAVB_3DRasterDevice@@A, 0, 4)->(ACCESS(ACCESS(ACCESS(&?B_3D_raster_device@@3PAVB_3DRasterDevice@@A, 0, 4), 0, 4), 64, 4))(STACKVAR(-8, 4));
+    unknown_function_10001BEF(STACKVAR(8, 4), LOCAL(-12));
+    STACKVAR(-48, 4) = STACKVAR(-12, 4);
+    STACKVAR(-44, 4) = reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x0000000C;
+    REGDEF(eax=(reinterpret_cast<unsigned int>(STACKVAR(-48, 4)) + reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-44, 4), 12, 4)) - 1) / reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-44, 4), 12, 4)), edx=STACKVAR(-44, 4))
 }
-Failed to find pattern for 'mov ecx, dword ptr [__imp_?B_3D_raster_device@@3PAVB_3DRasterDevice@@A]; [Raster.?B_3D_raster_device@@3PAVB_3DRasterDevice@@A].'
+Failed to find pattern for 'imul eax, dword ptr [edx+00Ch]'
 
 // address: 0x100413EE
 B_ODataFile &operator <<(B_ODataFile &file, const B_ParticleGType &particleType)
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=None)
-    unknown_function_10003A58(STACKVAR(8, 4), STACKVAR(12, 4));
-    ARG(ACCESS(STACKVAR(12, 4), 36, 4));
+    file << particleType;
+    reinterpret_cast<B_Name *>(LOCAL(-8))->B_Name(reinterpret_cast<char *>(ACCESS(&?B_3D_raster_device@@3PAVB_3DRasterDevice@@A, 0, 4)->(ACCESS(ACCESS(ACCESS(&?B_3D_raster_device@@3PAVB_3DRasterDevice@@A, 0, 4), 0, 4), 72, 4))(particleType.bmpHandle)));
+    file << particleType.duration << *reinterpret_cast<B_Name *>(LOCAL(-8)) << *reinterpret_cast<unsigned int *>(&particleType.operation_type);
+    file << particleType.a00C.size;
+    file.Write(particleType.a00C.elements, 8 * particleType.a00C.size);
+    STACKVAR(-12, 4) = file;
+    reinterpret_cast<B_Name *>(LOCAL(-8))->~B_Name();
+    return reinterpret_cast<B_ODataFile &>(STACKVAR(-12, 4));
 }
-Failed to find pattern for 'mov ecx, dword ptr [__imp_?B_3D_raster_device@@3PAVB_3DRasterDevice@@A]; [Raster.?B_3D_raster_device@@3PAVB_3DRasterDevice@@A].'
 
 // address: 0x100414A0
 p100414A0

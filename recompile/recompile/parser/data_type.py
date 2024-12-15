@@ -42,6 +42,8 @@ def parse_data_type(s, classes):
         return _parse_const(data_types.Pointer32, s[:-1], classes)
     if s.endswith("&"):
         return _parse_const(data_types.Reference, s[:-1], classes)
+    if s.endswith(">"):
+        return _parse_template(s, classes)
     raise UnknownTypeException("Not implemented type: {}.".format(s))
 
 
@@ -71,3 +73,18 @@ def _extract_class_name(class_type):
             "Failed to extract class name from '{}'.".format(class_type)
         )
     return class_name
+
+
+def _parse_template(s, classes):
+    start_pos = s.find("<")
+    if start_pos < 0:
+        raise Exception("'<' was not found at {}.".format(s))
+    template_type = parse_data_type(s[:start_pos], classes)
+    template_arg = parse_data_type(s[start_pos + 1:-1], classes)
+    if template_arg is not None:
+        template_arg_name = template_arg.get_type_name(is_metafile=False)
+    else:
+        template_arg_name = "void"
+    return template_type.rename(
+        "{}<{}>".format(template_type.class_name, template_arg_name)
+    )

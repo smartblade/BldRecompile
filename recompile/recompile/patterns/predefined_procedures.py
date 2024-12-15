@@ -12,6 +12,7 @@ _procedures = {
         *args, expression=None, offset=int, size=int),
     "GLOBAL": lambda *args: _unpack_args(*args, address=from_hex),
     "LOCAL": lambda *args: _unpack_args(*args, offset=int),
+    "EXTERNVAR": lambda *args: _unpack_args(*args, name=str),
     "ARRPTR": lambda *args: _unpack_args(
         *args, base=None, scale=from_hex, index=None, offset=int),
     "REAL64": lambda *args: _unpack_args(*args, high=from_hex, low=from_hex),

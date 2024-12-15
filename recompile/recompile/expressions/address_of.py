@@ -26,5 +26,9 @@ class AddressOf:
         on_expression_visited(self, **kwargs)
         self._expression.visit(on_expression_visited, **kwargs)
 
+    def transform(self, transform_callback, **kwargs):
+        expression = self._expression.transform(transform_callback, **kwargs)
+        return transform_callback(AddressOf(expression), **kwargs)
+
     def emit_code(self):
         return "&{}".format(self._expression.emit_code())

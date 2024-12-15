@@ -79,6 +79,7 @@ def _evaluate_procedure_calls(expression, **kwargs):
         on_access=_keep,
         on_global=_keep,
         on_local=_keep,
+        on_externvar=_evaluate_externvar,
         on_stackvar=_keep,
         on_arrptr=_keep,
         on_real64=_evaluate_real64,
@@ -97,6 +98,10 @@ def _evaluate_reg_value(reg, builder):
 
 def _evaluate_pop_fpu(builder):
     return builder.pop_fpu()
+
+
+def _evaluate_externvar(name, **kwargs):
+    return expressions.AddressOf(expressions.Identifier(None, name))
 
 
 def _evaluate_real64(high, low, **kwargs):

@@ -1,3 +1,5 @@
+import bisect
+
 import data_types
 from data_types.data_type import DataType
 from data_types.unknown32 import Unknown32
@@ -12,6 +14,7 @@ class ClassType(DataType):
         self._methods = []
         self._parent = None
         self._fields_sorted = True
+        self._sorted_offsets = None
 
     def __repr__(self):
         return "class {}".format(self._class_name)
@@ -64,6 +67,20 @@ class ClassType(DataType):
         if offset not in self._fields and self._parent is not None:
             return self._parent.get_field_by_offset(offset)
         return self._fields[offset]
+
+    def find_nearest_field_offset(self, offset):
+        if offset in self._fields:
+            return offset
+        self._sort_fields()
+        index = bisect.bisect_left(self._sorted_offsets, offset) - 1
+        if index >= 0:
+            found_offset = self._sorted_offsets[index]
+            field_type, field_name = self._fields[found_offset]
+            if found_offset < offset < found_offset + field_type.size:
+                return found_offset
+        if self._parent is not None:
+            return self._parent.find_nearest_field_offset(offset)
+        return None
 
     def find_data_type_by_field(self, field_name):
         for field_type, name in self._fields.values():
@@ -172,9 +189,12 @@ class ClassType(DataType):
 
     def _sort_fields(self):
         if self._fields_sorted:
+            if self._sorted_offsets is None:
+                self._sorted_offsets = list(sorted(self._fields.keys()))
             return
         self._fields = dict(sorted(self._fields.items()))
         self._fields_sorted = True
+        self._sorted_offsets = list(self._fields.keys())
 
 
 def _define_field_name(data_type, offset):

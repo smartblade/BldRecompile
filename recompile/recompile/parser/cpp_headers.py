@@ -12,6 +12,7 @@ comment_end_regexp = re.compile(r'\*/(?P<line>.*)$')
 class_regexp = re.compile(
     r'^(class|struct)\s+(LIB_EXP\s+)?(?P<class>\w+)(?P<semicolon>;)?'
     r'(\s*:\s*public\s*(?P<parent>\w+))?')
+template_regexp = re.compile(r'^template<class\s+(?P<class>\w+)>')
 
 _standard_types = {
     "bool": data_types.ClassType("bool", {}),
@@ -41,46 +42,7 @@ _standard_types = {
     "GLubyte": data_types.UnknownByte(),
     "BitMapType": data_types.Int32(),
     "B_CharData": data_types.ClassType("B_CharData", {}),
-    "B_NDataBase<B_ElementCSV>": data_types.ClassType(
-        "B_NDataBase<B_ElementCSV>", {}),
     "EventFn": data_types.Pointer32(),
-    "array_t<B_WorldPoint>": data_types.ClassType("array_t<B_WorldPoint>", {}),
-    "array_t<B_Vector>": data_types.ClassType("array_t<B_Vector>", {}),
-    "array_t<B_ParticleElement>": data_types.ClassType(
-        "array_t<B_ParticleElement>", {}),
-    "array_t<B_EventFunc *>": data_types.ClassType(
-        "array_t<B_EventFunc *>", {}),
-    "B_Array<B_BitMap24>": data_types.ClassType(
-        "B_Array<B_BitMap24>", {}),
-    "B_PtrArray<B_Atmosphere>": data_types.ClassType(
-        "B_PtrArray<B_Atmosphere>", {}),
-    "B_PtrArray<B_BipedAction>": data_types.ClassType(
-        "B_PtrArray<B_BipedAction>", {}),
-    "B_PtrArray<B_CharType>": data_types.ClassType(
-        "B_PtrArray<B_CharType>", {}),
-    "B_PtrArray<B_Event>": data_types.ClassType("B_PtrArray<B_Event>", {}),
-    "B_PtrArray<B_Name>": data_types.ClassType("B_PtrArray<B_Name>", {}),
-    "B_PtrArray<B_AfterFrameFunc>": data_types.ClassType(
-        "B_PtrArray<B_AfterFrameFunc>", {}),
-    "B_PtrArray<B_StringValue>": data_types.ClassType(
-        "B_PtrArray<B_StringValue>", {}),
-    "B_PtrArray<B_CameraMovement>": data_types.ClassType(
-        "B_PtrArray<B_CameraMovement>", {}),
-    "B_PtrArray<B_TriggerSector>": data_types.ClassType(
-        "B_PtrArray<B_TriggerSector>", {}),
-    "B_PtrArray<B_SubscriptionList>": data_types.ClassType(
-        "B_PtrArray<B_SubscriptionList>", {}),
-    "B_PtrArray<B_VideoMode>": data_types.ClassType(
-        "B_PtrArray<B_VideoMode>", {}),
-    "B_PtrArray<atmosphere_t>": data_types.ClassType(
-        "B_PtrArray<atmosphere_t>", {}),
-    "B_PtrArray<light_t>": data_types.ClassType(
-        "B_PtrArray<light_t>", {}),
-    "B_PtrArray<void>": data_types.ClassType("B_PtrArray<void>", {}),
-    "B_PtrArray<T>": data_types.ClassType("B_PtrArray<T>", {}),
-    "T": data_types.ClassType("T", {}),
-    "TYPE": data_types.ClassType("TYPE", {}),
-    "B_Hash<B_Entity>": data_types.ClassType("B_Hash<B_Entity>", {}),
 }
 
 
@@ -109,6 +71,7 @@ class HeaderState:
         for line in lines:
             line, is_comment = _strip_comments(line, is_comment)
             self._try_parse_include_file(line)
+            line = self._try_parse_template(line)
             match = re.search(class_regexp, line)
             if match and brackets_depth == 0:
                 class_name = match.group("class")
@@ -201,6 +164,14 @@ class HeaderState:
         included_header_state = self._header_states.get(include_file)
         if included_header_state is not None:
             included_header_state.parse()
+
+    def _try_parse_template(self, line):
+        match = re.search(template_regexp, line)
+        if not match:
+            return line
+        arg_class = match.group("class")
+        self._declared_types[arg_class] = data_types.ClassType(arg_class, {})
+        return re.sub(template_regexp, "", line).strip()
 
 
 def _strip_start(definition, start):

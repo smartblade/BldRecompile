@@ -13,15 +13,22 @@ def transform_access(expression, offset, size, **kwargs):
                 expression, expression.data_type))
     pointee = expression.data_type.pointee
     if isinstance(pointee, data_types.ClassType):
-        try:
-            data_type, field_name = pointee.get_field_by_offset(offset)
-        except KeyError:
+        field_offset = pointee.find_nearest_field_offset(offset)
+        if field_offset is None:
             return None
+        data_type, field_name = pointee.get_field_by_offset(field_offset)
+        field_access = expressions.FieldAccess(expression, field_name)
+        if field_offset != offset:
+            return transform_access(
+                expressions.AddressOf(field_access),
+                offset - field_offset,
+                size,
+                **kwargs)
         if size is not None and data_type.size != size:
             raise Exception(
                 "Data type size expected to be {} but was: {}.".format(
                     size, data_type.size))
-        return expressions.FieldAccess(expression, field_name)
+        return field_access
     if isinstance(
         pointee, (
             data_types.Char, data_types.UChar,
