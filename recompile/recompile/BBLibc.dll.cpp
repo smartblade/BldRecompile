@@ -3035,9 +3035,9 @@ p1000C80D
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 344, 4);
     STACKVAR(-40, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 24, 4), 0, 4);
     STACKVAR(-36, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 24, 4), 4, 4);
-    REGDEF(esi=STACKVAR(-4, 4))
+    REGDEF(esi=reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x0000000C, ecx=0x00000006)
 }
-Failed to find pattern for 'add esi, 00000000Ch'
+Failed to find pattern for 'lea edi, [ebp-020h]'
 
 // address: 0x1000C9AC
 p1000C9AC
@@ -3089,9 +3089,9 @@ p1000CEDD
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 344, 4);
     STACKVAR(-40, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 24, 4), 0, 4);
     STACKVAR(-36, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 24, 4), 4, 4);
-    REGDEF(esi=STACKVAR(-4, 4))
+    REGDEF(esi=reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x0000000C, ecx=0x00000006)
 }
-Failed to find pattern for 'add esi, 00000000Ch'
+Failed to find pattern for 'lea edi, [ebp-020h]'
 
 // address: 0x1000CF7A
 p1000CF7A
@@ -7788,11 +7788,11 @@ Failed to find pattern for 'fcomp qword ptr [g10042CF0]'
 // address: 0x1002E0B0
 p1002E0B0
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    memcpy(STACKVAR(-4, 4), STACKVAR(8, 4), 0x00000018); // TODO improve emitting of memcpy instructions
-    REGDEF(esi=STACKVAR(12, 4), edi=STACKVAR(-4, 4))
+    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=12)
+    memcpy(this, STACKVAR(8, 4), 0x00000018); // TODO improve emitting of memcpy instructions
+    memcpy(reinterpret_cast<any_int32>(this) + 0x00000018, STACKVAR(12, 4), 0x00000018); // TODO improve emitting of memcpy instructions
+    memcpy(reinterpret_cast<any_int32>(this) + 0x00000030, STACKVAR(16, 4), 0x00000018); // TODO improve emitting of memcpy instructions
 }
-Failed to find pattern for 'add edi, 000000018h'
 
 // address: 0x1002E0F0
 p1002E0F0
@@ -7974,9 +7974,11 @@ p10030232
 p10031284
 {
     ProcedureInfo(this=Id(this), this_offset=-52, local_size=52, stack_delta=None)
-    REGDEF(esi=STACKVAR(12, 4)->unknown_method_10031882(LOCAL(-24), STACKVAR(16, 4)), edi=STACKVAR(-52, 4))
+    memcpy(reinterpret_cast<any_int32>(STACKVAR(-52, 4)) + 0x00000004, STACKVAR(12, 4)->unknown_method_10031882(LOCAL(-24), STACKVAR(16, 4)), 0x00000018); // TODO improve emitting of memcpy instructions
+    REGDEF(ecx=reinterpret_cast<any_int32>(STACKVAR(-52, 4)) + 0x00000004)
+    unknown_function_10031913();
 }
-Failed to find pattern for 'add edi, 000000004h'
+Failed to find pattern for 'sub esp, 000000008h'
 
 // address: 0x100312FC
 p100312FC
@@ -9791,9 +9793,10 @@ Failed to find pattern for 'jne l1003B716'
 p1003B780
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    REGDEF(esi=STACKVAR(8, 4))
+    memcpy(reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000004, reinterpret_cast<any_int32>(STACKVAR(8, 4)) + 0x00000004, 0x00000018); // TODO improve emitting of memcpy instructions
+    ACCESS(STACKVAR(-4, 4), 28, 4) = ACCESS(STACKVAR(8, 4), 28, 4);
 }
-Failed to find pattern for 'add esi, 000000004h'
+Unexpected instruction type <class 'instructions.assignment.Assignment'>
 
 // address: 0x1003B7C0
 p1003B7C0
