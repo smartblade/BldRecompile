@@ -11179,8 +11179,9 @@ p100415A8
 // address: 0x10041600
 p10041600
 {
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    alloca_0x1004160C_0x10041620();
 }
-Unexpected instruction type <class 'NoneType'>
 
 // address: 0x100416B4
 p100416B4

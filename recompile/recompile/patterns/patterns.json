@@ -45,6 +45,30 @@
 	},
 	{
 		"instructions": [
+			{"push":  ["ecx"]},
+			{"cmp":   ["eax", "000001000h"]},
+			{"lea":   ["ecx", "[esp+008h]"]},
+			{"jb":    ["%label-tail%"]},
+			{"label": ["%label-loop%"]},
+			{"sub":   ["ecx", "000001000h"]},
+			{"sub":   ["eax", "000001000h"]},
+			{"test":  ["[ecx]", "eax"]},
+			{"cmp":   ["eax", "000001000h"]},
+			{"jnb":   ["%label-loop%"]},
+			{"label": ["%label-tail%"]},
+			{"sub":   ["ecx", "eax"]},
+			{"mov":   ["eax", "esp"]},
+			{"test":  ["[ecx]", "eax"]},
+			{"mov":   ["esp", "ecx"]},
+			{"mov":   ["ecx", "[eax]"]},
+			{"mov":   ["eax", "[eax+004h]"]},
+			{"push":  ["eax"]},
+			{"ret":   []}
+		],
+		"action": {"standard-proc": {"name": "alloca_%label-loop%_%label-tail%"}}
+	},
+	{
+		"instructions": [
 			{"mov": ["edx", "[eax]"]},
 			{"mov": ["[ecx]", "edx"]},
 			{"mov": ["edx", "[eax+004h]"]},
