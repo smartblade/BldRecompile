@@ -264,6 +264,12 @@
 	},
 	{
 		"instructions": [
+			{"sub":  ["%eax-ecx-edx%", "%src-operand%"]}
+		],
+		"action": {"tmpreg": {"dst": "%eax-ecx-edx%", "src": "I(REGVALUE(%eax-ecx-edx%)) - I(%src-operand%)"}}
+	},
+	{
+		"instructions": [
 			{"imul":  ["%eax-ecx-edx%", "%src-operand%", "%hex%"]}
 		],
 		"action": {"tmpreg": {"dst": "%eax-ecx-edx%", "src": "I(%hex%) * I(%src-operand%)"}}
