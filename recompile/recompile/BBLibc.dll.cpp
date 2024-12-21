@@ -207,18 +207,14 @@ int B_IDataFile::Tell()
 // address: 0x100019CC
 unsigned char B_IDataFile::Peek()
 {
-    ProcedureInfo(this=Id(this), this_offset=-8, local_size=8, stack_delta=None)
-    if (_eof(ACCESS(STACKVAR(-8, 4), 0, 4)) != 0x00000000)
+    if (_eof(this->fd) == 0x00000000)
     {
-        goto l10001A07;
+        this->Read(LOCAL(-4), 1);
+        this->Seek(-1, 1);
+        return reinterpret_cast<unsigned char>(STACKVAR(-4, 1));
     }
-    STACKVAR(-8, 4)->unknown_method_10001A33(LOCAL(-4), 0x00000001);
-    STACKVAR(-8, 4)->unknown_method_100018A6(0xFFFFFFFF, 0x00000001);
-    REGDEF(al=STACKVAR(-4, 1))
-    goto l10001A09;
-l10001A07:
+    return 0;
 }
-Failed to find pattern for 'xor al, al'
 
 // address: 0x10001A0D
 int B_IDataFile::Eof()
@@ -3073,14 +3069,17 @@ Failed to find pattern for 'jne l1000CC53'
 // address: 0x1000CD6C
 p1000CD6C
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=0)
     STACKVAR(-4, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 32, 4), 24, 4);
-    if ((ACCESS(STACKVAR(-4, 4), 12, 4)(ACCESS(STACKVAR(8, 4), 32, 4)) & 0x000000FF) != 0x00000000)
+    if ((ACCESS(STACKVAR(-4, 4), 12, 4)(ACCESS(STACKVAR(8, 4), 32, 4)) & 0x000000FF) == 0x00000000)
     {
-        goto l1000CD99;
+        REGDEF(al=0)
+        return;
     }
+    ACCESS(STACKVAR(8, 4), 0, 4) = ACCESS(STACKVAR(-4, 4), 0, 4);
+    ACCESS(STACKVAR(8, 4), 4, 4) = ACCESS(STACKVAR(-4, 4), 4, 4);
+    REGDEF(al=0x01)
 }
-Failed to find pattern for 'xor al, al'
 
 // address: 0x1000CDB5
 p1000CDB5
@@ -3090,19 +3089,23 @@ p1000CDB5
     {
         goto l1000CDD5;
     }
+    REGDEF(al=0)
 }
-Failed to find pattern for 'xor al, al'
+Failed to find pattern for 'jmp near ptr l1000CEA1'
 
 // address: 0x1000CEA5
 p1000CEA5
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    if ((unknown_function_1000CC15(STACKVAR(8, 4), 0x0000007F, 0x00000007) & 0x000000FF) != 0x00000000)
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
+    if ((unknown_function_1000CC15(STACKVAR(8, 4), 0x0000007F, 0x00000007) & 0x000000FF) == 0x00000000)
     {
-        goto l1000CEC5;
+        REGDEF(al=0)
+        return;
     }
+    ACCESS(STACKVAR(8, 4), 8, 4) = 0x00000000;
+    ACCESS(STACKVAR(8, 4), 12, 4) = 0x00000000;
+    REGDEF(al=0x01)
 }
-Failed to find pattern for 'xor al, al'
 
 // address: 0x1000CEDD
 p1000CEDD
@@ -5532,8 +5535,9 @@ p1001C089
         goto l1001C0AE;
     }
 l1001C0A7:
+    REGDEF(al=0)
 }
-Failed to find pattern for 'xor al, al'
+Failed to find pattern for 'jmp near ptr l1001C18B'
 
 // address: 0x1001C23B
 p1001C23B

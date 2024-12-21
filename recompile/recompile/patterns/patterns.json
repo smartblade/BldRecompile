@@ -359,6 +359,12 @@
 	},
 	{
 		"instructions": [
+			{"xor":  ["%al-cl-dl%", "%al-cl-dl%"]}
+		],
+		"action": {"tmpreg": {"dst": "%al-cl-dl%", "src": "0x00"}}
+	},
+	{
+		"instructions": [
 			{"xor":  ["%eax-ecx-edx%", "%eax-ecx-edx%"]}
 		],
 		"action": {"tmpreg": {"dst": "%eax-ecx-edx%", "src": "0x00000000"}}
