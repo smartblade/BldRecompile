@@ -10,6 +10,14 @@ class WhileInstruction:
     def __repr__(self):
         return "WhileInstruction({})".format(self._block)
 
+    @property
+    def clause(self):
+        return self._clause
+
+    @property
+    def block(self):
+        return self._block
+
     def transform_instruction(self, **kwargs):
         block = transform_block_instructions(self._block, **kwargs)
         clause = self._clause.transform_expression(**kwargs)

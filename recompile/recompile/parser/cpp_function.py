@@ -12,9 +12,13 @@ procedure_regexp = re.compile(
 
 def parse_cpp_function(class_name, func, declared_types):
     declaration = parser.split_procedure_parameters(func)
+    is_vararg = False
     parameters = []
     arg_index = 0
     for (var_type, var_name) in declaration.parameters:
+        if var_name == "...":
+            is_vararg = True
+            continue
         var_decl = "{} {}".format(var_type, var_name).strip()
         arg_index += 1
         try:
@@ -45,6 +49,7 @@ def parse_cpp_function(class_name, func, declared_types):
     if is_definition:
         is_static = _get_static_from_declaration(method_class, proc_name)
     convention = _get_calling_convention(is_static, method_class)
+    _validate_calling_convention(is_vararg, convention)
     return ProcedureDeclaration(
         proc_name=proc_name,
         convention=convention,
@@ -52,7 +57,17 @@ def parse_cpp_function(class_name, func, declared_types):
         parameters=parameters,
         return_arg=_extract_return_type(return_type, declared_types),
         is_static=is_static,
+        is_vararg=is_vararg,
     )
+
+
+def _validate_calling_convention(is_vararg, convention):
+    if is_vararg and convention != CallingConvention.CDECL:
+        raise Exception(
+            "Expected {} for vararg but was: {}".format(
+                CallingConvention.CDECL, convention
+            )
+        )
 
 
 def _get_calling_convention(is_static, method_class):

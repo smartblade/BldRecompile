@@ -12,7 +12,7 @@ operator_regexp = re.compile(r'^operator\s*(?P<op>\S+)$')
 class ProcedureDeclaration:
     def __init__(
         self, proc_name, convention, method_class, parameters, return_arg,
-        is_static=False,
+        is_static=False, is_vararg=False,
     ):
         self._proc_name = proc_name
         self._convention = convention
@@ -20,6 +20,7 @@ class ProcedureDeclaration:
         self._return_arg = return_arg
         self._parameters = parameters
         self._is_static = is_static
+        self._is_vararg = is_vararg
         self._operator = self._get_operator()
 
     @property
@@ -57,6 +58,10 @@ class ProcedureDeclaration:
     @property
     def is_destructor(self):
         return self._proc_name.startswith("~")
+
+    @property
+    def is_vararg(self):
+        return self._is_vararg
 
     @property
     def stack_delta(self):

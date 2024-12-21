@@ -18,7 +18,7 @@ def transform_access(expression, offset, size, **kwargs):
             return None
         data_type, field_name = pointee.get_field_by_offset(field_offset)
         field_access = expressions.FieldAccess(expression, field_name)
-        if field_offset != offset:
+        if field_offset != offset or size is not None and data_type.size > size:
             return transform_access(
                 expressions.AddressOf(field_access),
                 offset - field_offset,
@@ -32,7 +32,8 @@ def transform_access(expression, offset, size, **kwargs):
     if isinstance(
         pointee, (
             data_types.Char, data_types.UChar,
-            data_types.Int32, data_types.UInt32
+            data_types.Int32, data_types.UInt32,
+            data_types.Pointer32,
         )
     ):
         if size is not None and pointee.size != size:

@@ -26,7 +26,13 @@ def transform_procedure_call(pc, declarations, **kwargs):
 
 
 def _convert_arguments_to_parameters_types(pc, proc_decl):
-    if len(pc.arguments) != len(proc_decl.get_parameters_ids()):
+    if (
+        len(pc.arguments) != len(proc_decl.get_parameters_ids()) and
+        (
+            not proc_decl.is_vararg or
+            len(pc.arguments) < len(proc_decl.get_parameters_ids())
+        )
+    ):
         raise Exception(
             "Expected to be {} arguments at {} but was: {}".format(
                 len(pc.arguments),
@@ -39,12 +45,23 @@ def _convert_arguments_to_parameters_types(pc, proc_decl):
         stack_delta=pc.proc_decl.stack_delta,
         is_thiscall=pc.proc_decl.convention == CallingConvention.THISCALL)
     new_arguments = []
-    expected_args = proc_decl.get_parameters_ids(expected_args_types=True)
-    for i, parameter in enumerate(expected_args.values()):
-        c = narrow_constant(pc.arguments[i], parameter.data_type)
-        new_argument = c or convert_expression_to_type(
-            pc.arguments[i], parameter.data_type)
-        new_argument = explicit_arg_cast(
-            proc_decl, new_argument, parameter.data_type) or new_argument
+    parameters = list(
+        proc_decl.get_parameters_ids(expected_args_types=True).values())
+    for i, argument in enumerate(pc.arguments):
+        parameter = parameters[i] if i < len(parameters) else None
+        new_argument = _convert_argument_to_parameters_type(
+            argument, parameter, proc_decl)
         new_arguments.append(new_argument)
     return new_arguments
+
+
+def _convert_argument_to_parameters_type(argument, parameter, proc_decl):
+    if parameter is None:
+        return argument
+    c = narrow_constant(argument, parameter.data_type)
+    if c is not None:
+        return c
+    new_argument = convert_expression_to_type(argument, parameter.data_type)
+    new_argument = explicit_arg_cast(
+        proc_decl, new_argument, parameter.data_type) or new_argument
+    return new_argument

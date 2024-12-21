@@ -21,6 +21,7 @@ def split_procedure_parameters(s):
     for p in parameters:
         p = p.strip()
         if p == "...":
+            parsed_parameters.append((None, p))
             continue
         parsed_parameters.append(parser.parse_variable_declaration(p))
     if parsed_parameters:
