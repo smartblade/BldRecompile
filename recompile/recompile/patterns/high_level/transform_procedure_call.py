@@ -4,6 +4,7 @@ from patterns.validate_procedure_declaration import \
     validate_procedure_declaration
 
 from .convert_expression_to_type import convert_expression_to_type
+from .explicit_arg_cast import explicit_arg_cast
 from .narrow_constant import narrow_constant
 
 
@@ -43,5 +44,7 @@ def _convert_arguments_to_parameters_types(pc, proc_decl):
         c = narrow_constant(pc.arguments[i], parameter.data_type)
         new_argument = c or convert_expression_to_type(
             pc.arguments[i], parameter.data_type)
+        new_argument = explicit_arg_cast(
+            proc_decl, new_argument, parameter.data_type) or new_argument
         new_arguments.append(new_argument)
     return new_arguments

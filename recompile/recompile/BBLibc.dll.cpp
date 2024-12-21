@@ -11173,7 +11173,7 @@ Failed to find pattern for 'imul eax, dword ptr [edx+00Ch]'
 // address: 0x100413EE
 B_ODataFile &operator <<(B_ODataFile &file, const B_ParticleGType &particleType)
 {
-    file << particleType;
+    file << static_cast<B_NamedObj &>(particleType);
     reinterpret_cast<B_Name *>(LOCAL(-8))->B_Name(reinterpret_cast<char *>(ACCESS(&?B_3D_raster_device@@3PAVB_3DRasterDevice@@A, 0, 4)->(ACCESS(ACCESS(ACCESS(&?B_3D_raster_device@@3PAVB_3DRasterDevice@@A, 0, 4), 0, 4), 72, 4))(particleType.bmpHandle)));
     file << particleType.duration << *reinterpret_cast<B_Name *>(LOCAL(-8)) << *reinterpret_cast<unsigned int *>(&particleType.operation_type);
     file << particleType.a00C.size;
