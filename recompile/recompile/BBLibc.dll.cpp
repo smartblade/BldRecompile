@@ -208,9 +208,17 @@ int B_IDataFile::Tell()
 unsigned char B_IDataFile::Peek()
 {
     ProcedureInfo(this=Id(this), this_offset=-8, local_size=8, stack_delta=None)
-    _eof(ACCESS(STACKVAR(-8, 4), 0, 4));
+    if (_eof(ACCESS(STACKVAR(-8, 4), 0, 4)) != 0x00000000)
+    {
+        goto l10001A07;
+    }
+    STACKVAR(-8, 4)->unknown_method_10001A33(LOCAL(-4), 0x00000001);
+    STACKVAR(-8, 4)->unknown_method_100018A6(0xFFFFFFFF, 0x00000001);
+    REGDEF(al=STACKVAR(-4, 1))
+    goto l10001A09;
+l10001A07:
 }
-Failed to find pattern for 'test eax, eax'
+Failed to find pattern for 'xor al, al'
 
 // address: 0x10001A0D
 int B_IDataFile::Eof()
@@ -653,9 +661,14 @@ B_MessageManager &B_MessageManager::operator=(const B_MessageManager &that)
 char *GetConfigDirectory()
 {
     ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=None)
-    REGDEF(eax=static_cast<unsigned int>(ACCESS(GLOBAL(0x1004A110), 0, 1)))
+    if (static_cast<unsigned int>(ACCESS(GLOBAL(0x1004A110), 0, 1)) != 0x00000000)
+    {
+        goto l10002899;
+    }
+    _getcwd(GLOBAL(0x1004A00C), 0x00000104);
+    REGDEF(edi=GLOBAL(0x1004A00C))
 }
-Failed to find pattern for 'test eax, eax'
+Failed to find pattern for 'or ecx, 0FFFFFFFFh'
 
 // address: 0x100028EC
 char *GetCurrentLanguage()
@@ -3062,25 +3075,34 @@ p1000CD6C
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
     STACKVAR(-4, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 32, 4), 24, 4);
-    REGDEF(eax=ACCESS(STACKVAR(-4, 4), 12, 4)(ACCESS(STACKVAR(8, 4), 32, 4)) & 0x000000FF)
+    if ((ACCESS(STACKVAR(-4, 4), 12, 4)(ACCESS(STACKVAR(8, 4), 32, 4)) & 0x000000FF) != 0x00000000)
+    {
+        goto l1000CD99;
+    }
 }
-Failed to find pattern for 'test eax, eax'
+Failed to find pattern for 'xor al, al'
 
 // address: 0x1000CDB5
 p1000CDB5
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
-    REGDEF(eax=unknown_function_1000CEA5(STACKVAR(8, 4)) & 0x000000FF)
+    if ((unknown_function_1000CEA5(STACKVAR(8, 4)) & 0x000000FF) != 0x00000000)
+    {
+        goto l1000CDD5;
+    }
 }
-Failed to find pattern for 'test eax, eax'
+Failed to find pattern for 'xor al, al'
 
 // address: 0x1000CEA5
 p1000CEA5
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    REGDEF(eax=unknown_function_1000CC15(STACKVAR(8, 4), 0x0000007F, 0x00000007) & 0x000000FF)
+    if ((unknown_function_1000CC15(STACKVAR(8, 4), 0x0000007F, 0x00000007) & 0x000000FF) != 0x00000000)
+    {
+        goto l1000CEC5;
+    }
 }
-Failed to find pattern for 'test eax, eax'
+Failed to find pattern for 'xor al, al'
 
 // address: 0x1000CEDD
 p1000CEDD
@@ -3135,9 +3157,35 @@ p1000D320
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
     unknown_function_1000E360(STACKVAR(8, 4), 0x00000000);
-    REGDEF(edx=static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 172, 1)))
+    if (static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 172, 1)) != 0x00000000)
+    {
+        goto l1000D367;
+    }
+    unknown_function_1000A930(STACKVAR(8, 4));
+    unknown_function_10011F30(STACKVAR(8, 4));
+    unknown_function_100117C0(STACKVAR(8, 4), 0x00000000);
+l1000D367:
+    unknown_function_1000B300(STACKVAR(8, 4));
+    if (static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 173, 1)) == 0x00000000)
+    {
+        goto l1000D39E;
+    }
+    ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x00000001;
+    ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 0, 4)(STACKVAR(8, 4));
+    goto l1000D3C7;
+l1000D39E:
+    if (static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 208, 1)) == 0x00000000)
+    {
+        goto l1000D3BB;
+    }
+    unknown_function_10010620(STACKVAR(8, 4));
+    goto l1000D3C7;
+l1000D3BB:
+    unknown_function_1000C580(STACKVAR(8, 4));
+l1000D3C7:
+    REGDEF(cmpl=ACCESS(STACKVAR(8, 4), 164, 4), cmpr=0x00000001)
 }
-Failed to find pattern for 'test edx, edx'
+Failed to find pattern for 'jg l1000D3EB'
 
 // address: 0x1000D450
 p1000D450
@@ -3553,7 +3601,7 @@ p1000F4DE
 // address: 0x1000F516
 p1000F516
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=8, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=8, stack_delta=0)
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 312, 4);
     ACCESS(ACCESS(STACKVAR(8, 4), 344, 4), 8, 4)(STACKVAR(8, 4));
     STACKVAR(-8, 4) = ACCESS(STACKVAR(-4, 4), 16, 4);
@@ -3572,9 +3620,23 @@ p1000F516
     goto l1000F5B6;
 l1000F558:
     ACCESS(STACKVAR(-4, 4), 16, 4) = 0x00000002;
-    REGDEF(eax=static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 174, 1)))
+    if (static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 174, 1)) == 0)
+    {
+        ACCESS(STACKVAR(-4, 4), 28, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-4, 4), 28, 4)) + 0x00000001;
+    }
+    goto l1000F5B6;
+l1000F582:
+    ACCESS(STACKVAR(-4, 4), 16, 4) = 0x00000002;
+    goto l1000F5B6;
+l1000F58E:
+    if (static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 174, 1)) != 0)
+    {
+        ACCESS(STACKVAR(-4, 4), 16, 4) = 0x00000001;
+    }
+    ACCESS(STACKVAR(-4, 4), 28, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-4, 4), 28, 4)) + 0x00000001;
+l1000F5B6:
+    ACCESS(STACKVAR(-4, 4), 20, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-4, 4), 20, 4)) + 0x00000001;
 }
-Failed to find pattern for 'test eax, eax'
 
 // address: 0x1000F5D0
 p1000F5D0
@@ -3821,11 +3883,16 @@ Failed to find pattern for 'jne l10010AEE'
 // address: 0x10010C02
 p10010C02
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=0)
     STACKVAR(-4, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 32, 4), 24, 4);
-    REGDEF(eax=ACCESS(STACKVAR(-4, 4), 12, 4)(ACCESS(STACKVAR(8, 4), 32, 4)) & 0x000000FF)
+    if ((ACCESS(STACKVAR(-4, 4), 12, 4)(ACCESS(STACKVAR(8, 4), 32, 4)) & 0x000000FF) == 0x00000000)
+    {
+        ACCESS(ACCESS(ACCESS(STACKVAR(8, 4), 32, 4), 0, 4), 20, 4) = 0x00000018;
+        ACCESS(ACCESS(ACCESS(STACKVAR(8, 4), 32, 4), 0, 4), 0, 4)(ACCESS(STACKVAR(8, 4), 32, 4));
+    }
+    ACCESS(STACKVAR(8, 4), 16, 4) = ACCESS(STACKVAR(-4, 4), 0, 4);
+    ACCESS(STACKVAR(8, 4), 20, 4) = ACCESS(STACKVAR(-4, 4), 4, 4);
 }
-Failed to find pattern for 'test eax, eax'
 
 // address: 0x10010C69
 p10010C69
@@ -3844,9 +3911,17 @@ p10010CD3
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
     unknown_function_10010E04(STACKVAR(8, 4));
-    REGDEF(edx=static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 12, 1)))
+    if (static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 12, 1)) != 0x00000000)
+    {
+        goto l10010D7F;
+    }
+    unknown_function_10010DDB(STACKVAR(8, 4));
+    ACCESS(ACCESS(STACKVAR(8, 4), 16, 4), 0, 1) = 0xFF;
+    ACCESS(STACKVAR(8, 4), 16, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 16, 4)) + 0x00000001;
+    ACCESS(STACKVAR(8, 4), 20, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 20, 4)) - 0x00000001;
+    REGDEF(cmpl=ACCESS(STACKVAR(8, 4), 20, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'test edx, edx'
+Failed to find pattern for 'jne l10010D3B'
 
 // address: 0x10010DDB
 p10010DDB
@@ -5122,18 +5197,36 @@ p100185CF
 {
     ProcedureInfo(this=None, this_offset=None, local_size=8, stack_delta=None)
     STACKVAR(-8, 4) = ACCESS(STACKVAR(8, 4), 388, 4);
-    REGDEF(eax=static_cast<unsigned int>(ACCESS(STACKVAR(-8, 4), 48, 1)))
+    if (static_cast<unsigned int>(ACCESS(STACKVAR(-8, 4), 48, 1)) != 0x00000000)
+    {
+        goto l10018614;
+    }
+    if (ACCESS(ACCESS(STACKVAR(8, 4), 392, 4), 12, 4)(STACKVAR(8, 4), reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + 0x00000008) != 0x00000000)
+    {
+        goto l1001860D;
+    }
+    goto l1001866D;
+l1001860D:
+    ACCESS(STACKVAR(-8, 4), 48, 1) = 0x01;
+l10018614:
+    STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 280, 4);
+    ACCESS(ACCESS(STACKVAR(8, 4), 396, 4), 4, 4)(STACKVAR(8, 4), reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + 0x00000008, reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + 0x00000034, STACKVAR(-4, 4), STACKVAR(12, 4), STACKVAR(16, 4), STACKVAR(20, 4));
+    REGDEF(cmpl=ACCESS(STACKVAR(-8, 4), 52, 4), cmpr=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'test eax, eax'
+Failed to find pattern for 'jb l1001866D'
 
 // address: 0x10018671
 p10018671
 {
     ProcedureInfo(this=None, this_offset=None, local_size=8, stack_delta=None)
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 388, 4);
-    REGDEF(eax=static_cast<unsigned int>(ACCESS(STACKVAR(-4, 4), 48, 1)))
+    if (static_cast<unsigned int>(ACCESS(STACKVAR(-4, 4), 48, 1)) != 0x00000000)
+    {
+        goto l100186CF;
+    }
+    REGDEF(edx=ACCESS(STACKVAR(-4, 4), 64, 4), eax=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'test eax, eax'
+Failed to find pattern for 'mov ecx, dword ptr [eax+edx*04h+038h]'
 
 // address: 0x10018845
 p10018845
@@ -5315,9 +5408,16 @@ p1001A32B
     STACKVAR(-16, 4) = ACCESS(STACKVAR(8, 4), 24, 4);
     STACKVAR(-36, 4) = ACCESS(STACKVAR(-16, 4), 0, 4);
     STACKVAR(-24, 4) = ACCESS(STACKVAR(-16, 4), 4, 4);
-    REGDEF(edx=static_cast<unsigned int>(ACCESS(ACCESS(STACKVAR(8, 4), 404, 4), 13, 1)))
+    if (static_cast<unsigned int>(ACCESS(ACCESS(STACKVAR(8, 4), 404, 4), 13, 1)) != 0x00000000)
+    {
+        goto l1001A377;
+    }
+    ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x0000003E;
+    ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 0, 4)(STACKVAR(8, 4));
+l1001A377:
+    REGDEF(cmpl=STACKVAR(-24, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'test edx, edx'
+Failed to find pattern for 'jne l1001A3AB'
 
 // address: 0x1001A86C
 p1001A86C
@@ -5423,9 +5523,17 @@ Failed to find pattern for 'ja l1001BDCB'
 p1001C089
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    REGDEF(ecx=static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 72, 1)))
+    if (static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 72, 1)) != 0x00000000)
+    {
+        goto l1001C0A7;
+    }
+    if (static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 266, 1)) == 0x00000000)
+    {
+        goto l1001C0AE;
+    }
+l1001C0A7:
 }
-Failed to find pattern for 'test ecx, ecx'
+Failed to find pattern for 'xor al, al'
 
 // address: 0x1001C23B
 p1001C23B
@@ -7087,9 +7195,13 @@ p100269E0
 p100269F2
 {
     ProcedureInfo(this=None, this_offset=None, local_size=24, stack_delta=None)
-    REGDEF(eax=static_cast<unsigned int>(ACCESS(GLOBAL(0x1004A538), 0, 1)) & 0x00000001)
+    if ((static_cast<unsigned int>(ACCESS(GLOBAL(0x1004A538), 0, 1)) & 0x00000001) != 0x00000000)
+    {
+        goto l10026AD1;
+    }
+    REGDEF(cl=ACCESS(GLOBAL(0x1004A538), 0, 1))
 }
-Failed to find pattern for 'test eax, eax'
+Failed to find pattern for 'or cl, 001h'
 
 // address: 0x10026AD5
 B_BitMap24::B_BitMap24(const B_BitMap24 &that)
@@ -10558,156 +10670,269 @@ l1003E87A:
 // address: 0x1003E95C
 p1003E95C
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=8, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=8, stack_delta=0)
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048D98));
+    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048D98)) == 0x00000000)
+    {
+        REGDEF(eax=0x00000000)
+        return;
+    }
+    STACKVAR(-8, 4) = unknown_function_100020C3();
+    STACKVAR(-4, 4) = Py_BuildValue(GLOBAL(0x10048DB0), STACKVAR(-8, 4));
+    REGDEF(eax=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'test eax, eax'
 
 // address: 0x1003E9A6
 p1003E9A6
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=8, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=8, stack_delta=0)
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048DB4));
+    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048DB4)) == 0x00000000)
+    {
+        REGDEF(eax=0x00000000)
+        return;
+    }
+    STACKVAR(-8, 4) = unknown_function_100020CD();
+    STACKVAR(-4, 4) = Py_BuildValue(GLOBAL(0x10048DC8), STACKVAR(-8, 4));
+    REGDEF(eax=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'test eax, eax'
 
 // address: 0x1003E9F0
 p1003E9F0
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=0)
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048DCC));
+    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048DCC)) == 0x00000000)
+    {
+        REGDEF(eax=0x00000000)
+        return;
+    }
+    unknown_function_100020D7();
+    ACCESS(&_Py_NoneStruct, 0, 4) = reinterpret_cast<any_int32>(ACCESS(&_Py_NoneStruct, 0, 4)) + 0x00000001;
+    STACKVAR(-4, 4) = &_Py_NoneStruct;
+    REGDEF(eax=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'test eax, eax'
 
 // address: 0x1003EA3C
 p1003EA3C
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=16, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=16, stack_delta=0)
     STACKVAR(-12, 4) = 0x00000000;
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048DE4), LOCAL(-12));
+    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048DE4), LOCAL(-12)) == 0x00000000)
+    {
+        REGDEF(eax=0x00000000)
+        return;
+    }
+    if (PyCallable_Check(STACKVAR(-12, 4)) != 0x00000000)
+    {
+        STACKVAR(-8, 4) = STACKVAR(-12, 4);
+    }
+    else
+    {
+        STACKVAR(-8, 4) = 0x00000000;
+    }
+    STACKVAR(-16, 4) = unknown_function_100020E1(STACKVAR(-8, 4));
+    STACKVAR(-4, 4) = Py_BuildValue(GLOBAL(0x10048E00), STACKVAR(-16, 4));
+    REGDEF(eax=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'test eax, eax'
 
 // address: 0x1003EAB8
 p1003EAB8
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=0)
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048E04));
+    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048E04)) == 0x00000000)
+    {
+        REGDEF(eax=0x00000000)
+        return;
+    }
+    RemoveOnOpenInputFileFunc();
+    ACCESS(&_Py_NoneStruct, 0, 4) = reinterpret_cast<any_int32>(ACCESS(&_Py_NoneStruct, 0, 4)) + 0x00000001;
+    STACKVAR(-4, 4) = &_Py_NoneStruct;
+    REGDEF(eax=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'test eax, eax'
 
 // address: 0x1003EB04
 p1003EB04
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=0)
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048E20), LOCAL(-8));
+    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048E20), LOCAL(-8)) == 0x00000000)
+    {
+        REGDEF(eax=0x00000000)
+        return;
+    }
+    STACKVAR(-12, 4) = unknown_function_100061BA(STACKVAR(-8, 4));
+    STACKVAR(-4, 4) = Py_BuildValue(GLOBAL(0x10048E2C), STACKVAR(-12, 4));
+    REGDEF(eax=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'test eax, eax'
 
 // address: 0x1003EB59
 p1003EB59
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=0)
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048E30), LOCAL(-8));
+    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048E30), LOCAL(-8)) == 0x00000000)
+    {
+        REGDEF(eax=0x00000000)
+        return;
+    }
+    STACKVAR(-12, 4) = unknown_function_100061F0(STACKVAR(-8, 4));
+    STACKVAR(-4, 4) = Py_BuildValue(GLOBAL(0x10048E3C), STACKVAR(-12, 4));
+    REGDEF(eax=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'test eax, eax'
 
 // address: 0x1003EBAE
 p1003EBAE
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=0)
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048E40), LOCAL(-8));
+    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048E40), LOCAL(-8)) == 0x00000000)
+    {
+        REGDEF(eax=0x00000000)
+        return;
+    }
+    STACKVAR(-12, 4) = unknown_function_10006266(STACKVAR(-8, 4));
+    STACKVAR(-4, 4) = Py_BuildValue(GLOBAL(0x10048E50), STACKVAR(-12, 4));
+    REGDEF(eax=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'test eax, eax'
 
 // address: 0x1003EC03
 p1003EC03
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=0)
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048E54), LOCAL(-8));
+    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048E54), LOCAL(-8)) == 0x00000000)
+    {
+        REGDEF(eax=0x00000000)
+        return;
+    }
+    STACKVAR(-12, 4) = unknown_function_10006230(STACKVAR(-8, 4));
+    STACKVAR(-4, 4) = Py_BuildValue(GLOBAL(0x10048E60), STACKVAR(-12, 4));
+    REGDEF(eax=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'test eax, eax'
 
 // address: 0x1003EC58
 p1003EC58
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=0)
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048E64), LOCAL(-8));
+    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048E64), LOCAL(-8)) == 0x00000000)
+    {
+        REGDEF(eax=0x00000000)
+        return;
+    }
+    STACKVAR(-12, 4) = unknown_function_1000660B(STACKVAR(-8, 4));
+    STACKVAR(-4, 4) = Py_BuildValue(GLOBAL(0x10048E74), STACKVAR(-12, 4));
+    REGDEF(eax=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'test eax, eax'
 
 // address: 0x1003ECAD
 p1003ECAD
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=0)
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048E78), LOCAL(-8));
+    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048E78), LOCAL(-8)) == 0x00000000)
+    {
+        REGDEF(eax=0x00000000)
+        return;
+    }
+    STACKVAR(-12, 4) = unknown_function_10006620(STACKVAR(-8, 4));
+    STACKVAR(-4, 4) = Py_BuildValue(GLOBAL(0x10048E88), STACKVAR(-12, 4));
+    REGDEF(eax=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'test eax, eax'
 
 // address: 0x1003ED02
 p1003ED02
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=0)
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048E8C), LOCAL(-8));
+    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048E8C), LOCAL(-8)) == 0x00000000)
+    {
+        REGDEF(eax=0x00000000)
+        return;
+    }
+    STACKVAR(-12, 4) = unknown_function_10006635(STACKVAR(-8, 4));
+    STACKVAR(-4, 4) = Py_BuildValue(GLOBAL(0x10048EA0), STACKVAR(-12, 4));
+    REGDEF(eax=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'test eax, eax'
 
 // address: 0x1003ED57
 p1003ED57
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=0)
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048EA4), LOCAL(-8));
+    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048EA4), LOCAL(-8)) == 0x00000000)
+    {
+        REGDEF(eax=0x00000000)
+        return;
+    }
+    STACKVAR(-12, 4) = unknown_function_1000664A(STACKVAR(-8, 4));
+    STACKVAR(-4, 4) = Py_BuildValue(GLOBAL(0x10048EB8), STACKVAR(-12, 4));
+    REGDEF(eax=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'test eax, eax'
 
 // address: 0x1003EDAC
 p1003EDAC
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=16, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=16, stack_delta=0)
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048EBC), LOCAL(-8), LOCAL(-12));
+    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048EBC), LOCAL(-8), LOCAL(-12)) == 0x00000000)
+    {
+        REGDEF(eax=0x00000000)
+        return;
+    }
+    STACKVAR(-16, 4) = unknown_function_1000665F(STACKVAR(-8, 4), STACKVAR(-12, 4));
+    STACKVAR(-4, 4) = Py_BuildValue(GLOBAL(0x10048ED4), STACKVAR(-16, 4));
+    REGDEF(eax=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'test eax, eax'
 
 // address: 0x1003EE09
 p1003EE09
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=8, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=8, stack_delta=0)
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048ED8));
+    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048ED8)) == 0x00000000)
+    {
+        REGDEF(eax=0x00000000)
+        return;
+    }
+    STACKVAR(-8, 4) = GetCurrentLanguage();
+    STACKVAR(-4, 4) = Py_BuildValue(GLOBAL(0x10048EEC), STACKVAR(-8, 4));
+    REGDEF(eax=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'test eax, eax'
 
 // address: 0x1003EE53
 p1003EE53
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=8, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=8, stack_delta=0)
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048EF0));
+    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048EF0)) == 0x00000000)
+    {
+        REGDEF(eax=0x00000000)
+        return;
+    }
+    STACKVAR(-8, 4) = GetConfigDirectory();
+    STACKVAR(-4, 4) = Py_BuildValue(GLOBAL(0x10048F04), STACKVAR(-8, 4));
+    REGDEF(eax=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'test eax, eax'
 
 // address: 0x1003EE9D
 p1003EE9D
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=136, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=136, stack_delta=0)
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048F08));
+    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048F08)) == 0x00000000)
+    {
+        REGDEF(eax=0x00000000)
+        return;
+    }
+    STACKVAR(-8, 4) = GetResourceManager();
+    unknown_function_1003EF05(LOCAL(-136), STACKVAR(-8, 4), GLOBAL(0x10048F1C));
+    STACKVAR(-4, 4) = Py_BuildValue(GLOBAL(0x10048F34), LOCAL(-136));
+    REGDEF(eax=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'test eax, eax'
 
 // address: 0x1003EF05
 p1003EF05
@@ -10726,9 +10951,13 @@ p1003EFD4
     STACKVAR(-8, 4) = 0x00000000;
     STACKVAR(-12, 4) = 0x00000000;
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048F38), LOCAL(-8), LOCAL(-12));
+    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048F38), LOCAL(-8), LOCAL(-12)) != 0x00000000)
+    {
+        goto l1003F017;
+    }
+    REGDEF(eax=0x00000000)
 }
-Failed to find pattern for 'test eax, eax'
+Failed to find pattern for 'jmp near ptr l1003F247'
 
 // address: 0x1003F24C
 p1003F24C
@@ -10736,9 +10965,13 @@ p1003F24C
     ProcedureInfo(this=None, this_offset=None, local_size=24, stack_delta=None)
     STACKVAR(-12, 4) = 0x00000000;
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048F60), LOCAL(-12));
+    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048F60), LOCAL(-12)) != 0x00000000)
+    {
+        goto l1003F280;
+    }
+    REGDEF(eax=0x00000000)
 }
-Failed to find pattern for 'test eax, eax'
+Failed to find pattern for 'jmp near ptr l1003F301'
 
 // address: 0x1003F305
 p1003F305
@@ -10780,9 +11013,13 @@ p1003FAC8
     STACKVAR(8, 4) = STACKVAR(8, 4);
     STACKVAR(-16, 4) = LOCAL(-28);
     STACKVAR(-20, 4) = LOCAL(-4);
-    PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048FCC), LOCAL(-24));
+    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048FCC), LOCAL(-24)) != 0x00000000)
+    {
+        goto l1003FB08;
+    }
+    REGDEF(eax=0x00000000)
 }
-Failed to find pattern for 'test eax, eax'
+Failed to find pattern for 'jmp near ptr l1003FBC9'
 
 // address: 0x1003FBCD
 p1003FBCD
@@ -10795,12 +11032,27 @@ Failed to find pattern for 'jne l1003FBE4'
 // address: 0x1003FCF4
 p1003FCF4
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=16, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=16, stack_delta=0)
     STACKVAR(-12, 4) = 0x00000000;
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10049048), LOCAL(-12));
+    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10049048), LOCAL(-12)) == 0x00000000)
+    {
+        REGDEF(eax=0x00000000)
+        return;
+    }
+    if (STACKVAR(-12, 4) != 0x00000000)
+    {
+        if (unknown_function_1003F305(STACKVAR(-12, 4), LOCAL(-8), GLOBAL(0x10049060)) != 0x00000000)
+        {
+            PyErr_SetString(ACCESS(&PyExc_TypeError, 0, 4), GLOBAL(0x10049070));
+            REGDEF(eax=0x00000000)
+            return;
+        }
+    }
+    STACKVAR(-16, 4) = unknown_function_1003FD8A(STACKVAR(-8, 4));
+    STACKVAR(-4, 4) = Py_BuildValue(GLOBAL(0x100490B8), STACKVAR(-16, 4));
+    REGDEF(eax=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'test eax, eax'
 
 // address: 0x1003FD8A
 p1003FD8A
@@ -10821,161 +11073,391 @@ p1003FDA8
     ProcedureInfo(this=None, this_offset=None, local_size=20, stack_delta=None)
     STACKVAR(-12, 4) = 0x00000000;
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x100490BC), LOCAL(-12));
+    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x100490BC), LOCAL(-12)) != 0x00000000)
+    {
+        goto l1003FDDC;
+    }
+    REGDEF(eax=0x00000000)
 }
-Failed to find pattern for 'test eax, eax'
+Failed to find pattern for 'jmp near ptr l1003FE75'
 
 // address: 0x1003FE79
 p1003FE79
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=20, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=20, stack_delta=0)
     STACKVAR(-16, 4) = 0x00000000;
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10049128), LOCAL(-16), LOCAL(-12));
+    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10049128), LOCAL(-16), LOCAL(-12)) == 0x00000000)
+    {
+        REGDEF(eax=0x00000000)
+        return;
+    }
+    if (STACKVAR(-16, 4) != 0x00000000)
+    {
+        if (unknown_function_1003F305(STACKVAR(-16, 4), LOCAL(-8), GLOBAL(0x10049140)) != 0x00000000)
+        {
+            PyErr_SetString(ACCESS(&PyExc_TypeError, 0, 4), GLOBAL(0x10049150));
+            REGDEF(eax=0x00000000)
+            return;
+        }
+    }
+    STACKVAR(-20, 4) = reinterpret_cast<B_BitMap24 *>(STACKVAR(-8, 4))->SaveToBMP(reinterpret_cast<char *>(STACKVAR(-12, 4)));
+    STACKVAR(-4, 4) = Py_BuildValue(GLOBAL(0x1004919C), STACKVAR(-20, 4));
+    REGDEF(eax=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'test eax, eax'
 
 // address: 0x1003FF12
 p1003FF12
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=20, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=20, stack_delta=0)
     STACKVAR(-16, 4) = 0x00000000;
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x100491A0), LOCAL(-16), LOCAL(-12));
+    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x100491A0), LOCAL(-16), LOCAL(-12)) == 0x00000000)
+    {
+        REGDEF(eax=0x00000000)
+        return;
+    }
+    if (STACKVAR(-16, 4) != 0x00000000)
+    {
+        if (unknown_function_1003F305(STACKVAR(-16, 4), LOCAL(-8), GLOBAL(0x100491BC)) != 0x00000000)
+        {
+            PyErr_SetString(ACCESS(&PyExc_TypeError, 0, 4), GLOBAL(0x100491CC));
+            REGDEF(eax=0x00000000)
+            return;
+        }
+    }
+    STACKVAR(-20, 4) = STACKVAR(-8, 4)->unknown_method_10027D86(STACKVAR(-12, 4));
+    STACKVAR(-4, 4) = Py_BuildValue(GLOBAL(0x10049218), STACKVAR(-20, 4));
+    REGDEF(eax=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'test eax, eax'
 
 // address: 0x1003FFAB
 p1003FFAB
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=24, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=24, stack_delta=0)
     STACKVAR(-16, 4) = 0x00000032;
     STACKVAR(-20, 4) = 0x00000000;
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x1004921C), LOCAL(-20), LOCAL(-12), LOCAL(-16));
+    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x1004921C), LOCAL(-20), LOCAL(-12), LOCAL(-16)) == 0x00000000)
+    {
+        REGDEF(eax=0x00000000)
+        return;
+    }
+    if (STACKVAR(-20, 4) != 0x00000000)
+    {
+        if (unknown_function_1003F305(STACKVAR(-20, 4), LOCAL(-8), GLOBAL(0x10049238)) != 0x00000000)
+        {
+            PyErr_SetString(ACCESS(&PyExc_TypeError, 0, 4), GLOBAL(0x10049248));
+            REGDEF(eax=0x00000000)
+            return;
+        }
+    }
+    STACKVAR(-24, 4) = reinterpret_cast<B_BitMap24 *>(STACKVAR(-8, 4))->SaveToJPEG(reinterpret_cast<char *>(STACKVAR(-12, 4)), reinterpret_cast<int>(STACKVAR(-16, 4)));
+    STACKVAR(-4, 4) = Py_BuildValue(GLOBAL(0x10049294), STACKVAR(-24, 4));
+    REGDEF(eax=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'test eax, eax'
 
 // address: 0x10040054
 p10040054
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=20, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=20, stack_delta=0)
     STACKVAR(-16, 4) = 0x00000000;
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10049298), LOCAL(-16), LOCAL(-12));
+    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10049298), LOCAL(-16), LOCAL(-12)) == 0x00000000)
+    {
+        REGDEF(eax=0x00000000)
+        return;
+    }
+    if (STACKVAR(-16, 4) != 0x00000000)
+    {
+        if (unknown_function_1003F305(STACKVAR(-16, 4), LOCAL(-8), GLOBAL(0x100492B4)) != 0x00000000)
+        {
+            PyErr_SetString(ACCESS(&PyExc_TypeError, 0, 4), GLOBAL(0x100492C4));
+            REGDEF(eax=0x00000000)
+            return;
+        }
+    }
+    STACKVAR(-20, 4) = STACKVAR(-8, 4)->unknown_method_10029510(STACKVAR(-12, 4));
+    STACKVAR(-4, 4) = Py_BuildValue(GLOBAL(0x10049314), STACKVAR(-20, 4));
+    REGDEF(eax=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'test eax, eax'
 
 // address: 0x100400ED
 p100400ED
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=20, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=20, stack_delta=0)
     STACKVAR(-16, 4) = 0x00000000;
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10049318), LOCAL(-16), LOCAL(-12));
+    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10049318), LOCAL(-16), LOCAL(-12)) == 0x00000000)
+    {
+        REGDEF(eax=0x00000000)
+        return;
+    }
+    if (STACKVAR(-16, 4) != 0x00000000)
+    {
+        if (unknown_function_1003F305(STACKVAR(-16, 4), LOCAL(-8), GLOBAL(0x10049334)) != 0x00000000)
+        {
+            PyErr_SetString(ACCESS(&PyExc_TypeError, 0, 4), GLOBAL(0x10049344));
+            REGDEF(eax=0x00000000)
+            return;
+        }
+    }
+    STACKVAR(-20, 4) = STACKVAR(-8, 4)->unknown_method_10027E11(STACKVAR(-12, 4));
+    STACKVAR(-4, 4) = Py_BuildValue(GLOBAL(0x10049394), STACKVAR(-20, 4));
+    REGDEF(eax=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'test eax, eax'
 
 // address: 0x10040186
 p10040186
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=24, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=24, stack_delta=0)
     STACKVAR(-16, 4) = 0x00000032;
     STACKVAR(-20, 4) = 0x00000000;
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10049398), LOCAL(-20), LOCAL(-12), LOCAL(-16));
+    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10049398), LOCAL(-20), LOCAL(-12), LOCAL(-16)) == 0x00000000)
+    {
+        REGDEF(eax=0x00000000)
+        return;
+    }
+    if (STACKVAR(-20, 4) != 0x00000000)
+    {
+        if (unknown_function_1003F305(STACKVAR(-20, 4), LOCAL(-8), GLOBAL(0x100493B4)) != 0x00000000)
+        {
+            PyErr_SetString(ACCESS(&PyExc_TypeError, 0, 4), GLOBAL(0x100493C4));
+            REGDEF(eax=0x00000000)
+            return;
+        }
+    }
+    STACKVAR(-24, 4) = reinterpret_cast<B_BitMap24 *>(STACKVAR(-8, 4))->SaveToFile(reinterpret_cast<char *>(STACKVAR(-12, 4)), reinterpret_cast<int>(STACKVAR(-16, 4)));
+    STACKVAR(-4, 4) = Py_BuildValue(GLOBAL(0x10049410), STACKVAR(-24, 4));
+    REGDEF(eax=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'test eax, eax'
 
 // address: 0x1004022F
 p1004022F
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=0)
     STACKVAR(-12, 4) = 0x00000000;
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10049414), LOCAL(-12));
+    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10049414), LOCAL(-12)) == 0x00000000)
+    {
+        REGDEF(eax=0x00000000)
+        return;
+    }
+    if (STACKVAR(-12, 4) != 0x00000000)
+    {
+        if (unknown_function_1003F305(STACKVAR(-12, 4), LOCAL(-8), GLOBAL(0x10049430)) != 0x00000000)
+        {
+            PyErr_SetString(ACCESS(&PyExc_TypeError, 0, 4), GLOBAL(0x10049440));
+            REGDEF(eax=0x00000000)
+            return;
+        }
+    }
+    STACKVAR(-8, 4)->unknown_method_100283CD();
+    ACCESS(&_Py_NoneStruct, 0, 4) = reinterpret_cast<any_int32>(ACCESS(&_Py_NoneStruct, 0, 4)) + 0x00000001;
+    STACKVAR(-4, 4) = &_Py_NoneStruct;
+    REGDEF(eax=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'test eax, eax'
 
 // address: 0x100402C4
 p100402C4
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=20, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=20, stack_delta=0)
     STACKVAR(-16, 4) = 0x00000000;
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10049490), LOCAL(-16), LOCAL(-12));
+    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10049490), LOCAL(-16), LOCAL(-12)) == 0x00000000)
+    {
+        REGDEF(eax=0x00000000)
+        return;
+    }
+    if (STACKVAR(-16, 4) != 0x00000000)
+    {
+        if (unknown_function_1003F305(STACKVAR(-16, 4), LOCAL(-8), GLOBAL(0x100494B0)) != 0x00000000)
+        {
+            PyErr_SetString(ACCESS(&PyExc_TypeError, 0, 4), GLOBAL(0x100494C8));
+            REGDEF(eax=0x00000000)
+            return;
+        }
+    }
+    STACKVAR(-20, 4) = reinterpret_cast<B_ResourceManager *>(STACKVAR(-8, 4))->NResources(reinterpret_cast<unsigned short>(STACKVAR(-12, 2)));
+    STACKVAR(-4, 4) = Py_BuildValue(GLOBAL(0x10049524), STACKVAR(-20, 4));
+    REGDEF(eax=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'test eax, eax'
 
 // address: 0x1004035E
 p1004035E
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=24, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=24, stack_delta=0)
     STACKVAR(-20, 4) = 0x00000000;
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10049528), LOCAL(-20), LOCAL(-12), LOCAL(-16));
+    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10049528), LOCAL(-20), LOCAL(-12), LOCAL(-16)) == 0x00000000)
+    {
+        REGDEF(eax=0x00000000)
+        return;
+    }
+    if (STACKVAR(-20, 4) != 0x00000000)
+    {
+        if (unknown_function_1003F305(STACKVAR(-20, 4), LOCAL(-8), GLOBAL(0x10049550)) != 0x00000000)
+        {
+            PyErr_SetString(ACCESS(&PyExc_TypeError, 0, 4), GLOBAL(0x10049568));
+            REGDEF(eax=0x00000000)
+            return;
+        }
+    }
+    STACKVAR(-24, 4) = STACKVAR(-8, 4)->unknown_method_10005E42(STACKVAR(-12, 2), STACKVAR(-16, 4));
+    STACKVAR(-4, 4) = Py_BuildValue(GLOBAL(0x100495C8), STACKVAR(-24, 4));
+    REGDEF(eax=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'test eax, eax'
 
 // address: 0x10040401
 p10040401
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=24, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=24, stack_delta=0)
     STACKVAR(-20, 4) = 0x00000000;
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x100495CC), LOCAL(-20), LOCAL(-12), LOCAL(-16));
+    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x100495CC), LOCAL(-20), LOCAL(-12), LOCAL(-16)) == 0x00000000)
+    {
+        REGDEF(eax=0x00000000)
+        return;
+    }
+    if (STACKVAR(-20, 4) != 0x00000000)
+    {
+        if (unknown_function_1003F305(STACKVAR(-20, 4), LOCAL(-8), GLOBAL(0x100495F4)) != 0x00000000)
+        {
+            PyErr_SetString(ACCESS(&PyExc_TypeError, 0, 4), GLOBAL(0x1004960C));
+            REGDEF(eax=0x00000000)
+            return;
+        }
+    }
+    STACKVAR(-24, 4) = STACKVAR(-8, 4)->unknown_method_10005E8F(STACKVAR(-12, 2), STACKVAR(-16, 4));
+    STACKVAR(-4, 4) = Py_BuildValue(GLOBAL(0x1004966C), STACKVAR(-24, 4));
+    REGDEF(eax=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'test eax, eax'
 
 // address: 0x100404A4
 p100404A4
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=24, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=24, stack_delta=0)
     STACKVAR(-20, 4) = 0x00000000;
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10049670), LOCAL(-20), LOCAL(-12), LOCAL(-16));
+    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10049670), LOCAL(-20), LOCAL(-12), LOCAL(-16)) == 0x00000000)
+    {
+        REGDEF(eax=0x00000000)
+        return;
+    }
+    if (STACKVAR(-20, 4) != 0x00000000)
+    {
+        if (unknown_function_1003F305(STACKVAR(-20, 4), LOCAL(-8), GLOBAL(0x10049698)) != 0x00000000)
+        {
+            PyErr_SetString(ACCESS(&PyExc_TypeError, 0, 4), GLOBAL(0x100496B0));
+            REGDEF(eax=0x00000000)
+            return;
+        }
+    }
+    STACKVAR(-24, 4) = reinterpret_cast<B_ResourceManager *>(STACKVAR(-8, 4))->IsResourceLoaded(reinterpret_cast<int>(STACKVAR(-12, 4)), reinterpret_cast<int>(STACKVAR(-16, 4)));
+    STACKVAR(-4, 4) = Py_BuildValue(GLOBAL(0x10049710), STACKVAR(-24, 4));
+    REGDEF(eax=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'test eax, eax'
 
 // address: 0x10040546
 p10040546
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=28, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=28, stack_delta=0)
     STACKVAR(-20, 4) = 0x00000000;
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10049714), LOCAL(-20), LOCAL(-12), LOCAL(-16), LOCAL(-24));
+    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10049714), LOCAL(-20), LOCAL(-12), LOCAL(-16), LOCAL(-24)) == 0x00000000)
+    {
+        REGDEF(eax=0x00000000)
+        return;
+    }
+    if (STACKVAR(-20, 4) != 0x00000000)
+    {
+        if (unknown_function_1003F305(STACKVAR(-20, 4), LOCAL(-8), GLOBAL(0x10049738)) != 0x00000000)
+        {
+            PyErr_SetString(ACCESS(&PyExc_TypeError, 0, 4), GLOBAL(0x10049750));
+            REGDEF(eax=0x00000000)
+            return;
+        }
+    }
+    STACKVAR(-28, 4) = STACKVAR(-8, 4)->unknown_method_10005C13(STACKVAR(-12, 2), STACKVAR(-16, 4), STACKVAR(-24, 4));
+    STACKVAR(-4, 4) = Py_BuildValue(GLOBAL(0x100497AC), STACKVAR(-28, 4));
+    REGDEF(eax=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'test eax, eax'
 
 // address: 0x100405F1
 p100405F1
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=24, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=24, stack_delta=0)
     STACKVAR(-20, 4) = 0x00000000;
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x100497B0), LOCAL(-20), LOCAL(-12), LOCAL(-16));
+    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x100497B0), LOCAL(-20), LOCAL(-12), LOCAL(-16)) == 0x00000000)
+    {
+        REGDEF(eax=0x00000000)
+        return;
+    }
+    if (STACKVAR(-20, 4) != 0x00000000)
+    {
+        if (unknown_function_1003F305(STACKVAR(-20, 4), LOCAL(-8), GLOBAL(0x100497DC)) != 0x00000000)
+        {
+            PyErr_SetString(ACCESS(&PyExc_TypeError, 0, 4), GLOBAL(0x100497F4));
+            REGDEF(eax=0x00000000)
+            return;
+        }
+    }
+    STACKVAR(-24, 4) = STACKVAR(-8, 4)->unknown_method_10005BB2(STACKVAR(-12, 2), STACKVAR(-16, 4));
+    STACKVAR(-4, 4) = Py_BuildValue(GLOBAL(0x10049858), STACKVAR(-24, 4));
+    REGDEF(eax=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'test eax, eax'
 
 // address: 0x10040694
 p10040694
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=16, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=16, stack_delta=0)
     STACKVAR(-12, 4) = 0x00000000;
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x1004985C), LOCAL(-12));
+    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x1004985C), LOCAL(-12)) == 0x00000000)
+    {
+        REGDEF(eax=0x00000000)
+        return;
+    }
+    if (STACKVAR(-12, 4) != 0x00000000)
+    {
+        if (unknown_function_1003F305(STACKVAR(-12, 4), LOCAL(-8), GLOBAL(0x1004987C)) != 0x00000000)
+        {
+            PyErr_SetString(ACCESS(&PyExc_TypeError, 0, 4), GLOBAL(0x10049894));
+            REGDEF(eax=0x00000000)
+            return;
+        }
+    }
+    STACKVAR(-16, 4) = STACKVAR(-8, 4)->unknown_method_10004C20();
+    STACKVAR(-4, 4) = Py_BuildValue(GLOBAL(0x100498EC), STACKVAR(-16, 4));
+    REGDEF(eax=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'test eax, eax'
 
 // address: 0x10040726
 p10040726
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=20, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=20, stack_delta=0)
     STACKVAR(-16, 4) = 0x00000000;
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x100498F0), LOCAL(-16), LOCAL(-12));
+    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x100498F0), LOCAL(-16), LOCAL(-12)) == 0x00000000)
+    {
+        REGDEF(eax=0x00000000)
+        return;
+    }
+    if (STACKVAR(-16, 4) != 0x00000000)
+    {
+        if (unknown_function_1003F305(STACKVAR(-16, 4), LOCAL(-8), GLOBAL(0x10049910)) != 0x00000000)
+        {
+            PyErr_SetString(ACCESS(&PyExc_TypeError, 0, 4), GLOBAL(0x10049928));
+            REGDEF(eax=0x00000000)
+            return;
+        }
+    }
+    STACKVAR(-20, 4) = STACKVAR(-8, 4)->unknown_method_10004C37(STACKVAR(-12, 4));
+    STACKVAR(-4, 4) = Py_BuildValue(GLOBAL(0x10049980), STACKVAR(-20, 4));
+    REGDEF(eax=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'test eax, eax'
 
 // address: 0x100407BF
 p100407BF
