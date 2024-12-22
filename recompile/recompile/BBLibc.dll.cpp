@@ -189,7 +189,7 @@ l100018C9:
     STACKVAR(-4, 4) = STACKVAR(8, 4);
     goto l100018EF;
 l100018D1:
-    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(8, 4)) + STACKVAR(-12, 4)->unknown_method_100019AF();
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(8, 4)) + reinterpret_cast<any_int32>(STACKVAR(-12, 4)->unknown_method_100019AF());
     goto l100018EF;
 l100018E3:
     STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(8, 4)) + reinterpret_cast<any_int32>(ACCESS(STACKVAR(-12, 4), 8, 4));
@@ -1252,7 +1252,7 @@ p10003F26
     reinterpret_cast<B_ODataFile &>(STACKVAR(8, 4)) << *reinterpret_cast<unsigned int *>(LOCAL(-8));
     STACKVAR(-12, 4) = STACKVAR(12, 4)->(ACCESS(ACCESS(STACKVAR(12, 4), 0, 4), 12, 4))();
     reinterpret_cast<B_ODataFile &>(STACKVAR(8, 4)) << *reinterpret_cast<unsigned int *>(LOCAL(-12));
-    STACKVAR(-16, 4) = STACKVAR(12, 4)->(ACCESS(ACCESS(STACKVAR(12, 4), 0, 4), 4, 4))() & 0x0000FFFF;
+    STACKVAR(-16, 4) = reinterpret_cast<any_int32>(STACKVAR(12, 4)->(ACCESS(ACCESS(STACKVAR(12, 4), 0, 4), 4, 4))()) & 0x0000FFFF;
     if (STACKVAR(-16, 4) == 0x00000001)
     {
         goto l10003FA8;
@@ -3071,7 +3071,7 @@ p1000CD6C
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=0)
     STACKVAR(-4, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 32, 4), 24, 4);
-    if ((ACCESS(STACKVAR(-4, 4), 12, 4)(ACCESS(STACKVAR(8, 4), 32, 4)) & 0x000000FF) == 0x00000000)
+    if ((reinterpret_cast<any_int32>(ACCESS(STACKVAR(-4, 4), 12, 4)(ACCESS(STACKVAR(8, 4), 32, 4))) & 0x000000FF) == 0x00000000)
     {
         REGDEF(al=0)
         return;
@@ -3085,7 +3085,7 @@ p1000CD6C
 p1000CDB5
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
-    if ((unknown_function_1000CEA5(STACKVAR(8, 4)) & 0x000000FF) != 0x00000000)
+    if ((reinterpret_cast<any_int32>(unknown_function_1000CEA5(STACKVAR(8, 4))) & 0x000000FF) != 0x00000000)
     {
         goto l1000CDD5;
     }
@@ -3097,7 +3097,7 @@ Failed to find pattern for 'jmp near ptr l1000CEA1'
 p1000CEA5
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
-    if ((unknown_function_1000CC15(STACKVAR(8, 4), 0x0000007F, 0x00000007) & 0x000000FF) == 0x00000000)
+    if ((reinterpret_cast<any_int32>(unknown_function_1000CC15(STACKVAR(8, 4), 0x0000007F, 0x00000007)) & 0x000000FF) == 0x00000000)
     {
         REGDEF(al=0)
         return;
@@ -3888,7 +3888,7 @@ p10010C02
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=0)
     STACKVAR(-4, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 32, 4), 24, 4);
-    if ((ACCESS(STACKVAR(-4, 4), 12, 4)(ACCESS(STACKVAR(8, 4), 32, 4)) & 0x000000FF) == 0x00000000)
+    if ((reinterpret_cast<any_int32>(ACCESS(STACKVAR(-4, 4), 12, 4)(ACCESS(STACKVAR(8, 4), 32, 4))) & 0x000000FF) == 0x00000000)
     {
         ACCESS(ACCESS(ACCESS(STACKVAR(8, 4), 32, 4), 0, 4), 20, 4) = 0x00000018;
         ACCESS(ACCESS(ACCESS(STACKVAR(8, 4), 32, 4), 0, 4), 0, 4)(ACCESS(STACKVAR(8, 4), 32, 4));
@@ -4644,7 +4644,7 @@ p100147D6
     {
         goto l1001481C;
     }
-    if ((unknown_function_10014F46(STACKVAR(8, 4)) & 0x000000FF) != 0x00000000)
+    if ((reinterpret_cast<any_int32>(unknown_function_10014F46(STACKVAR(8, 4))) & 0x000000FF) != 0x00000000)
     {
         ACCESS(STACKVAR(-4, 4), 12, 4) = GLOBAL(0x100150C1);
         goto l10014826;

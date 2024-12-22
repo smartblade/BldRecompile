@@ -2,7 +2,7 @@ from data_types.data_type import DataType
 
 
 class AnyInt(DataType):
-    """Signed or unsigned integer or pointer"""
+    """Signed or unsigned integer or pointer to char"""
 
     def __init__(self, size):
         super().__init__()

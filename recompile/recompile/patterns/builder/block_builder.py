@@ -107,7 +107,7 @@ class BlockBuilder:
     def _extract_call_return(self, reg):
         return_types = {
             "ax": data_types.AnyInt16(),
-            "eax": data_types.AnyInt32(),
+            "eax": data_types.Unknown32(),
         }
         return_type = return_types[reg]
         self._try_merge_args_into_procedure_call()
