@@ -2,6 +2,10 @@ import data_types
 
 
 def are_same(first, second):
+    if isinstance(first, data_types.NamedType):
+        return are_same(first.referenced_type, second)
+    if isinstance(second, data_types.NamedType):
+        return are_same(first, second.referenced_type)
     if type(first) is not type(second):
         return False
     if first is None and second is None:

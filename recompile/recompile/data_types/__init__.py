@@ -9,6 +9,7 @@ from .data_type import DataType
 from .double import Double
 from .float_type import Float
 from .int32 import Int32
+from .named_type import NamedType, make_named_type
 from .pointer32 import Pointer32
 from .reference import Reference
 from .uchar import UChar

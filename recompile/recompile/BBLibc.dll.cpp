@@ -189,17 +189,17 @@ unsigned int B_IDataFile::ReadCacheBlock()
 Failed to find pattern for 'jnb l1000187C'
 
 // address: 0x10001882
-int B_IDataFile::Length()
+long B_IDataFile::Length()
 {
     if (static_cast<unsigned int>(this->fd != -1) != 0)
     {
-        return reinterpret_cast<int>(this->file_size);
+        return reinterpret_cast<long>(this->file_size);
     }
     return 0;
 }
 
 // address: 0x100018A6
-int B_IDataFile::Seek(int offset, int whence)
+long B_IDataFile::Seek(long offset, int whence)
 {
     ProcedureInfo(this=Id(this), this_offset=-12, local_size=16, stack_delta=None)
     STACKVAR(-16, 4) = STACKVAR(12, 4);
@@ -230,9 +230,9 @@ l100018EF:
 Failed to find pattern for 'jbe l10001928'
 
 // address: 0x100019AF
-int B_IDataFile::Tell()
+long B_IDataFile::Tell()
 {
-    return reinterpret_cast<int>(this->cacheBlockBytesRead + this->cacheBlockPos);
+    return reinterpret_cast<long>(this->cacheBlockBytesRead + this->cacheBlockPos);
 }
 
 // address: 0x100019CC
@@ -297,14 +297,14 @@ B_IDataFile &operator >>(B_IDataFile &file, int &i)
 }
 
 // address: 0x10001BC3
-B_IDataFile &operator >>(B_IDataFile &file, int &l)
+B_IDataFile &operator >>(B_IDataFile &file, long &l)
 {
     file.Read(&l, 4);
     return file;
 }
 
 // address: 0x10001BD9
-B_IDataFile &operator >>(B_IDataFile &file, unsigned int &l)
+B_IDataFile &operator >>(B_IDataFile &file, unsigned long &l)
 {
     file.Read(&l, 4);
     return file;
@@ -424,14 +424,14 @@ B_ODataFile &operator <<(B_ODataFile &file, const int &i)
 }
 
 // address: 0x10001FF2
-B_ODataFile &operator <<(B_ODataFile &file, const int &l)
+B_ODataFile &operator <<(B_ODataFile &file, const long &l)
 {
     file.Write(&l, 4);
     return file;
 }
 
 // address: 0x10002008
-B_ODataFile &operator <<(B_ODataFile &file, const unsigned int &l)
+B_ODataFile &operator <<(B_ODataFile &file, const unsigned long &l)
 {
     file.Write(&l, 4);
     return file;
@@ -1347,7 +1347,7 @@ p10003F26
     STACKVAR(-4, 2) = STACKVAR(12, 4)->(ACCESS(ACCESS(STACKVAR(12, 4), 0, 4), 4, 4))();
     reinterpret_cast<B_ODataFile &>(STACKVAR(8, 4)) << *reinterpret_cast<unsigned short *>(LOCAL(-4));
     STACKVAR(-8, 4) = STACKVAR(12, 4)->(ACCESS(ACCESS(STACKVAR(12, 4), 0, 4), 8, 4))();
-    reinterpret_cast<B_ODataFile &>(STACKVAR(8, 4)) << *reinterpret_cast<unsigned int *>(LOCAL(-8));
+    reinterpret_cast<B_ODataFile &>(STACKVAR(8, 4)) << *reinterpret_cast<unsigned long *>(LOCAL(-8));
     STACKVAR(-12, 4) = STACKVAR(12, 4)->(ACCESS(ACCESS(STACKVAR(12, 4), 0, 4), 12, 4))();
     reinterpret_cast<B_ODataFile &>(STACKVAR(8, 4)) << *reinterpret_cast<unsigned int *>(LOCAL(-12));
     STACKVAR(-16, 4) = reinterpret_cast<any_int32>(STACKVAR(12, 4)->(ACCESS(ACCESS(STACKVAR(12, 4), 0, 4), 4, 4))()) & 0x0000FFFF;
@@ -2077,7 +2077,7 @@ B_Color::B_Color()
 }
 
 // address: 0x10006890
-B_Color::B_Color(unsigned char r, unsigned char g, unsigned char b)
+B_Color::B_Color(byte r, byte g, byte b)
 {
     this->r = r;
     this->g = g;
@@ -2540,7 +2540,7 @@ p100085F0
 }
 
 // address: 0x10008639
-B_BitMap::B_BitMap(int type, unsigned int arg_2, unsigned int arg_3, const B_Pal *pal)
+B_BitMap::B_BitMap(BitMapType type, unsigned int arg_2, unsigned int arg_3, const B_Pal *pal)
 {
     ProcedureInfo(this=Id(this), this_offset=-16, local_size=20, stack_delta=None)
     ACCESS(STACKVAR(-16, 4), 4, 4) = STACKVAR(8, 4);
@@ -8132,7 +8132,7 @@ B_IDataFile &operator >>(B_IDataFile &file, B_BitMap24 &bitMap)
     }
     STACKVAR(-8, 4) = file.Tell();
     file >> *reinterpret_cast<unsigned short *>(LOCAL(-4));
-    file.Seek(reinterpret_cast<int>(STACKVAR(-8, 4)), 0);
+    file.Seek(reinterpret_cast<long>(STACKVAR(-8, 4)), 0);
     if ((reinterpret_cast<any_int32>(STACKVAR(-4, 4)) & 0x0000FFFF) == 0x00004D42)
     {
         unknown_function_10029217(file, &bitMap.data, &bitMap.dimension1, &bitMap.dimension2);
@@ -8219,7 +8219,7 @@ Failed to find pattern for 'jmp near ptr l10028581'
 p100285A0
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
-    return reinterpret_cast<B_IDataFile &>(STACKVAR(8, 4)) >> reinterpret_cast<unsigned short &>(STACKVAR(12, 4)) >> reinterpret_cast<unsigned int &>(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000004) >> reinterpret_cast<short &>(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000008) >> reinterpret_cast<short &>(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x0000000A) >> reinterpret_cast<unsigned int &>(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x0000000C);
+    return reinterpret_cast<B_IDataFile &>(STACKVAR(8, 4)) >> reinterpret_cast<unsigned short &>(STACKVAR(12, 4)) >> reinterpret_cast<unsigned long &>(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000004) >> reinterpret_cast<short &>(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000008) >> reinterpret_cast<short &>(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x0000000A) >> reinterpret_cast<unsigned long &>(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x0000000C);
 }
 
 // address: 0x100285F5
@@ -13078,7 +13078,7 @@ B_RDataTriangle::B_RDataTriangle()
 }
 
 // address: 0x10040F69
-B_ParticleGType::B_ParticleGType(const B_Name &new_type, const B_Name &parent_type, unsigned int operation_type, unsigned int duration)
+B_ParticleGType::B_ParticleGType(const B_Name &new_type, const B_Name &parent_type, unsigned long operation_type, unsigned int duration)
 {
     ProcedureInfo(this=Id(this), this_offset=-44, local_size=48, stack_delta=None)
     STACKVAR(-44, 4)->unknown_method_10003A07(STACKVAR(8, 4));
@@ -13148,7 +13148,7 @@ B_ODataFile &operator <<(B_ODataFile &file, const B_ParticleGType &particleType)
 {
     file << static_cast<B_NamedObj &>(particleType);
     reinterpret_cast<B_Name *>(LOCAL(-8))->B_Name(reinterpret_cast<char *>(ACCESS(&?B_3D_raster_device@@3PAVB_3DRasterDevice@@A, 0, 4)->(ACCESS(ACCESS(ACCESS(&?B_3D_raster_device@@3PAVB_3DRasterDevice@@A, 0, 4), 0, 4), 72, 4))(particleType.bmpHandle)));
-    file << particleType.duration << *reinterpret_cast<B_Name *>(LOCAL(-8)) << *reinterpret_cast<unsigned int *>(&particleType.operation_type);
+    file << particleType.duration << *reinterpret_cast<B_Name *>(LOCAL(-8)) << *reinterpret_cast<unsigned long *>(&particleType.operation_type);
     file << particleType.a00C.size;
     file.Write(particleType.a00C.elements, 8 * particleType.a00C.size);
     STACKVAR(-12, 4) = file;
