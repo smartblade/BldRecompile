@@ -75,6 +75,10 @@ class ProcedureCall:
         return self._arguments
 
     @property
+    def callee_expression(self):
+        return self._callee
+
+    @property
     def callee_address(self):
         return self._callee_addr
 

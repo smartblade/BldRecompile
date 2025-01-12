@@ -1,4 +1,9 @@
 def make_named_type(data_type, name):
+    if isinstance(data_type, NamedType):
+        return make_named_type(data_type.referenced_type, name)
+    if data_type is None:
+        return None
+
     class _NamedType(NamedType, type(data_type)):
         pass
     return _NamedType(data_type, name)

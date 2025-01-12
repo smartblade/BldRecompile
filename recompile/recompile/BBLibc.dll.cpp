@@ -24,15 +24,15 @@ int B_IDataFile::SetOnOpenFunc(PyObject *obj)
     {
         if (B_IDataFile::OnOpenFunc != NULL)
         {
-            ACCESS(B_IDataFile::OnOpenFunc, 0, 4) = reinterpret_cast<any_int32>(ACCESS(B_IDataFile::OnOpenFunc, 0, 4)) - 0x00000001;
-            if (ACCESS(B_IDataFile::OnOpenFunc, 0, 4) == 0x00000000)
+            B_IDataFile::OnOpenFunc->ob_refcnt = B_IDataFile::OnOpenFunc->ob_refcnt - 0x00000001;
+            if (B_IDataFile::OnOpenFunc->ob_refcnt == 0)
             {
-                ACCESS(ACCESS(B_IDataFile::OnOpenFunc, 4, 4), 24, 4)(B_IDataFile::OnOpenFunc);
+                B_IDataFile::OnOpenFunc->ob_type->tp_dealloc(B_IDataFile::OnOpenFunc);
             }
         }
         if (obj != NULL)
         {
-            ACCESS(obj, 0, 4) = reinterpret_cast<any_int32>(ACCESS(obj, 0, 4)) + 0x00000001;
+            obj->ob_refcnt = obj->ob_refcnt + 0x00000001;
         }
         B_IDataFile::OnOpenFunc = obj;
     }
@@ -48,10 +48,10 @@ void B_IDataFile::RemoveOnOpenFunc()
 {
     if (B_IDataFile::OnOpenFunc != NULL)
     {
-        ACCESS(B_IDataFile::OnOpenFunc, 0, 4) = reinterpret_cast<any_int32>(ACCESS(B_IDataFile::OnOpenFunc, 0, 4)) - 0x00000001;
-        if (ACCESS(B_IDataFile::OnOpenFunc, 0, 4) == 0x00000000)
+        B_IDataFile::OnOpenFunc->ob_refcnt = B_IDataFile::OnOpenFunc->ob_refcnt - 0x00000001;
+        if (B_IDataFile::OnOpenFunc->ob_refcnt == 0)
         {
-            ACCESS(ACCESS(B_IDataFile::OnOpenFunc, 4, 4), 24, 4)(B_IDataFile::OnOpenFunc);
+            B_IDataFile::OnOpenFunc->ob_type->tp_dealloc(B_IDataFile::OnOpenFunc);
         }
     }
     B_IDataFile::OnOpenFunc = NULL;

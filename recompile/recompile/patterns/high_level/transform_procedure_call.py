@@ -1,3 +1,4 @@
+import data_types
 import parser
 from calling_convention import CallingConvention
 from patterns.validate_procedure_declaration import \
@@ -9,20 +10,37 @@ from .narrow_constant import narrow_constant
 
 
 def transform_procedure_call(pc, declarations, **kwargs):
-    if pc.callee_address is None:
+    proc_decl = _get_callee_declaration(pc, declarations)
+    if proc_decl is None:
         return pc
     assert pc.proc_decl is not None
+    arguments = _convert_arguments_to_parameters_types(pc, proc_decl)
+    return pc.copy(
+        name=proc_decl.proc_name, proc_decl=proc_decl, arguments=arguments)
+
+
+def _get_callee_declaration(pc, declarations):
+    if pc.callee_expression is not None:
+        assert pc.callee_address is None
+        return _get_declaration_from_callee_expression(pc.callee_expression)
+    if pc.callee_address is None:
+        return None
     cpp_declaration = declarations.symbols.procedures.get(pc.callee_address)
     if cpp_declaration is None:
-        return pc
-    proc_decl = parser.parse_cpp_function(
+        return None
+    return parser.parse_cpp_function(
         cpp_declaration.class_name,
         cpp_declaration.declaration,
         declarations.declared_types,
     )
-    arguments = _convert_arguments_to_parameters_types(pc, proc_decl)
-    return pc.copy(
-        name=proc_decl.proc_name, proc_decl=proc_decl, arguments=arguments)
+
+
+def _get_declaration_from_callee_expression(e):
+    function = e.data_type
+    if isinstance(function, data_types.Unknown32):
+        return None
+    assert isinstance(function, data_types.Function)
+    return function.proc_decl
 
 
 def _convert_arguments_to_parameters_types(pc, proc_decl):

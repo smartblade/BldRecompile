@@ -5,6 +5,8 @@ import data_types
 import parser
 from procedure_declaration import ProcedureDeclaration
 
+from .xml_metadata import XmlMetadata
+
 include_regexp = re.compile(r'^#include\s+["<](?P<file>.+)[">]')
 comment_regexp = re.compile(r'^(?P<line>.*)//')
 comment_start_regexp = re.compile(r'^(?P<line>.*)/\*')
@@ -28,19 +30,6 @@ _standard_types = {
         data_types.UInt32(), "unsigned long"),
     "float": data_types.Float(),
     "double": data_types.Double(),
-    "size_t": data_types.make_named_type(data_types.UInt32(), "size_t"),
-    "HMODULE": data_types.Pointer32(),
-    "HINSTANCE": data_types.Pointer32(),
-    "HWND": data_types.Int32(),
-    "HDC": data_types.Int32(),
-    "HGLRC": data_types.Int32(),
-    "WNDPROC": data_types.Pointer32(),
-    "WNDCLASS": data_types.ClassType("WNDCLASS", {}),
-    "TIMECAPS": data_types.ClassType("TIMECAPS", {}),
-    "WORD": data_types.Int32(),
-    "GLuint": data_types.UInt32(),
-    "GLfloat": data_types.Float(),
-    "GLubyte": data_types.UnknownByte(),
     "BitMapType": data_types.make_named_type(data_types.Int32(), "BitMapType"),
     "B_CharData": data_types.ClassType("B_CharData", {}),
     "EventFn": data_types.Pointer32(),
@@ -199,17 +188,19 @@ def _strip_comments(line, is_comment):
     return line, is_comment
 
 
-def parse_cpp_header(src_path):
-    declared_types = _standard_types
-    incomplete_types = {}
+def _parse_cpp_headers(src_path, declared_types, incomplete_types):
     header_states = {}
     for (root, dirs, files) in os.walk(src_path):
         for file in files:
-            if file.lower().endswith(".h"):
+            if file.lower().endswith(".h") or file.lower().endswith(".xml"):
                 file_name = os.path.join(root, file)
                 head, dir_name1 = os.path.split(root)
                 head, dir_name2 = os.path.split(head)
-                header_state = HeaderState(
+                if file.lower().endswith(".xml"):
+                    metadata_state_class = XmlMetadata
+                else:
+                    metadata_state_class = HeaderState
+                header_state = metadata_state_class(
                     file_name, header_states, declared_types, incomplete_types)
                 header_states[file] = header_state
                 header_states["{}/{}".format(dir_name1, file)] = header_state
@@ -218,4 +209,14 @@ def parse_cpp_header(src_path):
                         dir_name2, dir_name1, file)] = header_state
     for header_state in header_states.values():
         header_state.parse()
+
+
+def parse_cpp_header(src_path):
+    declared_types = _standard_types
+    incomplete_types = {}
+    extern_definitions_path = os.path.join(
+        os.path.dirname(os.path.realpath(__file__)), "externdefs")
+    _parse_cpp_headers(
+        extern_definitions_path, declared_types, incomplete_types)
+    _parse_cpp_headers(src_path, declared_types, incomplete_types)
     return declared_types

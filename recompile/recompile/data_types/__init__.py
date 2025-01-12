@@ -8,6 +8,7 @@ from .class_type import ClassType
 from .data_type import DataType
 from .double import Double
 from .float_type import Float
+from .function import Function
 from .int32 import Int32
 from .named_type import NamedType, make_named_type
 from .pointer32 import Pointer32

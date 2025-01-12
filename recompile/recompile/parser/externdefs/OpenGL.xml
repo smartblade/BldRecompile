@@ -1,0 +1,7304 @@
+<?xml version="1.0" encoding="utf-8"?>
+<library xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemata.jklnet.org/Decompiler">
+  <Types>
+    <typedef name="GLenum">
+      <prim domain="UnsignedInt" size="4" />
+    </typedef>
+    <typedef name="GLboolean">
+      <prim domain="UnsignedInt" size="1" />
+    </typedef>
+    <typedef name="GLbitfield">
+      <prim domain="UnsignedInt" size="4" />
+    </typedef>
+    <typedef name="GLbyte">
+      <prim domain="SignedInt" size="1" />
+    </typedef>
+    <typedef name="GLshort">
+      <prim domain="SignedInt" size="2" />
+    </typedef>
+    <typedef name="GLint">
+      <prim domain="SignedInt" size="4" />
+    </typedef>
+    <typedef name="GLsizei">
+      <prim domain="SignedInt" size="4" />
+    </typedef>
+    <typedef name="GLubyte">
+      <prim domain="UnsignedInt" size="1" />
+    </typedef>
+    <typedef name="GLushort">
+      <prim domain="UnsignedInt" size="2" />
+    </typedef>
+    <typedef name="GLuint">
+      <prim domain="UnsignedInt" size="4" />
+    </typedef>
+    <typedef name="GLfloat">
+      <prim domain="Real" size="4" />
+    </typedef>
+    <typedef name="GLclampf">
+      <prim domain="Real" size="4" />
+    </typedef>
+    <typedef name="GLdouble">
+      <prim domain="Real" size="8" />
+    </typedef>
+    <typedef name="GLclampd">
+      <prim domain="Real" size="8" />
+    </typedef>
+    <typedef name="GLvoid">
+      <void />
+    </typedef>
+    <typedef name="PFNGLARRAYELEMENTEXTPROC">
+      <ptr size="4">
+        <fn convention="__stdcall">
+          <return>
+            <void />
+          </return>
+          <arg name="i">
+            <type>GLint</type>
+          </arg>
+        </fn>
+      </ptr>
+    </typedef>
+    <typedef name="PFNGLDRAWARRAYSEXTPROC">
+      <ptr size="4">
+        <fn convention="__stdcall">
+          <return>
+            <void />
+          </return>
+          <arg name="mode">
+            <type>GLenum</type>
+          </arg>
+          <arg name="first">
+            <type>GLint</type>
+          </arg>
+          <arg name="count">
+            <type>GLsizei</type>
+          </arg>
+        </fn>
+      </ptr>
+    </typedef>
+    <typedef name="PFNGLVERTEXPOINTEREXTPROC">
+      <ptr size="4">
+        <fn convention="__stdcall">
+          <return>
+            <void />
+          </return>
+          <arg name="size">
+            <type>GLint</type>
+          </arg>
+          <arg name="type">
+            <type>GLenum</type>
+          </arg>
+          <arg name="stride">
+            <type>GLsizei</type>
+          </arg>
+          <arg name="count">
+            <type>GLsizei</type>
+          </arg>
+          <arg name="pointer">
+            <ptr size="4">
+              <type>GLvoid</type>
+            </ptr>
+          </arg>
+        </fn>
+      </ptr>
+    </typedef>
+    <typedef name="PFNGLNORMALPOINTEREXTPROC">
+      <ptr size="4">
+        <fn convention="__stdcall">
+          <return>
+            <void />
+          </return>
+          <arg name="type">
+            <type>GLenum</type>
+          </arg>
+          <arg name="stride">
+            <type>GLsizei</type>
+          </arg>
+          <arg name="count">
+            <type>GLsizei</type>
+          </arg>
+          <arg name="pointer">
+            <ptr size="4">
+              <type>GLvoid</type>
+            </ptr>
+          </arg>
+        </fn>
+      </ptr>
+    </typedef>
+    <typedef name="PFNGLCOLORPOINTEREXTPROC">
+      <ptr size="4">
+        <fn convention="__stdcall">
+          <return>
+            <void />
+          </return>
+          <arg name="size">
+            <type>GLint</type>
+          </arg>
+          <arg name="type">
+            <type>GLenum</type>
+          </arg>
+          <arg name="stride">
+            <type>GLsizei</type>
+          </arg>
+          <arg name="count">
+            <type>GLsizei</type>
+          </arg>
+          <arg name="pointer">
+            <ptr size="4">
+              <type>GLvoid</type>
+            </ptr>
+          </arg>
+        </fn>
+      </ptr>
+    </typedef>
+    <typedef name="PFNGLINDEXPOINTEREXTPROC">
+      <ptr size="4">
+        <fn convention="__stdcall">
+          <return>
+            <void />
+          </return>
+          <arg name="type">
+            <type>GLenum</type>
+          </arg>
+          <arg name="stride">
+            <type>GLsizei</type>
+          </arg>
+          <arg name="count">
+            <type>GLsizei</type>
+          </arg>
+          <arg name="pointer">
+            <ptr size="4">
+              <type>GLvoid</type>
+            </ptr>
+          </arg>
+        </fn>
+      </ptr>
+    </typedef>
+    <typedef name="PFNGLTEXCOORDPOINTEREXTPROC">
+      <ptr size="4">
+        <fn convention="__stdcall">
+          <return>
+            <void />
+          </return>
+          <arg name="size">
+            <type>GLint</type>
+          </arg>
+          <arg name="type">
+            <type>GLenum</type>
+          </arg>
+          <arg name="stride">
+            <type>GLsizei</type>
+          </arg>
+          <arg name="count">
+            <type>GLsizei</type>
+          </arg>
+          <arg name="pointer">
+            <ptr size="4">
+              <type>GLvoid</type>
+            </ptr>
+          </arg>
+        </fn>
+      </ptr>
+    </typedef>
+    <typedef name="PFNGLEDGEFLAGPOINTEREXTPROC">
+      <ptr size="4">
+        <fn convention="__stdcall">
+          <return>
+            <void />
+          </return>
+          <arg name="stride">
+            <type>GLsizei</type>
+          </arg>
+          <arg name="count">
+            <type>GLsizei</type>
+          </arg>
+          <arg name="pointer">
+            <ptr size="4">
+              <type>GLboolean</type>
+            </ptr>
+          </arg>
+        </fn>
+      </ptr>
+    </typedef>
+    <typedef name="PFNGLGETPOINTERVEXTPROC">
+      <ptr size="4">
+        <fn convention="__stdcall">
+          <return>
+            <void />
+          </return>
+          <arg name="pname">
+            <type>GLenum</type>
+          </arg>
+          <arg name="params">
+            <ptr size="4">
+              <ptr size="4">
+                <type>GLvoid</type>
+              </ptr>
+            </ptr>
+          </arg>
+        </fn>
+      </ptr>
+    </typedef>
+    <typedef name="PFNGLARRAYELEMENTARRAYEXTPROC">
+      <ptr size="4">
+        <fn convention="__stdcall">
+          <return>
+            <void />
+          </return>
+          <arg name="mode">
+            <type>GLenum</type>
+          </arg>
+          <arg name="count">
+            <type>GLsizei</type>
+          </arg>
+          <arg name="pi">
+            <ptr size="4">
+              <type>GLvoid</type>
+            </ptr>
+          </arg>
+        </fn>
+      </ptr>
+    </typedef>
+    <typedef name="PFNGLDRAWRANGEELEMENTSWINPROC">
+      <ptr size="4">
+        <fn convention="__stdcall">
+          <return>
+            <void />
+          </return>
+          <arg name="mode">
+            <type>GLenum</type>
+          </arg>
+          <arg name="start">
+            <type>GLuint</type>
+          </arg>
+          <arg name="end">
+            <type>GLuint</type>
+          </arg>
+          <arg name="count">
+            <type>GLsizei</type>
+          </arg>
+          <arg name="type">
+            <type>GLenum</type>
+          </arg>
+          <arg name="indices">
+            <ptr size="4">
+              <type>GLvoid</type>
+            </ptr>
+          </arg>
+        </fn>
+      </ptr>
+    </typedef>
+    <typedef name="PFNGLADDSWAPHINTRECTWINPROC">
+      <ptr size="4">
+        <fn convention="__stdcall">
+          <return>
+            <void />
+          </return>
+          <arg name="x">
+            <type>GLint</type>
+          </arg>
+          <arg name="y">
+            <type>GLint</type>
+          </arg>
+          <arg name="width">
+            <type>GLsizei</type>
+          </arg>
+          <arg name="height">
+            <type>GLsizei</type>
+          </arg>
+        </fn>
+      </ptr>
+    </typedef>
+    <typedef name="PFNGLCOLORTABLEEXTPROC">
+      <ptr size="4">
+        <fn convention="__stdcall">
+          <return>
+            <void />
+          </return>
+          <arg name="target">
+            <type>GLenum</type>
+          </arg>
+          <arg name="internalFormat">
+            <type>GLenum</type>
+          </arg>
+          <arg name="width">
+            <type>GLsizei</type>
+          </arg>
+          <arg name="format">
+            <type>GLenum</type>
+          </arg>
+          <arg name="type">
+            <type>GLenum</type>
+          </arg>
+          <arg name="data">
+            <ptr size="4">
+              <type>GLvoid</type>
+            </ptr>
+          </arg>
+        </fn>
+      </ptr>
+    </typedef>
+    <typedef name="PFNGLCOLORSUBTABLEEXTPROC">
+      <ptr size="4">
+        <fn convention="__stdcall">
+          <return>
+            <void />
+          </return>
+          <arg name="target">
+            <type>GLenum</type>
+          </arg>
+          <arg name="start">
+            <type>GLsizei</type>
+          </arg>
+          <arg name="count">
+            <type>GLsizei</type>
+          </arg>
+          <arg name="format">
+            <type>GLenum</type>
+          </arg>
+          <arg name="type">
+            <type>GLenum</type>
+          </arg>
+          <arg name="data">
+            <ptr size="4">
+              <type>GLvoid</type>
+            </ptr>
+          </arg>
+        </fn>
+      </ptr>
+    </typedef>
+    <typedef name="PFNGLGETCOLORTABLEEXTPROC">
+      <ptr size="4">
+        <fn convention="__stdcall">
+          <return>
+            <void />
+          </return>
+          <arg name="target">
+            <type>GLenum</type>
+          </arg>
+          <arg name="format">
+            <type>GLenum</type>
+          </arg>
+          <arg name="type">
+            <type>GLenum</type>
+          </arg>
+          <arg name="data">
+            <ptr size="4">
+              <type>GLvoid</type>
+            </ptr>
+          </arg>
+        </fn>
+      </ptr>
+    </typedef>
+    <typedef name="PFNGLGETCOLORTABLEPARAMETERIVEXTPROC">
+      <ptr size="4">
+        <fn convention="__stdcall">
+          <return>
+            <void />
+          </return>
+          <arg name="target">
+            <type>GLenum</type>
+          </arg>
+          <arg name="pname">
+            <type>GLenum</type>
+          </arg>
+          <arg name="params">
+            <ptr size="4">
+              <type>GLint</type>
+            </ptr>
+          </arg>
+        </fn>
+      </ptr>
+    </typedef>
+    <typedef name="PFNGLGETCOLORTABLEPARAMETERFVEXTPROC">
+      <ptr size="4">
+        <fn convention="__stdcall">
+          <return>
+            <void />
+          </return>
+          <arg name="target">
+            <type>GLenum</type>
+          </arg>
+          <arg name="pname">
+            <type>GLenum</type>
+          </arg>
+          <arg name="params">
+            <ptr size="4">
+              <type>GLfloat</type>
+            </ptr>
+          </arg>
+        </fn>
+      </ptr>
+    </typedef>
+    <typedef name="GLUnurbs">
+      <struct name="GLUnurbs" />
+    </typedef>
+    <typedef name="GLUquadric">
+      <struct name="GLUquadric" />
+    </typedef>
+    <typedef name="GLUtesselator">
+      <struct name="GLUtesselator" />
+    </typedef>
+    <typedef name="GLUnurbsObj">
+      <struct name="GLUnurbs" />
+    </typedef>
+    <typedef name="GLUquadricObj">
+      <struct name="GLUquadric" />
+    </typedef>
+    <typedef name="GLUtesselatorObj">
+      <struct name="GLUtesselator" />
+    </typedef>
+    <typedef name="GLUtriangulatorObj">
+      <struct name="GLUtesselator" />
+    </typedef>
+    <typedef name="GLUquadricErrorProc">
+      <ptr size="4">
+        <fn convention="__stdcall">
+          <return>
+            <void />
+          </return>
+          <arg>
+            <type>GLenum</type>
+          </arg>
+        </fn>
+      </ptr>
+    </typedef>
+    <typedef name="GLUtessBeginProc">
+      <ptr size="4">
+        <fn convention="__stdcall">
+          <return>
+            <void />
+          </return>
+          <arg>
+            <type>GLenum</type>
+          </arg>
+        </fn>
+      </ptr>
+    </typedef>
+    <typedef name="GLUtessEdgeFlagProc">
+      <ptr size="4">
+        <fn convention="__stdcall">
+          <return>
+            <void />
+          </return>
+          <arg>
+            <type>GLboolean</type>
+          </arg>
+        </fn>
+      </ptr>
+    </typedef>
+    <typedef name="GLUtessVertexProc">
+      <ptr size="4">
+        <fn convention="__stdcall">
+          <return>
+            <void />
+          </return>
+          <arg>
+            <ptr size="4">
+              <void />
+            </ptr>
+          </arg>
+        </fn>
+      </ptr>
+    </typedef>
+    <typedef name="GLUtessEndProc">
+      <ptr size="4">
+        <fn convention="__stdcall">
+          <return>
+            <void />
+          </return>
+        </fn>
+      </ptr>
+    </typedef>
+    <typedef name="GLUtessErrorProc">
+      <ptr size="4">
+        <fn convention="__stdcall">
+          <return>
+            <void />
+          </return>
+          <arg>
+            <type>GLenum</type>
+          </arg>
+        </fn>
+      </ptr>
+    </typedef>
+    <typedef name="GLUtessBeginDataProc">
+      <ptr size="4">
+        <fn convention="__stdcall">
+          <return>
+            <void />
+          </return>
+          <arg>
+            <type>GLenum</type>
+          </arg>
+          <arg>
+            <ptr size="4">
+              <void />
+            </ptr>
+          </arg>
+        </fn>
+      </ptr>
+    </typedef>
+    <typedef name="GLUtessEdgeFlagDataProc">
+      <ptr size="4">
+        <fn convention="__stdcall">
+          <return>
+            <void />
+          </return>
+          <arg>
+            <type>GLboolean</type>
+          </arg>
+          <arg>
+            <ptr size="4">
+              <void />
+            </ptr>
+          </arg>
+        </fn>
+      </ptr>
+    </typedef>
+    <typedef name="GLUtessVertexDataProc">
+      <ptr size="4">
+        <fn convention="__stdcall">
+          <return>
+            <void />
+          </return>
+          <arg>
+            <ptr size="4">
+              <void />
+            </ptr>
+          </arg>
+          <arg>
+            <ptr size="4">
+              <void />
+            </ptr>
+          </arg>
+        </fn>
+      </ptr>
+    </typedef>
+    <typedef name="GLUtessEndDataProc">
+      <ptr size="4">
+        <fn convention="__stdcall">
+          <return>
+            <void />
+          </return>
+          <arg>
+            <ptr size="4">
+              <void />
+            </ptr>
+          </arg>
+        </fn>
+      </ptr>
+    </typedef>
+    <typedef name="GLUtessErrorDataProc">
+      <ptr size="4">
+        <fn convention="__stdcall">
+          <return>
+            <void />
+          </return>
+          <arg>
+            <type>GLenum</type>
+          </arg>
+          <arg>
+            <ptr size="4">
+              <void />
+            </ptr>
+          </arg>
+        </fn>
+      </ptr>
+    </typedef>
+    <typedef name="GLUnurbsErrorProc">
+      <ptr size="4">
+        <fn convention="__stdcall">
+          <return>
+            <void />
+          </return>
+          <arg>
+            <type>GLenum</type>
+          </arg>
+        </fn>
+      </ptr>
+    </typedef>
+    <struct name="_AUX_EVENTREC" size="20">
+      <field offset="0" name="event">
+        <type>GLint</type>
+      </field>
+      <field offset="4" name="data">
+        <arr length="4">
+          <type>GLint</type>
+        </arr>
+      </field>
+    </struct>
+    <typedef name="AUX_EVENTREC">
+      <struct name="_AUX_EVENTREC" />
+    </typedef>
+    <struct name="_AUX_RGBImageRec" size="12">
+      <field offset="0" name="sizeX">
+        <type>GLint</type>
+      </field>
+      <field offset="4" name="sizeY">
+        <type>GLint</type>
+      </field>
+      <field offset="8" name="data">
+        <ptr size="4">
+          <prim domain="UnsignedInt" size="1" />
+        </ptr>
+      </field>
+    </struct>
+    <typedef name="AUX_RGBImageRec">
+      <struct name="_AUX_RGBImageRec" />
+    </typedef>
+    <typedef name="AUXMAINPROC">
+      <ptr size="4">
+        <fn convention="__stdcall">
+          <return>
+            <void />
+          </return>
+        </fn>
+      </ptr>
+    </typedef>
+    <typedef name="AUXEXPOSEPROC">
+      <ptr size="4">
+        <fn convention="__stdcall">
+          <return>
+            <void />
+          </return>
+          <arg>
+            <prim domain="SignedInt" size="4" />
+          </arg>
+          <arg>
+            <prim domain="SignedInt" size="4" />
+          </arg>
+        </fn>
+      </ptr>
+    </typedef>
+    <typedef name="AUXRESHAPEPROC">
+      <ptr size="4">
+        <fn convention="__stdcall">
+          <return>
+            <void />
+          </return>
+          <arg>
+            <type>GLsizei</type>
+          </arg>
+          <arg>
+            <type>GLsizei</type>
+          </arg>
+        </fn>
+      </ptr>
+    </typedef>
+    <typedef name="AUXIDLEPROC">
+      <ptr size="4">
+        <fn convention="__stdcall">
+          <return>
+            <void />
+          </return>
+        </fn>
+      </ptr>
+    </typedef>
+    <typedef name="AUXKEYPROC">
+      <ptr size="4">
+        <fn convention="__stdcall">
+          <return>
+            <void />
+          </return>
+        </fn>
+      </ptr>
+    </typedef>
+    <typedef name="AUXMOUSEPROC">
+      <ptr size="4">
+        <fn convention="__stdcall">
+          <return>
+            <void />
+          </return>
+          <arg>
+            <ptr size="4">
+              <type>AUX_EVENTREC</type>
+            </ptr>
+          </arg>
+        </fn>
+      </ptr>
+    </typedef>
+    <enum name="enum_0">
+      <member name="AUX_USE_ID" value="1" />
+      <member name="AUX_EXACT_MATCH" value="2" />
+      <member name="AUX_MINIMUM_CRITERIA" value="3" />
+    </enum>
+  </Types>
+  <procedure name="glAccum">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="op">
+        <type>GLenum</type>
+      </arg>
+      <arg name="value">
+        <type>GLfloat</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glAlphaFunc">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="func">
+        <type>GLenum</type>
+      </arg>
+      <arg name="ref">
+        <type>GLclampf</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glAreTexturesResident">
+    <signature convention="__stdcall">
+      <return>
+        <type>GLboolean</type>
+      </return>
+      <arg name="n">
+        <type>GLsizei</type>
+      </arg>
+      <arg name="textures">
+        <ptr size="4">
+          <type>GLuint</type>
+        </ptr>
+      </arg>
+      <arg name="residences">
+        <ptr size="4">
+          <type>GLboolean</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glArrayElement">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="i">
+        <type>GLint</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glBegin">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="mode">
+        <type>GLenum</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glBindTexture">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="target">
+        <type>GLenum</type>
+      </arg>
+      <arg name="texture">
+        <type>GLuint</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glBitmap">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="width">
+        <type>GLsizei</type>
+      </arg>
+      <arg name="height">
+        <type>GLsizei</type>
+      </arg>
+      <arg name="xorig">
+        <type>GLfloat</type>
+      </arg>
+      <arg name="yorig">
+        <type>GLfloat</type>
+      </arg>
+      <arg name="xmove">
+        <type>GLfloat</type>
+      </arg>
+      <arg name="ymove">
+        <type>GLfloat</type>
+      </arg>
+      <arg name="bitmap">
+        <ptr size="4">
+          <type>GLubyte</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glBlendFunc">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="sfactor">
+        <type>GLenum</type>
+      </arg>
+      <arg name="dfactor">
+        <type>GLenum</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glCallList">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="list">
+        <type>GLuint</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glCallLists">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="n">
+        <type>GLsizei</type>
+      </arg>
+      <arg name="type">
+        <type>GLenum</type>
+      </arg>
+      <arg name="lists">
+        <ptr size="4">
+          <type>GLvoid</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glClear">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="mask">
+        <type>GLbitfield</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glClearAccum">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="red">
+        <type>GLfloat</type>
+      </arg>
+      <arg name="green">
+        <type>GLfloat</type>
+      </arg>
+      <arg name="blue">
+        <type>GLfloat</type>
+      </arg>
+      <arg name="alpha">
+        <type>GLfloat</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glClearColor">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="red">
+        <type>GLclampf</type>
+      </arg>
+      <arg name="green">
+        <type>GLclampf</type>
+      </arg>
+      <arg name="blue">
+        <type>GLclampf</type>
+      </arg>
+      <arg name="alpha">
+        <type>GLclampf</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glClearDepth">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="depth">
+        <type>GLclampd</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glClearIndex">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="c">
+        <type>GLfloat</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glClearStencil">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="s">
+        <type>GLint</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glClipPlane">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="plane">
+        <type>GLenum</type>
+      </arg>
+      <arg name="equation">
+        <ptr size="4">
+          <type>GLdouble</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glColor3b">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="red">
+        <type>GLbyte</type>
+      </arg>
+      <arg name="green">
+        <type>GLbyte</type>
+      </arg>
+      <arg name="blue">
+        <type>GLbyte</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glColor3bv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="v">
+        <ptr size="4">
+          <type>GLbyte</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glColor3d">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="red">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="green">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="blue">
+        <type>GLdouble</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glColor3dv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="v">
+        <ptr size="4">
+          <type>GLdouble</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glColor3f">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="red">
+        <type>GLfloat</type>
+      </arg>
+      <arg name="green">
+        <type>GLfloat</type>
+      </arg>
+      <arg name="blue">
+        <type>GLfloat</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glColor3fv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="v">
+        <ptr size="4">
+          <type>GLfloat</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glColor3i">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="red">
+        <type>GLint</type>
+      </arg>
+      <arg name="green">
+        <type>GLint</type>
+      </arg>
+      <arg name="blue">
+        <type>GLint</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glColor3iv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="v">
+        <ptr size="4">
+          <type>GLint</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glColor3s">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="red">
+        <type>GLshort</type>
+      </arg>
+      <arg name="green">
+        <type>GLshort</type>
+      </arg>
+      <arg name="blue">
+        <type>GLshort</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glColor3sv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="v">
+        <ptr size="4">
+          <type>GLshort</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glColor3ub">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="red">
+        <type>GLubyte</type>
+      </arg>
+      <arg name="green">
+        <type>GLubyte</type>
+      </arg>
+      <arg name="blue">
+        <type>GLubyte</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glColor3ubv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="v">
+        <ptr size="4">
+          <type>GLubyte</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glColor3ui">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="red">
+        <type>GLuint</type>
+      </arg>
+      <arg name="green">
+        <type>GLuint</type>
+      </arg>
+      <arg name="blue">
+        <type>GLuint</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glColor3uiv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="v">
+        <ptr size="4">
+          <type>GLuint</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glColor3us">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="red">
+        <type>GLushort</type>
+      </arg>
+      <arg name="green">
+        <type>GLushort</type>
+      </arg>
+      <arg name="blue">
+        <type>GLushort</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glColor3usv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="v">
+        <ptr size="4">
+          <type>GLushort</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glColor4b">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="red">
+        <type>GLbyte</type>
+      </arg>
+      <arg name="green">
+        <type>GLbyte</type>
+      </arg>
+      <arg name="blue">
+        <type>GLbyte</type>
+      </arg>
+      <arg name="alpha">
+        <type>GLbyte</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glColor4bv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="v">
+        <ptr size="4">
+          <type>GLbyte</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glColor4d">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="red">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="green">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="blue">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="alpha">
+        <type>GLdouble</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glColor4dv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="v">
+        <ptr size="4">
+          <type>GLdouble</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glColor4f">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="red">
+        <type>GLfloat</type>
+      </arg>
+      <arg name="green">
+        <type>GLfloat</type>
+      </arg>
+      <arg name="blue">
+        <type>GLfloat</type>
+      </arg>
+      <arg name="alpha">
+        <type>GLfloat</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glColor4fv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="v">
+        <ptr size="4">
+          <type>GLfloat</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glColor4i">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="red">
+        <type>GLint</type>
+      </arg>
+      <arg name="green">
+        <type>GLint</type>
+      </arg>
+      <arg name="blue">
+        <type>GLint</type>
+      </arg>
+      <arg name="alpha">
+        <type>GLint</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glColor4iv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="v">
+        <ptr size="4">
+          <type>GLint</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glColor4s">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="red">
+        <type>GLshort</type>
+      </arg>
+      <arg name="green">
+        <type>GLshort</type>
+      </arg>
+      <arg name="blue">
+        <type>GLshort</type>
+      </arg>
+      <arg name="alpha">
+        <type>GLshort</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glColor4sv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="v">
+        <ptr size="4">
+          <type>GLshort</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glColor4ub">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="red">
+        <type>GLubyte</type>
+      </arg>
+      <arg name="green">
+        <type>GLubyte</type>
+      </arg>
+      <arg name="blue">
+        <type>GLubyte</type>
+      </arg>
+      <arg name="alpha">
+        <type>GLubyte</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glColor4ubv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="v">
+        <ptr size="4">
+          <type>GLubyte</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glColor4ui">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="red">
+        <type>GLuint</type>
+      </arg>
+      <arg name="green">
+        <type>GLuint</type>
+      </arg>
+      <arg name="blue">
+        <type>GLuint</type>
+      </arg>
+      <arg name="alpha">
+        <type>GLuint</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glColor4uiv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="v">
+        <ptr size="4">
+          <type>GLuint</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glColor4us">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="red">
+        <type>GLushort</type>
+      </arg>
+      <arg name="green">
+        <type>GLushort</type>
+      </arg>
+      <arg name="blue">
+        <type>GLushort</type>
+      </arg>
+      <arg name="alpha">
+        <type>GLushort</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glColor4usv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="v">
+        <ptr size="4">
+          <type>GLushort</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glColorMask">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="red">
+        <type>GLboolean</type>
+      </arg>
+      <arg name="green">
+        <type>GLboolean</type>
+      </arg>
+      <arg name="blue">
+        <type>GLboolean</type>
+      </arg>
+      <arg name="alpha">
+        <type>GLboolean</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glColorMaterial">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="face">
+        <type>GLenum</type>
+      </arg>
+      <arg name="mode">
+        <type>GLenum</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glColorPointer">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="size">
+        <type>GLint</type>
+      </arg>
+      <arg name="type">
+        <type>GLenum</type>
+      </arg>
+      <arg name="stride">
+        <type>GLsizei</type>
+      </arg>
+      <arg name="pointer">
+        <ptr size="4">
+          <type>GLvoid</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glCopyPixels">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="x">
+        <type>GLint</type>
+      </arg>
+      <arg name="y">
+        <type>GLint</type>
+      </arg>
+      <arg name="width">
+        <type>GLsizei</type>
+      </arg>
+      <arg name="height">
+        <type>GLsizei</type>
+      </arg>
+      <arg name="type">
+        <type>GLenum</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glCopyTexImage1D">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="target">
+        <type>GLenum</type>
+      </arg>
+      <arg name="level">
+        <type>GLint</type>
+      </arg>
+      <arg name="internalFormat">
+        <type>GLenum</type>
+      </arg>
+      <arg name="x">
+        <type>GLint</type>
+      </arg>
+      <arg name="y">
+        <type>GLint</type>
+      </arg>
+      <arg name="width">
+        <type>GLsizei</type>
+      </arg>
+      <arg name="border">
+        <type>GLint</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glCopyTexImage2D">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="target">
+        <type>GLenum</type>
+      </arg>
+      <arg name="level">
+        <type>GLint</type>
+      </arg>
+      <arg name="internalFormat">
+        <type>GLenum</type>
+      </arg>
+      <arg name="x">
+        <type>GLint</type>
+      </arg>
+      <arg name="y">
+        <type>GLint</type>
+      </arg>
+      <arg name="width">
+        <type>GLsizei</type>
+      </arg>
+      <arg name="height">
+        <type>GLsizei</type>
+      </arg>
+      <arg name="border">
+        <type>GLint</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glCopyTexSubImage1D">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="target">
+        <type>GLenum</type>
+      </arg>
+      <arg name="level">
+        <type>GLint</type>
+      </arg>
+      <arg name="xoffset">
+        <type>GLint</type>
+      </arg>
+      <arg name="x">
+        <type>GLint</type>
+      </arg>
+      <arg name="y">
+        <type>GLint</type>
+      </arg>
+      <arg name="width">
+        <type>GLsizei</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glCopyTexSubImage2D">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="target">
+        <type>GLenum</type>
+      </arg>
+      <arg name="level">
+        <type>GLint</type>
+      </arg>
+      <arg name="xoffset">
+        <type>GLint</type>
+      </arg>
+      <arg name="yoffset">
+        <type>GLint</type>
+      </arg>
+      <arg name="x">
+        <type>GLint</type>
+      </arg>
+      <arg name="y">
+        <type>GLint</type>
+      </arg>
+      <arg name="width">
+        <type>GLsizei</type>
+      </arg>
+      <arg name="height">
+        <type>GLsizei</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glCullFace">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="mode">
+        <type>GLenum</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glDeleteLists">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="list">
+        <type>GLuint</type>
+      </arg>
+      <arg name="range">
+        <type>GLsizei</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glDeleteTextures">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="n">
+        <type>GLsizei</type>
+      </arg>
+      <arg name="textures">
+        <ptr size="4">
+          <type>GLuint</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glDepthFunc">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="func">
+        <type>GLenum</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glDepthMask">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="flag">
+        <type>GLboolean</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glDepthRange">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="zNear">
+        <type>GLclampd</type>
+      </arg>
+      <arg name="zFar">
+        <type>GLclampd</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glDisable">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="cap">
+        <type>GLenum</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glDisableClientState">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="array">
+        <type>GLenum</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glDrawArrays">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="mode">
+        <type>GLenum</type>
+      </arg>
+      <arg name="first">
+        <type>GLint</type>
+      </arg>
+      <arg name="count">
+        <type>GLsizei</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glDrawBuffer">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="mode">
+        <type>GLenum</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glDrawElements">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="mode">
+        <type>GLenum</type>
+      </arg>
+      <arg name="count">
+        <type>GLsizei</type>
+      </arg>
+      <arg name="type">
+        <type>GLenum</type>
+      </arg>
+      <arg name="indices">
+        <ptr size="4">
+          <type>GLvoid</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glDrawPixels">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="width">
+        <type>GLsizei</type>
+      </arg>
+      <arg name="height">
+        <type>GLsizei</type>
+      </arg>
+      <arg name="format">
+        <type>GLenum</type>
+      </arg>
+      <arg name="type">
+        <type>GLenum</type>
+      </arg>
+      <arg name="pixels">
+        <ptr size="4">
+          <type>GLvoid</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glEdgeFlag">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="flag">
+        <type>GLboolean</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glEdgeFlagPointer">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="stride">
+        <type>GLsizei</type>
+      </arg>
+      <arg name="pointer">
+        <ptr size="4">
+          <type>GLvoid</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glEdgeFlagv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="flag">
+        <ptr size="4">
+          <type>GLboolean</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glEnable">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="cap">
+        <type>GLenum</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glEnableClientState">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="array">
+        <type>GLenum</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glEnd">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="glEndList">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="glEvalCoord1d">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="u">
+        <type>GLdouble</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glEvalCoord1dv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="u">
+        <ptr size="4">
+          <type>GLdouble</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glEvalCoord1f">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="u">
+        <type>GLfloat</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glEvalCoord1fv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="u">
+        <ptr size="4">
+          <type>GLfloat</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glEvalCoord2d">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="u">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="v">
+        <type>GLdouble</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glEvalCoord2dv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="u">
+        <ptr size="4">
+          <type>GLdouble</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glEvalCoord2f">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="u">
+        <type>GLfloat</type>
+      </arg>
+      <arg name="v">
+        <type>GLfloat</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glEvalCoord2fv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="u">
+        <ptr size="4">
+          <type>GLfloat</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glEvalMesh1">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="mode">
+        <type>GLenum</type>
+      </arg>
+      <arg name="i1">
+        <type>GLint</type>
+      </arg>
+      <arg name="i2">
+        <type>GLint</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glEvalMesh2">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="mode">
+        <type>GLenum</type>
+      </arg>
+      <arg name="i1">
+        <type>GLint</type>
+      </arg>
+      <arg name="i2">
+        <type>GLint</type>
+      </arg>
+      <arg name="j1">
+        <type>GLint</type>
+      </arg>
+      <arg name="j2">
+        <type>GLint</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glEvalPoint1">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="i">
+        <type>GLint</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glEvalPoint2">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="i">
+        <type>GLint</type>
+      </arg>
+      <arg name="j">
+        <type>GLint</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glFeedbackBuffer">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="size">
+        <type>GLsizei</type>
+      </arg>
+      <arg name="type">
+        <type>GLenum</type>
+      </arg>
+      <arg name="buffer">
+        <ptr size="4">
+          <type>GLfloat</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glFinish">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="glFlush">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="glFogf">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="pname">
+        <type>GLenum</type>
+      </arg>
+      <arg name="param">
+        <type>GLfloat</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glFogfv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="pname">
+        <type>GLenum</type>
+      </arg>
+      <arg name="params">
+        <ptr size="4">
+          <type>GLfloat</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glFogi">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="pname">
+        <type>GLenum</type>
+      </arg>
+      <arg name="param">
+        <type>GLint</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glFogiv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="pname">
+        <type>GLenum</type>
+      </arg>
+      <arg name="params">
+        <ptr size="4">
+          <type>GLint</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glFrontFace">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="mode">
+        <type>GLenum</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glFrustum">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="left">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="right">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="bottom">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="top">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="zNear">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="zFar">
+        <type>GLdouble</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glGenLists">
+    <signature convention="__stdcall">
+      <return>
+        <type>GLuint</type>
+      </return>
+      <arg name="range">
+        <type>GLsizei</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glGenTextures">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="n">
+        <type>GLsizei</type>
+      </arg>
+      <arg name="textures">
+        <ptr size="4">
+          <type>GLuint</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glGetBooleanv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="pname">
+        <type>GLenum</type>
+      </arg>
+      <arg name="params">
+        <ptr size="4">
+          <type>GLboolean</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glGetClipPlane">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="plane">
+        <type>GLenum</type>
+      </arg>
+      <arg name="equation">
+        <ptr size="4">
+          <type>GLdouble</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glGetDoublev">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="pname">
+        <type>GLenum</type>
+      </arg>
+      <arg name="params">
+        <ptr size="4">
+          <type>GLdouble</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glGetError">
+    <signature convention="__stdcall">
+      <return>
+        <type>GLenum</type>
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="glGetFloatv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="pname">
+        <type>GLenum</type>
+      </arg>
+      <arg name="params">
+        <ptr size="4">
+          <type>GLfloat</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glGetIntegerv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="pname">
+        <type>GLenum</type>
+      </arg>
+      <arg name="params">
+        <ptr size="4">
+          <type>GLint</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glGetLightfv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="light">
+        <type>GLenum</type>
+      </arg>
+      <arg name="pname">
+        <type>GLenum</type>
+      </arg>
+      <arg name="params">
+        <ptr size="4">
+          <type>GLfloat</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glGetLightiv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="light">
+        <type>GLenum</type>
+      </arg>
+      <arg name="pname">
+        <type>GLenum</type>
+      </arg>
+      <arg name="params">
+        <ptr size="4">
+          <type>GLint</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glGetMapdv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="target">
+        <type>GLenum</type>
+      </arg>
+      <arg name="query">
+        <type>GLenum</type>
+      </arg>
+      <arg name="v">
+        <ptr size="4">
+          <type>GLdouble</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glGetMapfv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="target">
+        <type>GLenum</type>
+      </arg>
+      <arg name="query">
+        <type>GLenum</type>
+      </arg>
+      <arg name="v">
+        <ptr size="4">
+          <type>GLfloat</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glGetMapiv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="target">
+        <type>GLenum</type>
+      </arg>
+      <arg name="query">
+        <type>GLenum</type>
+      </arg>
+      <arg name="v">
+        <ptr size="4">
+          <type>GLint</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glGetMaterialfv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="face">
+        <type>GLenum</type>
+      </arg>
+      <arg name="pname">
+        <type>GLenum</type>
+      </arg>
+      <arg name="params">
+        <ptr size="4">
+          <type>GLfloat</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glGetMaterialiv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="face">
+        <type>GLenum</type>
+      </arg>
+      <arg name="pname">
+        <type>GLenum</type>
+      </arg>
+      <arg name="params">
+        <ptr size="4">
+          <type>GLint</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glGetPixelMapfv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="map">
+        <type>GLenum</type>
+      </arg>
+      <arg name="values">
+        <ptr size="4">
+          <type>GLfloat</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glGetPixelMapuiv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="map">
+        <type>GLenum</type>
+      </arg>
+      <arg name="values">
+        <ptr size="4">
+          <type>GLuint</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glGetPixelMapusv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="map">
+        <type>GLenum</type>
+      </arg>
+      <arg name="values">
+        <ptr size="4">
+          <type>GLushort</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glGetPointerv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="pname">
+        <type>GLenum</type>
+      </arg>
+      <arg name="params">
+        <ptr size="4">
+          <ptr size="4">
+            <type>GLvoid</type>
+          </ptr>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glGetPolygonStipple">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="mask">
+        <ptr size="4">
+          <type>GLubyte</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glGetString">
+    <signature convention="__stdcall">
+      <return>
+        <ptr size="4">
+          <type>GLubyte</type>
+        </ptr>
+      </return>
+      <arg name="name">
+        <type>GLenum</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glGetTexEnvfv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="target">
+        <type>GLenum</type>
+      </arg>
+      <arg name="pname">
+        <type>GLenum</type>
+      </arg>
+      <arg name="params">
+        <ptr size="4">
+          <type>GLfloat</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glGetTexEnviv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="target">
+        <type>GLenum</type>
+      </arg>
+      <arg name="pname">
+        <type>GLenum</type>
+      </arg>
+      <arg name="params">
+        <ptr size="4">
+          <type>GLint</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glGetTexGendv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="coord">
+        <type>GLenum</type>
+      </arg>
+      <arg name="pname">
+        <type>GLenum</type>
+      </arg>
+      <arg name="params">
+        <ptr size="4">
+          <type>GLdouble</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glGetTexGenfv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="coord">
+        <type>GLenum</type>
+      </arg>
+      <arg name="pname">
+        <type>GLenum</type>
+      </arg>
+      <arg name="params">
+        <ptr size="4">
+          <type>GLfloat</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glGetTexGeniv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="coord">
+        <type>GLenum</type>
+      </arg>
+      <arg name="pname">
+        <type>GLenum</type>
+      </arg>
+      <arg name="params">
+        <ptr size="4">
+          <type>GLint</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glGetTexImage">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="target">
+        <type>GLenum</type>
+      </arg>
+      <arg name="level">
+        <type>GLint</type>
+      </arg>
+      <arg name="format">
+        <type>GLenum</type>
+      </arg>
+      <arg name="type">
+        <type>GLenum</type>
+      </arg>
+      <arg name="pixels">
+        <ptr size="4">
+          <type>GLvoid</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glGetTexLevelParameterfv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="target">
+        <type>GLenum</type>
+      </arg>
+      <arg name="level">
+        <type>GLint</type>
+      </arg>
+      <arg name="pname">
+        <type>GLenum</type>
+      </arg>
+      <arg name="params">
+        <ptr size="4">
+          <type>GLfloat</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glGetTexLevelParameteriv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="target">
+        <type>GLenum</type>
+      </arg>
+      <arg name="level">
+        <type>GLint</type>
+      </arg>
+      <arg name="pname">
+        <type>GLenum</type>
+      </arg>
+      <arg name="params">
+        <ptr size="4">
+          <type>GLint</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glGetTexParameterfv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="target">
+        <type>GLenum</type>
+      </arg>
+      <arg name="pname">
+        <type>GLenum</type>
+      </arg>
+      <arg name="params">
+        <ptr size="4">
+          <type>GLfloat</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glGetTexParameteriv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="target">
+        <type>GLenum</type>
+      </arg>
+      <arg name="pname">
+        <type>GLenum</type>
+      </arg>
+      <arg name="params">
+        <ptr size="4">
+          <type>GLint</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glHint">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="target">
+        <type>GLenum</type>
+      </arg>
+      <arg name="mode">
+        <type>GLenum</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glIndexMask">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="mask">
+        <type>GLuint</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glIndexPointer">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="type">
+        <type>GLenum</type>
+      </arg>
+      <arg name="stride">
+        <type>GLsizei</type>
+      </arg>
+      <arg name="pointer">
+        <ptr size="4">
+          <type>GLvoid</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glIndexd">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="c">
+        <type>GLdouble</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glIndexdv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="c">
+        <ptr size="4">
+          <type>GLdouble</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glIndexf">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="c">
+        <type>GLfloat</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glIndexfv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="c">
+        <ptr size="4">
+          <type>GLfloat</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glIndexi">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="c">
+        <type>GLint</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glIndexiv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="c">
+        <ptr size="4">
+          <type>GLint</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glIndexs">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="c">
+        <type>GLshort</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glIndexsv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="c">
+        <ptr size="4">
+          <type>GLshort</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glIndexub">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="c">
+        <type>GLubyte</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glIndexubv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="c">
+        <ptr size="4">
+          <type>GLubyte</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glInitNames">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="glInterleavedArrays">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="format">
+        <type>GLenum</type>
+      </arg>
+      <arg name="stride">
+        <type>GLsizei</type>
+      </arg>
+      <arg name="pointer">
+        <ptr size="4">
+          <type>GLvoid</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glIsEnabled">
+    <signature convention="__stdcall">
+      <return>
+        <type>GLboolean</type>
+      </return>
+      <arg name="cap">
+        <type>GLenum</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glIsList">
+    <signature convention="__stdcall">
+      <return>
+        <type>GLboolean</type>
+      </return>
+      <arg name="list">
+        <type>GLuint</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glIsTexture">
+    <signature convention="__stdcall">
+      <return>
+        <type>GLboolean</type>
+      </return>
+      <arg name="texture">
+        <type>GLuint</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glLightModelf">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="pname">
+        <type>GLenum</type>
+      </arg>
+      <arg name="param">
+        <type>GLfloat</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glLightModelfv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="pname">
+        <type>GLenum</type>
+      </arg>
+      <arg name="params">
+        <ptr size="4">
+          <type>GLfloat</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glLightModeli">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="pname">
+        <type>GLenum</type>
+      </arg>
+      <arg name="param">
+        <type>GLint</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glLightModeliv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="pname">
+        <type>GLenum</type>
+      </arg>
+      <arg name="params">
+        <ptr size="4">
+          <type>GLint</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glLightf">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="light">
+        <type>GLenum</type>
+      </arg>
+      <arg name="pname">
+        <type>GLenum</type>
+      </arg>
+      <arg name="param">
+        <type>GLfloat</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glLightfv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="light">
+        <type>GLenum</type>
+      </arg>
+      <arg name="pname">
+        <type>GLenum</type>
+      </arg>
+      <arg name="params">
+        <ptr size="4">
+          <type>GLfloat</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glLighti">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="light">
+        <type>GLenum</type>
+      </arg>
+      <arg name="pname">
+        <type>GLenum</type>
+      </arg>
+      <arg name="param">
+        <type>GLint</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glLightiv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="light">
+        <type>GLenum</type>
+      </arg>
+      <arg name="pname">
+        <type>GLenum</type>
+      </arg>
+      <arg name="params">
+        <ptr size="4">
+          <type>GLint</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glLineStipple">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="factor">
+        <type>GLint</type>
+      </arg>
+      <arg name="pattern">
+        <type>GLushort</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glLineWidth">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="width">
+        <type>GLfloat</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glListBase">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="base">
+        <type>GLuint</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glLoadIdentity">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="glLoadMatrixd">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="m">
+        <ptr size="4">
+          <type>GLdouble</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glLoadMatrixf">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="m">
+        <ptr size="4">
+          <type>GLfloat</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glLoadName">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="name">
+        <type>GLuint</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glLogicOp">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="opcode">
+        <type>GLenum</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glMap1d">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="target">
+        <type>GLenum</type>
+      </arg>
+      <arg name="u1">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="u2">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="stride">
+        <type>GLint</type>
+      </arg>
+      <arg name="order">
+        <type>GLint</type>
+      </arg>
+      <arg name="points">
+        <ptr size="4">
+          <type>GLdouble</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glMap1f">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="target">
+        <type>GLenum</type>
+      </arg>
+      <arg name="u1">
+        <type>GLfloat</type>
+      </arg>
+      <arg name="u2">
+        <type>GLfloat</type>
+      </arg>
+      <arg name="stride">
+        <type>GLint</type>
+      </arg>
+      <arg name="order">
+        <type>GLint</type>
+      </arg>
+      <arg name="points">
+        <ptr size="4">
+          <type>GLfloat</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glMap2d">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="target">
+        <type>GLenum</type>
+      </arg>
+      <arg name="u1">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="u2">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="ustride">
+        <type>GLint</type>
+      </arg>
+      <arg name="uorder">
+        <type>GLint</type>
+      </arg>
+      <arg name="v1">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="v2">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="vstride">
+        <type>GLint</type>
+      </arg>
+      <arg name="vorder">
+        <type>GLint</type>
+      </arg>
+      <arg name="points">
+        <ptr size="4">
+          <type>GLdouble</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glMap2f">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="target">
+        <type>GLenum</type>
+      </arg>
+      <arg name="u1">
+        <type>GLfloat</type>
+      </arg>
+      <arg name="u2">
+        <type>GLfloat</type>
+      </arg>
+      <arg name="ustride">
+        <type>GLint</type>
+      </arg>
+      <arg name="uorder">
+        <type>GLint</type>
+      </arg>
+      <arg name="v1">
+        <type>GLfloat</type>
+      </arg>
+      <arg name="v2">
+        <type>GLfloat</type>
+      </arg>
+      <arg name="vstride">
+        <type>GLint</type>
+      </arg>
+      <arg name="vorder">
+        <type>GLint</type>
+      </arg>
+      <arg name="points">
+        <ptr size="4">
+          <type>GLfloat</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glMapGrid1d">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="un">
+        <type>GLint</type>
+      </arg>
+      <arg name="u1">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="u2">
+        <type>GLdouble</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glMapGrid1f">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="un">
+        <type>GLint</type>
+      </arg>
+      <arg name="u1">
+        <type>GLfloat</type>
+      </arg>
+      <arg name="u2">
+        <type>GLfloat</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glMapGrid2d">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="un">
+        <type>GLint</type>
+      </arg>
+      <arg name="u1">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="u2">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="vn">
+        <type>GLint</type>
+      </arg>
+      <arg name="v1">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="v2">
+        <type>GLdouble</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glMapGrid2f">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="un">
+        <type>GLint</type>
+      </arg>
+      <arg name="u1">
+        <type>GLfloat</type>
+      </arg>
+      <arg name="u2">
+        <type>GLfloat</type>
+      </arg>
+      <arg name="vn">
+        <type>GLint</type>
+      </arg>
+      <arg name="v1">
+        <type>GLfloat</type>
+      </arg>
+      <arg name="v2">
+        <type>GLfloat</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glMaterialf">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="face">
+        <type>GLenum</type>
+      </arg>
+      <arg name="pname">
+        <type>GLenum</type>
+      </arg>
+      <arg name="param">
+        <type>GLfloat</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glMaterialfv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="face">
+        <type>GLenum</type>
+      </arg>
+      <arg name="pname">
+        <type>GLenum</type>
+      </arg>
+      <arg name="params">
+        <ptr size="4">
+          <type>GLfloat</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glMateriali">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="face">
+        <type>GLenum</type>
+      </arg>
+      <arg name="pname">
+        <type>GLenum</type>
+      </arg>
+      <arg name="param">
+        <type>GLint</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glMaterialiv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="face">
+        <type>GLenum</type>
+      </arg>
+      <arg name="pname">
+        <type>GLenum</type>
+      </arg>
+      <arg name="params">
+        <ptr size="4">
+          <type>GLint</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glMatrixMode">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="mode">
+        <type>GLenum</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glMultMatrixd">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="m">
+        <ptr size="4">
+          <type>GLdouble</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glMultMatrixf">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="m">
+        <ptr size="4">
+          <type>GLfloat</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glNewList">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="list">
+        <type>GLuint</type>
+      </arg>
+      <arg name="mode">
+        <type>GLenum</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glNormal3b">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="nx">
+        <type>GLbyte</type>
+      </arg>
+      <arg name="ny">
+        <type>GLbyte</type>
+      </arg>
+      <arg name="nz">
+        <type>GLbyte</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glNormal3bv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="v">
+        <ptr size="4">
+          <type>GLbyte</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glNormal3d">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="nx">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="ny">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="nz">
+        <type>GLdouble</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glNormal3dv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="v">
+        <ptr size="4">
+          <type>GLdouble</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glNormal3f">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="nx">
+        <type>GLfloat</type>
+      </arg>
+      <arg name="ny">
+        <type>GLfloat</type>
+      </arg>
+      <arg name="nz">
+        <type>GLfloat</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glNormal3fv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="v">
+        <ptr size="4">
+          <type>GLfloat</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glNormal3i">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="nx">
+        <type>GLint</type>
+      </arg>
+      <arg name="ny">
+        <type>GLint</type>
+      </arg>
+      <arg name="nz">
+        <type>GLint</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glNormal3iv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="v">
+        <ptr size="4">
+          <type>GLint</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glNormal3s">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="nx">
+        <type>GLshort</type>
+      </arg>
+      <arg name="ny">
+        <type>GLshort</type>
+      </arg>
+      <arg name="nz">
+        <type>GLshort</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glNormal3sv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="v">
+        <ptr size="4">
+          <type>GLshort</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glNormalPointer">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="type">
+        <type>GLenum</type>
+      </arg>
+      <arg name="stride">
+        <type>GLsizei</type>
+      </arg>
+      <arg name="pointer">
+        <ptr size="4">
+          <type>GLvoid</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glOrtho">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="left">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="right">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="bottom">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="top">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="zNear">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="zFar">
+        <type>GLdouble</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glPassThrough">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="token">
+        <type>GLfloat</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glPixelMapfv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="map">
+        <type>GLenum</type>
+      </arg>
+      <arg name="mapsize">
+        <type>GLsizei</type>
+      </arg>
+      <arg name="values">
+        <ptr size="4">
+          <type>GLfloat</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glPixelMapuiv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="map">
+        <type>GLenum</type>
+      </arg>
+      <arg name="mapsize">
+        <type>GLsizei</type>
+      </arg>
+      <arg name="values">
+        <ptr size="4">
+          <type>GLuint</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glPixelMapusv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="map">
+        <type>GLenum</type>
+      </arg>
+      <arg name="mapsize">
+        <type>GLsizei</type>
+      </arg>
+      <arg name="values">
+        <ptr size="4">
+          <type>GLushort</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glPixelStoref">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="pname">
+        <type>GLenum</type>
+      </arg>
+      <arg name="param">
+        <type>GLfloat</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glPixelStorei">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="pname">
+        <type>GLenum</type>
+      </arg>
+      <arg name="param">
+        <type>GLint</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glPixelTransferf">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="pname">
+        <type>GLenum</type>
+      </arg>
+      <arg name="param">
+        <type>GLfloat</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glPixelTransferi">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="pname">
+        <type>GLenum</type>
+      </arg>
+      <arg name="param">
+        <type>GLint</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glPixelZoom">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="xfactor">
+        <type>GLfloat</type>
+      </arg>
+      <arg name="yfactor">
+        <type>GLfloat</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glPointSize">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="size">
+        <type>GLfloat</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glPolygonMode">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="face">
+        <type>GLenum</type>
+      </arg>
+      <arg name="mode">
+        <type>GLenum</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glPolygonOffset">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="factor">
+        <type>GLfloat</type>
+      </arg>
+      <arg name="units">
+        <type>GLfloat</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glPolygonStipple">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="mask">
+        <ptr size="4">
+          <type>GLubyte</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glPopAttrib">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="glPopClientAttrib">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="glPopMatrix">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="glPopName">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="glPrioritizeTextures">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="n">
+        <type>GLsizei</type>
+      </arg>
+      <arg name="textures">
+        <ptr size="4">
+          <type>GLuint</type>
+        </ptr>
+      </arg>
+      <arg name="priorities">
+        <ptr size="4">
+          <type>GLclampf</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glPushAttrib">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="mask">
+        <type>GLbitfield</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glPushClientAttrib">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="mask">
+        <type>GLbitfield</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glPushMatrix">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="glPushName">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="name">
+        <type>GLuint</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glRasterPos2d">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="x">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="y">
+        <type>GLdouble</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glRasterPos2dv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="v">
+        <ptr size="4">
+          <type>GLdouble</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glRasterPos2f">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="x">
+        <type>GLfloat</type>
+      </arg>
+      <arg name="y">
+        <type>GLfloat</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glRasterPos2fv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="v">
+        <ptr size="4">
+          <type>GLfloat</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glRasterPos2i">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="x">
+        <type>GLint</type>
+      </arg>
+      <arg name="y">
+        <type>GLint</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glRasterPos2iv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="v">
+        <ptr size="4">
+          <type>GLint</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glRasterPos2s">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="x">
+        <type>GLshort</type>
+      </arg>
+      <arg name="y">
+        <type>GLshort</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glRasterPos2sv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="v">
+        <ptr size="4">
+          <type>GLshort</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glRasterPos3d">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="x">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="y">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="z">
+        <type>GLdouble</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glRasterPos3dv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="v">
+        <ptr size="4">
+          <type>GLdouble</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glRasterPos3f">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="x">
+        <type>GLfloat</type>
+      </arg>
+      <arg name="y">
+        <type>GLfloat</type>
+      </arg>
+      <arg name="z">
+        <type>GLfloat</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glRasterPos3fv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="v">
+        <ptr size="4">
+          <type>GLfloat</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glRasterPos3i">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="x">
+        <type>GLint</type>
+      </arg>
+      <arg name="y">
+        <type>GLint</type>
+      </arg>
+      <arg name="z">
+        <type>GLint</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glRasterPos3iv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="v">
+        <ptr size="4">
+          <type>GLint</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glRasterPos3s">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="x">
+        <type>GLshort</type>
+      </arg>
+      <arg name="y">
+        <type>GLshort</type>
+      </arg>
+      <arg name="z">
+        <type>GLshort</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glRasterPos3sv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="v">
+        <ptr size="4">
+          <type>GLshort</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glRasterPos4d">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="x">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="y">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="z">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="w">
+        <type>GLdouble</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glRasterPos4dv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="v">
+        <ptr size="4">
+          <type>GLdouble</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glRasterPos4f">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="x">
+        <type>GLfloat</type>
+      </arg>
+      <arg name="y">
+        <type>GLfloat</type>
+      </arg>
+      <arg name="z">
+        <type>GLfloat</type>
+      </arg>
+      <arg name="w">
+        <type>GLfloat</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glRasterPos4fv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="v">
+        <ptr size="4">
+          <type>GLfloat</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glRasterPos4i">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="x">
+        <type>GLint</type>
+      </arg>
+      <arg name="y">
+        <type>GLint</type>
+      </arg>
+      <arg name="z">
+        <type>GLint</type>
+      </arg>
+      <arg name="w">
+        <type>GLint</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glRasterPos4iv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="v">
+        <ptr size="4">
+          <type>GLint</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glRasterPos4s">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="x">
+        <type>GLshort</type>
+      </arg>
+      <arg name="y">
+        <type>GLshort</type>
+      </arg>
+      <arg name="z">
+        <type>GLshort</type>
+      </arg>
+      <arg name="w">
+        <type>GLshort</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glRasterPos4sv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="v">
+        <ptr size="4">
+          <type>GLshort</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glReadBuffer">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="mode">
+        <type>GLenum</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glReadPixels">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="x">
+        <type>GLint</type>
+      </arg>
+      <arg name="y">
+        <type>GLint</type>
+      </arg>
+      <arg name="width">
+        <type>GLsizei</type>
+      </arg>
+      <arg name="height">
+        <type>GLsizei</type>
+      </arg>
+      <arg name="format">
+        <type>GLenum</type>
+      </arg>
+      <arg name="type">
+        <type>GLenum</type>
+      </arg>
+      <arg name="pixels">
+        <ptr size="4">
+          <type>GLvoid</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glRectd">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="x1">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="y1">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="x2">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="y2">
+        <type>GLdouble</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glRectdv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="v1">
+        <ptr size="4">
+          <type>GLdouble</type>
+        </ptr>
+      </arg>
+      <arg name="v2">
+        <ptr size="4">
+          <type>GLdouble</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glRectf">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="x1">
+        <type>GLfloat</type>
+      </arg>
+      <arg name="y1">
+        <type>GLfloat</type>
+      </arg>
+      <arg name="x2">
+        <type>GLfloat</type>
+      </arg>
+      <arg name="y2">
+        <type>GLfloat</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glRectfv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="v1">
+        <ptr size="4">
+          <type>GLfloat</type>
+        </ptr>
+      </arg>
+      <arg name="v2">
+        <ptr size="4">
+          <type>GLfloat</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glRecti">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="x1">
+        <type>GLint</type>
+      </arg>
+      <arg name="y1">
+        <type>GLint</type>
+      </arg>
+      <arg name="x2">
+        <type>GLint</type>
+      </arg>
+      <arg name="y2">
+        <type>GLint</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glRectiv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="v1">
+        <ptr size="4">
+          <type>GLint</type>
+        </ptr>
+      </arg>
+      <arg name="v2">
+        <ptr size="4">
+          <type>GLint</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glRects">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="x1">
+        <type>GLshort</type>
+      </arg>
+      <arg name="y1">
+        <type>GLshort</type>
+      </arg>
+      <arg name="x2">
+        <type>GLshort</type>
+      </arg>
+      <arg name="y2">
+        <type>GLshort</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glRectsv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="v1">
+        <ptr size="4">
+          <type>GLshort</type>
+        </ptr>
+      </arg>
+      <arg name="v2">
+        <ptr size="4">
+          <type>GLshort</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glRenderMode">
+    <signature convention="__stdcall">
+      <return>
+        <type>GLint</type>
+      </return>
+      <arg name="mode">
+        <type>GLenum</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glRotated">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="angle">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="x">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="y">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="z">
+        <type>GLdouble</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glRotatef">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="angle">
+        <type>GLfloat</type>
+      </arg>
+      <arg name="x">
+        <type>GLfloat</type>
+      </arg>
+      <arg name="y">
+        <type>GLfloat</type>
+      </arg>
+      <arg name="z">
+        <type>GLfloat</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glScaled">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="x">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="y">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="z">
+        <type>GLdouble</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glScalef">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="x">
+        <type>GLfloat</type>
+      </arg>
+      <arg name="y">
+        <type>GLfloat</type>
+      </arg>
+      <arg name="z">
+        <type>GLfloat</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glScissor">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="x">
+        <type>GLint</type>
+      </arg>
+      <arg name="y">
+        <type>GLint</type>
+      </arg>
+      <arg name="width">
+        <type>GLsizei</type>
+      </arg>
+      <arg name="height">
+        <type>GLsizei</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glSelectBuffer">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="size">
+        <type>GLsizei</type>
+      </arg>
+      <arg name="buffer">
+        <ptr size="4">
+          <type>GLuint</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glShadeModel">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="mode">
+        <type>GLenum</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glStencilFunc">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="func">
+        <type>GLenum</type>
+      </arg>
+      <arg name="ref">
+        <type>GLint</type>
+      </arg>
+      <arg name="mask">
+        <type>GLuint</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glStencilMask">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="mask">
+        <type>GLuint</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glStencilOp">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="fail">
+        <type>GLenum</type>
+      </arg>
+      <arg name="zfail">
+        <type>GLenum</type>
+      </arg>
+      <arg name="zpass">
+        <type>GLenum</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glTexCoord1d">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="s">
+        <type>GLdouble</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glTexCoord1dv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="v">
+        <ptr size="4">
+          <type>GLdouble</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glTexCoord1f">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="s">
+        <type>GLfloat</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glTexCoord1fv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="v">
+        <ptr size="4">
+          <type>GLfloat</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glTexCoord1i">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="s">
+        <type>GLint</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glTexCoord1iv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="v">
+        <ptr size="4">
+          <type>GLint</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glTexCoord1s">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="s">
+        <type>GLshort</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glTexCoord1sv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="v">
+        <ptr size="4">
+          <type>GLshort</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glTexCoord2d">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="s">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="t">
+        <type>GLdouble</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glTexCoord2dv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="v">
+        <ptr size="4">
+          <type>GLdouble</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glTexCoord2f">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="s">
+        <type>GLfloat</type>
+      </arg>
+      <arg name="t">
+        <type>GLfloat</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glTexCoord2fv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="v">
+        <ptr size="4">
+          <type>GLfloat</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glTexCoord2i">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="s">
+        <type>GLint</type>
+      </arg>
+      <arg name="t">
+        <type>GLint</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glTexCoord2iv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="v">
+        <ptr size="4">
+          <type>GLint</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glTexCoord2s">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="s">
+        <type>GLshort</type>
+      </arg>
+      <arg name="t">
+        <type>GLshort</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glTexCoord2sv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="v">
+        <ptr size="4">
+          <type>GLshort</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glTexCoord3d">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="s">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="t">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="r">
+        <type>GLdouble</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glTexCoord3dv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="v">
+        <ptr size="4">
+          <type>GLdouble</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glTexCoord3f">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="s">
+        <type>GLfloat</type>
+      </arg>
+      <arg name="t">
+        <type>GLfloat</type>
+      </arg>
+      <arg name="r">
+        <type>GLfloat</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glTexCoord3fv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="v">
+        <ptr size="4">
+          <type>GLfloat</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glTexCoord3i">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="s">
+        <type>GLint</type>
+      </arg>
+      <arg name="t">
+        <type>GLint</type>
+      </arg>
+      <arg name="r">
+        <type>GLint</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glTexCoord3iv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="v">
+        <ptr size="4">
+          <type>GLint</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glTexCoord3s">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="s">
+        <type>GLshort</type>
+      </arg>
+      <arg name="t">
+        <type>GLshort</type>
+      </arg>
+      <arg name="r">
+        <type>GLshort</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glTexCoord3sv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="v">
+        <ptr size="4">
+          <type>GLshort</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glTexCoord4d">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="s">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="t">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="r">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="q">
+        <type>GLdouble</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glTexCoord4dv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="v">
+        <ptr size="4">
+          <type>GLdouble</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glTexCoord4f">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="s">
+        <type>GLfloat</type>
+      </arg>
+      <arg name="t">
+        <type>GLfloat</type>
+      </arg>
+      <arg name="r">
+        <type>GLfloat</type>
+      </arg>
+      <arg name="q">
+        <type>GLfloat</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glTexCoord4fv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="v">
+        <ptr size="4">
+          <type>GLfloat</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glTexCoord4i">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="s">
+        <type>GLint</type>
+      </arg>
+      <arg name="t">
+        <type>GLint</type>
+      </arg>
+      <arg name="r">
+        <type>GLint</type>
+      </arg>
+      <arg name="q">
+        <type>GLint</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glTexCoord4iv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="v">
+        <ptr size="4">
+          <type>GLint</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glTexCoord4s">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="s">
+        <type>GLshort</type>
+      </arg>
+      <arg name="t">
+        <type>GLshort</type>
+      </arg>
+      <arg name="r">
+        <type>GLshort</type>
+      </arg>
+      <arg name="q">
+        <type>GLshort</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glTexCoord4sv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="v">
+        <ptr size="4">
+          <type>GLshort</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glTexCoordPointer">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="size">
+        <type>GLint</type>
+      </arg>
+      <arg name="type">
+        <type>GLenum</type>
+      </arg>
+      <arg name="stride">
+        <type>GLsizei</type>
+      </arg>
+      <arg name="pointer">
+        <ptr size="4">
+          <type>GLvoid</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glTexEnvf">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="target">
+        <type>GLenum</type>
+      </arg>
+      <arg name="pname">
+        <type>GLenum</type>
+      </arg>
+      <arg name="param">
+        <type>GLfloat</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glTexEnvfv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="target">
+        <type>GLenum</type>
+      </arg>
+      <arg name="pname">
+        <type>GLenum</type>
+      </arg>
+      <arg name="params">
+        <ptr size="4">
+          <type>GLfloat</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glTexEnvi">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="target">
+        <type>GLenum</type>
+      </arg>
+      <arg name="pname">
+        <type>GLenum</type>
+      </arg>
+      <arg name="param">
+        <type>GLint</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glTexEnviv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="target">
+        <type>GLenum</type>
+      </arg>
+      <arg name="pname">
+        <type>GLenum</type>
+      </arg>
+      <arg name="params">
+        <ptr size="4">
+          <type>GLint</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glTexGend">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="coord">
+        <type>GLenum</type>
+      </arg>
+      <arg name="pname">
+        <type>GLenum</type>
+      </arg>
+      <arg name="param">
+        <type>GLdouble</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glTexGendv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="coord">
+        <type>GLenum</type>
+      </arg>
+      <arg name="pname">
+        <type>GLenum</type>
+      </arg>
+      <arg name="params">
+        <ptr size="4">
+          <type>GLdouble</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glTexGenf">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="coord">
+        <type>GLenum</type>
+      </arg>
+      <arg name="pname">
+        <type>GLenum</type>
+      </arg>
+      <arg name="param">
+        <type>GLfloat</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glTexGenfv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="coord">
+        <type>GLenum</type>
+      </arg>
+      <arg name="pname">
+        <type>GLenum</type>
+      </arg>
+      <arg name="params">
+        <ptr size="4">
+          <type>GLfloat</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glTexGeni">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="coord">
+        <type>GLenum</type>
+      </arg>
+      <arg name="pname">
+        <type>GLenum</type>
+      </arg>
+      <arg name="param">
+        <type>GLint</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glTexGeniv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="coord">
+        <type>GLenum</type>
+      </arg>
+      <arg name="pname">
+        <type>GLenum</type>
+      </arg>
+      <arg name="params">
+        <ptr size="4">
+          <type>GLint</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glTexImage1D">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="target">
+        <type>GLenum</type>
+      </arg>
+      <arg name="level">
+        <type>GLint</type>
+      </arg>
+      <arg name="internalformat">
+        <type>GLint</type>
+      </arg>
+      <arg name="width">
+        <type>GLsizei</type>
+      </arg>
+      <arg name="border">
+        <type>GLint</type>
+      </arg>
+      <arg name="format">
+        <type>GLenum</type>
+      </arg>
+      <arg name="type">
+        <type>GLenum</type>
+      </arg>
+      <arg name="pixels">
+        <ptr size="4">
+          <type>GLvoid</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glTexImage2D">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="target">
+        <type>GLenum</type>
+      </arg>
+      <arg name="level">
+        <type>GLint</type>
+      </arg>
+      <arg name="internalformat">
+        <type>GLint</type>
+      </arg>
+      <arg name="width">
+        <type>GLsizei</type>
+      </arg>
+      <arg name="height">
+        <type>GLsizei</type>
+      </arg>
+      <arg name="border">
+        <type>GLint</type>
+      </arg>
+      <arg name="format">
+        <type>GLenum</type>
+      </arg>
+      <arg name="type">
+        <type>GLenum</type>
+      </arg>
+      <arg name="pixels">
+        <ptr size="4">
+          <type>GLvoid</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glTexParameterf">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="target">
+        <type>GLenum</type>
+      </arg>
+      <arg name="pname">
+        <type>GLenum</type>
+      </arg>
+      <arg name="param">
+        <type>GLfloat</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glTexParameterfv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="target">
+        <type>GLenum</type>
+      </arg>
+      <arg name="pname">
+        <type>GLenum</type>
+      </arg>
+      <arg name="params">
+        <ptr size="4">
+          <type>GLfloat</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glTexParameteri">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="target">
+        <type>GLenum</type>
+      </arg>
+      <arg name="pname">
+        <type>GLenum</type>
+      </arg>
+      <arg name="param">
+        <type>GLint</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glTexParameteriv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="target">
+        <type>GLenum</type>
+      </arg>
+      <arg name="pname">
+        <type>GLenum</type>
+      </arg>
+      <arg name="params">
+        <ptr size="4">
+          <type>GLint</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glTexSubImage1D">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="target">
+        <type>GLenum</type>
+      </arg>
+      <arg name="level">
+        <type>GLint</type>
+      </arg>
+      <arg name="xoffset">
+        <type>GLint</type>
+      </arg>
+      <arg name="width">
+        <type>GLsizei</type>
+      </arg>
+      <arg name="format">
+        <type>GLenum</type>
+      </arg>
+      <arg name="type">
+        <type>GLenum</type>
+      </arg>
+      <arg name="pixels">
+        <ptr size="4">
+          <type>GLvoid</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glTexSubImage2D">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="target">
+        <type>GLenum</type>
+      </arg>
+      <arg name="level">
+        <type>GLint</type>
+      </arg>
+      <arg name="xoffset">
+        <type>GLint</type>
+      </arg>
+      <arg name="yoffset">
+        <type>GLint</type>
+      </arg>
+      <arg name="width">
+        <type>GLsizei</type>
+      </arg>
+      <arg name="height">
+        <type>GLsizei</type>
+      </arg>
+      <arg name="format">
+        <type>GLenum</type>
+      </arg>
+      <arg name="type">
+        <type>GLenum</type>
+      </arg>
+      <arg name="pixels">
+        <ptr size="4">
+          <type>GLvoid</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glTranslated">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="x">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="y">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="z">
+        <type>GLdouble</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glTranslatef">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="x">
+        <type>GLfloat</type>
+      </arg>
+      <arg name="y">
+        <type>GLfloat</type>
+      </arg>
+      <arg name="z">
+        <type>GLfloat</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glVertex2d">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="x">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="y">
+        <type>GLdouble</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glVertex2dv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="v">
+        <ptr size="4">
+          <type>GLdouble</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glVertex2f">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="x">
+        <type>GLfloat</type>
+      </arg>
+      <arg name="y">
+        <type>GLfloat</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glVertex2fv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="v">
+        <ptr size="4">
+          <type>GLfloat</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glVertex2i">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="x">
+        <type>GLint</type>
+      </arg>
+      <arg name="y">
+        <type>GLint</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glVertex2iv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="v">
+        <ptr size="4">
+          <type>GLint</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glVertex2s">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="x">
+        <type>GLshort</type>
+      </arg>
+      <arg name="y">
+        <type>GLshort</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glVertex2sv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="v">
+        <ptr size="4">
+          <type>GLshort</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glVertex3d">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="x">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="y">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="z">
+        <type>GLdouble</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glVertex3dv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="v">
+        <ptr size="4">
+          <type>GLdouble</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glVertex3f">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="x">
+        <type>GLfloat</type>
+      </arg>
+      <arg name="y">
+        <type>GLfloat</type>
+      </arg>
+      <arg name="z">
+        <type>GLfloat</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glVertex3fv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="v">
+        <ptr size="4">
+          <type>GLfloat</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glVertex3i">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="x">
+        <type>GLint</type>
+      </arg>
+      <arg name="y">
+        <type>GLint</type>
+      </arg>
+      <arg name="z">
+        <type>GLint</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glVertex3iv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="v">
+        <ptr size="4">
+          <type>GLint</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glVertex3s">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="x">
+        <type>GLshort</type>
+      </arg>
+      <arg name="y">
+        <type>GLshort</type>
+      </arg>
+      <arg name="z">
+        <type>GLshort</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glVertex3sv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="v">
+        <ptr size="4">
+          <type>GLshort</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glVertex4d">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="x">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="y">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="z">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="w">
+        <type>GLdouble</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glVertex4dv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="v">
+        <ptr size="4">
+          <type>GLdouble</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glVertex4f">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="x">
+        <type>GLfloat</type>
+      </arg>
+      <arg name="y">
+        <type>GLfloat</type>
+      </arg>
+      <arg name="z">
+        <type>GLfloat</type>
+      </arg>
+      <arg name="w">
+        <type>GLfloat</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glVertex4fv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="v">
+        <ptr size="4">
+          <type>GLfloat</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glVertex4i">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="x">
+        <type>GLint</type>
+      </arg>
+      <arg name="y">
+        <type>GLint</type>
+      </arg>
+      <arg name="z">
+        <type>GLint</type>
+      </arg>
+      <arg name="w">
+        <type>GLint</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glVertex4iv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="v">
+        <ptr size="4">
+          <type>GLint</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glVertex4s">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="x">
+        <type>GLshort</type>
+      </arg>
+      <arg name="y">
+        <type>GLshort</type>
+      </arg>
+      <arg name="z">
+        <type>GLshort</type>
+      </arg>
+      <arg name="w">
+        <type>GLshort</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glVertex4sv">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="v">
+        <ptr size="4">
+          <type>GLshort</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glVertexPointer">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="size">
+        <type>GLint</type>
+      </arg>
+      <arg name="type">
+        <type>GLenum</type>
+      </arg>
+      <arg name="stride">
+        <type>GLsizei</type>
+      </arg>
+      <arg name="pointer">
+        <ptr size="4">
+          <type>GLvoid</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="glViewport">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="x">
+        <type>GLint</type>
+      </arg>
+      <arg name="y">
+        <type>GLint</type>
+      </arg>
+      <arg name="width">
+        <type>GLsizei</type>
+      </arg>
+      <arg name="height">
+        <type>GLsizei</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="gluErrorString">
+    <signature convention="__stdcall">
+      <return>
+        <ptr size="4">
+          <type>GLubyte</type>
+        </ptr>
+      </return>
+      <arg name="errCode">
+        <type>GLenum</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="gluErrorUnicodeStringEXT">
+    <signature convention="__stdcall">
+      <return>
+        <ptr size="4">
+          <prim domain="Character" size="2" />
+        </ptr>
+      </return>
+      <arg name="errCode">
+        <type>GLenum</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="gluGetString">
+    <signature convention="__stdcall">
+      <return>
+        <ptr size="4">
+          <type>GLubyte</type>
+        </ptr>
+      </return>
+      <arg name="name">
+        <type>GLenum</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="gluOrtho2D">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="left">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="right">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="bottom">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="top">
+        <type>GLdouble</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="gluPerspective">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="fovy">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="aspect">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="zNear">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="zFar">
+        <type>GLdouble</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="gluPickMatrix">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="x">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="y">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="width">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="height">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="viewport">
+        <ptr>
+          <type>GLint</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="gluLookAt">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="eyex">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="eyey">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="eyez">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="centerx">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="centery">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="centerz">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="upx">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="upy">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="upz">
+        <type>GLdouble</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="gluProject">
+    <signature convention="__stdcall">
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg name="objx">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="objy">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="objz">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="modelMatrix">
+        <ptr>
+          <type>GLdouble</type>
+        </ptr>
+      </arg>
+      <arg name="projMatrix">
+        <ptr>
+          <type>GLdouble</type>
+        </ptr>
+      </arg>
+      <arg name="viewport">
+        <ptr>
+          <type>GLint</type>
+        </ptr>
+      </arg>
+      <arg name="winx">
+        <ptr size="4">
+          <type>GLdouble</type>
+        </ptr>
+      </arg>
+      <arg name="winy">
+        <ptr size="4">
+          <type>GLdouble</type>
+        </ptr>
+      </arg>
+      <arg name="winz">
+        <ptr size="4">
+          <type>GLdouble</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="gluUnProject">
+    <signature convention="__stdcall">
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg name="winx">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="winy">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="winz">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="modelMatrix">
+        <ptr>
+          <type>GLdouble</type>
+        </ptr>
+      </arg>
+      <arg name="projMatrix">
+        <ptr>
+          <type>GLdouble</type>
+        </ptr>
+      </arg>
+      <arg name="viewport">
+        <ptr>
+          <type>GLint</type>
+        </ptr>
+      </arg>
+      <arg name="objx">
+        <ptr size="4">
+          <type>GLdouble</type>
+        </ptr>
+      </arg>
+      <arg name="objy">
+        <ptr size="4">
+          <type>GLdouble</type>
+        </ptr>
+      </arg>
+      <arg name="objz">
+        <ptr size="4">
+          <type>GLdouble</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="gluScaleImage">
+    <signature convention="__stdcall">
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg name="format">
+        <type>GLenum</type>
+      </arg>
+      <arg name="widthin">
+        <type>GLint</type>
+      </arg>
+      <arg name="heightin">
+        <type>GLint</type>
+      </arg>
+      <arg name="typein">
+        <type>GLenum</type>
+      </arg>
+      <arg name="datain">
+        <ptr size="4">
+          <void />
+        </ptr>
+      </arg>
+      <arg name="widthout">
+        <type>GLint</type>
+      </arg>
+      <arg name="heightout">
+        <type>GLint</type>
+      </arg>
+      <arg name="typeout">
+        <type>GLenum</type>
+      </arg>
+      <arg name="dataout">
+        <ptr size="4">
+          <void />
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="gluBuild1DMipmaps">
+    <signature convention="__stdcall">
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg name="target">
+        <type>GLenum</type>
+      </arg>
+      <arg name="components">
+        <type>GLint</type>
+      </arg>
+      <arg name="width">
+        <type>GLint</type>
+      </arg>
+      <arg name="format">
+        <type>GLenum</type>
+      </arg>
+      <arg name="type">
+        <type>GLenum</type>
+      </arg>
+      <arg name="data">
+        <ptr size="4">
+          <void />
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="gluBuild2DMipmaps">
+    <signature convention="__stdcall">
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+      <arg name="target">
+        <type>GLenum</type>
+      </arg>
+      <arg name="components">
+        <type>GLint</type>
+      </arg>
+      <arg name="width">
+        <type>GLint</type>
+      </arg>
+      <arg name="height">
+        <type>GLint</type>
+      </arg>
+      <arg name="format">
+        <type>GLenum</type>
+      </arg>
+      <arg name="type">
+        <type>GLenum</type>
+      </arg>
+      <arg name="data">
+        <ptr size="4">
+          <void />
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="gluNewQuadric">
+    <signature convention="__stdcall">
+      <return>
+        <ptr size="4">
+          <type>GLUquadric</type>
+        </ptr>
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="gluDeleteQuadric">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="state">
+        <ptr size="4">
+          <type>GLUquadric</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="gluQuadricNormals">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="quadObject">
+        <ptr size="4">
+          <type>GLUquadric</type>
+        </ptr>
+      </arg>
+      <arg name="normals">
+        <type>GLenum</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="gluQuadricTexture">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="quadObject">
+        <ptr size="4">
+          <type>GLUquadric</type>
+        </ptr>
+      </arg>
+      <arg name="textureCoords">
+        <type>GLboolean</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="gluQuadricOrientation">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="quadObject">
+        <ptr size="4">
+          <type>GLUquadric</type>
+        </ptr>
+      </arg>
+      <arg name="orientation">
+        <type>GLenum</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="gluQuadricDrawStyle">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="quadObject">
+        <ptr size="4">
+          <type>GLUquadric</type>
+        </ptr>
+      </arg>
+      <arg name="drawStyle">
+        <type>GLenum</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="gluCylinder">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="qobj">
+        <ptr size="4">
+          <type>GLUquadric</type>
+        </ptr>
+      </arg>
+      <arg name="baseRadius">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="topRadius">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="height">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="slices">
+        <type>GLint</type>
+      </arg>
+      <arg name="stacks">
+        <type>GLint</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="gluDisk">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="qobj">
+        <ptr size="4">
+          <type>GLUquadric</type>
+        </ptr>
+      </arg>
+      <arg name="innerRadius">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="outerRadius">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="slices">
+        <type>GLint</type>
+      </arg>
+      <arg name="loops">
+        <type>GLint</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="gluPartialDisk">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="qobj">
+        <ptr size="4">
+          <type>GLUquadric</type>
+        </ptr>
+      </arg>
+      <arg name="innerRadius">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="outerRadius">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="slices">
+        <type>GLint</type>
+      </arg>
+      <arg name="loops">
+        <type>GLint</type>
+      </arg>
+      <arg name="startAngle">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="sweepAngle">
+        <type>GLdouble</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="gluSphere">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="qobj">
+        <ptr size="4">
+          <type>GLUquadric</type>
+        </ptr>
+      </arg>
+      <arg name="radius">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="slices">
+        <type>GLint</type>
+      </arg>
+      <arg name="stacks">
+        <type>GLint</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="gluQuadricCallback">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="qobj">
+        <ptr size="4">
+          <type>GLUquadric</type>
+        </ptr>
+      </arg>
+      <arg name="which">
+        <type>GLenum</type>
+      </arg>
+      <arg name="fn">
+        <ptr size="4">
+          <fn convention="__stdcall">
+            <return>
+              <void />
+            </return>
+          </fn>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="gluNewTess">
+    <signature convention="__stdcall">
+      <return>
+        <ptr size="4">
+          <type>GLUtesselator</type>
+        </ptr>
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="gluDeleteTess">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="tess">
+        <ptr size="4">
+          <type>GLUtesselator</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="gluTessBeginPolygon">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="tess">
+        <ptr size="4">
+          <type>GLUtesselator</type>
+        </ptr>
+      </arg>
+      <arg name="polygon_data">
+        <ptr size="4">
+          <void />
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="gluTessBeginContour">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="tess">
+        <ptr size="4">
+          <type>GLUtesselator</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="gluTessVertex">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="tess">
+        <ptr size="4">
+          <type>GLUtesselator</type>
+        </ptr>
+      </arg>
+      <arg name="coords">
+        <ptr>
+          <type>GLdouble</type>
+        </ptr>
+      </arg>
+      <arg name="data">
+        <ptr size="4">
+          <void />
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="gluTessEndContour">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="tess">
+        <ptr size="4">
+          <type>GLUtesselator</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="gluTessEndPolygon">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="tess">
+        <ptr size="4">
+          <type>GLUtesselator</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="gluTessProperty">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="tess">
+        <ptr size="4">
+          <type>GLUtesselator</type>
+        </ptr>
+      </arg>
+      <arg name="which">
+        <type>GLenum</type>
+      </arg>
+      <arg name="value">
+        <type>GLdouble</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="gluTessNormal">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="tess">
+        <ptr size="4">
+          <type>GLUtesselator</type>
+        </ptr>
+      </arg>
+      <arg name="x">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="y">
+        <type>GLdouble</type>
+      </arg>
+      <arg name="z">
+        <type>GLdouble</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="gluTessCallback">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="tess">
+        <ptr size="4">
+          <type>GLUtesselator</type>
+        </ptr>
+      </arg>
+      <arg name="which">
+        <type>GLenum</type>
+      </arg>
+      <arg name="fn">
+        <ptr size="4">
+          <fn convention="__stdcall">
+            <return>
+              <void />
+            </return>
+          </fn>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="gluGetTessProperty">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="tess">
+        <ptr size="4">
+          <type>GLUtesselator</type>
+        </ptr>
+      </arg>
+      <arg name="which">
+        <type>GLenum</type>
+      </arg>
+      <arg name="value">
+        <ptr size="4">
+          <type>GLdouble</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="gluNewNurbsRenderer">
+    <signature convention="__stdcall">
+      <return>
+        <ptr size="4">
+          <type>GLUnurbs</type>
+        </ptr>
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="gluDeleteNurbsRenderer">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="nobj">
+        <ptr size="4">
+          <type>GLUnurbs</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="gluBeginSurface">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="nobj">
+        <ptr size="4">
+          <type>GLUnurbs</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="gluBeginCurve">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="nobj">
+        <ptr size="4">
+          <type>GLUnurbs</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="gluEndCurve">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="nobj">
+        <ptr size="4">
+          <type>GLUnurbs</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="gluEndSurface">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="nobj">
+        <ptr size="4">
+          <type>GLUnurbs</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="gluBeginTrim">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="nobj">
+        <ptr size="4">
+          <type>GLUnurbs</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="gluEndTrim">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="nobj">
+        <ptr size="4">
+          <type>GLUnurbs</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="gluPwlCurve">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="nobj">
+        <ptr size="4">
+          <type>GLUnurbs</type>
+        </ptr>
+      </arg>
+      <arg name="count">
+        <type>GLint</type>
+      </arg>
+      <arg name="array">
+        <ptr size="4">
+          <type>GLfloat</type>
+        </ptr>
+      </arg>
+      <arg name="stride">
+        <type>GLint</type>
+      </arg>
+      <arg name="type">
+        <type>GLenum</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="gluNurbsCurve">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="nobj">
+        <ptr size="4">
+          <type>GLUnurbs</type>
+        </ptr>
+      </arg>
+      <arg name="nknots">
+        <type>GLint</type>
+      </arg>
+      <arg name="knot">
+        <ptr size="4">
+          <type>GLfloat</type>
+        </ptr>
+      </arg>
+      <arg name="stride">
+        <type>GLint</type>
+      </arg>
+      <arg name="ctlarray">
+        <ptr size="4">
+          <type>GLfloat</type>
+        </ptr>
+      </arg>
+      <arg name="order">
+        <type>GLint</type>
+      </arg>
+      <arg name="type">
+        <type>GLenum</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="gluNurbsSurface">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="nobj">
+        <ptr size="4">
+          <type>GLUnurbs</type>
+        </ptr>
+      </arg>
+      <arg name="sknot_count">
+        <type>GLint</type>
+      </arg>
+      <arg name="sknot">
+        <ptr size="4">
+          <prim domain="Real" size="4" />
+        </ptr>
+      </arg>
+      <arg name="tknot_count">
+        <type>GLint</type>
+      </arg>
+      <arg name="tknot">
+        <ptr size="4">
+          <type>GLfloat</type>
+        </ptr>
+      </arg>
+      <arg name="s_stride">
+        <type>GLint</type>
+      </arg>
+      <arg name="t_stride">
+        <type>GLint</type>
+      </arg>
+      <arg name="ctlarray">
+        <ptr size="4">
+          <type>GLfloat</type>
+        </ptr>
+      </arg>
+      <arg name="sorder">
+        <type>GLint</type>
+      </arg>
+      <arg name="torder">
+        <type>GLint</type>
+      </arg>
+      <arg name="type">
+        <type>GLenum</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="gluLoadSamplingMatrices">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="nobj">
+        <ptr size="4">
+          <type>GLUnurbs</type>
+        </ptr>
+      </arg>
+      <arg name="modelMatrix">
+        <ptr>
+          <type>GLfloat</type>
+        </ptr>
+      </arg>
+      <arg name="projMatrix">
+        <ptr>
+          <type>GLfloat</type>
+        </ptr>
+      </arg>
+      <arg name="viewport">
+        <ptr>
+          <type>GLint</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="gluNurbsProperty">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="nobj">
+        <ptr size="4">
+          <type>GLUnurbs</type>
+        </ptr>
+      </arg>
+      <arg name="property">
+        <type>GLenum</type>
+      </arg>
+      <arg name="value">
+        <type>GLfloat</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="gluGetNurbsProperty">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="nobj">
+        <ptr size="4">
+          <type>GLUnurbs</type>
+        </ptr>
+      </arg>
+      <arg name="property">
+        <type>GLenum</type>
+      </arg>
+      <arg name="value">
+        <ptr size="4">
+          <type>GLfloat</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="gluNurbsCallback">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="nobj">
+        <ptr size="4">
+          <type>GLUnurbs</type>
+        </ptr>
+      </arg>
+      <arg name="which">
+        <type>GLenum</type>
+      </arg>
+      <arg name="fn">
+        <ptr size="4">
+          <fn convention="__stdcall">
+            <return>
+              <void />
+            </return>
+          </fn>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="gluBeginPolygon">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="tess">
+        <ptr size="4">
+          <type>GLUtesselator</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="gluNextContour">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="tess">
+        <ptr size="4">
+          <type>GLUtesselator</type>
+        </ptr>
+      </arg>
+      <arg name="type">
+        <type>GLenum</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="gluEndPolygon">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg name="tess">
+        <ptr size="4">
+          <type>GLUtesselator</type>
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="auxInitDisplayMode">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg>
+        <type>GLenum</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="auxInitPosition">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg>
+        <prim domain="SignedInt" size="4" />
+      </arg>
+      <arg>
+        <prim domain="SignedInt" size="4" />
+      </arg>
+      <arg>
+        <prim domain="SignedInt" size="4" />
+      </arg>
+      <arg>
+        <prim domain="SignedInt" size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="auxCloseWindow">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="auxQuit">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="auxSwapBuffers">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="auxMainLoop">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg>
+        <type>AUXMAINPROC</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="auxExposeFunc">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg>
+        <type>AUXEXPOSEPROC</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="auxReshapeFunc">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg>
+        <type>AUXRESHAPEPROC</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="auxIdleFunc">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg>
+        <type>AUXIDLEPROC</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="auxKeyFunc">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg>
+        <prim domain="SignedInt" size="4" />
+      </arg>
+      <arg>
+        <type>AUXKEYPROC</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="auxMouseFunc">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg>
+        <prim domain="SignedInt" size="4" />
+      </arg>
+      <arg>
+        <prim domain="SignedInt" size="4" />
+      </arg>
+      <arg>
+        <type>AUXMOUSEPROC</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="auxGetColorMapSize">
+    <signature convention="__stdcall">
+      <return>
+        <prim domain="SignedInt" size="4" />
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="auxGetMouseLoc">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg>
+        <ptr size="4">
+          <prim domain="SignedInt" size="4" />
+        </ptr>
+      </arg>
+      <arg>
+        <ptr size="4">
+          <prim domain="SignedInt" size="4" />
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="auxSetOneColor">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg>
+        <prim domain="SignedInt" size="4" />
+      </arg>
+      <arg>
+        <prim domain="Real" size="4" />
+      </arg>
+      <arg>
+        <prim domain="Real" size="4" />
+      </arg>
+      <arg>
+        <prim domain="Real" size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="auxSetFogRamp">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg>
+        <prim domain="SignedInt" size="4" />
+      </arg>
+      <arg>
+        <prim domain="SignedInt" size="4" />
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="auxSetGreyRamp">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="auxSetRGBMap">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg>
+        <prim domain="SignedInt" size="4" />
+      </arg>
+      <arg>
+        <ptr size="4">
+          <prim domain="Real" size="4" />
+        </ptr>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="auxCreateFont">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="auxWireSphere">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg>
+        <type>GLdouble</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="auxSolidSphere">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg>
+        <type>GLdouble</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="auxWireCube">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg>
+        <type>GLdouble</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="auxSolidCube">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg>
+        <type>GLdouble</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="auxWireBox">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg>
+        <type>GLdouble</type>
+      </arg>
+      <arg>
+        <type>GLdouble</type>
+      </arg>
+      <arg>
+        <type>GLdouble</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="auxSolidBox">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg>
+        <type>GLdouble</type>
+      </arg>
+      <arg>
+        <type>GLdouble</type>
+      </arg>
+      <arg>
+        <type>GLdouble</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="auxWireTorus">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg>
+        <type>GLdouble</type>
+      </arg>
+      <arg>
+        <type>GLdouble</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="auxSolidTorus">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg>
+        <type>GLdouble</type>
+      </arg>
+      <arg>
+        <type>GLdouble</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="auxWireCylinder">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg>
+        <type>GLdouble</type>
+      </arg>
+      <arg>
+        <type>GLdouble</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="auxSolidCylinder">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg>
+        <type>GLdouble</type>
+      </arg>
+      <arg>
+        <type>GLdouble</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="auxWireIcosahedron">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg>
+        <type>GLdouble</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="auxSolidIcosahedron">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg>
+        <type>GLdouble</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="auxWireOctahedron">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg>
+        <type>GLdouble</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="auxSolidOctahedron">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg>
+        <type>GLdouble</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="auxWireTetrahedron">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg>
+        <type>GLdouble</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="auxSolidTetrahedron">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg>
+        <type>GLdouble</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="auxWireDodecahedron">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg>
+        <type>GLdouble</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="auxSolidDodecahedron">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg>
+        <type>GLdouble</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="auxWireCone">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg>
+        <type>GLdouble</type>
+      </arg>
+      <arg>
+        <type>GLdouble</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="auxSolidCone">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg>
+        <type>GLdouble</type>
+      </arg>
+      <arg>
+        <type>GLdouble</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="auxWireTeapot">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg>
+        <type>GLdouble</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="auxSolidTeapot">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg>
+        <type>GLdouble</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="auxGetHWND">
+    <signature convention="__stdcall">
+      <return>
+        <type>HWND</type>
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="auxGetHDC">
+    <signature convention="__stdcall">
+      <return>
+        <type>HDC</type>
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="auxGetHGLRC">
+    <signature convention="__stdcall">
+      <return>
+        <type>HGLRC</type>
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="auxInitDisplayModePolicy">
+    <signature convention="__stdcall">
+      <return>
+        <void />
+      </return>
+      <arg>
+        <type>GLenum</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="auxInitDisplayModeID">
+    <signature convention="__stdcall">
+      <return>
+        <type>GLenum</type>
+      </return>
+      <arg>
+        <type>GLint</type>
+      </arg>
+    </signature>
+  </procedure>
+  <procedure name="auxGetDisplayModePolicy">
+    <signature convention="__stdcall">
+      <return>
+        <type>GLenum</type>
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="auxGetDisplayModeID">
+    <signature convention="__stdcall">
+      <return>
+        <type>GLint</type>
+      </return>
+    </signature>
+  </procedure>
+  <procedure name="auxGetDisplayMode">
+    <signature convention="__stdcall">
+      <return>
+        <type>GLenum</type>
+      </return>
+    </signature>
+  </procedure>
+</library>
