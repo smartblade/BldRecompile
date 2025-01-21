@@ -9,7 +9,7 @@ from hex_conversion import from_hex
 import parser
 
 const_regexp = re.compile(
-    r'^((?P<float>\d+\.\d+F?)|(?P<hex>0x[\dABCDEF]+)|(?P<int>-?\d+)|'
+    r'^((?P<float>-?\d+\.\d+F?)|(?P<hex>0x[\dABCDEF]+)|(?P<int>-?\d+)|'
     r'(?P<null>null))$'
 )
 field_access_regexp = re.compile(
