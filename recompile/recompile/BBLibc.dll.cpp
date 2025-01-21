@@ -20,9 +20,9 @@ int B_IDataFile::GetnOpenFiles()
 // address: 0x10001023
 int B_IDataFile::SetOnOpenFunc(PyObject *obj)
 {
-    if (obj != NULL)
+    if (obj != nullptr)
     {
-        if (B_IDataFile::OnOpenFunc != NULL)
+        if (B_IDataFile::OnOpenFunc != nullptr)
         {
             B_IDataFile::OnOpenFunc->ob_refcnt = B_IDataFile::OnOpenFunc->ob_refcnt - 0x00000001;
             if (B_IDataFile::OnOpenFunc->ob_refcnt == 0)
@@ -30,7 +30,7 @@ int B_IDataFile::SetOnOpenFunc(PyObject *obj)
                 B_IDataFile::OnOpenFunc->ob_type->tp_dealloc(B_IDataFile::OnOpenFunc);
             }
         }
-        if (obj != NULL)
+        if (obj != nullptr)
         {
             obj->ob_refcnt = obj->ob_refcnt + 0x00000001;
         }
@@ -46,7 +46,7 @@ int B_IDataFile::SetOnOpenFunc(PyObject *obj)
 // address: 0x10001096
 void B_IDataFile::RemoveOnOpenFunc()
 {
-    if (B_IDataFile::OnOpenFunc != NULL)
+    if (B_IDataFile::OnOpenFunc != nullptr)
     {
         B_IDataFile::OnOpenFunc->ob_refcnt = B_IDataFile::OnOpenFunc->ob_refcnt - 0x00000001;
         if (B_IDataFile::OnOpenFunc->ob_refcnt == 0)
@@ -54,7 +54,7 @@ void B_IDataFile::RemoveOnOpenFunc()
             B_IDataFile::OnOpenFunc->ob_type->tp_dealloc(B_IDataFile::OnOpenFunc);
         }
     }
-    B_IDataFile::OnOpenFunc = NULL;
+    B_IDataFile::OnOpenFunc = nullptr;
 }
 
 // address: 0x100010E4
@@ -102,10 +102,10 @@ void B_IDataFile::Close()
 {
     this->cacheBlockBytesRead = 4294950912;
     this->cacheBlockPos = 0;
-    if (this->file_name != NULL)
+    if (this->file_name != nullptr)
     {
         free(this->file_name);
-        this->file_name = NULL;
+        this->file_name = nullptr;
     }
     if (this->filePosition != 0)
     {
@@ -162,7 +162,7 @@ Failed to find pattern for 'jmp near ptr l1000173A'
 B_IDataFile::B_IDataFile()
 {
     this->fd = -1;
-    this->file_name = NULL;
+    this->file_name = nullptr;
     this->cacheBlockBytesRead = 4294950912;
     this->cacheBlockPos = 0;
     this->filePosition = 0;
@@ -717,7 +717,7 @@ Failed to find pattern for 'or ecx, 0FFFFFFFFh'
 B_ListElement::~B_ListElement()
 {
     ACCESS(this, 0, 4) = GLOBAL(0x10042190);
-    if (this->list != NULL)
+    if (this->list != nullptr)
     {
         this->list->Remove(this, 0);
     }
@@ -746,11 +746,11 @@ p100029AE
 // address: 0x10002A14
 unsigned int B_List::Add(B_ListElement *element)
 {
-    if (this->tail != NULL)
+    if (this->tail != nullptr)
     {
         this->tail->prev = element;
         element->next = this->tail;
-        element->prev = NULL;
+        element->prev = nullptr;
         this->tail = element;
     }
     else
@@ -774,7 +774,7 @@ unsigned int B_List::AddAfter(B_ListElement *existing, B_ListElement *newElement
     {
         this->head->next = existing;
         existing->prev = this->head;
-        existing->next = NULL;
+        existing->next = nullptr;
         this->head = existing;
     }
     else
@@ -797,7 +797,7 @@ unsigned int B_List::AddBefore(B_ListElement *existing, B_ListElement *newElemen
     {
         this->tail->prev = existing;
         existing->next = this->tail;
-        existing->prev = NULL;
+        existing->prev = nullptr;
         this->tail = existing;
     }
     else
@@ -875,9 +875,9 @@ unsigned int B_List::Exists(const B_ListElement *element)
 // address: 0x10002EA0
 B_ListElement::B_ListElement()
 {
-    this->list = NULL;
-    this->next = NULL;
-    this->prev = NULL;
+    this->list = nullptr;
+    this->next = nullptr;
+    this->prev = nullptr;
     ACCESS(this, 0, 4) = GLOBAL(0x10042190);
 }
 
@@ -936,8 +936,8 @@ Failed to find pattern for 'imul ecx, dword ptr [ebp-00Ch]'
 B_List::B_List(B_ListElement *element)
 {
     this->numElements = 0;
-    this->tail = NULL;
-    this->head = NULL;
+    this->tail = nullptr;
+    this->head = nullptr;
     ACCESS(this, 0, 4) = GLOBAL(0x10042194);
 }
 
@@ -1694,7 +1694,7 @@ B_Resource *B_ResourceManager::GetResource(unsigned short resourceId, const B_Na
 {
     if (ACCESS(ARRPTR(this, 0x04, reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x0000FFFF, 0), 0, 4) == 0x00000000)
     {
-        return NULL;
+        return nullptr;
     }
     ACCESS(ARRPTR(this, 0x04, reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x0000FFFF, 0), 0, 4)->unknown_method_10004874(name, resourceId);
 }
@@ -1821,7 +1821,7 @@ p10005E8F
 // address: 0x10005ED1
 void B_ResourceManager::FreeResource(B_Resource *resource)
 {
-    if (resource == NULL)
+    if (resource == nullptr)
     {
         mout << reinterpret_cast<char *>(GLOBAL(0x100473BC));
         return;
@@ -1913,7 +1913,7 @@ p100061BA
 {
     ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=0)
     reinterpret_cast<B_Name *>(LOCAL(-12))->B_Name(reinterpret_cast<char *>(STACKVAR(8, 4)));
-    STACKVAR(-4, 4) = B_resource_manager.LocateResourceIn(*reinterpret_cast<B_Name *>(LOCAL(-12)), NULL, 1);
+    STACKVAR(-4, 4) = B_resource_manager.LocateResourceIn(*reinterpret_cast<B_Name *>(LOCAL(-12)), nullptr, 1);
     reinterpret_cast<B_Name *>(LOCAL(-12))->~B_Name();
     REGDEF(eax=STACKVAR(-4, 4))
 }
@@ -1938,7 +1938,7 @@ p10006230
 {
     ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=0)
     reinterpret_cast<B_Name *>(LOCAL(-12))->B_Name(reinterpret_cast<char *>(STACKVAR(8, 4)));
-    STACKVAR(-4, 4) = B_resource_manager.LocateResourceIn(*reinterpret_cast<B_Name *>(LOCAL(-12)), NULL, 2);
+    STACKVAR(-4, 4) = B_resource_manager.LocateResourceIn(*reinterpret_cast<B_Name *>(LOCAL(-12)), nullptr, 2);
     reinterpret_cast<B_Name *>(LOCAL(-12))->~B_Name();
     REGDEF(eax=STACKVAR(-4, 4))
 }
@@ -1948,7 +1948,7 @@ p10006266
 {
     ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=0)
     reinterpret_cast<B_Name *>(LOCAL(-12))->B_Name(reinterpret_cast<char *>(STACKVAR(8, 4)));
-    STACKVAR(-4, 4) = B_resource_manager.LocateResourceIn(*reinterpret_cast<B_Name *>(LOCAL(-12)), NULL, 5);
+    STACKVAR(-4, 4) = B_resource_manager.LocateResourceIn(*reinterpret_cast<B_Name *>(LOCAL(-12)), nullptr, 5);
     reinterpret_cast<B_Name *>(LOCAL(-12))->~B_Name();
     REGDEF(eax=STACKVAR(-4, 4))
 }
@@ -2638,12 +2638,12 @@ Failed to find pattern for 'ja l10008D7C'
 B_BitMap::~B_BitMap()
 {
     ACCESS(this, 0, 4) = GLOBAL(0x100421F8);
-    if (this->data != NULL)
+    if (this->data != nullptr)
     {
         STACKVAR(-4, 4) = this->data;
         ??3@YAXPAX@Z(STACKVAR(-4, 4));
     }
-    if (this->pal != NULL)
+    if (this->pal != nullptr)
     {
         STACKVAR(-8, 4) = this->pal;
         ??3@YAXPAX@Z(STACKVAR(-8, 4));
@@ -8124,11 +8124,11 @@ B_IDataFile &operator >>(B_IDataFile &file, B_BitMap24 &bitMap)
 {
     bitMap.dimension2 = 0;
     bitMap.dimension1 = 0;
-    if (bitMap.data != NULL)
+    if (bitMap.data != nullptr)
     {
         STACKVAR(-12, 4) = bitMap.data;
         ??3@YAXPAX@Z(STACKVAR(-12, 4));
-        bitMap.data = NULL;
+        bitMap.data = nullptr;
     }
     STACKVAR(-8, 4) = file.Tell();
     file >> *reinterpret_cast<unsigned short *>(LOCAL(-4));
@@ -11983,7 +11983,7 @@ PyObject *CallPythonObject(PyObject *func, PyObject *args)
         if (STACKVAR(-8, 4) != 0x00000000)
         {
             PyErr_Print();
-            if (args != NULL)
+            if (args != nullptr)
             {
                 unknown_function_1003E280(args);
             }
@@ -12010,7 +12010,7 @@ PyObject *CallPythonObject(PyObject *func, PyObject *args)
         if (STACKVAR(-16, 4) != 0x00000000)
         {
             PyErr_Print();
-            if (args != NULL)
+            if (args != nullptr)
             {
                 unknown_function_1003E280(args);
             }
@@ -12036,7 +12036,7 @@ PyObject *CallPythonObject(PyObject *func, PyObject *args)
     }
     if ((CheckErrors & 0x00000004) != 0x00000000)
     {
-        if (args != NULL)
+        if (args != nullptr)
         {
             unknown_function_1003E280(args);
         }
@@ -13104,7 +13104,7 @@ B_ParticleGType::~B_ParticleGType()
 {
     ACCESS(this, 0, 4) = GLOBAL(0x10042E64);
     ACCESS(this, 12, 4) = GLOBAL(0x10042E60);
-    if (this != NULL)
+    if (this != nullptr)
     {
         STACKVAR(-8, 4) = &this->a00C;
     }

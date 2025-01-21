@@ -7,7 +7,7 @@ class _Null:
 
     @staticmethod
     def emit_code():
-        return "NULL"
+        return "nullptr"
 
 
 Null = _Null()
