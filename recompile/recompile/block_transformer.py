@@ -165,9 +165,9 @@ def _validate_return_instruction(code_instructions, proc_decl, **kwargs):
 
 def _is_one_use_of_id(instr, identifier):
     if isinstance(instr, instructions.IfInstruction):
-        if _is_one_use_of_id(instr.if_block()[-1], identifier):
+        if _is_one_use_of_id(instr.if_block[-1], identifier):
             return True
-        if _is_one_use_of_id(instr.else_block()[-1], identifier):
+        if _is_one_use_of_id(instr.else_block[-1], identifier):
             return True
         return False
     uses = {}

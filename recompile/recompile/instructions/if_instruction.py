@@ -17,9 +17,11 @@ class IfInstruction:
     def if_clause(self):
         return self._if_clause
 
+    @property
     def if_block(self):
         return self._if_block
 
+    @property
     def else_block(self):
         return self._else_block
 

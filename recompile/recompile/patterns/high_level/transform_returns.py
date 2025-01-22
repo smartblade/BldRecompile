@@ -66,10 +66,10 @@ def _rewrite_nested_blocks(proc_decl, instr):
 
 def _rewrite_if(proc_decl, instr):
     if isinstance(instr, instructions.IfInstruction):
-        if_block = _rewrite_returns(proc_decl, instr.if_block())
+        if_block = _rewrite_returns(proc_decl, instr.if_block)
         else_block = None
-        if instr.else_block() is not None:
-            else_block = _rewrite_returns(proc_decl, instr.else_block())
+        if instr.else_block is not None:
+            else_block = _rewrite_returns(proc_decl, instr.else_block)
         return instructions.IfInstruction(
             instr.if_clause, if_block, else_block)
     return instr

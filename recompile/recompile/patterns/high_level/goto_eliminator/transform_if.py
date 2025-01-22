@@ -39,24 +39,24 @@ def transform_if_statements(instrs, label_uses, **kwargs):
 def _as_if_goto_instr(if_instruction):
     if not isinstance(if_instruction, instructions.IfInstruction):
         return None
-    if if_instruction.else_block() is not None:
+    if if_instruction.else_block is not None:
         return None
-    goto_instr = if_instruction.if_block()[-1]
+    goto_instr = if_instruction.if_block[-1]
     if not isinstance(goto_instr, instructions.Goto):
         return None
     return goto_instr
 
 
 def _add_block_to_if_instruction(if_instruction, instrs):
-    assert if_instruction.else_block() is None
-    assert isinstance(if_instruction.if_block()[-1], instructions.Goto)
-    if len(if_instruction.if_block()) == 1:
+    assert if_instruction.else_block is None
+    assert isinstance(if_instruction.if_block[-1], instructions.Goto)
+    if len(if_instruction.if_block) == 1:
         return instructions.IfInstruction(
             expressions.do_logical_not(if_instruction.if_clause),
             instrs
         )
     return instructions.IfInstruction(
         if_instruction.if_clause,
-        if_instruction.if_block()[:-1],
+        if_instruction.if_block[:-1],
         instrs,
     )
