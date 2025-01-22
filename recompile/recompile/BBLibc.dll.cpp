@@ -22,18 +22,8 @@ int B_IDataFile::SetOnOpenFunc(PyObject *obj)
 {
     if (obj != nullptr)
     {
-        if (B_IDataFile::OnOpenFunc != nullptr)
-        {
-            B_IDataFile::OnOpenFunc->ob_refcnt = B_IDataFile::OnOpenFunc->ob_refcnt - 0x00000001;
-            if (B_IDataFile::OnOpenFunc->ob_refcnt == 0)
-            {
-                B_IDataFile::OnOpenFunc->ob_type->tp_dealloc(B_IDataFile::OnOpenFunc);
-            }
-        }
-        if (obj != nullptr)
-        {
-            obj->ob_refcnt = obj->ob_refcnt + 0x00000001;
-        }
+        Py_XDECREF(B_IDataFile::OnOpenFunc);
+        Py_XINCREF(obj);
         B_IDataFile::OnOpenFunc = obj;
     }
     else
@@ -46,14 +36,7 @@ int B_IDataFile::SetOnOpenFunc(PyObject *obj)
 // address: 0x10001096
 void B_IDataFile::RemoveOnOpenFunc()
 {
-    if (B_IDataFile::OnOpenFunc != nullptr)
-    {
-        B_IDataFile::OnOpenFunc->ob_refcnt = B_IDataFile::OnOpenFunc->ob_refcnt - 0x00000001;
-        if (B_IDataFile::OnOpenFunc->ob_refcnt == 0)
-        {
-            B_IDataFile::OnOpenFunc->ob_type->tp_dealloc(B_IDataFile::OnOpenFunc);
-        }
-    }
+    Py_XDECREF(B_IDataFile::OnOpenFunc);
     B_IDataFile::OnOpenFunc = nullptr;
 }
 

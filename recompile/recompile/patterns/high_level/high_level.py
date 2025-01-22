@@ -1,6 +1,7 @@
 import instructions
 import expressions
 import patterns.high_level.goto_eliminator as goto_eliminator
+import patterns.high_level.inline_functions as inline_functions
 from patterns.predefined_procedures import visit_predefined_procedures
 from patterns.validate_procedure_declaration import \
     validate_procedure_declaration
@@ -41,6 +42,8 @@ def _transform(e, **kwargs):
         return transform_binary(e, **kwargs)
     if isinstance(e, expressions.ReinterpretCast):
         return expressions.do_reinterpret(e.data_type, e.expression)
+    if isinstance(e, instructions.IfInstruction):
+        return inline_functions.transform_if(e)
     e = visit_predefined_procedures(
         e, **kwargs,
         on_stackvar=transform_stackvar,
