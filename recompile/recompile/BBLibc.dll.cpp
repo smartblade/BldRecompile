@@ -28,9 +28,9 @@ int B_IDataFile::SetOnOpenFunc(PyObject *obj)
     }
     else
     {
-        return 0;
+        return false;
     }
-    return 1;
+    return true;
 }
 
 // address: 0x10001096

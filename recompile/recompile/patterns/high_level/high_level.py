@@ -16,7 +16,9 @@ from .transform_procedure_call import transform_procedure_call
 from .transform_returns import transform_returns
 
 
-def make_high_level_code(proc_info, proc_decl, declarations, instrs):
+def make_high_level_code(
+    proc_info, proc_decl, characteristics, declarations, instrs
+):
     instrs = goto_eliminator.transform(instrs)
     stack_vars = proc_info.stack_variables
     if proc_decl is not None:
@@ -31,7 +33,8 @@ def make_high_level_code(proc_info, proc_decl, declarations, instrs):
     if proc_decl is not None:
         new_instructions = _eliminate_procedure_info(
             proc_info, new_instructions)
-    new_instructions = transform_returns(proc_info, proc_decl, new_instructions)
+    new_instructions = transform_returns(
+        proc_info, proc_decl, characteristics, new_instructions)
     return new_instructions
 
 

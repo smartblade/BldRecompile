@@ -9,6 +9,7 @@ import time
 from make_tuple import make_tuple
 import parser as cpp_parser
 from patterns.asm_patterns import process_asm_patterns
+from patterns.characteristics import ModuleCharacteristics
 
 parser = OptionParser()
 parser.add_option("--show-hex-prefix", dest="show_hex_prefix",
@@ -1467,8 +1468,13 @@ def run():
             module_name = read_module_name(asm_files)
             print("Processing {}".format(module_name))
             symbols = symbols_dict.get(module_name, SrcSymbols(module_name))
+            characteristics = ModuleCharacteristics.read(module_name)
             declarations = make_tuple(
-                "Declarations", symbols=symbols, declared_types=declared_types)
+                "Declarations",
+                symbols=symbols,
+                declared_types=declared_types,
+                characteristics=characteristics,
+            )
             process_asm_dir(asm_files, declarations)
 
 def process_asm_dir(asm_files, declarations):

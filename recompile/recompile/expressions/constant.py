@@ -38,4 +38,7 @@ class Constant:
         if isinstance(self._data_type, data_types.AnyInt):
             return "0x{:0{}X}".format(
                 self._value, self._data_type.size * 2)
+        if isinstance(self._data_type, data_types.Bool):
+            assert self._value == 0 or self._value == 1
+            return "true" if self._value else "false"
         return "{}".format(self._value)

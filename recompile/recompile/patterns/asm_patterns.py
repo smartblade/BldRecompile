@@ -71,7 +71,7 @@ def _build_proc(writer, declarations, patterns, proc_addr, proc_lines):
     writer.write_line("")
     writer.write_line("// address: 0x{}".format(to_hex(proc_addr)))
     writer.write_line(decl_string)
-    builder = ProcedureBuilder(proc_decl)
+    builder = ProcedureBuilder(proc_decl, proc_addr)
     try:
         _parse_asm_proc(builder, patterns, proc_lines)
     except Exception as exc:

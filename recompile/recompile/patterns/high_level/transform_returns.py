@@ -3,10 +3,11 @@ import expressions
 import instructions
 
 from .convert_expression_to_type import convert_expression_to_type
+from .convert_return_value_to_bool import convert_return_value_to_bool
 
 
-def transform_returns(proc_info, proc_decl, instrs):
-    instrs = _rewrite_returns(proc_decl, instrs)
+def transform_returns(proc_info, proc_decl, characteristics, instrs):
+    instrs = _rewrite_returns(proc_decl, characteristics, instrs)
     instrs = _eliminate_unnecessary_returns(proc_info, proc_decl, instrs)
     return instrs
 
@@ -29,7 +30,7 @@ def _eliminate_unnecessary_returns(proc_info, proc_decl, instrs):
     return instrs
 
 
-def _rewrite_returns(proc_decl, instrs):
+def _rewrite_returns(proc_decl, characteristics, instrs):
     new_instructions = []
     i = 0
     while i < len(instrs):
@@ -38,51 +39,54 @@ def _rewrite_returns(proc_decl, instrs):
             next_instr = instrs[i + 1]
         else:
             next_instr = None
-        instr = _rewrite_nested_blocks(proc_decl, instr)
-        updated_instrs = _rewrite_return(proc_decl, instr, next_instr)
+        instr = _rewrite_nested_blocks(proc_decl, characteristics, instr)
+        updated_instrs = _rewrite_return(
+            proc_decl, characteristics, instr, next_instr)
         if updated_instrs:
             new_instructions.extend(updated_instrs)
             i += 2
             continue
         updated_instrs = _rewrite_return_from_last_call(
-            proc_decl, instr, next_instr)
+            proc_decl, characteristics, instr, next_instr)
         if updated_instrs:
             new_instructions.extend(updated_instrs)
             i += 2
             continue
         if next_instr is None and isinstance(instr, instructions.LabeledBlock):
             instr = instructions.LabeledBlock(
-                instr.label, _rewrite_returns(proc_decl, instr.instructions))
+                instr.label, _rewrite_returns(
+                    proc_decl, characteristics, instr.instructions))
         new_instructions.append(instr)
         i += 1
     return new_instructions
 
 
-def _rewrite_nested_blocks(proc_decl, instr):
-    instr = _rewrite_if(proc_decl, instr)
-    instr = _rewrite_while(proc_decl, instr)
+def _rewrite_nested_blocks(proc_decl, characteristics, instr):
+    instr = _rewrite_if(proc_decl, characteristics, instr)
+    instr = _rewrite_while(proc_decl, characteristics, instr)
     return instr
 
 
-def _rewrite_if(proc_decl, instr):
+def _rewrite_if(proc_decl, characteristics, instr):
     if isinstance(instr, instructions.IfInstruction):
-        if_block = _rewrite_returns(proc_decl, instr.if_block)
+        if_block = _rewrite_returns(proc_decl, characteristics, instr.if_block)
         else_block = None
         if instr.else_block is not None:
-            else_block = _rewrite_returns(proc_decl, instr.else_block)
+            else_block = _rewrite_returns(
+                proc_decl, characteristics, instr.else_block)
         return instructions.IfInstruction(
             instr.if_clause, if_block, else_block)
     return instr
 
 
-def _rewrite_while(proc_decl, instr):
+def _rewrite_while(proc_decl, characteristics, instr):
     if isinstance(instr, instructions.WhileInstruction):
-        block = _rewrite_returns(proc_decl, instr.block)
+        block = _rewrite_returns(proc_decl, characteristics, instr.block)
         return instructions.WhileInstruction(instr.clause, block)
     return instr
 
 
-def _rewrite_return(proc_decl, regdef, return_instr):
+def _rewrite_return(proc_decl, characteristics, regdef, return_instr):
     if not isinstance(regdef, instructions.TemporaryRegisterDefinition):
         return
     if not isinstance(return_instr, instructions.ReturnInstruction):
@@ -101,6 +105,7 @@ def _rewrite_return(proc_decl, regdef, return_instr):
     else:
         return
     return_value = convert_expression_to_type(return_value, data_type)
+    return_value = convert_return_value_to_bool(characteristics, return_value)
     new_instructions = []
     if not regdef.is_empty():
         new_instructions.append(regdef)
@@ -108,7 +113,9 @@ def _rewrite_return(proc_decl, regdef, return_instr):
     return new_instructions
 
 
-def _rewrite_return_from_last_call(proc_decl, instr, return_instr):
+def _rewrite_return_from_last_call(
+    proc_decl, characteristics, instr, return_instr
+):
     if not isinstance(instr, instructions.CodeInstruction):
         return
     pc = instr.expression
@@ -128,6 +135,7 @@ def _rewrite_return_from_last_call(proc_decl, instr, return_instr):
     if not _is_eax_return_type(data_type):
         return
     return_value = convert_expression_to_type(pc, data_type)
+    return_value = convert_return_value_to_bool(characteristics, return_value)
     new_instructions = [instructions.ReturnInstruction(return_value)]
     return new_instructions
 

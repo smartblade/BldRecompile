@@ -10,7 +10,7 @@ from .make_float_assignment import make_float_assignment
 
 
 class ProcedureBuilder:
-    def __init__(self, proc_decl):
+    def __init__(self, proc_decl, proc_addr):
         self._instructions = []
         self._current_block = BlockBuilder(self._instructions)
         self._proc_decl = proc_decl
@@ -18,6 +18,7 @@ class ProcedureBuilder:
             self._method_class = self._proc_decl.method_class
         else:
             self._method_class = None
+        self._proc_addr = proc_addr
 
     def make_standard(self, name):
         self.make_prolog(allocated=expressions.Constant(data_types.UInt32, 0))
@@ -157,6 +158,7 @@ class ProcedureBuilder:
         self._instructions = make_high_level_code(
             self._expect_first_procedure_info(),
             self._proc_decl,
+            declarations.characteristics[self._proc_addr],
             declarations,
             self._instructions,
         )
