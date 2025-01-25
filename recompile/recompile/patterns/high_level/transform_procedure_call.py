@@ -1,4 +1,6 @@
 import data_types
+import expressions
+from expressions.operator import Operator
 import parser
 from calling_convention import CallingConvention
 from patterns.validate_procedure_declaration import \
@@ -14,6 +16,13 @@ def transform_procedure_call(pc, declarations, **kwargs):
     if proc_decl is None:
         return pc
     assert pc.proc_decl is not None
+    result = _convert_struct_return_implicit_arg(pc, proc_decl)
+    if result is not None:
+        return result
+    return _convert_procedure_call_arguments(pc, proc_decl)
+
+
+def _convert_procedure_call_arguments(pc, proc_decl):
     arguments = _convert_arguments_to_parameters_types(pc, proc_decl)
     return pc.copy(
         name=proc_decl.proc_name, proc_decl=proc_decl, arguments=arguments)
@@ -83,3 +92,25 @@ def _convert_argument_to_parameters_type(argument, parameter, proc_decl):
     new_argument = explicit_arg_cast(
         proc_decl, new_argument, parameter.data_type) or new_argument
     return new_argument
+
+
+def _convert_struct_return_implicit_arg(pc, proc_decl):
+    if not isinstance(proc_decl.return_type, data_types.ClassType):
+        return None
+    this_arg = None
+    new_arguments = pc.arguments
+    if pc.is_method:
+        this_arg = new_arguments[0]
+        new_arguments = new_arguments[1:]
+    return_arg = new_arguments[0]
+    return_arg = convert_expression_to_type(
+        return_arg, data_types.Pointer32(proc_decl.return_type))
+    new_arguments = new_arguments[1:]
+    if this_arg is not None:
+        new_arguments.insert(0, this_arg)
+    pc = pc.copy(arguments=new_arguments)
+    pc = _convert_procedure_call_arguments(pc, proc_decl)
+    dst = expressions.do_dereference(return_arg)
+    if isinstance(dst.data_type, data_types.ClassType):
+        dst = expressions.ImplicitCast(data_types.Reference(dst.data_type), dst)
+    return expressions.Bin(Operator.ASS, dst, pc)

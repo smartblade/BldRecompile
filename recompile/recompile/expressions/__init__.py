@@ -10,6 +10,7 @@ from .do_logical_not import do_logical_not
 from .do_reinterpret import do_reinterpret
 from .field_access import FieldAccess
 from .identifier import Identifier
+from .implicit_cast import ImplicitCast
 from .increment import Increment
 from .null import Null
 from .procedure_call import ProcedureCall

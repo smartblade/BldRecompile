@@ -83,6 +83,10 @@ class ProcedureCall:
         return self._callee_addr
 
     @property
+    def is_method(self):
+        return self._is_method
+
+    @property
     def proc_decl(self):
         return self._proc_decl
 

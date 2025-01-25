@@ -59,8 +59,16 @@ p100010F3
     {
         goto l10001133;
     }
+    goto l10001201;
+l10001133:
+    _read(ACCESS(GLOBAL(0x10049EE8), 0, 4), LOCAL(-20), 0x00000012);
+    STACKVAR(-24, 4) = GLOBAL(0x100471F8);
+    STACKVAR(-28, 4) = LOCAL(-20);
+l10001156:
+    STACKVAR(-29, 1) = ACCESS(STACKVAR(-28, 4), 0, 1);
+    REGDEF(edx=STACKVAR(-24, 4))
 }
-Failed to find pattern for 'jmp near ptr l10001201'
+'cl'
 
 // address: 0x10001205
 p10001205
@@ -126,20 +134,43 @@ void B_IDataFile::Close()
 // address: 0x100015E2
 void B_IDataFile::Open(const char *src, int flags)
 {
-    ProcedureInfo(this=Id(this), this_offset=-20, local_size=20, stack_delta=None)
-    ACCESS(STACKVAR(-20, 4), 4, 4) = _strdup(STACKVAR(8, 4));
-    ACCESS(STACKVAR(-20, 4), 16404, 4) = 0x00000000;
-    if (ACCESS(STACKVAR(-20, 4), 16404, 4) != 0x00000000)
+    this->file_name = reinterpret_cast<char *>(_strdup(src));
+    this->filePosition = 0;
+    if (this->filePosition == 0)
     {
-        goto l10001732;
+        this->fd = reinterpret_cast<int>(_open(src, flags));
+        if (static_cast<unsigned int>(this->fd != -1) == 0)
+        {
+            return;
+        }
+        this->file_size = reinterpret_cast<unsigned int>(_filelength(this->fd));
+        B_IDataFile::n_opened_files = B_IDataFile::n_opened_files + 0x00000001;
+        B_IDataFile::n_open_files = B_IDataFile::n_open_files + 0x00000001;
+        if (B_IDataFile::OnOpenFunc != nullptr)
+        {
+            STACKVAR(-16, 4) = PyTuple_New(0x00000002);
+            STACKVAR(-8, 4) = PyInt_FromLong(B_IDataFile::n_opened_files);
+            STACKVAR(-12, 4) = PyString_FromString(this->file_name);
+            ACCESS(STACKVAR(-16, 4), 12, 4) = STACKVAR(-8, 4);
+            ACCESS(STACKVAR(-16, 4), 16, 4) = STACKVAR(-12, 4);
+            STACKVAR(-4, 4) = CallPythonObject(B_IDataFile::OnOpenFunc, reinterpret_cast<PyObject *>(STACKVAR(-16, 4)));
+            ACCESS(STACKVAR(-16, 4), 0, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-16, 4), 0, 4)) - 0x00000001;
+            if (ACCESS(STACKVAR(-16, 4), 0, 4) == 0x00000000)
+            {
+                ACCESS(ACCESS(STACKVAR(-16, 4), 4, 4), 24, 4)(STACKVAR(-16, 4));
+            }
+            if (STACKVAR(-4, 4) != 0x00000000)
+            {
+                ACCESS(STACKVAR(-4, 4), 0, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-4, 4), 0, 4)) - 0x00000001;
+                if (ACCESS(STACKVAR(-4, 4), 0, 4) == 0x00000000)
+                {
+                    ACCESS(ACCESS(STACKVAR(-4, 4), 4, 4), 24, 4)(STACKVAR(-4, 4));
+                }
+            }
+        }
     }
-    ACCESS(STACKVAR(-20, 4), 0, 4) = _open(STACKVAR(8, 4), STACKVAR(12, 4));
-    if (static_cast<unsigned int>(ACCESS(STACKVAR(-20, 4), 0, 4) != 0xFFFFFFFF) != 0x00000000)
-    {
-        goto l10001645;
-    }
+    this->ReadCacheBlock();
 }
-Failed to find pattern for 'jmp near ptr l1000173A'
 
 // address: 0x10001740
 B_IDataFile::B_IDataFile()
@@ -361,8 +392,11 @@ void B_ODataFile::Write(const void *data, unsigned int size)
     {
         goto l10001E9C;
     }
+    goto l10001F56;
+l10001E9C:
+    REGDEF(cmpl=STACKVAR(12, 4), cmpr=0x00004000 - reinterpret_cast<any_int32>(ACCESS(STACKVAR(-8, 4), 16396, 4)))
 }
-Failed to find pattern for 'jmp near ptr l10001F56'
+Failed to find pattern for 'jnb l10001EEA'
 
 // address: 0x10001F5E
 B_ODataFile &operator <<(B_ODataFile &file, const char &c)
@@ -799,38 +833,117 @@ unsigned int B_List::AddBefore(B_ListElement *existing, B_ListElement *newElemen
 // address: 0x10002BC5
 unsigned int B_List::Remove(B_ListElement *element, unsigned int index)
 {
-    ProcedureInfo(this=Id(this), this_offset=-20, local_size=24, stack_delta=None)
-    if (ACCESS(STACKVAR(-20, 4), 4, 4) != 0x00000000)
+    if (this->numElements == 0)
     {
-        goto l10002BDE;
+        return 0;
     }
-    REGDEF(eax=0x00000000)
+    if (element == this->tail)
+    {
+        this->unknown_method_10002CAC(index);
+        return 1;
+    }
+    if (element == this->head)
+    {
+        this->unknown_method_10002D5D(index);
+        return 1;
+    }
+    STACKVAR(-4, 4) = element->prev;
+    STACKVAR(-8, 4) = element->next;
+    element->prev = nullptr;
+    element->next = nullptr;
+    ACCESS(STACKVAR(-4, 4), 8, 4) = STACKVAR(-8, 4);
+    ACCESS(STACKVAR(-8, 4), 12, 4) = STACKVAR(-4, 4);
+    element->list = nullptr;
+    if (index != 0)
+    {
+        STACKVAR(-16, 4) = element;
+        STACKVAR(-12, 4) = STACKVAR(-16, 4);
+        if (STACKVAR(-12, 4) != 0x00000000)
+        {
+            STACKVAR(-24, 4) = STACKVAR(-12, 4)->(ACCESS(ACCESS(STACKVAR(-12, 4), 0, 4), 0, 4))(0x00000001);
+        }
+        else
+        {
+            STACKVAR(-24, 4) = 0x00000000;
+        }
+    }
+    this->numElements = this->numElements - 0x00000001;
+    return 1;
 }
-Failed to find pattern for 'jmp near ptr l10002CA6'
 
 // address: 0x10002CAC
 p10002CAC
 {
-    ProcedureInfo(this=Id(this), this_offset=-16, local_size=20, stack_delta=None)
-    if (ACCESS(STACKVAR(-16, 4), 4, 4) != 0x00000000)
+    ProcedureInfo(this=Id(this), this_offset=-16, local_size=20, stack_delta=4)
+    if (ACCESS(this, 4, 4) == 0x00000000)
     {
-        goto l10002CC5;
+        REGDEF(eax=0x00000000)
+        return;
     }
-    REGDEF(eax=0x00000000)
+    ACCESS(this, 4, 4) = reinterpret_cast<any_int32>(ACCESS(this, 4, 4)) - 0x00000001;
+    STACKVAR(-4, 4) = ACCESS(this, 8, 4);
+    ACCESS(this, 8, 4) = ACCESS(ACCESS(this, 8, 4), 8, 4);
+    if (ACCESS(this, 4, 4) != 0x00000000)
+    {
+        ACCESS(ACCESS(this, 8, 4), 12, 4) = 0x00000000;
+    }
+    ACCESS(STACKVAR(-4, 4), 4, 4) = 0x00000000;
+    ACCESS(STACKVAR(-4, 4), 8, 4) = 0x00000000;
+    ACCESS(STACKVAR(-4, 4), 12, 4) = 0x00000000;
+    if (STACKVAR(8, 4) != 0x00000000)
+    {
+        STACKVAR(-12, 4) = STACKVAR(-4, 4);
+        STACKVAR(-8, 4) = STACKVAR(-12, 4);
+        if (STACKVAR(-8, 4) != 0x00000000)
+        {
+            STACKVAR(-20, 4) = STACKVAR(-8, 4)->(ACCESS(ACCESS(STACKVAR(-8, 4), 0, 4), 0, 4))(0x00000001);
+        }
+        else
+        {
+            STACKVAR(-20, 4) = 0x00000000;
+        }
+        REGDEF(eax=0x00000000)
+        return;
+    }
+    REGDEF(eax=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'jmp near ptr l10002D57'
 
 // address: 0x10002D5D
 p10002D5D
 {
-    ProcedureInfo(this=Id(this), this_offset=-16, local_size=20, stack_delta=None)
-    if (ACCESS(STACKVAR(-16, 4), 4, 4) != 0x00000000)
+    ProcedureInfo(this=Id(this), this_offset=-16, local_size=20, stack_delta=4)
+    if (ACCESS(this, 4, 4) == 0x00000000)
     {
-        goto l10002D76;
+        REGDEF(eax=0x00000000)
+        return;
     }
-    REGDEF(eax=0x00000000)
+    ACCESS(this, 4, 4) = reinterpret_cast<any_int32>(ACCESS(this, 4, 4)) - 0x00000001;
+    STACKVAR(-4, 4) = ACCESS(this, 12, 4);
+    ACCESS(this, 12, 4) = ACCESS(ACCESS(this, 12, 4), 12, 4);
+    if (ACCESS(this, 4, 4) != 0x00000000)
+    {
+        ACCESS(ACCESS(this, 12, 4), 8, 4) = 0x00000000;
+    }
+    ACCESS(STACKVAR(-4, 4), 4, 4) = 0x00000000;
+    ACCESS(STACKVAR(-4, 4), 8, 4) = 0x00000000;
+    ACCESS(STACKVAR(-4, 4), 12, 4) = 0x00000000;
+    if (STACKVAR(8, 4) != 0x00000000)
+    {
+        STACKVAR(-12, 4) = STACKVAR(-4, 4);
+        STACKVAR(-8, 4) = STACKVAR(-12, 4);
+        if (STACKVAR(-8, 4) != 0x00000000)
+        {
+            STACKVAR(-20, 4) = STACKVAR(-8, 4)->(ACCESS(ACCESS(STACKVAR(-8, 4), 0, 4), 0, 4))(0x00000001);
+        }
+        else
+        {
+            STACKVAR(-20, 4) = 0x00000000;
+        }
+        REGDEF(eax=0x00000000)
+        return;
+    }
+    REGDEF(eax=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'jmp near ptr l10002E08'
 
 // address: 0x10002E0E
 p10002E0E
@@ -1497,8 +1610,20 @@ p1000470A
     {
         goto l1000472A;
     }
+    goto l100047B8;
+l1000472A:
+    if (0x00000001 == 0x00000000)
+    {
+        goto l10004785;
+    }
+    STACKVAR(-4, 4) = 0x00000000;
+    goto l10004745;
+l1000473C:
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000001;
+l10004745:
+    REGDEF(cmpl=STACKVAR(-4, 4), cmpr=ACCESS(STACKVAR(-40, 4), 8, 4))
 }
-Failed to find pattern for 'jmp near ptr l100047B8'
+Failed to find pattern for 'jnb l10004785'
 
 // address: 0x10004874
 p10004874
@@ -1752,8 +1877,18 @@ p10005D06
         goto l10005D22;
     }
     REGDEF(eax=0x00000000)
+    goto l10005DA8;
+l10005D22:
+    LOCAL(-12)->unknown_method_10003337(STACKVAR(12, 4));
+    STACKVAR(-20, 4) = ACCESS(ARRPTR(STACKVAR(-24, 4), 0x04, STACKVAR(8, 4), 0), 0, 4);
+    STACKVAR(-16, 4) = 0x00000000;
+    goto l10005D4C;
+l10005D43:
+    STACKVAR(-16, 4) = reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000001;
+l10005D4C:
+    REGDEF(cmpl=STACKVAR(-16, 4), cmpr=ACCESS(STACKVAR(-20, 4), 8, 4))
 }
-Failed to find pattern for 'jmp near ptr l10005DA8'
+Failed to find pattern for 'jnb l10005D7F'
 
 // address: 0x10005DAE
 p10005DAE
@@ -2370,8 +2505,20 @@ p10007FA0
     {
         goto l10007FD6;
     }
+    goto l10008061;
+l10007FD6:
+    if (STACKVAR(-20, 4) == 0x00000000)
+    {
+        goto l1000802E;
+    }
+    STACKVAR(-4, 4) = 0x00000000;
+    goto l10007FEE;
+l10007FE5:
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000001;
+l10007FEE:
+    REGDEF(cmpl=STACKVAR(-4, 4), cmpr=ACCESS(STACKVAR(-24, 4), 8, 4))
 }
-Failed to find pattern for 'jmp near ptr l10008061'
+Failed to find pattern for 'jnb l1000802E'
 
 // address: 0x10008080
 p10008080
@@ -2387,8 +2534,20 @@ p10008080
     {
         goto l100080B6;
     }
+    goto l10008141;
+l100080B6:
+    if (STACKVAR(-20, 4) == 0x00000000)
+    {
+        goto l1000810E;
+    }
+    STACKVAR(-4, 4) = 0x00000000;
+    goto l100080CE;
+l100080C5:
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000001;
+l100080CE:
+    REGDEF(cmpl=STACKVAR(-4, 4), cmpr=ACCESS(STACKVAR(-24, 4), 8, 4))
 }
-Failed to find pattern for 'jmp near ptr l10008141'
+Failed to find pattern for 'jnb l1000810E'
 
 // address: 0x10008160
 p10008160
@@ -2404,8 +2563,20 @@ p10008160
     {
         goto l10008196;
     }
+    goto l10008238;
+l10008196:
+    if (STACKVAR(-20, 4) == 0x00000000)
+    {
+        goto l10008205;
+    }
+    STACKVAR(-4, 4) = 0x00000000;
+    goto l100081AE;
+l100081A5:
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000001;
+l100081AE:
+    REGDEF(cmpl=STACKVAR(-4, 4), cmpr=ACCESS(STACKVAR(-24, 4), 8, 4))
 }
-Failed to find pattern for 'jmp near ptr l10008238'
+Failed to find pattern for 'jnb l10008205'
 
 // address: 0x10008260
 p10008260
@@ -2421,8 +2592,20 @@ p10008260
     {
         goto l10008296;
     }
+    goto l10008321;
+l10008296:
+    if (STACKVAR(-20, 4) == 0x00000000)
+    {
+        goto l100082EE;
+    }
+    STACKVAR(-4, 4) = 0x00000000;
+    goto l100082AE;
+l100082A5:
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000001;
+l100082AE:
+    REGDEF(cmpl=STACKVAR(-4, 4), cmpr=ACCESS(STACKVAR(-24, 4), 8, 4))
 }
-Failed to find pattern for 'jmp near ptr l10008321'
+Failed to find pattern for 'jnb l100082EE'
 
 // address: 0x10008374
 p10008374
@@ -2565,8 +2748,14 @@ p10008974
     {
         goto l10008A4A;
     }
+    goto l10008ABD;
+l100089AD:
+    ACCESS(STACKVAR(-24, 4), 4, 4) = 0x00000002;
+    ACCESS(STACKVAR(-24, 4), 8, 4) = ACCESS(STACKVAR(12, 4), 4, 4);
+    ACCESS(STACKVAR(-24, 4), 12, 4) = ACCESS(STACKVAR(12, 4), 8, 4);
+    REGDEF(edx=STACKVAR(-24, 4), eax=ACCESS(STACKVAR(-24, 4), 8, 4))
 }
-Failed to find pattern for 'jmp near ptr l10008ABD'
+Failed to find pattern for 'imul eax, dword ptr [edx+00Ch]'
 
 // address: 0x10008AF0
 p10008AF0
@@ -2888,7 +3077,7 @@ Failed to find pattern for 'jnl l1000A005'
 // address: 0x1000A05E
 p1000A05E
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=8, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=8, stack_delta=0)
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 324, 4);
     ACCESS(STACKVAR(-4, 4), 8, 4) = 0x00000000;
     unknown_function_1000A14E(STACKVAR(8, 4));
@@ -2905,8 +3094,35 @@ p1000A05E
     {
         goto l1000A0D2;
     }
+    goto l1000A130;
+l1000A0A3:
+    if (ACCESS(STACKVAR(-4, 4), 64, 4) != 0x00000000)
+    {
+        ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x00000004;
+        ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 0, 4)(STACKVAR(8, 4));
+    }
+    ACCESS(STACKVAR(-4, 4), 4, 4) = GLOBAL(0x1000A1C8);
+    return;
+l1000A0D2:
+    if (ACCESS(STACKVAR(-4, 4), 64, 4) == 0x00000000)
+    {
+        ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x00000004;
+        ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 0, 4)(STACKVAR(8, 4));
+    }
+    ACCESS(STACKVAR(-4, 4), 4, 4) = GLOBAL(0x1000A47B);
+    return;
+l1000A101:
+    if (ACCESS(STACKVAR(-4, 4), 64, 4) == 0x00000000)
+    {
+        ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x00000004;
+        ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 0, 4)(STACKVAR(8, 4));
+    }
+    ACCESS(STACKVAR(-4, 4), 4, 4) = GLOBAL(0x1000A72E);
+    return;
+l1000A130:
+    ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x00000004;
+    ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 0, 4)(STACKVAR(8, 4));
 }
-Failed to find pattern for 'jmp near ptr l1000A130'
 
 // address: 0x1000A14E
 p1000A14E
@@ -3344,8 +3560,25 @@ p1000CDB5
         goto l1000CDD5;
     }
     REGDEF(al=0)
+    goto l1000CEA1;
+l1000CDD5:
+    ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 0, 1) = 0xFF;
+    ACCESS(STACKVAR(8, 4), 0, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 0, 4)) + 0x00000001;
+    ACCESS(STACKVAR(8, 4), 4, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 4, 4)) - 0x00000001;
+    if (ACCESS(STACKVAR(8, 4), 4, 4) != 0x00000000)
+    {
+        goto l1000CE1E;
+    }
+    if ((reinterpret_cast<any_int32>(unknown_function_1000CD6C(STACKVAR(8, 4))) & 0x000000FF) != 0x00000000)
+    {
+        goto l1000CE1E;
+    }
+    REGDEF(al=0)
+    goto l1000CEA1;
+l1000CE1E:
+    REGDEF(edx=reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x000000D0)
 }
-Failed to find pattern for 'jmp near ptr l1000CEA1'
+'dl'
 
 // address: 0x1000CEA5
 p1000CEA5
@@ -3464,8 +3697,26 @@ p1000D450
     {
         goto l1000D495;
     }
+    goto l1000D51F;
+l1000D495:
+    if ((reinterpret_cast<any_int32>(STACKVAR(12, 4)) & 0x000000FF) == 0x00000000)
+    {
+        goto l1000D4BE;
+    }
+    ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x00000004;
+    ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 0, 4)(STACKVAR(8, 4));
+    goto l1000D51F;
+l1000D4BE:
+    STACKVAR(-12, 4) = 0x00000000;
+    STACKVAR(-8, 4) = ACCESS(STACKVAR(8, 4), 64, 4);
+    goto l1000D4E2;
+l1000D4D0:
+    STACKVAR(-12, 4) = reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + 0x00000001;
+    STACKVAR(-8, 4) = reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + 0x00000054;
+l1000D4E2:
+    REGDEF(cmpl=STACKVAR(-12, 4), cmpr=ACCESS(STACKVAR(8, 4), 56, 4))
 }
-Failed to find pattern for 'jmp near ptr l1000D51F'
+Failed to find pattern for 'jnl l1000D51F'
 
 // address: 0x1000D523
 p1000D523
@@ -3680,8 +3931,16 @@ p1000DE6D
         goto l1000DE9F;
     }
     unknown_function_1000E0E2(STACKVAR(8, 4));
+    goto l1000DF57;
+l1000DE9F:
+    STACKVAR(-8, 4) = 0x00000000;
+    goto l1000DEB1;
+l1000DEA8:
+    STACKVAR(-8, 4) = reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + 0x00000001;
+l1000DEB1:
+    REGDEF(cmpl=STACKVAR(-8, 4), cmpr=ACCESS(STACKVAR(8, 4), 224, 4))
 }
-Failed to find pattern for 'jmp near ptr l1000DF57'
+Failed to find pattern for 'jnl l1000DF57'
 
 // address: 0x1000DF93
 p1000DF93
@@ -3830,8 +4089,23 @@ p1000EDE2
     {
         goto l1000EF90;
     }
+    goto l1000F017;
+l1000EE1C:
+    unknown_function_1000F076(STACKVAR(8, 4));
+    unknown_function_1000F1FC(STACKVAR(8, 4));
+    if (static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 172, 1)) != 0x00000000)
+    {
+        goto l1000EE7B;
+    }
+    ACCESS(ACCESS(STACKVAR(8, 4), 332, 4), 0, 4)(STACKVAR(8, 4));
+    ACCESS(ACCESS(STACKVAR(8, 4), 336, 4), 0, 4)(STACKVAR(8, 4));
+    ACCESS(ACCESS(STACKVAR(8, 4), 320, 4), 0, 4)(STACKVAR(8, 4), 0x00000000);
+l1000EE7B:
+    ACCESS(ACCESS(STACKVAR(8, 4), 340, 4), 0, 4)(STACKVAR(8, 4));
+    ACCESS(ACCESS(STACKVAR(8, 4), 344, 4), 0, 4)(STACKVAR(8, 4), ACCESS(STACKVAR(8, 4), 174, 1));
+    REGDEF(edx=0x00000000, cmpl=ACCESS(STACKVAR(-4, 4), 24, 4), cmpr=0x00000001)
 }
-Failed to find pattern for 'jmp near ptr l1000F017'
+Failed to find pattern for 'setle dl'
 
 // address: 0x1000F076
 p1000F076
@@ -3879,8 +4153,11 @@ l1000F28F:
     ACCESS(STACKVAR(-12, 4), 72, 4) = STACKVAR(-4, 4);
     ACCESS(STACKVAR(8, 4), 252, 4) = 0x00000001;
     ACCESS(STACKVAR(8, 4), 256, 4) = 0x00000000;
+    goto l1000F493;
+l1000F2B7:
+    REGDEF(cmpl=ACCESS(STACKVAR(8, 4), 224, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'jmp near ptr l1000F493'
+Failed to find pattern for 'jle l1000F2CF'
 
 // address: 0x1000F4DE
 p1000F4DE
@@ -4222,8 +4499,11 @@ l10010AEE:
     {
         goto l10010AFF;
     }
+    goto l10010BFE;
+l10010AFF:
+    REGDEF(edx=0x00000001, ecx=STACKVAR(16, 4))
 }
-Failed to find pattern for 'jmp near ptr l10010BFE'
+Failed to find pattern for 'shl edx, cl'
 
 // address: 0x10010C02
 p10010C02
@@ -4817,7 +5097,7 @@ Failed to find pattern for 'ja l10013795'
 // address: 0x100137E3
 p100137E3
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=28, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=28, stack_delta=0)
     STACKVAR(-20, 4) = ACCESS(STACKVAR(8, 4), 36, 4);
     if (STACKVAR(-20, 4) == 0x00000001)
     {
@@ -4831,8 +5111,144 @@ p100137E3
     {
         goto l10013990;
     }
+    goto l10013A23;
+l1001380D:
+    ACCESS(STACKVAR(8, 4), 40, 4) = 0x00000001;
+    ACCESS(STACKVAR(8, 4), 44, 4) = 0x00000001;
+    goto l10013A37;
+l10013826:
+    if (static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 256, 1)) != 0)
+    {
+        ACCESS(STACKVAR(8, 4), 40, 4) = 0x00000003;
+        goto l10013981;
+    }
+    if (static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 264, 1)) == 0)
+    {
+        goto l100138C4;
+    }
+    STACKVAR(-24, 1) = ACCESS(STACKVAR(8, 4), 265, 1);
+    if (STACKVAR(-24, 1) == 0)
+    {
+        goto l1001386D;
+    }
+    if (STACKVAR(-24, 1) == 0x01)
+    {
+        goto l10013879;
+    }
+    goto l10013885;
+l1001386D:
+    ACCESS(STACKVAR(8, 4), 40, 4) = 0x00000002;
+    goto l100138BF;
+l10013879:
+    ACCESS(STACKVAR(8, 4), 40, 4) = 0x00000003;
+    goto l100138BF;
+l10013885:
+    ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x00000072;
+    ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 24, 4) = static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 265, 1));
+    ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 4, 4)(STACKVAR(8, 4), 0xFFFFFFFF);
+    ACCESS(STACKVAR(8, 4), 40, 4) = 0x00000003;
+l100138BF:
+    goto l10013981;
+l100138C4:
+    STACKVAR(-4, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 196, 4), 0, 4);
+    STACKVAR(-8, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 196, 4), 84, 4);
+    STACKVAR(-12, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 196, 4), 168, 4);
+    if (STACKVAR(-4, 4) != 0x00000001)
+    {
+        goto l10013911;
+    }
+    if (STACKVAR(-8, 4) != 0x00000002)
+    {
+        goto l10013911;
+    }
+    if (STACKVAR(-12, 4) == 0x00000003)
+    {
+        ACCESS(STACKVAR(8, 4), 40, 4) = 0x00000003;
+        goto l10013981;
+    }
+l10013911:
+    if (STACKVAR(-4, 4) != 0x00000052)
+    {
+        goto l1001392F;
+    }
+    if (STACKVAR(-8, 4) != 0x00000047)
+    {
+        goto l1001392F;
+    }
+    if (STACKVAR(-12, 4) == 0x00000042)
+    {
+        ACCESS(STACKVAR(8, 4), 40, 4) = 0x00000002;
+        goto l10013981;
+    }
+l1001392F:
+    STACKVAR(-16, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 0, 4)) + 0x00000018;
+    ACCESS(STACKVAR(-16, 4), 0, 4) = STACKVAR(-4, 4);
+    ACCESS(STACKVAR(-16, 4), 4, 4) = STACKVAR(-8, 4);
+    ACCESS(STACKVAR(-16, 4), 8, 4) = STACKVAR(-12, 4);
+    ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x0000006F;
+    ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 4, 4)(STACKVAR(8, 4), 0x00000001);
+    if (0x00000000 != 0x00000000)
+    {
+        goto l1001392F;
+    }
+    ACCESS(STACKVAR(8, 4), 40, 4) = 0x00000003;
+l10013981:
+    ACCESS(STACKVAR(8, 4), 44, 4) = 0x00000002;
+    goto l10013A37;
+l10013990:
+    if (static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 264, 1)) == 0)
+    {
+        goto l10013A0D;
+    }
+    STACKVAR(-28, 1) = ACCESS(STACKVAR(8, 4), 265, 1);
+    if (STACKVAR(-28, 1) == 0)
+    {
+        goto l100139B9;
+    }
+    if (STACKVAR(-28, 1) == 0x02)
+    {
+        goto l100139C5;
+    }
+    goto l100139D1;
+l100139B9:
+    ACCESS(STACKVAR(8, 4), 40, 4) = 0x00000004;
+    goto l10013A0B;
+l100139C5:
+    ACCESS(STACKVAR(8, 4), 40, 4) = 0x00000005;
+    goto l10013A0B;
+l100139D1:
+    ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x00000072;
+    ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 24, 4) = static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 265, 1));
+    ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 4, 4)(STACKVAR(8, 4), 0xFFFFFFFF);
+    ACCESS(STACKVAR(8, 4), 40, 4) = 0x00000005;
+l10013A0B:
+    goto l10013A17;
+l10013A0D:
+    ACCESS(STACKVAR(8, 4), 40, 4) = 0x00000004;
+l10013A17:
+    ACCESS(STACKVAR(8, 4), 44, 4) = 0x00000004;
+    goto l10013A37;
+l10013A23:
+    ACCESS(STACKVAR(8, 4), 40, 4) = 0x00000000;
+    ACCESS(STACKVAR(8, 4), 44, 4) = 0x00000000;
+l10013A37:
+    ACCESS(STACKVAR(8, 4), 48, 4) = 0x00000001;
+    ACCESS(STACKVAR(8, 4), 52, 4) = 0x00000001;
+    ACCESS(STACKVAR(8, 4), 56, 8) = 1.0;
+    ACCESS(STACKVAR(8, 4), 64, 1) = 0;
+    ACCESS(STACKVAR(8, 4), 65, 1) = 0;
+    ACCESS(STACKVAR(8, 4), 68, 4) = 0x00000000;
+    ACCESS(STACKVAR(8, 4), 72, 1) = 0x01;
+    ACCESS(STACKVAR(8, 4), 73, 1) = 0x01;
+    ACCESS(STACKVAR(8, 4), 74, 1) = 0;
+    ACCESS(STACKVAR(8, 4), 76, 4) = 0x00000002;
+    ACCESS(STACKVAR(8, 4), 80, 1) = 0x01;
+    ACCESS(STACKVAR(8, 4), 84, 4) = 0x00000100;
+    ACCESS(STACKVAR(8, 4), 116, 4) = 0x00000000;
+    ACCESS(STACKVAR(8, 4), 88, 1) = 0;
+    ACCESS(STACKVAR(8, 4), 89, 1) = 0;
+    ACCESS(STACKVAR(8, 4), 90, 1) = 0;
 }
-Failed to find pattern for 'jmp near ptr l10013A23'
 
 // address: 0x10013B69
 p10013B69
@@ -4858,20 +5274,74 @@ Failed to find pattern for 'jnb l10013BB8'
 // address: 0x10013C80
 p10013C80
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
-    if (ACCESS(STACKVAR(8, 4), 20, 4) != 0x000000CA)
+    ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=0)
+    if (ACCESS(STACKVAR(8, 4), 20, 4) == 0x000000CA)
     {
-        goto l10013CC3;
+        unknown_function_1001C23B(STACKVAR(8, 4));
+        if (static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 64, 1)) != 0)
+        {
+            ACCESS(STACKVAR(8, 4), 20, 4) = 0x000000CF;
+            REGDEF(al=0x01)
+            return;
+        }
+        ACCESS(STACKVAR(8, 4), 20, 4) = 0x000000CB;
     }
-    unknown_function_1001C23B(STACKVAR(8, 4));
-    if (static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 64, 1)) == 0x00000000)
+    if (ACCESS(STACKVAR(8, 4), 20, 4) != 0x000000CB)
     {
-        goto l10013CB9;
+        goto l10013D9A;
     }
-    ACCESS(STACKVAR(8, 4), 20, 4) = 0x000000CF;
-    REGDEF(al=0x01)
+    if (static_cast<unsigned int>(ACCESS(ACCESS(STACKVAR(8, 4), 400, 4), 16, 1)) == 0)
+    {
+        goto l10013D89;
+    }
+l10013CE9:
+    if (ACCESS(STACKVAR(8, 4), 8, 4) != 0x00000000)
+    {
+        ACCESS(ACCESS(STACKVAR(8, 4), 8, 4), 0, 4)(STACKVAR(8, 4));
+    }
+    STACKVAR(-4, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 400, 4), 0, 4)(STACKVAR(8, 4));
+    if (STACKVAR(-4, 4) == 0x00000000)
+    {
+        REGDEF(al=0)
+        return;
+    }
+    if (STACKVAR(-4, 4) == 0x00000002)
+    {
+        goto l10013D89;
+    }
+    if (ACCESS(STACKVAR(8, 4), 8, 4) == 0x00000000)
+    {
+        goto l10013D84;
+    }
+    if (STACKVAR(-4, 4) == 0x00000003)
+    {
+        goto l10013D40;
+    }
+    if (STACKVAR(-4, 4) != 0x00000001)
+    {
+        goto l10013D84;
+    }
+l10013D40:
+    ACCESS(ACCESS(STACKVAR(8, 4), 8, 4), 4, 4) = reinterpret_cast<any_int32>(ACCESS(ACCESS(STACKVAR(8, 4), 8, 4), 4, 4)) + 0x00000001;
+    if (reinterpret_cast<int>(ACCESS(ACCESS(STACKVAR(8, 4), 8, 4), 4, 4)) >= reinterpret_cast<int>(ACCESS(ACCESS(STACKVAR(8, 4), 8, 4), 8, 4)))
+    {
+        ACCESS(ACCESS(STACKVAR(8, 4), 8, 4), 8, 4) = reinterpret_cast<any_int32>(ACCESS(ACCESS(STACKVAR(8, 4), 8, 4), 8, 4)) + reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 284, 4));
+    }
+l10013D84:
+    goto l10013CE9;
+l10013D89:
+    ACCESS(STACKVAR(8, 4), 132, 4) = ACCESS(STACKVAR(8, 4), 124, 4);
+    goto l10013DCE;
+l10013D9A:
+    if (ACCESS(STACKVAR(8, 4), 20, 4) != 0x000000CC)
+    {
+        ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x00000014;
+        ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 24, 4) = ACCESS(STACKVAR(8, 4), 20, 4);
+        ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 0, 4)(STACKVAR(8, 4));
+    }
+l10013DCE:
+    unknown_function_10013DDE(STACKVAR(8, 4));
 }
-Failed to find pattern for 'jmp near ptr l10013DDA'
 
 // address: 0x10013DDE
 p10013DDE
@@ -5151,8 +5621,25 @@ p10014F46
     }
 l10014F78:
     REGDEF(al=0)
+    goto l100150BC;
+l10014F7F:
+    if (ACCESS(STACKVAR(-12, 4), 112, 4) != 0x00000000)
+    {
+        goto l10014FA9;
+    }
+    ACCESS(STACKVAR(-12, 4), 112, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x00000018 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 36, 4)));
+l10014FA9:
+    STACKVAR(-4, 4) = ACCESS(STACKVAR(-12, 4), 112, 4);
+    STACKVAR(-24, 4) = 0x00000000;
+    STACKVAR(-20, 4) = ACCESS(STACKVAR(8, 4), 196, 4);
+    goto l10014FD9;
+l10014FC7:
+    STACKVAR(-24, 4) = reinterpret_cast<any_int32>(STACKVAR(-24, 4)) + 0x00000001;
+    STACKVAR(-20, 4) = reinterpret_cast<any_int32>(STACKVAR(-20, 4)) + 0x00000054;
+l10014FD9:
+    REGDEF(cmpl=STACKVAR(-24, 4), cmpr=ACCESS(STACKVAR(8, 4), 36, 4))
 }
-Failed to find pattern for 'jmp near ptr l100150BC'
+Failed to find pattern for 'jnl l100150B9'
 
 // address: 0x100150C1
 p100150C1
@@ -5476,8 +5963,20 @@ p10017160
         goto l100171A3;
     }
     REGDEF(al=0)
+    goto l10017791;
+l100171A3:
+    if (static_cast<unsigned int>(ACCESS(STACKVAR(-8, 4), 8, 1)) != 0x00000000)
+    {
+        goto l10017780;
+    }
+    STACKVAR(-32, 4) = STACKVAR(8, 4);
+    STACKVAR(-48, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 24, 4), 0, 4);
+    STACKVAR(-44, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 24, 4), 4, 4);
+    STACKVAR(-4, 4) = ACCESS(STACKVAR(-8, 4), 12, 4);
+    STACKVAR(-28, 4) = ACCESS(STACKVAR(-8, 4), 16, 4);
+    STACKVAR(-24, 4) = ACCESS(reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + 0x00000014, 0, 4);
 }
-Failed to find pattern for 'jmp near ptr l10017791'
+Unexpected instruction type <class 'instructions.assignment.Assignment'>
 
 // address: 0x10017795
 p10017795
@@ -5564,8 +6063,56 @@ p10017CAB
         goto l10017CD3;
     }
     REGDEF(eax=0x00000002)
+    goto l10017DB9;
+l10017CD3:
+    STACKVAR(-4, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 404, 4), 4, 4)(STACKVAR(8, 4));
+    STACKVAR(-12, 4) = STACKVAR(-4, 4);
+    if (STACKVAR(-12, 4) == 0x00000001)
+    {
+        goto l10017D00;
+    }
+    if (STACKVAR(-12, 4) == 0x00000002)
+    {
+        goto l10017D55;
+    }
+    goto l10017DB6;
+l10017D00:
+    if (static_cast<unsigned int>(ACCESS(STACKVAR(-8, 4), 20, 1)) == 0x00000000)
+    {
+        goto l10017D21;
+    }
+    unknown_function_10017DBD(STACKVAR(8, 4));
+    ACCESS(STACKVAR(-8, 4), 20, 1) = 0;
+    goto l10017D53;
+l10017D21:
+    if (static_cast<unsigned int>(ACCESS(STACKVAR(-8, 4), 16, 1)) != 0x00000000)
+    {
+        goto l10017D47;
+    }
+    ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x00000023;
+    ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 0, 4)(STACKVAR(8, 4));
+l10017D47:
+    unknown_function_100178C6(STACKVAR(8, 4));
+l10017D53:
+    goto l10017DB6;
+l10017D55:
+    ACCESS(STACKVAR(-8, 4), 17, 1) = 0x01;
+    if (static_cast<unsigned int>(ACCESS(STACKVAR(-8, 4), 20, 1)) == 0x00000000)
+    {
+        goto l10017D96;
+    }
+    if (static_cast<unsigned int>(ACCESS(ACCESS(STACKVAR(8, 4), 404, 4), 13, 1)) == 0x00000000)
+    {
+        goto l10017D94;
+    }
+    ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x0000003B;
+    ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 0, 4)(STACKVAR(8, 4));
+l10017D94:
+    goto l10017DB6;
+l10017D96:
+    REGDEF(cmpl=ACCESS(STACKVAR(8, 4), 132, 4), cmpr=ACCESS(STACKVAR(8, 4), 124, 4))
 }
-Failed to find pattern for 'jmp near ptr l10017DB9'
+Failed to find pattern for 'jle l10017DB6'
 
 // address: 0x10017DBD
 p10017DBD
@@ -5772,22 +6319,97 @@ Failed to find pattern for 'jnl l10018B01'
 // address: 0x10018C16
 p10018C16
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=16, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=16, stack_delta=0)
     STACKVAR(-8, 4) = ACCESS(STACKVAR(8, 4), 24, 4);
     STACKVAR(-16, 4) = ACCESS(STACKVAR(-8, 4), 0, 4);
     STACKVAR(-12, 4) = ACCESS(STACKVAR(-8, 4), 4, 4);
 l10018C36:
-    if (STACKVAR(-12, 4) != 0x00000000)
+    if (STACKVAR(-12, 4) == 0x00000000)
     {
-        goto l10018C6A;
+        if ((reinterpret_cast<any_int32>(ACCESS(STACKVAR(-8, 4), 12, 4)(STACKVAR(8, 4))) & 0x000000FF) == 0x00000000)
+        {
+            REGDEF(al=0)
+            return;
+        }
+        STACKVAR(-16, 4) = ACCESS(STACKVAR(-8, 4), 0, 4);
+        STACKVAR(-12, 4) = ACCESS(STACKVAR(-8, 4), 4, 4);
     }
-    if ((reinterpret_cast<any_int32>(ACCESS(STACKVAR(-8, 4), 12, 4)(STACKVAR(8, 4))) & 0x000000FF) != 0x00000000)
+    STACKVAR(-12, 4) = reinterpret_cast<any_int32>(STACKVAR(-12, 4)) - 0x00000001;
+    STACKVAR(-4, 4) = static_cast<unsigned int>(ACCESS(STACKVAR(-16, 4), 0, 1));
+    STACKVAR(-16, 4) = reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000001;
+    if (0x00000000 != 0x00000000)
     {
-        goto l10018C59;
+        goto l10018C36;
     }
-    REGDEF(al=0)
+l10018C8C:
+    if (STACKVAR(-4, 4) == 0x000000FF)
+    {
+        goto l10018D20;
+    }
+    ACCESS(ACCESS(STACKVAR(8, 4), 404, 4), 20, 4) = reinterpret_cast<any_int32>(ACCESS(ACCESS(STACKVAR(8, 4), 404, 4), 20, 4)) + 0x00000001;
+    ACCESS(STACKVAR(-8, 4), 0, 4) = STACKVAR(-16, 4);
+    ACCESS(STACKVAR(-8, 4), 4, 4) = STACKVAR(-12, 4);
+l10018CC5:
+    if (STACKVAR(-12, 4) == 0x00000000)
+    {
+        if ((reinterpret_cast<any_int32>(ACCESS(STACKVAR(-8, 4), 12, 4)(STACKVAR(8, 4))) & 0x000000FF) == 0x00000000)
+        {
+            REGDEF(al=0)
+            return;
+        }
+        STACKVAR(-16, 4) = ACCESS(STACKVAR(-8, 4), 0, 4);
+        STACKVAR(-12, 4) = ACCESS(STACKVAR(-8, 4), 4, 4);
+    }
+    STACKVAR(-12, 4) = reinterpret_cast<any_int32>(STACKVAR(-12, 4)) - 0x00000001;
+    STACKVAR(-4, 4) = static_cast<unsigned int>(ACCESS(STACKVAR(-16, 4), 0, 1));
+    STACKVAR(-16, 4) = reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000001;
+    if (0x00000000 != 0x00000000)
+    {
+        goto l10018CC5;
+    }
+    goto l10018C8C;
+l10018D20:
+    if (STACKVAR(-12, 4) == 0x00000000)
+    {
+        if ((reinterpret_cast<any_int32>(ACCESS(STACKVAR(-8, 4), 12, 4)(STACKVAR(8, 4))) & 0x000000FF) == 0x00000000)
+        {
+            REGDEF(al=0)
+            return;
+        }
+        STACKVAR(-16, 4) = ACCESS(STACKVAR(-8, 4), 0, 4);
+        STACKVAR(-12, 4) = ACCESS(STACKVAR(-8, 4), 4, 4);
+    }
+    STACKVAR(-12, 4) = reinterpret_cast<any_int32>(STACKVAR(-12, 4)) - 0x00000001;
+    STACKVAR(-4, 4) = static_cast<unsigned int>(ACCESS(STACKVAR(-16, 4), 0, 1));
+    STACKVAR(-16, 4) = reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000001;
+    if (0x00000000 != 0x00000000)
+    {
+        goto l10018D20;
+    }
+    if (STACKVAR(-4, 4) == 0x000000FF)
+    {
+        goto l10018D20;
+    }
+    if (STACKVAR(-4, 4) == 0x00000000)
+    {
+        ACCESS(ACCESS(STACKVAR(8, 4), 404, 4), 20, 4) = reinterpret_cast<any_int32>(ACCESS(ACCESS(STACKVAR(8, 4), 404, 4), 20, 4)) + 0x00000002;
+        ACCESS(STACKVAR(-8, 4), 0, 4) = STACKVAR(-16, 4);
+        ACCESS(STACKVAR(-8, 4), 4, 4) = STACKVAR(-12, 4);
+        goto l10018C36;
+    }
+    if (ACCESS(ACCESS(STACKVAR(8, 4), 404, 4), 20, 4) != 0x00000000)
+    {
+        ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x00000074;
+        ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 24, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 404, 4), 20, 4);
+        ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 28, 4) = STACKVAR(-4, 4);
+        ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 4, 4)(STACKVAR(8, 4), 0xFFFFFFFF);
+        ACCESS(ACCESS(STACKVAR(8, 4), 404, 4), 20, 4) = 0x00000000;
+    }
+    ACCESS(STACKVAR(8, 4), 380, 4) = STACKVAR(-4, 4);
+    ACCESS(STACKVAR(-8, 4), 0, 4) = STACKVAR(-16, 4);
+    ACCESS(STACKVAR(-8, 4), 4, 4) = STACKVAR(-12, 4);
+    REGDEF(al=0x01)
 }
-Failed to find pattern for 'jmp near ptr l10018E32'
 
 // address: 0x10018E36
 p10018E36
@@ -5826,8 +6448,46 @@ l10018F0C:
         goto l10018F2F;
     }
     REGDEF(al=0)
+    goto l10019114;
+l10018F2F:
+    STACKVAR(-40, 4) = ACCESS(STACKVAR(-24, 4), 0, 4);
+    STACKVAR(-32, 4) = ACCESS(STACKVAR(-24, 4), 4, 4);
+l10018F40:
+    STACKVAR(-32, 4) = reinterpret_cast<any_int32>(STACKVAR(-32, 4)) - 0x00000001;
+    STACKVAR(-20, 4) = 0x00000100 * static_cast<unsigned int>(ACCESS(STACKVAR(-40, 4), 0, 1));
+    STACKVAR(-40, 4) = reinterpret_cast<any_int32>(STACKVAR(-40, 4)) + 0x00000001;
+    if (STACKVAR(-32, 4) != 0x00000000)
+    {
+        goto l10018F93;
+    }
+    if ((reinterpret_cast<any_int32>(ACCESS(STACKVAR(-24, 4), 12, 4)(STACKVAR(8, 4))) & 0x000000FF) != 0x00000000)
+    {
+        goto l10018F82;
+    }
+    REGDEF(al=0)
+    goto l10019114;
+l10018F82:
+    STACKVAR(-40, 4) = ACCESS(STACKVAR(-24, 4), 0, 4);
+    STACKVAR(-32, 4) = ACCESS(STACKVAR(-24, 4), 4, 4);
+l10018F93:
+    STACKVAR(-32, 4) = reinterpret_cast<any_int32>(STACKVAR(-32, 4)) - 0x00000001;
+    STACKVAR(-20, 4) = reinterpret_cast<any_int32>(STACKVAR(-20, 4)) + static_cast<unsigned int>(ACCESS(STACKVAR(-40, 4), 0, 1));
+    STACKVAR(-40, 4) = reinterpret_cast<any_int32>(STACKVAR(-40, 4)) + 0x00000001;
+    if (0x00000000 != 0x00000000)
+    {
+        goto l10018F0C;
+    }
+    STACKVAR(-20, 4) = reinterpret_cast<any_int32>(STACKVAR(-20, 4)) - 0x00000002;
+    if (reinterpret_cast<int>(STACKVAR(-20, 4)) < 14)
+    {
+        goto l10018FD6;
+    }
+    STACKVAR(-36, 4) = 0x0000000E;
+    goto l10018FEB;
+l10018FD6:
+    REGDEF(cmpl=STACKVAR(-20, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'jmp near ptr l10019114'
+Failed to find pattern for 'jle l10018FE4'
 
 // address: 0x10019118
 p10019118
@@ -5863,8 +6523,45 @@ l1001964B:
         goto l1001966E;
     }
     REGDEF(al=0)
+    goto l1001976C;
+l1001966E:
+    STACKVAR(-16, 4) = ACCESS(STACKVAR(-8, 4), 0, 4);
+    STACKVAR(-12, 4) = ACCESS(STACKVAR(-8, 4), 4, 4);
+l1001967F:
+    STACKVAR(-12, 4) = reinterpret_cast<any_int32>(STACKVAR(-12, 4)) - 0x00000001;
+    STACKVAR(-4, 4) = 0x00000100 * static_cast<unsigned int>(ACCESS(STACKVAR(-16, 4), 0, 1));
+    STACKVAR(-16, 4) = reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000001;
+    if (STACKVAR(-12, 4) != 0x00000000)
+    {
+        goto l100196D2;
+    }
+    if ((reinterpret_cast<any_int32>(ACCESS(STACKVAR(-8, 4), 12, 4)(STACKVAR(8, 4))) & 0x000000FF) != 0x00000000)
+    {
+        goto l100196C1;
+    }
+    REGDEF(al=0)
+    goto l1001976C;
+l100196C1:
+    STACKVAR(-16, 4) = ACCESS(STACKVAR(-8, 4), 0, 4);
+    STACKVAR(-12, 4) = ACCESS(STACKVAR(-8, 4), 4, 4);
+l100196D2:
+    STACKVAR(-12, 4) = reinterpret_cast<any_int32>(STACKVAR(-12, 4)) - 0x00000001;
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + static_cast<unsigned int>(ACCESS(STACKVAR(-16, 4), 0, 1));
+    STACKVAR(-16, 4) = reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000001;
+    if (0x00000000 != 0x00000000)
+    {
+        goto l1001964B;
+    }
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) - 0x00000002;
+    ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x0000005B;
+    ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 24, 4) = ACCESS(STACKVAR(8, 4), 380, 4);
+    ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 28, 4) = STACKVAR(-4, 4);
+    ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 4, 4)(STACKVAR(8, 4), 0x00000001);
+    ACCESS(STACKVAR(-8, 4), 0, 4) = STACKVAR(-16, 4);
+    ACCESS(STACKVAR(-8, 4), 4, 4) = STACKVAR(-12, 4);
+    REGDEF(cmpl=STACKVAR(-4, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'jmp near ptr l1001976C'
+Failed to find pattern for 'jle l1001976A'
 
 // address: 0x10019770
 p10019770
@@ -5884,8 +6581,22 @@ l10019774:
         goto l100197AE;
     }
     REGDEF(eax=0x00000000)
+    goto l10019AB2;
+l100197AE:
+    goto l100197CC;
+l100197B0:
+    if ((reinterpret_cast<any_int32>(unknown_function_10018C16(STACKVAR(8, 4))) & 0x000000FF) != 0x00000000)
+    {
+        goto l100197CC;
+    }
+    REGDEF(eax=0x00000000)
+    goto l10019AB2;
+l100197CC:
+    STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 380, 4);
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) - 0x00000001;
+    REGDEF(cmpl=STACKVAR(-4, 4), cmpr=0x000000FD)
 }
-Failed to find pattern for 'jmp near ptr l10019AB2'
+Failed to find pattern for 'ja l10019A75'
 
 // address: 0x10019BF8
 p10019BF8
@@ -5928,8 +6639,180 @@ l10019D46:
         goto l10019D69;
     }
     REGDEF(al=0)
+    goto l1001A327;
+l10019D69:
+    STACKVAR(-28, 4) = ACCESS(STACKVAR(-12, 4), 0, 4);
+    STACKVAR(-16, 4) = ACCESS(STACKVAR(-12, 4), 4, 4);
+l10019D7A:
+    STACKVAR(-16, 4) = reinterpret_cast<any_int32>(STACKVAR(-16, 4)) - 0x00000001;
+    STACKVAR(-8, 4) = 0x00000100 * static_cast<unsigned int>(ACCESS(STACKVAR(-28, 4), 0, 1));
+    STACKVAR(-28, 4) = reinterpret_cast<any_int32>(STACKVAR(-28, 4)) + 0x00000001;
+    if (STACKVAR(-16, 4) != 0x00000000)
+    {
+        goto l10019DCD;
+    }
+    if ((reinterpret_cast<any_int32>(ACCESS(STACKVAR(-12, 4), 12, 4)(STACKVAR(8, 4))) & 0x000000FF) != 0x00000000)
+    {
+        goto l10019DBC;
+    }
+    REGDEF(al=0)
+    goto l1001A327;
+l10019DBC:
+    STACKVAR(-28, 4) = ACCESS(STACKVAR(-12, 4), 0, 4);
+    STACKVAR(-16, 4) = ACCESS(STACKVAR(-12, 4), 4, 4);
+l10019DCD:
+    STACKVAR(-16, 4) = reinterpret_cast<any_int32>(STACKVAR(-16, 4)) - 0x00000001;
+    STACKVAR(-8, 4) = reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + static_cast<unsigned int>(ACCESS(STACKVAR(-28, 4), 0, 1));
+    STACKVAR(-28, 4) = reinterpret_cast<any_int32>(STACKVAR(-28, 4)) + 0x00000001;
+    if (0x00000000 != 0x00000000)
+    {
+        goto l10019D46;
+    }
+l10019DF8:
+    if (STACKVAR(-16, 4) != 0x00000000)
+    {
+        goto l10019E2C;
+    }
+    if ((reinterpret_cast<any_int32>(ACCESS(STACKVAR(-12, 4), 12, 4)(STACKVAR(8, 4))) & 0x000000FF) != 0x00000000)
+    {
+        goto l10019E1B;
+    }
+    REGDEF(al=0)
+    goto l1001A327;
+l10019E1B:
+    STACKVAR(-28, 4) = ACCESS(STACKVAR(-12, 4), 0, 4);
+    STACKVAR(-16, 4) = ACCESS(STACKVAR(-12, 4), 4, 4);
+l10019E2C:
+    STACKVAR(-16, 4) = reinterpret_cast<any_int32>(STACKVAR(-16, 4)) - 0x00000001;
+    ACCESS(STACKVAR(8, 4), 192, 4) = static_cast<unsigned int>(ACCESS(STACKVAR(-28, 4), 0, 1));
+    STACKVAR(-28, 4) = reinterpret_cast<any_int32>(STACKVAR(-28, 4)) + 0x00000001;
+    if (0x00000000 != 0x00000000)
+    {
+        goto l10019DF8;
+    }
+l10019E54:
+    if (STACKVAR(-16, 4) != 0x00000000)
+    {
+        goto l10019E88;
+    }
+    if ((reinterpret_cast<any_int32>(ACCESS(STACKVAR(-12, 4), 12, 4)(STACKVAR(8, 4))) & 0x000000FF) != 0x00000000)
+    {
+        goto l10019E77;
+    }
+    REGDEF(al=0)
+    goto l1001A327;
+l10019E77:
+    STACKVAR(-28, 4) = ACCESS(STACKVAR(-12, 4), 0, 4);
+    STACKVAR(-16, 4) = ACCESS(STACKVAR(-12, 4), 4, 4);
+l10019E88:
+    STACKVAR(-16, 4) = reinterpret_cast<any_int32>(STACKVAR(-16, 4)) - 0x00000001;
+    ACCESS(STACKVAR(8, 4), 32, 4) = 0x00000100 * static_cast<unsigned int>(ACCESS(STACKVAR(-28, 4), 0, 1));
+    STACKVAR(-28, 4) = reinterpret_cast<any_int32>(STACKVAR(-28, 4)) + 0x00000001;
+    if (STACKVAR(-16, 4) != 0x00000000)
+    {
+        goto l10019EDE;
+    }
+    if ((reinterpret_cast<any_int32>(ACCESS(STACKVAR(-12, 4), 12, 4)(STACKVAR(8, 4))) & 0x000000FF) != 0x00000000)
+    {
+        goto l10019ECD;
+    }
+    REGDEF(al=0)
+    goto l1001A327;
+l10019ECD:
+    STACKVAR(-28, 4) = ACCESS(STACKVAR(-12, 4), 0, 4);
+    STACKVAR(-16, 4) = ACCESS(STACKVAR(-12, 4), 4, 4);
+l10019EDE:
+    STACKVAR(-16, 4) = reinterpret_cast<any_int32>(STACKVAR(-16, 4)) - 0x00000001;
+    ACCESS(STACKVAR(8, 4), 32, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 32, 4)) + static_cast<unsigned int>(ACCESS(STACKVAR(-28, 4), 0, 1));
+    STACKVAR(-28, 4) = reinterpret_cast<any_int32>(STACKVAR(-28, 4)) + 0x00000001;
+    if (0x00000000 != 0x00000000)
+    {
+        goto l10019E54;
+    }
+l10019F0F:
+    if (STACKVAR(-16, 4) != 0x00000000)
+    {
+        goto l10019F43;
+    }
+    if ((reinterpret_cast<any_int32>(ACCESS(STACKVAR(-12, 4), 12, 4)(STACKVAR(8, 4))) & 0x000000FF) != 0x00000000)
+    {
+        goto l10019F32;
+    }
+    REGDEF(al=0)
+    goto l1001A327;
+l10019F32:
+    STACKVAR(-28, 4) = ACCESS(STACKVAR(-12, 4), 0, 4);
+    STACKVAR(-16, 4) = ACCESS(STACKVAR(-12, 4), 4, 4);
+l10019F43:
+    STACKVAR(-16, 4) = reinterpret_cast<any_int32>(STACKVAR(-16, 4)) - 0x00000001;
+    ACCESS(STACKVAR(8, 4), 28, 4) = 0x00000100 * static_cast<unsigned int>(ACCESS(STACKVAR(-28, 4), 0, 1));
+    STACKVAR(-28, 4) = reinterpret_cast<any_int32>(STACKVAR(-28, 4)) + 0x00000001;
+    if (STACKVAR(-16, 4) != 0x00000000)
+    {
+        goto l10019F99;
+    }
+    if ((reinterpret_cast<any_int32>(ACCESS(STACKVAR(-12, 4), 12, 4)(STACKVAR(8, 4))) & 0x000000FF) != 0x00000000)
+    {
+        goto l10019F88;
+    }
+    REGDEF(al=0)
+    goto l1001A327;
+l10019F88:
+    STACKVAR(-28, 4) = ACCESS(STACKVAR(-12, 4), 0, 4);
+    STACKVAR(-16, 4) = ACCESS(STACKVAR(-12, 4), 4, 4);
+l10019F99:
+    STACKVAR(-16, 4) = reinterpret_cast<any_int32>(STACKVAR(-16, 4)) - 0x00000001;
+    ACCESS(STACKVAR(8, 4), 28, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 28, 4)) + static_cast<unsigned int>(ACCESS(STACKVAR(-28, 4), 0, 1));
+    STACKVAR(-28, 4) = reinterpret_cast<any_int32>(STACKVAR(-28, 4)) + 0x00000001;
+    if (0x00000000 != 0x00000000)
+    {
+        goto l10019F0F;
+    }
+l10019FCA:
+    if (STACKVAR(-16, 4) != 0x00000000)
+    {
+        goto l10019FFE;
+    }
+    if ((reinterpret_cast<any_int32>(ACCESS(STACKVAR(-12, 4), 12, 4)(STACKVAR(8, 4))) & 0x000000FF) != 0x00000000)
+    {
+        goto l10019FED;
+    }
+    REGDEF(al=0)
+    goto l1001A327;
+l10019FED:
+    STACKVAR(-28, 4) = ACCESS(STACKVAR(-12, 4), 0, 4);
+    STACKVAR(-16, 4) = ACCESS(STACKVAR(-12, 4), 4, 4);
+l10019FFE:
+    STACKVAR(-16, 4) = reinterpret_cast<any_int32>(STACKVAR(-16, 4)) - 0x00000001;
+    ACCESS(STACKVAR(8, 4), 36, 4) = static_cast<unsigned int>(ACCESS(STACKVAR(-28, 4), 0, 1));
+    STACKVAR(-28, 4) = reinterpret_cast<any_int32>(STACKVAR(-28, 4)) + 0x00000001;
+    if (0x00000000 != 0x00000000)
+    {
+        goto l10019FCA;
+    }
+    STACKVAR(-8, 4) = reinterpret_cast<any_int32>(STACKVAR(-8, 4)) - 0x00000008;
+l1001A02C:
+    STACKVAR(-32, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 0, 4)) + 0x00000018;
+    ACCESS(STACKVAR(-32, 4), 0, 4) = ACCESS(STACKVAR(8, 4), 380, 4);
+    ACCESS(STACKVAR(-32, 4), 4, 4) = ACCESS(STACKVAR(8, 4), 28, 4);
+    ACCESS(STACKVAR(-32, 4), 8, 4) = ACCESS(STACKVAR(8, 4), 32, 4);
+    ACCESS(STACKVAR(-32, 4), 12, 4) = ACCESS(STACKVAR(8, 4), 36, 4);
+    ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x00000064;
+    ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 4, 4)(STACKVAR(8, 4), 0x00000001);
+    if (0x00000000 != 0x00000000)
+    {
+        goto l1001A02C;
+    }
+    if (static_cast<unsigned int>(ACCESS(ACCESS(STACKVAR(8, 4), 404, 4), 13, 1)) == 0x00000000)
+    {
+        goto l1001A0B8;
+    }
+    ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x0000003A;
+    ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 0, 4)(STACKVAR(8, 4));
+l1001A0B8:
+    REGDEF(cmpl=ACCESS(STACKVAR(8, 4), 32, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'jmp near ptr l1001A327'
+Failed to find pattern for 'jbe l1001A0D3'
 
 // address: 0x1001A32B
 p1001A32B
@@ -5954,8 +6837,71 @@ l1001A377:
         goto l1001A39A;
     }
     REGDEF(al=0)
+    goto l1001A868;
+l1001A39A:
+    STACKVAR(-36, 4) = ACCESS(STACKVAR(-16, 4), 0, 4);
+    STACKVAR(-24, 4) = ACCESS(STACKVAR(-16, 4), 4, 4);
+l1001A3AB:
+    STACKVAR(-24, 4) = reinterpret_cast<any_int32>(STACKVAR(-24, 4)) - 0x00000001;
+    STACKVAR(-12, 4) = 0x00000100 * static_cast<unsigned int>(ACCESS(STACKVAR(-36, 4), 0, 1));
+    STACKVAR(-36, 4) = reinterpret_cast<any_int32>(STACKVAR(-36, 4)) + 0x00000001;
+    if (STACKVAR(-24, 4) != 0x00000000)
+    {
+        goto l1001A3FE;
+    }
+    if ((reinterpret_cast<any_int32>(ACCESS(STACKVAR(-16, 4), 12, 4)(STACKVAR(8, 4))) & 0x000000FF) != 0x00000000)
+    {
+        goto l1001A3ED;
+    }
+    REGDEF(al=0)
+    goto l1001A868;
+l1001A3ED:
+    STACKVAR(-36, 4) = ACCESS(STACKVAR(-16, 4), 0, 4);
+    STACKVAR(-24, 4) = ACCESS(STACKVAR(-16, 4), 4, 4);
+l1001A3FE:
+    STACKVAR(-24, 4) = reinterpret_cast<any_int32>(STACKVAR(-24, 4)) - 0x00000001;
+    STACKVAR(-12, 4) = reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + static_cast<unsigned int>(ACCESS(STACKVAR(-36, 4), 0, 1));
+    STACKVAR(-36, 4) = reinterpret_cast<any_int32>(STACKVAR(-36, 4)) + 0x00000001;
+    if (0x00000000 != 0x00000000)
+    {
+        goto l1001A377;
+    }
+l1001A429:
+    if (STACKVAR(-24, 4) != 0x00000000)
+    {
+        goto l1001A45D;
+    }
+    if ((reinterpret_cast<any_int32>(ACCESS(STACKVAR(-16, 4), 12, 4)(STACKVAR(8, 4))) & 0x000000FF) != 0x00000000)
+    {
+        goto l1001A44C;
+    }
+    REGDEF(al=0)
+    goto l1001A868;
+l1001A44C:
+    STACKVAR(-36, 4) = ACCESS(STACKVAR(-16, 4), 0, 4);
+    STACKVAR(-24, 4) = ACCESS(STACKVAR(-16, 4), 4, 4);
+l1001A45D:
+    STACKVAR(-24, 4) = reinterpret_cast<any_int32>(STACKVAR(-24, 4)) - 0x00000001;
+    STACKVAR(-40, 4) = static_cast<unsigned int>(ACCESS(STACKVAR(-36, 4), 0, 1));
+    STACKVAR(-36, 4) = reinterpret_cast<any_int32>(STACKVAR(-36, 4)) + 0x00000001;
+    if (0x00000000 != 0x00000000)
+    {
+        goto l1001A429;
+    }
+    ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x00000067;
+    ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 24, 4) = STACKVAR(-40, 4);
+    ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 4, 4)(STACKVAR(8, 4), 0x00000001);
+    if (STACKVAR(-12, 4) != 2 * reinterpret_cast<any_int32>(STACKVAR(-40, 4)) + 6)
+    {
+        goto l1001A4BF;
+    }
+    if (reinterpret_cast<int>(STACKVAR(-40, 4)) < 1)
+    {
+        goto l1001A4BF;
+    }
+    REGDEF(cmpl=STACKVAR(-40, 4), cmpr=0x00000004)
 }
-Failed to find pattern for 'jmp near ptr l1001A868'
+Failed to find pattern for 'jle l1001A4D9'
 
 // address: 0x1001A86C
 p1001A86C
@@ -5974,8 +6920,40 @@ l1001A8A0:
         goto l1001A8C9;
     }
     REGDEF(al=0)
+    goto l1001AF26;
+l1001A8C9:
+    STACKVAR(-304, 4) = ACCESS(STACKVAR(-288, 4), 0, 4);
+    STACKVAR(-296, 4) = ACCESS(STACKVAR(-288, 4), 4, 4);
+l1001A8E6:
+    STACKVAR(-296, 4) = reinterpret_cast<any_int32>(STACKVAR(-296, 4)) - 0x00000001;
+    STACKVAR(-284, 4) = 0x00000100 * static_cast<unsigned int>(ACCESS(STACKVAR(-304, 4), 0, 1));
+    STACKVAR(-304, 4) = reinterpret_cast<any_int32>(STACKVAR(-304, 4)) + 0x00000001;
+    if (STACKVAR(-296, 4) != 0x00000000)
+    {
+        goto l1001A95D;
+    }
+    if ((reinterpret_cast<any_int32>(ACCESS(STACKVAR(-288, 4), 12, 4)(STACKVAR(8, 4))) & 0x000000FF) != 0x00000000)
+    {
+        goto l1001A940;
+    }
+    REGDEF(al=0)
+    goto l1001AF26;
+l1001A940:
+    STACKVAR(-304, 4) = ACCESS(STACKVAR(-288, 4), 0, 4);
+    STACKVAR(-296, 4) = ACCESS(STACKVAR(-288, 4), 4, 4);
+l1001A95D:
+    STACKVAR(-296, 4) = reinterpret_cast<any_int32>(STACKVAR(-296, 4)) - 0x00000001;
+    STACKVAR(-284, 4) = reinterpret_cast<any_int32>(STACKVAR(-284, 4)) + static_cast<unsigned int>(ACCESS(STACKVAR(-304, 4), 0, 1));
+    STACKVAR(-304, 4) = reinterpret_cast<any_int32>(STACKVAR(-304, 4)) + 0x00000001;
+    if (0x00000000 != 0x00000000)
+    {
+        goto l1001A8A0;
+    }
+    STACKVAR(-284, 4) = reinterpret_cast<any_int32>(STACKVAR(-284, 4)) - 0x00000002;
+l1001A9AC:
+    REGDEF(cmpl=STACKVAR(-284, 4), cmpr=0x00000010)
 }
-Failed to find pattern for 'jmp near ptr l1001AF26'
+Failed to find pattern for 'jle l1001AEE4'
 
 // address: 0x1001AF2C
 p1001AF2C
@@ -5994,64 +6972,214 @@ l1001AF4C:
         goto l1001AF6F;
     }
     REGDEF(al=0)
+    goto l1001B3A2;
+l1001AF6F:
+    STACKVAR(-32, 4) = ACCESS(STACKVAR(-12, 4), 0, 4);
+    STACKVAR(-28, 4) = ACCESS(STACKVAR(-12, 4), 4, 4);
+l1001AF80:
+    STACKVAR(-28, 4) = reinterpret_cast<any_int32>(STACKVAR(-28, 4)) - 0x00000001;
+    STACKVAR(-8, 4) = 0x00000100 * static_cast<unsigned int>(ACCESS(STACKVAR(-32, 4), 0, 1));
+    STACKVAR(-32, 4) = reinterpret_cast<any_int32>(STACKVAR(-32, 4)) + 0x00000001;
+    if (STACKVAR(-28, 4) != 0x00000000)
+    {
+        goto l1001AFD3;
+    }
+    if ((reinterpret_cast<any_int32>(ACCESS(STACKVAR(-12, 4), 12, 4)(STACKVAR(8, 4))) & 0x000000FF) != 0x00000000)
+    {
+        goto l1001AFC2;
+    }
+    REGDEF(al=0)
+    goto l1001B3A2;
+l1001AFC2:
+    STACKVAR(-32, 4) = ACCESS(STACKVAR(-12, 4), 0, 4);
+    STACKVAR(-28, 4) = ACCESS(STACKVAR(-12, 4), 4, 4);
+l1001AFD3:
+    STACKVAR(-28, 4) = reinterpret_cast<any_int32>(STACKVAR(-28, 4)) - 0x00000001;
+    STACKVAR(-8, 4) = reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + static_cast<unsigned int>(ACCESS(STACKVAR(-32, 4), 0, 1));
+    STACKVAR(-32, 4) = reinterpret_cast<any_int32>(STACKVAR(-32, 4)) + 0x00000001;
+    if (0x00000000 != 0x00000000)
+    {
+        goto l1001AF4C;
+    }
+    STACKVAR(-8, 4) = reinterpret_cast<any_int32>(STACKVAR(-8, 4)) - 0x00000002;
+l1001B007:
+    REGDEF(cmpl=STACKVAR(-8, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'jmp near ptr l1001B3A2'
+Failed to find pattern for 'jle l1001B36F'
 
 // address: 0x1001B3A6
 p1001B3A6
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=20, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=20, stack_delta=0)
     STACKVAR(-12, 4) = ACCESS(STACKVAR(8, 4), 24, 4);
     STACKVAR(-20, 4) = ACCESS(STACKVAR(-12, 4), 0, 4);
     STACKVAR(-16, 4) = ACCESS(STACKVAR(-12, 4), 4, 4);
 l1001B3C6:
-    if (STACKVAR(-16, 4) != 0x00000000)
+    if (STACKVAR(-16, 4) == 0x00000000)
     {
-        goto l1001B3FA;
+        if ((reinterpret_cast<any_int32>(ACCESS(STACKVAR(-12, 4), 12, 4)(STACKVAR(8, 4))) & 0x000000FF) == 0x00000000)
+        {
+            REGDEF(al=0)
+            return;
+        }
+        STACKVAR(-20, 4) = ACCESS(STACKVAR(-12, 4), 0, 4);
+        STACKVAR(-16, 4) = ACCESS(STACKVAR(-12, 4), 4, 4);
     }
-    if ((reinterpret_cast<any_int32>(ACCESS(STACKVAR(-12, 4), 12, 4)(STACKVAR(8, 4))) & 0x000000FF) != 0x00000000)
+    STACKVAR(-16, 4) = reinterpret_cast<any_int32>(STACKVAR(-16, 4)) - 0x00000001;
+    STACKVAR(-8, 4) = 256 * static_cast<unsigned int>(ACCESS(STACKVAR(-20, 4), 0, 1));
+    STACKVAR(-20, 4) = reinterpret_cast<any_int32>(STACKVAR(-20, 4)) + 0x00000001;
+    if (STACKVAR(-16, 4) == 0x00000000)
     {
-        goto l1001B3E9;
+        if ((reinterpret_cast<any_int32>(ACCESS(STACKVAR(-12, 4), 12, 4)(STACKVAR(8, 4))) & 0x000000FF) == 0x00000000)
+        {
+            REGDEF(al=0)
+            return;
+        }
+        STACKVAR(-20, 4) = ACCESS(STACKVAR(-12, 4), 0, 4);
+        STACKVAR(-16, 4) = ACCESS(STACKVAR(-12, 4), 4, 4);
     }
-    REGDEF(al=0)
+    STACKVAR(-16, 4) = reinterpret_cast<any_int32>(STACKVAR(-16, 4)) - 0x00000001;
+    STACKVAR(-8, 4) = reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + static_cast<unsigned int>(ACCESS(STACKVAR(-20, 4), 0, 1));
+    STACKVAR(-20, 4) = reinterpret_cast<any_int32>(STACKVAR(-20, 4)) + 0x00000001;
+    if (0x00000000 != 0x00000000)
+    {
+        goto l1001B3C6;
+    }
+    if (STACKVAR(-8, 4) != 0x00000004)
+    {
+        ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x0000000B;
+        ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 0, 4)(STACKVAR(8, 4));
+    }
+l1001B498:
+    if (STACKVAR(-16, 4) == 0x00000000)
+    {
+        if ((reinterpret_cast<any_int32>(ACCESS(STACKVAR(-12, 4), 12, 4)(STACKVAR(8, 4))) & 0x000000FF) == 0x00000000)
+        {
+            REGDEF(al=0)
+            return;
+        }
+        STACKVAR(-20, 4) = ACCESS(STACKVAR(-12, 4), 0, 4);
+        STACKVAR(-16, 4) = ACCESS(STACKVAR(-12, 4), 4, 4);
+    }
+    STACKVAR(-16, 4) = reinterpret_cast<any_int32>(STACKVAR(-16, 4)) - 0x00000001;
+    STACKVAR(-4, 4) = 256 * static_cast<unsigned int>(ACCESS(STACKVAR(-20, 4), 0, 1));
+    STACKVAR(-20, 4) = reinterpret_cast<any_int32>(STACKVAR(-20, 4)) + 0x00000001;
+    if (STACKVAR(-16, 4) == 0x00000000)
+    {
+        if ((reinterpret_cast<any_int32>(ACCESS(STACKVAR(-12, 4), 12, 4)(STACKVAR(8, 4))) & 0x000000FF) == 0x00000000)
+        {
+            REGDEF(al=0)
+            return;
+        }
+        STACKVAR(-20, 4) = ACCESS(STACKVAR(-12, 4), 0, 4);
+        STACKVAR(-16, 4) = ACCESS(STACKVAR(-12, 4), 4, 4);
+    }
+    STACKVAR(-16, 4) = reinterpret_cast<any_int32>(STACKVAR(-16, 4)) - 0x00000001;
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + static_cast<unsigned int>(ACCESS(STACKVAR(-20, 4), 0, 1));
+    STACKVAR(-20, 4) = reinterpret_cast<any_int32>(STACKVAR(-20, 4)) + 0x00000001;
+    if (0x00000000 != 0x00000000)
+    {
+        goto l1001B498;
+    }
+    ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x00000052;
+    ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 24, 4) = STACKVAR(-4, 4);
+    ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 4, 4)(STACKVAR(8, 4), 0x00000001);
+    ACCESS(STACKVAR(8, 4), 252, 4) = STACKVAR(-4, 4);
+    ACCESS(STACKVAR(-12, 4), 0, 4) = STACKVAR(-20, 4);
+    ACCESS(STACKVAR(-12, 4), 4, 4) = STACKVAR(-16, 4);
+    REGDEF(al=0x01)
 }
-Failed to find pattern for 'jmp near ptr l1001B591'
 
 // address: 0x1001B595
 p1001B595
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=20, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=20, stack_delta=0)
     STACKVAR(-12, 4) = ACCESS(STACKVAR(8, 4), 24, 4);
     STACKVAR(-20, 4) = ACCESS(STACKVAR(-12, 4), 0, 4);
     STACKVAR(-16, 4) = ACCESS(STACKVAR(-12, 4), 4, 4);
 l1001B5B5:
-    if (STACKVAR(-16, 4) != 0x00000000)
+    if (STACKVAR(-16, 4) == 0x00000000)
     {
-        goto l1001B5E9;
+        if ((reinterpret_cast<any_int32>(ACCESS(STACKVAR(-12, 4), 12, 4)(STACKVAR(8, 4))) & 0x000000FF) == 0x00000000)
+        {
+            REGDEF(al=0)
+            return;
+        }
+        STACKVAR(-20, 4) = ACCESS(STACKVAR(-12, 4), 0, 4);
+        STACKVAR(-16, 4) = ACCESS(STACKVAR(-12, 4), 4, 4);
     }
-    if ((reinterpret_cast<any_int32>(ACCESS(STACKVAR(-12, 4), 12, 4)(STACKVAR(8, 4))) & 0x000000FF) != 0x00000000)
+    STACKVAR(-16, 4) = reinterpret_cast<any_int32>(STACKVAR(-16, 4)) - 0x00000001;
+    STACKVAR(-4, 4) = static_cast<unsigned int>(ACCESS(STACKVAR(-20, 4), 0, 1));
+    STACKVAR(-20, 4) = reinterpret_cast<any_int32>(STACKVAR(-20, 4)) + 0x00000001;
+    if (0x00000000 != 0x00000000)
     {
-        goto l1001B5D8;
+        goto l1001B5B5;
     }
-    REGDEF(al=0)
+l1001B60B:
+    if (STACKVAR(-16, 4) == 0x00000000)
+    {
+        if ((reinterpret_cast<any_int32>(ACCESS(STACKVAR(-12, 4), 12, 4)(STACKVAR(8, 4))) & 0x000000FF) == 0x00000000)
+        {
+            REGDEF(al=0)
+            return;
+        }
+        STACKVAR(-20, 4) = ACCESS(STACKVAR(-12, 4), 0, 4);
+        STACKVAR(-16, 4) = ACCESS(STACKVAR(-12, 4), 4, 4);
+    }
+    STACKVAR(-16, 4) = reinterpret_cast<any_int32>(STACKVAR(-16, 4)) - 0x00000001;
+    STACKVAR(-8, 4) = static_cast<unsigned int>(ACCESS(STACKVAR(-20, 4), 0, 1));
+    STACKVAR(-20, 4) = reinterpret_cast<any_int32>(STACKVAR(-20, 4)) + 0x00000001;
+    if (0x00000000 != 0x00000000)
+    {
+        goto l1001B60B;
+    }
+    if (STACKVAR(-4, 4) != 0x000000FF)
+    {
+        goto l1001B673;
+    }
+    if (STACKVAR(-8, 4) == 0x000000D8)
+    {
+        goto l1001B6A3;
+    }
+l1001B673:
+    ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x00000035;
+    ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 24, 4) = STACKVAR(-4, 4);
+    ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 28, 4) = STACKVAR(-8, 4);
+    ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 0, 4)(STACKVAR(8, 4));
+l1001B6A3:
+    ACCESS(STACKVAR(8, 4), 380, 4) = STACKVAR(-8, 4);
+    ACCESS(STACKVAR(-12, 4), 0, 4) = STACKVAR(-20, 4);
+    ACCESS(STACKVAR(-12, 4), 4, 4) = STACKVAR(-16, 4);
+    REGDEF(al=0x01)
 }
-Failed to find pattern for 'jmp near ptr l1001B6C2'
 
 // address: 0x1001B6C6
 p1001B6C6
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    if (ACCESS(STACKVAR(8, 4), 380, 4) != 0x00000000)
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
+    if (ACCESS(STACKVAR(8, 4), 380, 4) == 0x00000000)
     {
-        goto l1001B6F1;
+        if ((reinterpret_cast<any_int32>(unknown_function_10018C16(STACKVAR(8, 4))) & 0x000000FF) == 0x00000000)
+        {
+            REGDEF(al=0)
+            return;
+        }
     }
-    if ((reinterpret_cast<any_int32>(unknown_function_10018C16(STACKVAR(8, 4))) & 0x000000FF) != 0x00000000)
+    if (reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 380, 4)) == reinterpret_cast<any_int32>(ACCESS(ACCESS(STACKVAR(8, 4), 404, 4), 16, 4)) + 0x000000D0)
     {
-        goto l1001B6F1;
+        ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x00000062;
+        ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 24, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 404, 4), 16, 4);
+        ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 4, 4)(STACKVAR(8, 4), 0x00000003);
+        ACCESS(STACKVAR(8, 4), 380, 4) = 0x00000000;
     }
-    REGDEF(al=0)
+    else if ((reinterpret_cast<any_int32>(ACCESS(ACCESS(STACKVAR(8, 4), 24, 4), 20, 4)(STACKVAR(8, 4), ACCESS(ACCESS(STACKVAR(8, 4), 404, 4), 16, 4))) & 0x000000FF) == 0x00000000)
+    {
+        REGDEF(al=0)
+        return;
+    }
+    ACCESS(ACCESS(STACKVAR(8, 4), 404, 4), 16, 4) = reinterpret_cast<any_int32>(ACCESS(ACCESS(STACKVAR(8, 4), 404, 4), 16, 4)) + 0x00000001 & 0x00000007;
+    REGDEF(al=0x01)
 }
-Failed to find pattern for 'jmp near ptr l1001B798'
 
 // address: 0x1001B79A
 p1001B79A
@@ -6091,8 +7219,50 @@ l1001B946:
         goto l1001B969;
     }
     REGDEF(al=0)
+    goto l1001BCC8;
+l1001B969:
+    STACKVAR(-32, 4) = ACCESS(STACKVAR(-16, 4), 0, 4);
+    STACKVAR(-24, 4) = ACCESS(STACKVAR(-16, 4), 4, 4);
+l1001B97A:
+    STACKVAR(-24, 4) = reinterpret_cast<any_int32>(STACKVAR(-24, 4)) - 0x00000001;
+    STACKVAR(-12, 4) = 0x00000100 * static_cast<unsigned int>(ACCESS(STACKVAR(-32, 4), 0, 1));
+    STACKVAR(-32, 4) = reinterpret_cast<any_int32>(STACKVAR(-32, 4)) + 0x00000001;
+    if (STACKVAR(-24, 4) != 0x00000000)
+    {
+        goto l1001B9CD;
+    }
+    if ((reinterpret_cast<any_int32>(ACCESS(STACKVAR(-16, 4), 12, 4)(STACKVAR(8, 4))) & 0x000000FF) != 0x00000000)
+    {
+        goto l1001B9BC;
+    }
+    REGDEF(al=0)
+    goto l1001BCC8;
+l1001B9BC:
+    STACKVAR(-32, 4) = ACCESS(STACKVAR(-16, 4), 0, 4);
+    STACKVAR(-24, 4) = ACCESS(STACKVAR(-16, 4), 4, 4);
+l1001B9CD:
+    STACKVAR(-24, 4) = reinterpret_cast<any_int32>(STACKVAR(-24, 4)) - 0x00000001;
+    STACKVAR(-12, 4) = reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + static_cast<unsigned int>(ACCESS(STACKVAR(-32, 4), 0, 1));
+    STACKVAR(-32, 4) = reinterpret_cast<any_int32>(STACKVAR(-32, 4)) + 0x00000001;
+    if (0x00000000 != 0x00000000)
+    {
+        goto l1001B946;
+    }
+    STACKVAR(-12, 4) = reinterpret_cast<any_int32>(STACKVAR(-12, 4)) - 0x00000002;
+    if (reinterpret_cast<int>(STACKVAR(-12, 4)) < 0)
+    {
+        goto l1001BACC;
+    }
+    if (ACCESS(STACKVAR(8, 4), 380, 4) != 0x000000FE)
+    {
+        goto l1001BA25;
+    }
+    STACKVAR(-40, 4) = ACCESS(STACKVAR(-20, 4), 92, 4);
+    goto l1001BA3B;
+l1001BA25:
+    REGDEF(ecx=ACCESS(STACKVAR(8, 4), 380, 4), edx=STACKVAR(-20, 4))
 }
-Failed to find pattern for 'jmp near ptr l1001BCC8'
+Failed to find pattern for 'mov eax, dword ptr [edx+ecx*04h-000000320h]'
 
 // address: 0x1001BD40
 p1001BD40
@@ -6124,8 +7294,43 @@ p1001C089
     }
 l1001C0A7:
     REGDEF(al=0)
+    goto l1001C18B;
+l1001C0AE:
+    if (ACCESS(STACKVAR(8, 4), 40, 4) != 0x00000003)
+    {
+        goto l1001C0D2;
+    }
+    if (ACCESS(STACKVAR(8, 4), 36, 4) != 0x00000003)
+    {
+        goto l1001C0D2;
+    }
+    if (ACCESS(STACKVAR(8, 4), 44, 4) != 0x00000002)
+    {
+        goto l1001C0D2;
+    }
+    if (ACCESS(STACKVAR(8, 4), 100, 4) == 0x00000003)
+    {
+        goto l1001C0D9;
+    }
+l1001C0D2:
+    REGDEF(al=0)
+    goto l1001C18B;
+l1001C0D9:
+    if (ACCESS(ACCESS(STACKVAR(8, 4), 196, 4), 8, 4) != 0x00000002)
+    {
+        goto l1001C139;
+    }
+    if (ACCESS(ACCESS(STACKVAR(8, 4), 196, 4), 92, 4) != 0x00000001)
+    {
+        goto l1001C139;
+    }
+    if (ACCESS(ACCESS(STACKVAR(8, 4), 196, 4), 176, 4) != 0x00000001)
+    {
+        goto l1001C139;
+    }
+    REGDEF(cmpl=ACCESS(ACCESS(STACKVAR(8, 4), 196, 4), 12, 4), cmpr=0x00000002)
 }
-Failed to find pattern for 'jmp near ptr l1001C18B'
+Failed to find pattern for 'jg l1001C139'
 
 // address: 0x1001C23B
 p1001C23B
@@ -6174,8 +7379,60 @@ p1001C6F1
     ACCESS(ACCESS(STACKVAR(8, 4), 424, 4), 0, 4)(STACKVAR(8, 4), 0x00000000);
     ACCESS(ACCESS(STACKVAR(8, 4), 396, 4), 0, 4)(STACKVAR(8, 4), 0x00000002);
     ACCESS(ACCESS(STACKVAR(8, 4), 388, 4), 0, 4)(STACKVAR(8, 4), 0x00000002);
+    goto l1001C891;
+l1001C755:
+    if (static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 74, 1)) == 0x00000000)
+    {
+        goto l1001C7D1;
+    }
+    if (ACCESS(STACKVAR(8, 4), 116, 4) != 0x00000000)
+    {
+        goto l1001C7D1;
+    }
+    if (static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 80, 1)) == 0x00000000)
+    {
+        goto l1001C79A;
+    }
+    if (static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 90, 1)) == 0x00000000)
+    {
+        goto l1001C79A;
+    }
+    ACCESS(STACKVAR(8, 4), 424, 4) = ACCESS(STACKVAR(-4, 4), 24, 4);
+    ACCESS(STACKVAR(-4, 4), 8, 1) = 0x01;
+    goto l1001C7D1;
+l1001C79A:
+    if (static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 88, 1)) == 0x00000000)
+    {
+        goto l1001C7B7;
+    }
+    ACCESS(STACKVAR(8, 4), 424, 4) = ACCESS(STACKVAR(-4, 4), 20, 4);
+    goto l1001C7D1;
+l1001C7B7:
+    ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x0000002E;
+    ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 0, 4)(STACKVAR(8, 4));
+l1001C7D1:
+    ACCESS(ACCESS(STACKVAR(8, 4), 412, 4), 0, 4)(STACKVAR(8, 4));
+    ACCESS(ACCESS(STACKVAR(8, 4), 392, 4), 8, 4)(STACKVAR(8, 4));
+    if (static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 65, 1)) != 0x00000000)
+    {
+        goto l1001C891;
+    }
+    if (static_cast<unsigned int>(ACCESS(STACKVAR(-4, 4), 16, 1)) != 0x00000000)
+    {
+        goto l1001C824;
+    }
+    ACCESS(ACCESS(STACKVAR(8, 4), 420, 4), 0, 4)(STACKVAR(8, 4));
+l1001C824:
+    ACCESS(ACCESS(STACKVAR(8, 4), 416, 4), 0, 4)(STACKVAR(8, 4));
+    if (static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 74, 1)) == 0x00000000)
+    {
+        goto l1001C85B;
+    }
+    ACCESS(ACCESS(STACKVAR(8, 4), 424, 4), 0, 4)(STACKVAR(8, 4), ACCESS(STACKVAR(-4, 4), 8, 1));
+l1001C85B:
+    REGDEF(edx=static_cast<unsigned int>(ACCESS(STACKVAR(-4, 4), 8, 1)))
 }
-Failed to find pattern for 'jmp near ptr l1001C891'
+Failed to find pattern for 'neg edx'
 
 // address: 0x1001C912
 p1001C912
@@ -6332,8 +7589,20 @@ p1001D69E
         goto l1001D6EF;
     }
     REGDEF(al=0)
+    goto l1001D974;
+l1001D6EF:
+    if (static_cast<unsigned int>(ACCESS(STACKVAR(-24, 4), 8, 1)) != 0x00000000)
+    {
+        goto l1001D963;
+    }
+    STACKVAR(-60, 4) = STACKVAR(8, 4);
+    STACKVAR(-76, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 24, 4), 0, 4);
+    STACKVAR(-72, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 24, 4), 4, 4);
+    STACKVAR(-4, 4) = ACCESS(STACKVAR(-24, 4), 12, 4);
+    STACKVAR(-56, 4) = ACCESS(STACKVAR(-24, 4), 16, 4);
+    REGDEF(esi=reinterpret_cast<any_int32>(STACKVAR(-24, 4)) + 0x00000014, ecx=0x00000005)
 }
-Failed to find pattern for 'jmp near ptr l1001D974'
+Failed to find pattern for 'lea edi, [ebp-02Ch]'
 
 // address: 0x1001D97A
 p1001D97A
@@ -6364,8 +7633,16 @@ p1001DA41
         goto l1001DA9C;
     }
     REGDEF(al=0)
+    goto l1001DDA9;
+l1001DA9C:
+    if (static_cast<unsigned int>(ACCESS(STACKVAR(-28, 4), 8, 1)) != 0x00000000)
+    {
+        goto l1001DD98;
+    }
+    STACKVAR(-8, 4) = ACCESS(STACKVAR(-28, 4), 20, 4);
+    REGDEF(cmpl=STACKVAR(-8, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'jmp near ptr l1001DDA9'
+Failed to find pattern for 'jbe l1001DAC9'
 
 // address: 0x1001DDAD
 p1001DDAD
@@ -6413,7 +7690,7 @@ Failed to find pattern for 'imul ecx, dword ptr [eax+064h]'
 // address: 0x1001E668
 p1001E668
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=8, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=8, stack_delta=0)
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 396, 4);
     STACKVAR(-8, 4) = STACKVAR(12, 4);
     if (STACKVAR(-8, 4) == 0x00000000)
@@ -6428,8 +7705,44 @@ p1001E668
     {
         goto l1001E6F8;
     }
+    goto l1001E756;
+l1001E69B:
+    if (static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 74, 1)) != 0)
+    {
+        ACCESS(STACKVAR(-4, 4), 4, 4) = GLOBAL(0x1001E788);
+        if (ACCESS(STACKVAR(-4, 4), 12, 4) == 0x00000000)
+        {
+            ACCESS(STACKVAR(-4, 4), 12, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 28, 4)(STACKVAR(8, 4), ACCESS(STACKVAR(-4, 4), 8, 4), 0x00000000, ACCESS(STACKVAR(-4, 4), 16, 4), 0x00000001);
+        }
+    }
+    else
+    {
+        ACCESS(STACKVAR(-4, 4), 4, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 416, 4), 4, 4);
+    }
+    goto l1001E770;
+l1001E6F8:
+    if (ACCESS(STACKVAR(-4, 4), 8, 4) == 0x00000000)
+    {
+        ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x00000004;
+        ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 0, 4)(STACKVAR(8, 4));
+    }
+    ACCESS(STACKVAR(-4, 4), 4, 4) = GLOBAL(0x1001E829);
+    goto l1001E770;
+l1001E727:
+    if (ACCESS(STACKVAR(-4, 4), 8, 4) == 0x00000000)
+    {
+        ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x00000004;
+        ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 0, 4)(STACKVAR(8, 4));
+    }
+    ACCESS(STACKVAR(-4, 4), 4, 4) = GLOBAL(0x1001E926);
+    goto l1001E770;
+l1001E756:
+    ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x00000004;
+    ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 0, 4)(STACKVAR(8, 4));
+l1001E770:
+    ACCESS(STACKVAR(-4, 4), 24, 4) = 0x00000000;
+    ACCESS(STACKVAR(-4, 4), 20, 4) = 0x00000000;
 }
-Failed to find pattern for 'jmp near ptr l1001E756'
 
 // address: 0x1001E788
 p1001E788
@@ -6746,50 +8059,90 @@ Failed to find pattern for 'fsub dword ptr [edx+01Ch]'
 // address: 0x1001FD10
 p1001FD10
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=84, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=84, stack_delta=0)
     STACKVAR(-76, 4) = STACKVAR(8, 4);
     STACKVAR(-56, 4) = 0x00000007;
     goto l1001FD2E;
 l1001FD25:
     STACKVAR(-56, 4) = reinterpret_cast<any_int32>(STACKVAR(-56, 4)) - 0x00000001;
 l1001FD2E:
-    if (reinterpret_cast<int>(STACKVAR(-56, 4)) < 0)
+    if (reinterpret_cast<int>(STACKVAR(-56, 4)) >= 0)
     {
-        goto l1001FEC0;
+        STACKVAR(-60, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-76, 4), 0, 4)) + reinterpret_cast<any_int32>(ACCESS(STACKVAR(-76, 4), 28, 4));
+        STACKVAR(-20, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-76, 4), 0, 4)) - reinterpret_cast<any_int32>(ACCESS(STACKVAR(-76, 4), 28, 4));
+        STACKVAR(-64, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-76, 4), 4, 4)) + reinterpret_cast<any_int32>(ACCESS(STACKVAR(-76, 4), 24, 4));
+        STACKVAR(-8, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-76, 4), 4, 4)) - reinterpret_cast<any_int32>(ACCESS(STACKVAR(-76, 4), 24, 4));
+        STACKVAR(-68, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-76, 4), 8, 4)) + reinterpret_cast<any_int32>(ACCESS(STACKVAR(-76, 4), 20, 4));
+        STACKVAR(-84, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-76, 4), 8, 4)) - reinterpret_cast<any_int32>(ACCESS(STACKVAR(-76, 4), 20, 4));
+        STACKVAR(-72, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-76, 4), 12, 4)) + reinterpret_cast<any_int32>(ACCESS(STACKVAR(-76, 4), 16, 4));
+        STACKVAR(-80, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-76, 4), 12, 4)) - reinterpret_cast<any_int32>(ACCESS(STACKVAR(-76, 4), 16, 4));
+        STACKVAR(-16, 4) = reinterpret_cast<any_int32>(STACKVAR(-60, 4)) + reinterpret_cast<any_int32>(STACKVAR(-72, 4));
+        STACKVAR(-48, 4) = reinterpret_cast<any_int32>(STACKVAR(-60, 4)) - reinterpret_cast<any_int32>(STACKVAR(-72, 4));
+        STACKVAR(-28, 4) = reinterpret_cast<any_int32>(STACKVAR(-64, 4)) + reinterpret_cast<any_int32>(STACKVAR(-68, 4));
+        STACKVAR(-40, 4) = reinterpret_cast<any_int32>(STACKVAR(-64, 4)) - reinterpret_cast<any_int32>(STACKVAR(-68, 4));
+        ACCESS(STACKVAR(-76, 4), 0, 4) = reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + reinterpret_cast<any_int32>(STACKVAR(-28, 4));
+        ACCESS(STACKVAR(-76, 4), 16, 4) = reinterpret_cast<any_int32>(STACKVAR(-16, 4)) - reinterpret_cast<any_int32>(STACKVAR(-28, 4));
+        STACKVAR(-4, 4) = 181 * (reinterpret_cast<int>(STACKVAR(-40, 4)) + reinterpret_cast<int>(STACKVAR(-48, 4))) >> 8;
+        ACCESS(STACKVAR(-76, 4), 8, 4) = reinterpret_cast<any_int32>(STACKVAR(-48, 4)) + reinterpret_cast<any_int32>(STACKVAR(-4, 4));
+        ACCESS(STACKVAR(-76, 4), 24, 4) = reinterpret_cast<any_int32>(STACKVAR(-48, 4)) - reinterpret_cast<any_int32>(STACKVAR(-4, 4));
+        STACKVAR(-16, 4) = reinterpret_cast<any_int32>(STACKVAR(-80, 4)) + reinterpret_cast<any_int32>(STACKVAR(-84, 4));
+        STACKVAR(-28, 4) = reinterpret_cast<any_int32>(STACKVAR(-84, 4)) + reinterpret_cast<any_int32>(STACKVAR(-8, 4));
+        STACKVAR(-40, 4) = reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + reinterpret_cast<any_int32>(STACKVAR(-20, 4));
+        STACKVAR(-44, 4) = 98 * (reinterpret_cast<int>(STACKVAR(-16, 4)) - reinterpret_cast<int>(STACKVAR(-40, 4))) >> 8;
+        STACKVAR(-12, 4) = (139 * reinterpret_cast<int>(STACKVAR(-16, 4)) >> 8) + reinterpret_cast<any_int32>(STACKVAR(-44, 4));
+        STACKVAR(-36, 4) = (334 * reinterpret_cast<int>(STACKVAR(-40, 4)) >> 8) + reinterpret_cast<any_int32>(STACKVAR(-44, 4));
+        STACKVAR(-24, 4) = 181 * reinterpret_cast<int>(STACKVAR(-28, 4)) >> 8;
+        STACKVAR(-32, 4) = reinterpret_cast<any_int32>(STACKVAR(-20, 4)) + reinterpret_cast<any_int32>(STACKVAR(-24, 4));
+        STACKVAR(-52, 4) = reinterpret_cast<any_int32>(STACKVAR(-20, 4)) - reinterpret_cast<any_int32>(STACKVAR(-24, 4));
+        ACCESS(STACKVAR(-76, 4), 20, 4) = reinterpret_cast<any_int32>(STACKVAR(-52, 4)) + reinterpret_cast<any_int32>(STACKVAR(-12, 4));
+        ACCESS(STACKVAR(-76, 4), 12, 4) = reinterpret_cast<any_int32>(STACKVAR(-52, 4)) - reinterpret_cast<any_int32>(STACKVAR(-12, 4));
+        ACCESS(STACKVAR(-76, 4), 4, 4) = reinterpret_cast<any_int32>(STACKVAR(-32, 4)) + reinterpret_cast<any_int32>(STACKVAR(-36, 4));
+        ACCESS(STACKVAR(-76, 4), 28, 4) = reinterpret_cast<any_int32>(STACKVAR(-32, 4)) - reinterpret_cast<any_int32>(STACKVAR(-36, 4));
+        STACKVAR(-76, 4) = reinterpret_cast<any_int32>(STACKVAR(-76, 4)) + 0x00000020;
+        goto l1001FD25;
     }
-    STACKVAR(-60, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-76, 4), 0, 4)) + reinterpret_cast<any_int32>(ACCESS(STACKVAR(-76, 4), 28, 4));
-    STACKVAR(-20, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-76, 4), 0, 4)) - reinterpret_cast<any_int32>(ACCESS(STACKVAR(-76, 4), 28, 4));
-    STACKVAR(-64, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-76, 4), 4, 4)) + reinterpret_cast<any_int32>(ACCESS(STACKVAR(-76, 4), 24, 4));
-    STACKVAR(-8, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-76, 4), 4, 4)) - reinterpret_cast<any_int32>(ACCESS(STACKVAR(-76, 4), 24, 4));
-    STACKVAR(-68, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-76, 4), 8, 4)) + reinterpret_cast<any_int32>(ACCESS(STACKVAR(-76, 4), 20, 4));
-    STACKVAR(-84, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-76, 4), 8, 4)) - reinterpret_cast<any_int32>(ACCESS(STACKVAR(-76, 4), 20, 4));
-    STACKVAR(-72, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-76, 4), 12, 4)) + reinterpret_cast<any_int32>(ACCESS(STACKVAR(-76, 4), 16, 4));
-    STACKVAR(-80, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-76, 4), 12, 4)) - reinterpret_cast<any_int32>(ACCESS(STACKVAR(-76, 4), 16, 4));
-    STACKVAR(-16, 4) = reinterpret_cast<any_int32>(STACKVAR(-60, 4)) + reinterpret_cast<any_int32>(STACKVAR(-72, 4));
-    STACKVAR(-48, 4) = reinterpret_cast<any_int32>(STACKVAR(-60, 4)) - reinterpret_cast<any_int32>(STACKVAR(-72, 4));
-    STACKVAR(-28, 4) = reinterpret_cast<any_int32>(STACKVAR(-64, 4)) + reinterpret_cast<any_int32>(STACKVAR(-68, 4));
-    STACKVAR(-40, 4) = reinterpret_cast<any_int32>(STACKVAR(-64, 4)) - reinterpret_cast<any_int32>(STACKVAR(-68, 4));
-    ACCESS(STACKVAR(-76, 4), 0, 4) = reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + reinterpret_cast<any_int32>(STACKVAR(-28, 4));
-    ACCESS(STACKVAR(-76, 4), 16, 4) = reinterpret_cast<any_int32>(STACKVAR(-16, 4)) - reinterpret_cast<any_int32>(STACKVAR(-28, 4));
-    STACKVAR(-4, 4) = 0x000000B5 * (reinterpret_cast<int>(STACKVAR(-40, 4)) + reinterpret_cast<int>(STACKVAR(-48, 4))) >> 8;
-    ACCESS(STACKVAR(-76, 4), 8, 4) = reinterpret_cast<any_int32>(STACKVAR(-48, 4)) + reinterpret_cast<any_int32>(STACKVAR(-4, 4));
-    ACCESS(STACKVAR(-76, 4), 24, 4) = reinterpret_cast<any_int32>(STACKVAR(-48, 4)) - reinterpret_cast<any_int32>(STACKVAR(-4, 4));
-    STACKVAR(-16, 4) = reinterpret_cast<any_int32>(STACKVAR(-80, 4)) + reinterpret_cast<any_int32>(STACKVAR(-84, 4));
-    STACKVAR(-28, 4) = reinterpret_cast<any_int32>(STACKVAR(-84, 4)) + reinterpret_cast<any_int32>(STACKVAR(-8, 4));
-    STACKVAR(-40, 4) = reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + reinterpret_cast<any_int32>(STACKVAR(-20, 4));
-    STACKVAR(-44, 4) = 0x00000062 * (reinterpret_cast<int>(STACKVAR(-16, 4)) - reinterpret_cast<int>(STACKVAR(-40, 4))) >> 8;
-    STACKVAR(-12, 4) = (0x0000008B * reinterpret_cast<int>(STACKVAR(-16, 4)) >> 8) + reinterpret_cast<any_int32>(STACKVAR(-44, 4));
-    STACKVAR(-36, 4) = (0x0000014E * reinterpret_cast<int>(STACKVAR(-40, 4)) >> 8) + reinterpret_cast<any_int32>(STACKVAR(-44, 4));
-    STACKVAR(-24, 4) = 0x000000B5 * reinterpret_cast<int>(STACKVAR(-28, 4)) >> 8;
-    STACKVAR(-32, 4) = reinterpret_cast<any_int32>(STACKVAR(-20, 4)) + reinterpret_cast<any_int32>(STACKVAR(-24, 4));
-    STACKVAR(-52, 4) = reinterpret_cast<any_int32>(STACKVAR(-20, 4)) - reinterpret_cast<any_int32>(STACKVAR(-24, 4));
-    ACCESS(STACKVAR(-76, 4), 20, 4) = reinterpret_cast<any_int32>(STACKVAR(-52, 4)) + reinterpret_cast<any_int32>(STACKVAR(-12, 4));
-    ACCESS(STACKVAR(-76, 4), 12, 4) = reinterpret_cast<any_int32>(STACKVAR(-52, 4)) - reinterpret_cast<any_int32>(STACKVAR(-12, 4));
-    ACCESS(STACKVAR(-76, 4), 4, 4) = reinterpret_cast<any_int32>(STACKVAR(-32, 4)) + reinterpret_cast<any_int32>(STACKVAR(-36, 4));
-    ACCESS(STACKVAR(-76, 4), 28, 4) = reinterpret_cast<any_int32>(STACKVAR(-32, 4)) - reinterpret_cast<any_int32>(STACKVAR(-36, 4));
-    STACKVAR(-76, 4) = reinterpret_cast<any_int32>(STACKVAR(-76, 4)) + 0x00000020;
+    STACKVAR(-76, 4) = STACKVAR(8, 4);
+    STACKVAR(-56, 4) = 0x00000007;
+    goto l1001FED8;
+l1001FECF:
+    STACKVAR(-56, 4) = reinterpret_cast<any_int32>(STACKVAR(-56, 4)) - 0x00000001;
+l1001FED8:
+    if (reinterpret_cast<int>(STACKVAR(-56, 4)) >= 0)
+    {
+        STACKVAR(-60, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-76, 4), 0, 4)) + reinterpret_cast<any_int32>(ACCESS(STACKVAR(-76, 4), 224, 4));
+        STACKVAR(-20, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-76, 4), 0, 4)) - reinterpret_cast<any_int32>(ACCESS(STACKVAR(-76, 4), 224, 4));
+        STACKVAR(-64, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-76, 4), 32, 4)) + reinterpret_cast<any_int32>(ACCESS(STACKVAR(-76, 4), 192, 4));
+        STACKVAR(-8, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-76, 4), 32, 4)) - reinterpret_cast<any_int32>(ACCESS(STACKVAR(-76, 4), 192, 4));
+        STACKVAR(-68, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-76, 4), 64, 4)) + reinterpret_cast<any_int32>(ACCESS(STACKVAR(-76, 4), 160, 4));
+        STACKVAR(-84, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-76, 4), 64, 4)) - reinterpret_cast<any_int32>(ACCESS(STACKVAR(-76, 4), 160, 4));
+        STACKVAR(-72, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-76, 4), 96, 4)) + reinterpret_cast<any_int32>(ACCESS(STACKVAR(-76, 4), 128, 4));
+        STACKVAR(-80, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-76, 4), 96, 4)) - reinterpret_cast<any_int32>(ACCESS(STACKVAR(-76, 4), 128, 4));
+        STACKVAR(-16, 4) = reinterpret_cast<any_int32>(STACKVAR(-60, 4)) + reinterpret_cast<any_int32>(STACKVAR(-72, 4));
+        STACKVAR(-48, 4) = reinterpret_cast<any_int32>(STACKVAR(-60, 4)) - reinterpret_cast<any_int32>(STACKVAR(-72, 4));
+        STACKVAR(-28, 4) = reinterpret_cast<any_int32>(STACKVAR(-64, 4)) + reinterpret_cast<any_int32>(STACKVAR(-68, 4));
+        STACKVAR(-40, 4) = reinterpret_cast<any_int32>(STACKVAR(-64, 4)) - reinterpret_cast<any_int32>(STACKVAR(-68, 4));
+        ACCESS(STACKVAR(-76, 4), 0, 4) = reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + reinterpret_cast<any_int32>(STACKVAR(-28, 4));
+        ACCESS(STACKVAR(-76, 4), 128, 4) = reinterpret_cast<any_int32>(STACKVAR(-16, 4)) - reinterpret_cast<any_int32>(STACKVAR(-28, 4));
+        STACKVAR(-4, 4) = 181 * (reinterpret_cast<int>(STACKVAR(-40, 4)) + reinterpret_cast<int>(STACKVAR(-48, 4))) >> 8;
+        ACCESS(STACKVAR(-76, 4), 64, 4) = reinterpret_cast<any_int32>(STACKVAR(-48, 4)) + reinterpret_cast<any_int32>(STACKVAR(-4, 4));
+        ACCESS(STACKVAR(-76, 4), 192, 4) = reinterpret_cast<any_int32>(STACKVAR(-48, 4)) - reinterpret_cast<any_int32>(STACKVAR(-4, 4));
+        STACKVAR(-16, 4) = reinterpret_cast<any_int32>(STACKVAR(-80, 4)) + reinterpret_cast<any_int32>(STACKVAR(-84, 4));
+        STACKVAR(-28, 4) = reinterpret_cast<any_int32>(STACKVAR(-84, 4)) + reinterpret_cast<any_int32>(STACKVAR(-8, 4));
+        STACKVAR(-40, 4) = reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + reinterpret_cast<any_int32>(STACKVAR(-20, 4));
+        STACKVAR(-44, 4) = 98 * (reinterpret_cast<int>(STACKVAR(-16, 4)) - reinterpret_cast<int>(STACKVAR(-40, 4))) >> 8;
+        STACKVAR(-12, 4) = (139 * reinterpret_cast<int>(STACKVAR(-16, 4)) >> 8) + reinterpret_cast<any_int32>(STACKVAR(-44, 4));
+        STACKVAR(-36, 4) = (334 * reinterpret_cast<int>(STACKVAR(-40, 4)) >> 8) + reinterpret_cast<any_int32>(STACKVAR(-44, 4));
+        STACKVAR(-24, 4) = 181 * reinterpret_cast<int>(STACKVAR(-28, 4)) >> 8;
+        STACKVAR(-32, 4) = reinterpret_cast<any_int32>(STACKVAR(-20, 4)) + reinterpret_cast<any_int32>(STACKVAR(-24, 4));
+        STACKVAR(-52, 4) = reinterpret_cast<any_int32>(STACKVAR(-20, 4)) - reinterpret_cast<any_int32>(STACKVAR(-24, 4));
+        ACCESS(STACKVAR(-76, 4), 160, 4) = reinterpret_cast<any_int32>(STACKVAR(-52, 4)) + reinterpret_cast<any_int32>(STACKVAR(-12, 4));
+        ACCESS(STACKVAR(-76, 4), 96, 4) = reinterpret_cast<any_int32>(STACKVAR(-52, 4)) - reinterpret_cast<any_int32>(STACKVAR(-12, 4));
+        ACCESS(STACKVAR(-76, 4), 32, 4) = reinterpret_cast<any_int32>(STACKVAR(-32, 4)) + reinterpret_cast<any_int32>(STACKVAR(-36, 4));
+        ACCESS(STACKVAR(-76, 4), 224, 4) = reinterpret_cast<any_int32>(STACKVAR(-32, 4)) - reinterpret_cast<any_int32>(STACKVAR(-36, 4));
+        STACKVAR(-76, 4) = reinterpret_cast<any_int32>(STACKVAR(-76, 4)) + 0x00000004;
+        goto l1001FECF;
+    }
 }
-Failed to find pattern for 'jmp near ptr l1001FD25'
 
 // address: 0x100200A0
 p100200A0
@@ -7430,8 +8783,60 @@ p10024094
     {
         goto l10024161;
     }
+    goto l100241CC;
+l100240E2:
+    if (ACCESS(STACKVAR(8, 4), 100, 4) != 0x00000003)
+    {
+        goto l100240F7;
+    }
+    ACCESS(STACKVAR(-12, 4), 4, 4) = GLOBAL(0x10024436);
+    goto l10024101;
+l100240F7:
+    ACCESS(STACKVAR(-12, 4), 4, 4) = GLOBAL(0x10024357);
+l10024101:
+    goto l100241E6;
+l10024106:
+    if (ACCESS(STACKVAR(8, 4), 100, 4) != 0x00000003)
+    {
+        goto l1002411B;
+    }
+    ACCESS(STACKVAR(-12, 4), 4, 4) = GLOBAL(0x10024677);
+    goto l10024125;
+l1002411B:
+    ACCESS(STACKVAR(-12, 4), 4, 4) = GLOBAL(0x10024538);
+l10024125:
+    ACCESS(STACKVAR(-12, 4), 48, 4) = 0x00000000;
+    if (static_cast<unsigned int>(ACCESS(STACKVAR(-12, 4), 28, 1)) != 0x00000000)
+    {
+        goto l10024147;
+    }
+    unknown_function_10023E6E(STACKVAR(8, 4));
+l10024147:
+    if (ACCESS(STACKVAR(-12, 4), 52, 4) != 0x00000000)
+    {
+        goto l1002415C;
+    }
+    unknown_function_100241EA(STACKVAR(8, 4));
+l1002415C:
+    goto l100241E6;
+l10024161:
+    ACCESS(STACKVAR(-12, 4), 4, 4) = GLOBAL(0x100247FF);
+    ACCESS(STACKVAR(-12, 4), 84, 1) = 0;
+    if (ACCESS(STACKVAR(-12, 4), 68, 4) != 0x00000000)
+    {
+        goto l10024187;
+    }
+    unknown_function_10024032(STACKVAR(8, 4));
+l10024187:
+    STACKVAR(-4, 4) = 2 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 92, 4)) + 4;
+    STACKVAR(-8, 4) = 0x00000000;
+    goto l100241A6;
+l1002419D:
+    STACKVAR(-8, 4) = reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + 0x00000001;
+l100241A6:
+    REGDEF(cmpl=STACKVAR(-8, 4), cmpr=ACCESS(STACKVAR(8, 4), 100, 4))
 }
-Failed to find pattern for 'jmp near ptr l100241CC'
+Failed to find pattern for 'jnl l100241CA'
 
 // address: 0x100241EA
 p100241EA
@@ -7627,8 +9032,22 @@ l10024D66:
     ACCESS(STACKVAR(-12, 4), 4, 4) = GLOBAL(0x10024ED3);
     ACCESS(STACKVAR(-12, 4), 8, 4) = GLOBAL(0x10025E00);
     ACCESS(STACKVAR(-12, 4), 28, 1) = 0x01;
+    goto l10024E8B;
+l10024D92:
+    if (ACCESS(STACKVAR(8, 4), 76, 4) != 0x00000002)
+    {
+        goto l10024DA7;
+    }
+    ACCESS(STACKVAR(-12, 4), 4, 4) = GLOBAL(0x10025A2F);
+    goto l10024DB1;
+l10024DA7:
+    ACCESS(STACKVAR(-12, 4), 4, 4) = GLOBAL(0x10024FA9);
+l10024DB1:
+    ACCESS(STACKVAR(-12, 4), 8, 4) = GLOBAL(0x10026874);
+    STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 112, 4);
+    REGDEF(cmpl=STACKVAR(-4, 4), cmpr=0x00000001)
 }
-Failed to find pattern for 'jmp near ptr l10024E8B'
+Failed to find pattern for 'jnl l10024DF0'
 
 // address: 0x10024ED3
 p10024ED3
@@ -8071,36 +9490,74 @@ p10027D86
 // address: 0x10027E11
 p10027E11
 {
-    ProcedureInfo(this=Id(this), this_offset=-44, local_size=44, stack_delta=None)
-    LOCAL(-8)->unknown_method_10003337(STACKVAR(8, 4));
-    LOCAL(-8)->unknown_method_10003821(LOCAL(-16), 0x00000004);
-    if (LOCAL(-16)->unknown_method_10003769(GLOBAL(0x100487F4)) == 0x00000000)
+    ProcedureInfo(this=Id(this), this_offset=-44, local_size=44, stack_delta=4)
+    reinterpret_cast<B_Name *>(LOCAL(-8))->B_Name(reinterpret_cast<char *>(STACKVAR(8, 4)));
+    *reinterpret_cast<B_Name *>(LOCAL(-16)) = reinterpret_cast<B_Name *>(LOCAL(-8))->Right(4);
+    if (reinterpret_cast<B_Name *>(LOCAL(-16))->CompareNoCase(reinterpret_cast<char *>(GLOBAL(0x100487F4))) != 0)
     {
-        goto l10027E6C;
+        STACKVAR(-20, 4) = this->unknown_method_10027D86(STACKVAR(8, 4));
+        reinterpret_cast<B_Name *>(LOCAL(-16))->~B_Name();
+        reinterpret_cast<B_Name *>(LOCAL(-8))->~B_Name();
+        REGDEF(eax=STACKVAR(-20, 4))
+        return;
     }
-    STACKVAR(-20, 4) = STACKVAR(-44, 4)->unknown_method_10027D86(STACKVAR(8, 4));
-    LOCAL(-16)->unknown_method_100039BA();
-    LOCAL(-8)->unknown_method_100039BA();
-    REGDEF(eax=STACKVAR(-20, 4))
+    if (reinterpret_cast<B_Name *>(LOCAL(-16))->CompareNoCase(reinterpret_cast<char *>(GLOBAL(0x100487FC))) != 0)
+    {
+        STACKVAR(-24, 4) = this->unknown_method_10029510(STACKVAR(8, 4));
+        reinterpret_cast<B_Name *>(LOCAL(-16))->~B_Name();
+        reinterpret_cast<B_Name *>(LOCAL(-8))->~B_Name();
+        REGDEF(eax=STACKVAR(-24, 4))
+        return;
+    }
+    *reinterpret_cast<B_Name *>(LOCAL(-16)) = *reinterpret_cast<B_Name *>(LOCAL(-32)) = reinterpret_cast<B_Name *>(LOCAL(-8))->Right(5);
+    reinterpret_cast<B_Name *>(LOCAL(-32))->~B_Name();
+    if (reinterpret_cast<B_Name *>(LOCAL(-16))->CompareNoCase(reinterpret_cast<char *>(GLOBAL(0x10048804))) != 0)
+    {
+        STACKVAR(-36, 4) = this->unknown_method_10029510(STACKVAR(8, 4));
+        reinterpret_cast<B_Name *>(LOCAL(-16))->~B_Name();
+        reinterpret_cast<B_Name *>(LOCAL(-8))->~B_Name();
+        REGDEF(eax=STACKVAR(-36, 4))
+        return;
+    }
+    STACKVAR(-40, 4) = 0x00000000;
+    reinterpret_cast<B_Name *>(LOCAL(-16))->~B_Name();
+    reinterpret_cast<B_Name *>(LOCAL(-8))->~B_Name();
+    REGDEF(eax=STACKVAR(-40, 4))
 }
-Failed to find pattern for 'jmp near ptr l10027F0F'
 
 // address: 0x10027F15
 int B_BitMap24::SaveToFile(const char *arg_1, int arg_2)
 {
-    ProcedureInfo(this=Id(this), this_offset=-44, local_size=44, stack_delta=None)
-    LOCAL(-8)->unknown_method_10003337(STACKVAR(8, 4));
-    LOCAL(-8)->unknown_method_10003821(LOCAL(-16), 0x00000004);
-    if (LOCAL(-16)->unknown_method_10003769(GLOBAL(0x1004880C)) == 0x00000000)
+    reinterpret_cast<B_Name *>(LOCAL(-8))->B_Name(arg_1);
+    *reinterpret_cast<B_Name *>(LOCAL(-16)) = reinterpret_cast<B_Name *>(LOCAL(-8))->Right(4);
+    if (reinterpret_cast<B_Name *>(LOCAL(-16))->CompareNoCase(reinterpret_cast<char *>(GLOBAL(0x1004880C))) != 0)
     {
-        goto l10027F70;
+        STACKVAR(-20, 4) = this->SaveToBMP(arg_1);
+        reinterpret_cast<B_Name *>(LOCAL(-16))->~B_Name();
+        reinterpret_cast<B_Name *>(LOCAL(-8))->~B_Name();
+        return reinterpret_cast<int>(STACKVAR(-20, 4));
     }
-    STACKVAR(-20, 4) = STACKVAR(-44, 4)->unknown_method_10027382(STACKVAR(8, 4));
-    LOCAL(-16)->unknown_method_100039BA();
-    LOCAL(-8)->unknown_method_100039BA();
-    REGDEF(eax=STACKVAR(-20, 4))
+    if (reinterpret_cast<B_Name *>(LOCAL(-16))->CompareNoCase(reinterpret_cast<char *>(GLOBAL(0x10048814))) != 0)
+    {
+        STACKVAR(-24, 4) = this->SaveToJPEG(arg_1, arg_2);
+        reinterpret_cast<B_Name *>(LOCAL(-16))->~B_Name();
+        reinterpret_cast<B_Name *>(LOCAL(-8))->~B_Name();
+        return reinterpret_cast<int>(STACKVAR(-24, 4));
+    }
+    *reinterpret_cast<B_Name *>(LOCAL(-16)) = *reinterpret_cast<B_Name *>(LOCAL(-32)) = reinterpret_cast<B_Name *>(LOCAL(-8))->Right(5);
+    reinterpret_cast<B_Name *>(LOCAL(-32))->~B_Name();
+    if (reinterpret_cast<B_Name *>(LOCAL(-16))->CompareNoCase(reinterpret_cast<char *>(GLOBAL(0x1004881C))) != 0)
+    {
+        STACKVAR(-36, 4) = this->SaveToJPEG(arg_1, arg_2);
+        reinterpret_cast<B_Name *>(LOCAL(-16))->~B_Name();
+        reinterpret_cast<B_Name *>(LOCAL(-8))->~B_Name();
+        return reinterpret_cast<int>(STACKVAR(-36, 4));
+    }
+    STACKVAR(-40, 4) = 0x00000000;
+    reinterpret_cast<B_Name *>(LOCAL(-16))->~B_Name();
+    reinterpret_cast<B_Name *>(LOCAL(-8))->~B_Name();
+    return reinterpret_cast<int>(STACKVAR(-40, 4));
 }
-Failed to find pattern for 'jmp near ptr l1002801B'
 
 // address: 0x10028021
 B_IDataFile &operator >>(B_IDataFile &file, B_BitMap24 &bitMap)
@@ -8195,8 +9652,20 @@ p100284C0
     {
         goto l100284F6;
     }
+    goto l10028581;
+l100284F6:
+    if (STACKVAR(-20, 4) == 0x00000000)
+    {
+        goto l1002854E;
+    }
+    STACKVAR(-4, 4) = 0x00000000;
+    goto l1002850E;
+l10028505:
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000001;
+l1002850E:
+    REGDEF(cmpl=STACKVAR(-4, 4), cmpr=ACCESS(STACKVAR(-24, 4), 8, 4))
 }
-Failed to find pattern for 'jmp near ptr l10028581'
+Failed to find pattern for 'jnb l1002854E'
 
 // address: 0x100285A0
 p100285A0
@@ -8263,8 +9732,11 @@ p10029217
         goto l10029272;
     }
     REGDEF(eax=0x000003E8)
+    goto l10029506;
+l10029272:
+    unknown_function_100285F5(STACKVAR(8, 4), LOCAL(-88));
 }
-Failed to find pattern for 'jmp near ptr l10029506'
+Failed to find pattern for 'movsx ecx, word ptr [ebp-04Ch]'
 
 // address: 0x10029510
 p10029510
@@ -8279,8 +9751,34 @@ p10029510
     }
     unknown_function_1002A2C3(GLOBAL(0x1004A53C), unknown_function_10029BE0(GLOBAL(0x1004882C), STACKVAR(8, 4)));
     REGDEF(eax=0x00000000)
+    goto l100296FA;
+l10029591:
+    unknown_function_100143E0(LOCAL(-428), STACKVAR(-432, 4));
+    unknown_function_10013624(LOCAL(-428), 0x00000001);
+    if (STACKVAR(-392, 4) == 0x00000003)
+    {
+        goto l100295DA;
+    }
+    unknown_function_1002A2C3(GLOBAL(0x1004A53C), GLOBAL(0x10048848));
+    REGDEF(eax=0x00000000)
+    goto l100296FA;
+l100295DA:
+    if (ACCESS(STACKVAR(-580, 4), 4, 4) != STACKVAR(-400, 4))
+    {
+        goto l100295FC;
+    }
+    if (ACCESS(STACKVAR(-580, 4), 8, 4) == STACKVAR(-396, 4))
+    {
+        goto l1002966C;
+    }
+l100295FC:
+    STACKVAR(-572, 4) = ACCESS(STACKVAR(-580, 4), 12, 4);
+    ??3@YAXPAX@Z(STACKVAR(-572, 4));
+    ACCESS(STACKVAR(-580, 4), 4, 4) = STACKVAR(-400, 4);
+    ACCESS(STACKVAR(-580, 4), 8, 4) = STACKVAR(-396, 4);
+    REGDEF(ecx=STACKVAR(-580, 4), edx=ACCESS(STACKVAR(-580, 4), 4, 4))
 }
-Failed to find pattern for 'jmp near ptr l100296FA'
+Failed to find pattern for 'imul edx, dword ptr [ecx+008h]'
 
 // address: 0x10029700
 int B_BitMap24::SaveToJPEG(const char *arg_1, int arg_2)
@@ -8295,8 +9793,21 @@ int B_BitMap24::SaveToJPEG(const char *arg_1, int arg_2)
     }
     unknown_function_1002A2C3(GLOBAL(0x1004A53C), unknown_function_10029BE0(GLOBAL(0x10048874), STACKVAR(8, 4)));
     REGDEF(eax=0x00000000)
+    goto l1002989B;
+l10029781:
+    unknown_function_10014240(LOCAL(-356), STACKVAR(-368, 4));
+    STACKVAR(-328, 4) = ACCESS(STACKVAR(-508, 4), 4, 4);
+    STACKVAR(-324, 4) = ACCESS(STACKVAR(-508, 4), 8, 4);
+    STACKVAR(-320, 4) = 0x00000003;
+    STACKVAR(-316, 4) = 0x00000002;
+    unknown_function_1000F895(LOCAL(-356));
+    unknown_function_1000F86D(LOCAL(-356), STACKVAR(12, 4), 0x00000001);
+    unknown_function_10009C20(LOCAL(-356), 0x00000001);
+    STACKVAR(-360, 4) = 0x00000003 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-508, 4), 4, 4));
+l10029810:
+    REGDEF(cmpl=STACKVAR(-152, 4), cmpr=STACKVAR(-324, 4))
 }
-Failed to find pattern for 'jmp near ptr l1002989B'
+Failed to find pattern for 'jnb l10029868'
 
 // address: 0x100298B0
 p100298B0
@@ -8649,8 +10160,20 @@ p1002A2F0
     {
         goto l1002A326;
     }
+    goto l1002A3B1;
+l1002A326:
+    if (STACKVAR(-20, 4) == 0x00000000)
+    {
+        goto l1002A37E;
+    }
+    STACKVAR(-4, 4) = 0x00000000;
+    goto l1002A33E;
+l1002A335:
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000001;
+l1002A33E:
+    REGDEF(cmpl=STACKVAR(-4, 4), cmpr=ACCESS(STACKVAR(-24, 4), 8, 4))
 }
-Failed to find pattern for 'jmp near ptr l1002A3B1'
+Failed to find pattern for 'jnb l1002A37E'
 
 // address: 0x1002A3D0
 p1002A3D0
@@ -8666,8 +10189,20 @@ p1002A3D0
     {
         goto l1002A406;
     }
+    goto l1002A491;
+l1002A406:
+    if (STACKVAR(-20, 4) == 0x00000000)
+    {
+        goto l1002A45E;
+    }
+    STACKVAR(-4, 4) = 0x00000000;
+    goto l1002A41E;
+l1002A415:
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000001;
+l1002A41E:
+    REGDEF(cmpl=STACKVAR(-4, 4), cmpr=ACCESS(STACKVAR(-24, 4), 8, 4))
 }
-Failed to find pattern for 'jmp near ptr l1002A491'
+Failed to find pattern for 'jnb l1002A45E'
 
 // address: 0x1002A4B0
 p1002A4B0
@@ -8683,8 +10218,20 @@ p1002A4B0
     {
         goto l1002A4E6;
     }
+    goto l1002A571;
+l1002A4E6:
+    if (STACKVAR(-20, 4) == 0x00000000)
+    {
+        goto l1002A53E;
+    }
+    STACKVAR(-4, 4) = 0x00000000;
+    goto l1002A4FE;
+l1002A4F5:
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000001;
+l1002A4FE:
+    REGDEF(cmpl=STACKVAR(-4, 4), cmpr=ACCESS(STACKVAR(-24, 4), 8, 4))
 }
-Failed to find pattern for 'jmp near ptr l1002A571'
+Failed to find pattern for 'jnb l1002A53E'
 
 // address: 0x1002A590
 void OutputWin32Error(const char *message)
@@ -10514,8 +12061,20 @@ p10039F60
     {
         goto l10039F77;
     }
+    goto l1003A002;
+l10039F77:
+    if (STACKVAR(8, 4) == 0x00000000)
+    {
+        goto l10039FCF;
+    }
+    STACKVAR(-4, 4) = 0x00000000;
+    goto l10039F8F;
+l10039F86:
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000001;
+l10039F8F:
+    REGDEF(cmpl=STACKVAR(-4, 4), cmpr=ACCESS(STACKVAR(-20, 4), 8, 4))
 }
-Failed to find pattern for 'jmp near ptr l1003A002'
+Failed to find pattern for 'jnb l10039FCF'
 
 // address: 0x1003A010
 p1003A010
@@ -10744,8 +12303,20 @@ p1003A800
     {
         goto l1003A836;
     }
+    goto l1003A8C1;
+l1003A836:
+    if (STACKVAR(-20, 4) == 0x00000000)
+    {
+        goto l1003A88E;
+    }
+    STACKVAR(-4, 4) = 0x00000000;
+    goto l1003A84E;
+l1003A845:
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000001;
+l1003A84E:
+    REGDEF(cmpl=STACKVAR(-4, 4), cmpr=ACCESS(STACKVAR(-24, 4), 8, 4))
 }
-Failed to find pattern for 'jmp near ptr l1003A8C1'
+Failed to find pattern for 'jnb l1003A88E'
 
 // address: 0x1003A8E0
 p1003A8E0
@@ -10761,8 +12332,20 @@ p1003A8E0
     {
         goto l1003A916;
     }
+    goto l1003A9A1;
+l1003A916:
+    if (STACKVAR(-20, 4) == 0x00000000)
+    {
+        goto l1003A96E;
+    }
+    STACKVAR(-4, 4) = 0x00000000;
+    goto l1003A92E;
+l1003A925:
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000001;
+l1003A92E:
+    REGDEF(cmpl=STACKVAR(-4, 4), cmpr=ACCESS(STACKVAR(-24, 4), 8, 4))
 }
-Failed to find pattern for 'jmp near ptr l1003A9A1'
+Failed to find pattern for 'jnb l1003A96E'
 
 // address: 0x1003A9C0
 p1003A9C0
@@ -10824,8 +12407,20 @@ p1003AAC0
     {
         goto l1003AAF6;
     }
+    goto l1003AB81;
+l1003AAF6:
+    if (STACKVAR(-20, 4) == 0x00000000)
+    {
+        goto l1003AB4E;
+    }
+    STACKVAR(-4, 4) = 0x00000000;
+    goto l1003AB0E;
+l1003AB05:
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000001;
+l1003AB0E:
+    REGDEF(cmpl=STACKVAR(-4, 4), cmpr=ACCESS(STACKVAR(-24, 4), 8, 4))
 }
-Failed to find pattern for 'jmp near ptr l1003AB81'
+Failed to find pattern for 'jnb l1003AB4E'
 
 // address: 0x1003ABA0
 p1003ABA0
@@ -10841,8 +12436,20 @@ p1003ABA0
     {
         goto l1003ABD6;
     }
+    goto l1003AC61;
+l1003ABD6:
+    if (STACKVAR(-20, 4) == 0x00000000)
+    {
+        goto l1003AC2E;
+    }
+    STACKVAR(-4, 4) = 0x00000000;
+    goto l1003ABEE;
+l1003ABE5:
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000001;
+l1003ABEE:
+    REGDEF(cmpl=STACKVAR(-4, 4), cmpr=ACCESS(STACKVAR(-24, 4), 8, 4))
 }
-Failed to find pattern for 'jmp near ptr l1003AC61'
+Failed to find pattern for 'jnb l1003AC2E'
 
 // address: 0x1003AC80
 p1003AC80
@@ -10881,8 +12488,20 @@ p1003AD00
     {
         goto l1003AD36;
     }
+    goto l1003ADC1;
+l1003AD36:
+    if (STACKVAR(-20, 4) == 0x00000000)
+    {
+        goto l1003AD8E;
+    }
+    STACKVAR(-4, 4) = 0x00000000;
+    goto l1003AD4E;
+l1003AD45:
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000001;
+l1003AD4E:
+    REGDEF(cmpl=STACKVAR(-4, 4), cmpr=ACCESS(STACKVAR(-24, 4), 8, 4))
 }
-Failed to find pattern for 'jmp near ptr l1003ADC1'
+Failed to find pattern for 'jnb l1003AD8E'
 
 // address: 0x1003ADE0
 p1003ADE0
@@ -10898,8 +12517,20 @@ p1003ADE0
     {
         goto l1003AE16;
     }
+    goto l1003AEA1;
+l1003AE16:
+    if (STACKVAR(-20, 4) == 0x00000000)
+    {
+        goto l1003AE6E;
+    }
+    STACKVAR(-4, 4) = 0x00000000;
+    goto l1003AE2E;
+l1003AE25:
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000001;
+l1003AE2E:
+    REGDEF(cmpl=STACKVAR(-4, 4), cmpr=ACCESS(STACKVAR(-24, 4), 8, 4))
 }
-Failed to find pattern for 'jmp near ptr l1003AEA1'
+Failed to find pattern for 'jnb l1003AE6E'
 
 // address: 0x1003AEC0
 p1003AEC0
@@ -10915,8 +12546,20 @@ p1003AEC0
     {
         goto l1003AEF6;
     }
+    goto l1003B045;
+l1003AEF6:
+    if (STACKVAR(-40, 4) == 0x00000000)
+    {
+        goto l1003B012;
+    }
+    STACKVAR(-4, 4) = 0x00000000;
+    goto l1003AF12;
+l1003AF09:
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000001;
+l1003AF12:
+    REGDEF(cmpl=STACKVAR(-4, 4), cmpr=ACCESS(STACKVAR(-44, 4), 8, 4))
 }
-Failed to find pattern for 'jmp near ptr l1003B045'
+Failed to find pattern for 'jnb l1003B012'
 
 // address: 0x1003B070
 p1003B070
@@ -10961,8 +12604,20 @@ p1003B140
     {
         goto l1003B176;
     }
+    goto l1003B2C5;
+l1003B176:
+    if (STACKVAR(-40, 4) == 0x00000000)
+    {
+        goto l1003B292;
+    }
+    STACKVAR(-4, 4) = 0x00000000;
+    goto l1003B192;
+l1003B189:
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000001;
+l1003B192:
+    REGDEF(cmpl=STACKVAR(-4, 4), cmpr=ACCESS(STACKVAR(-44, 4), 8, 4))
 }
-Failed to find pattern for 'jmp near ptr l1003B2C5'
+Failed to find pattern for 'jnb l1003B292'
 
 // address: 0x1003B2F0
 p1003B2F0
@@ -10978,8 +12633,20 @@ p1003B2F0
     {
         goto l1003B326;
     }
+    goto l1003B3B1;
+l1003B326:
+    if (STACKVAR(-20, 4) == 0x00000000)
+    {
+        goto l1003B37E;
+    }
+    STACKVAR(-4, 4) = 0x00000000;
+    goto l1003B33E;
+l1003B335:
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000001;
+l1003B33E:
+    REGDEF(cmpl=STACKVAR(-4, 4), cmpr=ACCESS(STACKVAR(-24, 4), 8, 4))
 }
-Failed to find pattern for 'jmp near ptr l1003B3B1'
+Failed to find pattern for 'jnb l1003B37E'
 
 // address: 0x1003B3D0
 p1003B3D0
@@ -10995,8 +12662,20 @@ p1003B3D0
     {
         goto l1003B406;
     }
+    goto l1003B491;
+l1003B406:
+    if (STACKVAR(-20, 4) == 0x00000000)
+    {
+        goto l1003B45E;
+    }
+    STACKVAR(-4, 4) = 0x00000000;
+    goto l1003B41E;
+l1003B415:
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000001;
+l1003B41E:
+    REGDEF(cmpl=STACKVAR(-4, 4), cmpr=ACCESS(STACKVAR(-24, 4), 8, 4))
 }
-Failed to find pattern for 'jmp near ptr l1003B491'
+Failed to find pattern for 'jnb l1003B45E'
 
 // address: 0x1003B4B0
 p1003B4B0
@@ -11012,8 +12691,20 @@ p1003B4B0
     {
         goto l1003B4E6;
     }
+    goto l1003B571;
+l1003B4E6:
+    if (STACKVAR(-20, 4) == 0x00000000)
+    {
+        goto l1003B53E;
+    }
+    STACKVAR(-4, 4) = 0x00000000;
+    goto l1003B4FE;
+l1003B4F5:
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000001;
+l1003B4FE:
+    REGDEF(cmpl=STACKVAR(-4, 4), cmpr=ACCESS(STACKVAR(-24, 4), 8, 4))
 }
-Failed to find pattern for 'jmp near ptr l1003B571'
+Failed to find pattern for 'jnb l1003B53E'
 
 // address: 0x1003B590
 p1003B590
@@ -11029,8 +12720,20 @@ p1003B590
     {
         goto l1003B5C6;
     }
+    goto l1003B651;
+l1003B5C6:
+    if (STACKVAR(-20, 4) == 0x00000000)
+    {
+        goto l1003B61E;
+    }
+    STACKVAR(-4, 4) = 0x00000000;
+    goto l1003B5DE;
+l1003B5D5:
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000001;
+l1003B5DE:
+    REGDEF(cmpl=STACKVAR(-4, 4), cmpr=ACCESS(STACKVAR(-24, 4), 8, 4))
 }
-Failed to find pattern for 'jmp near ptr l1003B651'
+Failed to find pattern for 'jnb l1003B61E'
 
 // address: 0x1003B670
 p1003B670
@@ -11224,8 +12927,20 @@ p1003BA80
     {
         goto l1003BA97;
     }
+    goto l1003BB22;
+l1003BA97:
+    if (STACKVAR(8, 4) == 0x00000000)
+    {
+        goto l1003BAEF;
+    }
+    STACKVAR(-4, 4) = 0x00000000;
+    goto l1003BAAF;
+l1003BAA6:
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000001;
+l1003BAAF:
+    REGDEF(cmpl=STACKVAR(-4, 4), cmpr=ACCESS(STACKVAR(-20, 4), 8, 4))
 }
-Failed to find pattern for 'jmp near ptr l1003BB22'
+Failed to find pattern for 'jnb l1003BAEF'
 
 // address: 0x1003BB30
 p1003BB30
@@ -11265,8 +12980,20 @@ p1003BBE0
     {
         goto l1003BBF7;
     }
+    goto l1003BC82;
+l1003BBF7:
+    if (STACKVAR(8, 4) == 0x00000000)
+    {
+        goto l1003BC4F;
+    }
+    STACKVAR(-4, 4) = 0x00000000;
+    goto l1003BC0F;
+l1003BC06:
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000001;
+l1003BC0F:
+    REGDEF(cmpl=STACKVAR(-4, 4), cmpr=ACCESS(STACKVAR(-20, 4), 8, 4))
 }
-Failed to find pattern for 'jmp near ptr l1003BC82'
+Failed to find pattern for 'jnb l1003BC4F'
 
 // address: 0x1003BC90
 p1003BC90
@@ -11289,8 +13016,20 @@ p1003BCE0
     {
         goto l1003BCF7;
     }
+    goto l1003BE46;
+l1003BCF7:
+    if (STACKVAR(8, 4) == 0x00000000)
+    {
+        goto l1003BE13;
+    }
+    STACKVAR(-4, 4) = 0x00000000;
+    goto l1003BD13;
+l1003BD0A:
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000001;
+l1003BD13:
+    REGDEF(cmpl=STACKVAR(-4, 4), cmpr=ACCESS(STACKVAR(-40, 4), 8, 4))
 }
-Failed to find pattern for 'jmp near ptr l1003BE46'
+Failed to find pattern for 'jnb l1003BE13'
 
 // address: 0x1003BE50
 p1003BE50
@@ -11315,8 +13054,20 @@ p1003BEB0
     {
         goto l1003BEC7;
     }
+    goto l1003BF52;
+l1003BEC7:
+    if (STACKVAR(8, 4) == 0x00000000)
+    {
+        goto l1003BF1F;
+    }
+    STACKVAR(-4, 4) = 0x00000000;
+    goto l1003BEDF;
+l1003BED6:
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000001;
+l1003BEDF:
+    REGDEF(cmpl=STACKVAR(-4, 4), cmpr=ACCESS(STACKVAR(-20, 4), 8, 4))
 }
-Failed to find pattern for 'jmp near ptr l1003BF52'
+Failed to find pattern for 'jnb l1003BF1F'
 
 // address: 0x1003BF60
 p1003BF60
@@ -11341,8 +13092,20 @@ p1003BFC0
     {
         goto l1003BFD7;
     }
+    goto l1003C062;
+l1003BFD7:
+    if (STACKVAR(8, 4) == 0x00000000)
+    {
+        goto l1003C02F;
+    }
+    STACKVAR(-4, 4) = 0x00000000;
+    goto l1003BFEF;
+l1003BFE6:
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000001;
+l1003BFEF:
+    REGDEF(cmpl=STACKVAR(-4, 4), cmpr=ACCESS(STACKVAR(-20, 4), 8, 4))
 }
-Failed to find pattern for 'jmp near ptr l1003C062'
+Failed to find pattern for 'jnb l1003C02F'
 
 // address: 0x1003C070
 p1003C070
@@ -11358,8 +13121,20 @@ p1003C070
     {
         goto l1003C0A6;
     }
+    goto l1003C131;
+l1003C0A6:
+    if (STACKVAR(-20, 4) == 0x00000000)
+    {
+        goto l1003C0FE;
+    }
+    STACKVAR(-4, 4) = 0x00000000;
+    goto l1003C0BE;
+l1003C0B5:
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000001;
+l1003C0BE:
+    REGDEF(cmpl=STACKVAR(-4, 4), cmpr=ACCESS(STACKVAR(-24, 4), 8, 4))
 }
-Failed to find pattern for 'jmp near ptr l1003C131'
+Failed to find pattern for 'jnb l1003C0FE'
 
 // address: 0x1003C150
 p1003C150
@@ -11375,8 +13150,20 @@ p1003C150
     {
         goto l1003C186;
     }
+    goto l1003C211;
+l1003C186:
+    if (STACKVAR(-20, 4) == 0x00000000)
+    {
+        goto l1003C1DE;
+    }
+    STACKVAR(-4, 4) = 0x00000000;
+    goto l1003C19E;
+l1003C195:
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000001;
+l1003C19E:
+    REGDEF(cmpl=STACKVAR(-4, 4), cmpr=ACCESS(STACKVAR(-24, 4), 8, 4))
 }
-Failed to find pattern for 'jmp near ptr l1003C211'
+Failed to find pattern for 'jnb l1003C1DE'
 
 // address: 0x1003C230
 p1003C230
@@ -11392,8 +13179,20 @@ p1003C230
     {
         goto l1003C266;
     }
+    goto l1003C2F1;
+l1003C266:
+    if (STACKVAR(-20, 4) == 0x00000000)
+    {
+        goto l1003C2BE;
+    }
+    STACKVAR(-4, 4) = 0x00000000;
+    goto l1003C27E;
+l1003C275:
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000001;
+l1003C27E:
+    REGDEF(cmpl=STACKVAR(-4, 4), cmpr=ACCESS(STACKVAR(-24, 4), 8, 4))
 }
-Failed to find pattern for 'jmp near ptr l1003C2F1'
+Failed to find pattern for 'jnb l1003C2BE'
 
 // address: 0x1003C310
 p1003C310
@@ -11409,8 +13208,20 @@ p1003C310
     {
         goto l1003C346;
     }
+    goto l1003C3D1;
+l1003C346:
+    if (STACKVAR(-20, 4) == 0x00000000)
+    {
+        goto l1003C39E;
+    }
+    STACKVAR(-4, 4) = 0x00000000;
+    goto l1003C35E;
+l1003C355:
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000001;
+l1003C35E:
+    REGDEF(cmpl=STACKVAR(-4, 4), cmpr=ACCESS(STACKVAR(-24, 4), 8, 4))
 }
-Failed to find pattern for 'jmp near ptr l1003C3D1'
+Failed to find pattern for 'jnb l1003C39E'
 
 // address: 0x1003C3F0
 p1003C3F0
@@ -11426,8 +13237,20 @@ p1003C3F0
     {
         goto l1003C426;
     }
+    goto l1003C4B1;
+l1003C426:
+    if (STACKVAR(-20, 4) == 0x00000000)
+    {
+        goto l1003C47E;
+    }
+    STACKVAR(-4, 4) = 0x00000000;
+    goto l1003C43E;
+l1003C435:
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000001;
+l1003C43E:
+    REGDEF(cmpl=STACKVAR(-4, 4), cmpr=ACCESS(STACKVAR(-24, 4), 8, 4))
 }
-Failed to find pattern for 'jmp near ptr l1003C4B1'
+Failed to find pattern for 'jnb l1003C47E'
 
 // address: 0x1003C4D0
 p1003C4D0
@@ -11443,8 +13266,20 @@ p1003C4D0
     {
         goto l1003C506;
     }
+    goto l1003C591;
+l1003C506:
+    if (STACKVAR(-20, 4) == 0x00000000)
+    {
+        goto l1003C55E;
+    }
+    STACKVAR(-4, 4) = 0x00000000;
+    goto l1003C51E;
+l1003C515:
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000001;
+l1003C51E:
+    REGDEF(cmpl=STACKVAR(-4, 4), cmpr=ACCESS(STACKVAR(-24, 4), 8, 4))
 }
-Failed to find pattern for 'jmp near ptr l1003C591'
+Failed to find pattern for 'jnb l1003C55E'
 
 // address: 0x1003C5B0
 p1003C5B0
@@ -11460,8 +13295,20 @@ p1003C5B0
     {
         goto l1003C5E6;
     }
+    goto l1003C671;
+l1003C5E6:
+    if (STACKVAR(-20, 4) == 0x00000000)
+    {
+        goto l1003C63E;
+    }
+    STACKVAR(-4, 4) = 0x00000000;
+    goto l1003C5FE;
+l1003C5F5:
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000001;
+l1003C5FE:
+    REGDEF(cmpl=STACKVAR(-4, 4), cmpr=ACCESS(STACKVAR(-24, 4), 8, 4))
 }
-Failed to find pattern for 'jmp near ptr l1003C671'
+Failed to find pattern for 'jnb l1003C63E'
 
 // address: 0x1003C690
 p1003C690
@@ -11477,8 +13324,20 @@ p1003C690
     {
         goto l1003C6C6;
     }
+    goto l1003C751;
+l1003C6C6:
+    if (STACKVAR(-20, 4) == 0x00000000)
+    {
+        goto l1003C71E;
+    }
+    STACKVAR(-4, 4) = 0x00000000;
+    goto l1003C6DE;
+l1003C6D5:
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000001;
+l1003C6DE:
+    REGDEF(cmpl=STACKVAR(-4, 4), cmpr=ACCESS(STACKVAR(-24, 4), 8, 4))
 }
-Failed to find pattern for 'jmp near ptr l1003C751'
+Failed to find pattern for 'jnb l1003C71E'
 
 // address: 0x1003C770
 p1003C770
@@ -11494,8 +13353,20 @@ p1003C770
     {
         goto l1003C7A6;
     }
+    goto l1003C831;
+l1003C7A6:
+    if (STACKVAR(-20, 4) == 0x00000000)
+    {
+        goto l1003C7FE;
+    }
+    STACKVAR(-4, 4) = 0x00000000;
+    goto l1003C7BE;
+l1003C7B5:
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000001;
+l1003C7BE:
+    REGDEF(cmpl=STACKVAR(-4, 4), cmpr=ACCESS(STACKVAR(-24, 4), 8, 4))
 }
-Failed to find pattern for 'jmp near ptr l1003C831'
+Failed to find pattern for 'jnb l1003C7FE'
 
 // address: 0x1003C850
 p1003C850
@@ -11511,8 +13382,20 @@ p1003C850
     {
         goto l1003C886;
     }
+    goto l1003C911;
+l1003C886:
+    if (STACKVAR(-20, 4) == 0x00000000)
+    {
+        goto l1003C8DE;
+    }
+    STACKVAR(-4, 4) = 0x00000000;
+    goto l1003C89E;
+l1003C895:
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000001;
+l1003C89E:
+    REGDEF(cmpl=STACKVAR(-4, 4), cmpr=ACCESS(STACKVAR(-24, 4), 8, 4))
 }
-Failed to find pattern for 'jmp near ptr l1003C911'
+Failed to find pattern for 'jnb l1003C8DE'
 
 // address: 0x1003C930
 p1003C930
@@ -11526,8 +13409,20 @@ p1003C930
     {
         goto l1003C951;
     }
+    goto l1003CAA3;
+l1003C951:
+    if (0x00000001 == 0x00000000)
+    {
+        goto l1003CA70;
+    }
+    STACKVAR(-16, 4) = 0x00000000;
+    goto l1003C970;
+l1003C967:
+    STACKVAR(-16, 4) = reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000001;
+l1003C970:
+    REGDEF(cmpl=STACKVAR(-16, 4), cmpr=ACCESS(STACKVAR(12, 4), 8, 4))
 }
-Failed to find pattern for 'jmp near ptr l1003CAA3'
+Failed to find pattern for 'jnb l1003CA70'
 
 // address: 0x1003CBD0
 p1003CBD0
@@ -11541,8 +13436,20 @@ p1003CBD0
     {
         goto l1003CBF1;
     }
+    goto l1003CC7F;
+l1003CBF1:
+    if (0x00000001 == 0x00000000)
+    {
+        goto l1003CC4C;
+    }
+    STACKVAR(-16, 4) = 0x00000000;
+    goto l1003CC0C;
+l1003CC03:
+    STACKVAR(-16, 4) = reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000001;
+l1003CC0C:
+    REGDEF(cmpl=STACKVAR(-16, 4), cmpr=ACCESS(STACKVAR(12, 4), 8, 4))
 }
-Failed to find pattern for 'jmp near ptr l1003CC7F'
+Failed to find pattern for 'jnb l1003CC4C'
 
 // address: 0x1003CD80
 p1003CD80
@@ -11556,8 +13463,20 @@ p1003CD80
     {
         goto l1003CDA1;
     }
+    goto l1003CE2F;
+l1003CDA1:
+    if (0x00000001 == 0x00000000)
+    {
+        goto l1003CDFC;
+    }
+    STACKVAR(-16, 4) = 0x00000000;
+    goto l1003CDBC;
+l1003CDB3:
+    STACKVAR(-16, 4) = reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000001;
+l1003CDBC:
+    REGDEF(cmpl=STACKVAR(-16, 4), cmpr=ACCESS(STACKVAR(12, 4), 8, 4))
 }
-Failed to find pattern for 'jmp near ptr l1003CE2F'
+Failed to find pattern for 'jnb l1003CDFC'
 
 // address: 0x1003CFD0
 p1003CFD0
@@ -11571,8 +13490,20 @@ p1003CFD0
     {
         goto l1003CFF1;
     }
+    goto l1003D07F;
+l1003CFF1:
+    if (0x00000001 == 0x00000000)
+    {
+        goto l1003D04C;
+    }
+    STACKVAR(-16, 4) = 0x00000000;
+    goto l1003D00C;
+l1003D003:
+    STACKVAR(-16, 4) = reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000001;
+l1003D00C:
+    REGDEF(cmpl=STACKVAR(-16, 4), cmpr=ACCESS(STACKVAR(12, 4), 8, 4))
 }
-Failed to find pattern for 'jmp near ptr l1003D07F'
+Failed to find pattern for 'jnb l1003D04C'
 
 // address: 0x1003D1F0
 p1003D1F0
@@ -11636,8 +13567,20 @@ p1003D3D0
     {
         goto l1003D3F1;
     }
+    goto l1003D47F;
+l1003D3F1:
+    if (0x00000001 == 0x00000000)
+    {
+        goto l1003D44C;
+    }
+    STACKVAR(-16, 4) = 0x00000000;
+    goto l1003D40C;
+l1003D403:
+    STACKVAR(-16, 4) = reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000001;
+l1003D40C:
+    REGDEF(cmpl=STACKVAR(-16, 4), cmpr=ACCESS(STACKVAR(12, 4), 8, 4))
 }
-Failed to find pattern for 'jmp near ptr l1003D47F'
+Failed to find pattern for 'jnb l1003D44C'
 
 // address: 0x1003D5F0
 p1003D5F0
@@ -11831,8 +13774,20 @@ p1003DB00
     {
         goto l1003DB33;
     }
+    goto l1003DBBC;
+l1003DB33:
+    if (STACKVAR(-20, 4) == 0x00000000)
+    {
+        goto l1003DB8A;
+    }
+    STACKVAR(-4, 4) = 0x00000000;
+    goto l1003DB4B;
+l1003DB42:
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000001;
+l1003DB4B:
+    REGDEF(cmpl=STACKVAR(-4, 4), cmpr=ACCESS(GLOBAL(0x1004A9D8), 0, 4))
 }
-Failed to find pattern for 'jmp near ptr l1003DBBC'
+Failed to find pattern for 'jnb l1003DB8A'
 
 // address: 0x1003DBC0
 B_ElementCSV::~B_ElementCSV()
@@ -11855,8 +13810,37 @@ unsigned int ReadCSV(const char *file_name, B_NDataBase<B_ElementCSV> *csvs)
     }
     unknown_function_1002A2C3(GLOBAL(0x1004A53C), unknown_function_10029BE0(GLOBAL(0x10048940), STACKVAR(8, 4)));
     REGDEF(eax=0x00000000)
+    goto l1003DEC4;
+l1003DC48:
+    STACKVAR(-272, 4) = fscanf(STACKVAR(-4, 4), GLOBAL(0x10048974), LOCAL(-784), LOCAL(-260), LOCAL(-788), LOCAL(-268), LOCAL(-528));
+    if (STACKVAR(-272, 4) != 0x00000005)
+    {
+        goto l1003DEAA;
+    }
+    STACKVAR(-796, 4) = ??2@YAPAXI@Z(0x00000018);
+    if (STACKVAR(-796, 4) == 0x00000000)
+    {
+        goto l1003DCDC;
+    }
+    STACKVAR(-796, 4)->unknown_method_100039E5();
+    (reinterpret_cast<any_int32>(STACKVAR(-796, 4)) + 0x00000010)->unknown_method_10003300();
+    ACCESS(STACKVAR(-796, 4), 0, 4) = GLOBAL(0x10042E5C);
+    STACKVAR(-836, 4) = STACKVAR(-796, 4);
+    goto l1003DCE6;
+l1003DCDC:
+    STACKVAR(-836, 4) = 0x00000000;
+l1003DCE6:
+    STACKVAR(-792, 4) = STACKVAR(-836, 4);
+    LOCAL(-804)->unknown_method_10003337(LOCAL(-260));
+    (reinterpret_cast<any_int32>(STACKVAR(-792, 4)) + 0x00000004)->unknown_method_1000378E(LOCAL(-804));
+    LOCAL(-804)->unknown_method_100039BA();
+    ACCESS(STACKVAR(-792, 4), 12, 4) = STACKVAR(-788, 4);
+    LOCAL(-812)->unknown_method_10003337(LOCAL(-528));
+    (reinterpret_cast<any_int32>(STACKVAR(-792, 4)) + 0x00000010)->unknown_method_1000378E(LOCAL(-812));
+    LOCAL(-812)->unknown_method_100039BA();
+    REGDEF(cmpl=ACCESS(STACKVAR(12, 4), 16, 4), cmpr=ACCESS(STACKVAR(12, 4), 8, 4))
 }
-Failed to find pattern for 'jmp near ptr l1003DEC4'
+Failed to find pattern for 'jbe l1003DD9C'
 
 // address: 0x1003DED0
 p1003DED0
@@ -11884,8 +13868,20 @@ p1003DF00
     {
         goto l1003DF36;
     }
+    goto l1003DFC1;
+l1003DF36:
+    if (STACKVAR(-20, 4) == 0x00000000)
+    {
+        goto l1003DF8E;
+    }
+    STACKVAR(-4, 4) = 0x00000000;
+    goto l1003DF4E;
+l1003DF45:
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000001;
+l1003DF4E:
+    REGDEF(cmpl=STACKVAR(-4, 4), cmpr=ACCESS(STACKVAR(-24, 4), 8, 4))
 }
-Failed to find pattern for 'jmp near ptr l1003DFC1'
+Failed to find pattern for 'jnb l1003DF8E'
 
 // address: 0x1003DFE0
 p1003DFE0
@@ -11901,8 +13897,20 @@ p1003DFE0
     {
         goto l1003E016;
     }
+    goto l1003E0A1;
+l1003E016:
+    if (STACKVAR(-20, 4) == 0x00000000)
+    {
+        goto l1003E06E;
+    }
+    STACKVAR(-4, 4) = 0x00000000;
+    goto l1003E02E;
+l1003E025:
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000001;
+l1003E02E:
+    REGDEF(cmpl=STACKVAR(-4, 4), cmpr=ACCESS(STACKVAR(-24, 4), 8, 4))
 }
-Failed to find pattern for 'jmp near ptr l1003E0A1'
+Failed to find pattern for 'jnb l1003E06E'
 
 // address: 0x1003E0C0
 p1003E0C0
@@ -11918,8 +13926,20 @@ p1003E0C0
     {
         goto l1003E0F6;
     }
+    goto l1003E181;
+l1003E0F6:
+    if (STACKVAR(-20, 4) == 0x00000000)
+    {
+        goto l1003E14E;
+    }
+    STACKVAR(-4, 4) = 0x00000000;
+    goto l1003E10E;
+l1003E105:
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000001;
+l1003E10E:
+    REGDEF(cmpl=STACKVAR(-4, 4), cmpr=ACCESS(STACKVAR(-24, 4), 8, 4))
 }
-Failed to find pattern for 'jmp near ptr l1003E181'
+Failed to find pattern for 'jnb l1003E14E'
 
 // address: 0x1003E1A0
 p1003E1A0
@@ -11935,8 +13955,20 @@ p1003E1A0
     {
         goto l1003E1D6;
     }
+    goto l1003E261;
+l1003E1D6:
+    if (STACKVAR(-20, 4) == 0x00000000)
+    {
+        goto l1003E22E;
+    }
+    STACKVAR(-4, 4) = 0x00000000;
+    goto l1003E1EE;
+l1003E1E5:
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000001;
+l1003E1EE:
+    REGDEF(cmpl=STACKVAR(-4, 4), cmpr=ACCESS(STACKVAR(-24, 4), 8, 4))
 }
-Failed to find pattern for 'jmp near ptr l1003E261'
+Failed to find pattern for 'jnb l1003E22E'
 
 // address: 0x1003E280
 p1003E280
@@ -12393,22 +14425,54 @@ p1003EFD4
         goto l1003F017;
     }
     REGDEF(eax=0x00000000)
+    goto l1003F247;
+l1003F017:
+    STACKVAR(-148, 4) = ??2@YAPAXI@Z(0x00000010);
+    if (STACKVAR(-148, 4) == 0x00000000)
+    {
+        goto l1003F201;
+    }
+    STACKVAR(-180, 4) = STACKVAR(-12, 4);
+    STACKVAR(-176, 4) = STACKVAR(-8, 4);
+    ACCESS(STACKVAR(-148, 4), 0, 4) = GLOBAL(0x100421C8);
+    REGDEF(cmpl=ACCESS(GLOBAL(0x1004A530), 0, 4), cmpr=ACCESS(GLOBAL(0x1004A528), 0, 4))
 }
-Failed to find pattern for 'jmp near ptr l1003F247'
+Failed to find pattern for 'jbe l1003F088'
 
 // address: 0x1003F24C
 p1003F24C
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=24, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=24, stack_delta=0)
     STACKVAR(-12, 4) = 0x00000000;
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048F60), LOCAL(-12)) != 0x00000000)
+    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048F60), LOCAL(-12)) == 0x00000000)
     {
-        goto l1003F280;
+        REGDEF(eax=0x00000000)
+        return;
     }
-    REGDEF(eax=0x00000000)
+    if (STACKVAR(-12, 4) != 0x00000000)
+    {
+        if (unknown_function_1003F305(STACKVAR(-12, 4), LOCAL(-8), GLOBAL(0x10048F74)) != 0x00000000)
+        {
+            PyErr_SetString(ACCESS(&PyExc_TypeError, 0, 4), GLOBAL(0x10048F84));
+            REGDEF(eax=0x00000000)
+            return;
+        }
+    }
+    STACKVAR(-20, 4) = STACKVAR(-8, 4);
+    STACKVAR(-16, 4) = STACKVAR(-20, 4);
+    if (STACKVAR(-16, 4) != 0x00000000)
+    {
+        STACKVAR(-24, 4) = STACKVAR(-16, 4)->(ACCESS(ACCESS(STACKVAR(-16, 4), 0, 4), 0, 4))(0x00000001);
+    }
+    else
+    {
+        STACKVAR(-24, 4) = 0x00000000;
+    }
+    ACCESS(&_Py_NoneStruct, 0, 4) = reinterpret_cast<any_int32>(ACCESS(&_Py_NoneStruct, 0, 4)) + 0x00000001;
+    STACKVAR(-4, 4) = &_Py_NoneStruct;
+    REGDEF(eax=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'jmp near ptr l1003F301'
 
 // address: 0x1003F305
 p1003F305
@@ -12445,30 +14509,79 @@ p1003FA98
 // address: 0x1003FAC8
 p1003FAC8
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=40, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=40, stack_delta=0)
     STACKVAR(-24, 4) = 0x00000000;
     STACKVAR(8, 4) = STACKVAR(8, 4);
     STACKVAR(-16, 4) = LOCAL(-28);
     STACKVAR(-20, 4) = LOCAL(-4);
-    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048FCC), LOCAL(-24)) != 0x00000000)
+    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048FCC), LOCAL(-24)) == 0x00000000)
     {
-        goto l1003FB08;
+        REGDEF(eax=0x00000000)
+        return;
     }
-    REGDEF(eax=0x00000000)
+    if (STACKVAR(-24, 4) != 0x00000000)
+    {
+        if (unknown_function_1003F305(STACKVAR(-24, 4), LOCAL(-12), GLOBAL(0x10048FE8)) != 0x00000000)
+        {
+            PyErr_SetString(ACCESS(&PyExc_TypeError, 0, 4), GLOBAL(0x10048FF8));
+            REGDEF(eax=0x00000000)
+            return;
+        }
+    }
+    STACKVAR(-40, 4) = STACKVAR(-12, 4);
+    ACCESS(STACKVAR(-16, 4), 0, 4) = ACCESS(STACKVAR(-40, 4), 4, 4);
+    ACCESS(STACKVAR(-20, 4), 0, 4) = ACCESS(STACKVAR(-40, 4), 8, 4);
+    ACCESS(&_Py_NoneStruct, 0, 4) = reinterpret_cast<any_int32>(ACCESS(&_Py_NoneStruct, 0, 4)) + 0x00000001;
+    STACKVAR(-8, 4) = &_Py_NoneStruct;
+    STACKVAR(-32, 4) = PyInt_FromLong(ACCESS(STACKVAR(-16, 4), 0, 4));
+    STACKVAR(-8, 4) = unknown_function_1003FBCD(STACKVAR(-8, 4), STACKVAR(-32, 4));
+    STACKVAR(-36, 4) = PyInt_FromLong(ACCESS(STACKVAR(-20, 4), 0, 4));
+    STACKVAR(-8, 4) = unknown_function_1003FBCD(STACKVAR(-8, 4), STACKVAR(-36, 4));
+    REGDEF(eax=STACKVAR(-8, 4))
 }
-Failed to find pattern for 'jmp near ptr l1003FBC9'
 
 // address: 0x1003FBCD
 p1003FBCD
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=8, stack_delta=None)
-    if (STACKVAR(8, 4) != 0x00000000)
+    ProcedureInfo(this=None, this_offset=None, local_size=8, stack_delta=0)
+    if (STACKVAR(8, 4) == 0x00000000)
     {
-        goto l1003FBE4;
+        STACKVAR(8, 4) = STACKVAR(12, 4);
     }
-    STACKVAR(8, 4) = STACKVAR(12, 4);
+    else if (reinterpret_cast<void *>(STACKVAR(8, 4)) == &_Py_NoneStruct)
+    {
+        ACCESS(&_Py_NoneStruct, 0, 4) = reinterpret_cast<any_int32>(ACCESS(&_Py_NoneStruct, 0, 4)) - 0x00000001;
+        if (ACCESS(&_Py_NoneStruct, 0, 4) == 0x00000000)
+        {
+            ACCESS(ACCESS(&_Py_NoneStruct, 4, 4), 24, 4)(&_Py_NoneStruct);
+        }
+        STACKVAR(8, 4) = STACKVAR(12, 4);
+    }
+    else
+    {
+        if (reinterpret_cast<void *>(ACCESS(STACKVAR(8, 4), 4, 4)) != &PyTuple_Type)
+        {
+            STACKVAR(-4, 4) = STACKVAR(8, 4);
+            STACKVAR(8, 4) = PyTuple_New(0x00000001);
+            PyTuple_SetItem(STACKVAR(8, 4), 0x00000000, STACKVAR(-4, 4));
+        }
+        STACKVAR(-8, 4) = PyTuple_New(0x00000001);
+        PyTuple_SetItem(STACKVAR(-8, 4), 0x00000000, STACKVAR(12, 4));
+        STACKVAR(-4, 4) = STACKVAR(8, 4);
+        STACKVAR(8, 4) = PySequence_Concat(STACKVAR(-4, 4), STACKVAR(-8, 4));
+        ACCESS(STACKVAR(-4, 4), 0, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-4, 4), 0, 4)) - 0x00000001;
+        if (ACCESS(STACKVAR(-4, 4), 0, 4) == 0x00000000)
+        {
+            ACCESS(ACCESS(STACKVAR(-4, 4), 4, 4), 24, 4)(STACKVAR(-4, 4));
+        }
+        ACCESS(STACKVAR(-8, 4), 0, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-8, 4), 0, 4)) - 0x00000001;
+        if (ACCESS(STACKVAR(-8, 4), 0, 4) == 0x00000000)
+        {
+            ACCESS(ACCESS(STACKVAR(-8, 4), 4, 4), 24, 4)(STACKVAR(-8, 4));
+        }
+    }
+    REGDEF(eax=STACKVAR(8, 4))
 }
-Failed to find pattern for 'jmp near ptr l1003FCED'
 
 // address: 0x1003FCF4
 p1003FCF4
@@ -12511,16 +14624,36 @@ p1003FD8A
 // address: 0x1003FDA8
 p1003FDA8
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=20, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=20, stack_delta=0)
     STACKVAR(-12, 4) = 0x00000000;
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x100490BC), LOCAL(-12)) != 0x00000000)
+    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x100490BC), LOCAL(-12)) == 0x00000000)
     {
-        goto l1003FDDC;
+        REGDEF(eax=0x00000000)
+        return;
     }
-    REGDEF(eax=0x00000000)
+    if (STACKVAR(-12, 4) != 0x00000000)
+    {
+        if (unknown_function_1003F305(STACKVAR(-12, 4), LOCAL(-8), GLOBAL(0x100490D0)) != 0x00000000)
+        {
+            PyErr_SetString(ACCESS(&PyExc_TypeError, 0, 4), GLOBAL(0x100490E0));
+            REGDEF(eax=0x00000000)
+            return;
+        }
+    }
+    STACKVAR(-20, 4) = STACKVAR(-8, 4);
+    if (ACCESS(STACKVAR(-20, 4), 12, 4) != 0x00000000)
+    {
+        STACKVAR(-16, 4) = ACCESS(STACKVAR(-20, 4), 12, 4);
+        ??3@YAXPAX@Z(STACKVAR(-16, 4));
+        ACCESS(STACKVAR(-20, 4), 12, 4) = 0x00000000;
+    }
+    ACCESS(STACKVAR(-20, 4), 8, 4) = 0x00000000;
+    ACCESS(STACKVAR(-20, 4), 4, 4) = 0x00000000;
+    ACCESS(&_Py_NoneStruct, 0, 4) = reinterpret_cast<any_int32>(ACCESS(&_Py_NoneStruct, 0, 4)) + 0x00000001;
+    STACKVAR(-4, 4) = &_Py_NoneStruct;
+    REGDEF(eax=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'jmp near ptr l1003FE75'
 
 // address: 0x1003FE79
 p1003FE79

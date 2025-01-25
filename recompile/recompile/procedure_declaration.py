@@ -71,6 +71,8 @@ class ProcedureDeclaration:
         for parameter_type, parameter_name in self._parameters:
             stack_delta += parameter_type.size
             stack_delta = ((stack_delta + 3) // 4) * 4
+        if isinstance(self._return_arg, data_types.ClassType):
+            stack_delta += data_types.Pointer32().size
         return stack_delta
 
     @property
