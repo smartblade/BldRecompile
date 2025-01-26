@@ -82,6 +82,11 @@ class ProcedureDeclaration:
             param_ids = param_ids[1:]
         offset = 8
         stack_dict = {}
+        if isinstance(self._return_arg, data_types.ClassType):
+            param_ids.insert(
+                0,
+                expressions.Identifier(
+                    data_types.Pointer32(self._return_arg), "__result"))
         for param_id in param_ids:
             stack_dict[offset] = param_id
             offset += param_id.data_type.size

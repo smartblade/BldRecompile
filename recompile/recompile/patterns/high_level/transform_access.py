@@ -5,6 +5,11 @@ import expressions
 def transform_access(expression, offset, size, **kwargs):
     if isinstance(expression.data_type, data_types.Unknown32):
         return None
+    if (
+        isinstance(expression.data_type, data_types.AnyInt) and
+        expression.data_type.size == data_types.Pointer32().size
+    ):
+        return None
     if isinstance(expression.data_type, data_types.Reference):
         expression = expressions.AddressOf(expression)
     if not isinstance(expression.data_type, data_types.Pointer32):
