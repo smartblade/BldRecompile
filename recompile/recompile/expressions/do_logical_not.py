@@ -7,7 +7,7 @@ _inv_operators = {
     Operator.GT: Operator.LE,
     Operator.LE: Operator.GT,
     Operator.LT: Operator.GE,
-    Operator.GE: Operator.GT,
+    Operator.GE: Operator.LT,
 }
 
 
