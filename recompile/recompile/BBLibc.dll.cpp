@@ -9650,7 +9650,7 @@ l10026B62:
 Failed to find pattern for 'jnb l10026B84'
 
 // address: 0x10026C70
-void B_BitMap24::SetBits(int arg_1, int arg_2, const char *arg_3, const char *arg_4)
+void B_BitMap24::ClearBitMap24Data()
 {
     ProcedureInfo(this=None, this_offset=None, local_size=36, stack_delta=None)
     STACKVAR(-4, 4) = 0x00000000;
@@ -9728,7 +9728,7 @@ l1002724B:
 Failed to find pattern for 'imul ecx, dword ptr [eax+008h]'
 
 // address: 0x100272A5
-p100272A5
+unsigned int B_BitMap24::SetBits(int arg_1, int arg_2, const char *arg_3, const char *arg_4)
 {
     ProcedureInfo(this=Id(this), this_offset=-12, local_size=12, stack_delta=None)
     REGDEF(edi=GLOBAL(0x100487C8), esi=STACKVAR(20, 4), ecx=0x00000004, eax=0x00000000)
