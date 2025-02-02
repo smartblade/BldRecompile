@@ -80,13 +80,24 @@ p10001205
 // address: 0x10001217
 p10001217
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=0)
     STACKVAR(-12, 4) = 0x00000001;
     STACKVAR(-8, 4) = 0x0000001C;
     STACKVAR(-4, 4) = GLOBAL(0x10049EE0);
-    REGDEF(eax=STACKVAR(-8, 4))
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + reinterpret_cast<any_int32>(STACKVAR(-8, 4)) * reinterpret_cast<any_int32>(STACKVAR(-12, 4));
+l10001241:
+    STACKVAR(-12, 4) = reinterpret_cast<any_int32>(STACKVAR(-12, 4)) - 0x00000001;
+    if (reinterpret_cast<int>(STACKVAR(-12, 4)) >= 0)
+    {
+        STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) - reinterpret_cast<any_int32>(STACKVAR(-8, 4));
+        if (ACCESS(STACKVAR(-4, 4), 8, 4) != 0xFFFFFFFF)
+        {
+            _close(ACCESS(STACKVAR(-4, 4), 8, 4));
+            free(ACCESS(STACKVAR(-4, 4), 4, 4));
+        }
+        goto l10001241;
+    }
 }
-Failed to find pattern for 'imul eax, dword ptr [ebp-00Ch]'
 
 // address: 0x100014D2
 void B_IDataFile::Close()
@@ -688,19 +699,41 @@ B_NamedObj &B_NamedObj::operator=(const B_NamedObj &that)
 }
 
 // address: 0x100023C0
-void sub_100023C0(B_NamedObj *this_ptr, int arg_0)
+p100023C0
 {
-    ProcedureInfo(this=Id(this), this_offset=-16, local_size=16, stack_delta=None)
+    ProcedureInfo(this=Id(this), this_offset=-16, local_size=16, stack_delta=4)
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000002) == 0x00000000)
     {
         goto l10002447;
     }
-    STACKVAR(-12, 4) = ACCESS(STACKVAR(-16, 4), -4, 4);
+    STACKVAR(-12, 4) = ACCESS(this, -4, 4);
     STACKVAR(-8, 4) = 0x0000000C;
-    STACKVAR(-4, 4) = STACKVAR(-16, 4);
-    REGDEF(ecx=STACKVAR(-8, 4))
+    STACKVAR(-4, 4) = this;
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + reinterpret_cast<any_int32>(STACKVAR(-8, 4)) * reinterpret_cast<any_int32>(STACKVAR(-12, 4));
+l100023F8:
+    STACKVAR(-12, 4) = reinterpret_cast<any_int32>(STACKVAR(-12, 4)) - 0x00000001;
+    if (reinterpret_cast<int>(STACKVAR(-12, 4)) >= 0)
+    {
+        STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) - reinterpret_cast<any_int32>(STACKVAR(-8, 4));
+        ACCESS(STACKVAR(-4, 4), 0, 4) = GLOBAL(0x1004217C);
+        reinterpret_cast<B_Name *>(reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000004)->~B_Name();
+        goto l100023F8;
+    }
+    if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
+    {
+        ??3@YAXPAX@Z(reinterpret_cast<any_int32>(this) - 0x00000004);
+    }
+    REGDEF(eax=reinterpret_cast<any_int32>(this) - 0x00000004)
+    return;
+l10002447:
+    ACCESS(this, 0, 4) = GLOBAL(0x1004217C);
+    reinterpret_cast<B_Name *>(reinterpret_cast<any_int32>(this) + 0x00000004)->~B_Name();
+    if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
+    {
+        ??3@YAXPAX@Z(this);
+    }
+    REGDEF(eax=this)
 }
-Failed to find pattern for 'imul ecx, dword ptr [ebp-00Ch]'
 
 // address: 0x100024C0
 B_MessageChannel::B_MessageChannel(B_Name &name)
@@ -757,17 +790,41 @@ B_MessageChannel &B_MessageChannel::operator=(const B_MessageChannel &that)
 // address: 0x10002640
 p10002640
 {
-    ProcedureInfo(this=Id(this), this_offset=-16, local_size=16, stack_delta=None)
+    ProcedureInfo(this=Id(this), this_offset=-16, local_size=16, stack_delta=4)
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000002) == 0x00000000)
     {
         goto l100026D0;
     }
-    STACKVAR(-12, 4) = ACCESS(STACKVAR(-16, 4), -4, 4);
+    STACKVAR(-12, 4) = ACCESS(this, -4, 4);
     STACKVAR(-8, 4) = 0x00000010;
-    STACKVAR(-4, 4) = STACKVAR(-16, 4);
-    REGDEF(ecx=STACKVAR(-8, 4))
+    STACKVAR(-4, 4) = this;
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + reinterpret_cast<any_int32>(STACKVAR(-8, 4)) * reinterpret_cast<any_int32>(STACKVAR(-12, 4));
+l10002678:
+    STACKVAR(-12, 4) = reinterpret_cast<any_int32>(STACKVAR(-12, 4)) - 0x00000001;
+    if (reinterpret_cast<int>(STACKVAR(-12, 4)) >= 0)
+    {
+        STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) - reinterpret_cast<any_int32>(STACKVAR(-8, 4));
+        ACCESS(STACKVAR(-4, 4), 0, 4) = GLOBAL(0x10042180);
+        ACCESS(STACKVAR(-4, 4), 0, 4) = GLOBAL(0x1004217C);
+        reinterpret_cast<B_Name *>(reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000004)->~B_Name();
+        goto l10002678;
+    }
+    if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
+    {
+        ??3@YAXPAX@Z(reinterpret_cast<any_int32>(this) - 0x00000004);
+    }
+    REGDEF(eax=reinterpret_cast<any_int32>(this) - 0x00000004)
+    return;
+l100026D0:
+    ACCESS(this, 0, 4) = GLOBAL(0x10042180);
+    ACCESS(this, 0, 4) = GLOBAL(0x1004217C);
+    reinterpret_cast<B_Name *>(reinterpret_cast<any_int32>(this) + 0x00000004)->~B_Name();
+    if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
+    {
+        ??3@YAXPAX@Z(this);
+    }
+    REGDEF(eax=this)
 }
-Failed to find pattern for 'imul ecx, dword ptr [ebp-00Ch]'
 
 // address: 0x10002710
 B_MessageManager::~B_MessageManager()
@@ -1103,17 +1160,37 @@ B_ListElement &B_ListElement::operator =(const B_ListElement &other)
 // address: 0x10002FF0
 p10002FF0
 {
-    ProcedureInfo(this=Id(this), this_offset=-16, local_size=16, stack_delta=None)
+    ProcedureInfo(this=Id(this), this_offset=-16, local_size=16, stack_delta=4)
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000002) == 0x00000000)
     {
         goto l1000306B;
     }
-    STACKVAR(-12, 4) = ACCESS(STACKVAR(-16, 4), -4, 4);
+    STACKVAR(-12, 4) = ACCESS(this, -4, 4);
     STACKVAR(-8, 4) = 0x00000010;
-    STACKVAR(-4, 4) = STACKVAR(-16, 4);
-    REGDEF(ecx=STACKVAR(-8, 4))
+    STACKVAR(-4, 4) = this;
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + reinterpret_cast<any_int32>(STACKVAR(-8, 4)) * reinterpret_cast<any_int32>(STACKVAR(-12, 4));
+l10003028:
+    STACKVAR(-12, 4) = reinterpret_cast<any_int32>(STACKVAR(-12, 4)) - 0x00000001;
+    if (reinterpret_cast<int>(STACKVAR(-12, 4)) >= 0)
+    {
+        STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) - reinterpret_cast<any_int32>(STACKVAR(-8, 4));
+        reinterpret_cast<B_ListElement *>(STACKVAR(-4, 4))->~B_ListElement();
+        goto l10003028;
+    }
+    if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
+    {
+        ??3@YAXPAX@Z(reinterpret_cast<any_int32>(this) - 0x00000004);
+    }
+    REGDEF(eax=reinterpret_cast<any_int32>(this) - 0x00000004)
+    return;
+l1000306B:
+    reinterpret_cast<B_ListElement *>(this)->~B_ListElement();
+    if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
+    {
+        ??3@YAXPAX@Z(this);
+    }
+    REGDEF(eax=this)
 }
-Failed to find pattern for 'imul ecx, dword ptr [ebp-00Ch]'
 
 // address: 0x100030A0
 B_List::B_List(B_ListElement *element)
@@ -1182,17 +1259,37 @@ p100031E0
 // address: 0x10003250
 p10003250
 {
-    ProcedureInfo(this=Id(this), this_offset=-16, local_size=16, stack_delta=None)
+    ProcedureInfo(this=Id(this), this_offset=-16, local_size=16, stack_delta=4)
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000002) == 0x00000000)
     {
         goto l100032CC;
     }
-    STACKVAR(-12, 4) = ACCESS(STACKVAR(-16, 4), -4, 4);
+    STACKVAR(-12, 4) = ACCESS(this, -4, 4);
     STACKVAR(-8, 4) = 0x00000010;
-    STACKVAR(-4, 4) = STACKVAR(-16, 4);
-    REGDEF(ecx=STACKVAR(-8, 4))
+    STACKVAR(-4, 4) = this;
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + reinterpret_cast<any_int32>(STACKVAR(-8, 4)) * reinterpret_cast<any_int32>(STACKVAR(-12, 4));
+l10003288:
+    STACKVAR(-12, 4) = reinterpret_cast<any_int32>(STACKVAR(-12, 4)) - 0x00000001;
+    if (reinterpret_cast<int>(STACKVAR(-12, 4)) >= 0)
+    {
+        STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) - reinterpret_cast<any_int32>(STACKVAR(-8, 4));
+        ACCESS(STACKVAR(-4, 4), 0, 4) = GLOBAL(0x10042194);
+        goto l10003288;
+    }
+    if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
+    {
+        ??3@YAXPAX@Z(reinterpret_cast<any_int32>(this) - 0x00000004);
+    }
+    REGDEF(eax=reinterpret_cast<any_int32>(this) - 0x00000004)
+    return;
+l100032CC:
+    ACCESS(this, 0, 4) = GLOBAL(0x10042194);
+    if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
+    {
+        ??3@YAXPAX@Z(this);
+    }
+    REGDEF(eax=this)
 }
-Failed to find pattern for 'imul ecx, dword ptr [ebp-00Ch]'
 
 // address: 0x10003300
 B_Name::B_Name()
@@ -2616,17 +2713,37 @@ B_Resource &B_Resource::operator=(const B_Resource &that)
 // address: 0x10006780
 p10006780
 {
-    ProcedureInfo(this=Id(this), this_offset=-16, local_size=16, stack_delta=None)
+    ProcedureInfo(this=Id(this), this_offset=-16, local_size=16, stack_delta=4)
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000002) == 0x00000000)
     {
         goto l100067FB;
     }
-    STACKVAR(-12, 4) = ACCESS(STACKVAR(-16, 4), -4, 4);
+    STACKVAR(-12, 4) = ACCESS(this, -4, 4);
     STACKVAR(-8, 4) = 0x0000000C;
-    STACKVAR(-4, 4) = STACKVAR(-16, 4);
-    REGDEF(ecx=STACKVAR(-8, 4))
+    STACKVAR(-4, 4) = this;
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + reinterpret_cast<any_int32>(STACKVAR(-8, 4)) * reinterpret_cast<any_int32>(STACKVAR(-12, 4));
+l100067B8:
+    STACKVAR(-12, 4) = reinterpret_cast<any_int32>(STACKVAR(-12, 4)) - 0x00000001;
+    if (reinterpret_cast<int>(STACKVAR(-12, 4)) >= 0)
+    {
+        STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) - reinterpret_cast<any_int32>(STACKVAR(-8, 4));
+        reinterpret_cast<B_Resource *>(STACKVAR(-4, 4))->~B_Resource();
+        goto l100067B8;
+    }
+    if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
+    {
+        ??3@YAXPAX@Z(reinterpret_cast<any_int32>(this) - 0x00000004);
+    }
+    REGDEF(eax=reinterpret_cast<any_int32>(this) - 0x00000004)
+    return;
+l100067FB:
+    reinterpret_cast<B_Resource *>(this)->~B_Resource();
+    if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
+    {
+        ??3@YAXPAX@Z(this);
+    }
+    REGDEF(eax=this)
 }
-Failed to find pattern for 'imul ecx, dword ptr [ebp-00Ch]'
 
 // address: 0x10006830
 B_ResourceManager &B_ResourceManager::operator =(const B_ResourceManager &that)
@@ -2925,9 +3042,78 @@ p10007470
     STACKVAR(-24, 4) = ACCESS(STACKVAR(-72, 4), -4, 4);
     STACKVAR(-20, 4) = 0x00000010;
     STACKVAR(-16, 4) = STACKVAR(-72, 4);
-    REGDEF(ecx=STACKVAR(-20, 4))
+    STACKVAR(-16, 4) = reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + reinterpret_cast<any_int32>(STACKVAR(-20, 4)) * reinterpret_cast<any_int32>(STACKVAR(-24, 4));
+l100074AD:
+    STACKVAR(-24, 4) = reinterpret_cast<any_int32>(STACKVAR(-24, 4)) - 0x00000001;
+    if (reinterpret_cast<int>(STACKVAR(-24, 4)) < 0)
+    {
+        goto l10007544;
+    }
+    STACKVAR(-16, 4) = reinterpret_cast<any_int32>(STACKVAR(-16, 4)) - reinterpret_cast<any_int32>(STACKVAR(-20, 4));
+    ACCESS(STACKVAR(-16, 4), 0, 4) = GLOBAL(0x100421C8);
+    STACKVAR(-8, 4) = 0x00000000;
+    goto l100074E4;
+l100074DB:
+    STACKVAR(-8, 4) = reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + 0x00000001;
+l100074E4:
+    if (reinterpret_cast<unsigned int>(STACKVAR(-8, 4)) >= reinterpret_cast<unsigned int>(ACCESS(GLOBAL(0x1004A528), 0, 4)))
+    {
+        goto l1000750A;
+    }
+    if (ACCESS(ARRPTR(ACCESS(GLOBAL(0x1004A524), 0, 4), 0x04, STACKVAR(-8, 4), 0), 0, 4) != STACKVAR(-16, 4))
+    {
+        goto l10007508;
+    }
+    STACKVAR(-12, 4) = STACKVAR(-8, 4);
+    goto l10007511;
+l10007508:
+    goto l100074DB;
+l1000750A:
+    STACKVAR(-12, 4) = 0xFFFFFFFF;
+l10007511:
+    GLOBAL(0x1004A520)->unknown_method_10007D30(STACKVAR(-12, 4), 0x00000000);
+    if (ACCESS(STACKVAR(-16, 4), 12, 4) == 0x00000000)
+    {
+        goto l1000753F;
+    }
+    STACKVAR(-4, 4) = ACCESS(STACKVAR(-16, 4), 12, 4);
+    ??3@YAXPAX@Z(STACKVAR(-4, 4));
+l1000753F:
+    goto l100074AD;
+l10007544:
+    if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) == 0x00000000)
+    {
+        goto l1000755D;
+    }
+    ??3@YAXPAX@Z(reinterpret_cast<any_int32>(STACKVAR(-72, 4)) - 0x00000004);
+l1000755D:
+    REGDEF(eax=reinterpret_cast<any_int32>(STACKVAR(-72, 4)) - 0x00000004)
+    goto l10007786;
+l10007568:
+    ACCESS(STACKVAR(-72, 4), 0, 4) = GLOBAL(0x100421C8);
+    STACKVAR(-32, 4) = 0x00000000;
+    goto l10007583;
+l1000757A:
+    STACKVAR(-32, 4) = reinterpret_cast<any_int32>(STACKVAR(-32, 4)) + 0x00000001;
+l10007583:
+    if (reinterpret_cast<unsigned int>(STACKVAR(-32, 4)) >= reinterpret_cast<unsigned int>(ACCESS(GLOBAL(0x1004A528), 0, 4)))
+    {
+        goto l100075A9;
+    }
+    if (ACCESS(ARRPTR(ACCESS(GLOBAL(0x1004A524), 0, 4), 0x04, STACKVAR(-32, 4), 0), 0, 4) != STACKVAR(-72, 4))
+    {
+        goto l100075A7;
+    }
+    STACKVAR(-36, 4) = STACKVAR(-32, 4);
+    goto l100075B0;
+l100075A7:
+    goto l1000757A;
+l100075A9:
+    STACKVAR(-36, 4) = 0xFFFFFFFF;
+l100075B0:
+    REGDEF(cmpl=STACKVAR(-36, 4), cmpr=ACCESS(GLOBAL(0x1004A528), 0, 4))
 }
-Failed to find pattern for 'imul ecx, dword ptr [ebp-018h]'
+Failed to find pattern for 'jb l100075C0'
 
 // address: 0x10007790
 p10007790
@@ -3289,12 +3475,16 @@ Failed to find pattern for 'ja l100083EC'
 // address: 0x10008483
 p10008483
 {
-    ProcedureInfo(this=Id(this), this_offset=-12, local_size=12, stack_delta=None)
+    ProcedureInfo(this=Id(this), this_offset=-12, local_size=12, stack_delta=0)
     STACKVAR(-8, 4) = 0x0000000C;
-    STACKVAR(-4, 4) = (reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + 0x0000000C)->unknown_method_10008AF0();
-    REGDEF(ecx=STACKVAR(-12, 4), edx=ACCESS(STACKVAR(-12, 4), 20, 4))
+    STACKVAR(-4, 4) = (reinterpret_cast<any_int32>(this) + 0x0000000C)->unknown_method_10008AF0();
+    STACKVAR(-8, 4) = reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + reinterpret_cast<any_int32>(ACCESS(this, 20, 4)) * reinterpret_cast<any_int32>(ACCESS(this, 24, 4)) * reinterpret_cast<any_int32>(STACKVAR(-4, 4));
+    if (ACCESS(this, 32, 4) != 0x00000000)
+    {
+        STACKVAR(-8, 4) = reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + 0x00000300;
+    }
+    REGDEF(eax=STACKVAR(-8, 4))
 }
-Failed to find pattern for 'imul edx, dword ptr [ecx+018h]'
 
 // address: 0x100084D6
 p100084D6
@@ -3368,15 +3558,31 @@ p100085F0
 // address: 0x10008639
 B_BitMap::B_BitMap(BitMapType type, unsigned int arg_2, unsigned int arg_3, const B_Pal *pal)
 {
-    ProcedureInfo(this=Id(this), this_offset=-16, local_size=20, stack_delta=None)
-    ACCESS(STACKVAR(-16, 4), 4, 4) = STACKVAR(8, 4);
-    ACCESS(STACKVAR(-16, 4), 8, 4) = STACKVAR(12, 4);
-    ACCESS(STACKVAR(-16, 4), 12, 4) = STACKVAR(16, 4);
-    ACCESS(STACKVAR(-16, 4), 0, 4) = GLOBAL(0x100421F8);
-    STACKVAR(-4, 4) = STACKVAR(-16, 4)->unknown_method_10008AF0();
-    REGDEF(ecx=STACKVAR(12, 4))
+    this->type = type;
+    this->dimension1 = arg_2;
+    this->dimension2 = arg_3;
+    ACCESS(this, 0, 4) = GLOBAL(0x100421F8);
+    STACKVAR(-4, 4) = this->unknown_method_10008AF0();
+    STACKVAR(-8, 4) = ??2@YAPAXI@Z(arg_2 * arg_3 * reinterpret_cast<any_int32>(STACKVAR(-4, 4)));
+    this->data = reinterpret_cast<void *>(STACKVAR(-8, 4));
+    if (pal != nullptr)
+    {
+        STACKVAR(-12, 4) = ??2@YAPAXI@Z(0x00000300);
+        if (STACKVAR(-12, 4) != 0x00000000)
+        {
+            STACKVAR(-20, 4) = STACKVAR(-12, 4)->unknown_method_100093A7(pal);
+        }
+        else
+        {
+            STACKVAR(-20, 4) = 0x00000000;
+        }
+        this->pal = reinterpret_cast<B_Pal *>(STACKVAR(-20, 4));
+    }
+    else
+    {
+        this->pal = nullptr;
+    }
 }
-Failed to find pattern for 'imul ecx, dword ptr [ebp+010h]'
 
 // address: 0x100086E3
 B_BitMap::B_BitMap(const B_BitMap &src)
@@ -3396,9 +3602,9 @@ Failed to find pattern for 'ja l10008955'
 // address: 0x10008974
 p10008974
 {
-    ProcedureInfo(this=Id(this), this_offset=-24, local_size=28, stack_delta=None)
-    ACCESS(STACKVAR(-24, 4), 0, 4) = GLOBAL(0x100421F8);
-    ACCESS(STACKVAR(-24, 4), 20, 4) = 0x00000000;
+    ProcedureInfo(this=Id(this), this_offset=-24, local_size=28, stack_delta=8)
+    ACCESS(this, 0, 4) = GLOBAL(0x100421F8);
+    ACCESS(this, 20, 4) = 0x00000000;
     STACKVAR(-28, 4) = STACKVAR(8, 4);
     if (STACKVAR(-28, 4) == 0x00000002)
     {
@@ -3410,12 +3616,42 @@ p10008974
     }
     goto l10008ABD;
 l100089AD:
-    ACCESS(STACKVAR(-24, 4), 4, 4) = 0x00000002;
-    ACCESS(STACKVAR(-24, 4), 8, 4) = ACCESS(STACKVAR(12, 4), 4, 4);
-    ACCESS(STACKVAR(-24, 4), 12, 4) = ACCESS(STACKVAR(12, 4), 8, 4);
-    REGDEF(edx=STACKVAR(-24, 4), eax=ACCESS(STACKVAR(-24, 4), 8, 4))
+    ACCESS(this, 4, 4) = 0x00000002;
+    ACCESS(this, 8, 4) = ACCESS(STACKVAR(12, 4), 4, 4);
+    ACCESS(this, 12, 4) = ACCESS(STACKVAR(12, 4), 8, 4);
+    STACKVAR(-16, 4) = ??2@YAPAXI@Z(reinterpret_cast<any_int32>(ACCESS(this, 8, 4)) * reinterpret_cast<any_int32>(ACCESS(this, 12, 4)));
+    ACCESS(this, 16, 4) = STACKVAR(-16, 4);
+    STACKVAR(-12, 4) = ACCESS(this, 16, 4);
+    STACKVAR(-4, 4) = ACCESS(STACKVAR(12, 4), 12, 4);
+    STACKVAR(-8, 4) = 0x00000000;
+    goto l10008A15;
+l10008A0C:
+    STACKVAR(-8, 4) = reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + 0x00000001;
+l10008A15:
+    if (reinterpret_cast<unsigned int>(STACKVAR(-8, 4)) < reinterpret_cast<unsigned int>(ACCESS(this, 8, 4)) * reinterpret_cast<unsigned int>(ACCESS(this, 12, 4)))
+    {
+        ACCESS(STACKVAR(-12, 4), 0, 1) = ACCESS(STACKVAR(-4, 4), 0, 1);
+        STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000003;
+        STACKVAR(-12, 4) = reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + 0x00000001;
+        goto l10008A0C;
+    }
+    goto l10008AE5;
+l10008A4A:
+    ACCESS(this, 4, 4) = 0x00000004;
+    ACCESS(this, 8, 4) = ACCESS(STACKVAR(12, 4), 4, 4);
+    ACCESS(this, 12, 4) = ACCESS(STACKVAR(12, 4), 8, 4);
+    STACKVAR(-20, 4) = ??2@YAPAXI@Z(0x00000003 * reinterpret_cast<any_int32>(ACCESS(this, 8, 4)) * reinterpret_cast<any_int32>(ACCESS(this, 12, 4)));
+    ACCESS(this, 16, 4) = STACKVAR(-20, 4);
+    memcpy(ACCESS(this, 16, 4), ACCESS(STACKVAR(12, 4), 12, 4), 0x00000003 * reinterpret_cast<any_int32>(ACCESS(this, 8, 4)) * reinterpret_cast<any_int32>(ACCESS(this, 12, 4))); // TODO improve emitting of memcpy instructions
+    goto l10008AE5;
+l10008ABD:
+    ACCESS(this, 4, 4) = 0x00000000;
+    ACCESS(this, 8, 4) = 0x00000000;
+    ACCESS(this, 12, 4) = 0x00000000;
+    ACCESS(this, 16, 4) = 0x00000000;
+l10008AE5:
+    REGDEF(eax=this)
 }
-Failed to find pattern for 'imul eax, dword ptr [edx+00Ch]'
 
 // address: 0x10008AF0
 p10008AF0
@@ -3485,17 +3721,37 @@ B_BitMap::~B_BitMap()
 // address: 0x10009060
 p10009060
 {
-    ProcedureInfo(this=Id(this), this_offset=-16, local_size=16, stack_delta=None)
+    ProcedureInfo(this=Id(this), this_offset=-16, local_size=16, stack_delta=4)
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000002) == 0x00000000)
     {
         goto l100090DB;
     }
-    STACKVAR(-12, 4) = ACCESS(STACKVAR(-16, 4), -4, 4);
+    STACKVAR(-12, 4) = ACCESS(this, -4, 4);
     STACKVAR(-8, 4) = 0x00000018;
-    STACKVAR(-4, 4) = STACKVAR(-16, 4);
-    REGDEF(ecx=STACKVAR(-8, 4))
+    STACKVAR(-4, 4) = this;
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + reinterpret_cast<any_int32>(STACKVAR(-8, 4)) * reinterpret_cast<any_int32>(STACKVAR(-12, 4));
+l10009098:
+    STACKVAR(-12, 4) = reinterpret_cast<any_int32>(STACKVAR(-12, 4)) - 0x00000001;
+    if (reinterpret_cast<int>(STACKVAR(-12, 4)) >= 0)
+    {
+        STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) - reinterpret_cast<any_int32>(STACKVAR(-8, 4));
+        reinterpret_cast<B_BitMap *>(STACKVAR(-4, 4))->~B_BitMap();
+        goto l10009098;
+    }
+    if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
+    {
+        ??3@YAXPAX@Z(reinterpret_cast<any_int32>(this) - 0x00000004);
+    }
+    REGDEF(eax=reinterpret_cast<any_int32>(this) - 0x00000004)
+    return;
+l100090DB:
+    reinterpret_cast<B_BitMap *>(this)->~B_BitMap();
+    if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
+    {
+        ??3@YAXPAX@Z(this);
+    }
+    REGDEF(eax=this)
 }
-Failed to find pattern for 'imul ecx, dword ptr [ebp-00Ch]'
 
 // address: 0x10009110
 p10009110
@@ -5623,9 +5879,17 @@ p10011DDE
     ProcedureInfo(this=None, this_offset=None, local_size=28, stack_delta=None)
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 320, 4);
     STACKVAR(-28, 4) = ACCESS(STACKVAR(8, 4), 216, 4);
-    REGDEF(edx=0x00000005 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 56, 4)))
+    STACKVAR(-8, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x00000004 * 0x00000005 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 56, 4)) * reinterpret_cast<any_int32>(STACKVAR(-28, 4)));
+    STACKVAR(-24, 4) = 0x00000000;
+    STACKVAR(-20, 4) = ACCESS(STACKVAR(8, 4), 64, 4);
+    goto l10011E47;
+l10011E35:
+    STACKVAR(-24, 4) = reinterpret_cast<any_int32>(STACKVAR(-24, 4)) + 0x00000001;
+    STACKVAR(-20, 4) = reinterpret_cast<any_int32>(STACKVAR(-20, 4)) + 0x00000054;
+l10011E47:
+    REGDEF(cmpl=STACKVAR(-24, 4), cmpr=ACCESS(STACKVAR(8, 4), 56, 4))
 }
-Failed to find pattern for 'imul edx, dword ptr [ebp-01Ch]'
+Failed to find pattern for 'jnl l10011F23'
 
 // address: 0x10011F30
 p10011F30
@@ -5684,9 +5948,18 @@ p100121E7
     STACKVAR(-8, 4) = 0x00000008 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(12, 4), 28, 4));
     STACKVAR(-20, 4) = reinterpret_cast<int>(ACCESS(STACKVAR(8, 4), 212, 4)) / reinterpret_cast<int>(ACCESS(STACKVAR(12, 4), 8, 4));
     STACKVAR(-44, 4) = reinterpret_cast<int>(ACCESS(STACKVAR(8, 4), 216, 4)) / reinterpret_cast<int>(ACCESS(STACKVAR(12, 4), 12, 4));
-    REGDEF(edx=STACKVAR(-20, 4))
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-20, 4)) * reinterpret_cast<any_int32>(STACKVAR(-44, 4));
+    STACKVAR(-56, 4) = reinterpret_cast<int>(STACKVAR(-4, 4)) / 2;
+    unknown_function_10012353(STACKVAR(16, 4), ACCESS(STACKVAR(8, 4), 216, 4), ACCESS(STACKVAR(8, 4), 28, 4), reinterpret_cast<any_int32>(STACKVAR(-8, 4)) * reinterpret_cast<any_int32>(STACKVAR(-20, 4)));
+    STACKVAR(-48, 4) = 0x00000000;
+    STACKVAR(-32, 4) = 0x00000000;
+    goto l10012272;
+l10012269:
+    STACKVAR(-32, 4) = reinterpret_cast<any_int32>(STACKVAR(-32, 4)) + 0x00000001;
+l10012272:
+    REGDEF(cmpl=STACKVAR(-32, 4), cmpr=ACCESS(STACKVAR(12, 4), 12, 4))
 }
-Failed to find pattern for 'imul edx, dword ptr [ebp-02Ch]'
+Failed to find pattern for 'jnl l1001234F'
 
 // address: 0x10012353
 p10012353
@@ -8296,9 +8569,19 @@ p1001C28B
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 384, 4);
     unknown_function_1001BD40(STACKVAR(8, 4));
     unknown_function_1001C61D(STACKVAR(8, 4));
-    REGDEF(edx=STACKVAR(8, 4), eax=ACCESS(STACKVAR(8, 4), 92, 4))
+    STACKVAR(-16, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 92, 4)) * reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 100, 4));
+    STACKVAR(-12, 4) = STACKVAR(-16, 4);
+    if (STACKVAR(-12, 4) == STACKVAR(-16, 4))
+    {
+        goto l1001C2ED;
+    }
+    ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x00000046;
+    ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 0, 4)(STACKVAR(8, 4));
+l1001C2ED:
+    ACCESS(STACKVAR(-4, 4), 12, 4) = 0x00000000;
+    unknown_function_1001C089(STACKVAR(8, 4));
 }
-Failed to find pattern for 'imul eax, dword ptr [edx+064h]'
+'al'
 
 // address: 0x1001C61D
 p1001C61D
@@ -8394,14 +8677,26 @@ p1001C912
 // address: 0x1001C960
 p1001C960
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=0)
     STACKVAR(-4, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x00000030);
     ACCESS(STACKVAR(8, 4), 416, 4) = STACKVAR(-4, 4);
     ACCESS(STACKVAR(-4, 4), 0, 4) = GLOBAL(0x1001CB39);
     ACCESS(STACKVAR(-4, 4), 8, 1) = 0;
-    REGDEF(edx=STACKVAR(8, 4), eax=ACCESS(STACKVAR(8, 4), 92, 4))
+    ACCESS(STACKVAR(-4, 4), 40, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 92, 4)) * reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 100, 4));
+    if (ACCESS(STACKVAR(8, 4), 276, 4) == 0x00000002)
+    {
+        ACCESS(STACKVAR(-4, 4), 4, 4) = GLOBAL(0x1001CB60);
+        ACCESS(STACKVAR(-4, 4), 12, 4) = GLOBAL(0x1001CEF2);
+        ACCESS(STACKVAR(-4, 4), 32, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 4, 4)(STACKVAR(8, 4), 0x00000001, ACCESS(STACKVAR(-4, 4), 40, 4));
+    }
+    else
+    {
+        ACCESS(STACKVAR(-4, 4), 4, 4) = GLOBAL(0x1001CC76);
+        ACCESS(STACKVAR(-4, 4), 12, 4) = GLOBAL(0x1001CCC7);
+        ACCESS(STACKVAR(-4, 4), 32, 4) = 0x00000000;
+    }
+    unknown_function_1001CA18(STACKVAR(8, 4));
 }
-Failed to find pattern for 'imul eax, dword ptr [edx+064h]'
 
 // address: 0x1001CA18
 p1001CA18
@@ -8630,26 +8925,23 @@ Failed to find pattern for 'shl edx, cl'
 // address: 0x1001E580
 p1001E580
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=0)
     STACKVAR(-4, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x0000001C);
     ACCESS(STACKVAR(8, 4), 396, 4) = STACKVAR(-4, 4);
     ACCESS(STACKVAR(-4, 4), 0, 4) = GLOBAL(0x1001E668);
     ACCESS(STACKVAR(-4, 4), 8, 4) = 0x00000000;
     ACCESS(STACKVAR(-4, 4), 12, 4) = 0x00000000;
-    if (static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 74, 1)) == 0x00000000)
+    if (static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 74, 1)) != 0)
     {
-        goto l1001E664;
+        ACCESS(STACKVAR(-4, 4), 16, 4) = ACCESS(STACKVAR(8, 4), 276, 4);
+        if ((reinterpret_cast<any_int32>(STACKVAR(12, 4)) & 0x000000FF) != 0x00000000)
+        {
+            ACCESS(STACKVAR(-4, 4), 8, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 16, 4)(STACKVAR(8, 4), 0x00000001, 0x00000000, reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 92, 4)) * reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 100, 4)), unknown_function_100268B3(ACCESS(STACKVAR(8, 4), 96, 4), ACCESS(STACKVAR(-4, 4), 16, 4)), ACCESS(STACKVAR(-4, 4), 16, 4));
+            return;
+        }
+        ACCESS(STACKVAR(-4, 4), 12, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 8, 4)(STACKVAR(8, 4), 0x00000001, reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 92, 4)) * reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 100, 4)), ACCESS(STACKVAR(-4, 4), 16, 4));
     }
-    ACCESS(STACKVAR(-4, 4), 16, 4) = ACCESS(STACKVAR(8, 4), 276, 4);
-    if ((reinterpret_cast<any_int32>(STACKVAR(12, 4)) & 0x000000FF) == 0x00000000)
-    {
-        goto l1001E637;
-    }
-    ARG(ACCESS(STACKVAR(-4, 4), 16, 4));
-    ARG(unknown_function_100268B3(ACCESS(STACKVAR(8, 4), 96, 4), ACCESS(STACKVAR(-4, 4), 16, 4)));
-    REGDEF(eax=STACKVAR(8, 4), ecx=ACCESS(STACKVAR(8, 4), 92, 4))
 }
-Failed to find pattern for 'imul ecx, dword ptr [eax+064h]'
 
 // address: 0x1001E668
 p1001E668
@@ -8919,52 +9211,44 @@ Failed to find pattern for 'jnl l1001F46B'
 // address: 0x1001F5B0
 p1001F5B0
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=0)
     ACCESS(STACKVAR(8, 4), 64, 1) = 0x01;
-    if (static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 201, 1)) == 0x00000000)
+    if (static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 201, 1)) != 0)
     {
-        goto l1001F5E6;
+        ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x00000001;
+        ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 0, 4)(STACKVAR(8, 4));
     }
-    ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x00000001;
-    ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 0, 4)(STACKVAR(8, 4));
-    goto l1001F60F;
-l1001F5E6:
-    if (static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 200, 1)) == 0x00000000)
+    else if (static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 200, 1)) != 0)
     {
-        goto l1001F603;
+        unknown_function_1001D220(STACKVAR(8, 4));
     }
-    unknown_function_1001D220(STACKVAR(8, 4));
-    goto l1001F60F;
-l1001F603:
-    unknown_function_10016F06(STACKVAR(8, 4));
-l1001F60F:
+    else
+    {
+        unknown_function_10016F06(STACKVAR(8, 4));
+    }
     unknown_function_100145B0(STACKVAR(8, 4), 0x00000001);
     ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 24, 4)(STACKVAR(8, 4));
     ACCESS(ACCESS(STACKVAR(8, 4), 400, 4), 8, 4)(STACKVAR(8, 4));
-    if (ACCESS(STACKVAR(8, 4), 8, 4) == 0x00000000)
+    if (ACCESS(STACKVAR(8, 4), 8, 4) != 0x00000000)
     {
-        goto l1001F6CE;
+        if (static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 200, 1)) != 0)
+        {
+            STACKVAR(-4, 4) = 0x00000003 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 36, 4)) + 0x00000002;
+        }
+        else if (static_cast<unsigned int>(ACCESS(ACCESS(STACKVAR(8, 4), 400, 4), 16, 1)) != 0)
+        {
+            STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 36, 4);
+        }
+        else
+        {
+            STACKVAR(-4, 4) = 0x00000001;
+        }
+        ACCESS(ACCESS(STACKVAR(8, 4), 8, 4), 4, 4) = 0x00000000;
+        ACCESS(ACCESS(STACKVAR(8, 4), 8, 4), 8, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 284, 4)) * reinterpret_cast<any_int32>(STACKVAR(-4, 4));
+        ACCESS(ACCESS(STACKVAR(8, 4), 8, 4), 12, 4) = 0x00000000;
+        ACCESS(ACCESS(STACKVAR(8, 4), 8, 4), 16, 4) = 0x00000001;
     }
-    if (static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 200, 1)) == 0x00000000)
-    {
-        goto l1001F66D;
-    }
-    STACKVAR(-4, 4) = 0x00000003 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 36, 4)) + 0x00000002;
-    goto l1001F691;
-l1001F66D:
-    if (static_cast<unsigned int>(ACCESS(ACCESS(STACKVAR(8, 4), 400, 4), 16, 1)) == 0x00000000)
-    {
-        goto l1001F68A;
-    }
-    STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 36, 4);
-    goto l1001F691;
-l1001F68A:
-    STACKVAR(-4, 4) = 0x00000001;
-l1001F691:
-    ACCESS(ACCESS(STACKVAR(8, 4), 8, 4), 4, 4) = 0x00000000;
-    REGDEF(edx=ACCESS(STACKVAR(8, 4), 284, 4))
 }
-Failed to find pattern for 'imul edx, dword ptr [ebp-004h]'
 
 // address: 0x1001F6E0
 p1001F6E0
@@ -9509,9 +9793,32 @@ l10022E46:
     {
         goto l10022E7E;
     }
-    REGDEF(edx=STACKVAR(-24, 4), eax=ACCESS(STACKVAR(-24, 4), 12, 4))
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + reinterpret_cast<any_int32>(ACCESS(STACKVAR(-24, 4), 12, 4)) * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-24, 4), 8, 4));
+    STACKVAR(-12, 4) = reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + reinterpret_cast<any_int32>(ACCESS(STACKVAR(-24, 4), 4, 4)) * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-24, 4), 8, 4));
+l10022E7E:
+    goto l10022E3D;
+l10022E80:
+    STACKVAR(-8, 4) = ACCESS(STACKVAR(-16, 4), 72, 4);
+    goto l10022E94;
+l10022E8B:
+    STACKVAR(-8, 4) = ACCESS(STACKVAR(-8, 4), 36, 4);
+l10022E94:
+    if (STACKVAR(-8, 4) == 0x00000000)
+    {
+        goto l10022ED4;
+    }
+    if (ACCESS(STACKVAR(-8, 4), 0, 4) != 0x00000000)
+    {
+        goto l10022ED2;
+    }
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000080 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-8, 4), 12, 4)) * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-8, 4), 8, 4));
+    STACKVAR(-12, 4) = reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + 0x00000080 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-8, 4), 4, 4)) * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-8, 4), 8, 4));
+l10022ED2:
+    goto l10022E8B;
+l10022ED4:
+    REGDEF(cmpl=STACKVAR(-4, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'imul eax, dword ptr [edx+008h]'
+Failed to find pattern for 'jg l10022EDF'
 
 // address: 0x100230E4
 p100230E4
@@ -9527,9 +9834,15 @@ p100232EE
 {
     ProcedureInfo(this=None, this_offset=None, local_size=36, stack_delta=None)
     STACKVAR(-12, 4) = ACCESS(STACKVAR(12, 4), 8, 4);
-    REGDEF(eax=ACCESS(STACKVAR(12, 4), 24, 4))
+    STACKVAR(-8, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(12, 4), 24, 4)) * reinterpret_cast<any_int32>(STACKVAR(-12, 4));
+    STACKVAR(-20, 4) = 0x00000000;
+    goto l1002331F;
+l10023313:
+    STACKVAR(-20, 4) = reinterpret_cast<any_int32>(STACKVAR(-20, 4)) + reinterpret_cast<any_int32>(ACCESS(STACKVAR(12, 4), 20, 4));
+l1002331F:
+    REGDEF(cmpl=STACKVAR(-20, 4), cmpr=ACCESS(STACKVAR(12, 4), 16, 4))
 }
-Failed to find pattern for 'imul eax, dword ptr [ebp-00Ch]'
+Failed to find pattern for 'jnl l10023437'
 
 // address: 0x1002343B
 p1002343B
@@ -9545,9 +9858,15 @@ p10023648
 {
     ProcedureInfo(this=None, this_offset=None, local_size=36, stack_delta=None)
     STACKVAR(-12, 4) = 0x00000080 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(12, 4), 8, 4));
-    REGDEF(eax=ACCESS(STACKVAR(12, 4), 24, 4))
+    STACKVAR(-8, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(12, 4), 24, 4)) * reinterpret_cast<any_int32>(STACKVAR(-12, 4));
+    STACKVAR(-20, 4) = 0x00000000;
+    goto l1002367C;
+l10023670:
+    STACKVAR(-20, 4) = reinterpret_cast<any_int32>(STACKVAR(-20, 4)) + reinterpret_cast<any_int32>(ACCESS(STACKVAR(12, 4), 20, 4));
+l1002367C:
+    REGDEF(cmpl=STACKVAR(-20, 4), cmpr=ACCESS(STACKVAR(12, 4), 16, 4))
 }
-Failed to find pattern for 'imul eax, dword ptr [ebp-00Ch]'
+Failed to find pattern for 'jnl l10023794'
 
 // address: 0x10023798
 p10023798
@@ -10561,38 +10880,39 @@ Failed to find pattern for 'mov edx, dword ptr [edx+esi*04h]'
 // address: 0x100271BE
 B_BitMap24 &B_BitMap24::operator=(const B_BitMap24 &that)
 {
-    ProcedureInfo(this=Id(this), this_offset=-12, local_size=12, stack_delta=None)
-    if (ACCESS(STACKVAR(-12, 4), 4, 4) != ACCESS(STACKVAR(8, 4), 4, 4))
+    if (this->dimension1 != that.dimension1)
     {
         goto l100271E9;
     }
-    if (ACCESS(STACKVAR(-12, 4), 8, 4) == ACCESS(STACKVAR(8, 4), 8, 4))
+    if (this->dimension2 == that.dimension2)
     {
         goto l10027270;
     }
 l100271E9:
-    ACCESS(STACKVAR(-12, 4), 4, 4) = ACCESS(STACKVAR(8, 4), 4, 4);
-    ACCESS(STACKVAR(-12, 4), 8, 4) = ACCESS(STACKVAR(8, 4), 8, 4);
-    STACKVAR(-4, 4) = ACCESS(STACKVAR(-12, 4), 12, 4);
+    this->dimension1 = that.dimension1;
+    this->dimension2 = that.dimension2;
+    STACKVAR(-4, 4) = this->data;
     ??3@YAXPAX@Z(STACKVAR(-4, 4));
-    if (ACCESS(STACKVAR(-12, 4), 4, 4) == 0x00000000)
+    if (this->dimension1 == 0)
     {
         goto l10027228;
     }
-    if (ACCESS(STACKVAR(-12, 4), 8, 4) != 0x00000000)
+    if (this->dimension2 != 0)
     {
         goto l1002724B;
     }
 l10027228:
-    ACCESS(STACKVAR(-12, 4), 8, 4) = 0x00000000;
-    ACCESS(STACKVAR(-12, 4), 4, 4) = 0x00000000;
-    ACCESS(STACKVAR(-12, 4), 12, 4) = 0x00000000;
-    REGDEF(eax=STACKVAR(-12, 4))
-    goto l1002729D;
+    this->dimension2 = 0;
+    this->dimension1 = 0;
+    this->data = nullptr;
+    return *this;
 l1002724B:
-    REGDEF(eax=STACKVAR(-12, 4), ecx=ACCESS(STACKVAR(-12, 4), 4, 4))
+    STACKVAR(-8, 4) = ??2@YAPAXI@Z(3 * this->dimension1 * this->dimension2);
+    this->data = reinterpret_cast<void *>(STACKVAR(-8, 4));
+l10027270:
+    memcpy(this->data, that.data, 3 * this->dimension1 * this->dimension2); // TODO improve emitting of memcpy instructions
+    return *this;
 }
-Failed to find pattern for 'imul ecx, dword ptr [eax+008h]'
 
 // address: 0x100272A5
 unsigned int B_BitMap24::SetBits(int arg_1, int arg_2, const char *arg_3, const char *arg_4)
@@ -10756,17 +11076,34 @@ Failed to find pattern for 'jns l10028206'
 void B_BitMap24::EscribeArchivoRAW(const char *arg_1)
 {
     ProcedureInfo(this=Id(this), this_offset=-12, local_size=12, stack_delta=None)
-    REGDEF(ecx=STACKVAR(-12, 4), edx=ACCESS(STACKVAR(-12, 4), 4, 4))
+    STACKVAR(-8, 4) = 0x00000003 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-12, 4), 4, 4)) * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-12, 4), 8, 4));
+    STACKVAR(-4, 4) = fopen(STACKVAR(8, 4), GLOBAL(0x10048824));
+    if (STACKVAR(-4, 4) != 0x00000000)
+    {
+        goto l1002838C;
+    }
+    goto l100283C7;
+l1002838C:
+    fwrite(ACCESS(STACKVAR(-12, 4), 12, 4), 0x00000001, STACKVAR(-8, 4), STACKVAR(-4, 4));
+    REGDEF(cmpl=STACKVAR(-8, 4))
 }
-Failed to find pattern for 'imul edx, dword ptr [ecx+008h]'
+'eax'
 
 // address: 0x100283CD
 p100283CD
 {
     ProcedureInfo(this=Id(this), this_offset=-20, local_size=20, stack_delta=None)
-    REGDEF(ecx=STACKVAR(-20, 4), edx=ACCESS(STACKVAR(-20, 4), 4, 4))
+    STACKVAR(-12, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-20, 4), 4, 4)) * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-20, 4), 8, 4));
+    STACKVAR(-4, 4) = ACCESS(STACKVAR(-20, 4), 12, 4);
+    STACKVAR(-8, 4) = 0x00000000;
+    goto l1002840A;
+l100283F8:
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000003;
+    STACKVAR(-8, 4) = reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + 0x00000001;
+l1002840A:
+    REGDEF(cmpl=STACKVAR(-8, 4), cmpr=STACKVAR(-12, 4))
 }
-Failed to find pattern for 'imul edx, dword ptr [ecx+008h]'
+Failed to find pattern for 'jnl l10028430'
 
 // address: 0x10028434
 p10028434
@@ -10905,77 +11242,83 @@ Failed to find pattern for 'movsx ecx, word ptr [ebp-04Ch]'
 // address: 0x10029510
 p10029510
 {
-    ProcedureInfo(this=Id(this), this_offset=-580, local_size=580, stack_delta=None)
+    ProcedureInfo(this=Id(this), this_offset=-580, local_size=580, stack_delta=4)
     STACKVAR(-428, 4) = unknown_function_1001F6E0(LOCAL(-564));
     unknown_function_10013490(LOCAL(-428), 0x0000003E, 0x000001AC);
     STACKVAR(-432, 4) = fopen(STACKVAR(8, 4), GLOBAL(0x10048828));
-    if (STACKVAR(-432, 4) != 0x00000000)
+    if (STACKVAR(-432, 4) == 0x00000000)
     {
-        goto l10029591;
+        mout << vararg(reinterpret_cast<char *>(GLOBAL(0x1004882C)), STACKVAR(8, 4));
+        REGDEF(eax=0x00000000)
+        return;
     }
-    unknown_function_1002A2C3(GLOBAL(0x1004A53C), unknown_function_10029BE0(GLOBAL(0x1004882C), STACKVAR(8, 4)));
-    REGDEF(eax=0x00000000)
-    goto l100296FA;
-l10029591:
     unknown_function_100143E0(LOCAL(-428), STACKVAR(-432, 4));
     unknown_function_10013624(LOCAL(-428), 0x00000001);
-    if (STACKVAR(-392, 4) == 0x00000003)
+    if (STACKVAR(-392, 4) != 0x00000003)
     {
-        goto l100295DA;
+        mout << reinterpret_cast<char *>(GLOBAL(0x10048848));
+        REGDEF(eax=0x00000000)
+        return;
     }
-    unknown_function_1002A2C3(GLOBAL(0x1004A53C), GLOBAL(0x10048848));
-    REGDEF(eax=0x00000000)
-    goto l100296FA;
-l100295DA:
-    if (ACCESS(STACKVAR(-580, 4), 4, 4) != STACKVAR(-400, 4))
+    if (ACCESS(this, 4, 4) != STACKVAR(-400, 4))
     {
         goto l100295FC;
     }
-    if (ACCESS(STACKVAR(-580, 4), 8, 4) == STACKVAR(-396, 4))
+    if (ACCESS(this, 8, 4) == STACKVAR(-396, 4))
     {
         goto l1002966C;
     }
 l100295FC:
-    STACKVAR(-572, 4) = ACCESS(STACKVAR(-580, 4), 12, 4);
+    STACKVAR(-572, 4) = ACCESS(this, 12, 4);
     ??3@YAXPAX@Z(STACKVAR(-572, 4));
-    ACCESS(STACKVAR(-580, 4), 4, 4) = STACKVAR(-400, 4);
-    ACCESS(STACKVAR(-580, 4), 8, 4) = STACKVAR(-396, 4);
-    REGDEF(ecx=STACKVAR(-580, 4), edx=ACCESS(STACKVAR(-580, 4), 4, 4))
+    ACCESS(this, 4, 4) = STACKVAR(-400, 4);
+    ACCESS(this, 8, 4) = STACKVAR(-396, 4);
+    STACKVAR(-576, 4) = ??2@YAPAXI@Z(0x00000003 * reinterpret_cast<any_int32>(ACCESS(this, 4, 4)) * reinterpret_cast<any_int32>(ACCESS(this, 8, 4)));
+    ACCESS(this, 12, 4) = STACKVAR(-576, 4);
+l1002966C:
+    unknown_function_10013C80(LOCAL(-428));
+    while (reinterpret_cast<unsigned int>(STACKVAR(-308, 4)) < reinterpret_cast<unsigned int>(STACKVAR(-332, 4)))
+    {
+        STACKVAR(-568, 4) = reinterpret_cast<any_int32>(ACCESS(this, 12, 4)) + 0x00000003 * reinterpret_cast<any_int32>(STACKVAR(-308, 4)) * reinterpret_cast<any_int32>(ACCESS(this, 4, 4));
+        unknown_function_10013EFA(LOCAL(-428), LOCAL(-568), 0x00000001);
+    }
+    unknown_function_10013B69(LOCAL(-428));
+    unknown_function_10013602(LOCAL(-428));
+    fclose(STACKVAR(-432, 4));
+    REGDEF(eax=0x00000001)
 }
-Failed to find pattern for 'imul edx, dword ptr [ecx+008h]'
 
 // address: 0x10029700
 int B_BitMap24::SaveToJPEG(const char *arg_1, int arg_2)
 {
-    ProcedureInfo(this=Id(this), this_offset=-508, local_size=508, stack_delta=None)
     STACKVAR(-356, 4) = unknown_function_1001F6E0(LOCAL(-500));
     unknown_function_100096A0(LOCAL(-356), 0x0000003E, 0x00000164);
-    STACKVAR(-368, 4) = fopen(STACKVAR(8, 4), GLOBAL(0x10048870));
-    if (STACKVAR(-368, 4) != 0x00000000)
+    STACKVAR(-368, 4) = fopen(arg_1, GLOBAL(0x10048870));
+    if (STACKVAR(-368, 4) == 0x00000000)
     {
-        goto l10029781;
+        mout << vararg(reinterpret_cast<char *>(GLOBAL(0x10048874)), arg_1);
+        return 0;
     }
-    unknown_function_1002A2C3(GLOBAL(0x1004A53C), unknown_function_10029BE0(GLOBAL(0x10048874), STACKVAR(8, 4)));
-    REGDEF(eax=0x00000000)
-    goto l1002989B;
-l10029781:
     unknown_function_10014240(LOCAL(-356), STACKVAR(-368, 4));
-    STACKVAR(-328, 4) = ACCESS(STACKVAR(-508, 4), 4, 4);
-    STACKVAR(-324, 4) = ACCESS(STACKVAR(-508, 4), 8, 4);
+    STACKVAR(-328, 4) = this->dimension1;
+    STACKVAR(-324, 4) = this->dimension2;
     STACKVAR(-320, 4) = 0x00000003;
     STACKVAR(-316, 4) = 0x00000002;
     unknown_function_1000F895(LOCAL(-356));
-    unknown_function_1000F86D(LOCAL(-356), STACKVAR(12, 4), 0x00000001);
+    unknown_function_1000F86D(LOCAL(-356), arg_2, 0x00000001);
     unknown_function_10009C20(LOCAL(-356), 0x00000001);
-    STACKVAR(-360, 4) = 0x00000003 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-508, 4), 4, 4));
-l10029810:
-    if (reinterpret_cast<unsigned int>(STACKVAR(-152, 4)) >= reinterpret_cast<unsigned int>(STACKVAR(-324, 4)))
+    STACKVAR(-360, 4) = 3 * this->dimension1;
+    while (reinterpret_cast<unsigned int>(STACKVAR(-152, 4)) < reinterpret_cast<unsigned int>(STACKVAR(-324, 4)))
     {
-        goto l10029868;
+        STACKVAR(-504, 4) = reinterpret_cast<any_int32>(this->data) + 0x00000003 * reinterpret_cast<any_int32>(STACKVAR(-152, 4)) * this->dimension1;
+        STACKVAR(-364, 4) = STACKVAR(-504, 4);
+        unknown_function_10009CD5(LOCAL(-356), LOCAL(-364), 0x00000001);
     }
-    REGDEF(edx=STACKVAR(-508, 4), eax=STACKVAR(-152, 4))
+    unknown_function_100098C9(LOCAL(-356));
+    fclose(STACKVAR(-368, 4));
+    unknown_function_1000980C(LOCAL(-356));
+    return 1;
 }
-Failed to find pattern for 'imul eax, dword ptr [edx+004h]'
 
 // address: 0x100298B0
 p100298B0
@@ -11098,17 +11441,37 @@ p10029AC0
 // address: 0x10029B30
 p10029B30
 {
-    ProcedureInfo(this=Id(this), this_offset=-16, local_size=16, stack_delta=None)
+    ProcedureInfo(this=Id(this), this_offset=-16, local_size=16, stack_delta=4)
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000002) == 0x00000000)
     {
         goto l10029BAB;
     }
-    STACKVAR(-12, 4) = ACCESS(STACKVAR(-16, 4), -4, 4);
+    STACKVAR(-12, 4) = ACCESS(this, -4, 4);
     STACKVAR(-8, 4) = 0x00000014;
-    STACKVAR(-4, 4) = STACKVAR(-16, 4);
-    REGDEF(ecx=STACKVAR(-8, 4))
+    STACKVAR(-4, 4) = this;
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + reinterpret_cast<any_int32>(STACKVAR(-8, 4)) * reinterpret_cast<any_int32>(STACKVAR(-12, 4));
+l10029B68:
+    STACKVAR(-12, 4) = reinterpret_cast<any_int32>(STACKVAR(-12, 4)) - 0x00000001;
+    if (reinterpret_cast<int>(STACKVAR(-12, 4)) >= 0)
+    {
+        STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) - reinterpret_cast<any_int32>(STACKVAR(-8, 4));
+        STACKVAR(-4, 4)->unknown_method_1002994D();
+        goto l10029B68;
+    }
+    if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
+    {
+        ??3@YAXPAX@Z(reinterpret_cast<any_int32>(this) - 0x00000004);
+    }
+    REGDEF(eax=reinterpret_cast<any_int32>(this) - 0x00000004)
+    return;
+l10029BAB:
+    this->unknown_method_1002994D();
+    if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
+    {
+        ??3@YAXPAX@Z(this);
+    }
+    REGDEF(eax=this)
 }
-Failed to find pattern for 'imul ecx, dword ptr [ebp-00Ch]'
 
 // address: 0x10029BE0
 char *vararg(const char *format)
@@ -12060,18 +12423,16 @@ l10031FB6:
 // address: 0x10032003
 p10032003
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=32, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=32, stack_delta=0)
     STACKVAR(-28, 4) = reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000008;
     if (ACCESS(STACKVAR(-28, 4), 16, 4) == 0x00000000)
     {
         goto l100320A0;
     }
-    if (ACCESS(STACKVAR(-28, 4), 16, 4) != 0x00000000)
+    if (ACCESS(STACKVAR(-28, 4), 16, 4) == 0x00000000)
     {
-        goto l1003202A;
+        goto l100320A0;
     }
-    goto l100320A0;
-l1003202A:
     if (0x00000001 == 0x00000000)
     {
         goto l1003206D;
@@ -12081,13 +12442,12 @@ l1003202A:
 l1003203C:
     STACKVAR(-16, 4) = reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000001;
 l10032045:
-    if (reinterpret_cast<unsigned int>(STACKVAR(-16, 4)) >= reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-28, 4), 8, 4)))
+    if (reinterpret_cast<unsigned int>(STACKVAR(-16, 4)) < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-28, 4), 8, 4)))
     {
-        goto l1003206D;
+        STACKVAR(-20, 4) = ACCESS(ARRPTR(ACCESS(STACKVAR(-28, 4), 4, 4), 0x04, STACKVAR(-16, 4), 0), 0, 4);
+        ??3@YAXPAX@Z(STACKVAR(-20, 4));
+        goto l1003203C;
     }
-    STACKVAR(-20, 4) = ACCESS(ARRPTR(ACCESS(STACKVAR(-28, 4), 4, 4), 0x04, STACKVAR(-16, 4), 0), 0, 4);
-    ??3@YAXPAX@Z(STACKVAR(-20, 4));
-    goto l1003203C;
 l1003206D:
     STACKVAR(-24, 4) = ACCESS(STACKVAR(-28, 4), 4, 4);
     ??3@YAXPAX@Z(STACKVAR(-24, 4));
@@ -12095,10 +12455,38 @@ l1003206D:
     ACCESS(STACKVAR(-28, 4), 8, 4) = 0x00000000;
     ACCESS(STACKVAR(-28, 4), 16, 4) = 0x00000000;
 l100320A0:
-    unknown_function_10001BEF(STACKVAR(8, 4), reinterpret_cast<any_int32>(STACKVAR(-28, 4)) + 0x00000008);
-    REGDEF(eax=(reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-28, 4), 8, 4)) + reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-28, 4), 12, 4)) - 1) / reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-28, 4), 12, 4)), edx=STACKVAR(-28, 4))
+    reinterpret_cast<B_IDataFile &>(STACKVAR(8, 4)) >> reinterpret_cast<unsigned int &>(reinterpret_cast<any_int32>(STACKVAR(-28, 4)) + 0x00000008);
+    ACCESS(STACKVAR(-28, 4), 16, 4) = (reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-28, 4), 8, 4)) + reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-28, 4), 12, 4)) - 1) / reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-28, 4), 12, 4)) * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-28, 4), 12, 4));
+    if (ACCESS(STACKVAR(-28, 4), 16, 4) == 0x00000000)
+    {
+        goto l10032171;
+    }
+    STACKVAR(-8, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-28, 4), 16, 4)));
+    ACCESS(STACKVAR(-28, 4), 4, 4) = STACKVAR(-8, 4);
+    STACKVAR(-4, 4) = 0x00000000;
+    goto l10032115;
+l1003210C:
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000001;
+l10032115:
+    if (reinterpret_cast<unsigned int>(STACKVAR(-4, 4)) < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-28, 4), 8, 4)))
+    {
+        STACKVAR(-12, 4) = ??2@YAPAXI@Z(0x0000001C);
+        if (STACKVAR(-12, 4) != 0x00000000)
+        {
+            STACKVAR(-32, 4) = STACKVAR(-12, 4)->unknown_method_10031EA0();
+        }
+        else
+        {
+            STACKVAR(-32, 4) = 0x00000000;
+        }
+        ACCESS(ARRPTR(ACCESS(STACKVAR(-28, 4), 4, 4), 0x04, STACKVAR(-4, 4), 0), 0, 4) = STACKVAR(-32, 4);
+        unknown_function_10031F48(STACKVAR(8, 4), ACCESS(ARRPTR(ACCESS(STACKVAR(-28, 4), 4, 4), 0x04, STACKVAR(-4, 4), 0), 0, 4));
+        goto l1003210C;
+    }
+l10032171:
+    reinterpret_cast<B_IDataFile &>(STACKVAR(8, 4)) >> reinterpret_cast<int &>(STACKVAR(12, 4)) >> reinterpret_cast<int &>(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000004);
+    REGDEF(eax=STACKVAR(8, 4))
 }
-Failed to find pattern for 'imul eax, dword ptr [edx+00Ch]'
 
 // address: 0x100321A0
 p100321A0
@@ -12676,9 +13064,183 @@ l10035952:
     ACCESS(STACKVAR(-532, 4), 16, 4) = 0x00000000;
 l10035997:
     unknown_function_10001BEF(STACKVAR(-528, 4), reinterpret_cast<any_int32>(STACKVAR(-532, 4)) + 0x00000008);
-    REGDEF(eax=(reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-532, 4), 8, 4)) + reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-532, 4), 12, 4)) - 1) / reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-532, 4), 12, 4)), edx=STACKVAR(-532, 4))
+    ACCESS(STACKVAR(-532, 4), 16, 4) = (reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-532, 4), 8, 4)) + reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-532, 4), 12, 4)) - 1) / reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-532, 4), 12, 4)) * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-532, 4), 12, 4));
+    if (ACCESS(STACKVAR(-532, 4), 16, 4) == 0x00000000)
+    {
+        goto l10035AB7;
+    }
+    STACKVAR(-512, 4) = ACCESS(STACKVAR(-532, 4), 16, 4);
+    STACKVAR(-520, 4) = ??2@YAPAXI@Z(0x00000030 * reinterpret_cast<any_int32>(STACKVAR(-512, 4)));
+    if (STACKVAR(-520, 4) == 0x00000000)
+    {
+        goto l10035A4C;
+    }
+    unknown_function_100395E0(STACKVAR(-520, 4), 0x00000030, STACKVAR(-512, 4), GLOBAL(0x1003D740));
+    STACKVAR(-680, 4) = STACKVAR(-520, 4);
+    goto l10035A56;
+l10035A4C:
+    STACKVAR(-680, 4) = 0x00000000;
+l10035A56:
+    ACCESS(STACKVAR(-532, 4), 4, 4) = STACKVAR(-680, 4);
+    STACKVAR(-516, 4) = 0x00000000;
+    goto l10035A80;
+l10035A71:
+    STACKVAR(-516, 4) = reinterpret_cast<any_int32>(STACKVAR(-516, 4)) + 0x00000001;
+l10035A80:
+    if (reinterpret_cast<unsigned int>(STACKVAR(-516, 4)) >= reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-532, 4), 8, 4)))
+    {
+        goto l10035AB7;
+    }
+    unknown_function_100321A0(STACKVAR(-528, 4), reinterpret_cast<any_int32>(ACCESS(STACKVAR(-532, 4), 4, 4)) + 0x00000030 * reinterpret_cast<any_int32>(STACKVAR(-516, 4)));
+    goto l10035A71;
+l10035AB7:
+    STACKVAR(-548, 4) = reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000038;
+    if (ACCESS(STACKVAR(-548, 4), 16, 4) == 0x00000000)
+    {
+        goto l10035B22;
+    }
+    if (ACCESS(STACKVAR(-548, 4), 16, 4) != 0x00000000)
+    {
+        goto l10035ADD;
+    }
+    goto l10035B22;
+l10035ADD:
+    STACKVAR(-544, 4) = ACCESS(STACKVAR(-548, 4), 4, 4);
+    ??3@YAXPAX@Z(STACKVAR(-544, 4));
+    ACCESS(STACKVAR(-548, 4), 4, 4) = 0x00000000;
+    ACCESS(STACKVAR(-548, 4), 8, 4) = 0x00000000;
+    ACCESS(STACKVAR(-548, 4), 16, 4) = 0x00000000;
+l10035B22:
+    unknown_function_10001BEF(STACKVAR(-528, 4), reinterpret_cast<any_int32>(STACKVAR(-548, 4)) + 0x00000008);
+    ACCESS(STACKVAR(-548, 4), 16, 4) = (reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-548, 4), 8, 4)) + reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-548, 4), 12, 4)) - 1) / reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-548, 4), 12, 4)) * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-548, 4), 12, 4));
+    if (ACCESS(STACKVAR(-548, 4), 16, 4) == 0x00000000)
+    {
+        goto l10035BF7;
+    }
+    STACKVAR(-540, 4) = ??2@YAPAXI@Z(0x00000038 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-548, 4), 16, 4)));
+    ACCESS(STACKVAR(-548, 4), 4, 4) = STACKVAR(-540, 4);
+    STACKVAR(-536, 4) = 0x00000000;
+    goto l10035BC0;
+l10035BB1:
+    STACKVAR(-536, 4) = reinterpret_cast<any_int32>(STACKVAR(-536, 4)) + 0x00000001;
+l10035BC0:
+    if (reinterpret_cast<unsigned int>(STACKVAR(-536, 4)) >= reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-548, 4), 8, 4)))
+    {
+        goto l10035BF7;
+    }
+    unknown_function_1003236C(STACKVAR(-528, 4), reinterpret_cast<any_int32>(ACCESS(STACKVAR(-548, 4), 4, 4)) + 0x00000038 * reinterpret_cast<any_int32>(STACKVAR(-536, 4)));
+    goto l10035BB1;
+l10035BF7:
+    unknown_function_10001BEF(STACKVAR(8, 4), LOCAL(-20));
+    if (reinterpret_cast<unsigned int>(STACKVAR(-20, 4)) <= 1)
+    {
+        goto l10035C19;
+    }
+    ACCESS(GLOBAL(0x100488B8), 0, 4) = 0x40000000;
+    goto l10035C23;
+l10035C19:
+    ACCESS(GLOBAL(0x100488B8), 0, 4) = 0x3F800000;
+l10035C23:
+    if ((reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000004)->unknown_method_100035D2(GLOBAL(0x10048904)) == 0x00000000)
+    {
+        goto l10035C41;
+    }
+    ACCESS(GLOBAL(0x100488B8), 0, 4) = 0x3F800000;
+l10035C41:
+    STACKVAR(-568, 4) = reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x0000004C;
+    if (ACCESS(STACKVAR(-568, 4), 16, 4) != 0x00000000)
+    {
+        goto l10035C5E;
+    }
+    goto l10035D2B;
+l10035C5E:
+    if (0x00000001 == 0x00000000)
+    {
+        goto l10035CE6;
+    }
+    STACKVAR(-552, 4) = 0x00000000;
+    goto l10035C82;
+l10035C73:
+    STACKVAR(-552, 4) = reinterpret_cast<any_int32>(STACKVAR(-552, 4)) + 0x00000001;
+l10035C82:
+    if (reinterpret_cast<unsigned int>(STACKVAR(-552, 4)) >= reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-568, 4), 8, 4)))
+    {
+        goto l10035CE6;
+    }
+    STACKVAR(-560, 4) = ACCESS(ARRPTR(ACCESS(STACKVAR(-568, 4), 4, 4), 0x04, STACKVAR(-552, 4), 0), 0, 4);
+    STACKVAR(-556, 4) = STACKVAR(-560, 4);
+    if (STACKVAR(-556, 4) == 0x00000000)
+    {
+        goto l10035CDA;
+    }
+    STACKVAR(-684, 4) = STACKVAR(-556, 4)->(ACCESS(ACCESS(STACKVAR(-556, 4), 0, 4), 0, 4))(0x00000001);
+    goto l10035CE4;
+l10035CDA:
+    STACKVAR(-684, 4) = 0x00000000;
+l10035CE4:
+    goto l10035C73;
+l10035CE6:
+    STACKVAR(-564, 4) = ACCESS(STACKVAR(-568, 4), 4, 4);
+    ??3@YAXPAX@Z(STACKVAR(-564, 4));
+    ACCESS(STACKVAR(-568, 4), 4, 4) = 0x00000000;
+    ACCESS(STACKVAR(-568, 4), 8, 4) = 0x00000000;
+    ACCESS(STACKVAR(-568, 4), 16, 4) = 0x00000000;
+l10035D2B:
+    STACKVAR(-12, 4) = 0x00000000;
+    goto l10035D3D;
+l10035D34:
+    STACKVAR(-12, 4) = reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + 0x00000001;
+l10035D3D:
+    if (reinterpret_cast<unsigned int>(STACKVAR(-12, 4)) >= reinterpret_cast<unsigned int>(STACKVAR(-20, 4)))
+    {
+        goto l10035F4F;
+    }
+    STACKVAR(-44, 4) = ??2@YAPAXI@Z(0x000000AC);
+    if (STACKVAR(-44, 4) == 0x00000000)
+    {
+        goto l10035DAE;
+    }
+    STACKVAR(-44, 4)->unknown_method_100039E5();
+    (reinterpret_cast<any_int32>(STACKVAR(-44, 4)) + 0x00000010)->unknown_method_1002E190();
+    STACKVAR(-572, 4) = reinterpret_cast<any_int32>(STACKVAR(-44, 4)) + 0x00000090;
+    STACKVAR(-572, 4)->unknown_method_10039F20(0x00000001);
+    ACCESS(STACKVAR(-572, 4), 0, 4) = GLOBAL(0x10042D94);
+    ACCESS(STACKVAR(-44, 4), 0, 4) = GLOBAL(0x10042D90);
+    STACKVAR(-688, 4) = STACKVAR(-44, 4);
+    goto l10035DB8;
+l10035DAE:
+    STACKVAR(-688, 4) = 0x00000000;
+l10035DB8:
+    STACKVAR(-4, 4) = STACKVAR(-688, 4);
+    unknown_function_10032524(STACKVAR(8, 4), STACKVAR(-4, 4));
+    STACKVAR(-596, 4) = reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x0000004C;
+    if (reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-596, 4), 16, 4)) <= reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-596, 4), 8, 4)))
+    {
+        goto l10035E23;
+    }
+    ACCESS(ARRPTR(ACCESS(STACKVAR(-596, 4), 4, 4), 0x04, ACCESS(STACKVAR(-596, 4), 8, 4), 0), 0, 4) = STACKVAR(-4, 4);
+    ACCESS(STACKVAR(-596, 4), 8, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-596, 4), 8, 4)) + 0x00000001;
+    goto l10035F4A;
+l10035E23:
+    ACCESS(STACKVAR(-596, 4), 16, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-596, 4), 16, 4)) + reinterpret_cast<any_int32>(ACCESS(STACKVAR(-596, 4), 12, 4));
+    if (ACCESS(STACKVAR(-596, 4), 8, 4) == 0x00000000)
+    {
+        goto l10035EF3;
+    }
+    STACKVAR(-584, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-596, 4), 16, 4)));
+    STACKVAR(-576, 4) = STACKVAR(-584, 4);
+    STACKVAR(-580, 4) = 0x00000000;
+    goto l10035E90;
+l10035E81:
+    STACKVAR(-580, 4) = reinterpret_cast<any_int32>(STACKVAR(-580, 4)) + 0x00000001;
+l10035E90:
+    if (reinterpret_cast<unsigned int>(STACKVAR(-580, 4)) >= reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-596, 4), 8, 4)))
+    {
+        goto l10035EC4;
+    }
+    REGDEF(ecx=ACCESS(STACKVAR(-596, 4), 4, 4), edx=STACKVAR(-580, 4), eax=STACKVAR(-576, 4), esi=STACKVAR(-580, 4))
 }
-Failed to find pattern for 'imul eax, dword ptr [edx+00Ch]'
+Failed to find pattern for 'mov ecx, dword ptr [ecx+esi*04h]'
 
 // address: 0x100369F0
 p100369F0
@@ -13316,9 +13878,207 @@ p1003896F
     STACKVAR(-220, 4)->unknown_method_1003B840(0x00000001);
 l100389D9:
     unknown_function_10001BEF(STACKVAR(8, 4), reinterpret_cast<any_int32>(STACKVAR(-220, 4)) + 0x00000008);
-    REGDEF(eax=(reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-220, 4), 8, 4)) + reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-220, 4), 12, 4)) - 1) / reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-220, 4), 12, 4)), edx=STACKVAR(-220, 4))
+    ACCESS(STACKVAR(-220, 4), 16, 4) = (reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-220, 4), 8, 4)) + reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-220, 4), 12, 4)) - 1) / reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-220, 4), 12, 4)) * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-220, 4), 12, 4));
+    if (ACCESS(STACKVAR(-220, 4), 16, 4) == 0x00000000)
+    {
+        goto l10038B44;
+    }
+    STACKVAR(-208, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-220, 4), 16, 4)));
+    ACCESS(STACKVAR(-220, 4), 4, 4) = STACKVAR(-208, 4);
+    STACKVAR(-204, 4) = 0x00000000;
+    goto l10038A78;
+l10038A69:
+    STACKVAR(-204, 4) = reinterpret_cast<any_int32>(STACKVAR(-204, 4)) + 0x00000001;
+l10038A78:
+    if (reinterpret_cast<unsigned int>(STACKVAR(-204, 4)) >= reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-220, 4), 8, 4)))
+    {
+        goto l10038B44;
+    }
+    STACKVAR(-212, 4) = ??2@YAPAXI@Z(0x00000024);
+    if (STACKVAR(-212, 4) == 0x00000000)
+    {
+        goto l10038AFE;
+    }
+    STACKVAR(-216, 4) = reinterpret_cast<any_int32>(STACKVAR(-212, 4)) + 0x00000008;
+    ACCESS(STACKVAR(-216, 4), 0, 8) = 0.0;
+    ACCESS(STACKVAR(-216, 4), 8, 8) = 0.0;
+    ACCESS(STACKVAR(-216, 4), 16, 8) = 0.0;
+    STACKVAR(-316, 4) = STACKVAR(-212, 4);
+    goto l10038B08;
+l10038AFE:
+    STACKVAR(-316, 4) = 0x00000000;
+l10038B08:
+    ACCESS(ARRPTR(ACCESS(STACKVAR(-220, 4), 4, 4), 0x04, STACKVAR(-204, 4), 0), 0, 4) = STACKVAR(-316, 4);
+    unknown_function_100327E1(STACKVAR(8, 4), ACCESS(ARRPTR(ACCESS(STACKVAR(-220, 4), 4, 4), 0x04, STACKVAR(-204, 4), 0), 0, 4));
+    goto l10038A69;
+l10038B44:
+    STACKVAR(-240, 4) = reinterpret_cast<any_int32>(STACKVAR(-312, 4)) + 0x00000024;
+    if (ACCESS(STACKVAR(-240, 4), 16, 4) == 0x00000000)
+    {
+        goto l10038BB2;
+    }
+    if (ACCESS(STACKVAR(-240, 4), 16, 4) != 0x00000000)
+    {
+        goto l10038B6D;
+    }
+    goto l10038BB2;
+l10038B6D:
+    STACKVAR(-236, 4) = ACCESS(STACKVAR(-240, 4), 4, 4);
+    ??3@YAXPAX@Z(STACKVAR(-236, 4));
+    ACCESS(STACKVAR(-240, 4), 4, 4) = 0x00000000;
+    ACCESS(STACKVAR(-240, 4), 8, 4) = 0x00000000;
+    ACCESS(STACKVAR(-240, 4), 16, 4) = 0x00000000;
+l10038BB2:
+    unknown_function_10001BEF(STACKVAR(8, 4), reinterpret_cast<any_int32>(STACKVAR(-240, 4)) + 0x00000008);
+    ACCESS(STACKVAR(-240, 4), 16, 4) = (reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-240, 4), 8, 4)) + reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-240, 4), 12, 4)) - 1) / reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-240, 4), 12, 4)) * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-240, 4), 12, 4));
+    if (ACCESS(STACKVAR(-240, 4), 16, 4) == 0x00000000)
+    {
+        goto l10038CCC;
+    }
+    STACKVAR(-224, 4) = ACCESS(STACKVAR(-240, 4), 16, 4);
+    STACKVAR(-232, 4) = ??2@YAPAXI@Z(0x00000030 * reinterpret_cast<any_int32>(STACKVAR(-224, 4)));
+    if (STACKVAR(-232, 4) == 0x00000000)
+    {
+        goto l10038C64;
+    }
+    unknown_function_100395E0(STACKVAR(-232, 4), 0x00000030, STACKVAR(-224, 4), GLOBAL(0x1003D740));
+    STACKVAR(-320, 4) = STACKVAR(-232, 4);
+    goto l10038C6E;
+l10038C64:
+    STACKVAR(-320, 4) = 0x00000000;
+l10038C6E:
+    ACCESS(STACKVAR(-240, 4), 4, 4) = STACKVAR(-320, 4);
+    STACKVAR(-228, 4) = 0x00000000;
+    goto l10038C98;
+l10038C89:
+    STACKVAR(-228, 4) = reinterpret_cast<any_int32>(STACKVAR(-228, 4)) + 0x00000001;
+l10038C98:
+    if (reinterpret_cast<unsigned int>(STACKVAR(-228, 4)) >= reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-240, 4), 8, 4)))
+    {
+        goto l10038CCC;
+    }
+    unknown_function_100321A0(STACKVAR(8, 4), reinterpret_cast<any_int32>(ACCESS(STACKVAR(-240, 4), 4, 4)) + 0x00000030 * reinterpret_cast<any_int32>(STACKVAR(-228, 4)));
+    goto l10038C89;
+l10038CCC:
+    STACKVAR(-252, 4) = reinterpret_cast<any_int32>(STACKVAR(-312, 4)) + 0x00000038;
+    if (ACCESS(STACKVAR(-252, 4), 16, 4) == 0x00000000)
+    {
+        goto l10038CF2;
+    }
+    STACKVAR(-252, 4)->unknown_method_1003B8D0();
+l10038CF2:
+    unknown_function_10001BEF(STACKVAR(8, 4), reinterpret_cast<any_int32>(STACKVAR(-252, 4)) + 0x00000008);
+    ACCESS(STACKVAR(-252, 4), 16, 4) = (reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-252, 4), 8, 4)) + reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-252, 4), 12, 4)) - 1) / reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-252, 4), 12, 4)) * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-252, 4), 12, 4));
+    if (ACCESS(STACKVAR(-252, 4), 16, 4) == 0x00000000)
+    {
+        goto l10038DC1;
+    }
+    STACKVAR(-248, 4) = ??2@YAPAXI@Z(0x00000038 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-252, 4), 16, 4)));
+    ACCESS(STACKVAR(-252, 4), 4, 4) = STACKVAR(-248, 4);
+    STACKVAR(-244, 4) = 0x00000000;
+    goto l10038D8D;
+l10038D7E:
+    STACKVAR(-244, 4) = reinterpret_cast<any_int32>(STACKVAR(-244, 4)) + 0x00000001;
+l10038D8D:
+    if (reinterpret_cast<unsigned int>(STACKVAR(-244, 4)) >= reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-252, 4), 8, 4)))
+    {
+        goto l10038DC1;
+    }
+    unknown_function_1003236C(STACKVAR(8, 4), reinterpret_cast<any_int32>(ACCESS(STACKVAR(-252, 4), 4, 4)) + 0x00000038 * reinterpret_cast<any_int32>(STACKVAR(-244, 4)));
+    goto l10038D7E;
+l10038DC1:
+    STACKVAR(-268, 4) = reinterpret_cast<any_int32>(STACKVAR(-312, 4)) + 0x0000004C;
+    if (ACCESS(STACKVAR(-268, 4), 16, 4) == 0x00000000)
+    {
+        goto l10038DE9;
+    }
+    STACKVAR(-268, 4)->unknown_method_10039F60(0x00000001);
+l10038DE9:
+    unknown_function_10001BEF(STACKVAR(8, 4), reinterpret_cast<any_int32>(STACKVAR(-268, 4)) + 0x00000008);
+    ACCESS(STACKVAR(-268, 4), 16, 4) = (reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-268, 4), 8, 4)) + reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-268, 4), 12, 4)) - 1) / reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-268, 4), 12, 4)) * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-268, 4), 12, 4));
+    if (ACCESS(STACKVAR(-268, 4), 16, 4) == 0x00000000)
+    {
+        goto l10038F0E;
+    }
+    STACKVAR(-260, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-268, 4), 16, 4)));
+    ACCESS(STACKVAR(-268, 4), 4, 4) = STACKVAR(-260, 4);
+    STACKVAR(-256, 4) = 0x00000000;
+    goto l10038E88;
+l10038E79:
+    STACKVAR(-256, 4) = reinterpret_cast<any_int32>(STACKVAR(-256, 4)) + 0x00000001;
+l10038E88:
+    if (reinterpret_cast<unsigned int>(STACKVAR(-256, 4)) >= reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-268, 4), 8, 4)))
+    {
+        goto l10038F0E;
+    }
+    STACKVAR(-264, 4) = ??2@YAPAXI@Z(0x000000AC);
+    if (STACKVAR(-264, 4) == 0x00000000)
+    {
+        goto l10038EC8;
+    }
+    STACKVAR(-324, 4) = STACKVAR(-264, 4)->unknown_method_10039EA0();
+    goto l10038ED2;
+l10038EC8:
+    STACKVAR(-324, 4) = 0x00000000;
+l10038ED2:
+    ACCESS(ARRPTR(ACCESS(STACKVAR(-268, 4), 4, 4), 0x04, STACKVAR(-256, 4), 0), 0, 4) = STACKVAR(-324, 4);
+    unknown_function_10032524(STACKVAR(8, 4), ACCESS(ARRPTR(ACCESS(STACKVAR(-268, 4), 4, 4), 0x04, STACKVAR(-256, 4), 0), 0, 4));
+    goto l10038E79;
+l10038F0E:
+    STACKVAR(-280, 4) = reinterpret_cast<any_int32>(STACKVAR(-312, 4)) + 0x00000064;
+    if (ACCESS(STACKVAR(-280, 4), 16, 4) == 0x00000000)
+    {
+        goto l10038F34;
+    }
+    STACKVAR(-280, 4)->unknown_method_1003B980();
+l10038F34:
+    unknown_function_10001BEF(STACKVAR(8, 4), reinterpret_cast<any_int32>(STACKVAR(-280, 4)) + 0x00000008);
+    ACCESS(STACKVAR(-280, 4), 16, 4) = (reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-280, 4), 8, 4)) + reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-280, 4), 12, 4)) - 1) / reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-280, 4), 12, 4)) * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-280, 4), 12, 4));
+    if (ACCESS(STACKVAR(-280, 4), 16, 4) == 0x00000000)
+    {
+        goto l10038FFB;
+    }
+    STACKVAR(-276, 4) = ??2@YAPAXI@Z(ACCESS(STACKVAR(-280, 4), 16, 4));
+    ACCESS(STACKVAR(-280, 4), 4, 4) = STACKVAR(-276, 4);
+    STACKVAR(-272, 4) = 0x00000000;
+    goto l10038FCC;
+l10038FBD:
+    STACKVAR(-272, 4) = reinterpret_cast<any_int32>(STACKVAR(-272, 4)) + 0x00000001;
+l10038FCC:
+    if (reinterpret_cast<unsigned int>(STACKVAR(-272, 4)) >= reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-280, 4), 8, 4)))
+    {
+        goto l10038FFB;
+    }
+    unknown_function_10001B6B(STACKVAR(8, 4), reinterpret_cast<any_int32>(ACCESS(STACKVAR(-280, 4), 4, 4)) + reinterpret_cast<any_int32>(STACKVAR(-272, 4)));
+    goto l10038FBD;
+l10038FFB:
+    STACKVAR(-292, 4) = reinterpret_cast<any_int32>(STACKVAR(-312, 4)) + 0x00000078;
+    if (ACCESS(STACKVAR(-292, 4), 16, 4) == 0x00000000)
+    {
+        goto l10039021;
+    }
+    STACKVAR(-292, 4)->unknown_method_1003B9D0();
+l10039021:
+    unknown_function_10001BEF(STACKVAR(8, 4), reinterpret_cast<any_int32>(STACKVAR(-292, 4)) + 0x00000008);
+    ACCESS(STACKVAR(-292, 4), 16, 4) = (reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-292, 4), 8, 4)) + reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-292, 4), 12, 4)) - 1) / reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-292, 4), 12, 4)) * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-292, 4), 12, 4));
+    if (ACCESS(STACKVAR(-292, 4), 16, 4) == 0x00000000)
+    {
+        goto l100390EE;
+    }
+    STACKVAR(-288, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-292, 4), 16, 4)));
+    ACCESS(STACKVAR(-292, 4), 4, 4) = STACKVAR(-288, 4);
+    STACKVAR(-284, 4) = 0x00000000;
+    goto l100390BC;
+l100390AD:
+    STACKVAR(-284, 4) = reinterpret_cast<any_int32>(STACKVAR(-284, 4)) + 0x00000001;
+l100390BC:
+    if (reinterpret_cast<unsigned int>(STACKVAR(-284, 4)) >= reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-292, 4), 8, 4)))
+    {
+        goto l100390EE;
+    }
+    REGDEF(edx=ACCESS(STACKVAR(-292, 4), 4, 4), eax=STACKVAR(-284, 4))
 }
-Failed to find pattern for 'imul eax, dword ptr [edx+00Ch]'
+Failed to find pattern for 'lea ecx, [edx+eax*04h]'
 
 // address: 0x100395E0
 p100395E0
@@ -13432,17 +14192,37 @@ p10039830
 // address: 0x100398B0
 p100398B0
 {
-    ProcedureInfo(this=Id(this), this_offset=-16, local_size=16, stack_delta=None)
+    ProcedureInfo(this=Id(this), this_offset=-16, local_size=16, stack_delta=4)
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000002) == 0x00000000)
     {
         goto l1003992C;
     }
-    STACKVAR(-12, 4) = ACCESS(STACKVAR(-16, 4), -4, 4);
+    STACKVAR(-12, 4) = ACCESS(this, -4, 4);
     STACKVAR(-8, 4) = 0x00000024;
-    STACKVAR(-4, 4) = STACKVAR(-16, 4);
-    REGDEF(ecx=STACKVAR(-8, 4))
+    STACKVAR(-4, 4) = this;
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + reinterpret_cast<any_int32>(STACKVAR(-8, 4)) * reinterpret_cast<any_int32>(STACKVAR(-12, 4));
+l100398E8:
+    STACKVAR(-12, 4) = reinterpret_cast<any_int32>(STACKVAR(-12, 4)) - 0x00000001;
+    if (reinterpret_cast<int>(STACKVAR(-12, 4)) >= 0)
+    {
+        STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) - reinterpret_cast<any_int32>(STACKVAR(-8, 4));
+        ACCESS(STACKVAR(-4, 4), 0, 4) = GLOBAL(0x10042D3C);
+        goto l100398E8;
+    }
+    if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
+    {
+        ??3@YAXPAX@Z(reinterpret_cast<any_int32>(this) - 0x00000004);
+    }
+    REGDEF(eax=reinterpret_cast<any_int32>(this) - 0x00000004)
+    return;
+l1003992C:
+    ACCESS(this, 0, 4) = GLOBAL(0x10042D3C);
+    if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
+    {
+        ??3@YAXPAX@Z(this);
+    }
+    REGDEF(eax=this)
 }
-Failed to find pattern for 'imul ecx, dword ptr [ebp-00Ch]'
 
 // address: 0x10039960
 p10039960
@@ -13815,10 +14595,59 @@ p1003A010
 // address: 0x1003A050
 p1003A050
 {
-    ProcedureInfo(this=Id(this), this_offset=-28, local_size=32, stack_delta=None)
-    REGDEF(eax=(reinterpret_cast<unsigned int>(STACKVAR(8, 4)) + reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-28, 4), 12, 4)) - 1) / reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-28, 4), 12, 4)), edx=STACKVAR(-28, 4))
+    ProcedureInfo(this=Id(this), this_offset=-28, local_size=32, stack_delta=8)
+    STACKVAR(-4, 4) = (reinterpret_cast<unsigned int>(STACKVAR(8, 4)) + reinterpret_cast<unsigned int>(ACCESS(this, 12, 4)) - 1) / reinterpret_cast<unsigned int>(ACCESS(this, 12, 4)) * reinterpret_cast<any_int32>(ACCESS(this, 12, 4));
+    if (reinterpret_cast<unsigned int>(ACCESS(this, 8, 4)) < reinterpret_cast<unsigned int>(STACKVAR(8, 4)))
+    {
+        STACKVAR(-32, 4) = ACCESS(this, 8, 4);
+    }
+    else
+    {
+        STACKVAR(-32, 4) = STACKVAR(8, 4);
+    }
+    STACKVAR(-12, 4) = STACKVAR(-32, 4);
+    if (ACCESS(this, 16, 4) == STACKVAR(-4, 4))
+    {
+        goto l1003A14E;
+    }
+    STACKVAR(-8, 4) = ACCESS(this, 4, 4);
+    ACCESS(this, 16, 4) = STACKVAR(-4, 4);
+    if (ACCESS(this, 16, 4) != 0x00000000)
+    {
+        STACKVAR(-20, 4) = ??2@YAPAXI@Z(ACCESS(this, 16, 4));
+        ACCESS(this, 4, 4) = STACKVAR(-20, 4);
+        if (ACCESS(this, 4, 4) == 0x00000000)
+        {
+            ACCESS(this, 4, 4) = ACCESS(this, 4, 4);
+        }
+    }
+    else
+    {
+        ACCESS(this, 4, 4) = 0x00000000;
+    }
+    if (STACKVAR(12, 4) == 0x00000000)
+    {
+        goto l1003A136;
+    }
+    STACKVAR(-16, 4) = 0x00000000;
+    goto l1003A118;
+l1003A10F:
+    STACKVAR(-16, 4) = reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000001;
+l1003A118:
+    if (reinterpret_cast<unsigned int>(STACKVAR(-16, 4)) < reinterpret_cast<unsigned int>(STACKVAR(-12, 4)))
+    {
+        ACCESS(ARRPTR(ACCESS(this, 4, 4), 1, STACKVAR(-16, 4), 0), 0, 1) = ACCESS(reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + reinterpret_cast<any_int32>(STACKVAR(-16, 4)), 0, 1);
+        goto l1003A10F;
+    }
+l1003A136:
+    if (STACKVAR(-8, 4) != 0x00000000)
+    {
+        STACKVAR(-24, 4) = STACKVAR(-8, 4);
+        ??3@YAXPAX@Z(STACKVAR(-24, 4));
+    }
+l1003A14E:
+    ACCESS(this, 8, 4) = STACKVAR(8, 4);
 }
-Failed to find pattern for 'imul eax, dword ptr [edx+00Ch]'
 
 // address: 0x1003A160
 p1003A160
@@ -15919,17 +16748,15 @@ l1003C911:
 // address: 0x1003C930
 p1003C930
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=60, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=60, stack_delta=0)
     if (ACCESS(STACKVAR(12, 4), 16, 4) == 0x00000000)
     {
         goto l1003CAA3;
     }
-    if (ACCESS(STACKVAR(12, 4), 16, 4) != 0x00000000)
+    if (ACCESS(STACKVAR(12, 4), 16, 4) == 0x00000000)
     {
-        goto l1003C951;
+        goto l1003CAA3;
     }
-    goto l1003CAA3;
-l1003C951:
     if (0x00000001 == 0x00000000)
     {
         goto l1003CA70;
@@ -15956,12 +16783,10 @@ l1003C970:
         goto l1003CA44;
     }
     STACKVAR(-44, 4) = ACCESS(STACKVAR(-48, 4), 20, 4);
-    if (ACCESS(STACKVAR(-48, 4), 16, 4) != 0x00000000)
+    if (ACCESS(STACKVAR(-48, 4), 16, 4) == 0x00000000)
     {
-        goto l1003C9D1;
+        goto l1003CA44;
     }
-    goto l1003CA44;
-l1003C9D1:
     if (STACKVAR(-44, 4) == 0x00000000)
     {
         goto l1003CA11;
@@ -15971,13 +16796,12 @@ l1003C9D1:
 l1003C9E0:
     STACKVAR(-32, 4) = reinterpret_cast<any_int32>(STACKVAR(-32, 4)) + 0x00000001;
 l1003C9E9:
-    if (reinterpret_cast<unsigned int>(STACKVAR(-32, 4)) >= reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-48, 4), 8, 4)))
+    if (reinterpret_cast<unsigned int>(STACKVAR(-32, 4)) < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-48, 4), 8, 4)))
     {
-        goto l1003CA11;
+        STACKVAR(-36, 4) = ACCESS(ARRPTR(ACCESS(STACKVAR(-48, 4), 4, 4), 0x04, STACKVAR(-32, 4), 0), 0, 4);
+        ??3@YAXPAX@Z(STACKVAR(-36, 4));
+        goto l1003C9E0;
     }
-    STACKVAR(-36, 4) = ACCESS(ARRPTR(ACCESS(STACKVAR(-48, 4), 4, 4), 0x04, STACKVAR(-32, 4), 0), 0, 4);
-    ??3@YAXPAX@Z(STACKVAR(-36, 4));
-    goto l1003C9E0;
 l1003CA11:
     STACKVAR(-40, 4) = ACCESS(STACKVAR(-48, 4), 4, 4);
     ??3@YAXPAX@Z(STACKVAR(-40, 4));
@@ -15985,12 +16809,10 @@ l1003CA11:
     ACCESS(STACKVAR(-48, 4), 8, 4) = 0x00000000;
     ACCESS(STACKVAR(-48, 4), 16, 4) = 0x00000000;
 l1003CA44:
-    if ((0x00000001 & 0x00000001) == 0x00000000)
+    if ((0x00000001 & 0x00000001) != 0x00000000)
     {
-        goto l1003CA5C;
+        ??3@YAXPAX@Z(STACKVAR(-20, 4));
     }
-    ??3@YAXPAX@Z(STACKVAR(-20, 4));
-l1003CA5C:
     STACKVAR(-56, 4) = STACKVAR(-20, 4);
     goto l1003CA6B;
 l1003CA64:
@@ -16004,25 +16826,58 @@ l1003CA70:
     ACCESS(STACKVAR(12, 4), 8, 4) = 0x00000000;
     ACCESS(STACKVAR(12, 4), 16, 4) = 0x00000000;
 l1003CAA3:
-    unknown_function_10001BEF(STACKVAR(8, 4), reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000008);
-    REGDEF(eax=(reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 8, 4)) + reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 12, 4)) - 1) / reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 12, 4)), edx=STACKVAR(12, 4))
+    reinterpret_cast<B_IDataFile &>(STACKVAR(8, 4)) >> reinterpret_cast<unsigned int &>(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000008);
+    ACCESS(STACKVAR(12, 4), 16, 4) = (reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 8, 4)) + reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 12, 4)) - 1) / reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 12, 4)) * reinterpret_cast<any_int32>(ACCESS(STACKVAR(12, 4), 12, 4));
+    if (ACCESS(STACKVAR(12, 4), 16, 4) == 0x00000000)
+    {
+        goto l1003CBC3;
+    }
+    STACKVAR(-8, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(12, 4), 16, 4)));
+    ACCESS(STACKVAR(12, 4), 4, 4) = STACKVAR(-8, 4);
+    STACKVAR(-4, 4) = 0x00000000;
+    goto l1003CB18;
+l1003CB0F:
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000001;
+l1003CB18:
+    if (reinterpret_cast<unsigned int>(STACKVAR(-4, 4)) < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 8, 4)))
+    {
+        STACKVAR(-12, 4) = ??2@YAPAXI@Z(0x00000020);
+        if (STACKVAR(-12, 4) != 0x00000000)
+        {
+            STACKVAR(-52, 4) = reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + 0x00000008;
+            ACCESS(STACKVAR(-52, 4), 4, 4) = 0x00000000;
+            ACCESS(STACKVAR(-52, 4), 8, 4) = 0x00000000;
+            ACCESS(STACKVAR(-52, 4), 12, 4) = 0x00000010;
+            ACCESS(STACKVAR(-52, 4), 16, 4) = 0x00000000;
+            ACCESS(STACKVAR(-52, 4), 20, 4) = 0x00000001;
+            ACCESS(STACKVAR(-52, 4), 0, 4) = GLOBAL(0x10042E10);
+            ACCESS(STACKVAR(-52, 4), 0, 4) = GLOBAL(0x10042E3C);
+            STACKVAR(-60, 4) = STACKVAR(-12, 4);
+        }
+        else
+        {
+            STACKVAR(-60, 4) = 0x00000000;
+        }
+        ACCESS(ARRPTR(ACCESS(STACKVAR(12, 4), 4, 4), 0x04, STACKVAR(-4, 4), 0), 0, 4) = STACKVAR(-60, 4);
+        unknown_function_10032003(STACKVAR(8, 4), ACCESS(ARRPTR(ACCESS(STACKVAR(12, 4), 4, 4), 0x04, STACKVAR(-4, 4), 0), 0, 4));
+        goto l1003CB0F;
+    }
+l1003CBC3:
+    REGDEF(eax=STACKVAR(8, 4))
 }
-Failed to find pattern for 'imul eax, dword ptr [edx+00Ch]'
 
 // address: 0x1003CBD0
 p1003CBD0
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=36, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=36, stack_delta=0)
     if (ACCESS(STACKVAR(12, 4), 16, 4) == 0x00000000)
     {
         goto l1003CC7F;
     }
-    if (ACCESS(STACKVAR(12, 4), 16, 4) != 0x00000000)
+    if (ACCESS(STACKVAR(12, 4), 16, 4) == 0x00000000)
     {
-        goto l1003CBF1;
+        goto l1003CC7F;
     }
-    goto l1003CC7F;
-l1003CBF1:
     if (0x00000001 == 0x00000000)
     {
         goto l1003CC4C;
@@ -16032,22 +16887,20 @@ l1003CBF1:
 l1003CC03:
     STACKVAR(-16, 4) = reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000001;
 l1003CC0C:
-    if (reinterpret_cast<unsigned int>(STACKVAR(-16, 4)) >= reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 8, 4)))
+    if (reinterpret_cast<unsigned int>(STACKVAR(-16, 4)) < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 8, 4)))
     {
-        goto l1003CC4C;
+        STACKVAR(-24, 4) = ACCESS(ARRPTR(ACCESS(STACKVAR(12, 4), 4, 4), 0x04, STACKVAR(-16, 4), 0), 0, 4);
+        STACKVAR(-20, 4) = STACKVAR(-24, 4);
+        if (STACKVAR(-20, 4) != 0x00000000)
+        {
+            STACKVAR(-32, 4) = STACKVAR(-20, 4)->(ACCESS(ACCESS(STACKVAR(-20, 4), 0, 4), 0, 4))(0x00000001);
+        }
+        else
+        {
+            STACKVAR(-32, 4) = 0x00000000;
+        }
+        goto l1003CC03;
     }
-    STACKVAR(-24, 4) = ACCESS(ARRPTR(ACCESS(STACKVAR(12, 4), 4, 4), 0x04, STACKVAR(-16, 4), 0), 0, 4);
-    STACKVAR(-20, 4) = STACKVAR(-24, 4);
-    if (STACKVAR(-20, 4) == 0x00000000)
-    {
-        goto l1003CC43;
-    }
-    STACKVAR(-32, 4) = STACKVAR(-20, 4)->(ACCESS(ACCESS(STACKVAR(-20, 4), 0, 4), 0, 4))(0x00000001);
-    goto l1003CC4A;
-l1003CC43:
-    STACKVAR(-32, 4) = 0x00000000;
-l1003CC4A:
-    goto l1003CC03;
 l1003CC4C:
     STACKVAR(-28, 4) = ACCESS(STACKVAR(12, 4), 4, 4);
     ??3@YAXPAX@Z(STACKVAR(-28, 4));
@@ -16055,25 +16908,53 @@ l1003CC4C:
     ACCESS(STACKVAR(12, 4), 8, 4) = 0x00000000;
     ACCESS(STACKVAR(12, 4), 16, 4) = 0x00000000;
 l1003CC7F:
-    unknown_function_10001BEF(STACKVAR(8, 4), reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000008);
-    REGDEF(eax=(reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 8, 4)) + reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 12, 4)) - 1) / reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 12, 4)), edx=STACKVAR(12, 4))
+    reinterpret_cast<B_IDataFile &>(STACKVAR(8, 4)) >> reinterpret_cast<unsigned int &>(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000008);
+    ACCESS(STACKVAR(12, 4), 16, 4) = (reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 8, 4)) + reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 12, 4)) - 1) / reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 12, 4)) * reinterpret_cast<any_int32>(ACCESS(STACKVAR(12, 4), 12, 4));
+    if (ACCESS(STACKVAR(12, 4), 16, 4) == 0x00000000)
+    {
+        goto l1003CD6A;
+    }
+    STACKVAR(-8, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(12, 4), 16, 4)));
+    ACCESS(STACKVAR(12, 4), 4, 4) = STACKVAR(-8, 4);
+    STACKVAR(-4, 4) = 0x00000000;
+    goto l1003CCF4;
+l1003CCEB:
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000001;
+l1003CCF4:
+    if (reinterpret_cast<unsigned int>(STACKVAR(-4, 4)) < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 8, 4)))
+    {
+        STACKVAR(-12, 4) = ??2@YAPAXI@Z(0x00000090);
+        if (STACKVAR(-12, 4) != 0x00000000)
+        {
+            reinterpret_cast<B_NamedObj *>(STACKVAR(-12, 4))->B_NamedObj();
+            (reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + 0x0000000C)->unknown_method_1002E190();
+            ACCESS(STACKVAR(-12, 4), 0, 4) = GLOBAL(0x10042E40);
+            STACKVAR(-36, 4) = STACKVAR(-12, 4);
+        }
+        else
+        {
+            STACKVAR(-36, 4) = 0x00000000;
+        }
+        ACCESS(ARRPTR(ACCESS(STACKVAR(12, 4), 4, 4), 0x04, STACKVAR(-4, 4), 0), 0, 4) = STACKVAR(-36, 4);
+        unknown_function_10032871(STACKVAR(8, 4), ACCESS(ARRPTR(ACCESS(STACKVAR(12, 4), 4, 4), 0x04, STACKVAR(-4, 4), 0), 0, 4));
+        goto l1003CCEB;
+    }
+l1003CD6A:
+    REGDEF(eax=STACKVAR(8, 4))
 }
-Failed to find pattern for 'imul eax, dword ptr [edx+00Ch]'
 
 // address: 0x1003CD80
 p1003CD80
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=48, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=48, stack_delta=0)
     if (ACCESS(STACKVAR(12, 4), 16, 4) == 0x00000000)
     {
         goto l1003CE2F;
     }
-    if (ACCESS(STACKVAR(12, 4), 16, 4) != 0x00000000)
+    if (ACCESS(STACKVAR(12, 4), 16, 4) == 0x00000000)
     {
-        goto l1003CDA1;
+        goto l1003CE2F;
     }
-    goto l1003CE2F;
-l1003CDA1:
     if (0x00000001 == 0x00000000)
     {
         goto l1003CDFC;
@@ -16083,22 +16964,20 @@ l1003CDA1:
 l1003CDB3:
     STACKVAR(-16, 4) = reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000001;
 l1003CDBC:
-    if (reinterpret_cast<unsigned int>(STACKVAR(-16, 4)) >= reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 8, 4)))
+    if (reinterpret_cast<unsigned int>(STACKVAR(-16, 4)) < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 8, 4)))
     {
-        goto l1003CDFC;
+        STACKVAR(-24, 4) = ACCESS(ARRPTR(ACCESS(STACKVAR(12, 4), 4, 4), 0x04, STACKVAR(-16, 4), 0), 0, 4);
+        STACKVAR(-20, 4) = STACKVAR(-24, 4);
+        if (STACKVAR(-20, 4) != 0x00000000)
+        {
+            STACKVAR(-44, 4) = STACKVAR(-20, 4)->(ACCESS(ACCESS(STACKVAR(-20, 4), 0, 4), 0, 4))(0x00000001);
+        }
+        else
+        {
+            STACKVAR(-44, 4) = 0x00000000;
+        }
+        goto l1003CDB3;
     }
-    STACKVAR(-24, 4) = ACCESS(ARRPTR(ACCESS(STACKVAR(12, 4), 4, 4), 0x04, STACKVAR(-16, 4), 0), 0, 4);
-    STACKVAR(-20, 4) = STACKVAR(-24, 4);
-    if (STACKVAR(-20, 4) == 0x00000000)
-    {
-        goto l1003CDF3;
-    }
-    STACKVAR(-44, 4) = STACKVAR(-20, 4)->(ACCESS(ACCESS(STACKVAR(-20, 4), 0, 4), 0, 4))(0x00000001);
-    goto l1003CDFA;
-l1003CDF3:
-    STACKVAR(-44, 4) = 0x00000000;
-l1003CDFA:
-    goto l1003CDB3;
 l1003CDFC:
     STACKVAR(-28, 4) = ACCESS(STACKVAR(12, 4), 4, 4);
     ??3@YAXPAX@Z(STACKVAR(-28, 4));
@@ -16106,25 +16985,64 @@ l1003CDFC:
     ACCESS(STACKVAR(12, 4), 8, 4) = 0x00000000;
     ACCESS(STACKVAR(12, 4), 16, 4) = 0x00000000;
 l1003CE2F:
-    unknown_function_10001BEF(STACKVAR(8, 4), reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000008);
-    REGDEF(eax=(reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 8, 4)) + reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 12, 4)) - 1) / reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 12, 4)), edx=STACKVAR(12, 4))
+    reinterpret_cast<B_IDataFile &>(STACKVAR(8, 4)) >> reinterpret_cast<unsigned int &>(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000008);
+    ACCESS(STACKVAR(12, 4), 16, 4) = (reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 8, 4)) + reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 12, 4)) - 1) / reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 12, 4)) * reinterpret_cast<any_int32>(ACCESS(STACKVAR(12, 4), 12, 4));
+    if (ACCESS(STACKVAR(12, 4), 16, 4) == 0x00000000)
+    {
+        goto l1003CFC8;
+    }
+    STACKVAR(-8, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(12, 4), 16, 4)));
+    ACCESS(STACKVAR(12, 4), 4, 4) = STACKVAR(-8, 4);
+    STACKVAR(-4, 4) = 0x00000000;
+    goto l1003CEA4;
+l1003CE9B:
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000001;
+l1003CEA4:
+    if (reinterpret_cast<unsigned int>(STACKVAR(-4, 4)) < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 8, 4)))
+    {
+        STACKVAR(-12, 4) = ??2@YAPAXI@Z(0x00000058);
+        if (STACKVAR(-12, 4) != 0x00000000)
+        {
+            reinterpret_cast<B_NamedObj *>(STACKVAR(-12, 4))->B_NamedObj();
+            STACKVAR(-32, 4) = reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + 0x00000010;
+            ACCESS(STACKVAR(-32, 4), 0, 8) = 0.0;
+            ACCESS(STACKVAR(-32, 4), 8, 8) = 0.0;
+            ACCESS(STACKVAR(-32, 4), 16, 8) = 0.0;
+            STACKVAR(-36, 4) = reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + 0x00000028;
+            ACCESS(STACKVAR(-36, 4), 0, 8) = 0.0;
+            ACCESS(STACKVAR(-36, 4), 8, 8) = 0.0;
+            ACCESS(STACKVAR(-36, 4), 16, 8) = 0.0;
+            STACKVAR(-40, 4) = reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + 0x00000040;
+            ACCESS(STACKVAR(-40, 4), 0, 8) = 0.0;
+            ACCESS(STACKVAR(-40, 4), 8, 8) = 0.0;
+            ACCESS(STACKVAR(-40, 4), 16, 8) = 0.0;
+            ACCESS(STACKVAR(-12, 4), 0, 4) = GLOBAL(0x10042D98);
+            STACKVAR(-48, 4) = STACKVAR(-12, 4);
+        }
+        else
+        {
+            STACKVAR(-48, 4) = 0x00000000;
+        }
+        ACCESS(ARRPTR(ACCESS(STACKVAR(12, 4), 4, 4), 0x04, STACKVAR(-4, 4), 0), 0, 4) = STACKVAR(-48, 4);
+        unknown_function_100328ED(STACKVAR(8, 4), ACCESS(ARRPTR(ACCESS(STACKVAR(12, 4), 4, 4), 0x04, STACKVAR(-4, 4), 0), 0, 4));
+        goto l1003CE9B;
+    }
+l1003CFC8:
+    REGDEF(eax=STACKVAR(8, 4))
 }
-Failed to find pattern for 'imul eax, dword ptr [edx+00Ch]'
 
 // address: 0x1003CFD0
 p1003CFD0
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=44, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=44, stack_delta=0)
     if (ACCESS(STACKVAR(12, 4), 16, 4) == 0x00000000)
     {
         goto l1003D07F;
     }
-    if (ACCESS(STACKVAR(12, 4), 16, 4) != 0x00000000)
+    if (ACCESS(STACKVAR(12, 4), 16, 4) == 0x00000000)
     {
-        goto l1003CFF1;
+        goto l1003D07F;
     }
-    goto l1003D07F;
-l1003CFF1:
     if (0x00000001 == 0x00000000)
     {
         goto l1003D04C;
@@ -16134,22 +17052,20 @@ l1003CFF1:
 l1003D003:
     STACKVAR(-16, 4) = reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000001;
 l1003D00C:
-    if (reinterpret_cast<unsigned int>(STACKVAR(-16, 4)) >= reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 8, 4)))
+    if (reinterpret_cast<unsigned int>(STACKVAR(-16, 4)) < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 8, 4)))
     {
-        goto l1003D04C;
+        STACKVAR(-24, 4) = ACCESS(ARRPTR(ACCESS(STACKVAR(12, 4), 4, 4), 0x04, STACKVAR(-16, 4), 0), 0, 4);
+        STACKVAR(-20, 4) = STACKVAR(-24, 4);
+        if (STACKVAR(-20, 4) != 0x00000000)
+        {
+            STACKVAR(-40, 4) = STACKVAR(-20, 4)->(ACCESS(ACCESS(STACKVAR(-20, 4), 0, 4), 0, 4))(0x00000001);
+        }
+        else
+        {
+            STACKVAR(-40, 4) = 0x00000000;
+        }
+        goto l1003D003;
     }
-    STACKVAR(-24, 4) = ACCESS(ARRPTR(ACCESS(STACKVAR(12, 4), 4, 4), 0x04, STACKVAR(-16, 4), 0), 0, 4);
-    STACKVAR(-20, 4) = STACKVAR(-24, 4);
-    if (STACKVAR(-20, 4) == 0x00000000)
-    {
-        goto l1003D043;
-    }
-    STACKVAR(-40, 4) = STACKVAR(-20, 4)->(ACCESS(ACCESS(STACKVAR(-20, 4), 0, 4), 0, 4))(0x00000001);
-    goto l1003D04A;
-l1003D043:
-    STACKVAR(-40, 4) = 0x00000000;
-l1003D04A:
-    goto l1003D003;
 l1003D04C:
     STACKVAR(-28, 4) = ACCESS(STACKVAR(12, 4), 4, 4);
     ??3@YAXPAX@Z(STACKVAR(-28, 4));
@@ -16157,35 +17073,84 @@ l1003D04C:
     ACCESS(STACKVAR(12, 4), 8, 4) = 0x00000000;
     ACCESS(STACKVAR(12, 4), 16, 4) = 0x00000000;
 l1003D07F:
-    unknown_function_10001BEF(STACKVAR(8, 4), reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000008);
-    REGDEF(eax=(reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 8, 4)) + reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 12, 4)) - 1) / reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 12, 4)), edx=STACKVAR(12, 4))
+    reinterpret_cast<B_IDataFile &>(STACKVAR(8, 4)) >> reinterpret_cast<unsigned int &>(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000008);
+    ACCESS(STACKVAR(12, 4), 16, 4) = (reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 8, 4)) + reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 12, 4)) - 1) / reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 12, 4)) * reinterpret_cast<any_int32>(ACCESS(STACKVAR(12, 4), 12, 4));
+    if (ACCESS(STACKVAR(12, 4), 16, 4) == 0x00000000)
+    {
+        goto l1003D1DD;
+    }
+    STACKVAR(-8, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(12, 4), 16, 4)));
+    ACCESS(STACKVAR(12, 4), 4, 4) = STACKVAR(-8, 4);
+    STACKVAR(-4, 4) = 0x00000000;
+    goto l1003D0F4;
+l1003D0EB:
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000001;
+l1003D0F4:
+    if (reinterpret_cast<unsigned int>(STACKVAR(-4, 4)) < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 8, 4)))
+    {
+        STACKVAR(-12, 4) = ??2@YAPAXI@Z(0x00000040);
+        if (STACKVAR(-12, 4) != 0x00000000)
+        {
+            reinterpret_cast<B_NamedObj *>(STACKVAR(-12, 4))->B_NamedObj();
+            STACKVAR(-32, 4) = reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + 0x00000010;
+            ACCESS(STACKVAR(-32, 4), 0, 8) = 0.0;
+            ACCESS(STACKVAR(-32, 4), 8, 8) = 0.0;
+            ACCESS(STACKVAR(-32, 4), 16, 8) = 0.0;
+            STACKVAR(-36, 4) = reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + 0x00000028;
+            ACCESS(STACKVAR(-36, 4), 0, 8) = 0.0;
+            ACCESS(STACKVAR(-36, 4), 8, 8) = 0.0;
+            ACCESS(STACKVAR(-36, 4), 16, 8) = 0.0;
+            ACCESS(STACKVAR(-12, 4), 0, 4) = GLOBAL(0x10042E44);
+            STACKVAR(-44, 4) = STACKVAR(-12, 4);
+        }
+        else
+        {
+            STACKVAR(-44, 4) = 0x00000000;
+        }
+        ACCESS(ARRPTR(ACCESS(STACKVAR(12, 4), 4, 4), 0x04, STACKVAR(-4, 4), 0), 0, 4) = STACKVAR(-44, 4);
+        unknown_function_10032A2D(STACKVAR(8, 4), ACCESS(ARRPTR(ACCESS(STACKVAR(12, 4), 4, 4), 0x04, STACKVAR(-4, 4), 0), 0, 4));
+        goto l1003D0EB;
+    }
+l1003D1DD:
+    REGDEF(eax=STACKVAR(8, 4))
 }
-Failed to find pattern for 'imul eax, dword ptr [edx+00Ch]'
 
 // address: 0x1003D1F0
 p1003D1F0
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=None)
-    if (ACCESS(STACKVAR(12, 4), 16, 4) == 0x00000000)
-    {
-        goto l1003D23D;
-    }
+    ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=0)
     if (ACCESS(STACKVAR(12, 4), 16, 4) != 0x00000000)
     {
-        goto l1003D20A;
+        if (ACCESS(STACKVAR(12, 4), 16, 4) != 0x00000000)
+        {
+            STACKVAR(-12, 4) = ACCESS(STACKVAR(12, 4), 4, 4);
+            ??3@YAXPAX@Z(STACKVAR(-12, 4));
+            ACCESS(STACKVAR(12, 4), 4, 4) = 0x00000000;
+            ACCESS(STACKVAR(12, 4), 8, 4) = 0x00000000;
+            ACCESS(STACKVAR(12, 4), 16, 4) = 0x00000000;
+        }
     }
-    goto l1003D23D;
-l1003D20A:
-    STACKVAR(-12, 4) = ACCESS(STACKVAR(12, 4), 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-12, 4));
-    ACCESS(STACKVAR(12, 4), 4, 4) = 0x00000000;
-    ACCESS(STACKVAR(12, 4), 8, 4) = 0x00000000;
-    ACCESS(STACKVAR(12, 4), 16, 4) = 0x00000000;
-l1003D23D:
-    unknown_function_10001BEF(STACKVAR(8, 4), reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000008);
-    REGDEF(eax=(reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 8, 4)) + reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 12, 4)) - 1) / reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 12, 4)), edx=STACKVAR(12, 4))
+    reinterpret_cast<B_IDataFile &>(STACKVAR(8, 4)) >> reinterpret_cast<unsigned int &>(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000008);
+    ACCESS(STACKVAR(12, 4), 16, 4) = (reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 8, 4)) + reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 12, 4)) - 1) / reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 12, 4)) * reinterpret_cast<any_int32>(ACCESS(STACKVAR(12, 4), 12, 4));
+    if (ACCESS(STACKVAR(12, 4), 16, 4) == 0x00000000)
+    {
+        goto l1003D2CE;
+    }
+    STACKVAR(-8, 4) = ??2@YAPAXI@Z(ACCESS(STACKVAR(12, 4), 16, 4));
+    ACCESS(STACKVAR(12, 4), 4, 4) = STACKVAR(-8, 4);
+    STACKVAR(-4, 4) = 0x00000000;
+    goto l1003D2AB;
+l1003D2A2:
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000001;
+l1003D2AB:
+    if (reinterpret_cast<unsigned int>(STACKVAR(-4, 4)) < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 8, 4)))
+    {
+        reinterpret_cast<B_IDataFile &>(STACKVAR(8, 4)) >> reinterpret_cast<unsigned char &>(reinterpret_cast<any_int32>(ACCESS(STACKVAR(12, 4), 4, 4)) + reinterpret_cast<any_int32>(STACKVAR(-4, 4)));
+        goto l1003D2A2;
+    }
+l1003D2CE:
+    REGDEF(eax=STACKVAR(8, 4))
 }
-Failed to find pattern for 'imul eax, dword ptr [edx+00Ch]'
 
 // address: 0x1003D2E0
 p1003D2E0
@@ -16208,24 +17173,38 @@ l1003D2FA:
     ACCESS(STACKVAR(12, 4), 16, 4) = 0x00000000;
 l1003D32D:
     unknown_function_10001BEF(STACKVAR(8, 4), reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000008);
-    REGDEF(eax=(reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 8, 4)) + reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 12, 4)) - 1) / reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 12, 4)), edx=STACKVAR(12, 4))
+    ACCESS(STACKVAR(12, 4), 16, 4) = (reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 8, 4)) + reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 12, 4)) - 1) / reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 12, 4)) * reinterpret_cast<any_int32>(ACCESS(STACKVAR(12, 4), 12, 4));
+    if (ACCESS(STACKVAR(12, 4), 16, 4) == 0x00000000)
+    {
+        goto l1003D3C4;
+    }
+    STACKVAR(-8, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(12, 4), 16, 4)));
+    ACCESS(STACKVAR(12, 4), 4, 4) = STACKVAR(-8, 4);
+    STACKVAR(-4, 4) = 0x00000000;
+    goto l1003D39E;
+l1003D395:
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000001;
+l1003D39E:
+    if (reinterpret_cast<unsigned int>(STACKVAR(-4, 4)) >= reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 8, 4)))
+    {
+        goto l1003D3C4;
+    }
+    REGDEF(edx=ACCESS(STACKVAR(12, 4), 4, 4), eax=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'imul eax, dword ptr [edx+00Ch]'
+Failed to find pattern for 'lea ecx, [edx+eax*04h]'
 
 // address: 0x1003D3D0
 p1003D3D0
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=44, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=44, stack_delta=0)
     if (ACCESS(STACKVAR(12, 4), 16, 4) == 0x00000000)
     {
         goto l1003D47F;
     }
-    if (ACCESS(STACKVAR(12, 4), 16, 4) != 0x00000000)
+    if (ACCESS(STACKVAR(12, 4), 16, 4) == 0x00000000)
     {
-        goto l1003D3F1;
+        goto l1003D47F;
     }
-    goto l1003D47F;
-l1003D3F1:
     if (0x00000001 == 0x00000000)
     {
         goto l1003D44C;
@@ -16235,22 +17214,20 @@ l1003D3F1:
 l1003D403:
     STACKVAR(-16, 4) = reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000001;
 l1003D40C:
-    if (reinterpret_cast<unsigned int>(STACKVAR(-16, 4)) >= reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 8, 4)))
+    if (reinterpret_cast<unsigned int>(STACKVAR(-16, 4)) < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 8, 4)))
     {
-        goto l1003D44C;
+        STACKVAR(-24, 4) = ACCESS(ARRPTR(ACCESS(STACKVAR(12, 4), 4, 4), 0x04, STACKVAR(-16, 4), 0), 0, 4);
+        STACKVAR(-20, 4) = STACKVAR(-24, 4);
+        if (STACKVAR(-20, 4) != 0x00000000)
+        {
+            STACKVAR(-40, 4) = STACKVAR(-20, 4)->(ACCESS(ACCESS(STACKVAR(-20, 4), 0, 4), 0, 4))(0x00000001);
+        }
+        else
+        {
+            STACKVAR(-40, 4) = 0x00000000;
+        }
+        goto l1003D403;
     }
-    STACKVAR(-24, 4) = ACCESS(ARRPTR(ACCESS(STACKVAR(12, 4), 4, 4), 0x04, STACKVAR(-16, 4), 0), 0, 4);
-    STACKVAR(-20, 4) = STACKVAR(-24, 4);
-    if (STACKVAR(-20, 4) == 0x00000000)
-    {
-        goto l1003D443;
-    }
-    STACKVAR(-40, 4) = STACKVAR(-20, 4)->(ACCESS(ACCESS(STACKVAR(-20, 4), 0, 4), 0, 4))(0x00000001);
-    goto l1003D44A;
-l1003D443:
-    STACKVAR(-40, 4) = 0x00000000;
-l1003D44A:
-    goto l1003D403;
 l1003D44C:
     STACKVAR(-28, 4) = ACCESS(STACKVAR(12, 4), 4, 4);
     ??3@YAXPAX@Z(STACKVAR(-28, 4));
@@ -16258,35 +17235,105 @@ l1003D44C:
     ACCESS(STACKVAR(12, 4), 8, 4) = 0x00000000;
     ACCESS(STACKVAR(12, 4), 16, 4) = 0x00000000;
 l1003D47F:
-    unknown_function_10001BEF(STACKVAR(8, 4), reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000008);
-    REGDEF(eax=(reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 8, 4)) + reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 12, 4)) - 1) / reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 12, 4)), edx=STACKVAR(12, 4))
+    reinterpret_cast<B_IDataFile &>(STACKVAR(8, 4)) >> reinterpret_cast<unsigned int &>(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000008);
+    ACCESS(STACKVAR(12, 4), 16, 4) = (reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 8, 4)) + reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 12, 4)) - 1) / reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 12, 4)) * reinterpret_cast<any_int32>(ACCESS(STACKVAR(12, 4), 12, 4));
+    if (ACCESS(STACKVAR(12, 4), 16, 4) == 0x00000000)
+    {
+        goto l1003D5DD;
+    }
+    STACKVAR(-8, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(12, 4), 16, 4)));
+    ACCESS(STACKVAR(12, 4), 4, 4) = STACKVAR(-8, 4);
+    STACKVAR(-4, 4) = 0x00000000;
+    goto l1003D4F4;
+l1003D4EB:
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000001;
+l1003D4F4:
+    if (reinterpret_cast<unsigned int>(STACKVAR(-4, 4)) < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 8, 4)))
+    {
+        STACKVAR(-12, 4) = ??2@YAPAXI@Z(0x00000040);
+        if (STACKVAR(-12, 4) != 0x00000000)
+        {
+            reinterpret_cast<B_NamedObj *>(STACKVAR(-12, 4))->B_NamedObj();
+            STACKVAR(-32, 4) = reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + 0x00000010;
+            ACCESS(STACKVAR(-32, 4), 0, 8) = 0.0;
+            ACCESS(STACKVAR(-32, 4), 8, 8) = 0.0;
+            ACCESS(STACKVAR(-32, 4), 16, 8) = 0.0;
+            STACKVAR(-36, 4) = reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + 0x00000028;
+            ACCESS(STACKVAR(-36, 4), 0, 8) = 0.0;
+            ACCESS(STACKVAR(-36, 4), 8, 8) = 0.0;
+            ACCESS(STACKVAR(-36, 4), 16, 8) = 0.0;
+            ACCESS(STACKVAR(-12, 4), 0, 4) = GLOBAL(0x10042E48);
+            STACKVAR(-44, 4) = STACKVAR(-12, 4);
+        }
+        else
+        {
+            STACKVAR(-44, 4) = 0x00000000;
+        }
+        ACCESS(ARRPTR(ACCESS(STACKVAR(12, 4), 4, 4), 0x04, STACKVAR(-4, 4), 0), 0, 4) = STACKVAR(-44, 4);
+        unknown_function_1003299D(STACKVAR(8, 4), ACCESS(ARRPTR(ACCESS(STACKVAR(12, 4), 4, 4), 0x04, STACKVAR(-4, 4), 0), 0, 4));
+        goto l1003D4EB;
+    }
+l1003D5DD:
+    REGDEF(eax=STACKVAR(8, 4))
 }
-Failed to find pattern for 'imul eax, dword ptr [edx+00Ch]'
 
 // address: 0x1003D5F0
 p1003D5F0
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=32, stack_delta=None)
-    if (ACCESS(STACKVAR(12, 4), 16, 4) == 0x00000000)
-    {
-        goto l1003D63D;
-    }
+    ProcedureInfo(this=None, this_offset=None, local_size=32, stack_delta=0)
     if (ACCESS(STACKVAR(12, 4), 16, 4) != 0x00000000)
     {
-        goto l1003D60A;
+        if (ACCESS(STACKVAR(12, 4), 16, 4) != 0x00000000)
+        {
+            STACKVAR(-16, 4) = ACCESS(STACKVAR(12, 4), 4, 4);
+            ??3@YAXPAX@Z(STACKVAR(-16, 4));
+            ACCESS(STACKVAR(12, 4), 4, 4) = 0x00000000;
+            ACCESS(STACKVAR(12, 4), 8, 4) = 0x00000000;
+            ACCESS(STACKVAR(12, 4), 16, 4) = 0x00000000;
+        }
     }
-    goto l1003D63D;
-l1003D60A:
-    STACKVAR(-16, 4) = ACCESS(STACKVAR(12, 4), 4, 4);
-    ??3@YAXPAX@Z(STACKVAR(-16, 4));
-    ACCESS(STACKVAR(12, 4), 4, 4) = 0x00000000;
-    ACCESS(STACKVAR(12, 4), 8, 4) = 0x00000000;
-    ACCESS(STACKVAR(12, 4), 16, 4) = 0x00000000;
-l1003D63D:
-    unknown_function_10001BEF(STACKVAR(8, 4), reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000008);
-    REGDEF(eax=(reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 8, 4)) + reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 12, 4)) - 1) / reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 12, 4)), edx=STACKVAR(12, 4))
+    reinterpret_cast<B_IDataFile &>(STACKVAR(8, 4)) >> reinterpret_cast<unsigned int &>(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000008);
+    ACCESS(STACKVAR(12, 4), 16, 4) = (reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 8, 4)) + reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 12, 4)) - 1) / reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 12, 4)) * reinterpret_cast<any_int32>(ACCESS(STACKVAR(12, 4), 12, 4));
+    if (ACCESS(STACKVAR(12, 4), 16, 4) == 0x00000000)
+    {
+        goto l1003D72A;
+    }
+    STACKVAR(-4, 4) = ACCESS(STACKVAR(12, 4), 16, 4);
+    STACKVAR(-12, 4) = ??2@YAPAXI@Z(0x00000018 * reinterpret_cast<any_int32>(STACKVAR(-4, 4)));
+    if (STACKVAR(-12, 4) == 0x00000000)
+    {
+        goto l1003D6E0;
+    }
+    STACKVAR(-28, 4) = STACKVAR(-4, 4);
+    STACKVAR(-24, 4) = 0x00000018;
+    STACKVAR(-20, 4) = STACKVAR(-12, 4);
+l1003D6B6:
+    STACKVAR(-28, 4) = reinterpret_cast<any_int32>(STACKVAR(-28, 4)) - 0x00000001;
+    if (reinterpret_cast<int>(STACKVAR(-28, 4)) >= 0)
+    {
+        reinterpret_cast<B_MeshEdge *>(STACKVAR(-20, 4))->B_MeshEdge();
+        STACKVAR(-20, 4) = reinterpret_cast<any_int32>(STACKVAR(-20, 4)) + reinterpret_cast<any_int32>(STACKVAR(-24, 4));
+        goto l1003D6B6;
+    }
+    STACKVAR(-32, 4) = STACKVAR(-12, 4);
+    goto l1003D6E7;
+l1003D6E0:
+    STACKVAR(-32, 4) = 0x00000000;
+l1003D6E7:
+    ACCESS(STACKVAR(12, 4), 4, 4) = STACKVAR(-32, 4);
+    STACKVAR(-8, 4) = 0x00000000;
+    goto l1003D702;
+l1003D6F9:
+    STACKVAR(-8, 4) = reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + 0x00000001;
+l1003D702:
+    if (reinterpret_cast<unsigned int>(STACKVAR(-8, 4)) < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 8, 4)))
+    {
+        unknown_function_100322BC(STACKVAR(8, 4), reinterpret_cast<any_int32>(ACCESS(STACKVAR(12, 4), 4, 4)) + 0x00000018 * reinterpret_cast<any_int32>(STACKVAR(-8, 4)));
+        goto l1003D6F9;
+    }
+l1003D72A:
+    REGDEF(eax=STACKVAR(8, 4))
 }
-Failed to find pattern for 'imul eax, dword ptr [edx+00Ch]'
 
 // address: 0x1003D740
 p1003D740
@@ -18069,9 +19116,55 @@ B_ParticleGType::B_ParticleGType(const B_Name &new_type, const B_Name &parent_ty
     ACCESS(STACKVAR(-44, 4), 36, 4) = ACCESS(&?B_3D_raster_device@@3PAVB_3DRasterDevice@@A, 0, 4)->(ACCESS(ACCESS(ACCESS(&?B_3D_raster_device@@3PAVB_3DRasterDevice@@A, 0, 4), 0, 4), 64, 4))(STACKVAR(12, 4)->unknown_method_10003457());
     STACKVAR(-40, 4) = reinterpret_cast<any_int32>(STACKVAR(20, 4)) + 0x00000001;
     STACKVAR(-36, 4) = reinterpret_cast<any_int32>(STACKVAR(-44, 4)) + 0x0000000C;
-    REGDEF(eax=(reinterpret_cast<unsigned int>(STACKVAR(-40, 4)) + reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-36, 4), 12, 4)) - 1) / reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-36, 4), 12, 4)), edx=STACKVAR(-36, 4))
+    STACKVAR(-12, 4) = (reinterpret_cast<unsigned int>(STACKVAR(-40, 4)) + reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-36, 4), 12, 4)) - 1) / reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-36, 4), 12, 4)) * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-36, 4), 12, 4));
+    if (reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-36, 4), 8, 4)) >= reinterpret_cast<unsigned int>(STACKVAR(-40, 4)))
+    {
+        goto l10041049;
+    }
+    STACKVAR(-48, 4) = ACCESS(STACKVAR(-36, 4), 8, 4);
+    goto l1004104F;
+l10041049:
+    STACKVAR(-48, 4) = STACKVAR(-40, 4);
+l1004104F:
+    STACKVAR(-20, 4) = STACKVAR(-48, 4);
+    if (ACCESS(STACKVAR(-36, 4), 16, 4) == STACKVAR(-12, 4))
+    {
+        goto l10041115;
+    }
+    STACKVAR(-16, 4) = ACCESS(STACKVAR(-36, 4), 4, 4);
+    ACCESS(STACKVAR(-36, 4), 16, 4) = STACKVAR(-12, 4);
+    if (ACCESS(STACKVAR(-36, 4), 16, 4) == 0x00000000)
+    {
+        goto l100410B4;
+    }
+    STACKVAR(-28, 4) = ??2@YAPAXI@Z(0x00000008 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-36, 4), 16, 4)));
+    ACCESS(STACKVAR(-36, 4), 4, 4) = STACKVAR(-28, 4);
+    if (ACCESS(STACKVAR(-36, 4), 4, 4) != 0x00000000)
+    {
+        goto l100410B2;
+    }
+    ACCESS(STACKVAR(-36, 4), 4, 4) = ACCESS(STACKVAR(-36, 4), 4, 4);
+l100410B2:
+    goto l100410BE;
+l100410B4:
+    ACCESS(STACKVAR(-36, 4), 4, 4) = 0x00000000;
+l100410BE:
+    if (0x00000000 == 0x00000000)
+    {
+        goto l100410FD;
+    }
+    STACKVAR(-24, 4) = 0x00000000;
+    goto l100410D6;
+l100410CD:
+    STACKVAR(-24, 4) = reinterpret_cast<any_int32>(STACKVAR(-24, 4)) + 0x00000001;
+l100410D6:
+    if (reinterpret_cast<unsigned int>(STACKVAR(-24, 4)) >= reinterpret_cast<unsigned int>(STACKVAR(-20, 4)))
+    {
+        goto l100410FD;
+    }
+    REGDEF(eax=ACCESS(ARRPTR(STACKVAR(-16, 4), 0x08, STACKVAR(-24, 4), 0), 0, 4))
 }
-Failed to find pattern for 'imul eax, dword ptr [edx+00Ch]'
+Failed to find pattern for 'mov ecx, dword ptr [edx+ecx*08h+004h]'
 
 // address: 0x1004118F
 B_ParticleGType::~B_ParticleGType()
@@ -18113,9 +19206,55 @@ B_IDataFile &operator >>(B_IDataFile &file, B_ParticleGType &particleType)
     unknown_function_10001BEF(STACKVAR(8, 4), LOCAL(-12));
     STACKVAR(-48, 4) = STACKVAR(-12, 4);
     STACKVAR(-44, 4) = reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x0000000C;
-    REGDEF(eax=(reinterpret_cast<unsigned int>(STACKVAR(-48, 4)) + reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-44, 4), 12, 4)) - 1) / reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-44, 4), 12, 4)), edx=STACKVAR(-44, 4))
+    STACKVAR(-20, 4) = (reinterpret_cast<unsigned int>(STACKVAR(-48, 4)) + reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-44, 4), 12, 4)) - 1) / reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-44, 4), 12, 4)) * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-44, 4), 12, 4));
+    if (reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-44, 4), 8, 4)) >= reinterpret_cast<unsigned int>(STACKVAR(-48, 4)))
+    {
+        goto l100412ED;
+    }
+    STACKVAR(-52, 4) = ACCESS(STACKVAR(-44, 4), 8, 4);
+    goto l100412F3;
+l100412ED:
+    STACKVAR(-52, 4) = STACKVAR(-48, 4);
+l100412F3:
+    STACKVAR(-28, 4) = STACKVAR(-52, 4);
+    if (ACCESS(STACKVAR(-44, 4), 16, 4) == STACKVAR(-20, 4))
+    {
+        goto l100413B9;
+    }
+    STACKVAR(-24, 4) = ACCESS(STACKVAR(-44, 4), 4, 4);
+    ACCESS(STACKVAR(-44, 4), 16, 4) = STACKVAR(-20, 4);
+    if (ACCESS(STACKVAR(-44, 4), 16, 4) == 0x00000000)
+    {
+        goto l10041358;
+    }
+    STACKVAR(-36, 4) = ??2@YAPAXI@Z(0x00000008 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-44, 4), 16, 4)));
+    ACCESS(STACKVAR(-44, 4), 4, 4) = STACKVAR(-36, 4);
+    if (ACCESS(STACKVAR(-44, 4), 4, 4) != 0x00000000)
+    {
+        goto l10041356;
+    }
+    ACCESS(STACKVAR(-44, 4), 4, 4) = ACCESS(STACKVAR(-44, 4), 4, 4);
+l10041356:
+    goto l10041362;
+l10041358:
+    ACCESS(STACKVAR(-44, 4), 4, 4) = 0x00000000;
+l10041362:
+    if (0x00000000 == 0x00000000)
+    {
+        goto l100413A1;
+    }
+    STACKVAR(-32, 4) = 0x00000000;
+    goto l1004137A;
+l10041371:
+    STACKVAR(-32, 4) = reinterpret_cast<any_int32>(STACKVAR(-32, 4)) + 0x00000001;
+l1004137A:
+    if (reinterpret_cast<unsigned int>(STACKVAR(-32, 4)) >= reinterpret_cast<unsigned int>(STACKVAR(-28, 4)))
+    {
+        goto l100413A1;
+    }
+    REGDEF(eax=ACCESS(ARRPTR(STACKVAR(-24, 4), 0x08, STACKVAR(-32, 4), 0), 0, 4))
 }
-Failed to find pattern for 'imul eax, dword ptr [edx+00Ch]'
+Failed to find pattern for 'mov ecx, dword ptr [edx+ecx*08h+004h]'
 
 // address: 0x100413EE
 B_ODataFile &operator <<(B_ODataFile &file, const B_ParticleGType &particleType)
