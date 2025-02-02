@@ -790,17 +790,17 @@ char *GetConfigDirectory()
         goto l10002899;
     }
     _getcwd(GLOBAL(0x1004A00C), 0x00000104);
-    REGDEF(edi=GLOBAL(0x1004A00C))
+    REGDEF(edi=GLOBAL(0x1004A00C), ecx=0xFFFFFFFF, eax=0x00000000)
 }
-Failed to find pattern for 'or ecx, 0FFFFFFFFh'
+Failed to find pattern for 'repnz scasb'
 
 // address: 0x100028EC
 char *GetCurrentLanguage()
 {
     ProcedureInfo(this=None, this_offset=None, local_size=256, stack_delta=None)
-    REGDEF(edi=unknown_function_10002740(), edx=LOCAL(-256))
+    REGDEF(edi=unknown_function_10002740(), edx=LOCAL(-256), ecx=0xFFFFFFFF, eax=0x00000000)
 }
-Failed to find pattern for 'or ecx, 0FFFFFFFFh'
+Failed to find pattern for 'repnz scasb'
 
 // address: 0x10002980
 B_ListElement::~B_ListElement()
@@ -1210,9 +1210,9 @@ B_Name::B_Name(const char *str)
     ACCESS(STACKVAR(-8, 4), 4, 4) = strlen(STACKVAR(8, 4));
     STACKVAR(-4, 4) = ??2@YAPAXI@Z(reinterpret_cast<any_int32>(ACCESS(STACKVAR(-8, 4), 4, 4)) + 0x00000001);
     ACCESS(STACKVAR(-8, 4), 0, 4) = STACKVAR(-4, 4);
-    REGDEF(edi=STACKVAR(8, 4), edx=ACCESS(STACKVAR(-8, 4), 0, 4))
+    REGDEF(edi=STACKVAR(8, 4), edx=ACCESS(STACKVAR(-8, 4), 0, 4), ecx=0xFFFFFFFF, eax=0x00000000)
 }
-Failed to find pattern for 'or ecx, 0FFFFFFFFh'
+Failed to find pattern for 'repnz scasb'
 
 // address: 0x100033A4
 B_Name::B_Name(const B_Name &src)
@@ -1222,9 +1222,9 @@ B_Name::B_Name(const B_Name &src)
     ACCESS(STACKVAR(-12, 4), 4, 4) = STACKVAR(-8, 4);
     STACKVAR(-4, 4) = ??2@YAPAXI@Z(reinterpret_cast<any_int32>(ACCESS(STACKVAR(-12, 4), 4, 4)) + 0x00000001);
     ACCESS(STACKVAR(-12, 4), 0, 4) = STACKVAR(-4, 4);
-    REGDEF(edi=ACCESS(STACKVAR(8, 4), 0, 4), edx=ACCESS(STACKVAR(-12, 4), 0, 4))
+    REGDEF(edi=ACCESS(STACKVAR(8, 4), 0, 4), edx=ACCESS(STACKVAR(-12, 4), 0, 4), ecx=0xFFFFFFFF, eax=0x00000000)
 }
-Failed to find pattern for 'or ecx, 0FFFFFFFFh'
+Failed to find pattern for 'repnz scasb'
 
 // address: 0x10003410
 B_Name::B_Name(unsigned int len)
@@ -1356,9 +1356,9 @@ B_Name &B_Name::operator =(const B_Name &src)
     STACKVAR(-8, 4) = ??2@YAPAXI@Z(reinterpret_cast<any_int32>(ACCESS(STACKVAR(-12, 4), 4, 4)) + 0x00000001);
     ACCESS(STACKVAR(-12, 4), 0, 4) = STACKVAR(-8, 4);
 l100037EF:
-    REGDEF(edi=ACCESS(STACKVAR(8, 4), 0, 4), edx=ACCESS(STACKVAR(-12, 4), 0, 4))
+    REGDEF(edi=ACCESS(STACKVAR(8, 4), 0, 4), edx=ACCESS(STACKVAR(-12, 4), 0, 4), ecx=0xFFFFFFFF, eax=0x00000000)
 }
-Failed to find pattern for 'or ecx, 0FFFFFFFFh'
+Failed to find pattern for 'repnz scasb'
 
 // address: 0x10003821
 B_Name B_Name::Right(unsigned int count)
@@ -1496,9 +1496,9 @@ B_Name &B_Name::operator+=(char c)
     ACCESS(STACKVAR(-16, 4), 4, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-16, 4), 4, 4)) + 0x00000001;
     STACKVAR(-8, 4) = ??2@YAPAXI@Z(reinterpret_cast<any_int32>(ACCESS(STACKVAR(-16, 4), 4, 4)) + 0x00000001);
     STACKVAR(-4, 4) = STACKVAR(-8, 4);
-    REGDEF(edi=ACCESS(STACKVAR(-16, 4), 0, 4), edx=STACKVAR(-4, 4))
+    REGDEF(edi=ACCESS(STACKVAR(-16, 4), 0, 4), edx=STACKVAR(-4, 4), ecx=0xFFFFFFFF, eax=0x00000000)
 }
-Failed to find pattern for 'or ecx, 0FFFFFFFFh'
+Failed to find pattern for 'repnz scasb'
 
 // address: 0x10003DCE
 B_Name &B_Name::operator +=(const B_Name &other)
@@ -2230,13 +2230,14 @@ B_Resource *B_ResourceManager::GetResource(unsigned short resourceId, const B_Na
 // address: 0x10005B2F
 p10005B2F
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    if (ACCESS(ARRPTR(STACKVAR(-4, 4), 0x04, reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x0000FFFF, 0), 0, 4) != 0x00000000)
+    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=8)
+    if (ACCESS(ARRPTR(this, 0x04, reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x0000FFFF, 0), 0, 4) == 0x00000000)
     {
-        goto l10005B4C;
+        REGDEF(eax=0xFFFFFFFF)
+        return;
     }
+    ACCESS(ARRPTR(this, 0x04, reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x0000FFFF, 0), 0, 4)->unknown_method_100048EF(STACKVAR(12, 4), STACKVAR(8, 2));
 }
-Failed to find pattern for 'or eax, 0FFFFFFFFh'
 
 // address: 0x10005B6F
 p10005B6F
