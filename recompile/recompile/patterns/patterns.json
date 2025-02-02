@@ -188,6 +188,24 @@
 	},
 	{
 		"instructions": [
+			{"or":    ["ecx", "0FFFFFFFFh"]},
+			{"xor":   ["eax", "eax"]},
+			{"repnz": ["scasb"]},
+			{"not":   ["ecx"]},
+			{"sub":   ["edi", "ecx"]},
+			{"mov":   ["esi", "edi"]},
+			{"mov":   ["eax", "ecx"]},
+			{"mov":   ["edi", "edx"]},
+			{"shr":   ["ecx", "002h"]},
+			{"rep":   ["movsd"]},
+			{"mov":   ["ecx", "eax"]},
+			{"and":   ["ecx", "000000003h"]},
+			{"rep":   ["movsb"]}
+		],
+		"action": {"instruction": {"expression": "strcpy(REGVALUE(edx), REGVALUE(edi))"}}
+	},
+	{
+		"instructions": [
 			{"xor":  ["e%a-c-d%x", "e%a-c-d%x"]},
 			{"mov":  ["%a-c-d%l", "%src-operand%"]}
 		],

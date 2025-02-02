@@ -798,9 +798,9 @@ Failed to find pattern for 'repnz scasb'
 char *GetCurrentLanguage()
 {
     ProcedureInfo(this=None, this_offset=None, local_size=256, stack_delta=None)
-    REGDEF(edi=unknown_function_10002740(), edx=LOCAL(-256), ecx=0xFFFFFFFF, eax=0x00000000)
+    strcpy(LOCAL(-256), unknown_function_10002740());
 }
-Failed to find pattern for 'repnz scasb'
+Failed to find pattern for 'lea edi, [ebp-000000100h]'
 
 // address: 0x10002980
 B_ListElement::~B_ListElement()
@@ -1206,25 +1206,21 @@ B_Name::B_Name()
 // address: 0x10003337
 B_Name::B_Name(const char *str)
 {
-    ProcedureInfo(this=Id(this), this_offset=-8, local_size=8, stack_delta=None)
-    ACCESS(STACKVAR(-8, 4), 4, 4) = strlen(STACKVAR(8, 4));
-    STACKVAR(-4, 4) = ??2@YAPAXI@Z(reinterpret_cast<any_int32>(ACCESS(STACKVAR(-8, 4), 4, 4)) + 0x00000001);
-    ACCESS(STACKVAR(-8, 4), 0, 4) = STACKVAR(-4, 4);
-    REGDEF(edi=STACKVAR(8, 4), edx=ACCESS(STACKVAR(-8, 4), 0, 4), ecx=0xFFFFFFFF, eax=0x00000000)
+    this->len = strlen(str);
+    STACKVAR(-4, 4) = ??2@YAPAXI@Z(this->len + 0x00000001);
+    this->string = reinterpret_cast<char *>(STACKVAR(-4, 4));
+    strcpy(this->string, str);
 }
-Failed to find pattern for 'repnz scasb'
 
 // address: 0x100033A4
 B_Name::B_Name(const B_Name &src)
 {
-    ProcedureInfo(this=Id(this), this_offset=-12, local_size=12, stack_delta=None)
-    STACKVAR(-8, 4) = ACCESS(STACKVAR(8, 4), 4, 4);
-    ACCESS(STACKVAR(-12, 4), 4, 4) = STACKVAR(-8, 4);
-    STACKVAR(-4, 4) = ??2@YAPAXI@Z(reinterpret_cast<any_int32>(ACCESS(STACKVAR(-12, 4), 4, 4)) + 0x00000001);
-    ACCESS(STACKVAR(-12, 4), 0, 4) = STACKVAR(-4, 4);
-    REGDEF(edi=ACCESS(STACKVAR(8, 4), 0, 4), edx=ACCESS(STACKVAR(-12, 4), 0, 4), ecx=0xFFFFFFFF, eax=0x00000000)
+    STACKVAR(-8, 4) = src.len;
+    this->len = reinterpret_cast<unsigned int>(STACKVAR(-8, 4));
+    STACKVAR(-4, 4) = ??2@YAPAXI@Z(this->len + 0x00000001);
+    this->string = reinterpret_cast<char *>(STACKVAR(-4, 4));
+    strcpy(this->string, src.string);
 }
-Failed to find pattern for 'repnz scasb'
 
 // address: 0x10003410
 B_Name::B_Name(unsigned int len)
@@ -1345,20 +1341,17 @@ unsigned int B_Name::CompareNoCase(const char *str)
 // address: 0x1000378E
 B_Name &B_Name::operator =(const B_Name &src)
 {
-    ProcedureInfo(this=Id(this), this_offset=-12, local_size=12, stack_delta=None)
-    if (ACCESS(STACKVAR(-12, 4), 4, 4) == ACCESS(STACKVAR(8, 4), 4, 4))
+    if (this->len != src.len)
     {
-        goto l100037EF;
+        STACKVAR(-4, 4) = this->string;
+        ??3@YAXPAX@Z(STACKVAR(-4, 4));
+        this->len = strlen(src.string);
+        STACKVAR(-8, 4) = ??2@YAPAXI@Z(this->len + 0x00000001);
+        this->string = reinterpret_cast<char *>(STACKVAR(-8, 4));
     }
-    STACKVAR(-4, 4) = ACCESS(STACKVAR(-12, 4), 0, 4);
-    ??3@YAXPAX@Z(STACKVAR(-4, 4));
-    ACCESS(STACKVAR(-12, 4), 4, 4) = strlen(ACCESS(STACKVAR(8, 4), 0, 4));
-    STACKVAR(-8, 4) = ??2@YAPAXI@Z(reinterpret_cast<any_int32>(ACCESS(STACKVAR(-12, 4), 4, 4)) + 0x00000001);
-    ACCESS(STACKVAR(-12, 4), 0, 4) = STACKVAR(-8, 4);
-l100037EF:
-    REGDEF(edi=ACCESS(STACKVAR(8, 4), 0, 4), edx=ACCESS(STACKVAR(-12, 4), 0, 4), ecx=0xFFFFFFFF, eax=0x00000000)
+    strcpy(this->string, src.string);
+    return *this;
 }
-Failed to find pattern for 'repnz scasb'
 
 // address: 0x10003821
 B_Name B_Name::Right(unsigned int count)
@@ -1492,13 +1485,17 @@ Failed to find pattern for 'push ebx'
 // address: 0x10003D30
 B_Name &B_Name::operator+=(char c)
 {
-    ProcedureInfo(this=Id(this), this_offset=-16, local_size=16, stack_delta=None)
-    ACCESS(STACKVAR(-16, 4), 4, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-16, 4), 4, 4)) + 0x00000001;
-    STACKVAR(-8, 4) = ??2@YAPAXI@Z(reinterpret_cast<any_int32>(ACCESS(STACKVAR(-16, 4), 4, 4)) + 0x00000001);
+    this->len = this->len + 0x00000001;
+    STACKVAR(-8, 4) = ??2@YAPAXI@Z(this->len + 0x00000001);
     STACKVAR(-4, 4) = STACKVAR(-8, 4);
-    REGDEF(edi=ACCESS(STACKVAR(-16, 4), 0, 4), edx=STACKVAR(-4, 4), ecx=0xFFFFFFFF, eax=0x00000000)
+    strcpy(STACKVAR(-4, 4), this->string);
+    ACCESS(ARRPTR(STACKVAR(-4, 4), 1, this->len, -1), 0, 1) = c;
+    ACCESS(ARRPTR(STACKVAR(-4, 4), 1, this->len, 0), 0, 1) = 0;
+    STACKVAR(-12, 4) = this->string;
+    ??3@YAXPAX@Z(STACKVAR(-12, 4));
+    this->string = reinterpret_cast<char *>(STACKVAR(-4, 4));
+    return *this;
 }
-Failed to find pattern for 'repnz scasb'
 
 // address: 0x10003DCE
 B_Name &B_Name::operator +=(const B_Name &other)

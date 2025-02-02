@@ -8,7 +8,8 @@ from .transform_access import transform_access
 def transform_arrptr(base, scale, index, offset, **kwargs):
     if scale != 1:
         return None
-    assert offset >= 0
+    if offset < 0:
+        return None
     e = transform_access(base, 0, None)
     if e is None:
         return None
