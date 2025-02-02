@@ -16819,7 +16819,7 @@ Failed to find pattern for 'jnl l1003E32E'
 // address: 0x1003E436
 PyObject *CallPythonObject(PyObject *func, PyObject *args)
 {
-    if ((CheckErrors & 0x00000002) != 0x00000000)
+    if ((CheckErrors & 0x00000002) != 0)
     {
         STACKVAR(-8, 4) = PyErr_Occurred();
         if (STACKVAR(-8, 4) != 0x00000000)
@@ -16846,7 +16846,7 @@ PyObject *CallPythonObject(PyObject *func, PyObject *args)
         }
     }
     STACKVAR(-4, 4) = PyEval_CallObjectWithKeywords(func, args, 0x00000000);
-    if ((CheckErrors & 0x00000001) != 0x00000000)
+    if ((CheckErrors & 0x00000001) != 0)
     {
         STACKVAR(-16, 4) = PyErr_Occurred();
         if (STACKVAR(-16, 4) != 0x00000000)
@@ -16876,7 +16876,7 @@ PyObject *CallPythonObject(PyObject *func, PyObject *args)
     {
         PyErr_Clear();
     }
-    if ((CheckErrors & 0x00000004) != 0x00000000)
+    if ((CheckErrors & 0x00000004) != 0)
     {
         if (args != nullptr)
         {
