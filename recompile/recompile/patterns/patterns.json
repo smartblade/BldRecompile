@@ -299,6 +299,12 @@
 	},
 	{
 		"instructions": [
+			{"lea":  ["%eax-ecx-edx-dst%", "[%eax-ecx-edx-base%+%eax-ecx-edx-index%*%hex-scale%]"]}
+		],
+		"action": {"tmpreg": {"dst": "%eax-ecx-edx-dst%", "src": "ARRPTR(REGVALUE(%eax-ecx-edx-base%), %hex-scale%, REGVALUE(%eax-ecx-edx-index%), 0)"}}
+	},
+	{
+		"instructions": [
 			{"lea":  ["%eax-ecx-edx-dst%", "[%eax-ecx-edx-index%+%eax-ecx-edx-index%%offset%]"]}
 		],
 		"action": {"tmpreg": {"dst": "%eax-ecx-edx-dst%", "src": "2 * I(REGVALUE(%eax-ecx-edx-index%)) + %offset%"}}
