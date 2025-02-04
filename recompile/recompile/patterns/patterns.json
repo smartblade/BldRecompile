@@ -6,6 +6,7 @@
 			{"operand": "[%eax-ecx-edx%%offset%]", "expression": "ACCESS(REGVALUE(%eax-ecx-edx%), %offset%, %size%)"},
 			{"operand": "[%label%]", "expression": "ACCESS(GLOBAL(%label%), 0, %size%)"},
 			{"operand": "[%eax-ecx-edx-base%+%eax-ecx-edx-index%]", "expression": "ACCESS(ARRPTR(REGVALUE(%eax-ecx-edx-base%), 1, REGVALUE(%eax-ecx-edx-index%), 0), 0, %size%)"},
+			{"operand": "[esi+%eax-ecx-edx-index%]", "expression": "ACCESS(ARRPTR(REGVALUE(esi), 1, REGVALUE(%eax-ecx-edx-index%), 0), 0, %size%)"},
 			{"operand": "[%eax-ecx-edx-base%+%eax-ecx-edx-index%*%hex-scale%]", "expression": "ACCESS(ARRPTR(REGVALUE(%eax-ecx-edx-base%), %hex-scale%, REGVALUE(%eax-ecx-edx-index%), 0), 0, %size%)"},
 			{"operand": "[%eax-ecx-edx-base%+%eax-ecx-edx-index%%offset%]", "expression": "ACCESS(ARRPTR(REGVALUE(%eax-ecx-edx-base%), 1, REGVALUE(%eax-ecx-edx-index%), %offset%), 0, %size%)"},
 			{"operand": "%external%", "expression": "EXTERNVAR(%external%)"}

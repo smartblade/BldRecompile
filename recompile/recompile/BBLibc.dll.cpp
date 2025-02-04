@@ -9550,14 +9550,13 @@ Failed to find pattern for 'jle l1002245B'
 // address: 0x1002257C
 p1002257C
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=0)
     STACKVAR(-8, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 288, 4)) + 0x00000080;
     STACKVAR(-4, 4) = ACCESS(STACKVAR(12, 4), 80, 4);
     STACKVAR(-12, 4) = static_cast<int>(ACCESS(STACKVAR(16, 4), 0, 2)) * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-4, 4), 0, 4));
     STACKVAR(-12, 4) = reinterpret_cast<int>(STACKVAR(-12, 4)) + 0x00000004 >> 3;
-    REGDEF(edx=reinterpret_cast<any_int32>(STACKVAR(-12, 4)) & 0x000003FF, ecx=ACCESS(STACKVAR(20, 4), 0, 4), eax=STACKVAR(24, 4), esi=STACKVAR(-8, 4))
+    ACCESS(ARRPTR(ACCESS(STACKVAR(20, 4), 0, 4), 1, STACKVAR(24, 4), 0), 0, 1) = ACCESS(ARRPTR(STACKVAR(-8, 4), 1, reinterpret_cast<any_int32>(STACKVAR(-12, 4)) & 0x000003FF, 0), 0, 1);
 }
-Failed to find pattern for 'mov dl, byte ptr [esi+edx]'
 
 // address: 0x100225E0
 p100225E0
