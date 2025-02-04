@@ -4506,9 +4506,11 @@ Failed to find pattern for 'lea edi, [ebp-020h]'
 p1000C9AC
 {
     ProcedureInfo(this=None, this_offset=None, local_size=24, stack_delta=None)
-    REGDEF(eax=STACKVAR(12, 4))
+    STACKVAR(-8, 4) = static_cast<int>(ACCESS(STACKVAR(12, 4), 0, 2)) - reinterpret_cast<any_int32>(STACKVAR(16, 4));
+    STACKVAR(-16, 4) = STACKVAR(-8, 4);
+    REGDEF(cmpl=STACKVAR(-16, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'movsx ecx, word ptr [eax]'
+Failed to find pattern for 'jnl l1000C9DB'
 
 // address: 0x1000CC15
 p1000CC15
@@ -4622,9 +4624,10 @@ Failed to find pattern for 'jnl l1000CFD1'
 p1000D08D
 {
     ProcedureInfo(this=None, this_offset=None, local_size=16, stack_delta=None)
-    REGDEF(eax=STACKVAR(12, 4))
+    STACKVAR(-12, 4) = static_cast<int>(ACCESS(STACKVAR(12, 4), 0, 2)) - reinterpret_cast<any_int32>(STACKVAR(16, 4));
+    REGDEF(cmpl=STACKVAR(-12, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'movsx ecx, word ptr [eax]'
+Failed to find pattern for 'jnl l1000D0AD'
 
 // address: 0x1000D205
 p1000D205
@@ -5617,21 +5620,18 @@ Failed to find pattern for 'jle l10010E69'
 // address: 0x10010ED2
 p10010ED2
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    if (static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 12, 1)) == 0x00000000)
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
+    if (static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 12, 1)) != 0)
     {
-        goto l10010EE3;
+        return;
     }
-    goto l10010F12;
-l10010EE3:
-    if (reinterpret_cast<unsigned int>(STACKVAR(16, 4)) <= 0)
+    while (reinterpret_cast<unsigned int>(STACKVAR(16, 4)) > 0)
     {
-        goto l10010F12;
+        unknown_function_10010AB0(STACKVAR(8, 4), static_cast<int>(ACCESS(STACKVAR(12, 4), 0, 1)), 0x00000001);
+        STACKVAR(12, 4) = reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000001;
+        STACKVAR(16, 4) = reinterpret_cast<any_int32>(STACKVAR(16, 4)) - 0x00000001;
     }
-    ARG(0x00000001);
-    REGDEF(edx=STACKVAR(12, 4))
 }
-Failed to find pattern for 'movsx eax, byte ptr [edx]'
 
 // address: 0x10010F14
 p10010F14
@@ -9553,9 +9553,11 @@ p1002257C
     ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=None)
     STACKVAR(-8, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 288, 4)) + 0x00000080;
     STACKVAR(-4, 4) = ACCESS(STACKVAR(12, 4), 80, 4);
-    REGDEF(ecx=STACKVAR(16, 4))
+    STACKVAR(-12, 4) = static_cast<int>(ACCESS(STACKVAR(16, 4), 0, 2)) * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-4, 4), 0, 4));
+    STACKVAR(-12, 4) = reinterpret_cast<int>(STACKVAR(-12, 4)) + 0x00000004 >> 3;
+    REGDEF(edx=reinterpret_cast<any_int32>(STACKVAR(-12, 4)) & 0x000003FF, ecx=ACCESS(STACKVAR(20, 4), 0, 4), eax=STACKVAR(24, 4), esi=STACKVAR(-8, 4))
 }
-Failed to find pattern for 'movsx edx, word ptr [ecx]'
+Failed to find pattern for 'mov dl, byte ptr [esi+edx]'
 
 // address: 0x100225E0
 p100225E0
@@ -11236,8 +11238,10 @@ p10029217
     goto l10029506;
 l10029272:
     unknown_function_100285F5(STACKVAR(8, 4), LOCAL(-88));
+    STACKVAR(-12, 4) = static_cast<int>(STACKVAR(-76, 2)) * (reinterpret_cast<any_int32>(STACKVAR(-74, 4)) & 0x0000FFFF);
+    REGDEF(cmpl=STACKVAR(-12, 4), cmpr=0x00000020)
 }
-Failed to find pattern for 'movsx ecx, word ptr [ebp-04Ch]'
+Failed to find pattern for 'jg l100292BF'
 
 // address: 0x10029510
 p10029510
@@ -18384,9 +18388,23 @@ p1003F305
 {
     ProcedureInfo(this=None, this_offset=None, local_size=372, stack_delta=None)
     STACKVAR(-4, 4) = 0x00000000;
-    REGDEF(eax=STACKVAR(8, 4))
+    if (static_cast<int>(ACCESS(STACKVAR(8, 4), 0, 1)) != 0x0000005F)
+    {
+        goto l1003F9F2;
+    }
+    STACKVAR(8, 4) = reinterpret_cast<any_int32>(STACKVAR(8, 4)) + 0x00000001;
+l1003F32F:
+    if (static_cast<int>(ACCESS(STACKVAR(8, 4), 0, 1)) == 0x00000000)
+    {
+        goto l1003F39C;
+    }
+    if (static_cast<int>(ACCESS(STACKVAR(8, 4), 0, 1)) < 48)
+    {
+        goto l1003F364;
+    }
+    REGDEF(cmpl=static_cast<int>(ACCESS(STACKVAR(8, 4), 0, 1)), cmpr=0x00000039)
 }
-Failed to find pattern for 'movsx ecx, byte ptr [eax]'
+Failed to find pattern for 'jg l1003F364'
 
 // address: 0x1003FA24
 p1003FA24

@@ -292,6 +292,12 @@
 	},
 	{
 		"instructions": [
+			{"movsx":  ["%eax-ecx-edx%", "%src-operand%"]}
+		],
+		"action": {"tmpreg": {"dst": "%eax-ecx-edx%", "src": "(int32)%src-operand%"}}
+	},
+	{
+		"instructions": [
 			{"lea":  ["%eax-ecx-edx-dst%", "[%eax-ecx-edx-index%+%eax-ecx-edx-index%%offset%]"]}
 		],
 		"action": {"tmpreg": {"dst": "%eax-ecx-edx-dst%", "src": "2 * I(REGVALUE(%eax-ecx-edx-index%)) + %offset%"}}
