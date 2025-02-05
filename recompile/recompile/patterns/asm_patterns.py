@@ -76,7 +76,7 @@ def _build_proc(writer, declarations, patterns, proc_addr, proc_lines):
         _parse_asm_proc(builder, patterns, proc_lines)
     except Exception as exc:
         builder.emit_code(writer)
-        writer.write_line(str(exc))
+        writer.write_line('Error: "{}"'.format(str(exc)))
         return exc
     else:
         builder.make_high_level_code(declarations)

@@ -68,7 +68,7 @@ l10001156:
     STACKVAR(-29, 1) = ACCESS(STACKVAR(-28, 4), 0, 1);
     REGDEF(edx=STACKVAR(-24, 4))
 }
-'cl'
+Error: "'cl'"
 
 // address: 0x10001205
 p10001205
@@ -339,7 +339,7 @@ l10001A8F:
     }
     REGDEF(ecx=STACKVAR(12, 4), edx=ACCESS(STACKVAR(-8, 4), 16400, 4), eax=STACKVAR(-8, 4))
 }
-Failed to find pattern for 'lea esi, [eax+edx+00Ch]'
+Error: "Failed to find pattern for 'lea esi, [eax+edx+00Ch]'"
 
 // address: 0x10001B55
 B_IDataFile &operator >>(B_IDataFile &file, char &c)
@@ -427,7 +427,7 @@ B_ODataFile::B_ODataFile(const char *file_name, int flags)
     ARG(0x00000180);
     REGDEF(edx=STACKVAR(12, 4))
 }
-Failed to find pattern for 'or edx, 000000301h'
+Error: "Failed to find pattern for 'or edx, 000000301h'"
 
 // address: 0x10001DA0
 p10001DA0
@@ -479,7 +479,7 @@ l10001E9C:
     }
     REGDEF(ecx=STACKVAR(12, 4), esi=STACKVAR(8, 4), eax=ACCESS(STACKVAR(-8, 4), 16396, 4), edx=STACKVAR(-8, 4))
 }
-Failed to find pattern for 'lea edi, [edx+eax+008h]'
+Error: "Failed to find pattern for 'lea edi, [edx+eax+008h]'"
 
 // address: 0x10001F5E
 B_ODataFile &operator <<(B_ODataFile &file, const char &c)
@@ -617,7 +617,7 @@ p10002100
     ProcedureInfo(this=Id(this), this_offset=-12, local_size=12, stack_delta=None)
     REGDEF(cmpl=STACKVAR(8, 4), cmpr=STACKVAR(12, 4))
 }
-Failed to find pattern for 'jle l10002119'
+Error: "Failed to find pattern for 'jle l10002119'"
 
 // address: 0x100021E0
 unsigned int B_IDataFile::OK()
@@ -849,7 +849,7 @@ char *GetConfigDirectory()
     _getcwd(GLOBAL(0x1004A00C), 0x00000104);
     REGDEF(edi=GLOBAL(0x1004A00C), ecx=0xFFFFFFFF, eax=0x00000000)
 }
-Failed to find pattern for 'repnz scasb'
+Error: "Failed to find pattern for 'repnz scasb'"
 
 // address: 0x100028EC
 char *GetCurrentLanguage()
@@ -857,7 +857,7 @@ char *GetCurrentLanguage()
     ProcedureInfo(this=None, this_offset=None, local_size=256, stack_delta=None)
     strcpy(LOCAL(-256), unknown_function_10002740());
 }
-Failed to find pattern for 'lea edi, [ebp-000000100h]'
+Error: "Failed to find pattern for 'lea edi, [ebp-000000100h]'"
 
 // address: 0x10002980
 B_ListElement::~B_ListElement()
@@ -1344,7 +1344,7 @@ l10003480:
     STACKVAR(-13, 1) = ACCESS(STACKVAR(-12, 4), 0, 1);
     REGDEF(eax=STACKVAR(-8, 4))
 }
-'dl'
+Error: "'dl'"
 
 // address: 0x100034DA
 unsigned int B_Name::operator <(const B_Name &rhs)
@@ -1356,7 +1356,7 @@ l100034F3:
     STACKVAR(-13, 1) = ACCESS(STACKVAR(-12, 4), 0, 1);
     REGDEF(eax=STACKVAR(-8, 4))
 }
-'dl'
+Error: "'dl'"
 
 // address: 0x1000354D
 unsigned int B_Name::operator ==(const B_Name &rhs)
@@ -1372,7 +1372,7 @@ l10003574:
     STACKVAR(-13, 1) = ACCESS(STACKVAR(-12, 4), 0, 1);
     REGDEF(eax=STACKVAR(-8, 4))
 }
-'dl'
+Error: "'dl'"
 
 // address: 0x100035D2
 unsigned int B_Name::operator ==(const char *str)
@@ -1384,7 +1384,7 @@ l100035E9:
     STACKVAR(-13, 1) = ACCESS(STACKVAR(-12, 4), 0, 1);
     REGDEF(edx=STACKVAR(-8, 4))
 }
-'cl'
+Error: "'cl'"
 
 // address: 0x10003643
 unsigned int B_Name::operator !=(const B_Name &rhs)
@@ -1403,7 +1403,7 @@ l10003671:
     STACKVAR(-13, 1) = ACCESS(STACKVAR(-12, 4), 0, 1);
     REGDEF(eax=STACKVAR(-8, 4))
 }
-'dl'
+Error: "'dl'"
 
 // address: 0x100036C5
 unsigned int B_Name::operator !=(const char *str)
@@ -1415,7 +1415,7 @@ l100036DC:
     STACKVAR(-13, 1) = ACCESS(STACKVAR(-12, 4), 0, 1);
     REGDEF(edx=STACKVAR(-8, 4))
 }
-'cl'
+Error: "'cl'"
 
 // address: 0x10003730
 p10003730
@@ -1556,28 +1556,28 @@ B_Name operator +(const B_Name &lother, const B_Name &rother)
 {
     ProcedureInfo(this=None, this_offset=None, local_size=24, stack_delta=None)
 }
-Failed to find pattern for 'push ebx'
+Error: "Failed to find pattern for 'push ebx'"
 
 // address: 0x10003B1E
 B_Name operator +(const B_Name &other, const char *str)
 {
     ProcedureInfo(this=None, this_offset=None, local_size=16, stack_delta=None)
 }
-Failed to find pattern for 'push ebx'
+Error: "Failed to find pattern for 'push ebx'"
 
 // address: 0x10003BC7
 B_Name operator +(const char *str, const B_Name &bName)
 {
     ProcedureInfo(this=None, this_offset=None, local_size=16, stack_delta=None)
 }
-Failed to find pattern for 'push ebx'
+Error: "Failed to find pattern for 'push ebx'"
 
 // address: 0x10003C70
 B_Name &B_Name::operator +=(const char *str)
 {
     ProcedureInfo(this=None, this_offset=None, local_size=16, stack_delta=None)
 }
-Failed to find pattern for 'push ebx'
+Error: "Failed to find pattern for 'push ebx'"
 
 // address: 0x10003D30
 B_Name &B_Name::operator+=(char c)
@@ -1599,7 +1599,7 @@ B_Name &B_Name::operator +=(const B_Name &other)
 {
     ProcedureInfo(this=None, this_offset=None, local_size=24, stack_delta=None)
 }
-Failed to find pattern for 'push ebx'
+Error: "Failed to find pattern for 'push ebx'"
 
 // address: 0x10003E91
 void B_Name::UpCase()
@@ -1674,7 +1674,7 @@ p10003FCE
     STACKVAR(-68, 4) = reinterpret_cast<any_int32>(STACKVAR(-68, 4)) - 0x00000001;
     REGDEF(cmpl=STACKVAR(-68, 4), cmpr=0x00000004)
 }
-Failed to find pattern for 'ja l1000434E'
+Error: "Failed to find pattern for 'ja l1000434E'"
 
 // address: 0x10004371
 p10004371
@@ -1720,7 +1720,7 @@ B_Resource *B_ResourceManager::sub_10004425(unsigned short resourceId)
     REGDEF(eax=0x0000402C)
     unknown_function_10041600();
 }
-'ecx'
+Error: "'ecx'"
 
 // address: 0x100045B9
 p100045B9
@@ -2177,7 +2177,7 @@ l10004D7E:
     }
     REGDEF(eax=ACCESS(STACKVAR(-32, 4), 4, 4), ecx=STACKVAR(-16, 4), edx=STACKVAR(-12, 4), esi=STACKVAR(-16, 4))
 }
-Failed to find pattern for 'mov eax, dword ptr [eax+esi*04h]'
+Error: "Failed to find pattern for 'mov eax, dword ptr [eax+esi*04h]'"
 
 // address: 0x10004E0B
 unsigned int B_ResourceManager::LocateResourceIn(const B_Name &id, const B_Name *arg_2, int arg_3)
@@ -2186,7 +2186,7 @@ unsigned int B_ResourceManager::LocateResourceIn(const B_Name &id, const B_Name 
     REGDEF(eax=0x000040A0)
     unknown_function_10041600();
 }
-Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>
+Error: "Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>"
 
 // address: 0x10005533
 p10005533
@@ -2290,7 +2290,7 @@ l10005756:
     }
     REGDEF(eax=ACCESS(STACKVAR(-88, 4), 4, 4), ecx=STACKVAR(-72, 4), edx=STACKVAR(-68, 4), esi=STACKVAR(-72, 4))
 }
-Failed to find pattern for 'mov eax, dword ptr [eax+esi*04h]'
+Error: "Failed to find pattern for 'mov eax, dword ptr [eax+esi*04h]'"
 
 // address: 0x1000582E
 unsigned int B_ResourceManager::AddAutoResource(const B_Name &arg_1, B_Resource *arg_2, int arg_3)
@@ -2309,7 +2309,7 @@ l1000585D:
     }
     REGDEF(cmpl=STACKVAR(16, 4), cmpr=0x00000100)
 }
-Failed to find pattern for 'jle l10005873'
+Error: "Failed to find pattern for 'jle l10005873'"
 
 // address: 0x10005AF0
 B_Resource *B_ResourceManager::GetResource(unsigned short resourceId, const B_Name &name)
@@ -2362,7 +2362,7 @@ l10005BD0:
     REGDEF(ecx=ACCESS(ARRPTR(STACKVAR(-16, 4), 0x04, reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x0000FFFF, 0), 0, 4))
     unknown_function_10004874();
 }
-Failed to find pattern for 'neg eax'
+Error: "Failed to find pattern for 'neg eax'"
 
 // address: 0x10005C13
 p10005C13
@@ -2371,7 +2371,7 @@ p10005C13
     REGDEF(eax=0x00004024)
     unknown_function_10041600();
 }
-'ecx'
+Error: "'ecx'"
 
 // address: 0x10005CCD
 int B_ResourceManager::IsResourceLoaded(int arg_1, int arg_2)
@@ -2457,7 +2457,7 @@ l10005E2B:
     LOCAL(-12)->unknown_method_100039BA();
     REGDEF(eax=0x00000000, cmpl=STACKVAR(-4, 4), cmpr=0xFFFFFFFF)
 }
-Failed to find pattern for 'sete  al'
+Error: "Failed to find pattern for 'sete  al'"
 
 // address: 0x10005E42
 p10005E42
@@ -2542,7 +2542,7 @@ l10005FB0:
     REGDEF(ecx=LOCAL(-16))
     unknown_function_10003337();
 }
-Failed to find pattern for 'or dword ptr [ebp-01Ch], 000000001h'
+Error: "Failed to find pattern for 'or dword ptr [ebp-01Ch], 000000001h'"
 
 // address: 0x1000617B
 p1000617B
@@ -2625,7 +2625,7 @@ p1000629C
     REGDEF(eax=0x0000402C)
     unknown_function_10041600();
 }
-'ecx'
+Error: "'ecx'"
 
 // address: 0x1000644A
 p1000644A
@@ -2634,7 +2634,7 @@ p1000644A
     REGDEF(eax=0x00004048)
     unknown_function_10041600();
 }
-'ecx'
+Error: "'ecx'"
 
 // address: 0x1000660B
 p1000660B
@@ -2777,7 +2777,7 @@ B_Color B_Color::operator +(const B_Color &color)
     ProcedureInfo(this=Id(this), this_offset=-16, local_size=16, stack_delta=None)
     REGDEF(ecx=static_cast<unsigned int>(ACCESS(STACKVAR(-16, 4), 6, 1)) + static_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 6, 1)))
 }
-'cl'
+Error: "'cl'"
 
 // address: 0x10006950
 B_Color B_Color::operator *(float coef)
@@ -2785,7 +2785,7 @@ B_Color B_Color::operator *(float coef)
     ProcedureInfo(this=Id(this), this_offset=-16, local_size=28, stack_delta=None)
     STACKVAR(-20, 4) = static_cast<unsigned int>(ACCESS(STACKVAR(-16, 4), 6, 1));
 }
-Failed to find pattern for 'fild dword ptr [ebp-014h]'
+Error: "Failed to find pattern for 'fild dword ptr [ebp-014h]'"
 
 // address: 0x100069E0
 B_Color B_Color::operator /(float f)
@@ -2793,7 +2793,7 @@ B_Color B_Color::operator /(float f)
     ProcedureInfo(this=Id(this), this_offset=-16, local_size=28, stack_delta=None)
     STACKVAR(-20, 4) = static_cast<unsigned int>(ACCESS(STACKVAR(-16, 4), 6, 1));
 }
-Failed to find pattern for 'fild dword ptr [ebp-014h]'
+Error: "Failed to find pattern for 'fild dword ptr [ebp-014h]'"
 
 // address: 0x10006A70
 p10006A70
@@ -2938,7 +2938,7 @@ l10006D3C:
     }
     REGDEF(edx=ACCESS(GLOBAL(0x1004A524), 0, 4), eax=STACKVAR(-12, 4), ecx=STACKVAR(-8, 4), esi=STACKVAR(-12, 4))
 }
-Failed to find pattern for 'mov edx, dword ptr [edx+esi*04h]'
+Error: "Failed to find pattern for 'mov edx, dword ptr [edx+esi*04h]'"
 
 // address: 0x10006E20
 p10006E20
@@ -2981,7 +2981,7 @@ l10006EBA:
 l10006EC1:
     REGDEF(cmpl=STACKVAR(-12, 4), cmpr=ACCESS(GLOBAL(0x1004A528), 0, 4))
 }
-Failed to find pattern for 'jb l10006ED1'
+Error: "Failed to find pattern for 'jb l10006ED1'"
 
 // address: 0x10007090
 p10007090
@@ -3029,7 +3029,7 @@ l1000716C:
     }
     REGDEF(edx=ACCESS(GLOBAL(0x1004A524), 0, 4), eax=STACKVAR(-12, 4), ecx=STACKVAR(-8, 4), esi=STACKVAR(-12, 4))
 }
-Failed to find pattern for 'mov edx, dword ptr [edx+esi*04h]'
+Error: "Failed to find pattern for 'mov edx, dword ptr [edx+esi*04h]'"
 
 // address: 0x10007470
 p10007470
@@ -3113,7 +3113,7 @@ l100075A9:
 l100075B0:
     REGDEF(cmpl=STACKVAR(-36, 4), cmpr=ACCESS(GLOBAL(0x1004A528), 0, 4))
 }
-Failed to find pattern for 'jb l100075C0'
+Error: "Failed to find pattern for 'jb l100075C0'"
 
 // address: 0x10007790
 p10007790
@@ -3143,7 +3143,7 @@ l100077E4:
 l100077EB:
     REGDEF(cmpl=STACKVAR(-12, 4), cmpr=ACCESS(GLOBAL(0x1004A528), 0, 4))
 }
-Failed to find pattern for 'jb l100077FB'
+Error: "Failed to find pattern for 'jb l100077FB'"
 
 // address: 0x100079D0
 p100079D0
@@ -3173,7 +3173,7 @@ l10007A24:
 l10007A2B:
     REGDEF(cmpl=STACKVAR(-12, 4), cmpr=ACCESS(GLOBAL(0x1004A528), 0, 4))
 }
-Failed to find pattern for 'jb l10007A3B'
+Error: "Failed to find pattern for 'jb l10007A3B'"
 
 // address: 0x10007C10
 p10007C10
@@ -3205,7 +3205,7 @@ l10007C96:
     }
     REGDEF(eax=ACCESS(STACKVAR(-24, 4), 4, 4), ecx=STACKVAR(-8, 4), edx=STACKVAR(-4, 4), esi=STACKVAR(-8, 4))
 }
-Failed to find pattern for 'mov eax, dword ptr [eax+esi*04h]'
+Error: "Failed to find pattern for 'mov eax, dword ptr [eax+esi*04h]'"
 
 // address: 0x10007D30
 p10007D30
@@ -3213,7 +3213,7 @@ p10007D30
     ProcedureInfo(this=Id(this), this_offset=-36, local_size=40, stack_delta=None)
     REGDEF(cmpl=STACKVAR(8, 4), cmpr=ACCESS(STACKVAR(-36, 4), 8, 4))
 }
-Failed to find pattern for 'jb l10007D4A'
+Error: "Failed to find pattern for 'jb l10007D4A'"
 
 // address: 0x10007EF0
 B_RDataLight &B_RDataLight::operator=(const B_RDataLight &other)
@@ -3470,7 +3470,7 @@ p10008383
     STACKVAR(-20, 4) = reinterpret_cast<any_int32>(STACKVAR(-20, 4)) - 0x00000001;
     REGDEF(cmpl=STACKVAR(-20, 4), cmpr=0x00000004)
 }
-Failed to find pattern for 'ja l100083EC'
+Error: "Failed to find pattern for 'ja l100083EC'"
 
 // address: 0x10008483
 p10008483
@@ -3597,7 +3597,7 @@ B_BitMap::B_BitMap(const B_BitMap &src)
     STACKVAR(-36, 4) = reinterpret_cast<any_int32>(STACKVAR(-36, 4)) - 0x00000001;
     REGDEF(cmpl=STACKVAR(-36, 4), cmpr=0x00000004)
 }
-Failed to find pattern for 'ja l10008955'
+Error: "Failed to find pattern for 'ja l10008955'"
 
 // address: 0x10008974
 p10008974
@@ -3661,7 +3661,7 @@ p10008AF0
     STACKVAR(-8, 4) = reinterpret_cast<any_int32>(STACKVAR(-8, 4)) - 0x00000001;
     REGDEF(cmpl=STACKVAR(-8, 4), cmpr=0x00000004)
 }
-Failed to find pattern for 'ja l10008B37'
+Error: "Failed to find pattern for 'ja l10008B37'"
 
 // address: 0x10008B51
 B_ODataFile &operator <<(B_ODataFile &file, const B_BitMap &bitMap)
@@ -3673,7 +3673,7 @@ B_ODataFile &operator <<(B_ODataFile &file, const B_BitMap &bitMap)
     STACKVAR(-8, 4) = reinterpret_cast<any_int32>(STACKVAR(-8, 4)) - 0x00000001;
     REGDEF(cmpl=STACKVAR(-8, 4), cmpr=0x00000004)
 }
-Failed to find pattern for 'ja l10008C80'
+Error: "Failed to find pattern for 'ja l10008C80'"
 
 // address: 0x10008C9B
 B_IDataFile &operator >>(B_IDataFile &file, B_BitMap &bitMap)
@@ -3700,7 +3700,7 @@ l10008CF1:
     STACKVAR(-44, 4) = reinterpret_cast<any_int32>(STACKVAR(-44, 4)) - 0x00000001;
     REGDEF(cmpl=STACKVAR(-44, 4), cmpr=0x00000004)
 }
-Failed to find pattern for 'ja l10008D7C'
+Error: "Failed to find pattern for 'ja l10008D7C'"
 
 // address: 0x10008FDA
 B_BitMap::~B_BitMap()
@@ -3758,7 +3758,7 @@ p10009110
 {
     ProcedureInfo(this=None, this_offset=None, local_size=8, stack_delta=None)
 }
-Failed to find pattern for 'push ebx'
+Error: "Failed to find pattern for 'push ebx'"
 
 // address: 0x100091A4
 B_IDataFile &operator >>(B_IDataFile &file, B_Color &color)
@@ -3780,7 +3780,7 @@ void B_Color::MakeCons()
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=40, stack_delta=None)
     REGDEF(cmpl=static_cast<unsigned int>(ACCESS(STACKVAR(-4, 4), 4, 1)), cmpr=0x000000FF)
 }
-Failed to find pattern for 'jle l1000923C'
+Error: "Failed to find pattern for 'jle l1000923C'"
 
 // address: 0x100093A7
 p100093A7
@@ -3834,7 +3834,7 @@ p1000946B
 {
     ProcedureInfo(this=None, this_offset=None, local_size=20, stack_delta=None)
 }
-Failed to find pattern for 'push ebx'
+Error: "Failed to find pattern for 'push ebx'"
 
 // address: 0x10009633
 p10009633
@@ -3886,7 +3886,7 @@ l10009722:
     STACKVAR(-12, 4) = ACCESS(STACKVAR(8, 4), 12, 4);
     REGDEF(ecx=0x00000059, eax=0x00000000, edi=STACKVAR(8, 4))
 }
-Failed to find pattern for 'rep stosd'
+Error: "Failed to find pattern for 'rep stosd'"
 
 // address: 0x1000980C
 p1000980C
@@ -3906,7 +3906,7 @@ l1000983D:
 l10009846:
     REGDEF(cmpl=STACKVAR(-12, 4), cmpr=0x00000004)
 }
-Failed to find pattern for 'jnl l1000986D'
+Error: "Failed to find pattern for 'jnl l1000986D'"
 
 // address: 0x100098C9
 p100098C9
@@ -3994,7 +3994,7 @@ l10009C6F:
     ACCESS(STACKVAR(8, 4), 204, 4) = 0x00000000;
     REGDEF(eax=static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 172, 1)))
 }
-Failed to find pattern for 'neg eax'
+Error: "Failed to find pattern for 'neg eax'"
 
 // address: 0x10009CD5
 p10009CD5
@@ -4010,7 +4010,7 @@ p10009CD5
 l10009D0C:
     REGDEF(cmpl=ACCESS(STACKVAR(8, 4), 204, 4), cmpr=ACCESS(STACKVAR(8, 4), 32, 4))
 }
-Failed to find pattern for 'jb l10009D3A'
+Error: "Failed to find pattern for 'jb l10009D3A'"
 
 // address: 0x10009F40
 p10009F40
@@ -4032,7 +4032,7 @@ l10009F93:
 l10009FA5:
     REGDEF(cmpl=STACKVAR(-12, 4), cmpr=ACCESS(STACKVAR(8, 4), 56, 4))
 }
-Failed to find pattern for 'jnl l1000A005'
+Error: "Failed to find pattern for 'jnl l1000A005'"
 
 // address: 0x1000A05E
 p1000A05E
@@ -4091,7 +4091,7 @@ p1000A14E
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 324, 4);
     REGDEF(cmpl=ACCESS(STACKVAR(8, 4), 224, 4), cmpr=0x00000001)
 }
-Failed to find pattern for 'jle l1000A176'
+Error: "Failed to find pattern for 'jle l1000A176'"
 
 // address: 0x1000A1C8
 p1000A1C8
@@ -4107,7 +4107,7 @@ l1000A203:
 l1000A20C:
     REGDEF(cmpl=STACKVAR(-52, 4), cmpr=ACCESS(STACKVAR(-12, 4), 20, 4))
 }
-Failed to find pattern for 'jnl l1000A45A'
+Error: "Failed to find pattern for 'jnl l1000A45A'"
 
 // address: 0x1000A47B
 p1000A47B
@@ -4124,7 +4124,7 @@ l1000A4AF:
 l1000A4C1:
     REGDEF(cmpl=STACKVAR(-48, 4), cmpr=ACCESS(STACKVAR(8, 4), 56, 4))
 }
-Failed to find pattern for 'jnl l1000A719'
+Error: "Failed to find pattern for 'jnl l1000A719'"
 
 // address: 0x1000A72E
 p1000A72E
@@ -4138,7 +4138,7 @@ l1000A749:
 l1000A752:
     REGDEF(cmpl=STACKVAR(-36, 4), cmpr=ACCESS(STACKVAR(8, 4), 224, 4))
 }
-Failed to find pattern for 'jnl l1000A7AE'
+Error: "Failed to find pattern for 'jnl l1000A7AE'"
 
 // address: 0x1000A930
 p1000A930
@@ -4151,7 +4151,7 @@ p1000A930
     STACKVAR(-8, 4) = reinterpret_cast<any_int32>(STACKVAR(-8, 4)) - 0x00000001;
     REGDEF(cmpl=STACKVAR(-8, 4), cmpr=0x00000004)
 }
-Failed to find pattern for 'ja l1000A9F2'
+Error: "Failed to find pattern for 'ja l1000A9F2'"
 
 // address: 0x1000ACCF
 p1000ACCF
@@ -4167,7 +4167,7 @@ l1000AD0C:
 l1000AD15:
     REGDEF(cmpl=STACKVAR(-8, 4), cmpr=0x000000FF)
 }
-Failed to find pattern for 'jg l1000ADDC'
+Error: "Failed to find pattern for 'jg l1000ADDC'"
 
 // address: 0x1000ADE0
 p1000ADE0
@@ -4203,7 +4203,7 @@ l1000AE6F:
     STACKVAR(-32, 4) = reinterpret_cast<any_int32>(STACKVAR(-32, 4)) + 0x00000003;
     REGDEF(ecx=ACCESS(ARRPTR(STACKVAR(-44, 4), 0x04, STACKVAR(-12, 4), 0), 0, 4), edx=STACKVAR(-20, 4), eax=STACKVAR(-44, 4))
 }
-Failed to find pattern for 'add ecx, dword ptr [eax+edx*04h+000000400h]'
+Error: "Failed to find pattern for 'add ecx, dword ptr [eax+edx*04h+000000400h]'"
 
 // address: 0x1000AF44
 p1000AF44
@@ -4237,7 +4237,7 @@ l1000AFB5:
     STACKVAR(-28, 4) = reinterpret_cast<any_int32>(STACKVAR(-28, 4)) + 0x00000003;
     REGDEF(edx=ACCESS(ARRPTR(STACKVAR(-36, 4), 0x04, STACKVAR(-12, 4), 0), 0, 4), eax=STACKVAR(-20, 4), ecx=STACKVAR(-36, 4))
 }
-Failed to find pattern for 'add edx, dword ptr [ecx+eax*04h+000000400h]'
+Error: "Failed to find pattern for 'add edx, dword ptr [ecx+eax*04h+000000400h]'"
 
 // address: 0x1000B01F
 p1000B01F
@@ -4275,7 +4275,7 @@ l1000B0BD:
     STACKVAR(-36, 4) = reinterpret_cast<any_int32>(STACKVAR(-36, 4)) + 0x00000004;
     REGDEF(edx=ACCESS(ARRPTR(STACKVAR(-48, 4), 0x04, STACKVAR(-12, 4), 0), 0, 4), eax=STACKVAR(-20, 4), ecx=STACKVAR(-48, 4))
 }
-Failed to find pattern for 'add edx, dword ptr [ecx+eax*04h+000000400h]'
+Error: "Failed to find pattern for 'add edx, dword ptr [ecx+eax*04h+000000400h]'"
 
 // address: 0x1000B1B5
 p1000B1B5
@@ -4327,7 +4327,7 @@ l1000B270:
 l1000B279:
     REGDEF(cmpl=STACKVAR(-24, 4), cmpr=STACKVAR(-8, 4))
 }
-Failed to find pattern for 'jnl l1000B2D2'
+Error: "Failed to find pattern for 'jnl l1000B2D2'"
 
 // address: 0x1000B2ED
 p1000B2ED
@@ -4379,7 +4379,7 @@ l1000B3B6:
 l1000B3BF:
     REGDEF(cmpl=STACKVAR(-8, 4), cmpr=0x00000004)
 }
-Failed to find pattern for 'jnl l1000B3E3'
+Error: "Failed to find pattern for 'jnl l1000B3E3'"
 
 // address: 0x1000B3E7
 p1000B3E7
@@ -4395,7 +4395,7 @@ l1000B40B:
 l1000B41D:
     REGDEF(cmpl=STACKVAR(-24, 4), cmpr=ACCESS(STACKVAR(8, 4), 56, 4))
 }
-Failed to find pattern for 'jnl l1000B67B'
+Error: "Failed to find pattern for 'jnl l1000B67B'"
 
 // address: 0x1000B67F
 p1000B67F
@@ -4405,7 +4405,7 @@ p1000B67F
     STACKVAR(-8, 4) = ACCESS(STACKVAR(-272, 4), 8, 4);
     REGDEF(edx=ACCESS(STACKVAR(12, 4), 16, 4), eax=STACKVAR(-272, 4))
 }
-Failed to find pattern for 'mov ecx, dword ptr [eax+edx*04h+00Ch]'
+Error: "Failed to find pattern for 'mov ecx, dword ptr [eax+edx*04h+00Ch]'"
 
 // address: 0x1000BA22
 p1000BA22
@@ -4415,7 +4415,7 @@ p1000BA22
     STACKVAR(-8, 4) = ACCESS(STACKVAR(-272, 4), 28, 4);
     REGDEF(edx=ACCESS(STACKVAR(12, 4), 16, 4), eax=STACKVAR(-272, 4))
 }
-Failed to find pattern for 'mov ecx, dword ptr [eax+edx*04h+020h]'
+Error: "Failed to find pattern for 'mov ecx, dword ptr [eax+edx*04h+020h]'"
 
 // address: 0x1000BD80
 p1000BD80
@@ -4440,7 +4440,7 @@ l1000BDBB:
     }
     REGDEF(eax=STACKVAR(16, 4), ecx=STACKVAR(8, 4))
 }
-Failed to find pattern for 'mov edx, dword ptr [ecx+eax*04h+054h]'
+Error: "Failed to find pattern for 'mov edx, dword ptr [ecx+eax*04h+054h]'"
 
 // address: 0x1000C0BE
 p1000C0BE
@@ -4448,7 +4448,7 @@ p1000C0BE
     ProcedureInfo(this=None, this_offset=None, local_size=2116, stack_delta=None)
     REGDEF(ecx=0x00000008, eax=0x00000000)
 }
-Failed to find pattern for 'lea edi, [ebp-000000434h]'
+Error: "Failed to find pattern for 'lea edi, [ebp-000000434h]'"
 
 // address: 0x1000C580
 p1000C580
@@ -4464,7 +4464,7 @@ l1000C5BA:
 l1000C5C3:
     REGDEF(cmpl=STACKVAR(-8, 4), cmpr=0x00000004)
 }
-Failed to find pattern for 'jnl l1000C603'
+Error: "Failed to find pattern for 'jnl l1000C603'"
 
 // address: 0x1000C607
 p1000C607
@@ -4489,7 +4489,7 @@ l1000C65B:
 l1000C664:
     REGDEF(cmpl=STACKVAR(-16, 4), cmpr=ACCESS(STACKVAR(8, 4), 224, 4))
 }
-Failed to find pattern for 'jnl l1000C7DA'
+Error: "Failed to find pattern for 'jnl l1000C7DA'"
 
 // address: 0x1000C80D
 p1000C80D
@@ -4500,7 +4500,7 @@ p1000C80D
     STACKVAR(-36, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 24, 4), 4, 4);
     REGDEF(esi=reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x0000000C, ecx=0x00000006)
 }
-Failed to find pattern for 'lea edi, [ebp-020h]'
+Error: "Failed to find pattern for 'lea edi, [ebp-020h]'"
 
 // address: 0x1000C9AC
 p1000C9AC
@@ -4510,7 +4510,7 @@ p1000C9AC
     STACKVAR(-16, 4) = STACKVAR(-8, 4);
     REGDEF(cmpl=STACKVAR(-16, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'jnl l1000C9DB'
+Error: "Failed to find pattern for 'jnl l1000C9DB'"
 
 // address: 0x1000CC15
 p1000CC15
@@ -4527,7 +4527,7 @@ p1000CC15
 l1000CC53:
     REGDEF(edx=0x00000001, ecx=STACKVAR(16, 4))
 }
-Failed to find pattern for 'shl edx, cl'
+Error: "Failed to find pattern for 'shl edx, cl'"
 
 // address: 0x1000CD6C
 p1000CD6C
@@ -4571,7 +4571,7 @@ l1000CDD5:
 l1000CE1E:
     REGDEF(edx=reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x000000D0)
 }
-'dl'
+Error: "'dl'"
 
 // address: 0x1000CEA5
 p1000CEA5
@@ -4596,7 +4596,7 @@ p1000CEDD
     STACKVAR(-36, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 24, 4), 4, 4);
     REGDEF(esi=reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x0000000C, ecx=0x00000006)
 }
-Failed to find pattern for 'lea edi, [ebp-020h]'
+Error: "Failed to find pattern for 'lea edi, [ebp-020h]'"
 
 // address: 0x1000CF7A
 p1000CF7A
@@ -4618,7 +4618,7 @@ l1000CFAA:
 l1000CFB3:
     REGDEF(cmpl=STACKVAR(-12, 4), cmpr=ACCESS(STACKVAR(8, 4), 224, 4))
 }
-Failed to find pattern for 'jnl l1000CFD1'
+Error: "Failed to find pattern for 'jnl l1000CFD1'"
 
 // address: 0x1000D08D
 p1000D08D
@@ -4627,7 +4627,7 @@ p1000D08D
     STACKVAR(-12, 4) = static_cast<int>(ACCESS(STACKVAR(12, 4), 0, 2)) - reinterpret_cast<any_int32>(STACKVAR(16, 4));
     REGDEF(cmpl=STACKVAR(-12, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'jnl l1000D0AD'
+Error: "Failed to find pattern for 'jnl l1000D0AD'"
 
 // address: 0x1000D205
 p1000D205
@@ -4643,7 +4643,7 @@ l1000D22A:
 l1000D233:
     REGDEF(cmpl=STACKVAR(-20, 4), cmpr=ACCESS(STACKVAR(8, 4), 224, 4))
 }
-Failed to find pattern for 'jnl l1000D31C'
+Error: "Failed to find pattern for 'jnl l1000D31C'"
 
 // address: 0x1000D320
 p1000D320
@@ -4678,7 +4678,7 @@ l1000D3BB:
 l1000D3C7:
     REGDEF(cmpl=ACCESS(STACKVAR(8, 4), 164, 4), cmpr=0x00000001)
 }
-Failed to find pattern for 'jg l1000D3EB'
+Error: "Failed to find pattern for 'jg l1000D3EB'"
 
 // address: 0x1000D450
 p1000D450
@@ -4710,7 +4710,7 @@ l1000D4D0:
 l1000D4E2:
     REGDEF(cmpl=STACKVAR(-12, 4), cmpr=ACCESS(STACKVAR(8, 4), 56, 4))
 }
-Failed to find pattern for 'jnl l1000D51F'
+Error: "Failed to find pattern for 'jnl l1000D51F'"
 
 // address: 0x1000D523
 p1000D523
@@ -4924,7 +4924,7 @@ l1000DAA2:
 l1000DAB4:
     REGDEF(cmpl=STACKVAR(-16, 4), cmpr=ACCESS(STACKVAR(8, 4), 56, 4))
 }
-Failed to find pattern for 'jnl l1000DADC'
+Error: "Failed to find pattern for 'jnl l1000DADC'"
 
 // address: 0x1000DBFF
 p1000DBFF
@@ -4932,7 +4932,7 @@ p1000DBFF
     ProcedureInfo(this=None, this_offset=None, local_size=16, stack_delta=None)
     REGDEF(eax=STACKVAR(12, 4), ecx=STACKVAR(8, 4))
 }
-Failed to find pattern for 'mov edx, dword ptr [ecx+eax*04h+044h]'
+Error: "Failed to find pattern for 'mov edx, dword ptr [ecx+eax*04h+044h]'"
 
 // address: 0x1000DD3E
 p1000DD3E
@@ -4942,7 +4942,7 @@ p1000DD3E
     unknown_function_1000D7FA(STACKVAR(8, 4), 0x00000003 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 56, 4)) + 0x00000008);
     REGDEF(cmpl=ACCESS(STACKVAR(8, 4), 32, 4), cmpr=0x0000FFFF)
 }
-Failed to find pattern for 'jg l1000DD85'
+Error: "Failed to find pattern for 'jg l1000DD85'"
 
 // address: 0x1000DE6D
 p1000DE6D
@@ -4963,7 +4963,7 @@ l1000DEA8:
 l1000DEB1:
     REGDEF(cmpl=STACKVAR(-8, 4), cmpr=ACCESS(STACKVAR(8, 4), 224, 4))
 }
-Failed to find pattern for 'jnl l1000DF57'
+Error: "Failed to find pattern for 'jnl l1000DF57'"
 
 // address: 0x1000DF93
 p1000DF93
@@ -4975,7 +4975,7 @@ p1000DF93
     }
     REGDEF(ecx=STACKVAR(12, 4), edx=STACKVAR(8, 4))
 }
-Failed to find pattern for 'mov eax, dword ptr [edx+ecx*04h+064h]'
+Error: "Failed to find pattern for 'mov eax, dword ptr [edx+ecx*04h+064h]'"
 
 // address: 0x1000E0E2
 p1000E0E2
@@ -5006,7 +5006,7 @@ l1000E171:
 l1000E17A:
     REGDEF(cmpl=STACKVAR(-8, 4), cmpr=ACCESS(STACKVAR(8, 4), 224, 4))
 }
-Failed to find pattern for 'jnl l1000E228'
+Error: "Failed to find pattern for 'jnl l1000E228'"
 
 // address: 0x1000E27A
 p1000E27A
@@ -5027,7 +5027,7 @@ l1000E2AE:
 l1000E2B7:
     REGDEF(cmpl=STACKVAR(-4, 4), cmpr=0x00000004)
 }
-Failed to find pattern for 'jnl l1000E2DC'
+Error: "Failed to find pattern for 'jnl l1000E2DC'"
 
 // address: 0x1000E360
 p1000E360
@@ -5092,7 +5092,7 @@ p1000E487
     }
     REGDEF(cmpl=ACCESS(STACKVAR(8, 4), 56, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'jle l1000E4B1'
+Error: "Failed to find pattern for 'jle l1000E4B1'"
 
 // address: 0x1000E7C0
 p1000E7C0
@@ -5100,7 +5100,7 @@ p1000E7C0
     ProcedureInfo(this=None, this_offset=None, local_size=2616, stack_delta=None)
     REGDEF(cmpl=ACCESS(STACKVAR(8, 4), 164, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'jg l1000E7FB'
+Error: "Failed to find pattern for 'jg l1000E7FB'"
 
 // address: 0x1000EDE2
 p1000EDE2
@@ -5136,7 +5136,7 @@ l1000EE7B:
     ACCESS(ACCESS(STACKVAR(8, 4), 344, 4), 0, 4)(STACKVAR(8, 4), ACCESS(STACKVAR(8, 4), 174, 1));
     REGDEF(edx=0x00000000, cmpl=ACCESS(STACKVAR(-4, 4), 24, 4), cmpr=0x00000001)
 }
-Failed to find pattern for 'setle dl'
+Error: "Failed to find pattern for 'setle dl'"
 
 // address: 0x1000F076
 p1000F076
@@ -5156,7 +5156,7 @@ l1000F0C6:
 l1000F0CF:
     REGDEF(cmpl=STACKVAR(-4, 4), cmpr=ACCESS(STACKVAR(-12, 4), 0, 4))
 }
-Failed to find pattern for 'jnl l1000F0FD'
+Error: "Failed to find pattern for 'jnl l1000F0FD'"
 
 // address: 0x1000F1FC
 p1000F1FC
@@ -5188,7 +5188,7 @@ l1000F28F:
 l1000F2B7:
     REGDEF(cmpl=ACCESS(STACKVAR(8, 4), 224, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'jle l1000F2CF'
+Error: "Failed to find pattern for 'jle l1000F2CF'"
 
 // address: 0x1000F4DE
 p1000F4DE
@@ -5256,7 +5256,7 @@ l1000F5E8:
 l1000F5F1:
     REGDEF(cmpl=STACKVAR(-4, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'jle l1000F60D'
+Error: "Failed to find pattern for 'jle l1000F60D'"
 
 // address: 0x1000F640
 p1000F640
@@ -5315,7 +5315,7 @@ l1000F713:
 l1000F738:
     REGDEF(eax=STACKVAR(12, 4), ecx=STACKVAR(8, 4))
 }
-Failed to find pattern for 'lea edx, [ecx+eax*04h+044h]'
+Error: "Failed to find pattern for 'lea edx, [ecx+eax*04h+044h]'"
 
 // address: 0x1000F7ED
 p1000F7ED
@@ -5331,7 +5331,7 @@ p1000F828
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
     REGDEF(cmpl=STACKVAR(8, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'jg l1000F838'
+Error: "Failed to find pattern for 'jg l1000F838'"
 
 // address: 0x1000F86D
 p1000F86D
@@ -5369,7 +5369,7 @@ l1000F91E:
 l1000F927:
     REGDEF(cmpl=STACKVAR(-4, 4), cmpr=0x00000010)
 }
-Failed to find pattern for 'jnl l1000F953'
+Error: "Failed to find pattern for 'jnl l1000F953'"
 
 // address: 0x1000FA22
 p1000FA22
@@ -5393,7 +5393,7 @@ p1000FA9B
 l1000FABC:
     ACCESS(ACCESS(STACKVAR(12, 4), 0, 4), 0, 4) = ACCESS(STACKVAR(16, 4), 0, 4);
 }
-Unexpected instruction type <class 'instructions.assignment.Assignment'>
+Error: "Unexpected instruction type <class 'instructions.assignment.Assignment'>"
 
 // address: 0x1000FB6A
 p1000FB6A
@@ -5402,7 +5402,7 @@ p1000FB6A
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 40, 4);
     REGDEF(cmpl=STACKVAR(-4, 4), cmpr=0x00000005)
 }
-Failed to find pattern for 'ja l1000FBE7'
+Error: "Failed to find pattern for 'ja l1000FBE7'"
 
 // address: 0x1000FC1D
 p1000FC1D
@@ -5422,7 +5422,7 @@ l1000FC54:
     STACKVAR(-12, 4) = STACKVAR(12, 4);
     REGDEF(cmpl=STACKVAR(-12, 4), cmpr=0x00000005)
 }
-Failed to find pattern for 'ja l100101F0'
+Error: "Failed to find pattern for 'ja l100101F0'"
 
 // address: 0x100104D2
 p100104D2
@@ -5449,7 +5449,7 @@ l10010526:
 l1001052F:
     REGDEF(cmpl=STACKVAR(-4, 4), cmpr=STACKVAR(12, 4))
 }
-Failed to find pattern for 'jnl l10010578'
+Error: "Failed to find pattern for 'jnl l10010578'"
 
 // address: 0x1001057F
 p1001057F
@@ -5457,7 +5457,7 @@ p1001057F
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
     REGDEF(cmpl=STACKVAR(12, 4), cmpr=0x00000004)
 }
-Failed to find pattern for 'jg l100105EB'
+Error: "Failed to find pattern for 'jg l100105EB'"
 
 // address: 0x10010620
 p10010620
@@ -5473,7 +5473,7 @@ l1001065A:
 l10010663:
     REGDEF(cmpl=STACKVAR(-8, 4), cmpr=0x00000004)
 }
-Failed to find pattern for 'jnl l10010687'
+Error: "Failed to find pattern for 'jnl l10010687'"
 
 // address: 0x10010695
 p10010695
@@ -5484,7 +5484,7 @@ p10010695
     ACCESS(STACKVAR(-12, 4), 12, 1) = STACKVAR(12, 1);
     REGDEF(ecx=0x00000000, cmpl=ACCESS(STACKVAR(8, 4), 296, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'sete  cl'
+Error: "Failed to find pattern for 'sete  cl'"
 
 // address: 0x100108CB
 p100108CB
@@ -5511,7 +5511,7 @@ l10010937:
 l10010940:
     REGDEF(cmpl=STACKVAR(-32, 4), cmpr=ACCESS(STACKVAR(8, 4), 252, 4))
 }
-Failed to find pattern for 'jnl l10010A3C'
+Error: "Failed to find pattern for 'jnl l10010A3C'"
 
 // address: 0x10010AB0
 p10010AB0
@@ -5534,7 +5534,7 @@ l10010AEE:
 l10010AFF:
     REGDEF(edx=0x00000001, ecx=STACKVAR(16, 4))
 }
-Failed to find pattern for 'shl edx, cl'
+Error: "Failed to find pattern for 'shl edx, cl'"
 
 // address: 0x10010C02
 p10010C02
@@ -5560,7 +5560,7 @@ p10010C69
     }
     REGDEF(edx=STACKVAR(12, 4), eax=STACKVAR(8, 4))
 }
-Failed to find pattern for 'mov ecx, dword ptr [eax+edx*04h+05Ch]'
+Error: "Failed to find pattern for 'mov ecx, dword ptr [eax+edx*04h+05Ch]'"
 
 // address: 0x10010CD3
 p10010CD3
@@ -5583,7 +5583,7 @@ p10010CD3
 l10010D3B:
     REGDEF(edx=reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x000000D0)
 }
-'dl'
+Error: "'dl'"
 
 // address: 0x10010DDB
 p10010DDB
@@ -5615,7 +5615,7 @@ l10010E27:
 l10010E40:
     REGDEF(cmpl=STACKVAR(-4, 4), cmpr=0x0000000E)
 }
-Failed to find pattern for 'jle l10010E69'
+Error: "Failed to find pattern for 'jle l10010E69'"
 
 // address: 0x10010ED2
 p10010ED2
@@ -5661,7 +5661,7 @@ l10010FA0:
 l10010FA9:
     REGDEF(cmpl=STACKVAR(-32, 4), cmpr=STACKVAR(-20, 4))
 }
-Failed to find pattern for 'jg l100110DA'
+Error: "Failed to find pattern for 'jg l100110DA'"
 
 // address: 0x1001117B
 p1001117B
@@ -5688,7 +5688,7 @@ l100111E7:
 l100111F0:
     REGDEF(cmpl=STACKVAR(-16, 4), cmpr=ACCESS(STACKVAR(8, 4), 252, 4))
 }
-Failed to find pattern for 'jnl l1001122C'
+Error: "Failed to find pattern for 'jnl l1001122C'"
 
 // address: 0x100112A0
 p100112A0
@@ -5718,7 +5718,7 @@ l10011335:
 l10011344:
     REGDEF(cmpl=STACKVAR(-288, 4), cmpr=STACKVAR(-20, 4))
 }
-Failed to find pattern for 'jg l100113BE'
+Error: "Failed to find pattern for 'jg l100113BE'"
 
 // address: 0x10011641
 p10011641
@@ -5741,7 +5741,7 @@ p100116A7
     unknown_function_10010E04(STACKVAR(-12, 4));
     REGDEF(ecx=0x00000000, cmpl=ACCESS(STACKVAR(8, 4), 296, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'sete  cl'
+Error: "Failed to find pattern for 'sete  cl'"
 
 // address: 0x100117C0
 p100117C0
@@ -5775,7 +5775,7 @@ l1001185D:
 l1001186F:
     REGDEF(cmpl=STACKVAR(-12, 4), cmpr=ACCESS(STACKVAR(8, 4), 56, 4))
 }
-Failed to find pattern for 'jnl l100118BD'
+Error: "Failed to find pattern for 'jnl l100118BD'"
 
 // address: 0x100118C1
 p100118C1
@@ -5829,7 +5829,7 @@ l10011987:
     }
     REGDEF(cmpl=ACCESS(STACKVAR(-8, 4), 52, 4), cmpr=ACCESS(STACKVAR(8, 4), 216, 4))
 }
-Failed to find pattern for 'jnl l10011A5C'
+Error: "Failed to find pattern for 'jnl l10011A5C'"
 
 // address: 0x10011B35
 p10011B35
@@ -5842,7 +5842,7 @@ l10011B41:
 l10011B4A:
     REGDEF(cmpl=STACKVAR(-4, 4), cmpr=STACKVAR(20, 4))
 }
-Failed to find pattern for 'jnl l10011B75'
+Error: "Failed to find pattern for 'jnl l10011B75'"
 
 // address: 0x10011B79
 p10011B79
@@ -5883,7 +5883,7 @@ l10011C34:
 l10011C3D:
     REGDEF(cmpl=STACKVAR(-16, 4), cmpr=ACCESS(STACKVAR(8, 4), 56, 4))
 }
-Failed to find pattern for 'jnl l10011C9B'
+Error: "Failed to find pattern for 'jnl l10011C9B'"
 
 // address: 0x10011DDE
 p10011DDE
@@ -5901,7 +5901,7 @@ l10011E35:
 l10011E47:
     REGDEF(cmpl=STACKVAR(-24, 4), cmpr=ACCESS(STACKVAR(8, 4), 56, 4))
 }
-Failed to find pattern for 'jnl l10011F23'
+Error: "Failed to find pattern for 'jnl l10011F23'"
 
 // address: 0x10011F30
 p10011F30
@@ -5929,7 +5929,7 @@ l10011FB1:
 l10011FC3:
     REGDEF(cmpl=STACKVAR(-16, 4), cmpr=ACCESS(STACKVAR(8, 4), 56, 4))
 }
-Failed to find pattern for 'jnl l10012119'
+Error: "Failed to find pattern for 'jnl l10012119'"
 
 // address: 0x10012153
 p10012153
@@ -5951,7 +5951,7 @@ l1001217C:
 l1001218E:
     REGDEF(cmpl=STACKVAR(-20, 4), cmpr=ACCESS(STACKVAR(8, 4), 56, 4))
 }
-Failed to find pattern for 'jnl l100121E3'
+Error: "Failed to find pattern for 'jnl l100121E3'"
 
 // address: 0x100121E7
 p100121E7
@@ -5971,7 +5971,7 @@ l10012269:
 l10012272:
     REGDEF(cmpl=STACKVAR(-32, 4), cmpr=ACCESS(STACKVAR(12, 4), 12, 4))
 }
-Failed to find pattern for 'jnl l1001234F'
+Error: "Failed to find pattern for 'jnl l1001234F'"
 
 // address: 0x10012353
 p10012353
@@ -5980,7 +5980,7 @@ p10012353
     STACKVAR(-16, 4) = reinterpret_cast<any_int32>(STACKVAR(20, 4)) - reinterpret_cast<any_int32>(STACKVAR(16, 4));
     REGDEF(cmpl=STACKVAR(-16, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'jle l100123C6'
+Error: "Failed to find pattern for 'jle l100123C6'"
 
 // address: 0x100123CA
 p100123CA
@@ -6003,14 +6003,14 @@ l10012459:
 l10012462:
     REGDEF(cmpl=STACKVAR(-16, 4), cmpr=ACCESS(STACKVAR(12, 4), 12, 4))
 }
-Failed to find pattern for 'jnl l100124E5'
+Error: "Failed to find pattern for 'jnl l100124E5'"
 
 // address: 0x100124E9
 p100124E9
 {
     ProcedureInfo(this=None, this_offset=None, local_size=32, stack_delta=None)
 }
-Failed to find pattern for 'push ebx'
+Error: "Failed to find pattern for 'push ebx'"
 
 // address: 0x100125F5
 p100125F5
@@ -6028,7 +6028,7 @@ l10012665:
 l1001266E:
     REGDEF(cmpl=STACKVAR(-36, 4), cmpr=ACCESS(STACKVAR(12, 4), 12, 4))
 }
-Failed to find pattern for 'jnl l100129B0'
+Error: "Failed to find pattern for 'jnl l100129B0'"
 
 // address: 0x100129B4
 p100129B4
@@ -6045,7 +6045,7 @@ l10012A1B:
 l10012A24:
     REGDEF(cmpl=STACKVAR(-36, 4), cmpr=ACCESS(STACKVAR(12, 4), 12, 4))
 }
-Failed to find pattern for 'jnl l10012BFD'
+Error: "Failed to find pattern for 'jnl l10012BFD'"
 
 // address: 0x10012FCC
 p10012FCC
@@ -6090,7 +6090,7 @@ l100130F3:
 l100130FC:
     REGDEF(cmpl=STACKVAR(-8, 4), cmpr=0x0000000A)
 }
-Failed to find pattern for 'jnl l10013119'
+Error: "Failed to find pattern for 'jnl l10013119'"
 
 // address: 0x1001311D
 p1001311D
@@ -6113,7 +6113,7 @@ p10013167
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 324, 4);
     REGDEF(cmpl=ACCESS(STACKVAR(8, 4), 224, 4), cmpr=0x00000001)
 }
-Failed to find pattern for 'jle l1001318F'
+Error: "Failed to find pattern for 'jle l1001318F'"
 
 // address: 0x100131E1
 p100131E1
@@ -6129,7 +6129,7 @@ l1001321A:
 l10013223:
     REGDEF(cmpl=STACKVAR(-48, 4), cmpr=ACCESS(STACKVAR(8, 4), 224, 4))
 }
-Failed to find pattern for 'jnl l10013281'
+Error: "Failed to find pattern for 'jnl l10013281'"
 
 // address: 0x10013490
 p10013490
@@ -6158,7 +6158,7 @@ l10013512:
     STACKVAR(-12, 4) = ACCESS(STACKVAR(8, 4), 12, 4);
     REGDEF(ecx=0x0000006B, eax=0x00000000, edi=STACKVAR(8, 4))
 }
-Failed to find pattern for 'rep stosd'
+Error: "Failed to find pattern for 'rep stosd'"
 
 // address: 0x10013602
 p10013602
@@ -6215,7 +6215,7 @@ p100136D7
     STACKVAR(-8, 4) = reinterpret_cast<any_int32>(STACKVAR(-8, 4)) - 0x000000C8;
     REGDEF(cmpl=STACKVAR(-8, 4), cmpr=0x0000000A)
 }
-Failed to find pattern for 'ja l10013795'
+Error: "Failed to find pattern for 'ja l10013795'"
 
 // address: 0x100137E3
 p100137E3
@@ -6541,7 +6541,7 @@ l10013EA6:
 l10013EDA:
     REGDEF(ecx=static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 65, 1)))
 }
-Failed to find pattern for 'neg ecx'
+Error: "Failed to find pattern for 'neg ecx'"
 
 // address: 0x10013EFA
 p10013EFA
@@ -6557,7 +6557,7 @@ p10013EFA
 l10013F32:
     REGDEF(cmpl=ACCESS(STACKVAR(8, 4), 120, 4), cmpr=ACCESS(STACKVAR(8, 4), 96, 4))
 }
-Failed to find pattern for 'jb l10013F61'
+Error: "Failed to find pattern for 'jb l10013F61'"
 
 // address: 0x10014240
 p10014240
@@ -6658,7 +6658,7 @@ p1001449E
     STACKVAR(-4, 4) = fread(ACCESS(STACKVAR(-8, 4), 32, 4), 0x00000001, 0x00001000, ACCESS(STACKVAR(-8, 4), 28, 4));
     REGDEF(cmpl=STACKVAR(-4, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'ja l10014531'
+Error: "Failed to find pattern for 'ja l10014531'"
 
 // address: 0x10014552
 p10014552
@@ -6667,7 +6667,7 @@ p10014552
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 24, 4);
     REGDEF(cmpl=STACKVAR(12, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'jle l100145A6'
+Error: "Failed to find pattern for 'jle l100145A6'"
 
 // address: 0x100145AA
 p100145AA
@@ -6697,7 +6697,7 @@ l1001461B:
 l1001462D:
     REGDEF(cmpl=STACKVAR(-16, 4), cmpr=ACCESS(STACKVAR(8, 4), 36, 4))
 }
-Failed to find pattern for 'jnl l100146AE'
+Error: "Failed to find pattern for 'jnl l100146AE'"
 
 // address: 0x1001473B
 p1001473B
@@ -6714,7 +6714,7 @@ p10014759
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 392, 4);
     REGDEF(cmpl=ACCESS(STACKVAR(8, 4), 292, 4), cmpr=0x00000001)
 }
-Failed to find pattern for 'jle l10014781'
+Error: "Failed to find pattern for 'jle l10014781'"
 
 // address: 0x100147D6
 p100147D6
@@ -6754,7 +6754,7 @@ l10014872:
 l1001487B:
     REGDEF(cmpl=STACKVAR(-56, 4), cmpr=ACCESS(STACKVAR(-12, 4), 28, 4))
 }
-Failed to find pattern for 'jnl l10014A80'
+Error: "Failed to find pattern for 'jnl l10014A80'"
 
 // address: 0x10014AED
 p10014AED
@@ -6775,7 +6775,7 @@ l10014B0F:
 l10014B18:
     REGDEF(cmpl=STACKVAR(-36, 4), cmpr=ACCESS(STACKVAR(8, 4), 292, 4))
 }
-Failed to find pattern for 'jnl l10014B77'
+Error: "Failed to find pattern for 'jnl l10014B77'"
 
 // address: 0x10014D2D
 p10014D2D
@@ -6794,7 +6794,7 @@ l10014D4E:
     }
     REGDEF(cmpl=ACCESS(STACKVAR(8, 4), 128, 4), cmpr=ACCESS(STACKVAR(8, 4), 136, 4))
 }
-Failed to find pattern for 'ja l10014DA3'
+Error: "Failed to find pattern for 'ja l10014DA3'"
 
 // address: 0x10014F46
 p10014F46
@@ -6830,7 +6830,7 @@ l10014FC7:
 l10014FD9:
     REGDEF(cmpl=STACKVAR(-24, 4), cmpr=ACCESS(STACKVAR(8, 4), 36, 4))
 }
-Failed to find pattern for 'jnl l100150B9'
+Error: "Failed to find pattern for 'jnl l100150B9'"
 
 // address: 0x100150C1
 p100150C1
@@ -6841,7 +6841,7 @@ p100150C1
 l100150E6:
     REGDEF(cmpl=ACCESS(STACKVAR(8, 4), 124, 4), cmpr=ACCESS(STACKVAR(8, 4), 132, 4))
 }
-Failed to find pattern for 'jg l1001516D'
+Error: "Failed to find pattern for 'jg l1001516D'"
 
 // address: 0x10015B20
 p10015B20
@@ -6854,7 +6854,7 @@ p10015B20
     STACKVAR(-12, 4) = reinterpret_cast<any_int32>(STACKVAR(-12, 4)) - 0x00000001;
     REGDEF(cmpl=STACKVAR(-12, 4), cmpr=0x00000004)
 }
-Failed to find pattern for 'ja l10015BE2'
+Error: "Failed to find pattern for 'ja l10015BE2'"
 
 // address: 0x10015DFC
 p10015DFC
@@ -6874,7 +6874,7 @@ l10015E8E:
 l10015EA0:
     REGDEF(cmpl=STACKVAR(-8, 4), cmpr=0x000000FF)
 }
-Failed to find pattern for 'jg l10015F19'
+Error: "Failed to find pattern for 'jg l10015F19'"
 
 // address: 0x10015F1D
 p10015F1D
@@ -6938,7 +6938,7 @@ l100160A6:
 l100160AF:
     REGDEF(cmpl=STACKVAR(-24, 4), cmpr=STACKVAR(-12, 4))
 }
-Failed to find pattern for 'jnl l1001610B'
+Error: "Failed to find pattern for 'jnl l1001610B'"
 
 // address: 0x10016126
 p10016126
@@ -7046,7 +7046,7 @@ l100163C7:
 l100163D9:
     REGDEF(cmpl=STACKVAR(-8, 4), cmpr=ACCESS(STACKVAR(8, 4), 36, 4))
 }
-Failed to find pattern for 'jnl l1001641F'
+Error: "Failed to find pattern for 'jnl l1001641F'"
 
 // address: 0x10016424
 p10016424
@@ -7064,7 +7064,7 @@ l10016459:
 l1001646B:
     REGDEF(cmpl=STACKVAR(-20, 4), cmpr=ACCESS(STACKVAR(8, 4), 36, 4))
 }
-Failed to find pattern for 'jnl l10016707'
+Error: "Failed to find pattern for 'jnl l10016707'"
 
 // address: 0x10016730
 p10016730
@@ -7089,7 +7089,7 @@ l1001676B:
     }
     REGDEF(eax=STACKVAR(16, 4), ecx=STACKVAR(8, 4))
 }
-Failed to find pattern for 'mov edx, dword ptr [ecx+eax*04h+0000000A0h]'
+Error: "Failed to find pattern for 'mov edx, dword ptr [ecx+eax*04h+0000000A0h]'"
 
 // address: 0x10016BF7
 p10016BF7
@@ -7105,7 +7105,7 @@ p10016BF7
 l10016C27:
     REGDEF(cmpl=STACKVAR(16, 4), cmpr=0x00000019)
 }
-Failed to find pattern for 'jnl l10016D2C'
+Error: "Failed to find pattern for 'jnl l10016D2C'"
 
 // address: 0x10016DB2
 p10016DB2
@@ -7114,7 +7114,7 @@ p10016DB2
     STACKVAR(-4, 4) = STACKVAR(24, 4);
     REGDEF(cmpl=STACKVAR(16, 4), cmpr=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'jnl l10016E02'
+Error: "Failed to find pattern for 'jnl l10016E02'"
 
 // address: 0x10016F06
 p10016F06
@@ -7131,7 +7131,7 @@ l10016F4D:
 l10016F56:
     REGDEF(cmpl=STACKVAR(-8, 4), cmpr=0x00000004)
 }
-Failed to find pattern for 'jnl l10016F7A'
+Error: "Failed to find pattern for 'jnl l10016F7A'"
 
 // address: 0x10016F7E
 p10016F7E
@@ -7165,7 +7165,7 @@ l10016FE7:
 l10016FF0:
     REGDEF(cmpl=STACKVAR(-16, 4), cmpr=ACCESS(STACKVAR(8, 4), 292, 4))
 }
-Failed to find pattern for 'jnl l1001706D'
+Error: "Failed to find pattern for 'jnl l1001706D'"
 
 // address: 0x10017160
 p10017160
@@ -7198,7 +7198,7 @@ l100171A3:
     STACKVAR(-28, 4) = ACCESS(STACKVAR(-8, 4), 16, 4);
     STACKVAR(-24, 4) = ACCESS(reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + 0x00000014, 0, 4);
 }
-Unexpected instruction type <class 'instructions.assignment.Assignment'>
+Error: "Unexpected instruction type <class 'instructions.assignment.Assignment'>"
 
 // address: 0x10017795
 p10017795
@@ -7207,7 +7207,7 @@ p10017795
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 408, 4);
     REGDEF(ecx=ACCESS(STACKVAR(8, 4), 404, 4), eax=ACCESS(STACKVAR(-4, 4), 16, 4))
 }
-Failed to find pattern for 'cdq'
+Error: "Failed to find pattern for 'cdq'"
 
 // address: 0x10017860
 p10017860
@@ -7253,7 +7253,7 @@ p1001791E
     ACCESS(STACKVAR(-12, 4), 68, 4) = 0x00000001;
     REGDEF(esi=STACKVAR(-12, 4), eax=ACCESS(STACKVAR(-12, 4), 32, 4), edx=0x00000000)
 }
-Failed to find pattern for 'div dword ptr [esi+00Ch]'
+Error: "Failed to find pattern for 'div dword ptr [esi+00Ch]'"
 
 // address: 0x10017BC0
 p10017BC0
@@ -7266,7 +7266,7 @@ l10017BD1:
 l10017BDA:
     REGDEF(cmpl=STACKVAR(-16, 4), cmpr=ACCESS(STACKVAR(8, 4), 292, 4))
 }
-Failed to find pattern for 'jnl l10017C91'
+Error: "Failed to find pattern for 'jnl l10017C91'"
 
 // address: 0x10017C97
 p10017C97
@@ -7334,7 +7334,7 @@ l10017D94:
 l10017D96:
     REGDEF(cmpl=ACCESS(STACKVAR(8, 4), 132, 4), cmpr=ACCESS(STACKVAR(8, 4), 124, 4))
 }
-Failed to find pattern for 'jle l10017DB6'
+Error: "Failed to find pattern for 'jle l10017DB6'"
 
 // address: 0x10017DBD
 p10017DBD
@@ -7342,7 +7342,7 @@ p10017DBD
     ProcedureInfo(this=None, this_offset=None, local_size=16, stack_delta=None)
     REGDEF(cmpl=ACCESS(STACKVAR(8, 4), 32, 4), cmpr=0x0000FFDC)
 }
-Failed to find pattern for 'jg l10017DDB'
+Error: "Failed to find pattern for 'jg l10017DDB'"
 
 // address: 0x100180D6
 p100180D6
@@ -7378,7 +7378,7 @@ l10018198:
     }
     REGDEF(cmpl=ACCESS(STACKVAR(8, 4), 280, 4), cmpr=0x00000002)
 }
-Failed to find pattern for 'jnl l100181D0'
+Error: "Failed to find pattern for 'jnl l100181D0'"
 
 // address: 0x10018280
 p10018280
@@ -7397,7 +7397,7 @@ l100182EC:
 l100182FE:
     REGDEF(cmpl=STACKVAR(-16, 4), cmpr=ACCESS(STACKVAR(8, 4), 36, 4))
 }
-Failed to find pattern for 'jnl l10018393'
+Error: "Failed to find pattern for 'jnl l10018393'"
 
 // address: 0x10018398
 p10018398
@@ -7453,7 +7453,7 @@ l10018481:
 l10018493:
     REGDEF(cmpl=STACKVAR(-28, 4), cmpr=ACCESS(STACKVAR(8, 4), 36, 4))
 }
-Failed to find pattern for 'jnl l100185CA'
+Error: "Failed to find pattern for 'jnl l100185CA'"
 
 // address: 0x100185CF
 p100185CF
@@ -7476,7 +7476,7 @@ l10018614:
     ACCESS(ACCESS(STACKVAR(8, 4), 396, 4), 4, 4)(STACKVAR(8, 4), reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + 0x00000008, reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + 0x00000034, STACKVAR(-4, 4), STACKVAR(12, 4), STACKVAR(16, 4), STACKVAR(20, 4));
     REGDEF(cmpl=ACCESS(STACKVAR(-8, 4), 52, 4), cmpr=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'jb l1001866D'
+Error: "Failed to find pattern for 'jb l1001866D'"
 
 // address: 0x10018671
 p10018671
@@ -7489,7 +7489,7 @@ p10018671
     }
     REGDEF(edx=ACCESS(STACKVAR(-4, 4), 64, 4), eax=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'mov ecx, dword ptr [eax+edx*04h+038h]'
+Error: "Failed to find pattern for 'mov ecx, dword ptr [eax+edx*04h+038h]'"
 
 // address: 0x10018845
 p10018845
@@ -7506,7 +7506,7 @@ l10018879:
 l1001888B:
     REGDEF(cmpl=STACKVAR(-24, 4), cmpr=ACCESS(STACKVAR(8, 4), 36, 4))
 }
-Failed to find pattern for 'jnl l10018978'
+Error: "Failed to find pattern for 'jnl l10018978'"
 
 // address: 0x1001897D
 p1001897D
@@ -7522,7 +7522,7 @@ l100189A5:
 l100189B7:
     REGDEF(cmpl=STACKVAR(-28, 4), cmpr=ACCESS(STACKVAR(8, 4), 36, 4))
 }
-Failed to find pattern for 'jnl l10018A68'
+Error: "Failed to find pattern for 'jnl l10018A68'"
 
 // address: 0x10018A6D
 p10018A6D
@@ -7544,7 +7544,7 @@ p10018AA0
 l10018AEC:
     REGDEF(cmpl=STACKVAR(-8, 4), cmpr=0x000000C0)
 }
-Failed to find pattern for 'jnl l10018B01'
+Error: "Failed to find pattern for 'jnl l10018B01'"
 
 // address: 0x10018C16
 p10018C16
@@ -7659,7 +7659,7 @@ l10018E9B:
 l10018EA4:
     REGDEF(cmpl=STACKVAR(-8, 4), cmpr=0x00000010)
 }
-Failed to find pattern for 'jnl l10018EC8'
+Error: "Failed to find pattern for 'jnl l10018EC8'"
 
 // address: 0x10018EEC
 p10018EEC
@@ -7717,7 +7717,7 @@ l10018F93:
 l10018FD6:
     REGDEF(cmpl=STACKVAR(-20, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'jle l10018FE4'
+Error: "Failed to find pattern for 'jle l10018FE4'"
 
 // address: 0x10019118
 p10019118
@@ -7726,7 +7726,7 @@ p10019118
     STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(16, 4)) + reinterpret_cast<any_int32>(STACKVAR(20, 4));
     REGDEF(cmpl=STACKVAR(16, 4), cmpr=0x0000000E)
 }
-Failed to find pattern for 'jb l10019378'
+Error: "Failed to find pattern for 'jb l10019378'"
 
 // address: 0x100194DC
 p100194DC
@@ -7734,7 +7734,7 @@ p100194DC
     ProcedureInfo(this=None, this_offset=None, local_size=20, stack_delta=None)
     REGDEF(cmpl=STACKVAR(16, 4), cmpr=0x0000000C)
 }
-Failed to find pattern for 'jb l100195FC'
+Error: "Failed to find pattern for 'jb l100195FC'"
 
 // address: 0x1001962B
 p1001962B
@@ -7791,7 +7791,7 @@ l100196D2:
     ACCESS(STACKVAR(-8, 4), 4, 4) = STACKVAR(-12, 4);
     REGDEF(cmpl=STACKVAR(-4, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'jle l1001976A'
+Error: "Failed to find pattern for 'jle l1001976A'"
 
 // address: 0x10019770
 p10019770
@@ -7826,7 +7826,7 @@ l100197CC:
     STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) - 0x00000001;
     REGDEF(cmpl=STACKVAR(-4, 4), cmpr=0x000000FD)
 }
-Failed to find pattern for 'ja l10019A75'
+Error: "Failed to find pattern for 'ja l10019A75'"
 
 // address: 0x10019BF8
 p10019BF8
@@ -7848,7 +7848,7 @@ l10019C4E:
 l10019C57:
     REGDEF(cmpl=STACKVAR(-4, 4), cmpr=0x00000010)
 }
-Failed to find pattern for 'jnl l10019C86'
+Error: "Failed to find pattern for 'jnl l10019C86'"
 
 // address: 0x10019D0E
 p10019D0E
@@ -8050,7 +8050,7 @@ l1001A0B8:
     }
     REGDEF(cmpl=ACCESS(STACKVAR(8, 4), 36, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'jg l1001A0ED'
+Error: "Failed to find pattern for 'jg l1001A0ED'"
 
 // address: 0x1001A32B
 p1001A32B
@@ -8139,7 +8139,7 @@ l1001A45D:
     }
     REGDEF(cmpl=STACKVAR(-40, 4), cmpr=0x00000004)
 }
-Failed to find pattern for 'jle l1001A4D9'
+Error: "Failed to find pattern for 'jle l1001A4D9'"
 
 // address: 0x1001A86C
 p1001A86C
@@ -8191,7 +8191,7 @@ l1001A95D:
 l1001A9AC:
     REGDEF(cmpl=STACKVAR(-284, 4), cmpr=0x00000010)
 }
-Failed to find pattern for 'jle l1001AEE4'
+Error: "Failed to find pattern for 'jle l1001AEE4'"
 
 // address: 0x1001AF2C
 p1001AF2C
@@ -8243,7 +8243,7 @@ l1001AFD3:
 l1001B007:
     REGDEF(cmpl=STACKVAR(-8, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'jle l1001B36F'
+Error: "Failed to find pattern for 'jle l1001B36F'"
 
 // address: 0x1001B3A6
 p1001B3A6
@@ -8500,7 +8500,7 @@ l1001B9CD:
 l1001BA25:
     REGDEF(ecx=ACCESS(STACKVAR(8, 4), 380, 4), edx=STACKVAR(-20, 4))
 }
-Failed to find pattern for 'mov eax, dword ptr [edx+ecx*04h-000000320h]'
+Error: "Failed to find pattern for 'mov eax, dword ptr [edx+ecx*04h-000000320h]'"
 
 // address: 0x1001BD40
 p1001BD40
@@ -8516,7 +8516,7 @@ p1001BD40
 l1001BD7A:
     REGDEF(cmpl=0x00000008 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 48, 4)), cmpr=ACCESS(STACKVAR(8, 4), 52, 4))
 }
-Failed to find pattern for 'ja l1001BDCB'
+Error: "Failed to find pattern for 'ja l1001BDCB'"
 
 // address: 0x1001C089
 p1001C089
@@ -8568,7 +8568,7 @@ l1001C0D9:
     }
     REGDEF(cmpl=ACCESS(ACCESS(STACKVAR(8, 4), 196, 4), 12, 4), cmpr=0x00000002)
 }
-Failed to find pattern for 'jg l1001C139'
+Error: "Failed to find pattern for 'jg l1001C139'"
 
 // address: 0x1001C23B
 p1001C23B
@@ -8601,7 +8601,7 @@ l1001C2ED:
     ACCESS(STACKVAR(-4, 4), 12, 4) = 0x00000000;
     unknown_function_1001C089(STACKVAR(8, 4));
 }
-'al'
+Error: "'al'"
 
 // address: 0x1001C61D
 p1001C61D
@@ -8612,7 +8612,7 @@ p1001C61D
     ACCESS(STACKVAR(8, 4), 288, 4) = STACKVAR(-4, 4);
     REGDEF(ecx=0x00000040, eax=0x00000000, edi=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'sub edi, 000000100h'
+Error: "Failed to find pattern for 'sub edi, 000000100h'"
 
 // address: 0x1001C6F1
 p1001C6F1
@@ -8680,7 +8680,7 @@ l1001C824:
 l1001C85B:
     REGDEF(edx=static_cast<unsigned int>(ACCESS(STACKVAR(-4, 4), 8, 1)))
 }
-Failed to find pattern for 'neg edx'
+Error: "Failed to find pattern for 'neg edx'"
 
 // address: 0x1001C912
 p1001C912
@@ -8736,7 +8736,7 @@ l1001CAAA:
 l1001CABC:
     REGDEF(cmpl=STACKVAR(-8, 4), cmpr=0x000000FF)
 }
-Failed to find pattern for 'jg l1001CB35'
+Error: "Failed to find pattern for 'jg l1001CB35'"
 
 // address: 0x1001CB39
 p1001CB39
@@ -8782,7 +8782,7 @@ l1001CBED:
     }
     REGDEF(ecx=ACCESS(STACKVAR(28, 4), 0, 4), edx=STACKVAR(24, 4))
 }
-Failed to find pattern for 'mov eax, dword ptr [edx+ecx*04h+004h]'
+Error: "Failed to find pattern for 'mov eax, dword ptr [edx+ecx*04h+004h]'"
 
 // address: 0x1001CC76
 p1001CC76
@@ -8810,7 +8810,7 @@ p1001CCC7
     STACKVAR(-64, 4) = ACCESS(STACKVAR(20, 4), 0, 4);
     REGDEF(eax=ACCESS(STACKVAR(8, 4), 92, 4))
 }
-Failed to find pattern for 'shr eax, 001h'
+Error: "Failed to find pattern for 'shr eax, 001h'"
 
 // address: 0x1001CEF2
 p1001CEF2
@@ -8825,7 +8825,7 @@ p1001CEF2
     STACKVAR(-60, 4) = ACCESS(ARRPTR(ACCESS(STACKVAR(12, 4), 0, 4), 0x04, 0x00000002 * reinterpret_cast<any_int32>(STACKVAR(16, 4)), 0), 0, 4);
     REGDEF(ecx=0x00000002 * reinterpret_cast<any_int32>(STACKVAR(16, 4)), eax=ACCESS(STACKVAR(12, 4), 0, 4))
 }
-Failed to find pattern for 'mov ecx, dword ptr [eax+ecx*04h+004h]'
+Error: "Failed to find pattern for 'mov ecx, dword ptr [eax+ecx*04h+004h]'"
 
 // address: 0x1001D220
 p1001D220
@@ -8841,7 +8841,7 @@ l1001D25A:
 l1001D263:
     REGDEF(cmpl=STACKVAR(-8, 4), cmpr=0x00000004)
 }
-Failed to find pattern for 'jnl l1001D279'
+Error: "Failed to find pattern for 'jnl l1001D279'"
 
 // address: 0x1001D2FB
 p1001D2FB
@@ -8850,7 +8850,7 @@ p1001D2FB
     STACKVAR(-16, 4) = ACCESS(STACKVAR(8, 4), 408, 4);
     REGDEF(eax=0x00000000, cmpl=ACCESS(STACKVAR(8, 4), 364, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'sete  al'
+Error: "Failed to find pattern for 'sete  al'"
 
 // address: 0x1001D69E
 p1001D69E
@@ -8884,7 +8884,7 @@ l1001D6EF:
     STACKVAR(-56, 4) = ACCESS(STACKVAR(-24, 4), 16, 4);
     REGDEF(esi=reinterpret_cast<any_int32>(STACKVAR(-24, 4)) + 0x00000014, ecx=0x00000005)
 }
-Failed to find pattern for 'lea edi, [ebp-02Ch]'
+Error: "Failed to find pattern for 'lea edi, [ebp-02Ch]'"
 
 // address: 0x1001D97A
 p1001D97A
@@ -8893,7 +8893,7 @@ p1001D97A
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 408, 4);
     REGDEF(ecx=ACCESS(STACKVAR(8, 4), 404, 4), eax=ACCESS(STACKVAR(-4, 4), 16, 4))
 }
-Failed to find pattern for 'cdq'
+Error: "Failed to find pattern for 'cdq'"
 
 // address: 0x1001DA41
 p1001DA41
@@ -8943,7 +8943,7 @@ l1001DB17:
 l1001DB20:
     REGDEF(cmpl=STACKVAR(-36, 4), cmpr=STACKVAR(-32, 4))
 }
-Failed to find pattern for 'jg l1001DD66'
+Error: "Failed to find pattern for 'jg l1001DD66'"
 
 // address: 0x1001DDAD
 p1001DDAD
@@ -8952,7 +8952,7 @@ p1001DDAD
     STACKVAR(-8, 4) = ACCESS(STACKVAR(8, 4), 408, 4);
     REGDEF(eax=0x00000001, ecx=ACCESS(STACKVAR(8, 4), 376, 4))
 }
-Failed to find pattern for 'shl eax, cl'
+Error: "Failed to find pattern for 'shl eax, cl'"
 
 // address: 0x1001DEFE
 p1001DEFE
@@ -8962,7 +8962,7 @@ p1001DEFE
     STACKVAR(-32, 4) = ACCESS(STACKVAR(8, 4), 368, 4);
     REGDEF(edx=0x00000001, ecx=ACCESS(STACKVAR(8, 4), 376, 4))
 }
-Failed to find pattern for 'shl edx, cl'
+Error: "Failed to find pattern for 'shl edx, cl'"
 
 // address: 0x1001E580
 p1001E580
@@ -9081,7 +9081,7 @@ l1001E871:
 l1001E8F8:
     REGDEF(cmpl=ACCESS(STACKVAR(-8, 4), 24, 4), cmpr=ACCESS(STACKVAR(-8, 4), 16, 4))
 }
-Failed to find pattern for 'jb l1001E922'
+Error: "Failed to find pattern for 'jb l1001E922'"
 
 // address: 0x1001E926
 p1001E926
@@ -9114,7 +9114,7 @@ l1001E9B3:
     ACCESS(STACKVAR(-8, 4), 24, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-8, 4), 24, 4)) + reinterpret_cast<any_int32>(STACKVAR(-4, 4));
     REGDEF(cmpl=ACCESS(STACKVAR(-8, 4), 24, 4), cmpr=ACCESS(STACKVAR(-8, 4), 16, 4))
 }
-Failed to find pattern for 'jb l1001EA2C'
+Error: "Failed to find pattern for 'jb l1001EA2C'"
 
 // address: 0x1001EA30
 p1001EA30
@@ -9138,7 +9138,7 @@ l1001EA9F:
     }
     REGDEF(cmpl=ACCESS(STACKVAR(8, 4), 280, 4), cmpr=0x00000001)
 }
-Failed to find pattern for 'jle l1001EAC0'
+Error: "Failed to find pattern for 'jle l1001EAC0'"
 
 // address: 0x1001ED04
 p1001ED04
@@ -9167,7 +9167,7 @@ l1001ED6B:
 l1001ED7D:
     REGDEF(cmpl=STACKVAR(-16, 4), cmpr=ACCESS(STACKVAR(8, 4), 36, 4))
 }
-Failed to find pattern for 'jnl l1001EDC7'
+Error: "Failed to find pattern for 'jnl l1001EDC7'"
 
 // address: 0x1001EE8E
 p1001EE8E
@@ -9196,7 +9196,7 @@ p1001EEA9
 l1001EEFA:
     REGDEF(cmpl=STACKVAR(-12, 4), cmpr=ACCESS(STACKVAR(8, 4), 276, 4))
 }
-Failed to find pattern for 'jnl l1001EFBB'
+Error: "Failed to find pattern for 'jnl l1001EFBB'"
 
 // address: 0x1001EFBF
 p1001EFBF
@@ -9210,7 +9210,7 @@ l1001EFD6:
 l1001EFDF:
     REGDEF(cmpl=STACKVAR(-24, 4), cmpr=ACCESS(STACKVAR(8, 4), 276, 4))
 }
-Failed to find pattern for 'jnl l1001F050'
+Error: "Failed to find pattern for 'jnl l1001F050'"
 
 // address: 0x1001F054
 p1001F054
@@ -9222,7 +9222,7 @@ p1001F054
 l1001F06F:
     REGDEF(cmpl=STACKVAR(-8, 4), cmpr=ACCESS(STACKVAR(8, 4), 276, 4))
 }
-Failed to find pattern for 'jnl l1001F11D'
+Error: "Failed to find pattern for 'jnl l1001F11D'"
 
 // address: 0x1001F121
 p1001F121
@@ -9236,7 +9236,7 @@ l1001F138:
 l1001F141:
     REGDEF(cmpl=STACKVAR(-20, 4), cmpr=ACCESS(STACKVAR(8, 4), 276, 4))
 }
-Failed to find pattern for 'jnl l1001F268'
+Error: "Failed to find pattern for 'jnl l1001F268'"
 
 // address: 0x1001F26C
 p1001F26C
@@ -9248,7 +9248,7 @@ p1001F26C
 l1001F287:
     REGDEF(cmpl=STACKVAR(-24, 4), cmpr=ACCESS(STACKVAR(8, 4), 276, 4))
 }
-Failed to find pattern for 'jnl l1001F46B'
+Error: "Failed to find pattern for 'jnl l1001F46B'"
 
 // address: 0x1001F5B0
 p1001F5B0
@@ -9336,7 +9336,7 @@ p1001F7D6
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 0, 4);
     REGDEF(cmpl=STACKVAR(12, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'jnl l1001F818'
+Error: "Failed to find pattern for 'jnl l1001F818'"
 
 // address: 0x1001F834
 p1001F834
@@ -9347,7 +9347,7 @@ p1001F834
     STACKVAR(-16, 4) = 0x00000000;
     REGDEF(cmpl=STACKVAR(-4, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'jle l1001F874'
+Error: "Failed to find pattern for 'jle l1001F874'"
 
 // address: 0x1001F977
 p1001F977
@@ -9374,7 +9374,7 @@ l1001F9BE:
     STACKVAR(-60, 4) = reinterpret_cast<float>(ACCESS(STACKVAR(-76, 4), 0, 4)) + reinterpret_cast<float>(ACCESS(STACKVAR(-76, 4), 28, 4));
     REGDEF(edx=STACKVAR(-76, 4), ST(0)=reinterpret_cast<float>(ACCESS(STACKVAR(-76, 4), 0, 4)))
 }
-Failed to find pattern for 'fsub dword ptr [edx+01Ch]'
+Error: "Failed to find pattern for 'fsub dword ptr [edx+01Ch]'"
 
 // address: 0x1001FD10
 p1001FD10
@@ -9496,7 +9496,7 @@ l100200BE:
     ACCESS(STACKVAR(-68, 4), 8, 4) = reinterpret_cast<int>(STACKVAR(-4, 4)) + 0x0000187E * reinterpret_cast<int>(STACKVAR(-44, 4)) + 1024 >> 11;
     REGDEF(eax=STACKVAR(-36, 4))
 }
-Failed to find pattern for 'imul eax, eax, -000003B21h'
+Error: "Failed to find pattern for 'imul eax, eax, -000003B21h'"
 
 // address: 0x10020550
 p10020550
@@ -9513,7 +9513,7 @@ l10020592:
 l100205A1:
     REGDEF(cmpl=STACKVAR(-316, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'jle l100209B1'
+Error: "Failed to find pattern for 'jle l100209B1'"
 
 // address: 0x10020C70
 p10020C70
@@ -9530,7 +9530,7 @@ l10020CB2:
 l10020CC1:
     REGDEF(cmpl=STACKVAR(-316, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'jle l10021080'
+Error: "Failed to find pattern for 'jle l10021080'"
 
 // address: 0x10021410
 p10021410
@@ -9547,7 +9547,7 @@ l10021452:
 l10021461:
     REGDEF(cmpl=STACKVAR(-308, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'jle l100218F2'
+Error: "Failed to find pattern for 'jle l100218F2'"
 
 // address: 0x10021D80
 p10021D80
@@ -9567,7 +9567,7 @@ l10021DC2:
 l10021DF2:
     REGDEF(cmpl=STACKVAR(-168, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'jle l10022055'
+Error: "Failed to find pattern for 'jle l10022055'"
 
 // address: 0x100222BF
 p100222BF
@@ -9587,7 +9587,7 @@ l100222F5:
 l10022319:
     REGDEF(cmpl=STACKVAR(-88, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'jle l1002245B'
+Error: "Failed to find pattern for 'jle l1002245B'"
 
 // address: 0x1002257C
 p1002257C
@@ -9660,7 +9660,7 @@ l1002272A:
     }
     REGDEF(edx=STACKVAR(-4, 4), eax=STACKVAR(-8, 4))
 }
-Failed to find pattern for 'mov dword ptr [eax+edx*04h+034h], 000000000h'
+Error: "Failed to find pattern for 'mov dword ptr [eax+edx*04h+034h], 000000000h'"
 
 // address: 0x100227DF
 p100227DF
@@ -9696,7 +9696,7 @@ l1002285B:
     STACKVAR(-24, 4) = 0x00000000;
     REGDEF(eax=STACKVAR(12, 4), ecx=STACKVAR(-20, 4))
 }
-Failed to find pattern for 'mov edx, dword ptr [ecx+eax*04h+034h]'
+Error: "Failed to find pattern for 'mov edx, dword ptr [ecx+eax*04h+034h]'"
 
 // address: 0x100229A5
 p100229A5
@@ -9748,7 +9748,7 @@ l10022A75:
     ACCESS(STACKVAR(-8, 4), 76, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-8, 4), 76, 4)) + reinterpret_cast<any_int32>(STACKVAR(16, 4)) + 12;
     REGDEF(edx=STACKVAR(-12, 4), eax=STACKVAR(12, 4), ecx=STACKVAR(-8, 4))
 }
-Failed to find pattern for 'mov eax, dword ptr [ecx+eax*04h+03Ch]'
+Error: "Failed to find pattern for 'mov eax, dword ptr [ecx+eax*04h+03Ch]'"
 
 // address: 0x10022AC1
 p10022AC1
@@ -9758,7 +9758,7 @@ p10022AC1
     STACKVAR(-12, 4) = 999999988 / reinterpret_cast<unsigned int>(STACKVAR(16, 4));
     REGDEF(cmpl=STACKVAR(-12, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'jg l10022AFD'
+Error: "Failed to find pattern for 'jg l10022AFD'"
 
 // address: 0x10022BC2
 p10022BC2
@@ -9768,7 +9768,7 @@ p10022BC2
     STACKVAR(-12, 4) = 999999988 / (0x00000080 * reinterpret_cast<unsigned int>(STACKVAR(16, 4)));
     REGDEF(cmpl=STACKVAR(-12, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'jg l10022C03'
+Error: "Failed to find pattern for 'jg l10022C03'"
 
 // address: 0x10022CD7
 p10022CD7
@@ -9861,7 +9861,7 @@ l10022ED2:
 l10022ED4:
     REGDEF(cmpl=STACKVAR(-4, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'jg l10022EDF'
+Error: "Failed to find pattern for 'jg l10022EDF'"
 
 // address: 0x100230E4
 p100230E4
@@ -9870,7 +9870,7 @@ p100230E4
     STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(16, 4)) + reinterpret_cast<any_int32>(STACKVAR(20, 4));
     REGDEF(cmpl=STACKVAR(-4, 4), cmpr=ACCESS(STACKVAR(12, 4), 4, 4))
 }
-Failed to find pattern for 'ja l10023111'
+Error: "Failed to find pattern for 'ja l10023111'"
 
 // address: 0x100232EE
 p100232EE
@@ -9885,7 +9885,7 @@ l10023313:
 l1002331F:
     REGDEF(cmpl=STACKVAR(-20, 4), cmpr=ACCESS(STACKVAR(12, 4), 16, 4))
 }
-Failed to find pattern for 'jnl l10023437'
+Error: "Failed to find pattern for 'jnl l10023437'"
 
 // address: 0x1002343B
 p1002343B
@@ -9894,7 +9894,7 @@ p1002343B
     STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(16, 4)) + reinterpret_cast<any_int32>(STACKVAR(20, 4));
     REGDEF(cmpl=STACKVAR(-4, 4), cmpr=ACCESS(STACKVAR(12, 4), 4, 4))
 }
-Failed to find pattern for 'ja l10023468'
+Error: "Failed to find pattern for 'ja l10023468'"
 
 // address: 0x10023648
 p10023648
@@ -9909,7 +9909,7 @@ l10023670:
 l1002367C:
     REGDEF(cmpl=STACKVAR(-20, 4), cmpr=ACCESS(STACKVAR(12, 4), 16, 4))
 }
-Failed to find pattern for 'jnl l10023794'
+Error: "Failed to find pattern for 'jnl l10023794'"
 
 // address: 0x10023798
 p10023798
@@ -9974,7 +9974,7 @@ l10023872:
 l1002387C:
     REGDEF(edx=STACKVAR(12, 4), eax=STACKVAR(-12, 4))
 }
-Failed to find pattern for 'mov ecx, dword ptr [eax+edx*04h+03Ch]'
+Error: "Failed to find pattern for 'mov ecx, dword ptr [eax+edx*04h+03Ch]'"
 
 // address: 0x1002394E
 p1002394E
@@ -10064,7 +10064,7 @@ p10023A30
     ACCESS(STACKVAR(-4, 4), 52, 4) = 0x00000000;
     REGDEF(cmpl=ACCESS(STACKVAR(8, 4), 100, 4), cmpr=0x00000004)
 }
-Failed to find pattern for 'jle l10023AB6'
+Error: "Failed to find pattern for 'jle l10023AB6'"
 
 // address: 0x10023B19
 p10023B19
@@ -10103,7 +10103,7 @@ l10023BFD:
 l10023C06:
     REGDEF(cmpl=STACKVAR(-16, 4), cmpr=ACCESS(STACKVAR(8, 4), 100, 4))
 }
-Failed to find pattern for 'jnl l10023CC4'
+Error: "Failed to find pattern for 'jnl l10023CC4'"
 
 // address: 0x10023CDA
 p10023CDA
@@ -10122,7 +10122,7 @@ l10023D12:
 l10023D1B:
     REGDEF(cmpl=STACKVAR(-20, 4), cmpr=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'jnl l10023D2F'
+Error: "Failed to find pattern for 'jnl l10023D2F'"
 
 // address: 0x10023E52
 p10023E52
@@ -10156,7 +10156,7 @@ l10023EE2:
 l10023EEB:
     REGDEF(cmpl=STACKVAR(-16, 4), cmpr=ACCESS(STACKVAR(8, 4), 100, 4))
 }
-Failed to find pattern for 'jnl l10024011'
+Error: "Failed to find pattern for 'jnl l10024011'"
 
 // address: 0x10024015
 p10024015
@@ -10178,7 +10178,7 @@ l1002405A:
 l10024063:
     REGDEF(cmpl=STACKVAR(-8, 4), cmpr=ACCESS(STACKVAR(8, 4), 100, 4))
 }
-Failed to find pattern for 'jnl l10024090'
+Error: "Failed to find pattern for 'jnl l10024090'"
 
 // address: 0x10024094
 p10024094
@@ -10253,7 +10253,7 @@ l1002419D:
 l100241A6:
     REGDEF(cmpl=STACKVAR(-8, 4), cmpr=ACCESS(STACKVAR(8, 4), 100, 4))
 }
-Failed to find pattern for 'jnl l100241CA'
+Error: "Failed to find pattern for 'jnl l100241CA'"
 
 // address: 0x100241EA
 p100241EA
@@ -10267,7 +10267,7 @@ l10024205:
 l1002420E:
     REGDEF(cmpl=STACKVAR(-4, 4), cmpr=ACCESS(STACKVAR(8, 4), 100, 4))
 }
-Failed to find pattern for 'jnl l10024292'
+Error: "Failed to find pattern for 'jnl l10024292'"
 
 // address: 0x10024296
 p10024296
@@ -10282,7 +10282,7 @@ l100242CA:
 l100242D3:
     REGDEF(cmpl=STACKVAR(-8, 4), cmpr=0x00000010)
 }
-Failed to find pattern for 'jnl l10024350'
+Error: "Failed to find pattern for 'jnl l10024350'"
 
 // address: 0x10024357
 p10024357
@@ -10299,7 +10299,7 @@ l1002438D:
 l10024396:
     REGDEF(cmpl=STACKVAR(-16, 4), cmpr=STACKVAR(20, 4))
 }
-Failed to find pattern for 'jnl l10024432'
+Error: "Failed to find pattern for 'jnl l10024432'"
 
 // address: 0x10024436
 p10024436
@@ -10317,7 +10317,7 @@ l1002447D:
 l10024486:
     REGDEF(cmpl=STACKVAR(-12, 4), cmpr=STACKVAR(20, 4))
 }
-Failed to find pattern for 'jnl l10024534'
+Error: "Failed to find pattern for 'jnl l10024534'"
 
 // address: 0x10024538
 p10024538
@@ -10333,7 +10333,7 @@ l10024565:
 l1002456E:
     REGDEF(cmpl=STACKVAR(-24, 4), cmpr=STACKVAR(20, 4))
 }
-Failed to find pattern for 'jnl l10024673'
+Error: "Failed to find pattern for 'jnl l10024673'"
 
 // address: 0x10024677
 p10024677
@@ -10351,7 +10351,7 @@ l100246BE:
 l100246C7:
     REGDEF(cmpl=STACKVAR(-16, 4), cmpr=STACKVAR(20, 4))
 }
-Failed to find pattern for 'jnl l100247FB'
+Error: "Failed to find pattern for 'jnl l100247FB'"
 
 // address: 0x100247FF
 p100247FF
@@ -10368,7 +10368,7 @@ l10024838:
 l10024841:
     REGDEF(cmpl=STACKVAR(-24, 4), cmpr=STACKVAR(20, 4))
 }
-Failed to find pattern for 'jnl l10024A40'
+Error: "Failed to find pattern for 'jnl l10024A40'"
 
 // address: 0x10024A44
 p10024A44
@@ -10409,7 +10409,7 @@ l10024B07:
 l10024B10:
     REGDEF(cmpl=STACKVAR(-4, 4), cmpr=0x00000020)
 }
-Failed to find pattern for 'jnl l10024B3B'
+Error: "Failed to find pattern for 'jnl l10024B3B'"
 
 // address: 0x10024C3A
 p10024C3A
@@ -10428,7 +10428,7 @@ l10024C8A:
 l10024C9C:
     REGDEF(cmpl=STACKVAR(-12, 4), cmpr=0x00000010)
 }
-Failed to find pattern for 'jnl l10024CC0'
+Error: "Failed to find pattern for 'jnl l10024CC0'"
 
 // address: 0x10024D38
 p10024D38
@@ -10464,7 +10464,7 @@ l10024DB1:
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 112, 4);
     REGDEF(cmpl=STACKVAR(-4, 4), cmpr=0x00000001)
 }
-Failed to find pattern for 'jnl l10024DF0'
+Error: "Failed to find pattern for 'jnl l10024DF0'"
 
 // address: 0x10024ED3
 p10024ED3
@@ -10480,7 +10480,7 @@ l10024F00:
 l10024F09:
     REGDEF(cmpl=STACKVAR(-16, 4), cmpr=STACKVAR(20, 4))
 }
-Failed to find pattern for 'jnl l10024FA5'
+Error: "Failed to find pattern for 'jnl l10024FA5'"
 
 // address: 0x10024FA9
 p10024FA9
@@ -10496,7 +10496,7 @@ l10024FD6:
 l10024FDF:
     REGDEF(cmpl=STACKVAR(-12, 4), cmpr=STACKVAR(20, 4))
 }
-Failed to find pattern for 'jnl l100250C1'
+Error: "Failed to find pattern for 'jnl l100250C1'"
 
 // address: 0x100250C5
 p100250C5
@@ -10523,7 +10523,7 @@ l100251CB:
 l100251DA:
     REGDEF(cmpl=STACKVAR(-260, 4), cmpr=0x00000004)
 }
-Failed to find pattern for 'jnl l1002529F'
+Error: "Failed to find pattern for 'jnl l1002529F'"
 
 // address: 0x100252A3
 p100252A3
@@ -10544,7 +10544,7 @@ l10025325:
 l10025334:
     REGDEF(cmpl=STACKVAR(-1044, 4), cmpr=STACKVAR(-1052, 4))
 }
-Failed to find pattern for 'jnl l1002575C'
+Error: "Failed to find pattern for 'jnl l1002575C'"
 
 // address: 0x100257D0
 p100257D0
@@ -10571,7 +10571,7 @@ l10025826:
 l10025835:
     REGDEF(cmpl=STACKVAR(-560, 4), cmpr=STACKVAR(24, 4))
 }
-Failed to find pattern for 'jnl l10025A2B'
+Error: "Failed to find pattern for 'jnl l10025A2B'"
 
 // address: 0x10025A2F
 p10025A2F
@@ -10592,7 +10592,7 @@ l10025A94:
 l10025A9D:
     REGDEF(cmpl=STACKVAR(-16, 4), cmpr=STACKVAR(20, 4))
 }
-Failed to find pattern for 'jnl l10025DFC'
+Error: "Failed to find pattern for 'jnl l10025DFC'"
 
 // address: 0x10025E00
 p10025E00
@@ -10625,7 +10625,7 @@ l10025ED1:
 l10025EDA:
     REGDEF(cmpl=STACKVAR(-12, 4), cmpr=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'jnl l10025F00'
+Error: "Failed to find pattern for 'jnl l10025F00'"
 
 // address: 0x10025F35
 p10025F35
@@ -10641,7 +10641,7 @@ p10025F35
     STACKVAR(-20, 4) = ACCESS(STACKVAR(12, 4), 20, 4);
     REGDEF(cmpl=STACKVAR(-4, 4), cmpr=STACKVAR(-48, 4))
 }
-Failed to find pattern for 'jle l10026024'
+Error: "Failed to find pattern for 'jle l10026024'"
 
 // address: 0x1002642C
 p1002642C
@@ -10650,7 +10650,7 @@ p1002642C
 l10026432:
     REGDEF(cmpl=STACKVAR(16, 4), cmpr=STACKVAR(20, 4))
 }
-Failed to find pattern for 'jnl l100265FF'
+Error: "Failed to find pattern for 'jnl l100265FF'"
 
 // address: 0x10026606
 p10026606
@@ -10667,7 +10667,7 @@ l10026629:
 l1002663B:
     REGDEF(cmpl=STACKVAR(-12, 4), cmpr=STACKVAR(12, 4))
 }
-Failed to find pattern for 'jnl l10026668'
+Error: "Failed to find pattern for 'jnl l10026668'"
 
 // address: 0x1002666F
 p1002666F
@@ -10684,7 +10684,7 @@ l10026692:
 l100266A4:
     REGDEF(cmpl=STACKVAR(-8, 4), cmpr=STACKVAR(12, 4))
 }
-Failed to find pattern for 'jnl l100266C8'
+Error: "Failed to find pattern for 'jnl l100266C8'"
 
 // address: 0x100266CF
 p100266CF
@@ -10709,7 +10709,7 @@ l10026743:
 l1002674C:
     REGDEF(cmpl=STACKVAR(-20, 4), cmpr=STACKVAR(-12, 4))
 }
-Failed to find pattern for 'jg l1002681A'
+Error: "Failed to find pattern for 'jg l1002681A'"
 
 // address: 0x10026874
 p10026874
@@ -10754,7 +10754,7 @@ l100268FF:
 l10026908:
     REGDEF(cmpl=STACKVAR(-4, 4), cmpr=0x00000000)
 }
-Failed to find pattern for 'jle l10026949'
+Error: "Failed to find pattern for 'jle l10026949'"
 
 // address: 0x1002694F
 p1002694F
@@ -10807,7 +10807,7 @@ p100269F2
     }
     REGDEF(cl=ACCESS(GLOBAL(0x1004A538), 0, 1))
 }
-Failed to find pattern for 'or cl, 001h'
+Error: "Failed to find pattern for 'or cl, 001h'"
 
 // address: 0x10026AD5
 B_BitMap24::B_BitMap24(const B_BitMap24 &that)
@@ -10840,7 +10840,7 @@ l10026B62:
     }
     REGDEF(edx=ACCESS(GLOBAL(0x1004A524), 0, 4), eax=STACKVAR(-12, 4), ecx=STACKVAR(-8, 4), esi=STACKVAR(-12, 4))
 }
-Failed to find pattern for 'mov edx, dword ptr [edx+esi*04h]'
+Error: "Failed to find pattern for 'mov edx, dword ptr [edx+esi*04h]'"
 
 // address: 0x10026C70
 void B_BitMap24::ClearBitMap24Data()
@@ -10925,7 +10925,7 @@ l10026DFA:
     }
     REGDEF(edx=ACCESS(GLOBAL(0x1004A524), 0, 4), eax=STACKVAR(-52, 4), ecx=STACKVAR(-48, 4), esi=STACKVAR(-52, 4))
 }
-Failed to find pattern for 'mov edx, dword ptr [edx+esi*04h]'
+Error: "Failed to find pattern for 'mov edx, dword ptr [edx+esi*04h]'"
 
 // address: 0x100271BE
 B_BitMap24 &B_BitMap24::operator=(const B_BitMap24 &that)
@@ -10970,7 +10970,7 @@ unsigned int B_BitMap24::SetBits(int arg_1, int arg_2, const char *arg_3, const 
     ProcedureInfo(this=Id(this), this_offset=-12, local_size=12, stack_delta=None)
     REGDEF(edi=GLOBAL(0x100487C8), esi=STACKVAR(20, 4), ecx=0x00000004, eax=0x00000000)
 }
-Failed to find pattern for 'rep cmpsb'
+Error: "Failed to find pattern for 'rep cmpsb'"
 
 // address: 0x10027382
 int B_BitMap24::SaveToBMP(const char *fileName)
@@ -10979,7 +10979,7 @@ int B_BitMap24::SaveToBMP(const char *fileName)
     REGDEF(eax=0x00004084)
     unknown_function_10041600();
 }
-'ecx'
+Error: "'ecx'"
 
 // address: 0x1002778F
 int B_BitMap24::SaveToBMPSized(const char *fileName, int width, int height)
@@ -10988,7 +10988,7 @@ int B_BitMap24::SaveToBMPSized(const char *fileName, int width, int height)
     REGDEF(eax=0x000040AC)
     unknown_function_10041600();
 }
-'ecx'
+Error: "'ecx'"
 
 // address: 0x10027D86
 p10027D86
@@ -10997,7 +10997,7 @@ p10027D86
     REGDEF(eax=0x00004024)
     unknown_function_10041600();
 }
-'ecx'
+Error: "'ecx'"
 
 // address: 0x10027E11
 p10027E11
@@ -11120,7 +11120,7 @@ B_ODataFile &operator <<(B_ODataFile &file, const B_BitMap24 &bitMap)
     STACKVAR(-8, 4) = STACKVAR(-96, 4);
     REGDEF(eax=reinterpret_cast<any_int32>(ACCESS(STACKVAR(12, 4), 4, 4)) & 0x80000003)
 }
-Failed to find pattern for 'jns l10028206'
+Error: "Failed to find pattern for 'jns l10028206'"
 
 // address: 0x10028353
 void B_BitMap24::EscribeArchivoRAW(const char *arg_1)
@@ -11137,7 +11137,7 @@ l1002838C:
     fwrite(ACCESS(STACKVAR(-12, 4), 12, 4), 0x00000001, STACKVAR(-8, 4), STACKVAR(-4, 4));
     REGDEF(cmpl=STACKVAR(-8, 4))
 }
-'eax'
+Error: "'eax'"
 
 // address: 0x100283CD
 p100283CD
@@ -11153,7 +11153,7 @@ l100283F8:
 l1002840A:
     REGDEF(cmpl=STACKVAR(-8, 4), cmpr=STACKVAR(-12, 4))
 }
-Failed to find pattern for 'jnl l10028430'
+Error: "Failed to find pattern for 'jnl l10028430'"
 
 // address: 0x10028434
 p10028434
@@ -11165,7 +11165,7 @@ p10028434
     }
     REGDEF(cmpl=STACKVAR(8, 4), cmpr=ACCESS(STACKVAR(-8, 4), 4, 4))
 }
-Failed to find pattern for 'jnl l100284B6'
+Error: "Failed to find pattern for 'jnl l100284B6'"
 
 // address: 0x100284C0
 p100284C0
@@ -11231,7 +11231,7 @@ p100285F5
     ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=None)
     REGDEF(ecx=0x00000010, eax=0x00000000, edi=STACKVAR(12, 4))
 }
-Failed to find pattern for 'rep stosd'
+Error: "Failed to find pattern for 'rep stosd'"
 
 // address: 0x100289E4
 p100289E4
@@ -11248,7 +11248,7 @@ p10028A19
     STACKVAR(-48, 4) = reinterpret_cast<any_int32>(STACKVAR(-48, 4)) - 0x00000001;
     REGDEF(cmpl=STACKVAR(-48, 4), cmpr=0x00000017)
 }
-Failed to find pattern for 'ja l1002913A'
+Error: "Failed to find pattern for 'ja l1002913A'"
 
 // address: 0x10029170
 p10029170
@@ -11262,7 +11262,7 @@ l10029189:
 l10029192:
     REGDEF(cmpl=STACKVAR(-8, 4), cmpr=reinterpret_cast<int>(STACKVAR(16, 4)) / 2)
 }
-Failed to find pattern for 'jnl l10029212'
+Error: "Failed to find pattern for 'jnl l10029212'"
 
 // address: 0x10029217
 p10029217
@@ -11289,7 +11289,7 @@ l10029272:
     STACKVAR(-12, 4) = static_cast<int>(STACKVAR(-76, 2)) * (reinterpret_cast<any_int32>(STACKVAR(-74, 4)) & 0x0000FFFF);
     REGDEF(cmpl=STACKVAR(-12, 4), cmpr=0x00000020)
 }
-Failed to find pattern for 'jg l100292BF'
+Error: "Failed to find pattern for 'jg l100292BF'"
 
 // address: 0x10029510
 p10029510
@@ -11625,7 +11625,7 @@ l10029D8A:
     }
     REGDEF(ecx=ACCESS(STACKVAR(-24, 4), 4, 4), edx=STACKVAR(-8, 4), eax=STACKVAR(-4, 4), esi=STACKVAR(-8, 4))
 }
-Failed to find pattern for 'mov ecx, dword ptr [ecx+esi*04h]'
+Error: "Failed to find pattern for 'mov ecx, dword ptr [ecx+esi*04h]'"
 
 // address: 0x10029E17
 unsigned int B_MessageManager::OpenChannel(const B_Name &channel_name)
@@ -11708,7 +11708,7 @@ l10029F35:
     STACKVAR(-44, 4) = ACCESS(GLOBAL(0x1004A944), 0, 4);
     REGDEF(cmpl=STACKVAR(-4, 4), cmpr=ACCESS(STACKVAR(-44, 4), 8, 4))
 }
-Failed to find pattern for 'jb l10029F95'
+Error: "Failed to find pattern for 'jb l10029F95'"
 
 // address: 0x1002A13C
 p1002A13C
@@ -12028,7 +12028,7 @@ p1002DF30
     STACKVAR(-16, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(-44, 4), 4, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 0, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(-44, 4), 12, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 8, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(-44, 4), 20, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 16, 8));
     REGDEF(ST(0)=reinterpret_cast<double>(STACKVAR(-16, 8)))
 }
-Failed to find pattern for 'fcomp qword ptr [g10042CF0]'
+Error: "Failed to find pattern for 'fcomp qword ptr [g10042CF0]'"
 
 // address: 0x1002E0B0
 p1002E0B0
@@ -12110,7 +12110,7 @@ p1002E600
     REGDEF(ST(0)=reinterpret_cast<double>(STACKVAR(12, 8)))
     _CIcos();
 }
-'fpu'
+Error: "'fpu'"
 
 // address: 0x1002ED7C
 p1002ED7C
@@ -12140,7 +12140,7 @@ p1002EF9F
     REGDEF(ecx=STACKVAR(-28, 4))
     unknown_function_1002ED7C();
 }
-'fpu'
+Error: "'fpu'"
 
 // address: 0x1002F052
 p1002F052
@@ -12166,7 +12166,7 @@ l1002F087:
     }
     REGDEF(esi=reinterpret_cast<any_int32>(STACKVAR(8, 4)) + 0x00000020 * reinterpret_cast<any_int32>(STACKVAR(-4, 4)), edx=STACKVAR(-32, 4), edi=ACCESS(ARRPTR(reinterpret_cast<any_int32>(STACKVAR(-84, 4)) + 0x00000020 * reinterpret_cast<any_int32>(STACKVAR(-32, 4)), 0x08, STACKVAR(-4, 4), 0), 0, 4))
 }
-Failed to find pattern for 'mov dword ptr [esi+edx*08h], edi'
+Error: "Failed to find pattern for 'mov dword ptr [esi+edx*08h], edi'"
 
 // address: 0x1002F159
 p1002F159
@@ -12175,7 +12175,7 @@ p1002F159
     LOCAL(-128)->unknown_method_1002E190();
     REGDEF(ST(0)=reinterpret_cast<double>(ACCESS(STACKVAR(-212, 4), 16, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(-212, 4), 40, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(-212, 4), 64, 8)), ST(1)=reinterpret_cast<double>(ACCESS(STACKVAR(-212, 4), 0, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(-212, 4), 40, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(-212, 4), 80, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(-212, 4), 8, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(-212, 4), 48, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(-212, 4), 64, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(-212, 4), 32, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(-212, 4), 72, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(-212, 4), 16, 8)))
 }
-Failed to find pattern for 'fsubp st(01h), st(00h)'
+Error: "Failed to find pattern for 'fsubp st(01h), st(00h)'"
 
 // address: 0x1002F537
 p1002F537
@@ -12200,7 +12200,7 @@ p1002F537
     STACKVAR(-8, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 96, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 24, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 104, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 56, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 112, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 88, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 120, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 120, 8));
     REGDEF(ecx=0x00000020)
 }
-Failed to find pattern for 'lea esi, [ebp-080h]'
+Error: "Failed to find pattern for 'lea esi, [ebp-080h]'"
 
 // address: 0x1002FEB3
 p1002FEB3
@@ -12252,7 +12252,7 @@ p10031284
     REGDEF(ecx=reinterpret_cast<any_int32>(STACKVAR(-52, 4)) + 0x00000004)
     unknown_function_10031913();
 }
-Failed to find pattern for 'sub esp, 000000008h'
+Error: "Failed to find pattern for 'sub esp, 000000008h'"
 
 // address: 0x100312FC
 p100312FC
@@ -12262,7 +12262,7 @@ p100312FC
     REGDEF(ecx=reinterpret_cast<any_int32>(STACKVAR(8, 4)) + 0x00000004)
     unknown_function_1003184F();
 }
-Failed to find pattern for 'fcomp qword ptr [g10042D10]'
+Error: "Failed to find pattern for 'fcomp qword ptr [g10042D10]'"
 
 // address: 0x10031430
 p10031430
@@ -12393,7 +12393,7 @@ p10031760
     ProcedureInfo(this=Id(this), this_offset=-28, local_size=28, stack_delta=None)
     REGDEF(ecx=STACKVAR(12, 4), ST(0)=reinterpret_cast<double>(ACCESS(STACKVAR(-28, 4), 16, 8)))
 }
-Failed to find pattern for 'fsub qword ptr [ecx+010h]'
+Error: "Failed to find pattern for 'fsub qword ptr [ecx+010h]'"
 
 // address: 0x100317C9
 p100317C9
@@ -12418,7 +12418,7 @@ p10031882
     ProcedureInfo(this=Id(this), this_offset=-28, local_size=28, stack_delta=None)
     REGDEF(ST(0)=reinterpret_cast<double>(ACCESS(STACKVAR(-28, 4), 8, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 0, 8)), ST(1)=reinterpret_cast<double>(ACCESS(STACKVAR(-28, 4), 0, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 8, 8)))
 }
-Failed to find pattern for 'fsubp st(01h), st(00h)'
+Error: "Failed to find pattern for 'fsubp st(01h), st(00h)'"
 
 // address: 0x10031913
 p10031913
@@ -12695,7 +12695,7 @@ p10032524
     ProcedureInfo(this=None, this_offset=None, local_size=48, stack_delta=None)
     REGDEF(ST(0)=reinterpret_cast<float>(ACCESS(GLOBAL(0x100488B8), 0, 4)))
 }
-Failed to find pattern for 'fcomp qword ptr [g10042CD8]'
+Error: "Failed to find pattern for 'fcomp qword ptr [g10042CD8]'"
 
 // address: 0x1003270D
 p1003270D
@@ -12703,7 +12703,7 @@ p1003270D
     ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=None)
     REGDEF(ST(0)=reinterpret_cast<float>(ACCESS(GLOBAL(0x100488B8), 0, 4)))
 }
-Failed to find pattern for 'fcomp qword ptr [g10042CD8]'
+Error: "Failed to find pattern for 'fcomp qword ptr [g10042CD8]'"
 
 // address: 0x100327E1
 p100327E1
@@ -12852,7 +12852,7 @@ l10032BDE:
     ACCESS(LOCAL(-212), 0, 8) = 0.0;
     REGDEF(edx=0x00000030 * reinterpret_cast<any_int32>(STACKVAR(-24, 4)), ecx=ACCESS(STACKVAR(-628, 4), 40, 4))
 }
-Failed to find pattern for 'lea edi, [ecx+edx+018h]'
+Error: "Failed to find pattern for 'lea edi, [ecx+edx+018h]'"
 
 // address: 0x100335C3
 void B_ObjDscr::SetUpInertialT()
@@ -12898,7 +12898,7 @@ l100336CD:
     }
     ACCESS(ARRPTR(STACKVAR(-24, 4), 0x08, STACKVAR(-28, 4), 0), 0, 4) = 0x00000000;
 }
-Failed to find pattern for 'mov dword ptr [ecx+eax*08h+004h], 000000000h'
+Error: "Failed to find pattern for 'mov dword ptr [ecx+eax*08h+004h], 000000000h'"
 
 // address: 0x100342BD
 int B_ObjDscr::GetVtxNode(unsigned int arg_1)
@@ -12916,7 +12916,7 @@ l100342D8:
     STACKVAR(-8, 4) = ACCESS(ARRPTR(ACCESS(STACKVAR(-20, 4), 80, 4), 0x04, STACKVAR(-4, 4), 0), 0, 4);
     REGDEF(cmpl=STACKVAR(8, 4), cmpr=ACCESS(STACKVAR(-8, 4), 168, 4))
 }
-Failed to find pattern for 'jb l1003433A'
+Error: "Failed to find pattern for 'jb l1003433A'"
 
 // address: 0x10034345
 p10034345
@@ -13058,7 +13058,7 @@ l100345D3:
     REGDEF(ecx=(0x00000030 * reinterpret_cast<any_int32>(STACKVAR(12, 4)) + reinterpret_cast<any_int32>(ACCESS(STACKVAR(-168, 4), 40, 4)))->unknown_method_10031760(LOCAL(-56), reinterpret_cast<any_int32>(ACCESS(STACKVAR(-168, 4), 40, 4)) + 0x00000030 * reinterpret_cast<any_int32>(STACKVAR(8, 4))))
     unknown_function_10031913();
 }
-Failed to find pattern for 'fdivr qword ptr [g100422C0]'
+Error: "Failed to find pattern for 'fdivr qword ptr [g100422C0]'"
 
 // address: 0x10034A8A
 void B_ObjDscr::SetUpEdges()
@@ -13120,7 +13120,7 @@ void B_ObjDscr::Draw(B_3DRasterDevice *raster, float x1, float y1, float x2, flo
     ProcedureInfo(this=Id(this), this_offset=-1036, local_size=1164, stack_delta=None)
     REGDEF(ST(0)=reinterpret_cast<float>(STACKVAR(12, 4)))
 }
-Failed to find pattern for 'fcomp dword ptr [ebp+014h]'
+Error: "Failed to find pattern for 'fcomp dword ptr [ebp+014h]'"
 
 // address: 0x1003590B
 p1003590B
@@ -13321,7 +13321,7 @@ l10035E90:
     }
     REGDEF(ecx=ACCESS(STACKVAR(-596, 4), 4, 4), edx=STACKVAR(-580, 4), eax=STACKVAR(-576, 4), esi=STACKVAR(-580, 4))
 }
-Failed to find pattern for 'mov ecx, dword ptr [ecx+esi*04h]'
+Error: "Failed to find pattern for 'mov ecx, dword ptr [ecx+esi*04h]'"
 
 // address: 0x100369F0
 p100369F0
@@ -13555,7 +13555,7 @@ l10037093:
     }
     REGDEF(ecx=STACKVAR(-16, 4), edx=STACKVAR(-140, 4), eax=STACKVAR(-136, 4), esi=STACKVAR(-140, 4))
 }
-Failed to find pattern for 'mov ecx, dword ptr [ecx+esi*04h]'
+Error: "Failed to find pattern for 'mov ecx, dword ptr [ecx+esi*04h]'"
 
 // address: 0x100371B3
 p100371B3
@@ -13569,7 +13569,7 @@ p100371B3
     STACKVAR(-24, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(-36, 4), 16, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 20, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(-36, 4), 8, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 12, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(-36, 4), 0, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 4, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 28, 8));
     REGDEF(ST(0)=reinterpret_cast<double>(STACKVAR(-8, 8)))
 }
-Failed to find pattern for 'fabs'
+Error: "Failed to find pattern for 'fabs'"
 
 // address: 0x10037338
 p10037338
@@ -13602,7 +13602,7 @@ p1003737B
     REGDEF(ecx=STACKVAR(-292, 4)->unknown_method_10031760(LOCAL(-72), STACKVAR(-284, 4), LOCAL(-120), (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-464, 4), 40, 4)) + 0x00000030 * reinterpret_cast<any_int32>(ACCESS(ARRPTR(ACCESS(STACKVAR(-464, 4), 60, 4), 1, 0x00000038 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(16, 4), 0, 4)), 8), 0, 4)))->unknown_method_10031760(LOCAL(-96), reinterpret_cast<any_int32>(ACCESS(STACKVAR(-464, 4), 40, 4)) + 0x00000030 * reinterpret_cast<any_int32>(ACCESS(ARRPTR(ACCESS(STACKVAR(-464, 4), 60, 4), 1, 0x00000038 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(16, 4), 0, 4)), 0), 0, 4))))->unknown_method_10031882())
     unknown_function_10031913();
 }
-Failed to find pattern for 'fdivr qword ptr [g100422C0]'
+Error: "Failed to find pattern for 'fdivr qword ptr [g100422C0]'"
 
 // address: 0x10037E84
 unsigned char B_ObjDscr::EdgeFaceGrp(unsigned int arg_1)
@@ -14947,7 +14947,7 @@ l1003A2C6:
     }
     REGDEF(eax=ACCESS(STACKVAR(-24, 4), 4, 4), ecx=STACKVAR(-8, 4), edx=STACKVAR(-4, 4), esi=STACKVAR(-8, 4))
 }
-Failed to find pattern for 'mov eax, dword ptr [eax+esi*04h]'
+Error: "Failed to find pattern for 'mov eax, dword ptr [eax+esi*04h]'"
 
 // address: 0x1003A360
 p1003A360
@@ -15000,7 +15000,7 @@ l1003A448:
     }
     REGDEF(eax=ACCESS(STACKVAR(-24, 4), 4, 4), ecx=STACKVAR(-8, 4), edx=STACKVAR(-4, 4), esi=STACKVAR(-8, 4))
 }
-Failed to find pattern for 'mov eax, dword ptr [eax+esi*04h]'
+Error: "Failed to find pattern for 'mov eax, dword ptr [eax+esi*04h]'"
 
 // address: 0x1003A4E0
 p1003A4E0
@@ -17842,7 +17842,7 @@ l1003DDFA:
     }
     REGDEF(edx=ACCESS(STACKVAR(12, 4), 4, 4), eax=STACKVAR(-820, 4), ecx=STACKVAR(-816, 4), esi=STACKVAR(-820, 4))
 }
-Failed to find pattern for 'mov edx, dword ptr [edx+esi*04h]'
+Error: "Failed to find pattern for 'mov edx, dword ptr [edx+esi*04h]'"
 
 // address: 0x1003DED0
 p1003DED0
@@ -18077,7 +18077,7 @@ l1003E2D0:
 l1003E2D9:
     REGDEF(cmpl=STACKVAR(-8, 4), cmpr=STACKVAR(-4, 4))
 }
-Failed to find pattern for 'jnl l1003E32E'
+Error: "Failed to find pattern for 'jnl l1003E32E'"
 
 // address: 0x1003E436
 PyObject *CallPythonObject(PyObject *func, PyObject *args)
@@ -18206,7 +18206,7 @@ l1003E759:
     STACKVAR(-141, 1) = ACCESS(STACKVAR(-140, 4), 0, 1);
     REGDEF(edx=STACKVAR(-136, 4))
 }
-'cl'
+Error: "'cl'"
 
 // address: 0x1003E831
 p1003E831
@@ -18224,7 +18224,7 @@ l1003E87A:
     STACKVAR(-141, 1) = ACCESS(STACKVAR(-140, 4), 0, 1);
     REGDEF(edx=STACKVAR(-136, 4))
 }
-'cl'
+Error: "'cl'"
 
 // address: 0x1003E95C
 p1003E95C
@@ -18511,7 +18511,7 @@ l1003EF1F:
     STACKVAR(-12, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) & 0x0000000F;
     REGDEF(eax=STACKVAR(-8, 4), ecx=STACKVAR(-12, 4))
 }
-Failed to find pattern for 'mov dl, byte ptr [ecx+offset g10048A68]'
+Error: "Failed to find pattern for 'mov dl, byte ptr [ecx+offset g10048A68]'"
 
 // address: 0x1003EFD4
 p1003EFD4
@@ -18561,7 +18561,7 @@ l1003F0E4:
     }
     REGDEF(edx=ACCESS(GLOBAL(0x1004A524), 0, 4), eax=STACKVAR(-160, 4), ecx=STACKVAR(-156, 4), esi=STACKVAR(-160, 4))
 }
-Failed to find pattern for 'mov edx, dword ptr [edx+esi*04h]'
+Error: "Failed to find pattern for 'mov edx, dword ptr [edx+esi*04h]'"
 
 // address: 0x1003F24C
 p1003F24C
@@ -18619,7 +18619,7 @@ l1003F32F:
     }
     REGDEF(cmpl=static_cast<int>(ACCESS(STACKVAR(8, 4), 0, 1)), cmpr=0x00000039)
 }
-Failed to find pattern for 'jg l1003F364'
+Error: "Failed to find pattern for 'jg l1003F364'"
 
 // address: 0x1003FA24
 p1003FA24
@@ -18633,7 +18633,7 @@ l1003FA46:
     STACKVAR(-17, 1) = ACCESS(STACKVAR(-16, 4), 0, 1);
     REGDEF(edx=STACKVAR(-12, 4))
 }
-'cl'
+Error: "'cl'"
 
 // address: 0x1003FA98
 p1003FA98
@@ -19247,7 +19247,7 @@ l10040AD9:
 l10040AE2:
     REGDEF(cmpl=STACKVAR(-12, 4), cmpr=ACCESS(GLOBAL(0x1004BF58), 0, 4))
 }
-Failed to find pattern for 'jnl l10040B71'
+Error: "Failed to find pattern for 'jnl l10040B71'"
 
 // address: 0x10040CB0
 B_RDataLight::B_RDataLight()
@@ -19397,7 +19397,7 @@ l100410D6:
     }
     REGDEF(eax=ACCESS(ARRPTR(STACKVAR(-16, 4), 0x08, STACKVAR(-24, 4), 0), 0, 4))
 }
-Failed to find pattern for 'mov ecx, dword ptr [edx+ecx*08h+004h]'
+Error: "Failed to find pattern for 'mov ecx, dword ptr [edx+ecx*08h+004h]'"
 
 // address: 0x1004118F
 B_ParticleGType::~B_ParticleGType()
@@ -19487,7 +19487,7 @@ l1004137A:
     }
     REGDEF(eax=ACCESS(ARRPTR(STACKVAR(-24, 4), 0x08, STACKVAR(-32, 4), 0), 0, 4))
 }
-Failed to find pattern for 'mov ecx, dword ptr [edx+ecx*08h+004h]'
+Error: "Failed to find pattern for 'mov ecx, dword ptr [edx+ecx*08h+004h]'"
 
 // address: 0x100413EE
 B_ODataFile &operator <<(B_ODataFile &file, const B_ParticleGType &particleType)
@@ -19555,10 +19555,10 @@ p10041600
 p100416B4
 {
 }
-Failed to find pattern for 'mov eax, dword ptr [esp+008h]'
+Error: "Failed to find pattern for 'mov eax, dword ptr [esp+008h]'"
 
 // address: 0x10041808
 p10041808
 {
 }
-Failed to find pattern for 'cmp dword ptr [esp+008h], 000000001h'
+Error: "Failed to find pattern for 'cmp dword ptr [esp+008h], 000000001h'"
