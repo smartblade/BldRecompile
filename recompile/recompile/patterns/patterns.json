@@ -281,6 +281,42 @@
 	},
 	{
 		"instructions": [
+			{"mov": ["ecx", "[ebp%offset-right-low%]"]},
+			{"mov": ["[eax]", "ecx"]},
+			{"mov": ["edx", "[ebp%offset-right-high%]"]},
+			{"mov": ["[eax+004h]", "edx"]}
+		],
+		"action": {"assignment": {"dst": "ACCESS(REGVALUE(eax), 0, 8)", "src": "STACKVAR(EXPECT(%offset-right-low%, EVAL(%offset-right-high% - 4)), 8)"}}
+	},
+	{
+		"instructions": [
+			{"mov": ["ecx", "[ebp%offset-right-low%]"]},
+			{"mov": ["[eax%offset-left-low%]", "ecx"]},
+			{"mov": ["edx", "[ebp%offset-right-high%]"]},
+			{"mov": ["[eax%offset-left-high%]", "edx"]}
+		],
+		"action": {"assignment": {"dst": "ACCESS(REGVALUE(eax), EXPECT(%offset-left-low%, EVAL(%offset-left-high% - 4)), 8)", "src": "STACKVAR(EXPECT(%offset-right-low%, EVAL(%offset-right-high% - 4)), 8)"}}
+	},
+	{
+		"instructions": [
+			{"mov": ["edx", "[ebp%offset-right-low%]"]},
+			{"mov": ["[ecx%offset-left-low%]", "edx"]},
+			{"mov": ["eax", "[ebp%offset-right-high%]"]},
+			{"mov": ["[ecx%offset-left-high%]", "eax"]}
+		],
+		"action": {"assignment": {"dst": "ACCESS(REGVALUE(ecx), EXPECT(%offset-left-low%, EVAL(%offset-left-high% - 4)), 8)", "src": "STACKVAR(EXPECT(%offset-right-low%, EVAL(%offset-right-high% - 4)), 8)"}}
+	},
+	{
+		"instructions": [
+			{"mov": ["eax", "[ebp%offset-right-low%]"]},
+			{"mov": ["[edx%offset-left-low%]", "eax"]},
+			{"mov": ["ecx", "[ebp%offset-right-high%]"]},
+			{"mov": ["[edx%offset-left-high%]", "ecx"]}
+		],
+		"action": {"assignment": {"dst": "ACCESS(REGVALUE(edx), EXPECT(%offset-left-low%, EVAL(%offset-left-high% - 4)), 8)", "src": "STACKVAR(EXPECT(%offset-right-low%, EVAL(%offset-right-high% - 4)), 8)"}}
+	},
+	{
+		"instructions": [
 			{"mov":  ["%mem-operand%", "%src-operand%"]}
 		],
 		"action": {"assignment": {"dst": "%mem-operand%", "src": "%src-operand%"}}

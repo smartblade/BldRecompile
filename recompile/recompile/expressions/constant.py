@@ -3,6 +3,8 @@ import data_types
 
 class Constant:
     def __init__(self, data_type, value):
+        if isinstance(data_type, (data_types.UnknownTypes, data_types.AnyInt)):
+            assert value >= 0
         self._data_type = data_type
         self._value = value
 

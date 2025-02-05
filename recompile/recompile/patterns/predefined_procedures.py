@@ -1,7 +1,7 @@
 from calling_convention import CallingConvention
 import data_types
 import expressions
-from hex_conversion import from_hex
+from hex_conversion import from_hex, to_int
 from procedure_declaration import ProcedureDeclaration
 
 _procedures = {
@@ -17,7 +17,7 @@ _procedures = {
         *args, base=None, scale=from_hex, index=None, offset=int),
     "REAL64": lambda *args: _unpack_args(*args, high=from_hex, low=from_hex),
     "EXPECT": lambda *args: _unpack_args(
-        *args, expression=None, const=from_hex),
+        *args, expression=None, const=to_int),
     "EVAL": lambda *args: _unpack_args(*args, expression=None),
     "I": lambda *args: _unpack_args(*args, expression=None),
     "S": lambda *args: _unpack_args(*args, expression=None),

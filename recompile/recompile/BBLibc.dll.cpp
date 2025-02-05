@@ -12083,11 +12083,25 @@ p1002E190
 // address: 0x1002E2AD
 p1002E2AD
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=None)
-    ACCESS(STACKVAR(-4, 4), 0, 4) = STACKVAR(8, 4);
-    REGDEF(edx=STACKVAR(12, 4))
+    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=8)
+    ACCESS(this, 0, 8) = STACKVAR(8, 8);
+    ACCESS(this, 8, 8) = 0.0;
+    ACCESS(this, 16, 8) = 0.0;
+    ACCESS(this, 24, 8) = 0.0;
+    ACCESS(this, 32, 8) = 0.0;
+    ACCESS(this, 40, 8) = STACKVAR(8, 8);
+    ACCESS(this, 48, 8) = 0.0;
+    ACCESS(this, 56, 8) = 0.0;
+    ACCESS(this, 64, 8) = 0.0;
+    ACCESS(this, 72, 8) = 0.0;
+    ACCESS(this, 80, 8) = STACKVAR(8, 8);
+    ACCESS(this, 88, 8) = 0.0;
+    ACCESS(this, 96, 8) = 0.0;
+    ACCESS(this, 104, 8) = 0.0;
+    ACCESS(this, 112, 8) = 0.0;
+    ACCESS(this, 120, 8) = 1.0;
+    REGDEF(eax=this)
 }
-'eax'
 
 // address: 0x1002E600
 p1002E600
@@ -12191,26 +12205,28 @@ Failed to find pattern for 'lea esi, [ebp-080h]'
 // address: 0x1002FEB3
 p1002FEB3
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=24, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=24, stack_delta=0)
     STACKVAR(-24, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 0, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 16, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 8, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 48, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 16, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 80, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 112, 8));
     STACKVAR(-16, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 0, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 8, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 8, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 40, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 16, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 72, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 104, 8));
     STACKVAR(-8, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 0, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 0, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 8, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 32, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 16, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 64, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 96, 8));
-    ACCESS(STACKVAR(8, 4), 0, 4) = STACKVAR(-8, 4);
-    REGDEF(edx=STACKVAR(-4, 4))
+    ACCESS(STACKVAR(8, 4), 0, 8) = STACKVAR(-8, 8);
+    ACCESS(STACKVAR(8, 4), 8, 8) = STACKVAR(-16, 8);
+    ACCESS(STACKVAR(8, 4), 16, 8) = STACKVAR(-24, 8);
+    REGDEF(eax=STACKVAR(8, 4))
 }
-'eax'
 
 // address: 0x100300A1
 p100300A1
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=24, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=24, stack_delta=0)
     STACKVAR(-24, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 0, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 16, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 8, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 48, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 16, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 80, 8));
     STACKVAR(-16, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 0, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 8, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 8, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 40, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 16, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 72, 8));
     STACKVAR(-8, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 0, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 0, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 8, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 32, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 16, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 64, 8));
-    ACCESS(STACKVAR(8, 4), 0, 4) = STACKVAR(-8, 4);
-    REGDEF(edx=STACKVAR(-4, 4))
+    ACCESS(STACKVAR(8, 4), 0, 8) = STACKVAR(-8, 8);
+    ACCESS(STACKVAR(8, 4), 8, 8) = STACKVAR(-16, 8);
+    ACCESS(STACKVAR(8, 4), 16, 8) = STACKVAR(-24, 8);
+    REGDEF(eax=STACKVAR(8, 4))
 }
-'eax'
 
 // address: 0x10030219
 p10030219
@@ -12302,38 +12318,41 @@ p100314C8
 // address: 0x10031505
 p10031505
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=24, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=24, stack_delta=0)
     STACKVAR(-24, 8) = reinterpret_cast<double>(STACKVAR(12, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(20, 4), 16, 8));
     STACKVAR(-16, 8) = reinterpret_cast<double>(STACKVAR(12, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(20, 4), 8, 8));
     STACKVAR(-8, 8) = reinterpret_cast<double>(STACKVAR(12, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(20, 4), 0, 8));
-    ACCESS(STACKVAR(8, 4), 0, 4) = STACKVAR(-8, 4);
-    REGDEF(edx=STACKVAR(-4, 4))
+    ACCESS(STACKVAR(8, 4), 0, 8) = STACKVAR(-8, 8);
+    ACCESS(STACKVAR(8, 4), 8, 8) = STACKVAR(-16, 8);
+    ACCESS(STACKVAR(8, 4), 16, 8) = STACKVAR(-24, 8);
+    REGDEF(eax=STACKVAR(8, 4))
 }
-'eax'
 
 // address: 0x10031561
 p10031561
 {
-    ProcedureInfo(this=Id(this), this_offset=-28, local_size=28, stack_delta=None)
-    STACKVAR(-24, 8) = reinterpret_cast<double>(STACKVAR(12, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(-28, 4), 16, 8));
-    STACKVAR(-16, 8) = reinterpret_cast<double>(STACKVAR(12, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(-28, 4), 8, 8));
-    STACKVAR(-8, 8) = reinterpret_cast<double>(STACKVAR(12, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(-28, 4), 0, 8));
-    ACCESS(STACKVAR(8, 4), 0, 4) = STACKVAR(-8, 4);
-    REGDEF(edx=STACKVAR(-4, 4))
+    ProcedureInfo(this=Id(this), this_offset=-28, local_size=28, stack_delta=12)
+    STACKVAR(-24, 8) = reinterpret_cast<double>(STACKVAR(12, 8)) * reinterpret_cast<double>(ACCESS(this, 16, 8));
+    STACKVAR(-16, 8) = reinterpret_cast<double>(STACKVAR(12, 8)) * reinterpret_cast<double>(ACCESS(this, 8, 8));
+    STACKVAR(-8, 8) = reinterpret_cast<double>(STACKVAR(12, 8)) * reinterpret_cast<double>(ACCESS(this, 0, 8));
+    ACCESS(STACKVAR(8, 4), 0, 8) = STACKVAR(-8, 8);
+    ACCESS(STACKVAR(8, 4), 8, 8) = STACKVAR(-16, 8);
+    ACCESS(STACKVAR(8, 4), 16, 8) = STACKVAR(-24, 8);
+    REGDEF(eax=STACKVAR(8, 4))
 }
-'eax'
 
 // address: 0x100315C2
 p100315C2
 {
-    ProcedureInfo(this=Id(this), this_offset=-28, local_size=28, stack_delta=None)
-    STACKVAR(-24, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(-28, 4), 16, 8)) / reinterpret_cast<double>(STACKVAR(12, 8));
-    STACKVAR(-16, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(-28, 4), 8, 8)) / reinterpret_cast<double>(STACKVAR(12, 8));
-    STACKVAR(-8, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(-28, 4), 0, 8)) / reinterpret_cast<double>(STACKVAR(12, 8));
-    ACCESS(STACKVAR(8, 4), 0, 4) = STACKVAR(-8, 4);
-    REGDEF(edx=STACKVAR(-4, 4))
+    ProcedureInfo(this=Id(this), this_offset=-28, local_size=28, stack_delta=12)
+    STACKVAR(-24, 8) = reinterpret_cast<double>(ACCESS(this, 16, 8)) / reinterpret_cast<double>(STACKVAR(12, 8));
+    STACKVAR(-16, 8) = reinterpret_cast<double>(ACCESS(this, 8, 8)) / reinterpret_cast<double>(STACKVAR(12, 8));
+    STACKVAR(-8, 8) = reinterpret_cast<double>(ACCESS(this, 0, 8)) / reinterpret_cast<double>(STACKVAR(12, 8));
+    ACCESS(STACKVAR(8, 4), 0, 8) = STACKVAR(-8, 8);
+    ACCESS(STACKVAR(8, 4), 8, 8) = STACKVAR(-16, 8);
+    ACCESS(STACKVAR(8, 4), 16, 8) = STACKVAR(-24, 8);
+    REGDEF(eax=STACKVAR(8, 4))
 }
-'eax'
 
 // address: 0x10031623
 p10031623
@@ -12358,14 +12377,15 @@ p1003165E
 // address: 0x100316F7
 p100316F7
 {
-    ProcedureInfo(this=Id(this), this_offset=-28, local_size=28, stack_delta=None)
-    STACKVAR(-24, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(-28, 4), 16, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 16, 8));
-    STACKVAR(-16, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(-28, 4), 8, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 8, 8));
-    STACKVAR(-8, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(-28, 4), 0, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 0, 8));
-    ACCESS(STACKVAR(8, 4), 0, 4) = STACKVAR(-8, 4);
-    REGDEF(edx=STACKVAR(-4, 4))
+    ProcedureInfo(this=Id(this), this_offset=-28, local_size=28, stack_delta=8)
+    STACKVAR(-24, 8) = reinterpret_cast<double>(ACCESS(this, 16, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 16, 8));
+    STACKVAR(-16, 8) = reinterpret_cast<double>(ACCESS(this, 8, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 8, 8));
+    STACKVAR(-8, 8) = reinterpret_cast<double>(ACCESS(this, 0, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 0, 8));
+    ACCESS(STACKVAR(8, 4), 0, 8) = STACKVAR(-8, 8);
+    ACCESS(STACKVAR(8, 4), 8, 8) = STACKVAR(-16, 8);
+    ACCESS(STACKVAR(8, 4), 16, 8) = STACKVAR(-24, 8);
+    REGDEF(eax=STACKVAR(8, 4))
 }
-'eax'
 
 // address: 0x10031760
 p10031760

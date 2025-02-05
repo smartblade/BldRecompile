@@ -30,11 +30,18 @@ def _evaluate_binary(b):
     left = evaluate_expression(b.left)
     right = evaluate_expression(b.right)
     max_size = max(left.data_type.size, right.data_type.size)
-    data_type = data_types.AnyInt(max_size)
     if b.operator == Operator.MUL:
-        return expressions.Constant(data_type, left.value * right.value)
+        return _make_constant(max_size, left.value * right.value)
     if b.operator == Operator.SUB:
-        return expressions.Constant(data_type, left.value - right.value)
+        return _make_constant(max_size, left.value - right.value)
     if b.operator == Operator.SHL:
-        return expressions.Constant(data_type, left.value << right.value)
+        return _make_constant(max_size, left.value << right.value)
     return None
+
+
+def _make_constant(data_size, value):
+    data_type = data_types.AnyInt(data_size)
+    if value < 0:
+        if data_size == 4:
+            data_type = data_types.Int32()
+    return expressions.Constant(data_type, value)
