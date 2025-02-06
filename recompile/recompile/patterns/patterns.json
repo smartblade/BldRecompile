@@ -502,6 +502,16 @@
 	},
 	{
 		"instructions": [
+			{"fcomp":  ["%mem-operand%"]},
+			{"fnstsw":  ["ax"]}
+		],
+		"actions": [
+			{"tmpreg": {"dst": "cmpfl", "src": "F(POPFPU())"}},
+			{"tmpreg": {"dst": "cmpfr", "src": "F(%mem-operand%)"}}
+		]
+	},
+	{
+		"instructions": [
 			{"cmp":  ["%src-operand-left%", "%src-operand-right%"]}
 		],
 		"actions": [

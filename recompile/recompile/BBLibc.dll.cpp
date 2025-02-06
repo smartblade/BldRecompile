@@ -12026,9 +12026,9 @@ p1002DF30
 {
     ProcedureInfo(this=Id(this), this_offset=-44, local_size=44, stack_delta=None)
     STACKVAR(-16, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(-44, 4), 4, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 0, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(-44, 4), 12, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 8, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(-44, 4), 20, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 16, 8));
-    REGDEF(ST(0)=reinterpret_cast<double>(STACKVAR(-16, 8)))
+    REGDEF(cmpfl=reinterpret_cast<double>(STACKVAR(-16, 8)), cmpfr=reinterpret_cast<double>(ACCESS(GLOBAL(0x10042CF0), 0, 8)))
 }
-Error: "Failed to find pattern for 'fcomp qword ptr [g10042CF0]'"
+Error: "Failed to find pattern for 'test ah, 040h'"
 
 // address: 0x1002E0B0
 p1002E0B0
@@ -12262,7 +12262,7 @@ p100312FC
     REGDEF(ecx=reinterpret_cast<any_int32>(STACKVAR(8, 4)) + 0x00000004)
     unknown_function_1003184F();
 }
-Error: "Failed to find pattern for 'fcomp qword ptr [g10042D10]'"
+Error: "'fpu'"
 
 // address: 0x10031430
 p10031430
@@ -12693,17 +12693,17 @@ p100324EC
 p10032524
 {
     ProcedureInfo(this=None, this_offset=None, local_size=48, stack_delta=None)
-    REGDEF(ST(0)=reinterpret_cast<float>(ACCESS(GLOBAL(0x100488B8), 0, 4)))
+    REGDEF(cmpfl=reinterpret_cast<float>(ACCESS(GLOBAL(0x100488B8), 0, 4)), cmpfr=reinterpret_cast<double>(ACCESS(GLOBAL(0x10042CD8), 0, 8)))
 }
-Error: "Failed to find pattern for 'fcomp qword ptr [g10042CD8]'"
+Error: "Failed to find pattern for 'test ah, 040h'"
 
 // address: 0x1003270D
 p1003270D
 {
     ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=None)
-    REGDEF(ST(0)=reinterpret_cast<float>(ACCESS(GLOBAL(0x100488B8), 0, 4)))
+    REGDEF(cmpfl=reinterpret_cast<float>(ACCESS(GLOBAL(0x100488B8), 0, 4)), cmpfr=reinterpret_cast<double>(ACCESS(GLOBAL(0x10042CD8), 0, 8)))
 }
-Error: "Failed to find pattern for 'fcomp qword ptr [g10042CD8]'"
+Error: "Failed to find pattern for 'test ah, 040h'"
 
 // address: 0x100327E1
 p100327E1
@@ -13118,9 +13118,9 @@ l10034B53:
 void B_ObjDscr::Draw(B_3DRasterDevice *raster, float x1, float y1, float x2, float y2, float scale, int i_unknown)
 {
     ProcedureInfo(this=Id(this), this_offset=-1036, local_size=1164, stack_delta=None)
-    REGDEF(ST(0)=reinterpret_cast<float>(STACKVAR(12, 4)))
+    REGDEF(cmpfl=reinterpret_cast<float>(STACKVAR(12, 4)), cmpfr=reinterpret_cast<float>(STACKVAR(20, 4)))
 }
-Error: "Failed to find pattern for 'fcomp dword ptr [ebp+014h]'"
+Error: "Failed to find pattern for 'test ah, 041h'"
 
 // address: 0x1003590B
 p1003590B
