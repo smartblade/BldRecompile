@@ -12107,10 +12107,11 @@ p1002E2AD
 p1002E600
 {
     ProcedureInfo(this=Id(this), this_offset=-44, local_size=44, stack_delta=None)
-    REGDEF(ST(0)=reinterpret_cast<double>(STACKVAR(12, 8)))
-    _CIcos();
+    STACKVAR(-16, 8) = cos(reinterpret_cast<double>(STACKVAR(12, 8)));
+    STACKVAR(-8, 8) = sin(reinterpret_cast<double>(STACKVAR(12, 8)));
+    STACKVAR(-24, 4) = ACCESS(STACKVAR(8, 4), 0, 4);
 }
-Error: "'fpu'"
+Error: "Unexpected instruction type <class 'instructions.assignment.Assignment'>"
 
 // address: 0x1002ED7C
 p1002ED7C
@@ -12136,11 +12137,20 @@ p1002EDEA
 // address: 0x1002EF9F
 p1002EF9F
 {
-    ProcedureInfo(this=Id(this), this_offset=-28, local_size=28, stack_delta=None)
-    REGDEF(ecx=STACKVAR(-28, 4))
-    unknown_function_1002ED7C();
+    ProcedureInfo(this=Id(this), this_offset=-28, local_size=28, stack_delta=0)
+    STACKVAR(-8, 8) = this->unknown_method_1002ED7C();
+    STACKVAR(-16, 8) = this->unknown_method_1002EDB2();
+    STACKVAR(-24, 8) = this->unknown_method_1002EDEA();
+    ACCESS(this, 0, 8) = reinterpret_cast<double>(ACCESS(this, 0, 8)) / reinterpret_cast<double>(STACKVAR(-8, 8));
+    ACCESS(this, 8, 8) = reinterpret_cast<double>(ACCESS(this, 8, 8)) / reinterpret_cast<double>(STACKVAR(-8, 8));
+    ACCESS(this, 16, 8) = reinterpret_cast<double>(ACCESS(this, 16, 8)) / reinterpret_cast<double>(STACKVAR(-8, 8));
+    ACCESS(this, 32, 8) = reinterpret_cast<double>(ACCESS(this, 32, 8)) / reinterpret_cast<double>(STACKVAR(-16, 8));
+    ACCESS(this, 40, 8) = reinterpret_cast<double>(ACCESS(this, 40, 8)) / reinterpret_cast<double>(STACKVAR(-16, 8));
+    ACCESS(this, 48, 8) = reinterpret_cast<double>(ACCESS(this, 48, 8)) / reinterpret_cast<double>(STACKVAR(-16, 8));
+    ACCESS(this, 64, 8) = reinterpret_cast<double>(ACCESS(this, 64, 8)) / reinterpret_cast<double>(STACKVAR(-24, 8));
+    ACCESS(this, 72, 8) = reinterpret_cast<double>(ACCESS(this, 72, 8)) / reinterpret_cast<double>(STACKVAR(-24, 8));
+    ACCESS(this, 80, 8) = reinterpret_cast<double>(ACCESS(this, 80, 8)) / reinterpret_cast<double>(STACKVAR(-24, 8));
 }
-Error: "'fpu'"
 
 // address: 0x1002F052
 p1002F052
@@ -12258,11 +12268,9 @@ Error: "Failed to find pattern for 'sub esp, 000000008h'"
 p100312FC
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=8, stack_delta=None)
-    ARG(reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000004);
-    REGDEF(ecx=reinterpret_cast<any_int32>(STACKVAR(8, 4)) + 0x00000004)
-    unknown_function_1003184F();
+    REGDEF(cmpfl=(reinterpret_cast<any_int32>(STACKVAR(8, 4)) + 0x00000004)->unknown_method_1003184F(reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000004), cmpfr=reinterpret_cast<double>(ACCESS(GLOBAL(0x10042D10), 0, 8)))
 }
-Error: "'fpu'"
+Error: "Failed to find pattern for 'test ah, 041h'"
 
 // address: 0x10031430
 p10031430

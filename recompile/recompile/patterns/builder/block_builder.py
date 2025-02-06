@@ -108,9 +108,15 @@ class BlockBuilder:
         return_types = {
             "ax": data_types.AnyInt16(),
             "eax": data_types.Unknown32(),
+            "fpu": data_types.Double(),
         }
         return_type = return_types[reg]
         self._try_merge_args_into_procedure_call()
+        if isinstance(
+            self.last_instruction,
+            instructions.TemporaryRegisterDefinition
+        ):
+            return self.pop_reg_value(reg)
         assert isinstance(self.last_instruction, instructions.CodeInstruction)
         pc = self.last_instruction.expression
         assert isinstance(pc, expressions.ProcedureCall)
