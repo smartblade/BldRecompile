@@ -4,6 +4,10 @@ from expressions.operator import Operator
 
 
 def do_reinterpret(data_type, e):
+    if e.data_type.size != data_type.size:
+        raise Exception(
+            "Can't reinterpret {}(size: {}) as {}(size: {}).".format(
+                e.data_type, e.data_type.size, data_type, data_type.size))
     if data_types.are_compatible(e.data_type, data_type):
         return e
     if isinstance(e, expressions.Constant):

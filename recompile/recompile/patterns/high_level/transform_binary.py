@@ -49,6 +49,11 @@ def _transform_int_mul(left, right):
 
 
 def _transform_eq_ne(operator, left, right):
+    if (
+        isinstance(left.data_type, (data_types.Float, data_types.Double)) and
+        isinstance(right.data_type, (data_types.Float, data_types.Double))
+    ):
+        return None
     right = expressions.do_reinterpret(left.data_type, right)
     if not isinstance(right, expressions.ConstantTypes):
         left = expressions.do_reinterpret(right.data_type, left)

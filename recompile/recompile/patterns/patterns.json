@@ -512,6 +512,27 @@
 	},
 	{
 		"instructions": [
+			{"test": ["ah", "040h"]},
+			{"je": ["%label%"]}
+		],
+		"action": {"jump": {"condition": "REGVALUE(cmpfl) != REGVALUE(cmpfr)", "address": "%label%"}}
+	},
+	{
+		"instructions": [
+			{"test": ["ah", "041h"]},
+			{"je": ["%label%"]}
+		],
+		"action": {"jump": {"condition": "REGVALUE(cmpfl) > REGVALUE(cmpfr)", "address": "%label%"}}
+	},
+	{
+		"instructions": [
+			{"test": ["ah", "041h"]},
+			{"jne": ["%label%"]}
+		],
+		"action": {"jump": {"condition": "REGVALUE(cmpfl) <= REGVALUE(cmpfr)", "address": "%label%"}}
+	},
+	{
+		"instructions": [
 			{"cmp":  ["%src-operand-left%", "%src-operand-right%"]}
 		],
 		"actions": [
