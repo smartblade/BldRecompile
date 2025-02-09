@@ -12298,14 +12298,21 @@ Error: "Failed to find pattern for 'sub esp, 000000008h'"
 // address: 0x100312FC
 p100312FC
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=8, stack_delta=None)
-    if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) + 0x00000004)->unknown_method_1003184F(reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000004) <= reinterpret_cast<double>(ACCESS(GLOBAL(0x10042D10), 0, 8)))
+    ProcedureInfo(this=Id(this), this_offset=-4, local_size=8, stack_delta=4)
+    if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) + 0x00000004)->unknown_method_1003184F(reinterpret_cast<any_int32>(this) + 0x00000004) <= reinterpret_cast<double>(ACCESS(GLOBAL(0x10042D10), 0, 8)))
     {
         goto l10031348;
     }
-    REGDEF(cmpfl=fabs(reinterpret_cast<double>(ACCESS(STACKVAR(8, 4), 28, 8)) - reinterpret_cast<double>(ACCESS(STACKVAR(-4, 4), 28, 8))), cmpfr=reinterpret_cast<double>(ACCESS(GLOBAL(0x10042CE8), 0, 8)))
+    if (fabs(reinterpret_cast<double>(ACCESS(STACKVAR(8, 4), 28, 8)) - reinterpret_cast<double>(ACCESS(this, 28, 8))) < reinterpret_cast<double>(ACCESS(GLOBAL(0x10042CE8), 0, 8)))
+    {
+        STACKVAR(-8, 4) = 0x00000001;
+        goto l1003134F;
+    }
+l10031348:
+    STACKVAR(-8, 4) = 0x00000000;
+l1003134F:
+    REGDEF(eax=STACKVAR(-8, 4))
 }
-Error: "Failed to find pattern for 'test ah, 001h'"
 
 // address: 0x10031430
 p10031430
@@ -13787,16 +13794,48 @@ Error: "Failed to find pattern for 'mov ecx, dword ptr [ecx+esi*04h]'"
 // address: 0x100371B3
 p100371B3
 {
-    ProcedureInfo(this=Id(this), this_offset=-40, local_size=40, stack_delta=None)
-    STACKVAR(-28, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-40, 4), 40, 4)) + 0x00000030 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 0, 4));
+    ProcedureInfo(this=Id(this), this_offset=-40, local_size=40, stack_delta=8)
+    STACKVAR(-28, 4) = reinterpret_cast<any_int32>(ACCESS(this, 40, 4)) + 0x00000030 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 0, 4));
     STACKVAR(-8, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(-28, 4), 16, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 20, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(-28, 4), 8, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 12, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(-28, 4), 0, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 4, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 28, 8));
-    STACKVAR(-32, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-40, 4), 40, 4)) + 0x00000030 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 4, 4));
+    STACKVAR(-32, 4) = reinterpret_cast<any_int32>(ACCESS(this, 40, 4)) + 0x00000030 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 4, 4));
     STACKVAR(-16, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(-32, 4), 16, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 20, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(-32, 4), 8, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 12, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(-32, 4), 0, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 4, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 28, 8));
-    STACKVAR(-36, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-40, 4), 40, 4)) + 0x00000030 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 8, 4));
+    STACKVAR(-36, 4) = reinterpret_cast<any_int32>(ACCESS(this, 40, 4)) + 0x00000030 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 8, 4));
     STACKVAR(-24, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(-36, 4), 16, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 20, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(-36, 4), 8, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 12, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(-36, 4), 0, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 4, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 28, 8));
-    REGDEF(cmpfl=fabs(reinterpret_cast<double>(STACKVAR(-8, 8))), cmpfr=reinterpret_cast<double>(ACCESS(GLOBAL(0x10042CE8), 0, 8)))
+    if (fabs(reinterpret_cast<double>(STACKVAR(-8, 8))) < reinterpret_cast<double>(ACCESS(GLOBAL(0x10042CE8), 0, 8)))
+    {
+        if (fabs(reinterpret_cast<double>(STACKVAR(-16, 8))) < reinterpret_cast<double>(ACCESS(GLOBAL(0x10042CE8), 0, 8)))
+        {
+            if (fabs(reinterpret_cast<double>(STACKVAR(-24, 8))) < reinterpret_cast<double>(ACCESS(GLOBAL(0x10042CE8), 0, 8)))
+            {
+                REGDEF(eax=0x00000002)
+                return;
+            }
+        }
+    }
+    if (reinterpret_cast<double>(STACKVAR(-8, 8)) > reinterpret_cast<double>(ACCESS(GLOBAL(0x10042D58), 0, 8)))
+    {
+        if (reinterpret_cast<double>(STACKVAR(-16, 8)) > reinterpret_cast<double>(ACCESS(GLOBAL(0x10042D58), 0, 8)))
+        {
+            if (reinterpret_cast<double>(STACKVAR(-24, 8)) > reinterpret_cast<double>(ACCESS(GLOBAL(0x10042D58), 0, 8)))
+            {
+                REGDEF(eax=0x00000001)
+                return;
+            }
+        }
+    }
+    if (reinterpret_cast<double>(STACKVAR(-8, 8)) < reinterpret_cast<double>(ACCESS(GLOBAL(0x10042CE0), 0, 8)))
+    {
+        if (reinterpret_cast<double>(STACKVAR(-16, 8)) < reinterpret_cast<double>(ACCESS(GLOBAL(0x10042CE0), 0, 8)))
+        {
+            if (reinterpret_cast<double>(STACKVAR(-24, 8)) < reinterpret_cast<double>(ACCESS(GLOBAL(0x10042CE0), 0, 8)))
+            {
+                REGDEF(eax=0xFFFFFFFF)
+                return;
+            }
+        }
+    }
+    REGDEF(eax=0x00000000)
 }
-Error: "Failed to find pattern for 'test ah, 001h'"
 
 // address: 0x10037338
 p10037338
