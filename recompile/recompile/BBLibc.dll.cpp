@@ -9372,9 +9372,33 @@ l1001F9BE:
         goto l1001FB41;
     }
     STACKVAR(-60, 4) = reinterpret_cast<float>(ACCESS(STACKVAR(-76, 4), 0, 4)) + reinterpret_cast<float>(ACCESS(STACKVAR(-76, 4), 28, 4));
-    REGDEF(edx=STACKVAR(-76, 4), ST(0)=reinterpret_cast<float>(ACCESS(STACKVAR(-76, 4), 0, 4)))
+    STACKVAR(-20, 4) = reinterpret_cast<float>(ACCESS(STACKVAR(-76, 4), 0, 4)) - reinterpret_cast<float>(ACCESS(STACKVAR(-76, 4), 28, 4));
+    STACKVAR(-64, 4) = reinterpret_cast<float>(ACCESS(STACKVAR(-76, 4), 4, 4)) + reinterpret_cast<float>(ACCESS(STACKVAR(-76, 4), 24, 4));
+    STACKVAR(-8, 4) = reinterpret_cast<float>(ACCESS(STACKVAR(-76, 4), 4, 4)) - reinterpret_cast<float>(ACCESS(STACKVAR(-76, 4), 24, 4));
+    STACKVAR(-68, 4) = reinterpret_cast<float>(ACCESS(STACKVAR(-76, 4), 8, 4)) + reinterpret_cast<float>(ACCESS(STACKVAR(-76, 4), 20, 4));
+    STACKVAR(-84, 4) = reinterpret_cast<float>(ACCESS(STACKVAR(-76, 4), 8, 4)) - reinterpret_cast<float>(ACCESS(STACKVAR(-76, 4), 20, 4));
+    STACKVAR(-72, 4) = reinterpret_cast<float>(ACCESS(STACKVAR(-76, 4), 12, 4)) + reinterpret_cast<float>(ACCESS(STACKVAR(-76, 4), 16, 4));
+    STACKVAR(-80, 4) = reinterpret_cast<float>(ACCESS(STACKVAR(-76, 4), 12, 4)) - reinterpret_cast<float>(ACCESS(STACKVAR(-76, 4), 16, 4));
+    STACKVAR(-16, 4) = reinterpret_cast<float>(STACKVAR(-60, 4)) + reinterpret_cast<float>(STACKVAR(-72, 4));
+    STACKVAR(-48, 4) = reinterpret_cast<float>(STACKVAR(-60, 4)) - reinterpret_cast<float>(STACKVAR(-72, 4));
+    STACKVAR(-28, 4) = reinterpret_cast<float>(STACKVAR(-64, 4)) + reinterpret_cast<float>(STACKVAR(-68, 4));
+    STACKVAR(-40, 4) = reinterpret_cast<float>(STACKVAR(-64, 4)) - reinterpret_cast<float>(STACKVAR(-68, 4));
+    ACCESS(STACKVAR(-76, 4), 0, 4) = reinterpret_cast<float>(STACKVAR(-16, 4)) + reinterpret_cast<float>(STACKVAR(-28, 4));
+    ACCESS(STACKVAR(-76, 4), 16, 4) = reinterpret_cast<float>(STACKVAR(-16, 4)) - reinterpret_cast<float>(STACKVAR(-28, 4));
+    STACKVAR(-4, 4) = (reinterpret_cast<float>(STACKVAR(-40, 4)) + reinterpret_cast<float>(STACKVAR(-48, 4))) * reinterpret_cast<float>(ACCESS(GLOBAL(0x10042A48), 0, 4));
+    ACCESS(STACKVAR(-76, 4), 8, 4) = reinterpret_cast<float>(STACKVAR(-48, 4)) + reinterpret_cast<float>(STACKVAR(-4, 4));
+    ACCESS(STACKVAR(-76, 4), 24, 4) = reinterpret_cast<float>(STACKVAR(-48, 4)) - reinterpret_cast<float>(STACKVAR(-4, 4));
+    STACKVAR(-16, 4) = reinterpret_cast<float>(STACKVAR(-80, 4)) + reinterpret_cast<float>(STACKVAR(-84, 4));
+    STACKVAR(-28, 4) = reinterpret_cast<float>(STACKVAR(-84, 4)) + reinterpret_cast<float>(STACKVAR(-8, 4));
+    STACKVAR(-40, 4) = reinterpret_cast<float>(STACKVAR(-8, 4)) + reinterpret_cast<float>(STACKVAR(-20, 4));
+    STACKVAR(-44, 4) = (reinterpret_cast<float>(STACKVAR(-16, 4)) - reinterpret_cast<float>(STACKVAR(-40, 4))) * reinterpret_cast<float>(ACCESS(GLOBAL(0x10042A44), 0, 4));
+    STACKVAR(-12, 4) = reinterpret_cast<float>(ACCESS(GLOBAL(0x10042A40), 0, 4)) * reinterpret_cast<float>(STACKVAR(-16, 4)) + reinterpret_cast<float>(STACKVAR(-44, 4));
+    STACKVAR(-36, 4) = reinterpret_cast<float>(ACCESS(GLOBAL(0x10042A3C), 0, 4)) * reinterpret_cast<float>(STACKVAR(-40, 4)) + reinterpret_cast<float>(STACKVAR(-44, 4));
+    STACKVAR(-24, 4) = reinterpret_cast<float>(STACKVAR(-28, 4)) * reinterpret_cast<float>(ACCESS(GLOBAL(0x10042A48), 0, 4));
+    STACKVAR(-32, 4) = reinterpret_cast<float>(STACKVAR(-20, 4)) + reinterpret_cast<float>(STACKVAR(-24, 4));
+    REGDEF(ST(0)=reinterpret_cast<float>(STACKVAR(-20, 4)) - reinterpret_cast<float>(STACKVAR(-24, 4)))
 }
-Error: "Failed to find pattern for 'fsub dword ptr [edx+01Ch]'"
+Error: "Failed to find pattern for 'fst dword ptr [ebp-034h]'"
 
 // address: 0x1001FD10
 p1001FD10
@@ -12279,9 +12303,9 @@ p100312FC
     {
         goto l10031348;
     }
-    REGDEF(edx=STACKVAR(-4, 4), ST(0)=reinterpret_cast<double>(ACCESS(STACKVAR(8, 4), 28, 8)))
+    REGDEF(ST(0)=reinterpret_cast<double>(ACCESS(STACKVAR(8, 4), 28, 8)) - reinterpret_cast<double>(ACCESS(STACKVAR(-4, 4), 28, 8)))
 }
-Error: "Failed to find pattern for 'fsub qword ptr [edx+01Ch]'"
+Error: "Failed to find pattern for 'fabs'"
 
 // address: 0x10031430
 p10031430
@@ -12409,10 +12433,15 @@ p100316F7
 // address: 0x10031760
 p10031760
 {
-    ProcedureInfo(this=Id(this), this_offset=-28, local_size=28, stack_delta=None)
-    REGDEF(ecx=STACKVAR(12, 4), ST(0)=reinterpret_cast<double>(ACCESS(STACKVAR(-28, 4), 16, 8)))
+    ProcedureInfo(this=Id(this), this_offset=-28, local_size=28, stack_delta=8)
+    STACKVAR(-24, 8) = reinterpret_cast<double>(ACCESS(this, 16, 8)) - reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 16, 8));
+    STACKVAR(-16, 8) = reinterpret_cast<double>(ACCESS(this, 8, 8)) - reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 8, 8));
+    STACKVAR(-8, 8) = reinterpret_cast<double>(ACCESS(this, 0, 8)) - reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 0, 8));
+    ACCESS(STACKVAR(8, 4), 0, 8) = STACKVAR(-8, 8);
+    ACCESS(STACKVAR(8, 4), 8, 8) = STACKVAR(-16, 8);
+    ACCESS(STACKVAR(8, 4), 16, 8) = STACKVAR(-24, 8);
+    REGDEF(eax=STACKVAR(8, 4))
 }
-Error: "Failed to find pattern for 'fsub qword ptr [ecx+010h]'"
 
 // address: 0x100317C9
 p100317C9

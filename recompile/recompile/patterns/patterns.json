@@ -480,6 +480,12 @@
 	},
 	{
 		"instructions": [
+			{"fsub":  ["%mem-operand%"]}
+		],
+		"action": {"pushfpu": {"src": "F(POPFPU()) - F(%mem-operand%)"}}
+	},
+	{
+		"instructions": [
 			{"fmul":  ["%mem-operand%"]}
 		],
 		"action": {"pushfpu": {"src": "F(POPFPU()) * F(%mem-operand%)"}}
