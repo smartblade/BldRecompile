@@ -474,6 +474,15 @@
 	},
 	{
 		"instructions": [
+			{"fst":  ["%mem-operand%"]}
+		],
+		"actions": [
+			{"fassignment": {"dst": "%mem-operand%", "src": "F(POPFPU())"}},
+			{"pushfpu": {"src": "F(%mem-operand%)"}}
+		]
+	},
+	{
+		"instructions": [
 			{"fadd":  ["%mem-operand%"]}
 		],
 		"action": {"pushfpu": {"src": "F(POPFPU()) + F(%mem-operand%)"}}
