@@ -508,6 +508,12 @@
 	},
 	{
 		"instructions": [
+			{"fabs":  []}
+		],
+		"action": {"pushfpu": {"src": "fabs(F(POPFPU()))"}}
+	},
+	{
+		"instructions": [
 			{"fcomp":  ["%mem-operand%"]},
 			{"fnstsw":  ["ax"]}
 		],

@@ -12303,9 +12303,9 @@ p100312FC
     {
         goto l10031348;
     }
-    REGDEF(ST(0)=reinterpret_cast<double>(ACCESS(STACKVAR(8, 4), 28, 8)) - reinterpret_cast<double>(ACCESS(STACKVAR(-4, 4), 28, 8)))
+    REGDEF(cmpfl=fabs(reinterpret_cast<double>(ACCESS(STACKVAR(8, 4), 28, 8)) - reinterpret_cast<double>(ACCESS(STACKVAR(-4, 4), 28, 8))), cmpfr=reinterpret_cast<double>(ACCESS(GLOBAL(0x10042CE8), 0, 8)))
 }
-Error: "Failed to find pattern for 'fabs'"
+Error: "Failed to find pattern for 'test ah, 001h'"
 
 // address: 0x10031430
 p10031430
@@ -13794,9 +13794,9 @@ p100371B3
     STACKVAR(-16, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(-32, 4), 16, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 20, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(-32, 4), 8, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 12, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(-32, 4), 0, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 4, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 28, 8));
     STACKVAR(-36, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-40, 4), 40, 4)) + 0x00000030 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 8, 4));
     STACKVAR(-24, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(-36, 4), 16, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 20, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(-36, 4), 8, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 12, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(-36, 4), 0, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 4, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 28, 8));
-    REGDEF(ST(0)=reinterpret_cast<double>(STACKVAR(-8, 8)))
+    REGDEF(cmpfl=fabs(reinterpret_cast<double>(STACKVAR(-8, 8))), cmpfr=reinterpret_cast<double>(ACCESS(GLOBAL(0x10042CE8), 0, 8)))
 }
-Error: "Failed to find pattern for 'fabs'"
+Error: "Failed to find pattern for 'test ah, 001h'"
 
 // address: 0x10037338
 p10037338

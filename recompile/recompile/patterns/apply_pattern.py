@@ -6,6 +6,7 @@ from hex_conversion import to_hex
 import parser
 from expressions.operator import Operator
 from patterns.evaluate_expression import evaluate_expression
+from patterns.make_proc_decl_from_args import make_proc_decl_from_args
 from patterns.predefined_procedures import visit_predefined_procedures
 
 _actions = {
@@ -72,7 +73,7 @@ def _evaluate_procedure_calls(expression, **kwargs):
         return _evaluate_binary(expression)
     if isinstance(expression, expressions.Cast):
         return _evaluate_cast(expression)
-    return visit_predefined_procedures(
+    e = visit_predefined_procedures(
         expression,
         on_regvalue=_evaluate_reg_value,
         on_popfpu=_evaluate_pop_fpu,
@@ -90,6 +91,9 @@ def _evaluate_procedure_calls(expression, **kwargs):
         on_u=_evaluate_uint_conversion,
         on_f=evaluate_float_conversion,
         **kwargs)
+    if isinstance(e, expressions.ProcedureCall):
+        return _evaluate_procedure_call(e)
+    return e
 
 
 def _evaluate_reg_value(reg, builder):
@@ -176,3 +180,13 @@ def _evaluate_cast(cast):
     if isinstance(expression, expressions.BracketsExpression):
         expression = expression.expression
     return expressions.StaticCast(cast.data_type, expression)
+
+
+def _evaluate_procedure_call(pc):
+    if pc.name == "fabs":
+        proc_decl = make_proc_decl_from_args(
+            is_method=False,
+            args=[expressions.Identifier(data_types.Double(), None)])
+        proc_decl.change_return_type(data_types.Double())
+        pc = pc.copy(proc_decl=proc_decl)
+    return pc
