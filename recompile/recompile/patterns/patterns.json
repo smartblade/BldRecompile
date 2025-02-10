@@ -632,6 +632,12 @@
 	},
 	{
 		"instructions": [
+			{"ja":  ["%label%"]}
+		],
+		"action": {"jump": {"condition": "U(REGVALUE(cmpl)) > U(REGVALUE(cmpr))", "address": "%label%"}}
+	},
+	{
+		"instructions": [
 			{"jnb":  ["%label%"]}
 		],
 		"action": {"jump": {"condition": "U(REGVALUE(cmpl)) >= U(REGVALUE(cmpr))", "address": "%label%"}}
