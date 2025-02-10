@@ -620,6 +620,12 @@
 	},
 	{
 		"instructions": [
+			{"jle":  ["%label%"]}
+		],
+		"action": {"jump": {"condition": "S(REGVALUE(cmpl)) <= S(REGVALUE(cmpr))", "address": "%label%"}}
+	},
+	{
+		"instructions": [
 			{"jnb":  ["%label%"]}
 		],
 		"action": {"jump": {"condition": "U(REGVALUE(cmpl)) >= U(REGVALUE(cmpr))", "address": "%label%"}}
