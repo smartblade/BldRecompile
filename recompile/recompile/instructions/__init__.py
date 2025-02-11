@@ -7,6 +7,7 @@ from .if_instruction import IfInstruction
 from .labeled_block import LabeledBlock
 from .procedure_info import ProcedureInfo
 from .return_instruction import ReturnInstruction
+from .switch import Switch
 from .temporary_register_definition import TemporaryRegisterDefinition
 from .variable_declaration import VariableDeclaration
 from .while_instruction import WhileInstruction

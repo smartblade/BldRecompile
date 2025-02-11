@@ -1,6 +1,6 @@
 import re
 
-asm_line_regexp = re.compile(r'^((?P<label>l[\dABCDEF]+):\s+)?(?P<cmd>.+)$')
+asm_line_regexp = re.compile(r'^((?P<label>[gl][\dABCDEF]+):?\s+)?(?P<cmd>.+)$')
 
 
 def parse_asm_lines(lines):

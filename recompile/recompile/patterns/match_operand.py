@@ -4,8 +4,7 @@ from hex_conversion import from_hex
 from patterns.apply_pattern import replace_variables
 
 operand_regexp = re.compile(
-    r'^(?P<size>(byte|word|dword|qword|near)\s+ptr\s+)?(offset\s+)?'
-    r'(?P<operand>.+)$')
+    r'^(?P<size>(byte|word|dword|qword|near)\s+ptr\s+)?(?P<operand>.+)$')
 
 _regexp_map = {
     "a-c-d": (r"a|c|d", None),
@@ -13,7 +12,10 @@ _regexp_map = {
     "ax-cx-dx": (r"ax|cx|dx", None),
     "eax-ecx-edx": (r"eax|ecx|edx", None),
     "label": (
-        r"(g|l)(?P<inner_hex>[\dABCDEF]+)",
+        r"(offset\s+)?(g|l)(?P<inner_hex>[\dABCDEF]+)",
+        lambda **kwargs: _convert_hex(**kwargs)),
+    "variable-label": (
+        r"(offset\s+)?g(?P<inner_hex>[\dABCDEF]+)",
         lambda **kwargs: _convert_hex(**kwargs)),
     "hex": (
         r"0(?P<inner_hex>[\dABCDEF]+)h",

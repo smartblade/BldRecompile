@@ -7,12 +7,14 @@ from patterns.high_level import make_high_level_code
 from .block_builder import BlockBuilder
 from .ensure_tmp_reg_def import ensure_tmp_reg_def
 from .make_float_assignment import make_float_assignment
+from .switch_builder import SwitchBuilder
 
 
 class ProcedureBuilder:
     def __init__(self, proc_decl, proc_addr):
         self._instructions = []
         self._current_block = BlockBuilder(self._instructions)
+        self._switch_builder = SwitchBuilder()
         self._proc_decl = proc_decl
         if self._proc_decl is not None:
             self._method_class = self._proc_decl.method_class
@@ -72,6 +74,20 @@ class ProcedureBuilder:
             self._add_instruction(goto)
             return
         self._add_instruction(instructions.IfInstruction(condition, [goto]))
+
+    def make_switch(self, index, address):
+        hex_addr = address.emit_code()
+        assert hex_addr.startswith("0x")
+        switch = self._switch_builder.make_switch(index, hex_addr)
+        self._add_instruction(switch)
+
+    def add_address_entry(self, address):
+        self._switch_builder.add_address_entry(address.emit_code())
+
+    def start_labeled_variable(self, address):
+        hex_addr = address.emit_code()
+        assert hex_addr.startswith("0x")
+        self._switch_builder.start_table(hex_addr)
 
     def make_arg(self, arg):
         self._add_instruction(instructions.CodeInstruction(arg))
