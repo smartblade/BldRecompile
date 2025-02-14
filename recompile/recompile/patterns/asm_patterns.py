@@ -26,13 +26,15 @@ def process_asm_patterns(lines, declarations):
     smallest_failed_proc_len = None
     smallest_failed_proc_exc = None
     smallest_failed_proc_addr = None
+    standard_inlines = {}
     for line in lines:
         if line.startswith("l") and line.find("PROC") >= 0:
             proc_addr = from_hex(line[1:9])
             proc_lines.clear()
         elif proc_addr is not None and line.find("ENDP") >= 0:
             exc = _build_proc(
-                writer, declarations, patterns, proc_addr, proc_lines)
+                writer, declarations, standard_inlines, patterns, proc_addr,
+                proc_lines)
             if exc is not None and to_hex(proc_addr) not in ["10041808"]:
                 if (
                     smallest_failed_proc_len is None or
@@ -52,7 +54,9 @@ def process_asm_patterns(lines, declarations):
         ) from smallest_failed_proc_exc
 
 
-def _build_proc(writer, declarations, patterns, proc_addr, proc_lines):
+def _build_proc(
+    writer, declarations, standard_inlines, patterns, proc_addr, proc_lines
+):
     if (
         proc_addr in declarations.symbols.procedures and
         declarations.symbols.procedures[proc_addr].declaration is not None
@@ -71,7 +75,7 @@ def _build_proc(writer, declarations, patterns, proc_addr, proc_lines):
     writer.write_line("")
     writer.write_line("// address: 0x{}".format(to_hex(proc_addr)))
     writer.write_line(decl_string)
-    builder = ProcedureBuilder(proc_decl, proc_addr)
+    builder = ProcedureBuilder(proc_decl, proc_addr, standard_inlines)
     try:
         _parse_asm_proc(builder, patterns, proc_lines)
     except Exception as exc:

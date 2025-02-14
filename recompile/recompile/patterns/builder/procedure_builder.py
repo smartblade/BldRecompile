@@ -11,7 +11,7 @@ from .switch_builder import SwitchBuilder
 
 
 class ProcedureBuilder:
-    def __init__(self, proc_decl, proc_addr):
+    def __init__(self, proc_decl, proc_addr, standard_inlines):
         self._instructions = []
         self._current_block = BlockBuilder(self._instructions)
         self._switch_builder = SwitchBuilder()
@@ -21,10 +21,24 @@ class ProcedureBuilder:
         else:
             self._method_class = None
         self._proc_addr = proc_addr
+        self._standard_inlines = standard_inlines
 
     def make_standard(self, name):
         self.make_prolog(allocated=expressions.Constant(data_types.UInt32, 0))
         self.make_call(name=name)
+
+    def validate_label(self, name, address=None):
+        name = name.emit_code()
+        if address is None:
+            address = self._proc_addr
+        else:
+            address = from_hex(address.emit_code())
+        if name not in self._standard_inlines:
+            self._standard_inlines[name] = address
+        if self._standard_inlines[name] != address:
+            raise Exception(
+                "Expected address of {} is {} but was: {}".format(
+                    name, self._standard_inlines[name], address))
 
     def make_prolog(self, allocated):
         self._add_instruction(

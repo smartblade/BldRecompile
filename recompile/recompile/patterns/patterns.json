@@ -68,7 +68,10 @@
 			{"push":  ["eax"]},
 			{"ret":   []}
 		],
-		"action": {"standard-proc": {"name": "alloca_%label-loop%_%label-tail%"}}
+		"actions": [
+			{"standard-proc": {"name": "alloca_%label-loop%_%label-tail%"}},
+			{"validate-label": {"name": "alloca"}}
+		]
 	},
 	{
 		"instructions": [
@@ -98,6 +101,18 @@
 			{"sub":  ["esp", "%hex%"]}
 		],
 		"action": {"prolog": {"allocated": "%hex%"}}
+	},
+	{
+		"instructions": [
+			{"push": ["ebp"]},
+			{"mov":  ["ebp", "esp"]},
+			{"mov":  ["eax", "%hex%"]},
+			{"call": ["%label%"]}
+		],
+		"actions": [
+			{"prolog": {"allocated": "%hex%"}},
+			{"validate-label": {"name": "alloca", "address": "%label%"}}
+		]
 	},
 	{
 		"instructions": [

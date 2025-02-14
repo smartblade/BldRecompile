@@ -1814,13 +1814,49 @@ p10004406
 }
 
 // address: 0x10004425
-B_Resource *B_ResourceManager::sub_10004425(unsigned short resourceId)
+B_Resource *B_ResourceLocation::GetResource(unsigned short resourceId)
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    REGDEF(eax=0x0000402C)
-    unknown_function_10041600();
+    ACCESS(this, 32, 4) = reinterpret_cast<any_int32>(ACCESS(this, 32, 4)) + 0x00000001;
+    if (ACCESS(this, 28, 4) != 0x00000000)
+    {
+        goto l100045AA;
+    }
+    STACKVAR(-16420, 4) = ACCESS(this, 12, 4);
+    reinterpret_cast<B_IDataFile *>(LOCAL(-16408))->B_IDataFile(reinterpret_cast<char *>(STACKVAR(-16420, 4)), 32768);
+    if (static_cast<unsigned int>(STACKVAR(-16408, 4) != 0xFFFFFFFF) == 0)
+    {
+        mout << reinterpret_cast<char *>(GLOBAL(0x10047268));
+        mout << reinterpret_cast<char *>(GLOBAL(0x100472B4));
+        STACKVAR(-16424, 4) = ACCESS(this, 12, 4);
+        mout << reinterpret_cast<char *>(STACKVAR(-16424, 4));
+        mout << reinterpret_cast<char *>(GLOBAL(0x100472B8));
+        STACKVAR(-16412, 4) = 0x00000000;
+        reinterpret_cast<B_IDataFile *>(LOCAL(-16408))->~B_IDataFile();
+        return reinterpret_cast<B_Resource *>(STACKVAR(-16412, 4));
+    }
+    reinterpret_cast<B_IDataFile *>(LOCAL(-16408))->Seek(reinterpret_cast<long>(ACCESS(this, 20, 4)), 0);
+    ACCESS(this, 28, 4) = unknown_function_10003FCE(LOCAL(-16408), resourceId);
+    if (ACCESS(this, 28, 4) == 0x00000000)
+    {
+        STACKVAR(-16416, 4) = 0x00000000;
+        reinterpret_cast<B_IDataFile *>(LOCAL(-16408))->~B_IDataFile();
+        return reinterpret_cast<B_Resource *>(STACKVAR(-16416, 4));
+    }
+    if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x0000FFFF) == 0x00000003)
+    {
+        goto l10004584;
+    }
+    if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x0000FFFF) != 0x00000004)
+    {
+        goto l1000459F;
+    }
+l10004584:
+    reinterpret_cast<B_Name &>(reinterpret_cast<any_int32>(ACCESS(this, 28, 4)) + 0x00000004) = reinterpret_cast<B_Name &>(reinterpret_cast<any_int32>(this) + 0x00000004);
+l1000459F:
+    reinterpret_cast<B_IDataFile *>(LOCAL(-16408))->~B_IDataFile();
+l100045AA:
+    return reinterpret_cast<B_Resource *>(ACCESS(this, 28, 4));
 }
-Error: "'ecx'"
 
 // address: 0x100045B9
 p100045B9
@@ -2010,7 +2046,7 @@ l100048D2:
         REGDEF(eax=0x00000000)
         return;
     }
-    return reinterpret_cast<B_ResourceManager *>(STACKVAR(-4, 4))->sub_10004425(reinterpret_cast<unsigned short>(STACKVAR(12, 2)));
+    return reinterpret_cast<B_ResourceLocation *>(STACKVAR(-4, 4))->GetResource(reinterpret_cast<unsigned short>(STACKVAR(12, 2)));
 }
 
 // address: 0x100048EF
@@ -2282,11 +2318,126 @@ Error: "Failed to find pattern for 'mov eax, dword ptr [eax+esi*04h]'"
 // address: 0x10004E0B
 unsigned int B_ResourceManager::LocateResourceIn(const B_Name &id, const B_Name *arg_2, int arg_3)
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    REGDEF(eax=0x000040A0)
-    unknown_function_10041600();
+    ProcedureInfo(this=Id(this), this_offset=-16540, local_size=16544, stack_delta=None)
+    if (reinterpret_cast<int>(STACKVAR(16, 4)) < 0)
+    {
+        goto l10004E2E;
+    }
+    if (reinterpret_cast<int>(STACKVAR(16, 4)) <= 256)
+    {
+        goto l10004E35;
+    }
+l10004E2E:
+    REGDEF(eax=0x00000000)
+    goto l1000552C;
+l10004E35:
+    STACKVAR(-16420, 2) = STACKVAR(16, 2);
+    LOCAL(-16416)->unknown_method_10003300();
+    LOCAL(-16408)->unknown_method_10001788(STACKVAR(8, 4)->unknown_method_10003457(0x00008000));
+    if (static_cast<unsigned int>(STACKVAR(-16408, 4) != 0xFFFFFFFF) != 0x00000000)
+    {
+        goto l10004EC3;
+    }
+    unknown_function_1002A2C3(GLOBAL(0x1004A53C), unknown_function_10029BE0(GLOBAL(0x100472BC), STACKVAR(8, 4)->unknown_method_10003457()));
+    STACKVAR(-16440, 4) = 0x00000000;
+    LOCAL(-16408)->unknown_method_10001C31();
+    LOCAL(-16416)->unknown_method_100039BA();
+    REGDEF(eax=STACKVAR(-16440, 4))
+    goto l1000552C;
+l10004EC3:
+    STACKVAR(-16540, 4)->unknown_method_10004C76(STACKVAR(8, 4));
+    if (ACCESS(ARRPTR(STACKVAR(-16540, 4), 0x04, reinterpret_cast<any_int32>(STACKVAR(-16420, 4)) & 0x0000FFFF, 0), 0, 4) != 0x00000000)
+    {
+        goto l10004F3A;
+    }
+    STACKVAR(-16444, 4) = ??2@YAPAXI@Z(0x00000018);
+    if (STACKVAR(-16444, 4) == 0x00000000)
+    {
+        goto l10004F15;
+    }
+    STACKVAR(-16544, 4) = STACKVAR(-16444, 4)->unknown_method_100046A6();
+    goto l10004F1F;
+l10004F15:
+    STACKVAR(-16544, 4) = 0x00000000;
+l10004F1F:
+    ACCESS(ARRPTR(STACKVAR(-16540, 4), 0x04, reinterpret_cast<any_int32>(STACKVAR(-16420, 4)) & 0x0000FFFF, 0), 0, 4) = STACKVAR(-16544, 4);
+l10004F3A:
+    if ((reinterpret_cast<any_int32>(STACKVAR(-16420, 4)) & 0x0000FFFF) == 0x00000001)
+    {
+        goto l10004F5F;
+    }
+    if ((reinterpret_cast<any_int32>(STACKVAR(-16420, 4)) & 0x0000FFFF) != 0x00000005)
+    {
+        goto l10005236;
+    }
+l10004F5F:
+    unknown_function_10003904(LOCAL(-16408), LOCAL(-16416));
+    STACKVAR(-16424, 4) = 0x00000000;
+    goto l10004F90;
+l10004F81:
+    STACKVAR(-16424, 4) = reinterpret_cast<any_int32>(STACKVAR(-16424, 4)) + 0x00000001;
+l10004F90:
+    if (reinterpret_cast<unsigned int>(STACKVAR(-16424, 4)) >= reinterpret_cast<unsigned int>(ACCESS(ACCESS(ARRPTR(STACKVAR(-16540, 4), 0x04, reinterpret_cast<any_int32>(STACKVAR(-16420, 4)) & 0x0000FFFF, 0), 0, 4), 8, 4)))
+    {
+        goto l1000505E;
+    }
+    STACKVAR(-16428, 4) = ACCESS(ARRPTR(STACKVAR(-16540, 4), 0x04, reinterpret_cast<any_int32>(STACKVAR(-16420, 4)) & 0x0000FFFF, 0), 0, 4);
+    STACKVAR(-16472, 4) = ACCESS(ARRPTR(ACCESS(STACKVAR(-16428, 4), 4, 4), 0x04, STACKVAR(-16424, 4), 0), 0, 4);
+    if (STACKVAR(8, 4)->unknown_method_1000354D(reinterpret_cast<any_int32>(STACKVAR(-16472, 4)) + 0x0000000C) == 0x00000000)
+    {
+        goto l10005059;
+    }
+    STACKVAR(-16476, 4) = ACCESS(ARRPTR(ACCESS(STACKVAR(-16428, 4), 4, 4), 0x04, STACKVAR(-16424, 4), 0), 0, 4);
+    if (LOCAL(-16416)->unknown_method_1000354D(reinterpret_cast<any_int32>(STACKVAR(-16476, 4)) + 0x00000004) == 0x00000000)
+    {
+        goto l10005059;
+    }
+    STACKVAR(-16448, 4) = 0x00000000;
+    LOCAL(-16408)->unknown_method_10001C31();
+    LOCAL(-16416)->unknown_method_100039BA();
+    REGDEF(eax=STACKVAR(-16448, 4))
+    goto l1000552C;
+l10005059:
+    goto l10004F81;
+l1000505E:
+    STACKVAR(-16452, 4) = ??2@YAPAXI@Z(0x00000024);
+    if (STACKVAR(-16452, 4) == 0x00000000)
+    {
+        goto l10005099;
+    }
+    STACKVAR(-16504, 4) = STACKVAR(-16452, 4)->unknown_method_10004371(STACKVAR(8, 4), 0x00000000, LOCAL(-16416), 0x00000000);
+    goto l100050A3;
+l10005099:
+    STACKVAR(-16504, 4) = 0x00000000;
+l100050A3:
+    STACKVAR(-16500, 4) = ACCESS(ARRPTR(STACKVAR(-16540, 4), 0x04, reinterpret_cast<any_int32>(STACKVAR(-16420, 4)) & 0x0000FFFF, 0), 0, 4);
+    if (reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-16500, 4), 16, 4)) <= reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-16500, 4), 8, 4)))
+    {
+        goto l10005107;
+    }
+    ACCESS(ARRPTR(ACCESS(STACKVAR(-16500, 4), 4, 4), 0x04, ACCESS(STACKVAR(-16500, 4), 8, 4), 0), 0, 4) = STACKVAR(-16504, 4);
+    ACCESS(STACKVAR(-16500, 4), 8, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-16500, 4), 8, 4)) + 0x00000001;
+    goto l10005231;
+l10005107:
+    ACCESS(STACKVAR(-16500, 4), 16, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-16500, 4), 16, 4)) + reinterpret_cast<any_int32>(ACCESS(STACKVAR(-16500, 4), 12, 4));
+    if (ACCESS(STACKVAR(-16500, 4), 8, 4) == 0x00000000)
+    {
+        goto l100051D7;
+    }
+    STACKVAR(-16488, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-16500, 4), 16, 4)));
+    STACKVAR(-16480, 4) = STACKVAR(-16488, 4);
+    STACKVAR(-16484, 4) = 0x00000000;
+    goto l10005174;
+l10005165:
+    STACKVAR(-16484, 4) = reinterpret_cast<any_int32>(STACKVAR(-16484, 4)) + 0x00000001;
+l10005174:
+    if (reinterpret_cast<unsigned int>(STACKVAR(-16484, 4)) >= reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-16500, 4), 8, 4)))
+    {
+        goto l100051A8;
+    }
+    REGDEF(edx=ACCESS(STACKVAR(-16500, 4), 4, 4), eax=STACKVAR(-16484, 4), ecx=STACKVAR(-16480, 4), esi=STACKVAR(-16484, 4))
 }
-Error: "Unexpected instruction type <class 'instructions.code_instruction.CodeInstruction'>"
+Error: "Failed to find pattern for 'mov edx, dword ptr [edx+esi*04h]'"
 
 // address: 0x10005533
 p10005533
@@ -2485,7 +2636,7 @@ p10005B6F
         REGDEF(eax=0x00000000)
         return;
     }
-    return reinterpret_cast<B_ResourceManager *>(ACCESS(ARRPTR(ACCESS(ACCESS(ARRPTR(this, 0x04, reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x0000FFFF, 0), 0, 4), 4, 4), 0x04, STACKVAR(12, 4), 0), 0, 4))->sub_10004425(reinterpret_cast<unsigned short>(STACKVAR(8, 2)));
+    return reinterpret_cast<B_ResourceLocation *>(ACCESS(ARRPTR(ACCESS(ACCESS(ARRPTR(this, 0x04, reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x0000FFFF, 0), 0, 4), 4, 4), 0x04, STACKVAR(12, 4), 0), 0, 4))->GetResource(reinterpret_cast<unsigned short>(STACKVAR(8, 2)));
 }
 
 // address: 0x10005BB2
@@ -2510,11 +2661,31 @@ Error: "Failed to find pattern for 'neg eax'"
 // address: 0x10005C13
 p10005C13
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    REGDEF(eax=0x00004024)
-    unknown_function_10041600();
+    ProcedureInfo(this=Id(this), this_offset=-16416, local_size=16420, stack_delta=12)
+    if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x0000FFFF) != 0x00000005)
+    {
+        REGDEF(eax=0x00000000)
+        return;
+    }
+    STACKVAR(-16420, 4) = reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x0000FFFF;
+    if (STACKVAR(-16420, 4) == 0x00000005)
+    {
+        STACKVAR(-4, 4) = this->unknown_method_10005B6F(STACKVAR(8, 2), STACKVAR(12, 4));
+        if (STACKVAR(-4, 4) == 0x00000000)
+        {
+            REGDEF(eax=0x00000000)
+            return;
+        }
+        STACKVAR(-16408, 4) = STACKVAR(-4, 4);
+        reinterpret_cast<B_ODataFile *>(LOCAL(-16404))->B_ODataFile(reinterpret_cast<char *>(STACKVAR(16, 4)), 32768);
+        unknown_function_100369F0(LOCAL(-16404), STACKVAR(-16408, 4));
+        STACKVAR(-16412, 4) = 0x00000001;
+        reinterpret_cast<B_ODataFile *>(LOCAL(-16404))->~B_ODataFile();
+        REGDEF(eax=STACKVAR(-16412, 4))
+        return;
+    }
+    REGDEF(eax=0x00000000)
 }
-Error: "'ecx'"
 
 // address: 0x10005CCD
 int B_ResourceManager::IsResourceLoaded(int arg_1, int arg_2)
@@ -2611,7 +2782,7 @@ p10005E42
         REGDEF(eax=0x00000000)
         return;
     }
-    return reinterpret_cast<B_ResourceManager *>(ACCESS(ARRPTR(ACCESS(ACCESS(ARRPTR(this, 0x04, reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x0000FFFF, 0), 0, 4), 4, 4), 0x04, STACKVAR(12, 4), 0), 0, 4))->sub_10004425(reinterpret_cast<unsigned short>(STACKVAR(8, 2)))->name.String();
+    return reinterpret_cast<B_ResourceLocation *>(ACCESS(ARRPTR(ACCESS(ACCESS(ARRPTR(this, 0x04, reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x0000FFFF, 0), 0, 4), 4, 4), 0x04, STACKVAR(12, 4), 0), 0, 4))->GetResource(reinterpret_cast<unsigned short>(STACKVAR(8, 2)))->name.String();
 }
 
 // address: 0x10005E8F
@@ -2764,20 +2935,118 @@ p10006266
 // address: 0x1000629C
 p1000629C
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    REGDEF(eax=0x0000402C)
-    unknown_function_10041600();
+    ProcedureInfo(this=Id(this), this_offset=-16428, local_size=16428, stack_delta=8)
+    if (STACKVAR(8, 4) != 0x00000001)
+    {
+        if (STACKVAR(8, 4) != 0x00000005)
+        {
+            _assert(GLOBAL(0x10047470), GLOBAL(0x10047454), 0x000002BF);
+        }
+    }
+    if (ACCESS(ARRPTR(this, 0x04, STACKVAR(8, 4), 0), 0, 4) == 0x00000000)
+    {
+        REGDEF(eax=0x00000000)
+        return;
+    }
+    reinterpret_cast<B_ODataFile *>(LOCAL(-16404))->B_ODataFile(reinterpret_cast<char *>(STACKVAR(12, 4)), 32768);
+    if (static_cast<unsigned int>(STACKVAR(-16404, 4) != 0xFFFFFFFF) == 0)
+    {
+        STACKVAR(-16420, 4) = 0x00000000;
+        reinterpret_cast<B_ODataFile *>(LOCAL(-16404))->~B_ODataFile();
+        REGDEF(eax=STACKVAR(-16420, 4))
+        return;
+    }
+    STACKVAR(-4, 4) = reinterpret_cast<B_ResourceManager *>(this)->NResources(reinterpret_cast<unsigned short>(STACKVAR(8, 2)));
+    *reinterpret_cast<B_ODataFile *>(LOCAL(-16404)) << *reinterpret_cast<unsigned int *>(LOCAL(-4));
+    STACKVAR(-16408, 4) = 0x00000000;
+    goto l1000636E;
+l1000635F:
+    STACKVAR(-16408, 4) = reinterpret_cast<any_int32>(STACKVAR(-16408, 4)) + 0x00000001;
+l1000636E:
+    if (reinterpret_cast<unsigned int>(STACKVAR(-16408, 4)) < reinterpret_cast<unsigned int>(STACKVAR(-4, 4)))
+    {
+        STACKVAR(-16412, 4) = 0x00000001;
+        if (reinterpret_cast<B_ResourceManager *>(this)->IsResourceLoaded(reinterpret_cast<int>(STACKVAR(8, 4)), reinterpret_cast<int>(STACKVAR(-16408, 4))) != 0)
+        {
+            STACKVAR(-16412, 4) = 0x00000001;
+            *reinterpret_cast<B_ODataFile *>(LOCAL(-16404)) << *reinterpret_cast<unsigned int *>(LOCAL(-16412));
+            STACKVAR(-16416, 4) = this->unknown_method_10005B6F(STACKVAR(8, 2), STACKVAR(-16408, 4));
+            STACKVAR(-16416, 4)->unknown_method_100384CA(LOCAL(-16404));
+            reinterpret_cast<B_ResourceManager *>(this)->FreeResource(reinterpret_cast<B_Resource *>(STACKVAR(-16416, 4)));
+        }
+        else
+        {
+            STACKVAR(-16412, 4) = 0x00000000;
+            *reinterpret_cast<B_ODataFile *>(LOCAL(-16404)) << *reinterpret_cast<unsigned int *>(LOCAL(-16412));
+        }
+        goto l1000635F;
+    }
+    STACKVAR(-16424, 4) = 0x00000001;
+    reinterpret_cast<B_ODataFile *>(LOCAL(-16404))->~B_ODataFile();
+    REGDEF(eax=STACKVAR(-16424, 4))
 }
-Error: "'ecx'"
 
 // address: 0x1000644A
 p1000644A
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    REGDEF(eax=0x00004048)
-    unknown_function_10041600();
+    ProcedureInfo(this=Id(this), this_offset=-16448, local_size=16456, stack_delta=8)
+    if (STACKVAR(8, 4) != 0x00000001)
+    {
+        if (STACKVAR(8, 4) != 0x00000005)
+        {
+            _assert(GLOBAL(0x100474C4), GLOBAL(0x100474A8), 0x000002E2);
+        }
+    }
+    reinterpret_cast<B_IDataFile *>(LOCAL(-16412))->B_IDataFile(reinterpret_cast<char *>(STACKVAR(12, 4)), 32768);
+    if (static_cast<unsigned int>(STACKVAR(-16412, 4) != 0xFFFFFFFF) == 0)
+    {
+        STACKVAR(-16428, 4) = 0x00000000;
+        reinterpret_cast<B_IDataFile *>(LOCAL(-16412))->~B_IDataFile();
+        REGDEF(eax=STACKVAR(-16428, 4))
+        return;
+    }
+    *reinterpret_cast<B_IDataFile *>(LOCAL(-16412)) >> *reinterpret_cast<unsigned int *>(LOCAL(-4));
+    STACKVAR(-16416, 4) = 0x00000000;
+    goto l100064F3;
+l100064E4:
+    STACKVAR(-16416, 4) = reinterpret_cast<any_int32>(STACKVAR(-16416, 4)) + 0x00000001;
+l100064F3:
+    if (reinterpret_cast<unsigned int>(STACKVAR(-16416, 4)) < reinterpret_cast<unsigned int>(STACKVAR(-4, 4)))
+    {
+        *reinterpret_cast<B_IDataFile *>(LOCAL(-16412)) >> *reinterpret_cast<unsigned int *>(LOCAL(-16420));
+        if (STACKVAR(-16420, 4) != 0x00000000)
+        {
+            STACKVAR(-16432, 4) = ??2@YAPAXI@Z(0x00000278);
+            if (STACKVAR(-16432, 4) != 0x00000000)
+            {
+                STACKVAR(-16452, 4) = reinterpret_cast<B_ObjDscr *>(STACKVAR(-16432, 4))->B_ObjDscr();
+            }
+            else
+            {
+                STACKVAR(-16452, 4) = 0x00000000;
+            }
+            STACKVAR(-16424, 4) = STACKVAR(-16452, 4);
+            STACKVAR(-16424, 4)->unknown_method_1003896F(LOCAL(-16412));
+            if (reinterpret_cast<B_ResourceManager *>(this)->AddAutoResource(reinterpret_cast<B_Name &>(reinterpret_cast<any_int32>(STACKVAR(-16424, 4)) + 0x00000004), reinterpret_cast<B_Resource *>(STACKVAR(-16424, 4)), reinterpret_cast<int>(STACKVAR(8, 4))) == 0)
+            {
+                STACKVAR(-16440, 4) = STACKVAR(-16424, 4);
+                STACKVAR(-16436, 4) = STACKVAR(-16440, 4);
+                if (STACKVAR(-16436, 4) != 0x00000000)
+                {
+                    STACKVAR(-16456, 4) = STACKVAR(-16436, 4)->(ACCESS(ACCESS(STACKVAR(-16436, 4), 0, 4), 0, 4))(0x00000001);
+                }
+                else
+                {
+                    STACKVAR(-16456, 4) = 0x00000000;
+                }
+            }
+        }
+        goto l100064E4;
+    }
+    STACKVAR(-16444, 4) = 0x00000001;
+    reinterpret_cast<B_IDataFile *>(LOCAL(-16412))->~B_IDataFile();
+    REGDEF(eax=STACKVAR(-16444, 4))
 }
-Error: "'ecx'"
 
 // address: 0x1000660B
 p1000660B
@@ -17130,29 +17399,92 @@ Error: "Failed to find pattern for 'rep cmpsb'"
 // address: 0x10027382
 int B_BitMap24::SaveToBMP(const char *fileName)
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    REGDEF(eax=0x00004084)
-    unknown_function_10041600();
+    ProcedureInfo(this=Id(this), this_offset=-16516, local_size=16516, stack_delta=None)
+    LOCAL(-16408)->unknown_method_10001C44(STACKVAR(8, 4), 0x00008000);
+    if (static_cast<unsigned int>(STACKVAR(-16408, 4) != 0xFFFFFFFF) != 0x00000000)
+    {
+        goto l100273D9;
+    }
+    STACKVAR(-16444, 4) = 0x00000000;
+    LOCAL(-16408)->unknown_method_10002082();
+    REGDEF(eax=STACKVAR(-16444, 4))
+    goto l10027789;
+l100273D9:
+    STACKVAR(-16448, 4) = 0x0000001D;
+    STACKVAR(-16452, 2) = 0x0000;
+    STACKVAR(-16456, 2) = 0x0000;
+    STACKVAR(-16460, 4) = 0x00000000;
+    STACKVAR(-16464, 2) = 0x4D42;
+    unknown_function_10002008(unknown_function_10001FC6(unknown_function_10001FC6(unknown_function_10002008(unknown_function_10001FC6(LOCAL(-16408), LOCAL(-16464)), LOCAL(-16460)), LOCAL(-16456)), LOCAL(-16452)), LOCAL(-16448));
+    STACKVAR(-16468, 2) = 0x0018;
+    STACKVAR(-16472, 2) = 0x0001;
+    STACKVAR(-16476, 2) = ACCESS(STACKVAR(-16516, 4), 8, 2);
+    STACKVAR(-16480, 2) = ACCESS(STACKVAR(-16516, 4), 4, 2);
+    STACKVAR(-16484, 4) = 0x0000000C;
+    unknown_function_10001FC6(unknown_function_10001FC6(unknown_function_10001FC6(unknown_function_10001FC6(unknown_function_10002008(LOCAL(-16408), LOCAL(-16484)), LOCAL(-16480)), LOCAL(-16476)), LOCAL(-16472)), LOCAL(-16468));
+    STACKVAR(-16488, 1) = 0;
+    STACKVAR(-16492, 1) = 0;
+    STACKVAR(-16496, 1) = 0;
+    unknown_function_10001F9A(unknown_function_10001F9A(unknown_function_10001F9A(LOCAL(-16408), LOCAL(-16496)), LOCAL(-16492)), LOCAL(-16488));
+    STACKVAR(-16500, 4) = ??2@YAPAXI@Z(0x00000003 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-16516, 4), 4, 4)));
+    STACKVAR(-8, 4) = STACKVAR(-16500, 4);
+    REGDEF(edx=reinterpret_cast<any_int32>(ACCESS(STACKVAR(-16516, 4), 4, 4)) & 0x80000003)
 }
-Error: "'ecx'"
+Error: "Failed to find pattern for 'jns l10027577'"
 
 // address: 0x1002778F
 int B_BitMap24::SaveToBMPSized(const char *fileName, int width, int height)
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    REGDEF(eax=0x000040AC)
-    unknown_function_10041600();
+    ProcedureInfo(this=Id(this), this_offset=-16556, local_size=16556, stack_delta=None)
+    LOCAL(-16408)->unknown_method_10001C44(STACKVAR(8, 4), 0x00008000);
+    if (static_cast<unsigned int>(STACKVAR(-16408, 4) != 0xFFFFFFFF) != 0x00000000)
+    {
+        goto l100277E6;
+    }
+    STACKVAR(-16484, 4) = 0x00000000;
+    LOCAL(-16408)->unknown_method_10002082();
+    REGDEF(eax=STACKVAR(-16484, 4))
+    goto l10027D80;
+l100277E6:
+    STACKVAR(-16488, 4) = 0x0000001D;
+    STACKVAR(-16492, 2) = 0x0000;
+    STACKVAR(-16496, 2) = 0x0000;
+    STACKVAR(-16500, 4) = 0x00000000;
+    STACKVAR(-16504, 2) = 0x4D42;
+    unknown_function_10002008(unknown_function_10001FC6(unknown_function_10001FC6(unknown_function_10002008(unknown_function_10001FC6(LOCAL(-16408), LOCAL(-16504)), LOCAL(-16500)), LOCAL(-16496)), LOCAL(-16492)), LOCAL(-16488));
+    STACKVAR(-16508, 2) = 0x0018;
+    STACKVAR(-16512, 2) = 0x0001;
+    STACKVAR(-16516, 2) = STACKVAR(16, 2);
+    STACKVAR(-16520, 2) = STACKVAR(12, 2);
+    STACKVAR(-16524, 4) = 0x0000000C;
+    unknown_function_10001FC6(unknown_function_10001FC6(unknown_function_10001FC6(unknown_function_10001FC6(unknown_function_10002008(LOCAL(-16408), LOCAL(-16524)), LOCAL(-16520)), LOCAL(-16516)), LOCAL(-16512)), LOCAL(-16508));
+    STACKVAR(-16528, 1) = 0;
+    STACKVAR(-16532, 1) = 0;
+    STACKVAR(-16536, 1) = 0;
+    unknown_function_10001F9A(unknown_function_10001F9A(unknown_function_10001F9A(LOCAL(-16408), LOCAL(-16536)), LOCAL(-16532)), LOCAL(-16528));
+    STACKVAR(-16540, 4) = ??2@YAPAXI@Z(0x00000003 * reinterpret_cast<any_int32>(STACKVAR(12, 4)));
+    STACKVAR(-8, 4) = STACKVAR(-16540, 4);
+    REGDEF(ecx=reinterpret_cast<any_int32>(STACKVAR(12, 4)) & 0x80000003)
 }
-Error: "'ecx'"
+Error: "Failed to find pattern for 'jns l1002796C'"
 
 // address: 0x10027D86
 p10027D86
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    REGDEF(eax=0x00004024)
-    unknown_function_10041600();
+    ProcedureInfo(this=Id(this), this_offset=-16420, local_size=16420, stack_delta=4)
+    reinterpret_cast<B_IDataFile *>(LOCAL(-16408))->B_IDataFile(reinterpret_cast<char *>(STACKVAR(8, 4)), 32768);
+    if (static_cast<unsigned int>(STACKVAR(-16408, 4) != 0xFFFFFFFF) == 0)
+    {
+        STACKVAR(-16412, 4) = 0x00000000;
+        reinterpret_cast<B_IDataFile *>(LOCAL(-16408))->~B_IDataFile();
+        REGDEF(eax=STACKVAR(-16412, 4))
+        return;
+    }
+    *reinterpret_cast<B_IDataFile *>(LOCAL(-16408)) >> *reinterpret_cast<B_BitMap24 *>(this);
+    STACKVAR(-16416, 4) = 0x00000001;
+    reinterpret_cast<B_IDataFile *>(LOCAL(-16408))->~B_IDataFile();
+    REGDEF(eax=STACKVAR(-16416, 4))
 }
-Error: "'ecx'"
 
 // address: 0x10027E11
 p10027E11

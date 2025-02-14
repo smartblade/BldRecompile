@@ -11,6 +11,8 @@ from patterns.predefined_procedures import visit_predefined_procedures
 
 _actions = {
     "standard-proc": lambda builder, **kwargs: builder.make_standard(**kwargs),
+    "validate-label": lambda builder, **kwargs: builder.validate_label(
+        **kwargs),
     "prolog": lambda builder, **kwargs: builder.make_prolog(**kwargs),
     "prolog-preserved": lambda builder, **kwargs: builder.make_preserved(
         **kwargs),
