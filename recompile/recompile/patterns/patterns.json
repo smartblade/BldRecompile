@@ -442,6 +442,12 @@
 	},
 	{
 		"instructions": [
+			{"neg":  ["%eax-ecx-edx%"]}
+		],
+		"action": {"tmpreg": {"dst": "%eax-ecx-edx%", "src": "-S(REGVALUE(%eax-ecx-edx%))"}}
+	},
+	{
+		"instructions": [
 			{"and":  ["%eax-ecx-edx%", "%src-operand%"]}
 		],
 		"action": {"tmpreg": {"dst": "%eax-ecx-edx%", "src": "I(REGVALUE(%eax-ecx-edx%)) & I(%src-operand%)"}}

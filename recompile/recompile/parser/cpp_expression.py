@@ -146,7 +146,11 @@ def _new_field_access(e, sep, field_name):
 
 
 def _new_brackets_expression(state, prefix, brackets_tokens):
-    if (prefix != ""):
+    if prefix != "":
+        if prefix.startswith("-"):
+            return expressions.Negate(
+                _new_brackets_expression(state, prefix[1:], brackets_tokens)
+            )
         operator = None
         if (
             prefix in operators and
