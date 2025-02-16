@@ -1,3 +1,7 @@
+import data_types
+import expressions
+
+
 class TemporaryRegisterDefinition:
     def __init__(self):
         self._reg_values = {}
@@ -27,6 +31,9 @@ class TemporaryRegisterDefinition:
     def pop_reg_value(self, reg):
         if reg == "fpu":
             return self.pop_fpu()
+        value = self._try_pop_aliased_reg(reg)
+        if value is not None:
+            return value
         return self._reg_values.pop(reg)
 
     def push_fpu(self, value):
@@ -37,6 +44,20 @@ class TemporaryRegisterDefinition:
 
     def is_empty(self):
         return not self._reg_values and not self._fpu_stack
+
+    def _try_pop_aliased_reg(self, reg):
+        if reg in self._reg_values:
+            return None
+        reg32 = _32_bit_alias(reg)
+        if reg32 is not None and reg32 in self._reg_values:
+            return expressions.do_static_cast(
+                data_types.AnyInt(_reg_size(reg)),
+                expressions.do_reinterpret(
+                    data_types.AnyInt(_reg_size(reg32)),
+                    self._reg_values.pop(reg32)
+                ),
+            )
+        return None
 
     def visit(self, on_expression_visited, **kwargs):
         on_expression_visited(self, **kwargs)
@@ -59,3 +80,17 @@ class TemporaryRegisterDefinition:
                 for (name, value) in self._values.items())
         )
         writer.write_line(code)
+
+
+def _32_bit_alias(reg):
+    if reg.endswith("l"):
+        return "e{}x".format(reg[:-1])
+    return None
+
+
+def _reg_size(reg):
+    if reg.endswith("l"):
+        return 1
+    if reg.startswith("e") and reg.endswith("x"):
+        return 4
+    raise Exception("Can't defined size for {}".format(reg))

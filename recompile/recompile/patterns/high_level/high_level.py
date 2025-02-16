@@ -45,6 +45,8 @@ def _transform(e, **kwargs):
         return transform_binary(e, **kwargs)
     if isinstance(e, expressions.ReinterpretCast):
         return expressions.do_reinterpret(e.data_type, e.expression)
+    if isinstance(e, expressions.StaticCast):
+        return expressions.do_static_cast(e.data_type, e.expression)
     if isinstance(e, instructions.IfInstruction):
         return inline_functions.transform_if(e)
     e = visit_predefined_procedures(

@@ -8,3 +8,7 @@ class UChar(DataType):
     @property
     def size(self):
         return 1
+
+    @property
+    def is_any_int(self):
+        return True
