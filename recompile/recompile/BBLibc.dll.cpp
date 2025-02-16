@@ -2642,18 +2642,17 @@ p10005B6F
 // address: 0x10005BB2
 p10005BB2
 {
-    ProcedureInfo(this=Id(this), this_offset=-16, local_size=16, stack_delta=None)
-    if (ACCESS(ARRPTR(STACKVAR(-16, 4), 0x04, reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x0000FFFF, 0), 0, 4) != 0x00000000)
+    ProcedureInfo(this=Id(this), this_offset=-16, local_size=16, stack_delta=8)
+    if (ACCESS(ARRPTR(this, 0x04, reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x0000FFFF, 0), 0, 4) == 0x00000000)
     {
-        goto l10005BD0;
+        REGDEF(eax=0x00000000)
+        return;
     }
-    REGDEF(eax=0x00000000)
-    goto l10005C0D;
-l10005BD0:
-    LOCAL(-12)->unknown_method_10003337(STACKVAR(12, 4));
-    REGDEF(eax=-reinterpret_cast<int>(ACCESS(ARRPTR(STACKVAR(-16, 4), 0x04, reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x0000FFFF, 0), 0, 4)->unknown_method_10004874(LOCAL(-12), STACKVAR(8, 2))))
+    reinterpret_cast<B_Name *>(LOCAL(-12))->B_Name(reinterpret_cast<char *>(STACKVAR(12, 4)));
+    STACKVAR(-4, 4) = static_cast<unsigned int>(ACCESS(ARRPTR(this, 0x04, reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x0000FFFF, 0), 0, 4)->unknown_method_10004874(LOCAL(-12), STACKVAR(8, 2)) != 0x00000000);
+    reinterpret_cast<B_Name *>(LOCAL(-12))->~B_Name();
+    REGDEF(eax=STACKVAR(-4, 4))
 }
-Error: "Failed to find pattern for 'sbb eax, eax'"
 
 // address: 0x10005C13
 p10005C13
@@ -4925,29 +4924,24 @@ l10009A23:
 // address: 0x10009C20
 p10009C20
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
-    if (ACCESS(STACKVAR(8, 4), 20, 4) == 0x00000064)
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
+    if (ACCESS(STACKVAR(8, 4), 20, 4) != 0x00000064)
     {
-        goto l10009C54;
+        ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x00000014;
+        ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 24, 4) = ACCESS(STACKVAR(8, 4), 20, 4);
+        ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 0, 4)(STACKVAR(8, 4));
     }
-    ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x00000014;
-    ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 24, 4) = ACCESS(STACKVAR(8, 4), 20, 4);
-    ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 0, 4)(STACKVAR(8, 4));
-l10009C54:
-    if ((reinterpret_cast<any_int32>(STACKVAR(12, 4)) & 0x000000FF) == 0x00000000)
+    if ((reinterpret_cast<any_int32>(STACKVAR(12, 4)) & 0x000000FF) != 0x00000000)
     {
-        goto l10009C6F;
+        unknown_function_1000982E(STACKVAR(8, 4), 0x00000000);
     }
-    unknown_function_1000982E(STACKVAR(8, 4), 0x00000000);
-l10009C6F:
     ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 16, 4)(STACKVAR(8, 4));
     ACCESS(ACCESS(STACKVAR(8, 4), 24, 4), 8, 4)(STACKVAR(8, 4));
     unknown_function_1000D320(STACKVAR(8, 4));
     ACCESS(ACCESS(STACKVAR(8, 4), 312, 4), 0, 4)(STACKVAR(8, 4));
     ACCESS(STACKVAR(8, 4), 204, 4) = 0x00000000;
-    REGDEF(eax=-reinterpret_cast<int>(static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 172, 1))))
+    ACCESS(STACKVAR(8, 4), 20, 4) = static_cast<unsigned int>(static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 172, 1)) != 0) + 0x00000065;
 }
-Error: "Failed to find pattern for 'sbb eax, eax'"
 
 // address: 0x10009CD5
 p10009CD5
@@ -9298,51 +9292,38 @@ l10013DCE:
 // address: 0x10013DDE
 p10013DDE
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
-    if (ACCESS(STACKVAR(8, 4), 20, 4) == 0x000000CC)
+    ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=0)
+    if (ACCESS(STACKVAR(8, 4), 20, 4) != 0x000000CC)
     {
-        goto l10013E14;
+        ACCESS(ACCESS(STACKVAR(8, 4), 384, 4), 0, 4)(STACKVAR(8, 4));
+        ACCESS(STACKVAR(8, 4), 120, 4) = 0x00000000;
+        ACCESS(STACKVAR(8, 4), 20, 4) = 0x000000CC;
     }
-    ACCESS(ACCESS(STACKVAR(8, 4), 384, 4), 0, 4)(STACKVAR(8, 4));
-    ACCESS(STACKVAR(8, 4), 120, 4) = 0x00000000;
-    ACCESS(STACKVAR(8, 4), 20, 4) = 0x000000CC;
-l10013E14:
-    if (static_cast<unsigned int>(ACCESS(ACCESS(STACKVAR(8, 4), 384, 4), 8, 1)) == 0x00000000)
+    while (static_cast<unsigned int>(ACCESS(ACCESS(STACKVAR(8, 4), 384, 4), 8, 1)) != 0)
     {
-        goto l10013EDA;
+        while (reinterpret_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 120, 4)) < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 96, 4)))
+        {
+            if (ACCESS(STACKVAR(8, 4), 8, 4) != 0x00000000)
+            {
+                ACCESS(ACCESS(STACKVAR(8, 4), 8, 4), 4, 4) = ACCESS(STACKVAR(8, 4), 120, 4);
+                ACCESS(ACCESS(STACKVAR(8, 4), 8, 4), 8, 4) = ACCESS(STACKVAR(8, 4), 96, 4);
+                ACCESS(ACCESS(STACKVAR(8, 4), 8, 4), 0, 4)(STACKVAR(8, 4));
+            }
+            STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 120, 4);
+            ACCESS(ACCESS(STACKVAR(8, 4), 388, 4), 4, 4)(STACKVAR(8, 4), 0x00000000, reinterpret_cast<any_int32>(STACKVAR(8, 4)) + 0x00000078, 0x00000000);
+            if (ACCESS(STACKVAR(8, 4), 120, 4) == STACKVAR(-4, 4))
+            {
+                REGDEF(al=0)
+                return;
+            }
+        }
+        ACCESS(ACCESS(STACKVAR(8, 4), 384, 4), 4, 4)(STACKVAR(8, 4));
+        ACCESS(ACCESS(STACKVAR(8, 4), 384, 4), 0, 4)(STACKVAR(8, 4));
+        ACCESS(STACKVAR(8, 4), 120, 4) = 0x00000000;
     }
-l10013E2A:
-    if (reinterpret_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 120, 4)) >= reinterpret_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 96, 4)))
-    {
-        goto l10013EA6;
-    }
-    if (ACCESS(STACKVAR(8, 4), 8, 4) == 0x00000000)
-    {
-        goto l10013E6E;
-    }
-    ACCESS(ACCESS(STACKVAR(8, 4), 8, 4), 4, 4) = ACCESS(STACKVAR(8, 4), 120, 4);
-    ACCESS(ACCESS(STACKVAR(8, 4), 8, 4), 8, 4) = ACCESS(STACKVAR(8, 4), 96, 4);
-    ACCESS(ACCESS(STACKVAR(8, 4), 8, 4), 0, 4)(STACKVAR(8, 4));
-l10013E6E:
-    STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 120, 4);
-    ACCESS(ACCESS(STACKVAR(8, 4), 388, 4), 4, 4)(STACKVAR(8, 4), 0x00000000, reinterpret_cast<any_int32>(STACKVAR(8, 4)) + 0x00000078, 0x00000000);
-    if (ACCESS(STACKVAR(8, 4), 120, 4) != STACKVAR(-4, 4))
-    {
-        goto l10013EA4;
-    }
-    REGDEF(al=0)
-    goto l10013EF6;
-l10013EA4:
-    goto l10013E2A;
-l10013EA6:
-    ACCESS(ACCESS(STACKVAR(8, 4), 384, 4), 4, 4)(STACKVAR(8, 4));
-    ACCESS(ACCESS(STACKVAR(8, 4), 384, 4), 0, 4)(STACKVAR(8, 4));
-    ACCESS(STACKVAR(8, 4), 120, 4) = 0x00000000;
-    goto l10013E14;
-l10013EDA:
-    REGDEF(ecx=-reinterpret_cast<int>(static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 65, 1))))
+    ACCESS(STACKVAR(8, 4), 20, 4) = static_cast<unsigned int>(static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 65, 1)) != 0) + 0x000000CD;
+    REGDEF(al=0x01)
 }
-Error: "Failed to find pattern for 'sbb ecx, ecx'"
 
 // address: 0x10013EFA
 p10013EFA

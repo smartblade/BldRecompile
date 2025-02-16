@@ -253,6 +253,14 @@
 	},
 	{
 		"instructions": [
+			{"neg":  ["%eax-ecx-edx%"]},
+			{"sbb":  ["%eax-ecx-edx%", "%eax-ecx-edx%"]},
+			{"neg":  ["%eax-ecx-edx%"]}
+		],
+		"action": {"tmpreg": {"dst": "%eax-ecx-edx%", "src": "(uint32)(REGVALUE(%eax-ecx-edx%) != 0x00000000)"}}
+	},
+	{
+		"instructions": [
 			{"sbb":  ["%eax-ecx-edx%", "%eax-ecx-edx%"]},
 			{"inc":  ["%eax-ecx-edx%"]}
 		],
