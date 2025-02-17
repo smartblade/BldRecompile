@@ -23,20 +23,12 @@ class BinaryExpression:
         if self._operator in [Operator.SHL, Operator.SHR, Operator.ASS]:
             return left_type
         if (
-            isinstance(left_type, data_types.Double) and
-            isinstance(right_type, data_types.Double)
+            isinstance(left_type, (data_types.Float, data_types.Double)) and
+            isinstance(right_type, (data_types.Float, data_types.Double))
         ):
-            return left_type
-        if (
-            isinstance(left_type, data_types.Float) and
-            isinstance(right_type, data_types.Double)
-        ):
-            return right_type
-        if (
-            isinstance(left_type, data_types.Float) and
-            isinstance(right_type, data_types.Float)
-        ):
-            return left_type
+            if data_types.are_same(left_type, right_type):
+                return left_type
+            return data_types.Double()
         if (
             left_type.is_any_int and
             right_type.is_any_int

@@ -3198,16 +3198,20 @@ B_Color B_Color::operator *(float coef)
 {
     ProcedureInfo(this=Id(this), this_offset=-16, local_size=28, stack_delta=None)
     STACKVAR(-20, 4) = static_cast<unsigned int>(ACCESS(STACKVAR(-16, 4), 6, 1));
+    REGDEF(ST(0)=static_cast<double>(reinterpret_cast<int>(STACKVAR(-20, 4))) * reinterpret_cast<float>(STACKVAR(12, 4)))
+    _ftol();
 }
-Error: "Failed to find pattern for 'fild dword ptr [ebp-014h]'"
+Error: "'al'"
 
 // address: 0x100069E0
 B_Color B_Color::operator /(float f)
 {
     ProcedureInfo(this=Id(this), this_offset=-16, local_size=28, stack_delta=None)
     STACKVAR(-20, 4) = static_cast<unsigned int>(ACCESS(STACKVAR(-16, 4), 6, 1));
+    REGDEF(ST(0)=static_cast<double>(reinterpret_cast<int>(STACKVAR(-20, 4))) / reinterpret_cast<float>(STACKVAR(12, 4)))
+    _ftol();
 }
-Error: "Failed to find pattern for 'fild dword ptr [ebp-014h]'"
+Error: "'al'"
 
 // address: 0x10006A70
 p10006A70
@@ -5900,8 +5904,53 @@ l1000BAB3:
     }
     STACKVAR(-284, 4) = reinterpret_cast<any_int32>(ACCESS(ARRPTR(STACKVAR(16, 4), 0x04, STACKVAR(-276, 4), 0), 0, 4)) + reinterpret_cast<any_int32>(STACKVAR(28, 4));
     STACKVAR(-300, 4) = static_cast<unsigned int>(ACCESS(STACKVAR(-284, 4), 0, 1)) - 0x00000080;
+    ACCESS(STACKVAR(-280, 4), 0, 4) = static_cast<float>(reinterpret_cast<int>(STACKVAR(-300, 4)));
+    STACKVAR(-280, 4) = reinterpret_cast<any_int32>(STACKVAR(-280, 4)) + 0x00000004;
+    STACKVAR(-284, 4) = reinterpret_cast<any_int32>(STACKVAR(-284, 4)) + 0x00000001;
+    STACKVAR(-304, 4) = static_cast<unsigned int>(ACCESS(STACKVAR(-284, 4), 0, 1)) - 0x00000080;
+    ACCESS(STACKVAR(-280, 4), 0, 4) = static_cast<float>(reinterpret_cast<int>(STACKVAR(-304, 4)));
+    STACKVAR(-280, 4) = reinterpret_cast<any_int32>(STACKVAR(-280, 4)) + 0x00000004;
+    STACKVAR(-284, 4) = reinterpret_cast<any_int32>(STACKVAR(-284, 4)) + 0x00000001;
+    STACKVAR(-308, 4) = static_cast<unsigned int>(ACCESS(STACKVAR(-284, 4), 0, 1)) - 0x00000080;
+    ACCESS(STACKVAR(-280, 4), 0, 4) = static_cast<float>(reinterpret_cast<int>(STACKVAR(-308, 4)));
+    STACKVAR(-280, 4) = reinterpret_cast<any_int32>(STACKVAR(-280, 4)) + 0x00000004;
+    STACKVAR(-284, 4) = reinterpret_cast<any_int32>(STACKVAR(-284, 4)) + 0x00000001;
+    STACKVAR(-312, 4) = static_cast<unsigned int>(ACCESS(STACKVAR(-284, 4), 0, 1)) - 0x00000080;
+    ACCESS(STACKVAR(-280, 4), 0, 4) = static_cast<float>(reinterpret_cast<int>(STACKVAR(-312, 4)));
+    STACKVAR(-280, 4) = reinterpret_cast<any_int32>(STACKVAR(-280, 4)) + 0x00000004;
+    STACKVAR(-284, 4) = reinterpret_cast<any_int32>(STACKVAR(-284, 4)) + 0x00000001;
+    STACKVAR(-316, 4) = static_cast<unsigned int>(ACCESS(STACKVAR(-284, 4), 0, 1)) - 0x00000080;
+    ACCESS(STACKVAR(-280, 4), 0, 4) = static_cast<float>(reinterpret_cast<int>(STACKVAR(-316, 4)));
+    STACKVAR(-280, 4) = reinterpret_cast<any_int32>(STACKVAR(-280, 4)) + 0x00000004;
+    STACKVAR(-284, 4) = reinterpret_cast<any_int32>(STACKVAR(-284, 4)) + 0x00000001;
+    STACKVAR(-320, 4) = static_cast<unsigned int>(ACCESS(STACKVAR(-284, 4), 0, 1)) - 0x00000080;
+    ACCESS(STACKVAR(-280, 4), 0, 4) = static_cast<float>(reinterpret_cast<int>(STACKVAR(-320, 4)));
+    STACKVAR(-280, 4) = reinterpret_cast<any_int32>(STACKVAR(-280, 4)) + 0x00000004;
+    STACKVAR(-284, 4) = reinterpret_cast<any_int32>(STACKVAR(-284, 4)) + 0x00000001;
+    STACKVAR(-324, 4) = static_cast<unsigned int>(ACCESS(STACKVAR(-284, 4), 0, 1)) - 0x00000080;
+    ACCESS(STACKVAR(-280, 4), 0, 4) = static_cast<float>(reinterpret_cast<int>(STACKVAR(-324, 4)));
+    STACKVAR(-280, 4) = reinterpret_cast<any_int32>(STACKVAR(-280, 4)) + 0x00000004;
+    STACKVAR(-284, 4) = reinterpret_cast<any_int32>(STACKVAR(-284, 4)) + 0x00000001;
+    STACKVAR(-328, 4) = static_cast<unsigned int>(ACCESS(STACKVAR(-284, 4), 0, 1)) - 0x00000080;
+    ACCESS(STACKVAR(-280, 4), 0, 4) = static_cast<float>(reinterpret_cast<int>(STACKVAR(-328, 4)));
+    STACKVAR(-280, 4) = reinterpret_cast<any_int32>(STACKVAR(-280, 4)) + 0x00000004;
+    STACKVAR(-284, 4) = reinterpret_cast<any_int32>(STACKVAR(-284, 4)) + 0x00000001;
+    goto l1000BAA4;
+l1000BCE8:
+    STACKVAR(-8, 4)(LOCAL(-268));
+    STACKVAR(-288, 4) = reinterpret_cast<any_int32>(STACKVAR(20, 4)) + 0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-12, 4));
+    STACKVAR(-296, 4) = 0x00000000;
+    goto l1000BD21;
+l1000BD12:
+    STACKVAR(-296, 4) = reinterpret_cast<any_int32>(STACKVAR(-296, 4)) + 0x00000001;
+l1000BD21:
+    if (reinterpret_cast<int>(STACKVAR(-296, 4)) >= 64)
+    {
+        goto l1000BD6B;
+    }
+    REGDEF(eax=STACKVAR(-296, 4), ecx=STACKVAR(-296, 4), edx=STACKVAR(-4, 4))
 }
-Error: "Failed to find pattern for 'fild dword ptr [ebp-00000012Ch]'"
+Error: "Failed to find pattern for 'fld dword ptr [ebp+eax*04h-00000010Ch]'"
 
 // address: 0x1000BD80
 p1000BD80
@@ -14640,8 +14689,103 @@ l100205A1:
         goto l100206DD;
     }
     STACKVAR(-356, 4) = static_cast<int>(ACCESS(STACKVAR(-324, 4), 0, 2));
+    STACKVAR(-352, 4) = static_cast<float>(static_cast<double>(reinterpret_cast<int>(STACKVAR(-356, 4))) * reinterpret_cast<float>(ACCESS(STACKVAR(-24, 4), 0, 4)));
+    ACCESS(STACKVAR(-56, 4), 0, 4) = STACKVAR(-352, 4);
+    ACCESS(STACKVAR(-56, 4), 32, 4) = STACKVAR(-352, 4);
+    ACCESS(STACKVAR(-56, 4), 64, 4) = STACKVAR(-352, 4);
+    ACCESS(STACKVAR(-56, 4), 96, 4) = STACKVAR(-352, 4);
+    ACCESS(STACKVAR(-56, 4), 128, 4) = STACKVAR(-352, 4);
+    ACCESS(STACKVAR(-56, 4), 160, 4) = STACKVAR(-352, 4);
+    ACCESS(STACKVAR(-56, 4), 192, 4) = STACKVAR(-352, 4);
+    ACCESS(STACKVAR(-56, 4), 224, 4) = STACKVAR(-352, 4);
+    STACKVAR(-324, 4) = reinterpret_cast<any_int32>(STACKVAR(-324, 4)) + 0x00000002;
+    STACKVAR(-24, 4) = reinterpret_cast<any_int32>(STACKVAR(-24, 4)) + 0x00000004;
+    STACKVAR(-56, 4) = reinterpret_cast<any_int32>(STACKVAR(-56, 4)) + 0x00000004;
+    goto l10020592;
+l100206DD:
+    STACKVAR(-360, 4) = static_cast<int>(ACCESS(STACKVAR(-324, 4), 0, 2));
+    STACKVAR(-328, 4) = static_cast<float>(static_cast<double>(reinterpret_cast<int>(STACKVAR(-360, 4))) * reinterpret_cast<float>(ACCESS(STACKVAR(-24, 4), 0, 4)));
+    STACKVAR(-364, 4) = static_cast<int>(ACCESS(STACKVAR(-324, 4), 32, 2));
+    STACKVAR(-332, 4) = static_cast<float>(static_cast<double>(reinterpret_cast<int>(STACKVAR(-364, 4))) * reinterpret_cast<float>(ACCESS(STACKVAR(-24, 4), 64, 4)));
+    STACKVAR(-368, 4) = static_cast<int>(ACCESS(STACKVAR(-324, 4), 64, 2));
+    STACKVAR(-336, 4) = static_cast<float>(static_cast<double>(reinterpret_cast<int>(STACKVAR(-368, 4))) * reinterpret_cast<float>(ACCESS(STACKVAR(-24, 4), 128, 4)));
+    STACKVAR(-372, 4) = static_cast<int>(ACCESS(STACKVAR(-324, 4), 96, 2));
+    STACKVAR(-340, 4) = static_cast<float>(static_cast<double>(reinterpret_cast<int>(STACKVAR(-372, 4))) * reinterpret_cast<float>(ACCESS(STACKVAR(-24, 4), 192, 4)));
+    STACKVAR(-8, 4) = reinterpret_cast<float>(STACKVAR(-328, 4)) + reinterpret_cast<float>(STACKVAR(-336, 4));
+    STACKVAR(-20, 4) = reinterpret_cast<float>(STACKVAR(-328, 4)) - reinterpret_cast<float>(STACKVAR(-336, 4));
+    STACKVAR(-44, 4) = reinterpret_cast<float>(STACKVAR(-332, 4)) + reinterpret_cast<float>(STACKVAR(-340, 4));
+    STACKVAR(-32, 4) = (reinterpret_cast<float>(STACKVAR(-332, 4)) - reinterpret_cast<float>(STACKVAR(-340, 4))) * reinterpret_cast<float>(ACCESS(GLOBAL(0x10042A58), 0, 4)) - reinterpret_cast<float>(STACKVAR(-44, 4));
+    STACKVAR(-328, 4) = reinterpret_cast<float>(STACKVAR(-8, 4)) + reinterpret_cast<float>(STACKVAR(-44, 4));
+    STACKVAR(-340, 4) = reinterpret_cast<float>(STACKVAR(-8, 4)) - reinterpret_cast<float>(STACKVAR(-44, 4));
+    STACKVAR(-332, 4) = reinterpret_cast<float>(STACKVAR(-20, 4)) + reinterpret_cast<float>(STACKVAR(-32, 4));
+    STACKVAR(-336, 4) = reinterpret_cast<float>(STACKVAR(-20, 4)) - reinterpret_cast<float>(STACKVAR(-32, 4));
+    STACKVAR(-376, 4) = static_cast<int>(ACCESS(STACKVAR(-324, 4), 16, 2));
+    STACKVAR(-344, 4) = static_cast<float>(static_cast<double>(reinterpret_cast<int>(STACKVAR(-376, 4))) * reinterpret_cast<float>(ACCESS(STACKVAR(-24, 4), 32, 4)));
+    STACKVAR(-380, 4) = static_cast<int>(ACCESS(STACKVAR(-324, 4), 48, 2));
+    STACKVAR(-348, 4) = static_cast<float>(static_cast<double>(reinterpret_cast<int>(STACKVAR(-380, 4))) * reinterpret_cast<float>(ACCESS(STACKVAR(-24, 4), 96, 4)));
+    STACKVAR(-384, 4) = static_cast<int>(ACCESS(STACKVAR(-324, 4), 80, 2));
+    STACKVAR(-4, 4) = static_cast<float>(static_cast<double>(reinterpret_cast<int>(STACKVAR(-384, 4))) * reinterpret_cast<float>(ACCESS(STACKVAR(-24, 4), 160, 4)));
+    STACKVAR(-388, 4) = static_cast<int>(ACCESS(STACKVAR(-324, 4), 112, 2));
+    STACKVAR(-12, 4) = static_cast<float>(static_cast<double>(reinterpret_cast<int>(STACKVAR(-388, 4))) * reinterpret_cast<float>(ACCESS(STACKVAR(-24, 4), 224, 4)));
+    STACKVAR(-52, 4) = reinterpret_cast<float>(STACKVAR(-4, 4)) + reinterpret_cast<float>(STACKVAR(-348, 4));
+    STACKVAR(-16, 4) = reinterpret_cast<float>(STACKVAR(-4, 4)) - reinterpret_cast<float>(STACKVAR(-348, 4));
+    STACKVAR(-28, 4) = reinterpret_cast<float>(STACKVAR(-344, 4)) + reinterpret_cast<float>(STACKVAR(-12, 4));
+    STACKVAR(-36, 4) = reinterpret_cast<float>(STACKVAR(-344, 4)) - reinterpret_cast<float>(STACKVAR(-12, 4));
+    STACKVAR(-12, 4) = reinterpret_cast<float>(STACKVAR(-28, 4)) + reinterpret_cast<float>(STACKVAR(-52, 4));
+    STACKVAR(-20, 4) = (reinterpret_cast<float>(STACKVAR(-28, 4)) - reinterpret_cast<float>(STACKVAR(-52, 4))) * reinterpret_cast<float>(ACCESS(GLOBAL(0x10042A58), 0, 4));
+    STACKVAR(-40, 4) = (reinterpret_cast<float>(STACKVAR(-16, 4)) + reinterpret_cast<float>(STACKVAR(-36, 4))) * reinterpret_cast<float>(ACCESS(GLOBAL(0x10042A54), 0, 4));
+    STACKVAR(-8, 4) = reinterpret_cast<float>(ACCESS(GLOBAL(0x10042A50), 0, 4)) * reinterpret_cast<float>(STACKVAR(-36, 4)) - reinterpret_cast<float>(STACKVAR(-40, 4));
+    STACKVAR(-32, 4) = reinterpret_cast<float>(ACCESS(GLOBAL(0x10042A4C), 0, 4)) * reinterpret_cast<float>(STACKVAR(-16, 4)) + reinterpret_cast<float>(STACKVAR(-40, 4));
+    STACKVAR(-4, 4) = reinterpret_cast<float>(STACKVAR(-32, 4)) - reinterpret_cast<float>(STACKVAR(-12, 4));
+    STACKVAR(-348, 4) = reinterpret_cast<float>(STACKVAR(-20, 4)) - reinterpret_cast<float>(STACKVAR(-4, 4));
+    STACKVAR(-344, 4) = reinterpret_cast<float>(STACKVAR(-8, 4)) + reinterpret_cast<float>(STACKVAR(-348, 4));
+    ACCESS(STACKVAR(-56, 4), 0, 4) = reinterpret_cast<float>(STACKVAR(-328, 4)) + reinterpret_cast<float>(STACKVAR(-12, 4));
+    ACCESS(STACKVAR(-56, 4), 224, 4) = reinterpret_cast<float>(STACKVAR(-328, 4)) - reinterpret_cast<float>(STACKVAR(-12, 4));
+    ACCESS(STACKVAR(-56, 4), 32, 4) = reinterpret_cast<float>(STACKVAR(-332, 4)) + reinterpret_cast<float>(STACKVAR(-4, 4));
+    ACCESS(STACKVAR(-56, 4), 192, 4) = reinterpret_cast<float>(STACKVAR(-332, 4)) - reinterpret_cast<float>(STACKVAR(-4, 4));
+    ACCESS(STACKVAR(-56, 4), 64, 4) = reinterpret_cast<float>(STACKVAR(-336, 4)) + reinterpret_cast<float>(STACKVAR(-348, 4));
+    ACCESS(STACKVAR(-56, 4), 160, 4) = reinterpret_cast<float>(STACKVAR(-336, 4)) - reinterpret_cast<float>(STACKVAR(-348, 4));
+    ACCESS(STACKVAR(-56, 4), 128, 4) = reinterpret_cast<float>(STACKVAR(-340, 4)) + reinterpret_cast<float>(STACKVAR(-344, 4));
+    ACCESS(STACKVAR(-56, 4), 96, 4) = reinterpret_cast<float>(STACKVAR(-340, 4)) - reinterpret_cast<float>(STACKVAR(-344, 4));
+    STACKVAR(-324, 4) = reinterpret_cast<any_int32>(STACKVAR(-324, 4)) + 0x00000002;
+    STACKVAR(-24, 4) = reinterpret_cast<any_int32>(STACKVAR(-24, 4)) + 0x00000004;
+    STACKVAR(-56, 4) = reinterpret_cast<any_int32>(STACKVAR(-56, 4)) + 0x00000004;
+    goto l10020592;
+l100209B1:
+    STACKVAR(-56, 4) = LOCAL(-312);
+    STACKVAR(-316, 4) = 0x00000000;
+    goto l100209D5;
+l100209C6:
+    STACKVAR(-316, 4) = reinterpret_cast<any_int32>(STACKVAR(-316, 4)) + 0x00000001;
+l100209D5:
+    if (reinterpret_cast<int>(STACKVAR(-316, 4)) >= 8)
+    {
+        goto l10020C65;
+    }
+    STACKVAR(-320, 4) = reinterpret_cast<any_int32>(ACCESS(ARRPTR(STACKVAR(20, 4), 0x04, STACKVAR(-316, 4), 0), 0, 4)) + reinterpret_cast<any_int32>(STACKVAR(24, 4));
+    STACKVAR(-8, 4) = reinterpret_cast<float>(ACCESS(STACKVAR(-56, 4), 0, 4)) + reinterpret_cast<float>(ACCESS(STACKVAR(-56, 4), 16, 4));
+    STACKVAR(-20, 4) = reinterpret_cast<float>(ACCESS(STACKVAR(-56, 4), 0, 4)) - reinterpret_cast<float>(ACCESS(STACKVAR(-56, 4), 16, 4));
+    STACKVAR(-44, 4) = reinterpret_cast<float>(ACCESS(STACKVAR(-56, 4), 8, 4)) + reinterpret_cast<float>(ACCESS(STACKVAR(-56, 4), 24, 4));
+    STACKVAR(-32, 4) = (reinterpret_cast<float>(ACCESS(STACKVAR(-56, 4), 8, 4)) - reinterpret_cast<float>(ACCESS(STACKVAR(-56, 4), 24, 4))) * reinterpret_cast<float>(ACCESS(GLOBAL(0x10042A58), 0, 4)) - reinterpret_cast<float>(STACKVAR(-44, 4));
+    STACKVAR(-328, 4) = reinterpret_cast<float>(STACKVAR(-8, 4)) + reinterpret_cast<float>(STACKVAR(-44, 4));
+    STACKVAR(-340, 4) = reinterpret_cast<float>(STACKVAR(-8, 4)) - reinterpret_cast<float>(STACKVAR(-44, 4));
+    STACKVAR(-332, 4) = reinterpret_cast<float>(STACKVAR(-20, 4)) + reinterpret_cast<float>(STACKVAR(-32, 4));
+    STACKVAR(-336, 4) = reinterpret_cast<float>(STACKVAR(-20, 4)) - reinterpret_cast<float>(STACKVAR(-32, 4));
+    STACKVAR(-52, 4) = reinterpret_cast<float>(ACCESS(STACKVAR(-56, 4), 20, 4)) + reinterpret_cast<float>(ACCESS(STACKVAR(-56, 4), 12, 4));
+    STACKVAR(-16, 4) = reinterpret_cast<float>(ACCESS(STACKVAR(-56, 4), 20, 4)) - reinterpret_cast<float>(ACCESS(STACKVAR(-56, 4), 12, 4));
+    STACKVAR(-28, 4) = reinterpret_cast<float>(ACCESS(STACKVAR(-56, 4), 4, 4)) + reinterpret_cast<float>(ACCESS(STACKVAR(-56, 4), 28, 4));
+    STACKVAR(-36, 4) = reinterpret_cast<float>(ACCESS(STACKVAR(-56, 4), 4, 4)) - reinterpret_cast<float>(ACCESS(STACKVAR(-56, 4), 28, 4));
+    STACKVAR(-12, 4) = reinterpret_cast<float>(STACKVAR(-28, 4)) + reinterpret_cast<float>(STACKVAR(-52, 4));
+    STACKVAR(-20, 4) = (reinterpret_cast<float>(STACKVAR(-28, 4)) - reinterpret_cast<float>(STACKVAR(-52, 4))) * reinterpret_cast<float>(ACCESS(GLOBAL(0x10042A58), 0, 4));
+    STACKVAR(-40, 4) = (reinterpret_cast<float>(STACKVAR(-16, 4)) + reinterpret_cast<float>(STACKVAR(-36, 4))) * reinterpret_cast<float>(ACCESS(GLOBAL(0x10042A54), 0, 4));
+    STACKVAR(-8, 4) = reinterpret_cast<float>(ACCESS(GLOBAL(0x10042A50), 0, 4)) * reinterpret_cast<float>(STACKVAR(-36, 4)) - reinterpret_cast<float>(STACKVAR(-40, 4));
+    STACKVAR(-32, 4) = reinterpret_cast<float>(ACCESS(GLOBAL(0x10042A4C), 0, 4)) * reinterpret_cast<float>(STACKVAR(-16, 4)) + reinterpret_cast<float>(STACKVAR(-40, 4));
+    STACKVAR(-4, 4) = reinterpret_cast<float>(STACKVAR(-32, 4)) - reinterpret_cast<float>(STACKVAR(-12, 4));
+    STACKVAR(-348, 4) = reinterpret_cast<float>(STACKVAR(-20, 4)) - reinterpret_cast<float>(STACKVAR(-4, 4));
+    STACKVAR(-344, 4) = reinterpret_cast<float>(STACKVAR(-8, 4)) + reinterpret_cast<float>(STACKVAR(-348, 4));
+    REGDEF(ST(0)=reinterpret_cast<float>(STACKVAR(-328, 4)) + reinterpret_cast<float>(STACKVAR(-12, 4)))
 }
-Error: "Failed to find pattern for 'fild dword ptr [ebp-000000164h]'"
+Error: "'ecx'"
 
 // address: 0x10020C70
 p10020C70

@@ -23,6 +23,10 @@ def do_static_cast(data_type, e):
 def _cast_cast(data_type, c):
     if not isinstance(c, expressions.StaticCast):
         return None
+    return _int_cast_cast(data_type, c) or _floating_cast_cast(data_type, c)
+
+
+def _int_cast_cast(data_type, c):
     if not data_type.is_any_int:
         return None
     if not c.data_type.is_any_int:
@@ -30,6 +34,16 @@ def _cast_cast(data_type, c):
     if not c.expression.data_type.is_any_int:
         return None
     if data_type.size > c.data_type.size:
+        return None
+    return do_static_cast(data_type, c.expression)
+
+
+def _floating_cast_cast(data_type, c):
+    if not isinstance(data_type, data_types.Float):
+        return None
+    if not isinstance(c.data_type, data_types.Double):
+        return None
+    if not c.expression.data_type.is_any_int:
         return None
     return do_static_cast(data_type, c.expression)
 

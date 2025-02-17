@@ -513,6 +513,12 @@
 	},
 	{
 		"instructions": [
+			{"fild":  ["%mem-operand%"]}
+		],
+		"action": {"pushfpu": {"src": "(real64)S(%mem-operand%)"}}
+	},
+	{
+		"instructions": [
 			{"fadd":  ["%mem-operand%"]}
 		],
 		"action": {"pushfpu": {"src": "F(POPFPU()) + F(%mem-operand%)"}}

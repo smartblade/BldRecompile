@@ -185,7 +185,7 @@ def _evaluate_cast(cast):
     expression = cast.expression
     if isinstance(expression, expressions.BracketsExpression):
         expression = expression.expression
-    return expressions.StaticCast(cast.data_type, expression)
+    return expressions.do_static_cast(cast.data_type, expression)
 
 
 def _evaluate_procedure_call(pc):
