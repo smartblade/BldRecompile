@@ -31,7 +31,11 @@ def _int_cast_cast(data_type, c):
         return None
     if not c.data_type.is_any_int:
         return None
-    if not c.expression.data_type.is_any_int:
+    if (
+        not c.expression.data_type.is_any_int and
+        not isinstance(
+            c.expression.data_type, (data_types.Float, data_types.Double))
+    ):
         return None
     if data_type.size > c.data_type.size:
         return None

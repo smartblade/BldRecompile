@@ -3196,22 +3196,36 @@ B_Color B_Color::operator +(const B_Color &color)
 // address: 0x10006950
 B_Color B_Color::operator *(float coef)
 {
-    ProcedureInfo(this=Id(this), this_offset=-16, local_size=28, stack_delta=None)
-    STACKVAR(-20, 4) = static_cast<unsigned int>(ACCESS(STACKVAR(-16, 4), 6, 1));
-    REGDEF(ST(0)=static_cast<double>(reinterpret_cast<int>(STACKVAR(-20, 4))) * reinterpret_cast<float>(STACKVAR(12, 4)))
-    _ftol();
+    STACKVAR(-20, 4) = static_cast<unsigned int>(this->b);
+    STACKVAR(-12, 1) = static_cast<any_int8>(static_cast<double>(reinterpret_cast<int>(STACKVAR(-20, 4))) * coef);
+    STACKVAR(-24, 4) = static_cast<unsigned int>(this->g);
+    STACKVAR(-8, 1) = static_cast<any_int8>(static_cast<double>(reinterpret_cast<int>(STACKVAR(-24, 4))) * coef);
+    STACKVAR(-28, 4) = static_cast<unsigned int>(this->r);
+    STACKVAR(-4, 1) = static_cast<any_int8>(static_cast<double>(reinterpret_cast<int>(STACKVAR(-28, 4))) * coef);
+    __result->r = reinterpret_cast<byte>(STACKVAR(-4, 1));
+    __result->g = reinterpret_cast<byte>(STACKVAR(-8, 1));
+    __result->b = reinterpret_cast<byte>(STACKVAR(-12, 1));
+    ACCESS(__result, 0, 4) = GLOBAL(0x100421F0);
+    __result->MakeCons();
+    REGDEF(eax=__result)
 }
-Error: "'al'"
 
 // address: 0x100069E0
 B_Color B_Color::operator /(float f)
 {
-    ProcedureInfo(this=Id(this), this_offset=-16, local_size=28, stack_delta=None)
-    STACKVAR(-20, 4) = static_cast<unsigned int>(ACCESS(STACKVAR(-16, 4), 6, 1));
-    REGDEF(ST(0)=static_cast<double>(reinterpret_cast<int>(STACKVAR(-20, 4))) / reinterpret_cast<float>(STACKVAR(12, 4)))
-    _ftol();
+    STACKVAR(-20, 4) = static_cast<unsigned int>(this->b);
+    STACKVAR(-12, 1) = static_cast<any_int8>(static_cast<double>(reinterpret_cast<int>(STACKVAR(-20, 4))) / f);
+    STACKVAR(-24, 4) = static_cast<unsigned int>(this->g);
+    STACKVAR(-8, 1) = static_cast<any_int8>(static_cast<double>(reinterpret_cast<int>(STACKVAR(-24, 4))) / f);
+    STACKVAR(-28, 4) = static_cast<unsigned int>(this->r);
+    STACKVAR(-4, 1) = static_cast<any_int8>(static_cast<double>(reinterpret_cast<int>(STACKVAR(-28, 4))) / f);
+    __result->r = reinterpret_cast<byte>(STACKVAR(-4, 1));
+    __result->g = reinterpret_cast<byte>(STACKVAR(-8, 1));
+    __result->b = reinterpret_cast<byte>(STACKVAR(-12, 1));
+    ACCESS(__result, 0, 4) = GLOBAL(0x100421F0);
+    __result->MakeCons();
+    REGDEF(eax=__result)
 }
-Error: "'al'"
 
 // address: 0x10006A70
 p10006A70
@@ -13389,23 +13403,149 @@ p1001C23B
 // address: 0x1001C28B
 p1001C28B
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=24, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=24, stack_delta=0)
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 384, 4);
     unknown_function_1001BD40(STACKVAR(8, 4));
     unknown_function_1001C61D(STACKVAR(8, 4));
     STACKVAR(-16, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 92, 4)) * reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 100, 4));
     STACKVAR(-12, 4) = STACKVAR(-16, 4);
-    if (STACKVAR(-12, 4) == STACKVAR(-16, 4))
+    if (STACKVAR(-12, 4) != STACKVAR(-16, 4))
     {
-        goto l1001C2ED;
+        ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x00000046;
+        ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 0, 4)(STACKVAR(8, 4));
     }
-    ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x00000046;
-    ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 0, 4)(STACKVAR(8, 4));
-l1001C2ED:
     ACCESS(STACKVAR(-4, 4), 12, 4) = 0x00000000;
-    unknown_function_1001C089(STACKVAR(8, 4));
+    ACCESS(STACKVAR(-4, 4), 16, 1) = unknown_function_1001C089(STACKVAR(8, 4));
+    ACCESS(STACKVAR(-4, 4), 20, 4) = 0x00000000;
+    ACCESS(STACKVAR(-4, 4), 24, 4) = 0x00000000;
+    if (static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 74, 1)) == 0)
+    {
+        goto l1001C335;
+    }
+    if (static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 64, 1)) != 0)
+    {
+        goto l1001C34A;
+    }
+l1001C335:
+    ACCESS(STACKVAR(8, 4), 88, 1) = 0;
+    ACCESS(STACKVAR(8, 4), 89, 1) = 0;
+    ACCESS(STACKVAR(8, 4), 90, 1) = 0;
+l1001C34A:
+    if (static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 74, 1)) == 0)
+    {
+        goto l1001C432;
+    }
+    if (static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 65, 1)) != 0)
+    {
+        ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x0000002F;
+        ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 0, 4)(STACKVAR(8, 4));
+    }
+    if (ACCESS(STACKVAR(8, 4), 100, 4) != 0x00000003)
+    {
+        ACCESS(STACKVAR(8, 4), 88, 1) = 0x01;
+        ACCESS(STACKVAR(8, 4), 89, 1) = 0;
+        ACCESS(STACKVAR(8, 4), 90, 1) = 0;
+        ACCESS(STACKVAR(8, 4), 116, 4) = 0x00000000;
+    }
+    else if (ACCESS(STACKVAR(8, 4), 116, 4) != 0x00000000)
+    {
+        ACCESS(STACKVAR(8, 4), 89, 1) = 0x01;
+    }
+    else if (static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 80, 1)) != 0)
+    {
+        ACCESS(STACKVAR(8, 4), 90, 1) = 0x01;
+    }
+    else
+    {
+        ACCESS(STACKVAR(8, 4), 88, 1) = 0x01;
+    }
+    if (static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 88, 1)) != 0)
+    {
+        unknown_function_10023A30(STACKVAR(8, 4));
+        ACCESS(STACKVAR(-4, 4), 20, 4) = ACCESS(STACKVAR(8, 4), 424, 4);
+    }
+    if (static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 90, 1)) != 0)
+    {
+        goto l1001C417;
+    }
+    if (static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 89, 1)) == 0)
+    {
+        goto l1001C432;
+    }
+l1001C417:
+    unknown_function_10024A70(STACKVAR(8, 4));
+    ACCESS(STACKVAR(-4, 4), 24, 4) = ACCESS(STACKVAR(8, 4), 424, 4);
+l1001C432:
+    if (static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 65, 1)) == 0)
+    {
+        if (static_cast<unsigned int>(ACCESS(STACKVAR(-4, 4), 16, 1)) != 0)
+        {
+            unknown_function_1001C960(STACKVAR(8, 4));
+        }
+        else
+        {
+            unknown_function_10015B20(STACKVAR(8, 4));
+            unknown_function_1001EA30(STACKVAR(8, 4));
+        }
+        unknown_function_1001E580(STACKVAR(8, 4), ACCESS(STACKVAR(8, 4), 90, 1));
+    }
+    unknown_function_10016380(STACKVAR(8, 4));
+    if (static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 201, 1)) != 0)
+    {
+        ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x00000001;
+        ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 0, 4)(STACKVAR(8, 4));
+    }
+    else if (static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 200, 1)) != 0)
+    {
+        unknown_function_1001D220(STACKVAR(8, 4));
+    }
+    else
+    {
+        unknown_function_10016F06(STACKVAR(8, 4));
+    }
+    if (static_cast<unsigned int>(ACCESS(ACCESS(STACKVAR(8, 4), 400, 4), 16, 1)) != 0)
+    {
+        goto l1001C50A;
+    }
+    if (static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 64, 1)) == 0)
+    {
+        STACKVAR(-24, 4) = 0x00000000;
+        goto l1001C511;
+    }
+l1001C50A:
+    STACKVAR(-24, 4) = 0x00000001;
+l1001C511:
+    STACKVAR(-8, 1) = STACKVAR(-24, 1);
+    unknown_function_100145B0(STACKVAR(8, 4), STACKVAR(-8, 1));
+    if (static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 65, 1)) == 0)
+    {
+        unknown_function_10018140(STACKVAR(8, 4), 0x00000000);
+    }
+    ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 24, 4)(STACKVAR(8, 4));
+    ACCESS(ACCESS(STACKVAR(8, 4), 400, 4), 8, 4)(STACKVAR(8, 4));
+    if (ACCESS(STACKVAR(8, 4), 8, 4) != 0x00000000)
+    {
+        if (static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 64, 1)) == 0)
+        {
+            if (static_cast<unsigned int>(ACCESS(ACCESS(STACKVAR(8, 4), 400, 4), 16, 1)) != 0)
+            {
+                if (static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 200, 1)) != 0)
+                {
+                    STACKVAR(-20, 4) = 0x00000003 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 36, 4)) + 0x00000002;
+                }
+                else
+                {
+                    STACKVAR(-20, 4) = ACCESS(STACKVAR(8, 4), 36, 4);
+                }
+                ACCESS(ACCESS(STACKVAR(8, 4), 8, 4), 4, 4) = 0x00000000;
+                ACCESS(ACCESS(STACKVAR(8, 4), 8, 4), 8, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 284, 4)) * reinterpret_cast<any_int32>(STACKVAR(-20, 4));
+                ACCESS(ACCESS(STACKVAR(8, 4), 8, 4), 12, 4) = 0x00000000;
+                ACCESS(ACCESS(STACKVAR(8, 4), 8, 4), 16, 4) = static_cast<unsigned int>(static_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 90, 1)) != 0) + 0x00000002;
+                ACCESS(STACKVAR(-4, 4), 12, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-4, 4), 12, 4)) + 0x00000001;
+            }
+        }
+    }
 }
-Error: "'al'"
 
 // address: 0x1001C61D
 p1001C61D

@@ -106,6 +106,7 @@ class BlockBuilder:
 
     def _extract_call_return(self, reg):
         return_types = {
+            "al": data_types.AnyInt8(),
             "ax": data_types.AnyInt16(),
             "eax": data_types.Unknown32(),
             "fpu": data_types.Double(),

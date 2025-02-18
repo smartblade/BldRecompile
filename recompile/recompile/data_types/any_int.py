@@ -23,6 +23,11 @@ class AnyInt(DataType):
         return True
 
 
+class AnyInt8(AnyInt):
+    def __init__(self):
+        super().__init__(1)
+
+
 class AnyInt16(AnyInt):
     def __init__(self):
         super().__init__(2)
