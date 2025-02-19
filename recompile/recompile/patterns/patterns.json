@@ -716,6 +716,16 @@
 	},
 	{
 		"instructions": [
+			{"sub":  ["esp", "000000008h"]},
+			{"fstp":  ["[esp]"]}
+		],
+		"actions": [
+			{"validate": {"expect": "EXPECT(%size%, 8)"}},
+			{"stackarg": {"arg": "ARG((real64)F(POPFPU()))"}}
+		]
+	},
+	{
+		"instructions": [
 			{"call":  ["%label%"]}
 		],
 		"action": {"call": {"address": "%label%"}}
