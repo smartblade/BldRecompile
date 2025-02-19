@@ -559,6 +559,12 @@
 	},
 	{
 		"instructions": [
+			{"fchs":  []}
+		],
+		"action": {"pushfpu": {"src": "-F(POPFPU())"}}
+	},
+	{
+		"instructions": [
 			{"fcomp":  ["%mem-operand%"]},
 			{"fnstsw":  ["ax"]}
 		],

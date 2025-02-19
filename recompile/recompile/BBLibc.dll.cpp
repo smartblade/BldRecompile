@@ -19388,14 +19388,11 @@ p10030232
 // address: 0x10031284
 p10031284
 {
-    ProcedureInfo(this=Id(this), this_offset=-52, local_size=52, stack_delta=None)
-    memcpy(reinterpret_cast<any_int32>(STACKVAR(-52, 4)) + 0x00000004, STACKVAR(12, 4)->unknown_method_10031882(LOCAL(-24), STACKVAR(16, 4)), 0x00000018); // TODO improve emitting of memcpy instructions
-    memcpy(reinterpret_cast<any_int32>(STACKVAR(-52, 4)) + 0x00000004, (reinterpret_cast<any_int32>(STACKVAR(-52, 4)) + 0x00000004)->unknown_method_100315C2(LOCAL(-48), (reinterpret_cast<any_int32>(STACKVAR(-52, 4)) + 0x00000004)->unknown_method_10031913()), 0x00000018); // TODO improve emitting of memcpy instructions
-    ARG(reinterpret_cast<any_int32>(STACKVAR(-52, 4)) + 0x00000004);
-    REGDEF(ecx=STACKVAR(8, 4))
-    unknown_function_1003184F();
+    ProcedureInfo(this=Id(this), this_offset=-52, local_size=52, stack_delta=12)
+    memcpy(reinterpret_cast<any_int32>(this) + 0x00000004, STACKVAR(12, 4)->unknown_method_10031882(LOCAL(-24), STACKVAR(16, 4)), 0x00000018); // TODO improve emitting of memcpy instructions
+    memcpy(reinterpret_cast<any_int32>(this) + 0x00000004, (reinterpret_cast<any_int32>(this) + 0x00000004)->unknown_method_100315C2(LOCAL(-48), (reinterpret_cast<any_int32>(this) + 0x00000004)->unknown_method_10031913()), 0x00000018); // TODO improve emitting of memcpy instructions
+    ACCESS(this, 28, 8) = -STACKVAR(8, 4)->unknown_method_1003184F(reinterpret_cast<any_int32>(this) + 0x00000004);
 }
-Error: "Failed to find pattern for 'fchs'"
 
 // address: 0x100312FC
 p100312FC
