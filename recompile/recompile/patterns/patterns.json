@@ -223,6 +223,40 @@
 	},
 	{
 		"instructions": [
+			{"label": ["%label-loop%"]},
+			{"mov":   ["%eax-ecx-edx-1%", "[ebp%offset-str1%]"]},
+			{"mov":   ["%al-cl-dl-1%", "[%eax-ecx-edx-1%]"]},
+			{"mov":   ["[ebp-%hex-first_char%]", "%al-cl-dl-1%"]},
+			{"mov":   ["%eax-ecx-edx-2%", "[ebp%offset-str2%]"]},
+			{"cmp":   ["%al-cl-dl-1%", "[%eax-ecx-edx-2%]"]},
+			{"jne":   ["%label-not-equal%"]},
+			{"cmp":   ["[ebp-%hex-first_char%]", "000h"]},
+			{"je":    ["%label-equal%"]},
+			{"mov":   ["%eax-ecx-edx-3%", "[ebp%offset-str1%]"]},
+			{"mov":   ["%al-cl-dl-2%", "[%eax-ecx-edx-3%+001h]"]},
+			{"mov":   ["[ebp-%hex-second_char%]", "%al-cl-dl-2%"]},
+			{"mov":   ["%eax-ecx-edx-4%", "[ebp%offset-str2%]"]},
+			{"cmp":   ["%al-cl-dl-2%", "[%eax-ecx-edx-4%+001h]"]},
+			{"jne":   ["%label-not-equal%"]},
+			{"add":   ["[ebp%offset-str1%]", "000000002h"]},
+			{"add":   ["[ebp%offset-str2%]", "000000002h"]},
+			{"cmp":   ["[ebp-%hex-second_char%]", "000h"]},
+			{"jne":   ["%label-loop%"]},
+			{"label": ["%label-equal%"]},
+			{"mov":   ["[ebp-%hex-intermediate-result%]", "000000000h"]},
+			{"jmp":   ["%label-tail%"]},
+			{"label": ["%label-not-equal%"]},
+			{"sbb":   ["%eax-ecx-edx-5%", "%eax-ecx-edx-5%"]},
+			{"sbb":   ["%eax-ecx-edx-5%", "0FFFFFFFFh"]},
+			{"mov":   ["[ebp-%hex-intermediate-result%]", "%eax-ecx-edx-5%"]},
+			{"label": ["%label-tail%"]},
+			{"mov":   ["%eax-ecx-edx-6%", "[ebp-%hex-intermediate-result%]"]},
+			{"mov":   ["[ebp%offset-result%]", "%eax-ecx-edx-6%"]}
+		],
+		"action": {"assignment": {"dst": "STACKVAR(%offset-result%, 4)", "src": "strcmp(STACKVAR(%offset-str1%, 4), STACKVAR(%offset-str2%, 4))"}}
+	},
+	{
+		"instructions": [
 			{"xor":  ["e%a-c-d%x", "e%a-c-d%x"]},
 			{"mov":  ["%a-c-d%l", "%src-operand%"]}
 		],

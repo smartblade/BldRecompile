@@ -51,24 +51,26 @@ p100010E4
 // address: 0x100010F3
 p100010F3
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=40, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=40, stack_delta=0)
     ACCESS(GLOBAL(0x10049EF4), 0, 4) = GLOBAL(0x10047040);
     ACCESS(GLOBAL(0x10049EEC), 0, 4) = 0xFFFFFFFF;
     ACCESS(GLOBAL(0x10049EE8), 0, 4) = _open(GLOBAL(0x1004704C), 0x00008000);
-    if (ACCESS(GLOBAL(0x10049EE8), 0, 4) != 0xFFFFFFFF)
+    if (ACCESS(GLOBAL(0x10049EE8), 0, 4) == 0xFFFFFFFF)
     {
-        goto l10001133;
+        return;
     }
-    goto l10001201;
-l10001133:
     _read(ACCESS(GLOBAL(0x10049EE8), 0, 4), LOCAL(-20), 0x00000012);
     STACKVAR(-24, 4) = GLOBAL(0x100471F8);
     STACKVAR(-28, 4) = LOCAL(-20);
-l10001156:
-    STACKVAR(-29, 1) = ACCESS(STACKVAR(-28, 4), 0, 1);
-    REGDEF(edx=STACKVAR(-24, 4))
+    STACKVAR(-40, 4) = strcmp(STACKVAR(-28, 4), STACKVAR(-24, 4));
+    if (STACKVAR(-40, 4) != 0x00000000)
+    {
+        _assert(GLOBAL(0x100471B4), GLOBAL(0x100471DC), 0x00000052);
+    }
+    ACCESS(GLOBAL(0x10049EE0), 0, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) & 0x0000FFFF;
+    ACCESS(GLOBAL(0x10049EE4), 0, 4) = malloc(0x00000048 * reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x10049EE0), 0, 4)));
+    _read(ACCESS(GLOBAL(0x10049EE8), 0, 4), ACCESS(GLOBAL(0x10049EE4), 0, 4), 0x00000048 * reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x10049EE0), 0, 4)));
 }
-Error: "'cl'"
 
 // address: 0x10001205
 p10001205
@@ -1366,11 +1368,10 @@ unsigned int B_Name::operator >(const B_Name &rhs)
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=24, stack_delta=None)
     STACKVAR(-8, 4) = ACCESS(STACKVAR(8, 4), 0, 4);
     STACKVAR(-12, 4) = ACCESS(STACKVAR(-4, 4), 0, 4);
-l10003480:
-    STACKVAR(-13, 1) = ACCESS(STACKVAR(-12, 4), 0, 1);
-    REGDEF(eax=STACKVAR(-8, 4))
+    STACKVAR(-24, 4) = strcmp(STACKVAR(-12, 4), STACKVAR(-8, 4));
+    REGDEF(eax=0x00000000, cmpl=STACKVAR(-24, 4), cmpr=0x00000000)
 }
-Error: "'dl'"
+Error: "Failed to find pattern for 'setg  al'"
 
 // address: 0x100034DA
 unsigned int B_Name::operator <(const B_Name &rhs)
@@ -1378,11 +1379,10 @@ unsigned int B_Name::operator <(const B_Name &rhs)
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=24, stack_delta=None)
     STACKVAR(-8, 4) = ACCESS(STACKVAR(8, 4), 0, 4);
     STACKVAR(-12, 4) = ACCESS(STACKVAR(-4, 4), 0, 4);
-l100034F3:
-    STACKVAR(-13, 1) = ACCESS(STACKVAR(-12, 4), 0, 1);
-    REGDEF(eax=STACKVAR(-8, 4))
+    STACKVAR(-24, 4) = strcmp(STACKVAR(-12, 4), STACKVAR(-8, 4));
+    REGDEF(eax=0x00000000, cmpl=STACKVAR(-24, 4), cmpr=0x00000000)
 }
-Error: "'dl'"
+Error: "Failed to find pattern for 'setl  al'"
 
 // address: 0x1000354D
 unsigned int B_Name::operator ==(const B_Name &rhs)
@@ -1394,11 +1394,10 @@ unsigned int B_Name::operator ==(const B_Name &rhs)
     }
     STACKVAR(-8, 4) = ACCESS(STACKVAR(8, 4), 0, 4);
     STACKVAR(-12, 4) = ACCESS(STACKVAR(-4, 4), 0, 4);
-l10003574:
-    STACKVAR(-13, 1) = ACCESS(STACKVAR(-12, 4), 0, 1);
-    REGDEF(eax=STACKVAR(-8, 4))
+    STACKVAR(-24, 4) = strcmp(STACKVAR(-12, 4), STACKVAR(-8, 4));
+    REGDEF(eax=0x00000000, cmpl=STACKVAR(-24, 4), cmpr=0x00000000)
 }
-Error: "'dl'"
+Error: "Failed to find pattern for 'sete  al'"
 
 // address: 0x100035D2
 unsigned int B_Name::operator ==(const char *str)
@@ -1406,42 +1405,32 @@ unsigned int B_Name::operator ==(const char *str)
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=24, stack_delta=None)
     STACKVAR(-8, 4) = STACKVAR(8, 4);
     STACKVAR(-12, 4) = ACCESS(STACKVAR(-4, 4), 0, 4);
-l100035E9:
-    STACKVAR(-13, 1) = ACCESS(STACKVAR(-12, 4), 0, 1);
-    REGDEF(edx=STACKVAR(-8, 4))
+    STACKVAR(-24, 4) = strcmp(STACKVAR(-12, 4), STACKVAR(-8, 4));
+    REGDEF(eax=0x00000000, cmpl=STACKVAR(-24, 4), cmpr=0x00000000)
 }
-Error: "'cl'"
+Error: "Failed to find pattern for 'sete  al'"
 
 // address: 0x10003643
 unsigned int B_Name::operator !=(const B_Name &rhs)
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=24, stack_delta=None)
-    if (ACCESS(STACKVAR(-4, 4), 4, 4) == ACCESS(STACKVAR(8, 4), 4, 4))
+    if (this->len != rhs.len)
     {
-        goto l10003661;
+        return 1;
     }
-    REGDEF(eax=0x00000001)
-    goto l100036BF;
-l10003661:
-    STACKVAR(-8, 4) = ACCESS(STACKVAR(8, 4), 0, 4);
-    STACKVAR(-12, 4) = ACCESS(STACKVAR(-4, 4), 0, 4);
-l10003671:
-    STACKVAR(-13, 1) = ACCESS(STACKVAR(-12, 4), 0, 1);
-    REGDEF(eax=STACKVAR(-8, 4))
+    STACKVAR(-8, 4) = rhs.string;
+    STACKVAR(-12, 4) = this->string;
+    STACKVAR(-24, 4) = strcmp(STACKVAR(-12, 4), STACKVAR(-8, 4));
+    return reinterpret_cast<unsigned int>(STACKVAR(-24, 4));
 }
-Error: "'dl'"
 
 // address: 0x100036C5
 unsigned int B_Name::operator !=(const char *str)
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=24, stack_delta=None)
-    STACKVAR(-8, 4) = STACKVAR(8, 4);
-    STACKVAR(-12, 4) = ACCESS(STACKVAR(-4, 4), 0, 4);
-l100036DC:
-    STACKVAR(-13, 1) = ACCESS(STACKVAR(-12, 4), 0, 1);
-    REGDEF(edx=STACKVAR(-8, 4))
+    STACKVAR(-8, 4) = str;
+    STACKVAR(-12, 4) = this->string;
+    STACKVAR(-24, 4) = strcmp(STACKVAR(-12, 4), STACKVAR(-8, 4));
+    return reinterpret_cast<unsigned int>(STACKVAR(-24, 4));
 }
-Error: "'cl'"
 
 // address: 0x10003730
 p10003730
@@ -25603,38 +25592,46 @@ p1003E679
 // address: 0x1003E710
 p1003E710
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=152, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=152, stack_delta=0)
     STACKVAR(-132, 4) = 0x00000000;
-l1003E723:
-    if (ACCESS(ARRPTR(ACCESS(STACKVAR(8, 4), 8, 4), 0x04, STACKVAR(-132, 4), 0), 0, 4) == 0x00000000)
+    while (ACCESS(ARRPTR(ACCESS(STACKVAR(8, 4), 8, 4), 0x04, STACKVAR(-132, 4), 0), 0, 4) != 0x00000000)
     {
-        goto l1003E7FF;
+        STACKVAR(-136, 4) = STACKVAR(12, 4);
+        STACKVAR(-140, 4) = ACCESS(ACCESS(ARRPTR(ACCESS(STACKVAR(8, 4), 8, 4), 0x04, STACKVAR(-132, 4), 0), 0, 4), 0, 4);
+        STACKVAR(-152, 4) = strcmp(STACKVAR(-140, 4), STACKVAR(-136, 4));
+        if (STACKVAR(-152, 4) == 0x00000000)
+        {
+            ACCESS(ACCESS(ARRPTR(ACCESS(STACKVAR(8, 4), 8, 4), 0x04, STACKVAR(-132, 4), 0), 0, 4), 4, 4)();
+            return;
+        }
+        STACKVAR(-132, 4) = reinterpret_cast<any_int32>(STACKVAR(-132, 4)) + 0x00000001;
     }
-    STACKVAR(-136, 4) = STACKVAR(12, 4);
-    STACKVAR(-140, 4) = ACCESS(ACCESS(ARRPTR(ACCESS(STACKVAR(8, 4), 8, 4), 0x04, STACKVAR(-132, 4), 0), 0, 4), 0, 4);
-l1003E759:
-    STACKVAR(-141, 1) = ACCESS(STACKVAR(-140, 4), 0, 1);
-    REGDEF(edx=STACKVAR(-136, 4))
+    sprintf(LOCAL(-128), GLOBAL(0x10048D0C), STACKVAR(12, 4));
+    PyErr_SetString(ACCESS(&PyExc_NameError, 0, 4), LOCAL(-128));
+    REGDEF(eax=0x00000000)
 }
-Error: "'cl'"
 
 // address: 0x1003E831
 p1003E831
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=152, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=152, stack_delta=0)
     STACKVAR(-132, 4) = 0x00000000;
-l1003E844:
-    if (ACCESS(ARRPTR(ACCESS(STACKVAR(8, 4), 8, 4), 0x04, STACKVAR(-132, 4), 0), 0, 4) == 0x00000000)
+    while (ACCESS(ARRPTR(ACCESS(STACKVAR(8, 4), 8, 4), 0x04, STACKVAR(-132, 4), 0), 0, 4) != 0x00000000)
     {
-        goto l1003E927;
+        STACKVAR(-136, 4) = STACKVAR(12, 4);
+        STACKVAR(-140, 4) = ACCESS(ACCESS(ARRPTR(ACCESS(STACKVAR(8, 4), 8, 4), 0x04, STACKVAR(-132, 4), 0), 0, 4), 0, 4);
+        STACKVAR(-152, 4) = strcmp(STACKVAR(-140, 4), STACKVAR(-136, 4));
+        if (STACKVAR(-152, 4) == 0x00000000)
+        {
+            ACCESS(ACCESS(ARRPTR(ACCESS(STACKVAR(8, 4), 8, 4), 0x04, STACKVAR(-132, 4), 0), 0, 4), 8, 4)(STACKVAR(16, 4));
+            return;
+        }
+        STACKVAR(-132, 4) = reinterpret_cast<any_int32>(STACKVAR(-132, 4)) + 0x00000001;
     }
-    STACKVAR(-136, 4) = STACKVAR(12, 4);
-    STACKVAR(-140, 4) = ACCESS(ACCESS(ARRPTR(ACCESS(STACKVAR(8, 4), 8, 4), 0x04, STACKVAR(-132, 4), 0), 0, 4), 0, 4);
-l1003E87A:
-    STACKVAR(-141, 1) = ACCESS(STACKVAR(-140, 4), 0, 1);
-    REGDEF(edx=STACKVAR(-136, 4))
+    sprintf(LOCAL(-128), GLOBAL(0x10048D2C), STACKVAR(12, 4));
+    PyErr_SetString(ACCESS(&PyExc_NameError, 0, 4), LOCAL(-128));
+    REGDEF(eax=0x00000001)
 }
-Error: "'cl'"
 
 // address: 0x1003E95C
 p1003E95C
@@ -26056,25 +26053,40 @@ l1003F39C:
     }
     STACKVAR(-296, 4) = STACKVAR(8, 4);
     STACKVAR(-300, 4) = STACKVAR(16, 4);
-l1003F3B8:
-    STACKVAR(-301, 1) = ACCESS(STACKVAR(-300, 4), 0, 1);
-    REGDEF(edx=STACKVAR(-296, 4))
+    STACKVAR(-312, 4) = strcmp(STACKVAR(-300, 4), STACKVAR(-296, 4));
+    if (STACKVAR(-312, 4) == 0x00000000)
+    {
+        goto l1003F9DA;
+    }
+    if (ACCESS(GLOBAL(0x1004BF5C), 0, 4) != 0x00000000)
+    {
+        goto l1003F547;
+    }
+    qsort(ACCESS(GLOBAL(0x1004BF60), 0, 4), ACCESS(GLOBAL(0x1004BF58), 0, 4), 0x00000010, GLOBAL(0x1003FA24));
+    STACKVAR(-24, 4) = 0x00000000;
+    goto l1003F476;
+l1003F46D:
+    STACKVAR(-24, 4) = reinterpret_cast<any_int32>(STACKVAR(-24, 4)) + 0x00000001;
+l1003F476:
+    if (reinterpret_cast<int>(STACKVAR(-24, 4)) >= 256)
+    {
+        goto l1003F490;
+    }
+    REGDEF(edx=STACKVAR(-24, 4), eax=ACCESS(GLOBAL(0x1004BF58), 0, 4))
 }
-Error: "'cl'"
+Error: "Failed to find pattern for 'mov dword ptr [offset g1004BB58+edx*04h], eax'"
 
 // address: 0x1003FA24
 p1003FA24
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=28, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=28, stack_delta=0)
     STACKVAR(-4, 4) = STACKVAR(8, 4);
     STACKVAR(-8, 4) = STACKVAR(12, 4);
     STACKVAR(-12, 4) = ACCESS(STACKVAR(-8, 4), 0, 4);
     STACKVAR(-16, 4) = ACCESS(STACKVAR(-4, 4), 0, 4);
-l1003FA46:
-    STACKVAR(-17, 1) = ACCESS(STACKVAR(-16, 4), 0, 1);
-    REGDEF(edx=STACKVAR(-12, 4))
+    STACKVAR(-28, 4) = strcmp(STACKVAR(-16, 4), STACKVAR(-12, 4));
+    REGDEF(eax=STACKVAR(-28, 4))
 }
-Error: "'cl'"
 
 // address: 0x1003FA98
 p1003FA98
@@ -26665,38 +26677,69 @@ p100409D8
 // address: 0x10040A5E
 p10040A5E
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=52, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=52, stack_delta=0)
     STACKVAR(-4, 4) = 0x00000000;
-    if (ACCESS(GLOBAL(0x1004BF60), 0, 4) != 0x00000000)
+    if (ACCESS(GLOBAL(0x1004BF60), 0, 4) == 0x00000000)
     {
-        goto l10040A96;
+        ACCESS(GLOBAL(0x1004BF60), 0, 4) = malloc(0x00000010 * reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x10048A64), 0, 4)));
+        ACCESS(GLOBAL(0x1004BF58), 0, 4) = 0x00000000;
     }
-    ACCESS(GLOBAL(0x1004BF60), 0, 4) = malloc(0x00000010 * reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x10048A64), 0, 4)));
-    ACCESS(GLOBAL(0x1004BF58), 0, 4) = 0x00000000;
-l10040A96:
-    if (reinterpret_cast<int>(ACCESS(GLOBAL(0x1004BF58), 0, 4)) < reinterpret_cast<int>(ACCESS(GLOBAL(0x10048A64), 0, 4)))
+    if (reinterpret_cast<int>(ACCESS(GLOBAL(0x1004BF58), 0, 4)) >= reinterpret_cast<int>(ACCESS(GLOBAL(0x10048A64), 0, 4)))
     {
-        goto l10040AD0;
+        ACCESS(GLOBAL(0x10048A64), 0, 4) = 0x00000002 * reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x10048A64), 0, 4));
+        ACCESS(GLOBAL(0x1004BF60), 0, 4) = realloc(ACCESS(GLOBAL(0x1004BF60), 0, 4), 0x00000010 * reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x10048A64), 0, 4)));
     }
-    ACCESS(GLOBAL(0x10048A64), 0, 4) = 0x00000002 * reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x10048A64), 0, 4));
-    ACCESS(GLOBAL(0x1004BF60), 0, 4) = realloc(ACCESS(GLOBAL(0x1004BF60), 0, 4), 0x00000010 * reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x10048A64), 0, 4)));
-l10040AD0:
     STACKVAR(-12, 4) = 0x00000000;
     goto l10040AE2;
 l10040AD9:
     STACKVAR(-12, 4) = reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + 0x00000001;
 l10040AE2:
-    if (reinterpret_cast<int>(STACKVAR(-12, 4)) >= reinterpret_cast<int>(ACCESS(GLOBAL(0x1004BF58), 0, 4)))
+    if (reinterpret_cast<int>(STACKVAR(-12, 4)) < reinterpret_cast<int>(ACCESS(GLOBAL(0x1004BF58), 0, 4)))
     {
-        goto l10040B71;
+        STACKVAR(-16, 4) = STACKVAR(8, 4);
+        STACKVAR(-20, 4) = ACCESS(ARRPTR(ACCESS(GLOBAL(0x1004BF60), 0, 4), 1, 0x00000010 * reinterpret_cast<any_int32>(STACKVAR(-12, 4)), 0), 0, 4);
+        STACKVAR(-32, 4) = strcmp(STACKVAR(-20, 4), STACKVAR(-16, 4));
+        if (STACKVAR(-32, 4) == 0x00000000)
+        {
+            STACKVAR(-4, 4) = reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004BF60), 0, 4)) + 0x00000010 * reinterpret_cast<any_int32>(STACKVAR(-12, 4));
+        }
+        else
+        {
+            goto l10040AD9;
+        }
     }
-    STACKVAR(-16, 4) = STACKVAR(8, 4);
-    STACKVAR(-20, 4) = ACCESS(ARRPTR(ACCESS(GLOBAL(0x1004BF60), 0, 4), 1, 0x00000010 * reinterpret_cast<any_int32>(STACKVAR(-12, 4)), 0), 0, 4);
-l10040B08:
-    STACKVAR(-21, 1) = ACCESS(STACKVAR(-20, 4), 0, 1);
-    REGDEF(ecx=STACKVAR(-16, 4))
+    if (STACKVAR(-4, 4) == 0x00000000)
+    {
+        STACKVAR(-4, 4) = reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004BF60), 0, 4)) + 0x00000010 * reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004BF58), 0, 4));
+        ACCESS(STACKVAR(-4, 4), 0, 4) = STACKVAR(8, 4);
+        ACCESS(STACKVAR(-4, 4), 4, 4) = strlen(ACCESS(STACKVAR(-4, 4), 0, 4));
+        ACCESS(STACKVAR(-4, 4), 8, 4) = 0x00000000;
+        ACCESS(STACKVAR(-4, 4), 12, 4) = 0x00000000;
+        ACCESS(GLOBAL(0x1004BF58), 0, 4) = reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004BF58), 0, 4)) + 0x00000001;
+    }
+    while (ACCESS(STACKVAR(-4, 4), 12, 4) != 0x00000000)
+    {
+        STACKVAR(-36, 4) = STACKVAR(12, 4);
+        STACKVAR(-40, 4) = ACCESS(STACKVAR(-4, 4), 0, 4);
+        STACKVAR(-52, 4) = strcmp(STACKVAR(-40, 4), STACKVAR(-36, 4));
+        if (STACKVAR(-52, 4) == 0x00000000)
+        {
+            if (STACKVAR(16, 4) != 0x00000000)
+            {
+                ACCESS(STACKVAR(-4, 4), 8, 4) = STACKVAR(16, 4);
+            }
+            return;
+        }
+        STACKVAR(-4, 4) = ACCESS(STACKVAR(-4, 4), 12, 4);
+    }
+    STACKVAR(-8, 4) = malloc(0x00000010);
+    ACCESS(STACKVAR(-8, 4), 0, 4) = STACKVAR(12, 4);
+    ACCESS(STACKVAR(-8, 4), 4, 4) = strlen(ACCESS(STACKVAR(-8, 4), 0, 4));
+    ACCESS(STACKVAR(-8, 4), 8, 4) = STACKVAR(16, 4);
+    ACCESS(STACKVAR(-8, 4), 12, 4) = 0x00000000;
+    ACCESS(STACKVAR(-4, 4), 12, 4) = STACKVAR(-8, 4);
+    ACCESS(GLOBAL(0x1004BF5C), 0, 4) = 0x00000000;
 }
-Error: "'al'"
 
 // address: 0x10040CB0
 B_RDataLight::B_RDataLight()

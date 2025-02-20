@@ -195,4 +195,13 @@ def _evaluate_procedure_call(pc):
             args=[expressions.Identifier(data_types.Double(), None)])
         proc_decl.change_return_type(data_types.Double())
         pc = pc.copy(proc_decl=proc_decl)
+    elif pc.name == "strcmp":
+        char_ptr = data_types.Pointer32(data_types.Char())
+        proc_decl = make_proc_decl_from_args(
+            is_method=False,
+            args=[
+                expressions.Identifier(char_ptr, None),
+                expressions.Identifier(char_ptr, None)])
+        proc_decl.change_return_type(data_types.Int32())
+        pc = pc.copy(proc_decl=proc_decl)
     return pc

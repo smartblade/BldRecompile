@@ -150,7 +150,10 @@ def _match_instruction(instr_pattern, operand_pattern_sets, line, match_dict):
             if param not in match_dict:
                 match_dict[param] = value
             elif match_dict[param] != value:
-                return False
+                if param == "size":
+                    match_dict[param] = "<different-sizes>"
+                else:
+                    return False
     return True
 
 
