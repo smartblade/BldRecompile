@@ -273,9 +273,33 @@
 		"instructions": [
 			{"xor":  ["e%a-c-d%x", "e%a-c-d%x"]},
 			{"cmp":  ["%src-operand-left%", "%src-operand-right%"]},
+			{"sete":  ["%a-c-d%l"]}
+		],
+		"action": {"tmpreg": {"dst": "e%a-c-d%x", "src": "(uint32)(%src-operand-left% == %src-operand-right%)"}}
+	},
+	{
+		"instructions": [
+			{"xor":  ["e%a-c-d%x", "e%a-c-d%x"]},
+			{"cmp":  ["%src-operand-left%", "%src-operand-right%"]},
 			{"setne":  ["%a-c-d%l"]}
 		],
 		"action": {"tmpreg": {"dst": "e%a-c-d%x", "src": "(uint32)(%src-operand-left% != %src-operand-right%)"}}
+	},
+	{
+		"instructions": [
+			{"xor":  ["e%a-c-d%x", "e%a-c-d%x"]},
+			{"cmp":  ["%src-operand-left%", "%src-operand-right%"]},
+			{"setg":  ["%a-c-d%l"]}
+		],
+		"action": {"tmpreg": {"dst": "e%a-c-d%x", "src": "(uint32)(S(%src-operand-left%) > S(%src-operand-right%))"}}
+	},
+	{
+		"instructions": [
+			{"xor":  ["e%a-c-d%x", "e%a-c-d%x"]},
+			{"cmp":  ["%src-operand-left%", "%src-operand-right%"]},
+			{"setl":  ["%a-c-d%l"]}
+		],
+		"action": {"tmpreg": {"dst": "e%a-c-d%x", "src": "(uint32)(S(%src-operand-left%) < S(%src-operand-right%))"}}
 	},
 	{
 		"instructions": [
