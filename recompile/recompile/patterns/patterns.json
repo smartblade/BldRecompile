@@ -263,14 +263,14 @@
 			{"xor":  ["e%a-c-d%x", "e%a-c-d%x"]},
 			{"mov":  ["%a-c-d%l", "%src-operand%"]}
 		],
-		"action": {"tmpreg": {"dst": "e%a-c-d%x", "src": "(uint32)%src-operand%"}}
+		"action": {"tmpreg": {"dst": "e%a-c-d%x", "src": "ZEROEXTEND(4, %src-operand%)"}}
 	},
 	{
 		"instructions": [
 			{"xor":  ["e%a-c-d%x", "e%a-c-d%x"]},
 			{"mov":  ["%a-c-d%x", "%src-operand%"]}
 		],
-		"action": {"tmpreg": {"dst": "e%a-c-d%x", "src": "(uint32)%src-operand%"}}
+		"action": {"tmpreg": {"dst": "e%a-c-d%x", "src": "ZEROEXTEND(4, %src-operand%)"}}
 	},
 	{
 		"instructions": [
@@ -278,7 +278,7 @@
 			{"cmp":  ["%src-operand-left%", "%src-operand-right%"]},
 			{"sete":  ["%a-c-d%l"]}
 		],
-		"action": {"tmpreg": {"dst": "e%a-c-d%x", "src": "(uint32)(%src-operand-left% == %src-operand-right%)"}}
+		"action": {"tmpreg": {"dst": "e%a-c-d%x", "src": "ZEROEXTEND(4, %src-operand-left% == %src-operand-right%)"}}
 	},
 	{
 		"instructions": [
@@ -286,7 +286,7 @@
 			{"cmp":  ["%src-operand-left%", "%src-operand-right%"]},
 			{"setne":  ["%a-c-d%l"]}
 		],
-		"action": {"tmpreg": {"dst": "e%a-c-d%x", "src": "(uint32)(%src-operand-left% != %src-operand-right%)"}}
+		"action": {"tmpreg": {"dst": "e%a-c-d%x", "src": "ZEROEXTEND(4, %src-operand-left% != %src-operand-right%)"}}
 	},
 	{
 		"instructions": [
@@ -294,7 +294,7 @@
 			{"cmp":  ["%src-operand-left%", "%src-operand-right%"]},
 			{"setg":  ["%a-c-d%l"]}
 		],
-		"action": {"tmpreg": {"dst": "e%a-c-d%x", "src": "(uint32)(S(%src-operand-left%) > S(%src-operand-right%))"}}
+		"action": {"tmpreg": {"dst": "e%a-c-d%x", "src": "ZEROEXTEND(4, S(%src-operand-left%) > S(%src-operand-right%))"}}
 	},
 	{
 		"instructions": [
@@ -302,7 +302,7 @@
 			{"cmp":  ["%src-operand-left%", "%src-operand-right%"]},
 			{"setl":  ["%a-c-d%l"]}
 		],
-		"action": {"tmpreg": {"dst": "e%a-c-d%x", "src": "(uint32)(S(%src-operand-left%) < S(%src-operand-right%))"}}
+		"action": {"tmpreg": {"dst": "e%a-c-d%x", "src": "ZEROEXTEND(4, S(%src-operand-left%) < S(%src-operand-right%))"}}
 	},
 	{
 		"instructions": [
@@ -310,7 +310,7 @@
 			{"sbb":  ["%eax-ecx-edx%", "%eax-ecx-edx%"]},
 			{"inc":  ["%eax-ecx-edx%"]}
 		],
-		"action": {"tmpreg": {"dst": "%eax-ecx-edx%", "src": "(uint32)(REGVALUE(%eax-ecx-edx%) == 0x00000000)"}}
+		"action": {"tmpreg": {"dst": "%eax-ecx-edx%", "src": "ZEROEXTEND(4, REGVALUE(%eax-ecx-edx%) == 0x00000000)"}}
 	},
 	{
 		"instructions": [
@@ -318,14 +318,14 @@
 			{"sbb":  ["%eax-ecx-edx%", "%eax-ecx-edx%"]},
 			{"neg":  ["%eax-ecx-edx%"]}
 		],
-		"action": {"tmpreg": {"dst": "%eax-ecx-edx%", "src": "(uint32)(REGVALUE(%eax-ecx-edx%) != 0x00000000)"}}
+		"action": {"tmpreg": {"dst": "%eax-ecx-edx%", "src": "ZEROEXTEND(4, REGVALUE(%eax-ecx-edx%) != 0x00000000)"}}
 	},
 	{
 		"instructions": [
 			{"sbb":  ["%eax-ecx-edx%", "%eax-ecx-edx%"]},
 			{"inc":  ["%eax-ecx-edx%"]}
 		],
-		"action": {"tmpreg": {"dst": "%eax-ecx-edx%", "src": "(uint32)(U(REGVALUE(cmpl)) >= U(REGVALUE(cmpr)))"}}
+		"action": {"tmpreg": {"dst": "%eax-ecx-edx%", "src": "ZEROEXTEND(4, U(REGVALUE(cmpl)) >= U(REGVALUE(cmpr)))"}}
 	},
 	{
 		"instructions": [
@@ -416,7 +416,7 @@
 		"instructions": [
 			{"movsx":  ["%eax-ecx-edx%", "%src-operand%"]}
 		],
-		"action": {"tmpreg": {"dst": "%eax-ecx-edx%", "src": "(int32)%src-operand%"}}
+		"action": {"tmpreg": {"dst": "%eax-ecx-edx%", "src": "SIGNEXTEND(4, %src-operand%)"}}
 	},
 	{
 		"instructions": [

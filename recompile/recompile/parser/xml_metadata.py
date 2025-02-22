@@ -131,7 +131,7 @@ _primitive_types = {
     ("Character", 1): data_types.Char,
     ("SignedInt", 1): data_types.Char,
     ("UnsignedInt", 1): data_types.UChar,
-    ("SignedInt", 2): data_types.AnyInt16,
+    ("SignedInt", 2): data_types.Short,
     ("UnsignedInt", 2): data_types.UShort,
     ("SignedInt", 4): data_types.Int32,
     ("UnsignedInt", 4): data_types.UInt32,

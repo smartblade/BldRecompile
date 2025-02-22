@@ -117,7 +117,7 @@ def _reinterpret_static_cast(data_type, cast):
         return None
     if (
         isinstance(data_type, (data_types.Int32, data_types.UInt32)) and
-        isinstance(cast.data_type, (data_types.Int32, data_types.UInt32))
+        cast.data_type.is_any_int and data_type.size == cast.data_type.size
     ):
         return expressions.do_static_cast(data_type, cast.expression)
     return None

@@ -92,6 +92,8 @@ def _evaluate_procedure_calls(expression, **kwargs):
         on_real64=_evaluate_real64,
         on_expect=_evaluate_expect,
         on_eval=_evaluate_constants,
+        on_zeroextend=_evaluate_zeroextend,
+        on_signextend=_evaluate_signextend,
         on_i=_evaluate_any_int_conversion,
         on_s=_evaluate_int_conversion,
         on_u=_evaluate_uint_conversion,
@@ -135,6 +137,18 @@ def _evaluate_constants(expression, **kwargs):
     return evaluate_expression(expression)
 
 
+def _evaluate_zeroextend(size, expression, **kwargs):
+    return expressions.do_static_cast(
+        data_types.AnyInt(size), _evaluate_uint_conversion(expression)
+    )
+
+
+def _evaluate_signextend(size, expression, **kwargs):
+    return expressions.do_static_cast(
+        data_types.AnyInt(size), _evaluate_int_conversion(expression)
+    )
+
+
 def _evaluate_any_int_conversion(expression, **kwargs):
     size = expression.data_type.size
     return expressions.do_reinterpret(data_types.AnyInt(size), expression)
@@ -143,6 +157,8 @@ def _evaluate_any_int_conversion(expression, **kwargs):
 def _evaluate_uint_conversion(expression, **kwargs):
     if expression.data_type.size == 1:
         return expressions.do_reinterpret(data_types.UChar(), expression)
+    if expression.data_type.size == 2:
+        return expressions.do_reinterpret(data_types.UShort(), expression)
     if expression.data_type.size == 4:
         return expressions.do_reinterpret(data_types.UInt32(), expression)
     raise Exception("Conversion to uint{} is not supported.".format(
@@ -150,6 +166,10 @@ def _evaluate_uint_conversion(expression, **kwargs):
 
 
 def _evaluate_int_conversion(expression, **kwargs):
+    if expression.data_type.size == 1:
+        return expressions.do_reinterpret(data_types.Char(), expression)
+    if expression.data_type.size == 2:
+        return expressions.do_reinterpret(data_types.Short(), expression)
     if expression.data_type.size == 4:
         return expressions.do_reinterpret(data_types.Int32(), expression)
     raise Exception("Conversion to int{} is not supported.".format(

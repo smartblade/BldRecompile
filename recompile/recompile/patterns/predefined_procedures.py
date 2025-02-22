@@ -19,6 +19,8 @@ _procedures = {
     "EXPECT": lambda *args: _unpack_args(
         *args, expression=None, const=to_int),
     "EVAL": lambda *args: _unpack_args(*args, expression=None),
+    "ZEROEXTEND": lambda *args: _unpack_args(*args, size=int, expression=None),
+    "SIGNEXTEND": lambda *args: _unpack_args(*args, size=int, expression=None),
     "I": lambda *args: _unpack_args(*args, expression=None),
     "S": lambda *args: _unpack_args(*args, expression=None),
     "U": lambda *args: _unpack_args(*args, expression=None),

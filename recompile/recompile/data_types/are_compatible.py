@@ -27,6 +27,11 @@ def are_compatible(child, parent):
         isinstance(parent, data_types.AnyInt)
     ):
         return True
+    if (
+        isinstance(child, data_types.Bool) and
+        isinstance(parent, data_types.UChar)
+    ):
+        return True
     return False
 
 

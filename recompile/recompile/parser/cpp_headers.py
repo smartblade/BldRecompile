@@ -21,7 +21,7 @@ _standard_types = {
     "char": data_types.Char(),
     "unsigned char": data_types.UChar(),
     "byte": data_types.make_named_type(data_types.UChar(), "byte"),
-    "short": data_types.ClassType("short", {}),
+    "short": data_types.Short(),
     "unsigned short": data_types.UShort(),
     "int": data_types.Int32(),
     "long": data_types.make_named_type(data_types.Int32(), "long"),
