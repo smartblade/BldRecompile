@@ -18447,19 +18447,19 @@ Error: "Failed to find pattern for 'jns l10028206'"
 // address: 0x10028353
 void B_BitMap24::EscribeArchivoRAW(const char *arg_1)
 {
-    ProcedureInfo(this=Id(this), this_offset=-12, local_size=12, stack_delta=None)
-    STACKVAR(-8, 4) = 0x00000003 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-12, 4), 4, 4)) * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-12, 4), 8, 4));
-    STACKVAR(-4, 4) = fopen(STACKVAR(8, 4), GLOBAL(0x10048824));
-    if (STACKVAR(-4, 4) != 0x00000000)
+    STACKVAR(-8, 4) = 3 * this->dimension1 * this->dimension2;
+    STACKVAR(-4, 4) = fopen(arg_1, GLOBAL(0x10048824));
+    if (STACKVAR(-4, 4) == 0x00000000)
     {
-        goto l1002838C;
+        return;
     }
-    goto l100283C7;
-l1002838C:
-    fwrite(ACCESS(STACKVAR(-12, 4), 12, 4), 0x00000001, STACKVAR(-8, 4), STACKVAR(-4, 4));
-    REGDEF(cmpl=STACKVAR(-8, 4))
+    if (STACKVAR(-8, 4) != fwrite(this->data, 0x00000001, STACKVAR(-8, 4), STACKVAR(-4, 4)))
+    {
+        fclose(STACKVAR(-4, 4));
+        return;
+    }
+    fclose(STACKVAR(-4, 4));
 }
-Error: "'eax'"
 
 // address: 0x100283CD
 p100283CD

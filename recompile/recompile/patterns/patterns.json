@@ -671,6 +671,15 @@
 	},
 	{
 		"instructions": [
+			{"cmp":  ["%src-operand-left%", "eax"]}
+		],
+		"actions": [
+			{"tmpreg": {"dst": "cmpr", "src": "REGVALUE(eax)"}},
+			{"tmpreg": {"dst": "cmpl", "src": "%src-operand-left%"}}
+		]
+	},
+	{
+		"instructions": [
 			{"cmp":  ["%src-operand-left%", "%src-operand-right%"]}
 		],
 		"actions": [
