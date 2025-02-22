@@ -1,5 +1,10 @@
 {
 	"operand-patterns": {
+		"reg32-operand": [
+			{"operand": "edi", "expression": "edi"},
+			{"operand": "esi", "expression": "esi"},
+			{"operand": "%eax-ecx-edx%", "expression": "%eax-ecx-edx%"}
+		],
 		"mem-operand": [
 			{"operand": "[ebp%offset%]", "expression": "STACKVAR(%offset%, %size%)"},
 			{"operand": "[%eax-ecx-edx%]", "expression": "ACCESS(REGVALUE(%eax-ecx-edx%), 0, %size%)"},
@@ -13,11 +18,9 @@
 			{"operand": "%external%", "expression": "EXTERNVAR(%external%)"}
 		],
 		"reg-operand": [
-			{"operand": "edi", "expression": "edi"},
-			{"operand": "esi", "expression": "esi"},
+			{"operand": "%reg32-operand%", "expression": "%reg32-operand%"},
 			{"operand": "%al-cl-dl%", "expression": "%al-cl-dl%"},
-			{"operand": "%ax-cx-dx%", "expression": "%ax-cx-dx%"},
-			{"operand": "%eax-ecx-edx%", "expression": "%eax-ecx-edx%"}
+			{"operand": "%ax-cx-dx%", "expression": "%ax-cx-dx%"}
 		],
 		"src-operand": [
 			{"operand": "%mem-operand%", "expression": "%mem-operand%"},
@@ -435,9 +438,9 @@
 	},
 	{
 		"instructions": [
-			{"lea":  ["%eax-ecx-edx%", "[ebp%offset%]"]}
+			{"lea":  ["%reg32-operand%", "[ebp%offset%]"]}
 		],
-		"action": {"tmpreg": {"dst": "%eax-ecx-edx%", "src": "LOCAL(%offset%)"}}
+		"action": {"tmpreg": {"dst": "%reg32-operand%", "src": "LOCAL(%offset%)"}}
 	},
 	{
 		"instructions": [

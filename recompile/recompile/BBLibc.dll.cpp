@@ -884,8 +884,9 @@ char *GetCurrentLanguage()
 {
     ProcedureInfo(this=None, this_offset=None, local_size=256, stack_delta=None)
     strcpy(LOCAL(-256), unknown_function_10002740());
+    REGDEF(edi=LOCAL(-256), ecx=0xFFFFFFFF, eax=0x00000000)
 }
-Error: "Failed to find pattern for 'lea edi, [ebp-000000100h]'"
+Error: "Failed to find pattern for 'repnz scasb'"
 
 // address: 0x10002980
 B_ListElement::~B_ListElement()
@@ -6016,9 +6017,9 @@ Error: "Unexpected instruction type <class 'instructions.assignment.Assignment'>
 p1000C0BE
 {
     ProcedureInfo(this=None, this_offset=None, local_size=2116, stack_delta=None)
-    REGDEF(ecx=0x00000008, eax=0x00000000)
+    REGDEF(ecx=0x00000008, eax=0x00000000, edi=LOCAL(-1076))
 }
-Error: "Failed to find pattern for 'lea edi, [ebp-000000434h]'"
+Error: "Failed to find pattern for 'rep stosd'"
 
 // address: 0x1000C580
 p1000C580
@@ -6117,9 +6118,39 @@ p1000C80D
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 344, 4);
     STACKVAR(-40, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 24, 4), 0, 4);
     STACKVAR(-36, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 24, 4), 4, 4);
-    REGDEF(esi=reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x0000000C, ecx=0x00000006)
+    memcpy(LOCAL(-32), reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x0000000C, 0x00000018); // TODO improve emitting of memcpy instructions
+    STACKVAR(-8, 4) = STACKVAR(8, 4);
+    if (ACCESS(STACKVAR(8, 4), 184, 4) == 0x00000000)
+    {
+        goto l1000C886;
+    }
+    if (ACCESS(STACKVAR(-4, 4), 36, 4) != 0x00000000)
+    {
+        goto l1000C886;
+    }
+    if ((reinterpret_cast<any_int32>(unknown_function_1000CDB5(LOCAL(-40), ACCESS(STACKVAR(-4, 4), 40, 4))) & 0x000000FF) != 0x00000000)
+    {
+        goto l1000C886;
+    }
+    REGDEF(al=0)
+    goto l1000C9A6;
+l1000C886:
+    STACKVAR(-52, 4) = 0x00000000;
+    goto l1000C898;
+l1000C88F:
+    STACKVAR(-52, 4) = reinterpret_cast<any_int32>(STACKVAR(-52, 4)) + 0x00000001;
+l1000C898:
+    if (reinterpret_cast<int>(STACKVAR(-52, 4)) >= reinterpret_cast<int>(ACCESS(STACKVAR(8, 4), 252, 4)))
+    {
+        goto l1000C92C;
+    }
+    STACKVAR(-48, 4) = ACCESS(ARRPTR(STACKVAR(8, 4), 0x04, STACKVAR(-52, 4), 256), 0, 4);
+    STACKVAR(-44, 4) = ACCESS(ARRPTR(STACKVAR(8, 4), 0x04, STACKVAR(-48, 4), 228), 0, 4);
+    ARG(ACCESS(ARRPTR(STACKVAR(-4, 4), 0x04, ACCESS(STACKVAR(-44, 4), 24, 4), 60), 0, 4));
+    ARG(ACCESS(ARRPTR(STACKVAR(-4, 4), 0x04, ACCESS(STACKVAR(-44, 4), 20, 4), 44), 0, 4));
+    REGDEF(ecx=STACKVAR(-48, 4))
 }
-Error: "Failed to find pattern for 'lea edi, [ebp-020h]'"
+Error: "Failed to find pattern for 'mov edx, dword ptr [ebp+ecx*04h-018h]'"
 
 // address: 0x1000C9AC
 p1000C9AC
@@ -6276,13 +6307,21 @@ p1000CEA5
 // address: 0x1000CEDD
 p1000CEDD
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=40, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=40, stack_delta=0)
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 344, 4);
     STACKVAR(-40, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 24, 4), 0, 4);
     STACKVAR(-36, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 24, 4), 4, 4);
-    REGDEF(esi=reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x0000000C, ecx=0x00000006)
+    memcpy(LOCAL(-32), reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x0000000C, 0x00000018); // TODO improve emitting of memcpy instructions
+    STACKVAR(-8, 4) = STACKVAR(8, 4);
+    if ((reinterpret_cast<any_int32>(unknown_function_1000CEA5(LOCAL(-40))) & 0x000000FF) == 0x00000000)
+    {
+        ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x00000018;
+        ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 0, 4)(STACKVAR(8, 4));
+    }
+    ACCESS(ACCESS(STACKVAR(8, 4), 24, 4), 0, 4) = STACKVAR(-40, 4);
+    ACCESS(ACCESS(STACKVAR(8, 4), 24, 4), 4, 4) = STACKVAR(-36, 4);
+    memcpy(reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x0000000C, LOCAL(-32), 0x00000018); // TODO improve emitting of memcpy instructions
 }
-Error: "Failed to find pattern for 'lea edi, [ebp-020h]'"
 
 // address: 0x1000CF7A
 p1000CF7A
@@ -14162,9 +14201,43 @@ l1001D6EF:
     STACKVAR(-72, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 24, 4), 4, 4);
     STACKVAR(-4, 4) = ACCESS(STACKVAR(-24, 4), 12, 4);
     STACKVAR(-56, 4) = ACCESS(STACKVAR(-24, 4), 16, 4);
-    REGDEF(esi=reinterpret_cast<any_int32>(STACKVAR(-24, 4)) + 0x00000014, ecx=0x00000005)
+    memcpy(LOCAL(-44), reinterpret_cast<any_int32>(STACKVAR(-24, 4)) + 0x00000014, 0x00000014); // TODO improve emitting of memcpy instructions
+    STACKVAR(-80, 4) = 0x00000000;
+    goto l1001D750;
+l1001D747:
+    STACKVAR(-80, 4) = reinterpret_cast<any_int32>(STACKVAR(-80, 4)) + 0x00000001;
+l1001D750:
+    if (reinterpret_cast<int>(STACKVAR(-80, 4)) >= reinterpret_cast<int>(ACCESS(STACKVAR(8, 4), 320, 4)))
+    {
+        goto l1001D92A;
+    }
+    STACKVAR(-84, 4) = ACCESS(ARRPTR(STACKVAR(12, 4), 0x04, STACKVAR(-80, 4), 0), 0, 4);
+    STACKVAR(-52, 4) = ACCESS(ARRPTR(STACKVAR(8, 4), 0x04, STACKVAR(-80, 4), 324), 0, 4);
+    STACKVAR(-48, 4) = ACCESS(ARRPTR(STACKVAR(8, 4), 0x04, STACKVAR(-52, 4), 296), 0, 4);
+    STACKVAR(-12, 4) = ACCESS(ARRPTR(STACKVAR(-24, 4), 0x04, ACCESS(STACKVAR(-48, 4), 20, 4), 44), 0, 4);
+    if (reinterpret_cast<int>(STACKVAR(-56, 4)) >= 8)
+    {
+        goto l1001D7E5;
+    }
+    if ((reinterpret_cast<any_int32>(unknown_function_10016BF7(LOCAL(-76), STACKVAR(-4, 4), STACKVAR(-56, 4), 0x00000000)) & 0x000000FF) != 0x00000000)
+    {
+        goto l1001D7CA;
+    }
+    REGDEF(al=0)
+    goto l1001D974;
+l1001D7CA:
+    STACKVAR(-4, 4) = STACKVAR(-68, 4);
+    STACKVAR(-56, 4) = STACKVAR(-64, 4);
+    if (reinterpret_cast<int>(STACKVAR(-56, 4)) >= 8)
+    {
+        goto l1001D7E5;
+    }
+    STACKVAR(-88, 4) = 0x00000001;
+    goto l1001D832;
+l1001D7E5:
+    REGDEF(ecx=reinterpret_cast<any_int32>(STACKVAR(-56, 4)) - 0x00000008, edx=STACKVAR(-4, 4))
 }
-Error: "Failed to find pattern for 'lea edi, [ebp-02Ch]'"
+Error: "Failed to find pattern for 'sar edx, cl'"
 
 // address: 0x1001D97A
 p1001D97A
@@ -19627,7 +19700,7 @@ Error: "Unexpected instruction type <class 'instructions.assignment.Assignment'>
 // address: 0x1002F537
 p1002F537
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=128, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=128, stack_delta=0)
     LOCAL(-128)->unknown_method_1002E190();
     STACKVAR(-128, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 0, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 0, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 8, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 32, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 16, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 64, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 24, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 96, 8));
     STACKVAR(-120, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 0, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 8, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 8, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 40, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 16, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 72, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 24, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 104, 8));
@@ -19645,9 +19718,9 @@ p1002F537
     STACKVAR(-24, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 96, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 8, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 104, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 40, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 112, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 72, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 120, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 104, 8));
     STACKVAR(-16, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 96, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 16, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 104, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 48, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 112, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 80, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 120, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 112, 8));
     STACKVAR(-8, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 96, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 24, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 104, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 56, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 112, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 88, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 120, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 120, 8));
-    REGDEF(ecx=0x00000020)
+    memcpy(STACKVAR(8, 4), LOCAL(-128), 0x00000080); // TODO improve emitting of memcpy instructions
+    REGDEF(eax=STACKVAR(8, 4))
 }
-Error: "Failed to find pattern for 'lea esi, [ebp-080h]'"
 
 // address: 0x1002FEB3
 p1002FEB3
@@ -20769,9 +20842,106 @@ l10034FEB:
     }
     LOCAL(-392)->unknown_method_1002E190();
     (reinterpret_cast<any_int32>(STACKVAR(-32, 4)) + 0x0000000C)->unknown_method_1002F052(LOCAL(-392));
-    REGDEF(esi=unknown_function_1002F537(LOCAL(-692), LOCAL(-172), LOCAL(-392)), ecx=0x00000020)
+    memcpy(LOCAL(-172), unknown_function_1002F537(LOCAL(-692), LOCAL(-172), LOCAL(-392)), 0x00000080); // TODO improve emitting of memcpy instructions
+    goto l100350CC;
+l1003504A:
+    STACKVAR(-716, 4) = 0x00000000;
+    STACKVAR(-712, 4) = 0x3FF00000;
+    ACCESS(LOCAL(-708), 0, 8) = 0.0;
+    ACCESS(LOCAL(-700), 0, 8) = 0.0;
+    LOCAL(-520)->unknown_method_1002E600(LOCAL(-716), 0x54442EEA, 0x3FF921FB);
+    memcpy(LOCAL(-172), unknown_function_1002F537(LOCAL(-844), LOCAL(-172), LOCAL(-520)), 0x00000080); // TODO improve emitting of memcpy instructions
+l100350CC:
+    STACKVAR(-196, 4) = 0x00000000;
+    STACKVAR(-192, 4) = 0x3FF00000;
+    ACCESS(LOCAL(-188), 0, 8) = 2.0;
+    ACCESS(LOCAL(-180), 0, 8) = 1.0;
+    LOCAL(-196)->unknown_method_1003165E(LOCAL(-196)->unknown_method_10031913());
+    STACKVAR(-44, 4) = 0x00000000;
+    goto l10035134;
+l1003512B:
+    STACKVAR(-44, 4) = reinterpret_cast<any_int32>(STACKVAR(-44, 4)) + 0x00000001;
+l10035134:
+    if (reinterpret_cast<unsigned int>(STACKVAR(-44, 4)) >= reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-1036, 4), 44, 4)))
+    {
+        goto l10035376;
+    }
+    memcpy(reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A9BC), 0, 4)) + 0x00000018 * reinterpret_cast<any_int32>(STACKVAR(-44, 4)), unknown_function_100300A1(LOCAL(-868), reinterpret_cast<any_int32>(ACCESS(STACKVAR(-1036, 4), 40, 4)) + 0x00000030 * reinterpret_cast<any_int32>(STACKVAR(-44, 4)), LOCAL(-172)), 0x00000018); // TODO improve emitting of memcpy instructions
+    memcpy(LOCAL(-544), reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A9BC), 0, 4)) + 0x00000018 * reinterpret_cast<any_int32>(STACKVAR(-44, 4)), 0x00000018); // TODO improve emitting of memcpy instructions
+    if (reinterpret_cast<double>(STACKVAR(-260, 8)) <= reinterpret_cast<double>(STACKVAR(-544, 8)))
+    {
+        goto l100351CD;
+    }
+    STACKVAR(-1048, 4) = STACKVAR(-260, 4);
+    STACKVAR(-1044, 4) = STACKVAR(-256, 4);
+    goto l100351E5;
+l100351CD:
+    STACKVAR(-1048, 4) = STACKVAR(-544, 4);
+    STACKVAR(-1044, 4) = STACKVAR(-540, 4);
+l100351E5:
+    STACKVAR(-260, 4) = STACKVAR(-1048, 4);
+    STACKVAR(-256, 4) = STACKVAR(-1044, 4);
+    if (reinterpret_cast<double>(STACKVAR(-212, 8)) <= reinterpret_cast<double>(STACKVAR(-536, 8)))
+    {
+        goto l1003522A;
+    }
+    STACKVAR(-1056, 4) = STACKVAR(-212, 4);
+    STACKVAR(-1052, 4) = STACKVAR(-208, 4);
+    goto l10035242;
+l1003522A:
+    STACKVAR(-1056, 4) = STACKVAR(-536, 4);
+    STACKVAR(-1052, 4) = STACKVAR(-532, 4);
+l10035242:
+    STACKVAR(-212, 4) = STACKVAR(-1056, 4);
+    STACKVAR(-208, 4) = STACKVAR(-1052, 4);
+    if (reinterpret_cast<double>(STACKVAR(-244, 8)) >= reinterpret_cast<double>(STACKVAR(-544, 8)))
+    {
+        goto l10035287;
+    }
+    STACKVAR(-1064, 4) = STACKVAR(-244, 4);
+    STACKVAR(-1060, 4) = STACKVAR(-240, 4);
+    goto l1003529F;
+l10035287:
+    STACKVAR(-1064, 4) = STACKVAR(-544, 4);
+    STACKVAR(-1060, 4) = STACKVAR(-540, 4);
+l1003529F:
+    STACKVAR(-244, 4) = STACKVAR(-1064, 4);
+    STACKVAR(-240, 4) = STACKVAR(-1060, 4);
+    if (reinterpret_cast<double>(STACKVAR(-252, 8)) >= reinterpret_cast<double>(STACKVAR(-536, 8)))
+    {
+        goto l100352E4;
+    }
+    STACKVAR(-1072, 4) = STACKVAR(-252, 4);
+    STACKVAR(-1068, 4) = STACKVAR(-248, 4);
+    goto l100352FC;
+l100352E4:
+    STACKVAR(-1072, 4) = STACKVAR(-536, 4);
+    STACKVAR(-1068, 4) = STACKVAR(-532, 4);
+l100352FC:
+    STACKVAR(-252, 4) = STACKVAR(-1072, 4);
+    STACKVAR(-248, 4) = STACKVAR(-1068, 4);
+    if (reinterpret_cast<double>(STACKVAR(-204, 8)) >= reinterpret_cast<double>(STACKVAR(-528, 8)))
+    {
+        goto l10035341;
+    }
+    STACKVAR(-1080, 4) = STACKVAR(-204, 4);
+    STACKVAR(-1076, 4) = STACKVAR(-200, 4);
+    goto l10035359;
+l10035341:
+    STACKVAR(-1080, 4) = STACKVAR(-528, 4);
+    STACKVAR(-1076, 4) = STACKVAR(-524, 4);
+l10035359:
+    STACKVAR(-204, 4) = STACKVAR(-1080, 4);
+    STACKVAR(-200, 4) = STACKVAR(-1076, 4);
+    goto l1003512B;
+l10035376:
+    if (reinterpret_cast<float>(STACKVAR(28, 4)) != reinterpret_cast<double>(ACCESS(GLOBAL(0x10042CF0), 0, 8)))
+    {
+        goto l10035401;
+    }
+    REGDEF(ST(0)=reinterpret_cast<double>(STACKVAR(-260, 8)) - reinterpret_cast<double>(STACKVAR(-244, 8)), ST(1)=reinterpret_cast<float>(STACKVAR(20, 4)) - reinterpret_cast<float>(STACKVAR(12, 4)))
 }
-Error: "Failed to find pattern for 'lea edi, [ebp-0000000ACh]'"
+Error: "Failed to find pattern for 'fdivp st(01h), st(00h)'"
 
 // address: 0x1003590B
 p1003590B
