@@ -51,14 +51,15 @@ def _get_operand_pattern_set_name(operand_pattern, operand_pattern_sets):
 
 def _match_operand_pattern_set(operand, set_name, operand_pattern_sets):
     for pattern in operand_pattern_sets[set_name]:
-        operand_expression = _apply_operand_pattern(
+        match_dict = _apply_operand_pattern(
             operand,
             pattern["operand"],
             pattern["expression"],
             operand_pattern_sets,
         )
-        if operand_expression is not None:
-            return {set_name: operand_expression}
+        if match_dict is not None:
+            operand_expression = match_dict.pop("expression")
+            return {set_name: operand_expression, **match_dict}
     return None
 
 
@@ -69,7 +70,11 @@ def _apply_operand_pattern(
     if match_dict is None:
         return None
     expression = replace_variables(expression, match_dict)
-    return expression
+    size = {'size': match_dict["size"]} if 'size' in match_dict else {}
+    return {
+        'expression': expression,
+        **size,
+    }
 
 
 def _match_operand(operand, operand_pattern):

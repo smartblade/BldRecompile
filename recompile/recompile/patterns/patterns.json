@@ -5,17 +5,20 @@
 			{"operand": "esi", "expression": "esi"},
 			{"operand": "%eax-ecx-edx%", "expression": "%eax-ecx-edx%"}
 		],
+		"effective-addr-operand": [
+			{"operand": "[%eax-ecx-edx-base%+%eax-ecx-edx-index%]", "expression": "ARRPTR(REGVALUE(%eax-ecx-edx-base%), 1, REGVALUE(%eax-ecx-edx-index%), 0)"},
+			{"operand": "[esi+%eax-ecx-edx-index%]", "expression": "ARRPTR(REGVALUE(esi), 1, REGVALUE(%eax-ecx-edx-index%), 0)"},
+			{"operand": "[%eax-ecx-edx-base%+%eax-ecx-edx-index%*%hex-scale%]", "expression": "ARRPTR(REGVALUE(%eax-ecx-edx-base%), %hex-scale%, REGVALUE(%eax-ecx-edx-index%), 0)"},
+			{"operand": "[%eax-ecx-edx-base%+%eax-ecx-edx-index%%offset%]", "expression": "ARRPTR(REGVALUE(%eax-ecx-edx-base%), 1, REGVALUE(%eax-ecx-edx-index%), %offset%)"},
+			{"operand": "[%eax-ecx-edx-base%+%eax-ecx-edx-index%*%hex-scale%%offset%]", "expression": "ARRPTR(REGVALUE(%eax-ecx-edx-base%), %hex-scale%, REGVALUE(%eax-ecx-edx-index%), %offset%)"}
+		],
 		"mem-operand": [
 			{"operand": "[ebp%offset%]", "expression": "STACKVAR(%offset%, %size%)"},
 			{"operand": "[%eax-ecx-edx%]", "expression": "ACCESS(REGVALUE(%eax-ecx-edx%), 0, %size%)"},
 			{"operand": "[%eax-ecx-edx%%offset%]", "expression": "ACCESS(REGVALUE(%eax-ecx-edx%), %offset%, %size%)"},
 			{"operand": "[%label%]", "expression": "ACCESS(GLOBAL(%label%), 0, %size%)"},
-			{"operand": "[%eax-ecx-edx-base%+%eax-ecx-edx-index%]", "expression": "ACCESS(ARRPTR(REGVALUE(%eax-ecx-edx-base%), 1, REGVALUE(%eax-ecx-edx-index%), 0), 0, %size%)"},
-			{"operand": "[esi+%eax-ecx-edx-index%]", "expression": "ACCESS(ARRPTR(REGVALUE(esi), 1, REGVALUE(%eax-ecx-edx-index%), 0), 0, %size%)"},
-			{"operand": "[%eax-ecx-edx-base%+%eax-ecx-edx-index%*%hex-scale%]", "expression": "ACCESS(ARRPTR(REGVALUE(%eax-ecx-edx-base%), %hex-scale%, REGVALUE(%eax-ecx-edx-index%), 0), 0, %size%)"},
-			{"operand": "[%eax-ecx-edx-base%+%eax-ecx-edx-index%%offset%]", "expression": "ACCESS(ARRPTR(REGVALUE(%eax-ecx-edx-base%), 1, REGVALUE(%eax-ecx-edx-index%), %offset%), 0, %size%)"},
-			{"operand": "[%eax-ecx-edx-base%+%eax-ecx-edx-index%*%hex-scale%%offset%]", "expression": "ACCESS(ARRPTR(REGVALUE(%eax-ecx-edx-base%), %hex-scale%, REGVALUE(%eax-ecx-edx-index%), %offset%), 0, %size%)"},
-			{"operand": "%external%", "expression": "EXTERNVAR(%external%)"}
+			{"operand": "%external%", "expression": "EXTERNVAR(%external%)"},
+			{"operand": "%effective-addr-operand%", "expression": "ACCESS(%effective-addr-operand%, 0, %size%)"}
 		],
 		"reg-operand": [
 			{"operand": "%reg32-operand%", "expression": "%reg32-operand%"},
@@ -420,12 +423,6 @@
 	},
 	{
 		"instructions": [
-			{"lea":  ["%eax-ecx-edx-dst%", "[%eax-ecx-edx-base%+%eax-ecx-edx-index%*%hex-scale%]"]}
-		],
-		"action": {"tmpreg": {"dst": "%eax-ecx-edx-dst%", "src": "ARRPTR(REGVALUE(%eax-ecx-edx-base%), %hex-scale%, REGVALUE(%eax-ecx-edx-index%), 0)"}}
-	},
-	{
-		"instructions": [
 			{"lea":  ["%eax-ecx-edx-dst%", "[%eax-ecx-edx-index%+%eax-ecx-edx-index%%offset%]"]}
 		],
 		"action": {"tmpreg": {"dst": "%eax-ecx-edx-dst%", "src": "2 * I(REGVALUE(%eax-ecx-edx-index%)) + %offset%"}}
@@ -441,6 +438,12 @@
 			{"lea":  ["%reg32-operand%", "[ebp%offset%]"]}
 		],
 		"action": {"tmpreg": {"dst": "%reg32-operand%", "src": "LOCAL(%offset%)"}}
+	},
+	{
+		"instructions": [
+			{"lea":  ["%eax-ecx-edx%", "%effective-addr-operand%"]}
+		],
+		"action": {"tmpreg": {"dst": "%eax-ecx-edx%", "src": "%effective-addr-operand%"}}
 	},
 	{
 		"instructions": [
