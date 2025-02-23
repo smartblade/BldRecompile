@@ -113,7 +113,12 @@ def _reinterpret_bin(data_type, b):
 def _reinterpret_static_cast(data_type, cast):
     if not isinstance(cast, expressions.StaticCast):
         return None
-    if not isinstance(cast.expression.data_type, data_types.Bool):
+    if (
+        not cast.expression.data_type.is_any_int and
+        not isinstance(cast.expression.data_type, data_types.Bool)
+    ):
+        return None
+    if cast.expression.data_type.size > cast.data_type.size:
         return None
     if (
         isinstance(data_type, (data_types.Int32, data_types.UInt32)) and
