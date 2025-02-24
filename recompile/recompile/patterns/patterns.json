@@ -2,9 +2,9 @@
 	"operand-patterns": {
 		"effective-addr-operand": [
 			{"operand": "[%tmpreg32-base%+%eax-ecx-edx-index%]", "expression": "ARRPTR(REGVALUE(%tmpreg32-base%), 1, REGVALUE(%eax-ecx-edx-index%), 0)"},
-			{"operand": "[%eax-ecx-edx-base%+%eax-ecx-edx-index%*%hex-scale%]", "expression": "ARRPTR(REGVALUE(%eax-ecx-edx-base%), %hex-scale%, REGVALUE(%eax-ecx-edx-index%), 0)"},
-			{"operand": "[%eax-ecx-edx-base%+%eax-ecx-edx-index%%offset%]", "expression": "ARRPTR(REGVALUE(%eax-ecx-edx-base%), 1, REGVALUE(%eax-ecx-edx-index%), %offset%)"},
-			{"operand": "[%eax-ecx-edx-base%+%eax-ecx-edx-index%*%hex-scale%%offset%]", "expression": "ARRPTR(REGVALUE(%eax-ecx-edx-base%), %hex-scale%, REGVALUE(%eax-ecx-edx-index%), %offset%)"}
+			{"operand": "[%tmpreg32-base%+%eax-ecx-edx-index%*%hex-scale%]", "expression": "ARRPTR(REGVALUE(%tmpreg32-base%), %hex-scale%, REGVALUE(%eax-ecx-edx-index%), 0)"},
+			{"operand": "[%tmpreg32-base%+%eax-ecx-edx-index%%offset%]", "expression": "ARRPTR(REGVALUE(%tmpreg32-base%), 1, REGVALUE(%eax-ecx-edx-index%), %offset%)"},
+			{"operand": "[%tmpreg32-base%+%eax-ecx-edx-index%*%hex-scale%%offset%]", "expression": "ARRPTR(REGVALUE(%tmpreg32-base%), %hex-scale%, REGVALUE(%eax-ecx-edx-index%), %offset%)"}
 		],
 		"mem-operand": [
 			{"operand": "[ebp%offset%]", "expression": "STACKVAR(%offset%, %size%)"},
