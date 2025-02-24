@@ -318,30 +318,37 @@ int B_IDataFile::Eof()
 // address: 0x10001A33
 void B_IDataFile::Read(void *data, unsigned int size)
 {
-    ProcedureInfo(this=Id(this), this_offset=-8, local_size=12, stack_delta=None)
-    if (reinterpret_cast<unsigned int>(STACKVAR(12, 4)) >= reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-8, 4), 8, 4)) - reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-8, 4), 16400, 4)) - reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-8, 4), 16396, 4)))
+    if (size < this->file_size - this->cacheBlockPos - this->cacheBlockBytesRead)
     {
-        goto l10001A63;
+        STACKVAR(-12, 4) = size;
     }
-    STACKVAR(-12, 4) = STACKVAR(12, 4);
-    goto l10001A7E;
-l10001A63:
-    STACKVAR(-12, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-8, 4), 8, 4)) - reinterpret_cast<any_int32>(ACCESS(STACKVAR(-8, 4), 16400, 4)) - reinterpret_cast<any_int32>(ACCESS(STACKVAR(-8, 4), 16396, 4));
-l10001A7E:
-    STACKVAR(12, 4) = STACKVAR(-12, 4);
-    if (STACKVAR(12, 4) != 0x00000000)
+    else
     {
-        goto l10001A8F;
+        STACKVAR(-12, 4) = this->file_size - this->cacheBlockPos - this->cacheBlockBytesRead;
     }
-    goto l10001B4D;
-l10001A8F:
-    if (reinterpret_cast<unsigned int>(STACKVAR(12, 4)) >= 0x00004000 - reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-8, 4), 16400, 4)))
+    size = reinterpret_cast<unsigned int>(STACKVAR(-12, 4));
+    if (size == 0)
     {
-        goto l10001ADD;
+        return;
     }
-    REGDEF(esi=reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + reinterpret_cast<any_int32>(ACCESS(STACKVAR(-8, 4), 16400, 4)) + 12, edi=STACKVAR(8, 4), edx=STACKVAR(12, 4))
+    if (size < 0x00004000 - this->cacheBlockPos)
+    {
+        memcpy(data, reinterpret_cast<any_int32>(this) + this->cacheBlockPos + 12, size); // TODO improve emitting of memcpy instructions
+        this->cacheBlockPos = this->cacheBlockPos + size;
+        return;
+    }
+    STACKVAR(-4, 4) = 0x00004000 - this->cacheBlockPos;
+    if (STACKVAR(-4, 4) != 0x00000000)
+    {
+        memcpy(data, reinterpret_cast<any_int32>(this) + this->cacheBlockPos + 12, STACKVAR(-4, 4)); // TODO improve emitting of memcpy instructions
+        this->cacheBlockPos = 16384;
+        size = reinterpret_cast<unsigned int>(size - reinterpret_cast<any_int32>(STACKVAR(-4, 4)));
+    }
+    if (this->ReadCacheBlock() != 0)
+    {
+        this->Read(reinterpret_cast<void *>(reinterpret_cast<any_int32>(data) + reinterpret_cast<any_int32>(STACKVAR(-4, 4))), size);
+    }
 }
-Error: "Failed to find pattern for 'shr ecx, 002h'"
 
 // address: 0x10001B55
 B_IDataFile &operator >>(B_IDataFile &file, char &c)
@@ -468,29 +475,26 @@ l10001E6E:
 // address: 0x10001E86
 void B_ODataFile::Write(const void *data, unsigned int size)
 {
-    ProcedureInfo(this=Id(this), this_offset=-8, local_size=8, stack_delta=None)
-    if (STACKVAR(12, 4) != 0x00000000)
+    if (size == 0)
     {
-        goto l10001E9C;
+        return;
     }
-    goto l10001F56;
-l10001E9C:
-    if (reinterpret_cast<unsigned int>(STACKVAR(12, 4)) >= 0x00004000 - reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-8, 4), 16396, 4)))
+    if (size < 0x00004000 - reinterpret_cast<unsigned int>(ACCESS(this, 16396, 4)))
     {
-        goto l10001EEA;
+        memcpy(reinterpret_cast<any_int32>(this) + reinterpret_cast<any_int32>(ACCESS(this, 16396, 4)) + 8, data, size); // TODO improve emitting of memcpy instructions
+        ACCESS(this, 16396, 4) = reinterpret_cast<any_int32>(ACCESS(this, 16396, 4)) + size;
+        return;
     }
-    memcpy(reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + reinterpret_cast<any_int32>(ACCESS(STACKVAR(-8, 4), 16396, 4)) + 8, STACKVAR(8, 4), STACKVAR(12, 4)); // TODO improve emitting of memcpy instructions
-    ACCESS(STACKVAR(-8, 4), 16396, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-8, 4), 16396, 4)) + reinterpret_cast<any_int32>(STACKVAR(12, 4));
-    goto l10001F56;
-l10001EEA:
-    STACKVAR(-4, 4) = 0x00004000 - reinterpret_cast<any_int32>(ACCESS(STACKVAR(-8, 4), 16396, 4));
-    if (STACKVAR(-4, 4) == 0x00000000)
+    STACKVAR(-4, 4) = 0x00004000 - reinterpret_cast<any_int32>(ACCESS(this, 16396, 4));
+    if (STACKVAR(-4, 4) != 0x00000000)
     {
-        goto l10001F3B;
+        memcpy(reinterpret_cast<any_int32>(this) + reinterpret_cast<any_int32>(ACCESS(this, 16396, 4)) + 8, data, STACKVAR(-4, 4)); // TODO improve emitting of memcpy instructions
+        ACCESS(this, 16396, 4) = 0x00004000;
+        size = reinterpret_cast<unsigned int>(size - reinterpret_cast<any_int32>(STACKVAR(-4, 4)));
     }
-    REGDEF(esi=STACKVAR(8, 4), edi=reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + reinterpret_cast<any_int32>(ACCESS(STACKVAR(-8, 4), 16396, 4)) + 8, edx=STACKVAR(-4, 4))
+    this->unknown_method_10001DA0();
+    this->Write(reinterpret_cast<void *>(reinterpret_cast<any_int32>(data) + reinterpret_cast<any_int32>(STACKVAR(-4, 4))), size);
 }
-Error: "Failed to find pattern for 'shr ecx, 002h'"
 
 // address: 0x10001F5E
 B_ODataFile &operator <<(B_ODataFile &file, const char &c)
@@ -8761,9 +8765,19 @@ l10011E47:
         goto l10011F23;
     }
     STACKVAR(-16, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 8, 4)(STACKVAR(8, 4), 0x00000001, 0x00000008 * reinterpret_cast<int>(ACCESS(STACKVAR(-20, 4), 28, 4)) * reinterpret_cast<int>(ACCESS(STACKVAR(8, 4), 212, 4)) / reinterpret_cast<int>(ACCESS(STACKVAR(-20, 4), 8, 4)), 0x00000003 * reinterpret_cast<any_int32>(STACKVAR(-28, 4)));
-    REGDEF(esi=STACKVAR(-16, 4), edi=ARRPTR(STACKVAR(-8, 4), 0x04, STACKVAR(-28, 4), 0), edx=0x00000004 * 0x00000003 * reinterpret_cast<any_int32>(STACKVAR(-28, 4)))
+    memcpy(ARRPTR(STACKVAR(-8, 4), 0x04, STACKVAR(-28, 4), 0), STACKVAR(-16, 4), 0x00000004 * 0x00000003 * reinterpret_cast<any_int32>(STACKVAR(-28, 4))); // TODO improve emitting of memcpy instructions
+    STACKVAR(-12, 4) = 0x00000000;
+    goto l10011EC2;
+l10011EB9:
+    STACKVAR(-12, 4) = reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + 0x00000001;
+l10011EC2:
+    if (reinterpret_cast<int>(STACKVAR(-12, 4)) >= reinterpret_cast<int>(STACKVAR(-28, 4)))
+    {
+        goto l10011EFC;
+    }
+    REGDEF(ecx=ARRPTR(STACKVAR(-12, 4), 0x02, STACKVAR(-28, 4), 0), edx=STACKVAR(-12, 4), eax=STACKVAR(-8, 4), esi=STACKVAR(-16, 4))
 }
-Error: "Failed to find pattern for 'shr ecx, 002h'"
+Error: "Failed to find pattern for 'mov ecx, dword ptr [esi+ecx*04h]'"
 
 // address: 0x10011F30
 p10011F30
