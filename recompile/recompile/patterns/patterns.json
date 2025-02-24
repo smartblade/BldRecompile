@@ -423,15 +423,15 @@
 	},
 	{
 		"instructions": [
-			{"lea":  ["%eax-ecx-edx-dst%", "[%eax-ecx-edx-index%+%eax-ecx-edx-index%%offset%]"]}
+			{"lea":  ["%reg32-operand%", "[%eax-ecx-edx-index%+%eax-ecx-edx-index%%offset%]"]}
 		],
-		"action": {"tmpreg": {"dst": "%eax-ecx-edx-dst%", "src": "2 * I(REGVALUE(%eax-ecx-edx-index%)) + %offset%"}}
+		"action": {"tmpreg": {"dst": "%reg32-operand%", "src": "2 * I(REGVALUE(%eax-ecx-edx-index%)) + %offset%"}}
 	},
 	{
 		"instructions": [
-			{"lea":  ["%eax-ecx-edx-dst%", "[%eax-ecx-edx-base%+%eax-ecx-edx-index%%offset%]"]}
+			{"lea":  ["%reg32-operand%", "[%eax-ecx-edx-base%+%eax-ecx-edx-index%%offset%]"]}
 		],
-		"action": {"tmpreg": {"dst": "%eax-ecx-edx-dst%", "src": "I(REGVALUE(%eax-ecx-edx-base%)) + I(REGVALUE(%eax-ecx-edx-index%)) + %offset%"}}
+		"action": {"tmpreg": {"dst": "%reg32-operand%", "src": "I(REGVALUE(%eax-ecx-edx-base%)) + I(REGVALUE(%eax-ecx-edx-index%)) + %offset%"}}
 	},
 	{
 		"instructions": [
@@ -441,9 +441,9 @@
 	},
 	{
 		"instructions": [
-			{"lea":  ["%eax-ecx-edx%", "%effective-addr-operand%"]}
+			{"lea":  ["%reg32-operand%", "%effective-addr-operand%"]}
 		],
-		"action": {"tmpreg": {"dst": "%eax-ecx-edx%", "src": "%effective-addr-operand%"}}
+		"action": {"tmpreg": {"dst": "%reg32-operand%", "src": "%effective-addr-operand%"}}
 	},
 	{
 		"instructions": [
