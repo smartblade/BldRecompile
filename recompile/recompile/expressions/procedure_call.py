@@ -6,7 +6,7 @@ from hex_conversion import to_hex
 class ProcedureCall:
     def __init__(
         self, name=None, operator=None, arguments=None, callee_addr=None,
-        is_method=False, proc_decl=None, callee=None
+        is_method=False, proc_decl=None, callee=None, is_predefined=False,
     ):
         if arguments is None:
             arguments = []
@@ -17,6 +17,7 @@ class ProcedureCall:
         self._callee_addr = callee_addr
         self._is_method = is_method
         self._proc_decl = proc_decl
+        self._is_predefined = is_predefined
         self._define_operator()
 
     def copy(self, **kwargs):
@@ -28,6 +29,7 @@ class ProcedureCall:
             callee_addr=self._callee_addr,
             is_method=self._is_method,
             proc_decl=self._proc_decl,
+            is_predefined=self._is_predefined,
         )
         for key, value in default_map.items():
             if key not in kwargs:
@@ -92,6 +94,10 @@ class ProcedureCall:
 
     def set_declaration(self, proc_decl):
         self._proc_decl = proc_decl
+
+    @property
+    def is_predefined(self):
+        return self._is_predefined
 
     def transform_expression(self, **kwargs):
         declarations = kwargs['declarations']

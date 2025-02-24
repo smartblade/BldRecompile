@@ -6,6 +6,7 @@ from patterns.predefined_procedures import visit_predefined_procedures
 from patterns.validate_procedure_declaration import \
     validate_procedure_declaration
 
+from .call_arguments_matcher import CallArgumentsMatcher
 from .transform_access import transform_access
 from .transform_arrptr import transform_arrptr
 from .transform_assignment import transform_assignment
@@ -24,11 +25,18 @@ def make_high_level_code(
     if proc_decl is not None:
         stack_vars.update(proc_decl.stack_variables)
     new_instructions = []
+    call_args_matcher = CallArgumentsMatcher()
     for instr in instrs:
         instr = instr.transform(
             lambda e: _transform(
-                e, stack_vars=stack_vars, declarations=declarations))
+                e,
+                stack_vars=stack_vars,
+                declarations=declarations,
+                call_args_matcher=call_args_matcher,
+            )
+        )
         new_instructions.append(instr)
+    call_args_matcher.expect_all_args_are_matched()
     _validate_procedure_info(proc_info, proc_decl)
     if proc_decl is not None:
         new_instructions = _eliminate_procedure_info(
@@ -49,6 +57,8 @@ def _transform(e, **kwargs):
         return expressions.do_static_cast(e.data_type, e.expression)
     if isinstance(e, instructions.IfInstruction):
         return inline_functions.transform_if(e)
+    if isinstance(e, expressions.ProcedureCall) and not e.is_predefined:
+        return transform_procedure_call(e, **kwargs)
     e = visit_predefined_procedures(
         e, **kwargs,
         on_stackvar=transform_stackvar,
@@ -56,8 +66,6 @@ def _transform(e, **kwargs):
         on_global=transform_global,
         on_arrptr=transform_arrptr,
     )
-    if isinstance(e, expressions.ProcedureCall):
-        return transform_procedure_call(e, **kwargs)
     return e
 
 

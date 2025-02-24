@@ -5,21 +5,25 @@ import parser
 from calling_convention import CallingConvention
 from patterns.validate_procedure_declaration import \
     validate_procedure_declaration
+from procedure_declaration import ProcedureDeclaration
 
 from .convert_expression_to_type import convert_expression_to_type
 from .explicit_arg_cast import explicit_arg_cast
 from .narrow_constant import narrow_constant
 
 
-def transform_procedure_call(pc, declarations, **kwargs):
+def transform_procedure_call(pc, declarations, call_args_matcher, **kwargs):
     proc_decl = _get_callee_declaration(pc, declarations)
+    pc = call_args_matcher.match_args(pc, proc_decl)
     if proc_decl is None:
         return pc
     assert pc.proc_decl is not None
     result = _convert_struct_return_implicit_arg(pc, proc_decl)
     if result is not None:
         return result
-    return _convert_procedure_call_arguments(pc, proc_decl)
+    return_type = pc.proc_decl.return_type
+    pc = _convert_procedure_call_arguments(pc, proc_decl)
+    return _convert_to_return_type(pc, return_type)
 
 
 def _convert_procedure_call_arguments(pc, proc_decl):
@@ -97,6 +101,10 @@ def _convert_argument_to_parameters_type(argument, parameter, proc_decl):
 def _convert_struct_return_implicit_arg(pc, proc_decl):
     if not isinstance(proc_decl.return_type, data_types.ClassType):
         return None
+    assert (
+        pc.proc_decl.return_type is None or
+        isinstance(pc.proc_decl.return_type, data_types.Unknown32)
+    )
     this_arg = None
     new_arguments = pc.arguments
     if pc.is_method:
@@ -114,3 +122,30 @@ def _convert_struct_return_implicit_arg(pc, proc_decl):
     if isinstance(dst.data_type, data_types.ClassType):
         dst = expressions.ImplicitCast(data_types.Reference(dst.data_type), dst)
     return expressions.Bin(Operator.ASS, dst, pc)
+
+
+def _convert_to_return_type(pc, return_type):
+    if return_type is None:
+        return pc
+    if data_types.are_compatible(pc.data_type, return_type):
+        return pc
+    if (
+        isinstance(return_type, data_types.Unknown32) and
+        pc.data_type.is_any_int and pc.data_type.size == 1
+    ):
+        return _trash_extend(return_type, pc)
+    raise Exception(
+        'Incompatible return type of {} procedure: {}, can\'t be converted to '
+        '{}'.format(pc.name, pc.data_type, return_type)
+    )
+
+
+def _trash_extend(return_type, pc):
+    proc_decl = ProcedureDeclaration(
+        pc.name, CallingConvention.CDECL, None, [], return_type)
+    return expressions.ProcedureCall(
+        name="TRASHEXTEND",
+        arguments=[pc],
+        proc_decl=proc_decl,
+        is_predefined=True,
+    )

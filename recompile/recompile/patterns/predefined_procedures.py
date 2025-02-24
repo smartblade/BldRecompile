@@ -101,5 +101,5 @@ def _unpack_args(procedure_call, callback, cb_args, **kwargs):
     transformed_expression = callback(**cb_args, **values_map)
     if transformed_expression is None:
         DataTypeDefiner.define_data_type(procedure_call, **values_map)
-        return procedure_call
+        return procedure_call.copy(is_predefined=True)
     return transformed_expression
