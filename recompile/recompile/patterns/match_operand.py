@@ -11,6 +11,7 @@ _regexp_map = {
     "al-cl-dl": (r"al|cl|dl", None),
     "ax-cx-dx": (r"ax|cx|dx", None),
     "eax-ecx-edx": (r"eax|ecx|edx", None),
+    "tmpreg32": (r"eax|ecx|edx|edi|esi", None),
     "label": (
         r"(offset\s+)?(g|l)(?P<inner_hex>[\dABCDEF]+)",
         lambda **kwargs: _convert_hex(**kwargs)),

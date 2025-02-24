@@ -1,13 +1,7 @@
 {
 	"operand-patterns": {
-		"reg32-operand": [
-			{"operand": "edi", "expression": "edi"},
-			{"operand": "esi", "expression": "esi"},
-			{"operand": "%eax-ecx-edx%", "expression": "%eax-ecx-edx%"}
-		],
 		"effective-addr-operand": [
-			{"operand": "[%eax-ecx-edx-base%+%eax-ecx-edx-index%]", "expression": "ARRPTR(REGVALUE(%eax-ecx-edx-base%), 1, REGVALUE(%eax-ecx-edx-index%), 0)"},
-			{"operand": "[esi+%eax-ecx-edx-index%]", "expression": "ARRPTR(REGVALUE(esi), 1, REGVALUE(%eax-ecx-edx-index%), 0)"},
+			{"operand": "[%tmpreg32-base%+%eax-ecx-edx-index%]", "expression": "ARRPTR(REGVALUE(%tmpreg32-base%), 1, REGVALUE(%eax-ecx-edx-index%), 0)"},
 			{"operand": "[%eax-ecx-edx-base%+%eax-ecx-edx-index%*%hex-scale%]", "expression": "ARRPTR(REGVALUE(%eax-ecx-edx-base%), %hex-scale%, REGVALUE(%eax-ecx-edx-index%), 0)"},
 			{"operand": "[%eax-ecx-edx-base%+%eax-ecx-edx-index%%offset%]", "expression": "ARRPTR(REGVALUE(%eax-ecx-edx-base%), 1, REGVALUE(%eax-ecx-edx-index%), %offset%)"},
 			{"operand": "[%eax-ecx-edx-base%+%eax-ecx-edx-index%*%hex-scale%%offset%]", "expression": "ARRPTR(REGVALUE(%eax-ecx-edx-base%), %hex-scale%, REGVALUE(%eax-ecx-edx-index%), %offset%)"}
@@ -21,7 +15,7 @@
 			{"operand": "%effective-addr-operand%", "expression": "ACCESS(%effective-addr-operand%, 0, %size%)"}
 		],
 		"reg-operand": [
-			{"operand": "%reg32-operand%", "expression": "%reg32-operand%"},
+			{"operand": "%tmpreg32%", "expression": "%tmpreg32%"},
 			{"operand": "%al-cl-dl%", "expression": "%al-cl-dl%"},
 			{"operand": "%ax-cx-dx%", "expression": "%ax-cx-dx%"}
 		],
@@ -434,27 +428,27 @@
 	},
 	{
 		"instructions": [
-			{"lea":  ["%reg32-operand%", "[%eax-ecx-edx-index%+%eax-ecx-edx-index%%offset%]"]}
+			{"lea":  ["%tmpreg32%", "[%eax-ecx-edx-index%+%eax-ecx-edx-index%%offset%]"]}
 		],
-		"action": {"tmpreg": {"dst": "%reg32-operand%", "src": "2 * I(REGVALUE(%eax-ecx-edx-index%)) + %offset%"}}
+		"action": {"tmpreg": {"dst": "%tmpreg32%", "src": "2 * I(REGVALUE(%eax-ecx-edx-index%)) + %offset%"}}
 	},
 	{
 		"instructions": [
-			{"lea":  ["%reg32-operand%", "[%eax-ecx-edx-base%+%eax-ecx-edx-index%%offset%]"]}
+			{"lea":  ["%tmpreg32%", "[%eax-ecx-edx-base%+%eax-ecx-edx-index%%offset%]"]}
 		],
-		"action": {"tmpreg": {"dst": "%reg32-operand%", "src": "I(REGVALUE(%eax-ecx-edx-base%)) + I(REGVALUE(%eax-ecx-edx-index%)) + %offset%"}}
+		"action": {"tmpreg": {"dst": "%tmpreg32%", "src": "I(REGVALUE(%eax-ecx-edx-base%)) + I(REGVALUE(%eax-ecx-edx-index%)) + %offset%"}}
 	},
 	{
 		"instructions": [
-			{"lea":  ["%reg32-operand%", "[ebp%offset%]"]}
+			{"lea":  ["%tmpreg32%", "[ebp%offset%]"]}
 		],
-		"action": {"tmpreg": {"dst": "%reg32-operand%", "src": "LOCAL(%offset%)"}}
+		"action": {"tmpreg": {"dst": "%tmpreg32%", "src": "LOCAL(%offset%)"}}
 	},
 	{
 		"instructions": [
-			{"lea":  ["%reg32-operand%", "%effective-addr-operand%"]}
+			{"lea":  ["%tmpreg32%", "%effective-addr-operand%"]}
 		],
-		"action": {"tmpreg": {"dst": "%reg32-operand%", "src": "%effective-addr-operand%"}}
+		"action": {"tmpreg": {"dst": "%tmpreg32%", "src": "%effective-addr-operand%"}}
 	},
 	{
 		"instructions": [
