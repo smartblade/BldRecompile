@@ -2,6 +2,7 @@
 	"operand-patterns": {
 		"effective-addr-operand": [
 			{"operand": "[ebp+%tmpreg32-index%*%hex-scale%%offset%]", "expression": "ARRPTR(LOCAL(%offset%), %hex-scale%, REGVALUE(%tmpreg32-index%), 0)"},
+			{"operand": "[ebp+%tmpreg32-index%%offset%]", "expression": "ARRPTR(LOCAL(%offset%), 1, REGVALUE(%tmpreg32-index%), 0)"},
 			{"operand": "[%tmpreg32-base%+%tmpreg32-index%]", "expression": "ARRPTR(REGVALUE(%tmpreg32-base%), 1, REGVALUE(%tmpreg32-index%), 0)"},
 			{"operand": "[%tmpreg32-base%+%tmpreg32-index%*%hex-scale%]", "expression": "ARRPTR(REGVALUE(%tmpreg32-base%), %hex-scale%, REGVALUE(%tmpreg32-index%), 0)"},
 			{"operand": "[%tmpreg32-base%+%tmpreg32-index%%offset%]", "expression": "ARRPTR(REGVALUE(%tmpreg32-base%), 1, REGVALUE(%tmpreg32-index%), %offset%)"},
