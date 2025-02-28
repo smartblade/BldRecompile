@@ -5592,22 +5592,91 @@ Error: "Failed to find pattern for 'div dword ptr [esi+00Ch]'"
 // address: 0x1000A72E
 p1000A72E
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=56, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=56, stack_delta=0)
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 324, 4);
     STACKVAR(-36, 4) = 0x00000000;
     goto l1000A752;
 l1000A749:
     STACKVAR(-36, 4) = reinterpret_cast<any_int32>(STACKVAR(-36, 4)) + 0x00000001;
 l1000A752:
+    if (reinterpret_cast<int>(STACKVAR(-36, 4)) < reinterpret_cast<int>(ACCESS(STACKVAR(8, 4), 224, 4)))
+    {
+        STACKVAR(-16, 4) = ACCESS(ARRPTR(STACKVAR(8, 4), 0x04, STACKVAR(-36, 4), 228), 0, 4);
+        ACCESS(ARRPTR(LOCAL(-32), 0x04, STACKVAR(-36, 4), 0), 0, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 32, 4)(STACKVAR(8, 4), ACCESS(ARRPTR(STACKVAR(-4, 4), 0x04, ACCESS(STACKVAR(-16, 4), 4, 4), 64), 0, 4), reinterpret_cast<any_int32>(ACCESS(STACKVAR(-4, 4), 8, 4)) * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-16, 4), 12, 4)), ACCESS(STACKVAR(-16, 4), 12, 4), 0x00000000);
+        goto l1000A749;
+    }
+    STACKVAR(-52, 4) = ACCESS(STACKVAR(-4, 4), 16, 4);
+    goto l1000A7C2;
+l1000A7B9:
+    STACKVAR(-52, 4) = reinterpret_cast<any_int32>(STACKVAR(-52, 4)) + 0x00000001;
+l1000A7C2:
+    if (reinterpret_cast<int>(STACKVAR(-52, 4)) >= reinterpret_cast<int>(ACCESS(STACKVAR(-4, 4), 20, 4)))
+    {
+        goto l1000A90C;
+    }
+    STACKVAR(-8, 4) = ACCESS(STACKVAR(-4, 4), 12, 4);
+    goto l1000A7E5;
+l1000A7DC:
+    STACKVAR(-8, 4) = reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + 0x00000001;
+l1000A7E5:
+    if (reinterpret_cast<unsigned int>(STACKVAR(-8, 4)) >= reinterpret_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 244, 4)))
+    {
+        goto l1000A8FD;
+    }
+    STACKVAR(-48, 4) = 0x00000000;
+    STACKVAR(-36, 4) = 0x00000000;
+    goto l1000A810;
+l1000A807:
+    STACKVAR(-36, 4) = reinterpret_cast<any_int32>(STACKVAR(-36, 4)) + 0x00000001;
+l1000A810:
     if (reinterpret_cast<int>(STACKVAR(-36, 4)) >= reinterpret_cast<int>(ACCESS(STACKVAR(8, 4), 224, 4)))
     {
-        goto l1000A7AE;
+        goto l1000A8BF;
     }
     STACKVAR(-16, 4) = ACCESS(ARRPTR(STACKVAR(8, 4), 0x04, STACKVAR(-36, 4), 228), 0, 4);
-    ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 32, 4)(STACKVAR(8, 4), ACCESS(ARRPTR(STACKVAR(-4, 4), 0x04, ACCESS(STACKVAR(-16, 4), 4, 4), 64), 0, 4), reinterpret_cast<any_int32>(ACCESS(STACKVAR(-4, 4), 8, 4)) * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-16, 4), 12, 4)), ACCESS(STACKVAR(-16, 4), 12, 4), 0x00000000);
-    REGDEF(edx=STACKVAR(-36, 4))
+    STACKVAR(-40, 4) = reinterpret_cast<any_int32>(STACKVAR(-8, 4)) * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-16, 4), 52, 4));
+    STACKVAR(-44, 4) = 0x00000000;
+    goto l1000A851;
+l1000A848:
+    STACKVAR(-44, 4) = reinterpret_cast<any_int32>(STACKVAR(-44, 4)) + 0x00000001;
+l1000A851:
+    if (reinterpret_cast<int>(STACKVAR(-44, 4)) >= reinterpret_cast<int>(ACCESS(STACKVAR(-16, 4), 56, 4)))
+    {
+        goto l1000A8BA;
+    }
+    STACKVAR(-12, 4) = reinterpret_cast<any_int32>(ACCESS(ARRPTR(ACCESS(ARRPTR(LOCAL(-32), 0x04, STACKVAR(-36, 4), 0), 0, 4), 0x04, reinterpret_cast<any_int32>(STACKVAR(-44, 4)) + reinterpret_cast<any_int32>(STACKVAR(-52, 4)), 0), 0, 4)) + 0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-40, 4));
+    STACKVAR(-56, 4) = 0x00000000;
+    goto l1000A889;
+l1000A880:
+    STACKVAR(-56, 4) = reinterpret_cast<any_int32>(STACKVAR(-56, 4)) + 0x00000001;
+l1000A889:
+    if (reinterpret_cast<int>(STACKVAR(-56, 4)) < reinterpret_cast<int>(ACCESS(STACKVAR(-16, 4), 52, 4)))
+    {
+        ACCESS(ARRPTR(STACKVAR(-4, 4), 0x04, STACKVAR(-48, 4), 24), 0, 4) = STACKVAR(-12, 4);
+        STACKVAR(-48, 4) = reinterpret_cast<any_int32>(STACKVAR(-48, 4)) + 0x00000001;
+        STACKVAR(-12, 4) = reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + 0x00000080;
+        goto l1000A880;
+    }
+    goto l1000A848;
+l1000A8BA:
+    goto l1000A807;
+l1000A8BF:
+    if ((reinterpret_cast<any_int32>(ACCESS(ACCESS(STACKVAR(8, 4), 344, 4), 4, 4)(STACKVAR(8, 4), reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000018)) & 0x000000FF) == 0x00000000)
+    {
+        ACCESS(STACKVAR(-4, 4), 16, 4) = STACKVAR(-52, 4);
+        ACCESS(STACKVAR(-4, 4), 12, 4) = STACKVAR(-8, 4);
+        REGDEF(al=0)
+        return;
+    }
+    goto l1000A7DC;
+l1000A8FD:
+    ACCESS(STACKVAR(-4, 4), 12, 4) = 0x00000000;
+    goto l1000A7B9;
+l1000A90C:
+    ACCESS(STACKVAR(-4, 4), 8, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-4, 4), 8, 4)) + 0x00000001;
+    unknown_function_1000A14E(STACKVAR(8, 4));
+    REGDEF(al=0x01)
 }
-Error: "Failed to find pattern for 'mov dword ptr [ebp+edx*04h-020h], eax'"
 
 // address: 0x1000A930
 p1000A930
@@ -6148,7 +6217,7 @@ Error: "Failed to find pattern for 'movsx ecx, word ptr [offset g10042200+eax*02
 // address: 0x1000B67F
 p1000B67F
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=300, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=300, stack_delta=0)
     STACKVAR(-272, 4) = ACCESS(STACKVAR(8, 4), 340, 4);
     STACKVAR(-8, 4) = ACCESS(STACKVAR(-272, 4), 8, 4);
     STACKVAR(-4, 4) = ACCESS(ARRPTR(STACKVAR(-272, 4), 0x04, ACCESS(STACKVAR(12, 4), 16, 4), 12), 0, 4);
@@ -6169,37 +6238,35 @@ l1000B6DD:
 l1000B701:
     STACKVAR(-276, 4) = reinterpret_cast<any_int32>(STACKVAR(-276, 4)) + 0x00000001;
 l1000B710:
-    if (reinterpret_cast<int>(STACKVAR(-276, 4)) >= 8)
+    if (reinterpret_cast<int>(STACKVAR(-276, 4)) < 8)
     {
-        goto l1000B8E5;
+        STACKVAR(-284, 4) = reinterpret_cast<any_int32>(ACCESS(ARRPTR(STACKVAR(16, 4), 0x04, STACKVAR(-276, 4), 0), 0, 4)) + reinterpret_cast<any_int32>(STACKVAR(28, 4));
+        ACCESS(STACKVAR(-280, 4), 0, 4) = static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-284, 4), 0, 1))) - 0x00000080;
+        STACKVAR(-280, 4) = reinterpret_cast<any_int32>(STACKVAR(-280, 4)) + 0x00000004;
+        STACKVAR(-284, 4) = reinterpret_cast<any_int32>(STACKVAR(-284, 4)) + 0x00000001;
+        ACCESS(STACKVAR(-280, 4), 0, 4) = static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-284, 4), 0, 1))) - 0x00000080;
+        STACKVAR(-280, 4) = reinterpret_cast<any_int32>(STACKVAR(-280, 4)) + 0x00000004;
+        STACKVAR(-284, 4) = reinterpret_cast<any_int32>(STACKVAR(-284, 4)) + 0x00000001;
+        ACCESS(STACKVAR(-280, 4), 0, 4) = static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-284, 4), 0, 1))) - 0x00000080;
+        STACKVAR(-280, 4) = reinterpret_cast<any_int32>(STACKVAR(-280, 4)) + 0x00000004;
+        STACKVAR(-284, 4) = reinterpret_cast<any_int32>(STACKVAR(-284, 4)) + 0x00000001;
+        ACCESS(STACKVAR(-280, 4), 0, 4) = static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-284, 4), 0, 1))) - 0x00000080;
+        STACKVAR(-280, 4) = reinterpret_cast<any_int32>(STACKVAR(-280, 4)) + 0x00000004;
+        STACKVAR(-284, 4) = reinterpret_cast<any_int32>(STACKVAR(-284, 4)) + 0x00000001;
+        ACCESS(STACKVAR(-280, 4), 0, 4) = static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-284, 4), 0, 1))) - 0x00000080;
+        STACKVAR(-280, 4) = reinterpret_cast<any_int32>(STACKVAR(-280, 4)) + 0x00000004;
+        STACKVAR(-284, 4) = reinterpret_cast<any_int32>(STACKVAR(-284, 4)) + 0x00000001;
+        ACCESS(STACKVAR(-280, 4), 0, 4) = static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-284, 4), 0, 1))) - 0x00000080;
+        STACKVAR(-280, 4) = reinterpret_cast<any_int32>(STACKVAR(-280, 4)) + 0x00000004;
+        STACKVAR(-284, 4) = reinterpret_cast<any_int32>(STACKVAR(-284, 4)) + 0x00000001;
+        ACCESS(STACKVAR(-280, 4), 0, 4) = static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-284, 4), 0, 1))) - 0x00000080;
+        STACKVAR(-280, 4) = reinterpret_cast<any_int32>(STACKVAR(-280, 4)) + 0x00000004;
+        STACKVAR(-284, 4) = reinterpret_cast<any_int32>(STACKVAR(-284, 4)) + 0x00000001;
+        ACCESS(STACKVAR(-280, 4), 0, 4) = static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-284, 4), 0, 1))) - 0x00000080;
+        STACKVAR(-280, 4) = reinterpret_cast<any_int32>(STACKVAR(-280, 4)) + 0x00000004;
+        STACKVAR(-284, 4) = reinterpret_cast<any_int32>(STACKVAR(-284, 4)) + 0x00000001;
+        goto l1000B701;
     }
-    STACKVAR(-284, 4) = reinterpret_cast<any_int32>(ACCESS(ARRPTR(STACKVAR(16, 4), 0x04, STACKVAR(-276, 4), 0), 0, 4)) + reinterpret_cast<any_int32>(STACKVAR(28, 4));
-    ACCESS(STACKVAR(-280, 4), 0, 4) = static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-284, 4), 0, 1))) - 0x00000080;
-    STACKVAR(-280, 4) = reinterpret_cast<any_int32>(STACKVAR(-280, 4)) + 0x00000004;
-    STACKVAR(-284, 4) = reinterpret_cast<any_int32>(STACKVAR(-284, 4)) + 0x00000001;
-    ACCESS(STACKVAR(-280, 4), 0, 4) = static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-284, 4), 0, 1))) - 0x00000080;
-    STACKVAR(-280, 4) = reinterpret_cast<any_int32>(STACKVAR(-280, 4)) + 0x00000004;
-    STACKVAR(-284, 4) = reinterpret_cast<any_int32>(STACKVAR(-284, 4)) + 0x00000001;
-    ACCESS(STACKVAR(-280, 4), 0, 4) = static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-284, 4), 0, 1))) - 0x00000080;
-    STACKVAR(-280, 4) = reinterpret_cast<any_int32>(STACKVAR(-280, 4)) + 0x00000004;
-    STACKVAR(-284, 4) = reinterpret_cast<any_int32>(STACKVAR(-284, 4)) + 0x00000001;
-    ACCESS(STACKVAR(-280, 4), 0, 4) = static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-284, 4), 0, 1))) - 0x00000080;
-    STACKVAR(-280, 4) = reinterpret_cast<any_int32>(STACKVAR(-280, 4)) + 0x00000004;
-    STACKVAR(-284, 4) = reinterpret_cast<any_int32>(STACKVAR(-284, 4)) + 0x00000001;
-    ACCESS(STACKVAR(-280, 4), 0, 4) = static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-284, 4), 0, 1))) - 0x00000080;
-    STACKVAR(-280, 4) = reinterpret_cast<any_int32>(STACKVAR(-280, 4)) + 0x00000004;
-    STACKVAR(-284, 4) = reinterpret_cast<any_int32>(STACKVAR(-284, 4)) + 0x00000001;
-    ACCESS(STACKVAR(-280, 4), 0, 4) = static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-284, 4), 0, 1))) - 0x00000080;
-    STACKVAR(-280, 4) = reinterpret_cast<any_int32>(STACKVAR(-280, 4)) + 0x00000004;
-    STACKVAR(-284, 4) = reinterpret_cast<any_int32>(STACKVAR(-284, 4)) + 0x00000001;
-    ACCESS(STACKVAR(-280, 4), 0, 4) = static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-284, 4), 0, 1))) - 0x00000080;
-    STACKVAR(-280, 4) = reinterpret_cast<any_int32>(STACKVAR(-280, 4)) + 0x00000004;
-    STACKVAR(-284, 4) = reinterpret_cast<any_int32>(STACKVAR(-284, 4)) + 0x00000001;
-    ACCESS(STACKVAR(-280, 4), 0, 4) = static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-284, 4), 0, 1))) - 0x00000080;
-    STACKVAR(-280, 4) = reinterpret_cast<any_int32>(STACKVAR(-280, 4)) + 0x00000004;
-    STACKVAR(-284, 4) = reinterpret_cast<any_int32>(STACKVAR(-284, 4)) + 0x00000001;
-    goto l1000B701;
-l1000B8E5:
     STACKVAR(-8, 4)(LOCAL(-268));
     STACKVAR(-288, 4) = reinterpret_cast<any_int32>(STACKVAR(20, 4)) + 0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-12, 4));
     STACKVAR(-300, 4) = 0x00000000;
@@ -6207,14 +6274,42 @@ l1000B8E5:
 l1000B90F:
     STACKVAR(-300, 4) = reinterpret_cast<any_int32>(STACKVAR(-300, 4)) + 0x00000001;
 l1000B91E:
-    if (reinterpret_cast<int>(STACKVAR(-300, 4)) >= 64)
+    if (reinterpret_cast<int>(STACKVAR(-300, 4)) < 64)
     {
-        goto l1000BA19;
+        STACKVAR(-292, 4) = ACCESS(ARRPTR(STACKVAR(-4, 4), 0x04, STACKVAR(-300, 4), 0), 0, 4);
+        STACKVAR(-296, 4) = ACCESS(ARRPTR(LOCAL(-268), 0x04, STACKVAR(-300, 4), 0), 0, 4);
+        if (reinterpret_cast<int>(STACKVAR(-296, 4)) < 0)
+        {
+            STACKVAR(-296, 4) = -reinterpret_cast<int>(STACKVAR(-296, 4));
+            STACKVAR(-296, 4) = reinterpret_cast<any_int32>(STACKVAR(-296, 4)) + (reinterpret_cast<int>(STACKVAR(-292, 4)) >> 1);
+            if (reinterpret_cast<int>(STACKVAR(-296, 4)) >= reinterpret_cast<int>(STACKVAR(-292, 4)))
+            {
+                STACKVAR(-296, 4) = reinterpret_cast<int>(STACKVAR(-296, 4)) / reinterpret_cast<int>(STACKVAR(-292, 4));
+            }
+            else
+            {
+                STACKVAR(-296, 4) = 0x00000000;
+            }
+            STACKVAR(-296, 4) = -reinterpret_cast<int>(STACKVAR(-296, 4));
+        }
+        else
+        {
+            STACKVAR(-296, 4) = reinterpret_cast<any_int32>(STACKVAR(-296, 4)) + (reinterpret_cast<int>(STACKVAR(-292, 4)) >> 1);
+            if (reinterpret_cast<int>(STACKVAR(-296, 4)) >= reinterpret_cast<int>(STACKVAR(-292, 4)))
+            {
+                STACKVAR(-296, 4) = reinterpret_cast<int>(STACKVAR(-296, 4)) / reinterpret_cast<int>(STACKVAR(-292, 4));
+            }
+            else
+            {
+                STACKVAR(-296, 4) = 0x00000000;
+            }
+        }
+        ACCESS(ARRPTR(STACKVAR(-288, 4), 0x02, STACKVAR(-300, 4), 0), 0, 2) = STACKVAR(-296, 2);
+        goto l1000B90F;
     }
-    STACKVAR(-292, 4) = ACCESS(ARRPTR(STACKVAR(-4, 4), 0x04, STACKVAR(-300, 4), 0), 0, 4);
-    REGDEF(eax=STACKVAR(-300, 4))
+    goto l1000B6CB;
+l1000BA1E:
 }
-Error: "Failed to find pattern for 'mov ecx, dword ptr [ebp+eax*04h-00000010Ch]'"
 
 // address: 0x1000BA22
 p1000BA22
@@ -6290,9 +6385,10 @@ l1000BD21:
     {
         goto l1000BD6B;
     }
-    REGDEF(eax=STACKVAR(-296, 4), ecx=STACKVAR(-296, 4), edx=STACKVAR(-4, 4))
+    STACKVAR(-292, 4) = reinterpret_cast<float>(ACCESS(ARRPTR(LOCAL(-268), 0x04, STACKVAR(-296, 4), 0), 0, 4)) * reinterpret_cast<float>(ACCESS(ARRPTR(STACKVAR(-4, 4), 0x04, STACKVAR(-296, 4), 0), 0, 4));
+    REGDEF(eax=static_cast<int>(reinterpret_cast<float>(STACKVAR(-292, 4)) + reinterpret_cast<float>(ACCESS(GLOBAL(0x100422D0), 0, 4))) - 0x00004000)
 }
-Error: "Failed to find pattern for 'fld dword ptr [ebp+eax*04h-00000010Ch]'"
+Error: "'ax'"
 
 // address: 0x1000BD80
 p1000BD80
@@ -6465,43 +6561,55 @@ Error: "Failed to find pattern for 'rep stosd'"
 // address: 0x1000C80D
 p1000C80D
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=52, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=52, stack_delta=0)
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 344, 4);
     STACKVAR(-40, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 24, 4), 0, 4);
     STACKVAR(-36, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 24, 4), 4, 4);
     memcpy(LOCAL(-32), reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x0000000C, 0x00000018); // TODO improve emitting of memcpy instructions
     STACKVAR(-8, 4) = STACKVAR(8, 4);
-    if (ACCESS(STACKVAR(8, 4), 184, 4) == 0x00000000)
+    if (ACCESS(STACKVAR(8, 4), 184, 4) != 0x00000000)
     {
-        goto l1000C886;
+        if (ACCESS(STACKVAR(-4, 4), 36, 4) == 0x00000000)
+        {
+            if ((reinterpret_cast<any_int32>(unknown_function_1000CDB5(LOCAL(-40), ACCESS(STACKVAR(-4, 4), 40, 4))) & 0x000000FF) == 0x00000000)
+            {
+                REGDEF(al=0)
+                return;
+            }
+        }
     }
-    if (ACCESS(STACKVAR(-4, 4), 36, 4) != 0x00000000)
-    {
-        goto l1000C886;
-    }
-    if ((reinterpret_cast<any_int32>(unknown_function_1000CDB5(LOCAL(-40), ACCESS(STACKVAR(-4, 4), 40, 4))) & 0x000000FF) != 0x00000000)
-    {
-        goto l1000C886;
-    }
-    REGDEF(al=0)
-    goto l1000C9A6;
-l1000C886:
     STACKVAR(-52, 4) = 0x00000000;
     goto l1000C898;
 l1000C88F:
     STACKVAR(-52, 4) = reinterpret_cast<any_int32>(STACKVAR(-52, 4)) + 0x00000001;
 l1000C898:
-    if (reinterpret_cast<int>(STACKVAR(-52, 4)) >= reinterpret_cast<int>(ACCESS(STACKVAR(8, 4), 252, 4)))
+    if (reinterpret_cast<int>(STACKVAR(-52, 4)) < reinterpret_cast<int>(ACCESS(STACKVAR(8, 4), 252, 4)))
     {
-        goto l1000C92C;
+        STACKVAR(-48, 4) = ACCESS(ARRPTR(STACKVAR(8, 4), 0x04, STACKVAR(-52, 4), 256), 0, 4);
+        STACKVAR(-44, 4) = ACCESS(ARRPTR(STACKVAR(8, 4), 0x04, STACKVAR(-48, 4), 228), 0, 4);
+        if ((reinterpret_cast<any_int32>(unknown_function_1000C9AC(LOCAL(-40), ACCESS(ARRPTR(STACKVAR(12, 4), 0x04, STACKVAR(-52, 4), 0), 0, 4), ACCESS(ARRPTR(LOCAL(-24), 0x04, STACKVAR(-48, 4), 0), 0, 4), ACCESS(ARRPTR(STACKVAR(-4, 4), 0x04, ACCESS(STACKVAR(-44, 4), 20, 4), 44), 0, 4), ACCESS(ARRPTR(STACKVAR(-4, 4), 0x04, ACCESS(STACKVAR(-44, 4), 24, 4), 60), 0, 4))) & 0x000000FF) == 0x00000000)
+        {
+            REGDEF(al=0)
+            return;
+        }
+        ACCESS(ARRPTR(LOCAL(-24), 0x04, STACKVAR(-48, 4), 0), 0, 4) = static_cast<any_int32>(reinterpret_cast<short>(ACCESS(ACCESS(ARRPTR(STACKVAR(12, 4), 0x04, STACKVAR(-52, 4), 0), 0, 4), 0, 2)));
+        goto l1000C88F;
     }
-    STACKVAR(-48, 4) = ACCESS(ARRPTR(STACKVAR(8, 4), 0x04, STACKVAR(-52, 4), 256), 0, 4);
-    STACKVAR(-44, 4) = ACCESS(ARRPTR(STACKVAR(8, 4), 0x04, STACKVAR(-48, 4), 228), 0, 4);
-    ARG(ACCESS(ARRPTR(STACKVAR(-4, 4), 0x04, ACCESS(STACKVAR(-44, 4), 24, 4), 60), 0, 4));
-    ARG(ACCESS(ARRPTR(STACKVAR(-4, 4), 0x04, ACCESS(STACKVAR(-44, 4), 20, 4), 44), 0, 4));
-    REGDEF(ecx=STACKVAR(-48, 4))
+    ACCESS(ACCESS(STACKVAR(8, 4), 24, 4), 0, 4) = STACKVAR(-40, 4);
+    ACCESS(ACCESS(STACKVAR(8, 4), 24, 4), 4, 4) = STACKVAR(-36, 4);
+    memcpy(reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x0000000C, LOCAL(-32), 0x00000018); // TODO improve emitting of memcpy instructions
+    if (ACCESS(STACKVAR(8, 4), 184, 4) != 0x00000000)
+    {
+        if (ACCESS(STACKVAR(-4, 4), 36, 4) == 0x00000000)
+        {
+            ACCESS(STACKVAR(-4, 4), 36, 4) = ACCESS(STACKVAR(8, 4), 184, 4);
+            ACCESS(STACKVAR(-4, 4), 40, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-4, 4), 40, 4)) + 0x00000001;
+            ACCESS(STACKVAR(-4, 4), 40, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-4, 4), 40, 4)) & 0x00000007;
+        }
+        ACCESS(STACKVAR(-4, 4), 36, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-4, 4), 36, 4)) - 0x00000001;
+    }
+    REGDEF(al=0x01)
 }
-Error: "Failed to find pattern for 'mov edx, dword ptr [ebp+ecx*04h-018h]'"
 
 // address: 0x1000C9AC
 p1000C9AC
@@ -9592,7 +9700,7 @@ p10013167
 // address: 0x100131E1
 p100131E1
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=112, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=112, stack_delta=0)
     STACKVAR(-8, 4) = ACCESS(STACKVAR(8, 4), 324, 4);
     STACKVAR(-12, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 244, 4)) - 0x00000001;
     STACKVAR(-4, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 220, 4)) - 0x00000001;
@@ -9601,15 +9709,117 @@ p100131E1
 l1001321A:
     STACKVAR(-48, 4) = reinterpret_cast<any_int32>(STACKVAR(-48, 4)) + 0x00000001;
 l10013223:
+    if (reinterpret_cast<int>(STACKVAR(-48, 4)) < reinterpret_cast<int>(ACCESS(STACKVAR(8, 4), 224, 4)))
+    {
+        STACKVAR(-28, 4) = ACCESS(ARRPTR(STACKVAR(8, 4), 0x04, STACKVAR(-48, 4), 228), 0, 4);
+        ACCESS(ARRPTR(LOCAL(-44), 0x04, STACKVAR(-48, 4), 0), 0, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 32, 4)(STACKVAR(8, 4), ACCESS(ARRPTR(ACCESS(STACKVAR(-8, 4), 24, 4), 0x04, ACCESS(STACKVAR(-28, 4), 4, 4), 0), 0, 4), reinterpret_cast<any_int32>(ACCESS(STACKVAR(-8, 4), 8, 4)) * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-28, 4), 12, 4)), ACCESS(STACKVAR(-28, 4), 12, 4), 0x00000000);
+        goto l1001321A;
+    }
+    STACKVAR(-104, 4) = ACCESS(STACKVAR(-8, 4), 16, 4);
+    goto l10013295;
+l1001328C:
+    STACKVAR(-104, 4) = reinterpret_cast<any_int32>(STACKVAR(-104, 4)) + 0x00000001;
+l10013295:
+    if (reinterpret_cast<int>(STACKVAR(-104, 4)) >= reinterpret_cast<int>(ACCESS(STACKVAR(-8, 4), 20, 4)))
+    {
+        goto l10013467;
+    }
+    STACKVAR(-16, 4) = ACCESS(STACKVAR(-8, 4), 12, 4);
+    goto l100132B8;
+l100132AF:
+    STACKVAR(-16, 4) = reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000001;
+l100132B8:
+    if (reinterpret_cast<unsigned int>(STACKVAR(-16, 4)) >= reinterpret_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 244, 4)))
+    {
+        goto l10013458;
+    }
+    STACKVAR(-100, 4) = 0x00000000;
+    STACKVAR(-48, 4) = 0x00000000;
+    goto l100132E3;
+l100132DA:
+    STACKVAR(-48, 4) = reinterpret_cast<any_int32>(STACKVAR(-48, 4)) + 0x00000001;
+l100132E3:
     if (reinterpret_cast<int>(STACKVAR(-48, 4)) >= reinterpret_cast<int>(ACCESS(STACKVAR(8, 4), 224, 4)))
     {
-        goto l10013281;
+        goto l1001341D;
     }
     STACKVAR(-28, 4) = ACCESS(ARRPTR(STACKVAR(8, 4), 0x04, STACKVAR(-48, 4), 228), 0, 4);
-    ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 32, 4)(STACKVAR(8, 4), ACCESS(ARRPTR(ACCESS(STACKVAR(-8, 4), 24, 4), 0x04, ACCESS(STACKVAR(-28, 4), 4, 4), 0), 0, 4), reinterpret_cast<any_int32>(ACCESS(STACKVAR(-8, 4), 8, 4)) * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-28, 4), 12, 4)), ACCESS(STACKVAR(-28, 4), 12, 4), 0x00000000);
-    REGDEF(ecx=STACKVAR(-48, 4))
+    STACKVAR(-92, 4) = reinterpret_cast<any_int32>(STACKVAR(-16, 4)) * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-28, 4), 52, 4));
+    if (reinterpret_cast<unsigned int>(STACKVAR(-16, 4)) < reinterpret_cast<unsigned int>(STACKVAR(-12, 4)))
+    {
+        STACKVAR(-112, 4) = ACCESS(STACKVAR(-28, 4), 52, 4);
+    }
+    else
+    {
+        STACKVAR(-112, 4) = ACCESS(STACKVAR(-28, 4), 68, 4);
+    }
+    STACKVAR(-24, 4) = STACKVAR(-112, 4);
+    STACKVAR(-96, 4) = 0x00000000;
+    goto l10013346;
+l1001333D:
+    STACKVAR(-96, 4) = reinterpret_cast<any_int32>(STACKVAR(-96, 4)) + 0x00000001;
+l10013346:
+    if (reinterpret_cast<int>(STACKVAR(-96, 4)) >= reinterpret_cast<int>(ACCESS(STACKVAR(-28, 4), 56, 4)))
+    {
+        goto l10013418;
+    }
+    if (reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-8, 4), 8, 4)) < reinterpret_cast<unsigned int>(STACKVAR(-4, 4)))
+    {
+        goto l1001336E;
+    }
+    if (reinterpret_cast<int>(STACKVAR(-96, 4)) + reinterpret_cast<int>(STACKVAR(-104, 4)) >= reinterpret_cast<int>(ACCESS(STACKVAR(-28, 4), 72, 4)))
+    {
+        goto l100133C6;
+    }
+l1001336E:
+    STACKVAR(-20, 4) = reinterpret_cast<any_int32>(ACCESS(ARRPTR(ACCESS(ARRPTR(LOCAL(-44), 0x04, STACKVAR(-48, 4), 0), 0, 4), 0x04, reinterpret_cast<any_int32>(STACKVAR(-96, 4)) + reinterpret_cast<any_int32>(STACKVAR(-104, 4)), 0), 0, 4)) + 0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-92, 4));
+    STACKVAR(-108, 4) = 0x00000000;
+    goto l1001339B;
+l10013392:
+    STACKVAR(-108, 4) = reinterpret_cast<any_int32>(STACKVAR(-108, 4)) + 0x00000001;
+l1001339B:
+    if (reinterpret_cast<int>(STACKVAR(-108, 4)) < reinterpret_cast<int>(STACKVAR(-24, 4)))
+    {
+        ACCESS(ARRPTR(LOCAL(-88), 0x04, STACKVAR(-100, 4), 0), 0, 4) = STACKVAR(-20, 4);
+        STACKVAR(-100, 4) = reinterpret_cast<any_int32>(STACKVAR(-100, 4)) + 0x00000001;
+        STACKVAR(-20, 4) = reinterpret_cast<any_int32>(STACKVAR(-20, 4)) + 0x00000080;
+        goto l10013392;
+    }
+    goto l100133CD;
+l100133C6:
+    STACKVAR(-108, 4) = 0x00000000;
+l100133CD:
+    goto l100133D8;
+l100133CF:
+    STACKVAR(-108, 4) = reinterpret_cast<any_int32>(STACKVAR(-108, 4)) + 0x00000001;
+l100133D8:
+    if (reinterpret_cast<int>(STACKVAR(-108, 4)) < reinterpret_cast<int>(ACCESS(STACKVAR(-28, 4), 52, 4)))
+    {
+        ACCESS(ARRPTR(LOCAL(-88), 0x04, STACKVAR(-100, 4), 0), 0, 4) = ACCESS(ARRPTR(STACKVAR(-8, 4), 0x04, STACKVAR(-100, 4), 28), 0, 4);
+        ACCESS(ACCESS(ARRPTR(LOCAL(-88), 0x04, STACKVAR(-100, 4), 0), 0, 4), 0, 2) = ACCESS(ACCESS(ARRPTR(LOCAL(-92), 0x04, STACKVAR(-100, 4), 0), 0, 4), 0, 2);
+        STACKVAR(-100, 4) = reinterpret_cast<any_int32>(STACKVAR(-100, 4)) + 0x00000001;
+        goto l100133CF;
+    }
+    goto l1001333D;
+l10013418:
+    goto l100132DA;
+l1001341D:
+    if ((reinterpret_cast<any_int32>(ACCESS(ACCESS(STACKVAR(8, 4), 344, 4), 4, 4)(STACKVAR(8, 4), LOCAL(-88))) & 0x000000FF) == 0x00000000)
+    {
+        ACCESS(STACKVAR(-8, 4), 16, 4) = STACKVAR(-104, 4);
+        ACCESS(STACKVAR(-8, 4), 12, 4) = STACKVAR(-16, 4);
+        REGDEF(al=0)
+        return;
+    }
+    goto l100132AF;
+l10013458:
+    ACCESS(STACKVAR(-8, 4), 12, 4) = 0x00000000;
+    goto l1001328C;
+l10013467:
+    ACCESS(STACKVAR(-8, 4), 8, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-8, 4), 8, 4)) + 0x00000001;
+    unknown_function_10013167(STACKVAR(8, 4));
+    REGDEF(al=0x01)
 }
-Error: "Failed to find pattern for 'mov dword ptr [ebp+ecx*04h-02Ch], eax'"
 
 // address: 0x10013490
 p10013490
@@ -10411,22 +10621,97 @@ p10014AED
 // address: 0x10014AF4
 p10014AF4
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=56, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=56, stack_delta=0)
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 392, 4);
     STACKVAR(-36, 4) = 0x00000000;
     goto l10014B18;
 l10014B0F:
     STACKVAR(-36, 4) = reinterpret_cast<any_int32>(STACKVAR(-36, 4)) + 0x00000001;
 l10014B18:
+    if (reinterpret_cast<int>(STACKVAR(-36, 4)) < reinterpret_cast<int>(ACCESS(STACKVAR(8, 4), 292, 4)))
+    {
+        STACKVAR(-16, 4) = ACCESS(ARRPTR(STACKVAR(8, 4), 0x04, STACKVAR(-36, 4), 296), 0, 4);
+        ACCESS(ARRPTR(LOCAL(-32), 0x04, STACKVAR(-36, 4), 0), 0, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 32, 4)(STACKVAR(8, 4), ACCESS(ARRPTR(STACKVAR(-4, 4), 0x04, ACCESS(STACKVAR(-16, 4), 4, 4), 72), 0, 4), reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 128, 4)) * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-16, 4), 12, 4)), ACCESS(STACKVAR(-16, 4), 12, 4), 0x00000001);
+        goto l10014B0F;
+    }
+    STACKVAR(-52, 4) = ACCESS(STACKVAR(-4, 4), 24, 4);
+    goto l10014B8B;
+l10014B82:
+    STACKVAR(-52, 4) = reinterpret_cast<any_int32>(STACKVAR(-52, 4)) + 0x00000001;
+l10014B8B:
+    if (reinterpret_cast<int>(STACKVAR(-52, 4)) >= reinterpret_cast<int>(ACCESS(STACKVAR(-4, 4), 28, 4)))
+    {
+        goto l10014CD5;
+    }
+    STACKVAR(-8, 4) = ACCESS(STACKVAR(-4, 4), 20, 4);
+    goto l10014BAE;
+l10014BA5:
+    STACKVAR(-8, 4) = reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + 0x00000001;
+l10014BAE:
+    if (reinterpret_cast<unsigned int>(STACKVAR(-8, 4)) >= reinterpret_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 312, 4)))
+    {
+        goto l10014CC6;
+    }
+    STACKVAR(-48, 4) = 0x00000000;
+    STACKVAR(-36, 4) = 0x00000000;
+    goto l10014BD9;
+l10014BD0:
+    STACKVAR(-36, 4) = reinterpret_cast<any_int32>(STACKVAR(-36, 4)) + 0x00000001;
+l10014BD9:
     if (reinterpret_cast<int>(STACKVAR(-36, 4)) >= reinterpret_cast<int>(ACCESS(STACKVAR(8, 4), 292, 4)))
     {
-        goto l10014B77;
+        goto l10014C88;
     }
     STACKVAR(-16, 4) = ACCESS(ARRPTR(STACKVAR(8, 4), 0x04, STACKVAR(-36, 4), 296), 0, 4);
-    ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 32, 4)(STACKVAR(8, 4), ACCESS(ARRPTR(STACKVAR(-4, 4), 0x04, ACCESS(STACKVAR(-16, 4), 4, 4), 72), 0, 4), reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 128, 4)) * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-16, 4), 12, 4)), ACCESS(STACKVAR(-16, 4), 12, 4), 0x00000001);
-    REGDEF(edx=STACKVAR(-36, 4))
+    STACKVAR(-40, 4) = reinterpret_cast<any_int32>(STACKVAR(-8, 4)) * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-16, 4), 52, 4));
+    STACKVAR(-44, 4) = 0x00000000;
+    goto l10014C1A;
+l10014C11:
+    STACKVAR(-44, 4) = reinterpret_cast<any_int32>(STACKVAR(-44, 4)) + 0x00000001;
+l10014C1A:
+    if (reinterpret_cast<int>(STACKVAR(-44, 4)) >= reinterpret_cast<int>(ACCESS(STACKVAR(-16, 4), 56, 4)))
+    {
+        goto l10014C83;
+    }
+    STACKVAR(-12, 4) = reinterpret_cast<any_int32>(ACCESS(ARRPTR(ACCESS(ARRPTR(LOCAL(-32), 0x04, STACKVAR(-36, 4), 0), 0, 4), 0x04, reinterpret_cast<any_int32>(STACKVAR(-44, 4)) + reinterpret_cast<any_int32>(STACKVAR(-52, 4)), 0), 0, 4)) + 0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-40, 4));
+    STACKVAR(-56, 4) = 0x00000000;
+    goto l10014C52;
+l10014C49:
+    STACKVAR(-56, 4) = reinterpret_cast<any_int32>(STACKVAR(-56, 4)) + 0x00000001;
+l10014C52:
+    if (reinterpret_cast<int>(STACKVAR(-56, 4)) < reinterpret_cast<int>(ACCESS(STACKVAR(-16, 4), 52, 4)))
+    {
+        ACCESS(ARRPTR(STACKVAR(-4, 4), 0x04, STACKVAR(-48, 4), 32), 0, 4) = STACKVAR(-12, 4);
+        STACKVAR(-48, 4) = reinterpret_cast<any_int32>(STACKVAR(-48, 4)) + 0x00000001;
+        STACKVAR(-12, 4) = reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + 0x00000080;
+        goto l10014C49;
+    }
+    goto l10014C11;
+l10014C83:
+    goto l10014BD0;
+l10014C88:
+    if ((reinterpret_cast<any_int32>(ACCESS(ACCESS(STACKVAR(8, 4), 408, 4), 4, 4)(STACKVAR(8, 4), reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000020)) & 0x000000FF) == 0x00000000)
+    {
+        ACCESS(STACKVAR(-4, 4), 24, 4) = STACKVAR(-52, 4);
+        ACCESS(STACKVAR(-4, 4), 20, 4) = STACKVAR(-8, 4);
+        REGDEF(eax=0x00000000)
+        return;
+    }
+    goto l10014BA5;
+l10014CC6:
+    ACCESS(STACKVAR(-4, 4), 20, 4) = 0x00000000;
+    goto l10014B82;
+l10014CD5:
+    ACCESS(STACKVAR(8, 4), 128, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 128, 4)) + 0x00000001;
+    if (reinterpret_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 128, 4)) < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 284, 4)))
+    {
+        unknown_function_10014759(STACKVAR(8, 4));
+        REGDEF(eax=0x00000003)
+        return;
+    }
+    ACCESS(ACCESS(STACKVAR(8, 4), 400, 4), 12, 4)(STACKVAR(8, 4));
+    REGDEF(eax=0x00000004)
 }
-Error: "Failed to find pattern for 'mov dword ptr [ebp+edx*04h-020h], eax'"
 
 // address: 0x10014D2D
 p10014D2D
@@ -17934,7 +18219,7 @@ Error: "'ax'"
 // address: 0x100252A3
 p100252A3
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=1080, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=1080, stack_delta=0)
     STACKVAR(-1052, 4) = ACCESS(STACKVAR(8, 4), 112, 4);
     STACKVAR(-1060, 4) = reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000018;
     STACKVAR(-1072, 4) = reinterpret_cast<int>(STACKVAR(12, 4)) + reinterpret_cast<int>(STACKVAR(-1060, 4)) >> 1;
@@ -17948,110 +18233,111 @@ p100252A3
 l10025325:
     STACKVAR(-1044, 4) = reinterpret_cast<any_int32>(STACKVAR(-1044, 4)) + 0x00000001;
 l10025334:
-    if (reinterpret_cast<int>(STACKVAR(-1044, 4)) >= reinterpret_cast<int>(STACKVAR(-1052, 4)))
+    if (reinterpret_cast<int>(STACKVAR(-1044, 4)) < reinterpret_cast<int>(STACKVAR(-1052, 4)))
     {
-        goto l1002575C;
+        STACKVAR(-1036, 4) = static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(ARRPTR(ACCESS(ACCESS(STACKVAR(8, 4), 116, 4), 0, 4), 1, STACKVAR(-1044, 4), 0), 0, 1)));
+        if (reinterpret_cast<int>(STACKVAR(-1036, 4)) < reinterpret_cast<int>(STACKVAR(12, 4)))
+        {
+            STACKVAR(-1048, 4) = 0x00000002 * (reinterpret_cast<any_int32>(STACKVAR(-1036, 4)) - reinterpret_cast<any_int32>(STACKVAR(12, 4)));
+            STACKVAR(-1056, 4) = reinterpret_cast<any_int32>(STACKVAR(-1048, 4)) * reinterpret_cast<any_int32>(STACKVAR(-1048, 4));
+            STACKVAR(-1048, 4) = 0x00000002 * (reinterpret_cast<any_int32>(STACKVAR(-1036, 4)) - reinterpret_cast<any_int32>(STACKVAR(-1060, 4)));
+            STACKVAR(-1028, 4) = reinterpret_cast<any_int32>(STACKVAR(-1048, 4)) * reinterpret_cast<any_int32>(STACKVAR(-1048, 4));
+        }
+        else if (reinterpret_cast<int>(STACKVAR(-1036, 4)) > reinterpret_cast<int>(STACKVAR(-1060, 4)))
+        {
+            STACKVAR(-1048, 4) = 0x00000002 * (reinterpret_cast<any_int32>(STACKVAR(-1036, 4)) - reinterpret_cast<any_int32>(STACKVAR(-1060, 4)));
+            STACKVAR(-1056, 4) = reinterpret_cast<any_int32>(STACKVAR(-1048, 4)) * reinterpret_cast<any_int32>(STACKVAR(-1048, 4));
+            STACKVAR(-1048, 4) = 0x00000002 * (reinterpret_cast<any_int32>(STACKVAR(-1036, 4)) - reinterpret_cast<any_int32>(STACKVAR(12, 4)));
+            STACKVAR(-1028, 4) = reinterpret_cast<any_int32>(STACKVAR(-1048, 4)) * reinterpret_cast<any_int32>(STACKVAR(-1048, 4));
+        }
+        else
+        {
+            STACKVAR(-1056, 4) = 0x00000000;
+            if (reinterpret_cast<int>(STACKVAR(-1036, 4)) <= reinterpret_cast<int>(STACKVAR(-1072, 4)))
+            {
+                STACKVAR(-1048, 4) = 0x00000002 * (reinterpret_cast<any_int32>(STACKVAR(-1036, 4)) - reinterpret_cast<any_int32>(STACKVAR(-1060, 4)));
+                STACKVAR(-1028, 4) = reinterpret_cast<any_int32>(STACKVAR(-1048, 4)) * reinterpret_cast<any_int32>(STACKVAR(-1048, 4));
+            }
+            else
+            {
+                STACKVAR(-1048, 4) = 0x00000002 * (reinterpret_cast<any_int32>(STACKVAR(-1036, 4)) - reinterpret_cast<any_int32>(STACKVAR(12, 4)));
+                STACKVAR(-1028, 4) = reinterpret_cast<any_int32>(STACKVAR(-1048, 4)) * reinterpret_cast<any_int32>(STACKVAR(-1048, 4));
+            }
+        }
+        STACKVAR(-1036, 4) = static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(ARRPTR(ACCESS(ACCESS(STACKVAR(8, 4), 116, 4), 4, 4), 1, STACKVAR(-1044, 4), 0), 0, 1)));
+        if (reinterpret_cast<int>(STACKVAR(-1036, 4)) < reinterpret_cast<int>(STACKVAR(16, 4)))
+        {
+            STACKVAR(-1048, 4) = 0x00000003 * (reinterpret_cast<any_int32>(STACKVAR(-1036, 4)) - reinterpret_cast<any_int32>(STACKVAR(16, 4)));
+            STACKVAR(-1056, 4) = reinterpret_cast<any_int32>(STACKVAR(-1056, 4)) + reinterpret_cast<any_int32>(STACKVAR(-1048, 4)) * reinterpret_cast<any_int32>(STACKVAR(-1048, 4));
+            STACKVAR(-1048, 4) = 0x00000003 * (reinterpret_cast<any_int32>(STACKVAR(-1036, 4)) - reinterpret_cast<any_int32>(STACKVAR(-1068, 4)));
+            STACKVAR(-1028, 4) = reinterpret_cast<any_int32>(STACKVAR(-1028, 4)) + reinterpret_cast<any_int32>(STACKVAR(-1048, 4)) * reinterpret_cast<any_int32>(STACKVAR(-1048, 4));
+        }
+        else if (reinterpret_cast<int>(STACKVAR(-1036, 4)) > reinterpret_cast<int>(STACKVAR(-1068, 4)))
+        {
+            STACKVAR(-1048, 4) = 0x00000003 * (reinterpret_cast<any_int32>(STACKVAR(-1036, 4)) - reinterpret_cast<any_int32>(STACKVAR(-1068, 4)));
+            STACKVAR(-1056, 4) = reinterpret_cast<any_int32>(STACKVAR(-1056, 4)) + reinterpret_cast<any_int32>(STACKVAR(-1048, 4)) * reinterpret_cast<any_int32>(STACKVAR(-1048, 4));
+            STACKVAR(-1048, 4) = 0x00000003 * (reinterpret_cast<any_int32>(STACKVAR(-1036, 4)) - reinterpret_cast<any_int32>(STACKVAR(16, 4)));
+            STACKVAR(-1028, 4) = reinterpret_cast<any_int32>(STACKVAR(-1028, 4)) + reinterpret_cast<any_int32>(STACKVAR(-1048, 4)) * reinterpret_cast<any_int32>(STACKVAR(-1048, 4));
+        }
+        else if (reinterpret_cast<int>(STACKVAR(-1036, 4)) <= reinterpret_cast<int>(STACKVAR(-1080, 4)))
+        {
+            STACKVAR(-1048, 4) = 0x00000003 * (reinterpret_cast<any_int32>(STACKVAR(-1036, 4)) - reinterpret_cast<any_int32>(STACKVAR(-1068, 4)));
+            STACKVAR(-1028, 4) = reinterpret_cast<any_int32>(STACKVAR(-1028, 4)) + reinterpret_cast<any_int32>(STACKVAR(-1048, 4)) * reinterpret_cast<any_int32>(STACKVAR(-1048, 4));
+        }
+        else
+        {
+            STACKVAR(-1048, 4) = 0x00000003 * (reinterpret_cast<any_int32>(STACKVAR(-1036, 4)) - reinterpret_cast<any_int32>(STACKVAR(16, 4)));
+            STACKVAR(-1028, 4) = reinterpret_cast<any_int32>(STACKVAR(-1028, 4)) + reinterpret_cast<any_int32>(STACKVAR(-1048, 4)) * reinterpret_cast<any_int32>(STACKVAR(-1048, 4));
+        }
+        STACKVAR(-1036, 4) = static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(ARRPTR(ACCESS(ACCESS(STACKVAR(8, 4), 116, 4), 8, 4), 1, STACKVAR(-1044, 4), 0), 0, 1)));
+        if (reinterpret_cast<int>(STACKVAR(-1036, 4)) < reinterpret_cast<int>(STACKVAR(20, 4)))
+        {
+            STACKVAR(-1048, 4) = reinterpret_cast<any_int32>(STACKVAR(-1036, 4)) - reinterpret_cast<any_int32>(STACKVAR(20, 4));
+            STACKVAR(-1056, 4) = reinterpret_cast<any_int32>(STACKVAR(-1056, 4)) + reinterpret_cast<any_int32>(STACKVAR(-1048, 4)) * reinterpret_cast<any_int32>(STACKVAR(-1048, 4));
+            STACKVAR(-1048, 4) = reinterpret_cast<any_int32>(STACKVAR(-1036, 4)) - reinterpret_cast<any_int32>(STACKVAR(-1076, 4));
+            STACKVAR(-1028, 4) = reinterpret_cast<any_int32>(STACKVAR(-1028, 4)) + reinterpret_cast<any_int32>(STACKVAR(-1048, 4)) * reinterpret_cast<any_int32>(STACKVAR(-1048, 4));
+        }
+        else if (reinterpret_cast<int>(STACKVAR(-1036, 4)) > reinterpret_cast<int>(STACKVAR(-1076, 4)))
+        {
+            STACKVAR(-1048, 4) = reinterpret_cast<any_int32>(STACKVAR(-1036, 4)) - reinterpret_cast<any_int32>(STACKVAR(-1076, 4));
+            STACKVAR(-1056, 4) = reinterpret_cast<any_int32>(STACKVAR(-1056, 4)) + reinterpret_cast<any_int32>(STACKVAR(-1048, 4)) * reinterpret_cast<any_int32>(STACKVAR(-1048, 4));
+            STACKVAR(-1048, 4) = reinterpret_cast<any_int32>(STACKVAR(-1036, 4)) - reinterpret_cast<any_int32>(STACKVAR(20, 4));
+            STACKVAR(-1028, 4) = reinterpret_cast<any_int32>(STACKVAR(-1028, 4)) + reinterpret_cast<any_int32>(STACKVAR(-1048, 4)) * reinterpret_cast<any_int32>(STACKVAR(-1048, 4));
+        }
+        else if (reinterpret_cast<int>(STACKVAR(-1036, 4)) <= reinterpret_cast<int>(STACKVAR(-1040, 4)))
+        {
+            STACKVAR(-1048, 4) = reinterpret_cast<any_int32>(STACKVAR(-1036, 4)) - reinterpret_cast<any_int32>(STACKVAR(-1076, 4));
+            STACKVAR(-1028, 4) = reinterpret_cast<any_int32>(STACKVAR(-1028, 4)) + reinterpret_cast<any_int32>(STACKVAR(-1048, 4)) * reinterpret_cast<any_int32>(STACKVAR(-1048, 4));
+        }
+        else
+        {
+            STACKVAR(-1048, 4) = reinterpret_cast<any_int32>(STACKVAR(-1036, 4)) - reinterpret_cast<any_int32>(STACKVAR(20, 4));
+            STACKVAR(-1028, 4) = reinterpret_cast<any_int32>(STACKVAR(-1028, 4)) + reinterpret_cast<any_int32>(STACKVAR(-1048, 4)) * reinterpret_cast<any_int32>(STACKVAR(-1048, 4));
+        }
+        ACCESS(ARRPTR(LOCAL(-1024), 0x04, STACKVAR(-1044, 4), 0), 0, 4) = STACKVAR(-1056, 4);
+        if (reinterpret_cast<int>(STACKVAR(-1028, 4)) < reinterpret_cast<int>(STACKVAR(-1064, 4)))
+        {
+            STACKVAR(-1064, 4) = STACKVAR(-1028, 4);
+        }
+        goto l10025325;
     }
-    STACKVAR(-1036, 4) = static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(ARRPTR(ACCESS(ACCESS(STACKVAR(8, 4), 116, 4), 0, 4), 1, STACKVAR(-1044, 4), 0), 0, 1)));
-    if (reinterpret_cast<int>(STACKVAR(-1036, 4)) >= reinterpret_cast<int>(STACKVAR(12, 4)))
+    STACKVAR(-1032, 4) = 0x00000000;
+    STACKVAR(-1044, 4) = 0x00000000;
+    goto l10025781;
+l10025772:
+    STACKVAR(-1044, 4) = reinterpret_cast<any_int32>(STACKVAR(-1044, 4)) + 0x00000001;
+l10025781:
+    if (reinterpret_cast<int>(STACKVAR(-1044, 4)) < reinterpret_cast<int>(STACKVAR(-1052, 4)))
     {
-        goto l100253BA;
+        if (reinterpret_cast<int>(ACCESS(ARRPTR(LOCAL(-1024), 0x04, STACKVAR(-1044, 4), 0), 0, 4)) <= reinterpret_cast<int>(STACKVAR(-1064, 4)))
+        {
+            ACCESS(reinterpret_cast<any_int32>(STACKVAR(24, 4)) + reinterpret_cast<any_int32>(STACKVAR(-1032, 4)), 0, 1) = STACKVAR(-1044, 1);
+            STACKVAR(-1032, 4) = reinterpret_cast<any_int32>(STACKVAR(-1032, 4)) + 0x00000001;
+        }
+        goto l10025772;
     }
-    STACKVAR(-1048, 4) = 0x00000002 * (reinterpret_cast<any_int32>(STACKVAR(-1036, 4)) - reinterpret_cast<any_int32>(STACKVAR(12, 4)));
-    STACKVAR(-1056, 4) = reinterpret_cast<any_int32>(STACKVAR(-1048, 4)) * reinterpret_cast<any_int32>(STACKVAR(-1048, 4));
-    STACKVAR(-1048, 4) = 0x00000002 * (reinterpret_cast<any_int32>(STACKVAR(-1036, 4)) - reinterpret_cast<any_int32>(STACKVAR(-1060, 4)));
-    STACKVAR(-1028, 4) = reinterpret_cast<any_int32>(STACKVAR(-1048, 4)) * reinterpret_cast<any_int32>(STACKVAR(-1048, 4));
-    goto l1002547A;
-l100253BA:
-    if (reinterpret_cast<int>(STACKVAR(-1036, 4)) <= reinterpret_cast<int>(STACKVAR(-1060, 4)))
-    {
-        goto l10025415;
-    }
-    STACKVAR(-1048, 4) = 0x00000002 * (reinterpret_cast<any_int32>(STACKVAR(-1036, 4)) - reinterpret_cast<any_int32>(STACKVAR(-1060, 4)));
-    STACKVAR(-1056, 4) = reinterpret_cast<any_int32>(STACKVAR(-1048, 4)) * reinterpret_cast<any_int32>(STACKVAR(-1048, 4));
-    STACKVAR(-1048, 4) = 0x00000002 * (reinterpret_cast<any_int32>(STACKVAR(-1036, 4)) - reinterpret_cast<any_int32>(STACKVAR(12, 4)));
-    STACKVAR(-1028, 4) = reinterpret_cast<any_int32>(STACKVAR(-1048, 4)) * reinterpret_cast<any_int32>(STACKVAR(-1048, 4));
-    goto l1002547A;
-l10025415:
-    STACKVAR(-1056, 4) = 0x00000000;
-    if (reinterpret_cast<int>(STACKVAR(-1036, 4)) > reinterpret_cast<int>(STACKVAR(-1072, 4)))
-    {
-        goto l10025456;
-    }
-    STACKVAR(-1048, 4) = 0x00000002 * (reinterpret_cast<any_int32>(STACKVAR(-1036, 4)) - reinterpret_cast<any_int32>(STACKVAR(-1060, 4)));
-    STACKVAR(-1028, 4) = reinterpret_cast<any_int32>(STACKVAR(-1048, 4)) * reinterpret_cast<any_int32>(STACKVAR(-1048, 4));
-    goto l1002547A;
-l10025456:
-    STACKVAR(-1048, 4) = 0x00000002 * (reinterpret_cast<any_int32>(STACKVAR(-1036, 4)) - reinterpret_cast<any_int32>(STACKVAR(12, 4)));
-    STACKVAR(-1028, 4) = reinterpret_cast<any_int32>(STACKVAR(-1048, 4)) * reinterpret_cast<any_int32>(STACKVAR(-1048, 4));
-l1002547A:
-    STACKVAR(-1036, 4) = static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(ARRPTR(ACCESS(ACCESS(STACKVAR(8, 4), 116, 4), 4, 4), 1, STACKVAR(-1044, 4), 0), 0, 1)));
-    if (reinterpret_cast<int>(STACKVAR(-1036, 4)) >= reinterpret_cast<int>(STACKVAR(16, 4)))
-    {
-        goto l10025501;
-    }
-    STACKVAR(-1048, 4) = 0x00000003 * (reinterpret_cast<any_int32>(STACKVAR(-1036, 4)) - reinterpret_cast<any_int32>(STACKVAR(16, 4)));
-    STACKVAR(-1056, 4) = reinterpret_cast<any_int32>(STACKVAR(-1056, 4)) + reinterpret_cast<any_int32>(STACKVAR(-1048, 4)) * reinterpret_cast<any_int32>(STACKVAR(-1048, 4));
-    STACKVAR(-1048, 4) = 0x00000003 * (reinterpret_cast<any_int32>(STACKVAR(-1036, 4)) - reinterpret_cast<any_int32>(STACKVAR(-1068, 4)));
-    STACKVAR(-1028, 4) = reinterpret_cast<any_int32>(STACKVAR(-1028, 4)) + reinterpret_cast<any_int32>(STACKVAR(-1048, 4)) * reinterpret_cast<any_int32>(STACKVAR(-1048, 4));
-    goto l100255DB;
-l10025501:
-    if (reinterpret_cast<int>(STACKVAR(-1036, 4)) <= reinterpret_cast<int>(STACKVAR(-1068, 4)))
-    {
-        goto l1002556E;
-    }
-    STACKVAR(-1048, 4) = 0x00000003 * (reinterpret_cast<any_int32>(STACKVAR(-1036, 4)) - reinterpret_cast<any_int32>(STACKVAR(-1068, 4)));
-    STACKVAR(-1056, 4) = reinterpret_cast<any_int32>(STACKVAR(-1056, 4)) + reinterpret_cast<any_int32>(STACKVAR(-1048, 4)) * reinterpret_cast<any_int32>(STACKVAR(-1048, 4));
-    STACKVAR(-1048, 4) = 0x00000003 * (reinterpret_cast<any_int32>(STACKVAR(-1036, 4)) - reinterpret_cast<any_int32>(STACKVAR(16, 4)));
-    STACKVAR(-1028, 4) = reinterpret_cast<any_int32>(STACKVAR(-1028, 4)) + reinterpret_cast<any_int32>(STACKVAR(-1048, 4)) * reinterpret_cast<any_int32>(STACKVAR(-1048, 4));
-    goto l100255DB;
-l1002556E:
-    if (reinterpret_cast<int>(STACKVAR(-1036, 4)) > reinterpret_cast<int>(STACKVAR(-1080, 4)))
-    {
-        goto l100255AE;
-    }
-    STACKVAR(-1048, 4) = 0x00000003 * (reinterpret_cast<any_int32>(STACKVAR(-1036, 4)) - reinterpret_cast<any_int32>(STACKVAR(-1068, 4)));
-    STACKVAR(-1028, 4) = reinterpret_cast<any_int32>(STACKVAR(-1028, 4)) + reinterpret_cast<any_int32>(STACKVAR(-1048, 4)) * reinterpret_cast<any_int32>(STACKVAR(-1048, 4));
-    goto l100255DB;
-l100255AE:
-    STACKVAR(-1048, 4) = 0x00000003 * (reinterpret_cast<any_int32>(STACKVAR(-1036, 4)) - reinterpret_cast<any_int32>(STACKVAR(16, 4)));
-    STACKVAR(-1028, 4) = reinterpret_cast<any_int32>(STACKVAR(-1028, 4)) + reinterpret_cast<any_int32>(STACKVAR(-1048, 4)) * reinterpret_cast<any_int32>(STACKVAR(-1048, 4));
-l100255DB:
-    STACKVAR(-1036, 4) = static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(ARRPTR(ACCESS(ACCESS(STACKVAR(8, 4), 116, 4), 8, 4), 1, STACKVAR(-1044, 4), 0), 0, 1)));
-    if (reinterpret_cast<int>(STACKVAR(-1036, 4)) >= reinterpret_cast<int>(STACKVAR(20, 4)))
-    {
-        goto l1002565C;
-    }
-    STACKVAR(-1048, 4) = reinterpret_cast<any_int32>(STACKVAR(-1036, 4)) - reinterpret_cast<any_int32>(STACKVAR(20, 4));
-    STACKVAR(-1056, 4) = reinterpret_cast<any_int32>(STACKVAR(-1056, 4)) + reinterpret_cast<any_int32>(STACKVAR(-1048, 4)) * reinterpret_cast<any_int32>(STACKVAR(-1048, 4));
-    STACKVAR(-1048, 4) = reinterpret_cast<any_int32>(STACKVAR(-1036, 4)) - reinterpret_cast<any_int32>(STACKVAR(-1076, 4));
-    STACKVAR(-1028, 4) = reinterpret_cast<any_int32>(STACKVAR(-1028, 4)) + reinterpret_cast<any_int32>(STACKVAR(-1048, 4)) * reinterpret_cast<any_int32>(STACKVAR(-1048, 4));
-    goto l1002572A;
-l1002565C:
-    if (reinterpret_cast<int>(STACKVAR(-1036, 4)) <= reinterpret_cast<int>(STACKVAR(-1076, 4)))
-    {
-        goto l100256C3;
-    }
-    STACKVAR(-1048, 4) = reinterpret_cast<any_int32>(STACKVAR(-1036, 4)) - reinterpret_cast<any_int32>(STACKVAR(-1076, 4));
-    STACKVAR(-1056, 4) = reinterpret_cast<any_int32>(STACKVAR(-1056, 4)) + reinterpret_cast<any_int32>(STACKVAR(-1048, 4)) * reinterpret_cast<any_int32>(STACKVAR(-1048, 4));
-    STACKVAR(-1048, 4) = reinterpret_cast<any_int32>(STACKVAR(-1036, 4)) - reinterpret_cast<any_int32>(STACKVAR(20, 4));
-    STACKVAR(-1028, 4) = reinterpret_cast<any_int32>(STACKVAR(-1028, 4)) + reinterpret_cast<any_int32>(STACKVAR(-1048, 4)) * reinterpret_cast<any_int32>(STACKVAR(-1048, 4));
-    goto l1002572A;
-l100256C3:
-    if (reinterpret_cast<int>(STACKVAR(-1036, 4)) > reinterpret_cast<int>(STACKVAR(-1040, 4)))
-    {
-        goto l10025700;
-    }
-    STACKVAR(-1048, 4) = reinterpret_cast<any_int32>(STACKVAR(-1036, 4)) - reinterpret_cast<any_int32>(STACKVAR(-1076, 4));
-    STACKVAR(-1028, 4) = reinterpret_cast<any_int32>(STACKVAR(-1028, 4)) + reinterpret_cast<any_int32>(STACKVAR(-1048, 4)) * reinterpret_cast<any_int32>(STACKVAR(-1048, 4));
-    goto l1002572A;
-l10025700:
-    STACKVAR(-1048, 4) = reinterpret_cast<any_int32>(STACKVAR(-1036, 4)) - reinterpret_cast<any_int32>(STACKVAR(20, 4));
-    STACKVAR(-1028, 4) = reinterpret_cast<any_int32>(STACKVAR(-1028, 4)) + reinterpret_cast<any_int32>(STACKVAR(-1048, 4)) * reinterpret_cast<any_int32>(STACKVAR(-1048, 4));
-l1002572A:
-    REGDEF(ecx=STACKVAR(-1044, 4), edx=STACKVAR(-1056, 4))
+    REGDEF(eax=STACKVAR(-1032, 4))
 }
-Error: "Failed to find pattern for 'mov dword ptr [ebp+ecx*04h-000000400h], edx'"
 
 // address: 0x100257D0
 p100257D0
