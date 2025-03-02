@@ -137,6 +137,12 @@
 	},
 	{
 		"instructions": [
+			{"push": ["ebx"]}
+		],
+		"action": {"prolog-preserved": {"reg": "ebx"}}
+	},
+	{
+		"instructions": [
 			{"pop": ["edi"]}
 		],
 		"action": {"epilog-restore": {"restore": "RESTORE(edi)"}}

@@ -1576,29 +1576,51 @@ B_ODataFile &operator <<(B_ODataFile &file, const B_NamedObj &namedObj)
 B_Name operator +(const B_Name &lother, const B_Name &rother)
 {
     ProcedureInfo(this=None, this_offset=None, local_size=24, stack_delta=None)
+    STACKVAR(-12, 4) = ACCESS(STACKVAR(12, 4), 4, 4);
+    STACKVAR(-16, 4) = ACCESS(STACKVAR(16, 4), 4, 4);
+    LOCAL(-8)->unknown_method_10003410(reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 1);
+    STACKVAR(-20, 4) = ACCESS(STACKVAR(12, 4), 0, 4);
+    strcpy(STACKVAR(-8, 4), STACKVAR(-20, 4));
+    STACKVAR(-24, 4) = ACCESS(STACKVAR(16, 4), 0, 4);
+    REGDEF(edi=STACKVAR(-24, 4), edx=STACKVAR(-8, 4), ecx=0xFFFFFFFF, eax=0x00000000)
 }
-Error: "Failed to find pattern for 'push ebx'"
+Error: "Failed to find pattern for 'repnz scasb'"
 
 // address: 0x10003B1E
 B_Name operator +(const B_Name &other, const char *str)
 {
     ProcedureInfo(this=None, this_offset=None, local_size=16, stack_delta=None)
+    STACKVAR(-12, 4) = ACCESS(STACKVAR(12, 4), 4, 4);
+    LOCAL(-8)->unknown_method_10003410(reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + strlen(STACKVAR(16, 4)) + 1);
+    STACKVAR(-16, 4) = ACCESS(STACKVAR(12, 4), 0, 4);
+    strcpy(STACKVAR(-8, 4), STACKVAR(-16, 4));
+    REGDEF(edi=STACKVAR(16, 4), edx=STACKVAR(-8, 4), ecx=0xFFFFFFFF, eax=0x00000000)
 }
-Error: "Failed to find pattern for 'push ebx'"
+Error: "Failed to find pattern for 'repnz scasb'"
 
 // address: 0x10003BC7
 B_Name operator +(const char *str, const B_Name &bName)
 {
     ProcedureInfo(this=None, this_offset=None, local_size=16, stack_delta=None)
+    STACKVAR(-12, 4) = ACCESS(STACKVAR(16, 4), 4, 4);
+    LOCAL(-8)->unknown_method_10003410(strlen(STACKVAR(12, 4)) + reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + 1);
+    strcpy(STACKVAR(-8, 4), STACKVAR(12, 4));
+    STACKVAR(-16, 4) = ACCESS(STACKVAR(16, 4), 0, 4);
+    REGDEF(edi=STACKVAR(-16, 4), edx=STACKVAR(-8, 4), ecx=0xFFFFFFFF, eax=0x00000000)
 }
-Error: "Failed to find pattern for 'push ebx'"
+Error: "Failed to find pattern for 'repnz scasb'"
 
 // address: 0x10003C70
 B_Name &B_Name::operator +=(const char *str)
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=16, stack_delta=None)
+    ProcedureInfo(this=Id(this), this_offset=-16, local_size=16, stack_delta=None)
+    ACCESS(STACKVAR(-16, 4), 4, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-16, 4), 4, 4)) + strlen(STACKVAR(8, 4));
+    STACKVAR(-8, 4) = ??2@YAPAXI@Z(reinterpret_cast<any_int32>(ACCESS(STACKVAR(-16, 4), 4, 4)) + 0x00000001);
+    STACKVAR(-4, 4) = STACKVAR(-8, 4);
+    strcpy(STACKVAR(-4, 4), ACCESS(STACKVAR(-16, 4), 0, 4));
+    REGDEF(edi=STACKVAR(8, 4), edx=STACKVAR(-4, 4), ecx=0xFFFFFFFF, eax=0x00000000)
 }
-Error: "Failed to find pattern for 'push ebx'"
+Error: "Failed to find pattern for 'repnz scasb'"
 
 // address: 0x10003D30
 B_Name &B_Name::operator+=(char c)
@@ -1618,9 +1640,16 @@ B_Name &B_Name::operator+=(char c)
 // address: 0x10003DCE
 B_Name &B_Name::operator +=(const B_Name &other)
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=24, stack_delta=None)
+    ProcedureInfo(this=Id(this), this_offset=-24, local_size=24, stack_delta=None)
+    STACKVAR(-16, 4) = ACCESS(STACKVAR(8, 4), 4, 4);
+    ACCESS(STACKVAR(-24, 4), 4, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-24, 4), 4, 4)) + reinterpret_cast<any_int32>(STACKVAR(-16, 4));
+    STACKVAR(-8, 4) = ??2@YAPAXI@Z(reinterpret_cast<any_int32>(ACCESS(STACKVAR(-24, 4), 4, 4)) + 0x00000001);
+    STACKVAR(-4, 4) = STACKVAR(-8, 4);
+    strcpy(STACKVAR(-4, 4), ACCESS(STACKVAR(-24, 4), 0, 4));
+    STACKVAR(-20, 4) = ACCESS(STACKVAR(8, 4), 0, 4);
+    REGDEF(edi=STACKVAR(-20, 4), edx=STACKVAR(-4, 4), ecx=0xFFFFFFFF, eax=0x00000000)
 }
-Error: "Failed to find pattern for 'push ebx'"
+Error: "Failed to find pattern for 'repnz scasb'"
 
 // address: 0x10003E91
 void B_Name::UpCase()
@@ -4962,9 +4991,10 @@ l100090DB:
 // address: 0x10009110
 p10009110
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=8, stack_delta=None)
+    ProcedureInfo(this=Id(this), this_offset=-4, local_size=8, stack_delta=None)
+    REGDEF(ecx=static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-4, 4), 4, 1))) - static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(8, 4), 4, 1))), eax=static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-4, 4), 4, 1))), edx=STACKVAR(8, 4))
 }
-Error: "Failed to find pattern for 'push ebx'"
+Error: "Failed to find pattern for 'xor ebx, ebx'"
 
 // address: 0x100091A4
 B_IDataFile &operator >>(B_IDataFile &file, B_Color &color)
@@ -5110,9 +5140,11 @@ p1000944E
 // address: 0x1000946B
 p1000946B
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=20, stack_delta=None)
+    ProcedureInfo(this=Id(this), this_offset=-20, local_size=20, stack_delta=None)
+    STACKVAR(-16, 4) = STACKVAR(20, 4);
+    REGDEF(esi=STACKVAR(8, 4))
 }
-Error: "Failed to find pattern for 'push ebx'"
+Error: "Failed to find pattern for 'and esi, 0000000FFh'"
 
 // address: 0x10009633
 p10009633
@@ -9766,8 +9798,34 @@ Error: "Failed to find pattern for 'xor ecx, 000000001h'"
 p100124E9
 {
     ProcedureInfo(this=None, this_offset=None, local_size=32, stack_delta=None)
+    STACKVAR(-4, 4) = 0x00000008 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(12, 4), 28, 4));
+    unknown_function_10012353(STACKVAR(16, 4), ACCESS(STACKVAR(8, 4), 216, 4), ACCESS(STACKVAR(8, 4), 28, 4), 0x00000002 * reinterpret_cast<any_int32>(STACKVAR(-4, 4)));
+    STACKVAR(-32, 4) = 0x00000000;
+    STACKVAR(-24, 4) = 0x00000000;
+    goto l10012538;
+l1001252F:
+    STACKVAR(-24, 4) = reinterpret_cast<any_int32>(STACKVAR(-24, 4)) + 0x00000001;
+l10012538:
+    if (reinterpret_cast<int>(STACKVAR(-24, 4)) >= reinterpret_cast<int>(ACCESS(STACKVAR(12, 4), 12, 4)))
+    {
+        goto l100125F0;
+    }
+    STACKVAR(-28, 4) = ACCESS(ARRPTR(STACKVAR(20, 4), 0x04, STACKVAR(-24, 4), 0), 0, 4);
+    STACKVAR(-16, 4) = ACCESS(ARRPTR(STACKVAR(16, 4), 0x04, STACKVAR(-32, 4), 0), 0, 4);
+    STACKVAR(-8, 4) = ACCESS(ARRPTR(STACKVAR(16, 4), 0x04, STACKVAR(-32, 4), 4), 0, 4);
+    STACKVAR(-20, 4) = 0x00000001;
+    STACKVAR(-12, 4) = 0x00000000;
+    goto l10012585;
+l1001257C:
+    STACKVAR(-12, 4) = reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + 0x00000001;
+l10012585:
+    if (reinterpret_cast<unsigned int>(STACKVAR(-12, 4)) >= reinterpret_cast<unsigned int>(STACKVAR(-4, 4)))
+    {
+        goto l100125E2;
+    }
+    REGDEF(edx=static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-16, 4), 0, 1))) + static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-16, 4), 1, 1))), ecx=static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-8, 4), 0, 1))) + reinterpret_cast<any_int32>(STACKVAR(-20, 4)), eax=STACKVAR(-8, 4))
 }
-Error: "Failed to find pattern for 'push ebx'"
+Error: "Failed to find pattern for 'xor ebx, ebx'"
 
 // address: 0x100125F5
 p100125F5
