@@ -192,6 +192,12 @@
 	},
 	{
 		"instructions": [
+			{"rep": ["stosd"]}
+		],
+		"action": {"instruction": {"expression": "memset(REGVALUE(edi), EXPECT(REGVALUE(eax), 0), EVAL(4 * REGVALUE(ecx)))"}}
+	},
+	{
+		"instructions": [
 			{"mov": ["eax", "ecx"]},
 			{"shr": ["ecx", "002h"]},
 			{"rep": ["movsd"]},
