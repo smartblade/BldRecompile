@@ -1582,9 +1582,14 @@ B_Name operator +(const B_Name &lother, const B_Name &rother)
     STACKVAR(-20, 4) = ACCESS(STACKVAR(12, 4), 0, 4);
     strcpy(STACKVAR(-8, 4), STACKVAR(-20, 4));
     STACKVAR(-24, 4) = ACCESS(STACKVAR(16, 4), 0, 4);
-    REGDEF(edi=STACKVAR(-24, 4), edx=STACKVAR(-8, 4), ecx=0xFFFFFFFF, eax=0x00000000)
+    strcat(STACKVAR(-8, 4), STACKVAR(-24, 4));
+    STACKVAR(8, 4)->unknown_method_100033A4(LOCAL(-8));
+    LOCAL(-8)->unknown_method_100039BA();
+    REGDEF(eax=STACKVAR(8, 4))
+    RESTORE(edi);
+    RESTORE(esi);
 }
-Error: "Failed to find pattern for 'repnz scasb'"
+Error: "Failed to find pattern for 'pop ebx'"
 
 // address: 0x10003B1E
 B_Name operator +(const B_Name &other, const char *str)
@@ -1594,9 +1599,14 @@ B_Name operator +(const B_Name &other, const char *str)
     LOCAL(-8)->unknown_method_10003410(reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + strlen(STACKVAR(16, 4)) + 1);
     STACKVAR(-16, 4) = ACCESS(STACKVAR(12, 4), 0, 4);
     strcpy(STACKVAR(-8, 4), STACKVAR(-16, 4));
-    REGDEF(edi=STACKVAR(16, 4), edx=STACKVAR(-8, 4), ecx=0xFFFFFFFF, eax=0x00000000)
+    strcat(STACKVAR(-8, 4), STACKVAR(16, 4));
+    STACKVAR(8, 4)->unknown_method_100033A4(LOCAL(-8));
+    LOCAL(-8)->unknown_method_100039BA();
+    REGDEF(eax=STACKVAR(8, 4))
+    RESTORE(edi);
+    RESTORE(esi);
 }
-Error: "Failed to find pattern for 'repnz scasb'"
+Error: "Failed to find pattern for 'pop ebx'"
 
 // address: 0x10003BC7
 B_Name operator +(const char *str, const B_Name &bName)
@@ -1606,9 +1616,14 @@ B_Name operator +(const char *str, const B_Name &bName)
     LOCAL(-8)->unknown_method_10003410(strlen(STACKVAR(12, 4)) + reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + 1);
     strcpy(STACKVAR(-8, 4), STACKVAR(12, 4));
     STACKVAR(-16, 4) = ACCESS(STACKVAR(16, 4), 0, 4);
-    REGDEF(edi=STACKVAR(-16, 4), edx=STACKVAR(-8, 4), ecx=0xFFFFFFFF, eax=0x00000000)
+    strcat(STACKVAR(-8, 4), STACKVAR(-16, 4));
+    STACKVAR(8, 4)->unknown_method_100033A4(LOCAL(-8));
+    LOCAL(-8)->unknown_method_100039BA();
+    REGDEF(eax=STACKVAR(8, 4))
+    RESTORE(edi);
+    RESTORE(esi);
 }
-Error: "Failed to find pattern for 'repnz scasb'"
+Error: "Failed to find pattern for 'pop ebx'"
 
 // address: 0x10003C70
 B_Name &B_Name::operator +=(const char *str)
@@ -1618,9 +1633,15 @@ B_Name &B_Name::operator +=(const char *str)
     STACKVAR(-8, 4) = ??2@YAPAXI@Z(reinterpret_cast<any_int32>(ACCESS(STACKVAR(-16, 4), 4, 4)) + 0x00000001);
     STACKVAR(-4, 4) = STACKVAR(-8, 4);
     strcpy(STACKVAR(-4, 4), ACCESS(STACKVAR(-16, 4), 0, 4));
-    REGDEF(edi=STACKVAR(8, 4), edx=STACKVAR(-4, 4), ecx=0xFFFFFFFF, eax=0x00000000)
+    strcat(STACKVAR(-4, 4), STACKVAR(8, 4));
+    STACKVAR(-12, 4) = ACCESS(STACKVAR(-16, 4), 0, 4);
+    ??3@YAXPAX@Z(STACKVAR(-12, 4));
+    ACCESS(STACKVAR(-16, 4), 0, 4) = STACKVAR(-4, 4);
+    REGDEF(eax=STACKVAR(-16, 4))
+    RESTORE(edi);
+    RESTORE(esi);
 }
-Error: "Failed to find pattern for 'repnz scasb'"
+Error: "Failed to find pattern for 'pop ebx'"
 
 // address: 0x10003D30
 B_Name &B_Name::operator+=(char c)
@@ -1647,9 +1668,15 @@ B_Name &B_Name::operator +=(const B_Name &other)
     STACKVAR(-4, 4) = STACKVAR(-8, 4);
     strcpy(STACKVAR(-4, 4), ACCESS(STACKVAR(-24, 4), 0, 4));
     STACKVAR(-20, 4) = ACCESS(STACKVAR(8, 4), 0, 4);
-    REGDEF(edi=STACKVAR(-20, 4), edx=STACKVAR(-4, 4), ecx=0xFFFFFFFF, eax=0x00000000)
+    strcat(STACKVAR(-4, 4), STACKVAR(-20, 4));
+    STACKVAR(-12, 4) = ACCESS(STACKVAR(-24, 4), 0, 4);
+    ??3@YAXPAX@Z(STACKVAR(-12, 4));
+    ACCESS(STACKVAR(-24, 4), 0, 4) = STACKVAR(-4, 4);
+    REGDEF(eax=STACKVAR(-24, 4))
+    RESTORE(edi);
+    RESTORE(esi);
 }
-Error: "Failed to find pattern for 'repnz scasb'"
+Error: "Failed to find pattern for 'pop ebx'"
 
 // address: 0x10003E91
 void B_Name::UpCase()

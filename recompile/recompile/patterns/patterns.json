@@ -242,6 +242,29 @@
 	},
 	{
 		"instructions": [
+			{"or":    ["ecx", "0FFFFFFFFh"]},
+			{"xor":   ["eax", "eax"]},
+			{"repnz": ["scasb"]},
+			{"not":   ["ecx"]},
+			{"sub":   ["edi", "ecx"]},
+			{"mov":   ["esi", "edi"]},
+			{"mov":   ["ebx", "ecx"]},
+			{"mov":   ["edi", "edx"]},
+			{"or":    ["ecx", "0FFFFFFFFh"]},
+			{"xor":   ["eax", "eax"]},
+			{"repnz": ["scasb"]},
+			{"add":   ["edi", "0FFFFFFFFh"]},
+			{"mov":   ["ecx", "ebx"]},
+			{"shr":   ["ecx", "002h"]},
+			{"rep":   ["movsd"]},
+			{"mov":   ["ecx", "ebx"]},
+			{"and":   ["ecx", "000000003h"]},
+			{"rep":   ["movsb"]}
+		],
+		"action": {"instruction": {"expression": "strcat(REGVALUE(edx), REGVALUE(edi))"}}
+	},
+	{
+		"instructions": [
 			{"label": ["%label-loop%"]},
 			{"mov":   ["%eax-ecx-edx-1%", "[ebp%offset-str1%]"]},
 			{"mov":   ["%al-cl-dl-1%", "[%eax-ecx-edx-1%]"]},
