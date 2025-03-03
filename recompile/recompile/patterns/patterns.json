@@ -192,6 +192,13 @@
 	},
 	{
 		"instructions": [
+			{"rep":   ["stosd"]},
+			{"stosb": []}
+		],
+		"action": {"instruction": {"expression": "memset(REGVALUE(edi), EXPECT(REGVALUE(eax), 0), EVAL(4 * REGVALUE(ecx) + 1))"}}
+	},
+	{
+		"instructions": [
 			{"rep": ["stosd"]}
 		],
 		"action": {"instruction": {"expression": "memset(REGVALUE(edi), EXPECT(REGVALUE(eax), 0), EVAL(4 * REGVALUE(ecx)))"}}

@@ -32,6 +32,8 @@ def _evaluate_binary(b):
     max_size = max(left.data_type.size, right.data_type.size)
     if b.operator == Operator.MUL:
         return _make_constant(max_size, left.value * right.value)
+    if b.operator == Operator.ADD:
+        return _make_constant(max_size, left.value + right.value)
     if b.operator == Operator.SUB:
         return _make_constant(max_size, left.value - right.value)
     if b.operator == Operator.SHL:

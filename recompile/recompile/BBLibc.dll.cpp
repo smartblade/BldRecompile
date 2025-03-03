@@ -6529,9 +6529,142 @@ Error: "Unexpected instruction type <class 'instructions.assignment.Assignment'>
 p1000C0BE
 {
     ProcedureInfo(this=None, this_offset=None, local_size=2116, stack_delta=None)
-    memset(LOCAL(-1076), 0x00000000, 0x00000020);
+    memset(LOCAL(-1076), 0x00000000, 0x00000021);
+    memset(LOCAL(-1040), 0x00000000, 0x00000404);
+    STACKVAR(-2112, 4) = 0x00000000;
+    goto l1000C102;
+l1000C0F3:
+    STACKVAR(-2112, 4) = reinterpret_cast<any_int32>(STACKVAR(-2112, 4)) + 0x00000001;
+l1000C102:
+    if (reinterpret_cast<int>(STACKVAR(-2112, 4)) >= 257)
+    {
+        goto l1000C121;
+    }
+    ACCESS(ARRPTR(LOCAL(-2108), 0x04, STACKVAR(-2112, 4), 0), 0, 4) = 0xFFFFFFFF;
+    goto l1000C0F3;
+l1000C121:
+    ACCESS(STACKVAR(16, 4), 1024, 4) = 0x00000001;
+l1000C12E:
+    STACKVAR(-8, 4) = 0xFFFFFFFF;
+    STACKVAR(-1080, 4) = 0x3B9ACA00;
+    STACKVAR(-2112, 4) = 0x00000000;
+    goto l1000C15A;
+l1000C14B:
+    STACKVAR(-2112, 4) = reinterpret_cast<any_int32>(STACKVAR(-2112, 4)) + 0x00000001;
+l1000C15A:
+    if (reinterpret_cast<int>(STACKVAR(-2112, 4)) > 256)
+    {
+        goto l1000C1A6;
+    }
+    if (ACCESS(ARRPTR(STACKVAR(16, 4), 0x04, STACKVAR(-2112, 4), 0), 0, 4) == 0x00000000)
+    {
+        goto l1000C1A4;
+    }
+    if (reinterpret_cast<int>(ACCESS(ARRPTR(STACKVAR(16, 4), 0x04, STACKVAR(-2112, 4), 0), 0, 4)) > reinterpret_cast<int>(STACKVAR(-1080, 4)))
+    {
+        goto l1000C1A4;
+    }
+    STACKVAR(-1080, 4) = ACCESS(ARRPTR(STACKVAR(16, 4), 0x04, STACKVAR(-2112, 4), 0), 0, 4);
+    STACKVAR(-8, 4) = STACKVAR(-2112, 4);
+l1000C1A4:
+    goto l1000C14B;
+l1000C1A6:
+    STACKVAR(-12, 4) = 0xFFFFFFFF;
+    STACKVAR(-1080, 4) = 0x3B9ACA00;
+    STACKVAR(-2112, 4) = 0x00000000;
+    goto l1000C1D2;
+l1000C1C3:
+    STACKVAR(-2112, 4) = reinterpret_cast<any_int32>(STACKVAR(-2112, 4)) + 0x00000001;
+l1000C1D2:
+    if (reinterpret_cast<int>(STACKVAR(-2112, 4)) > 256)
+    {
+        goto l1000C229;
+    }
+    if (ACCESS(ARRPTR(STACKVAR(16, 4), 0x04, STACKVAR(-2112, 4), 0), 0, 4) == 0x00000000)
+    {
+        goto l1000C227;
+    }
+    if (reinterpret_cast<int>(ACCESS(ARRPTR(STACKVAR(16, 4), 0x04, STACKVAR(-2112, 4), 0), 0, 4)) > reinterpret_cast<int>(STACKVAR(-1080, 4)))
+    {
+        goto l1000C227;
+    }
+    if (STACKVAR(-2112, 4) == STACKVAR(-8, 4))
+    {
+        goto l1000C227;
+    }
+    STACKVAR(-1080, 4) = ACCESS(ARRPTR(STACKVAR(16, 4), 0x04, STACKVAR(-2112, 4), 0), 0, 4);
+    STACKVAR(-12, 4) = STACKVAR(-2112, 4);
+l1000C227:
+    goto l1000C1C3;
+l1000C229:
+    if (reinterpret_cast<int>(STACKVAR(-12, 4)) >= 0)
+    {
+        goto l1000C234;
+    }
+    goto l1000C302;
+l1000C234:
+    ACCESS(ARRPTR(STACKVAR(16, 4), 0x04, STACKVAR(-8, 4), 0), 0, 4) = reinterpret_cast<any_int32>(ACCESS(ARRPTR(STACKVAR(16, 4), 0x04, STACKVAR(-8, 4), 0), 0, 4)) + reinterpret_cast<any_int32>(ACCESS(ARRPTR(STACKVAR(16, 4), 0x04, STACKVAR(-12, 4), 0), 0, 4));
+    ACCESS(ARRPTR(STACKVAR(16, 4), 0x04, STACKVAR(-12, 4), 0), 0, 4) = 0x00000000;
+    ACCESS(ARRPTR(LOCAL(-1040), 0x04, STACKVAR(-8, 4), 0), 0, 4) = reinterpret_cast<any_int32>(ACCESS(ARRPTR(LOCAL(-1040), 0x04, STACKVAR(-8, 4), 0), 0, 4)) + 0x00000001;
+l1000C273:
+    if (reinterpret_cast<int>(ACCESS(ARRPTR(LOCAL(-2108), 0x04, STACKVAR(-8, 4), 0), 0, 4)) < 0)
+    {
+        goto l1000C2A6;
+    }
+    STACKVAR(-8, 4) = ACCESS(ARRPTR(LOCAL(-2108), 0x04, STACKVAR(-8, 4), 0), 0, 4);
+    ACCESS(ARRPTR(LOCAL(-1040), 0x04, STACKVAR(-8, 4), 0), 0, 4) = reinterpret_cast<any_int32>(ACCESS(ARRPTR(LOCAL(-1040), 0x04, STACKVAR(-8, 4), 0), 0, 4)) + 0x00000001;
+    goto l1000C273;
+l1000C2A6:
+    ACCESS(ARRPTR(LOCAL(-2108), 0x04, STACKVAR(-8, 4), 0), 0, 4) = STACKVAR(-12, 4);
+    ACCESS(ARRPTR(LOCAL(-1040), 0x04, STACKVAR(-12, 4), 0), 0, 4) = reinterpret_cast<any_int32>(ACCESS(ARRPTR(LOCAL(-1040), 0x04, STACKVAR(-12, 4), 0), 0, 4)) + 0x00000001;
+l1000C2CA:
+    if (reinterpret_cast<int>(ACCESS(ARRPTR(LOCAL(-2108), 0x04, STACKVAR(-12, 4), 0), 0, 4)) < 0)
+    {
+        goto l1000C2FD;
+    }
+    STACKVAR(-12, 4) = ACCESS(ARRPTR(LOCAL(-2108), 0x04, STACKVAR(-12, 4), 0), 0, 4);
+    ACCESS(ARRPTR(LOCAL(-1040), 0x04, STACKVAR(-12, 4), 0), 0, 4) = reinterpret_cast<any_int32>(ACCESS(ARRPTR(LOCAL(-1040), 0x04, STACKVAR(-12, 4), 0), 0, 4)) + 0x00000001;
+    goto l1000C2CA;
+l1000C2FD:
+    goto l1000C12E;
+l1000C302:
+    STACKVAR(-2112, 4) = 0x00000000;
+    goto l1000C31D;
+l1000C30E:
+    STACKVAR(-2112, 4) = reinterpret_cast<any_int32>(STACKVAR(-2112, 4)) + 0x00000001;
+l1000C31D:
+    if (reinterpret_cast<int>(STACKVAR(-2112, 4)) > 256)
+    {
+        goto l1000C393;
+    }
+    if (ACCESS(ARRPTR(LOCAL(-1040), 0x04, STACKVAR(-2112, 4), 0), 0, 4) == 0x00000000)
+    {
+        goto l1000C38E;
+    }
+    if (reinterpret_cast<int>(ACCESS(ARRPTR(LOCAL(-1040), 0x04, STACKVAR(-2112, 4), 0), 0, 4)) <= 32)
+    {
+        goto l1000C363;
+    }
+    ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x00000027;
+    ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 0, 4)(STACKVAR(8, 4));
+l1000C363:
+    ACCESS(ARRPTR(LOCAL(-1076), 1, ACCESS(ARRPTR(LOCAL(-1040), 0x04, STACKVAR(-2112, 4), 0), 0, 4), 0), 0, 1) = reinterpret_cast<any_int8>(ACCESS(ARRPTR(LOCAL(-1076), 1, ACCESS(ARRPTR(LOCAL(-1040), 0x04, STACKVAR(-2112, 4), 0), 0, 4), 0), 0, 1)) + 0x01;
+l1000C38E:
+    goto l1000C30E;
+l1000C393:
+    STACKVAR(-2112, 4) = 0x00000020;
+    goto l1000C3AE;
+l1000C39F:
+    STACKVAR(-2112, 4) = reinterpret_cast<any_int32>(STACKVAR(-2112, 4)) - 0x00000001;
+l1000C3AE:
+    if (reinterpret_cast<int>(STACKVAR(-2112, 4)) <= 16)
+    {
+        goto l1000C47F;
+    }
+l1000C3BB:
+    REGDEF(eax=static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(ARRPTR(LOCAL(-1076), 1, STACKVAR(-2112, 4), 0), 0, 1))))
 }
-Error: "Failed to find pattern for 'stosb'"
+Error: "Failed to find pattern for 'test eax, eax'"
 
 // address: 0x1000C580
 p1000C580
