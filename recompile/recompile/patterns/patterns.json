@@ -155,6 +155,12 @@
 	},
 	{
 		"instructions": [
+			{"pop": ["ebx"]}
+		],
+		"action": {"epilog-restore": {"restore": "RESTORE(ebx)"}}
+	},
+	{
+		"instructions": [
 			{"mov": ["esp", "ebp"]}
 		],
 		"action": {"epilog-restore": {"restore": "RESTORE(esp)"}}

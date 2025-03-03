@@ -1575,73 +1575,57 @@ B_ODataFile &operator <<(B_ODataFile &file, const B_NamedObj &namedObj)
 // address: 0x10003A70
 B_Name operator +(const B_Name &lother, const B_Name &rother)
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=24, stack_delta=None)
-    STACKVAR(-12, 4) = ACCESS(STACKVAR(12, 4), 4, 4);
-    STACKVAR(-16, 4) = ACCESS(STACKVAR(16, 4), 4, 4);
-    LOCAL(-8)->unknown_method_10003410(reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 1);
-    STACKVAR(-20, 4) = ACCESS(STACKVAR(12, 4), 0, 4);
+    STACKVAR(-12, 4) = lother.len;
+    STACKVAR(-16, 4) = rother.len;
+    reinterpret_cast<B_Name *>(LOCAL(-8))->B_Name(reinterpret_cast<unsigned int>(STACKVAR(-12, 4)) + reinterpret_cast<unsigned int>(STACKVAR(-16, 4)) + 1);
+    STACKVAR(-20, 4) = lother.string;
     strcpy(STACKVAR(-8, 4), STACKVAR(-20, 4));
-    STACKVAR(-24, 4) = ACCESS(STACKVAR(16, 4), 0, 4);
+    STACKVAR(-24, 4) = rother.string;
     strcat(STACKVAR(-8, 4), STACKVAR(-24, 4));
-    STACKVAR(8, 4)->unknown_method_100033A4(LOCAL(-8));
-    LOCAL(-8)->unknown_method_100039BA();
-    REGDEF(eax=STACKVAR(8, 4))
-    RESTORE(edi);
-    RESTORE(esi);
+    __result->B_Name(*reinterpret_cast<B_Name *>(LOCAL(-8)));
+    reinterpret_cast<B_Name *>(LOCAL(-8))->~B_Name();
+    REGDEF(eax=__result)
 }
-Error: "Failed to find pattern for 'pop ebx'"
 
 // address: 0x10003B1E
 B_Name operator +(const B_Name &other, const char *str)
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=16, stack_delta=None)
-    STACKVAR(-12, 4) = ACCESS(STACKVAR(12, 4), 4, 4);
-    LOCAL(-8)->unknown_method_10003410(reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + strlen(STACKVAR(16, 4)) + 1);
-    STACKVAR(-16, 4) = ACCESS(STACKVAR(12, 4), 0, 4);
+    STACKVAR(-12, 4) = other.len;
+    reinterpret_cast<B_Name *>(LOCAL(-8))->B_Name(reinterpret_cast<unsigned int>(reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + strlen(str)) + 1);
+    STACKVAR(-16, 4) = other.string;
     strcpy(STACKVAR(-8, 4), STACKVAR(-16, 4));
-    strcat(STACKVAR(-8, 4), STACKVAR(16, 4));
-    STACKVAR(8, 4)->unknown_method_100033A4(LOCAL(-8));
-    LOCAL(-8)->unknown_method_100039BA();
-    REGDEF(eax=STACKVAR(8, 4))
-    RESTORE(edi);
-    RESTORE(esi);
+    strcat(STACKVAR(-8, 4), str);
+    __result->B_Name(*reinterpret_cast<B_Name *>(LOCAL(-8)));
+    reinterpret_cast<B_Name *>(LOCAL(-8))->~B_Name();
+    REGDEF(eax=__result)
 }
-Error: "Failed to find pattern for 'pop ebx'"
 
 // address: 0x10003BC7
 B_Name operator +(const char *str, const B_Name &bName)
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=16, stack_delta=None)
-    STACKVAR(-12, 4) = ACCESS(STACKVAR(16, 4), 4, 4);
-    LOCAL(-8)->unknown_method_10003410(strlen(STACKVAR(12, 4)) + reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + 1);
-    strcpy(STACKVAR(-8, 4), STACKVAR(12, 4));
-    STACKVAR(-16, 4) = ACCESS(STACKVAR(16, 4), 0, 4);
+    STACKVAR(-12, 4) = bName.len;
+    reinterpret_cast<B_Name *>(LOCAL(-8))->B_Name(reinterpret_cast<unsigned int>(strlen(str) + reinterpret_cast<any_int32>(STACKVAR(-12, 4))) + 1);
+    strcpy(STACKVAR(-8, 4), str);
+    STACKVAR(-16, 4) = bName.string;
     strcat(STACKVAR(-8, 4), STACKVAR(-16, 4));
-    STACKVAR(8, 4)->unknown_method_100033A4(LOCAL(-8));
-    LOCAL(-8)->unknown_method_100039BA();
-    REGDEF(eax=STACKVAR(8, 4))
-    RESTORE(edi);
-    RESTORE(esi);
+    __result->B_Name(*reinterpret_cast<B_Name *>(LOCAL(-8)));
+    reinterpret_cast<B_Name *>(LOCAL(-8))->~B_Name();
+    REGDEF(eax=__result)
 }
-Error: "Failed to find pattern for 'pop ebx'"
 
 // address: 0x10003C70
 B_Name &B_Name::operator +=(const char *str)
 {
-    ProcedureInfo(this=Id(this), this_offset=-16, local_size=16, stack_delta=None)
-    ACCESS(STACKVAR(-16, 4), 4, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-16, 4), 4, 4)) + strlen(STACKVAR(8, 4));
-    STACKVAR(-8, 4) = ??2@YAPAXI@Z(reinterpret_cast<any_int32>(ACCESS(STACKVAR(-16, 4), 4, 4)) + 0x00000001);
+    this->len = this->len + strlen(str);
+    STACKVAR(-8, 4) = ??2@YAPAXI@Z(this->len + 0x00000001);
     STACKVAR(-4, 4) = STACKVAR(-8, 4);
-    strcpy(STACKVAR(-4, 4), ACCESS(STACKVAR(-16, 4), 0, 4));
-    strcat(STACKVAR(-4, 4), STACKVAR(8, 4));
-    STACKVAR(-12, 4) = ACCESS(STACKVAR(-16, 4), 0, 4);
+    strcpy(STACKVAR(-4, 4), this->string);
+    strcat(STACKVAR(-4, 4), str);
+    STACKVAR(-12, 4) = this->string;
     ??3@YAXPAX@Z(STACKVAR(-12, 4));
-    ACCESS(STACKVAR(-16, 4), 0, 4) = STACKVAR(-4, 4);
-    REGDEF(eax=STACKVAR(-16, 4))
-    RESTORE(edi);
-    RESTORE(esi);
+    this->string = reinterpret_cast<char *>(STACKVAR(-4, 4));
+    return *this;
 }
-Error: "Failed to find pattern for 'pop ebx'"
 
 // address: 0x10003D30
 B_Name &B_Name::operator+=(char c)
@@ -1661,22 +1645,18 @@ B_Name &B_Name::operator+=(char c)
 // address: 0x10003DCE
 B_Name &B_Name::operator +=(const B_Name &other)
 {
-    ProcedureInfo(this=Id(this), this_offset=-24, local_size=24, stack_delta=None)
-    STACKVAR(-16, 4) = ACCESS(STACKVAR(8, 4), 4, 4);
-    ACCESS(STACKVAR(-24, 4), 4, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-24, 4), 4, 4)) + reinterpret_cast<any_int32>(STACKVAR(-16, 4));
-    STACKVAR(-8, 4) = ??2@YAPAXI@Z(reinterpret_cast<any_int32>(ACCESS(STACKVAR(-24, 4), 4, 4)) + 0x00000001);
+    STACKVAR(-16, 4) = other.len;
+    this->len = reinterpret_cast<unsigned int>(this->len + reinterpret_cast<any_int32>(STACKVAR(-16, 4)));
+    STACKVAR(-8, 4) = ??2@YAPAXI@Z(this->len + 0x00000001);
     STACKVAR(-4, 4) = STACKVAR(-8, 4);
-    strcpy(STACKVAR(-4, 4), ACCESS(STACKVAR(-24, 4), 0, 4));
-    STACKVAR(-20, 4) = ACCESS(STACKVAR(8, 4), 0, 4);
+    strcpy(STACKVAR(-4, 4), this->string);
+    STACKVAR(-20, 4) = other.string;
     strcat(STACKVAR(-4, 4), STACKVAR(-20, 4));
-    STACKVAR(-12, 4) = ACCESS(STACKVAR(-24, 4), 0, 4);
+    STACKVAR(-12, 4) = this->string;
     ??3@YAXPAX@Z(STACKVAR(-12, 4));
-    ACCESS(STACKVAR(-24, 4), 0, 4) = STACKVAR(-4, 4);
-    REGDEF(eax=STACKVAR(-24, 4))
-    RESTORE(edi);
-    RESTORE(esi);
+    this->string = reinterpret_cast<char *>(STACKVAR(-4, 4));
+    return *this;
 }
-Error: "Failed to find pattern for 'pop ebx'"
 
 // address: 0x10003E91
 void B_Name::UpCase()
