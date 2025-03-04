@@ -765,6 +765,13 @@
 	{
 		"instructions": [
 			{"test": ["%eax-ecx-edx%", "%eax-ecx-edx%"]},
+			{"jg":  ["%label%"]}
+		],
+		"action": {"jump": {"condition": "S(REGVALUE(%eax-ecx-edx%)) > S(0x00000000)", "address": "%label%"}}
+	},
+	{
+		"instructions": [
+			{"test": ["%eax-ecx-edx%", "%eax-ecx-edx%"]},
 			{"jle":  ["%label%"]}
 		],
 		"action": {"jump": {"condition": "S(REGVALUE(%eax-ecx-edx%)) <= S(0x00000000)", "address": "%label%"}}

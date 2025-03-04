@@ -18835,7 +18835,7 @@ l10024ECF:
 // address: 0x10024ED3
 p10024ED3
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=28, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=28, stack_delta=0)
     STACKVAR(-28, 4) = ACCESS(STACKVAR(8, 4), 424, 4);
     STACKVAR(-24, 4) = ACCESS(STACKVAR(-28, 4), 24, 4);
     STACKVAR(-12, 4) = ACCESS(STACKVAR(8, 4), 92, 4);
@@ -18854,15 +18854,20 @@ l10024F09:
 l10024F29:
     STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) - 0x00000001;
 l10024F32:
-    if (reinterpret_cast<unsigned int>(STACKVAR(-4, 4)) <= 0)
+    if (reinterpret_cast<unsigned int>(STACKVAR(-4, 4)) > 0)
     {
-        goto l10024FA0;
+        STACKVAR(-20, 4) = ARRPTR(reinterpret_cast<any_int32>(ACCESS(ARRPTR(STACKVAR(-24, 4), 0x04, static_cast<int>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-8, 4), 0, 1))) >> 3, 0), 0, 4)) + 64 * (static_cast<int>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-8, 4), 1, 1))) >> 2), 0x02, static_cast<int>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-8, 4), 2, 1))) >> 3, 0);
+        ACCESS(STACKVAR(-20, 4), 0, 2) = ACCESS(STACKVAR(-20, 4), 0, 2) + 0x0001;
+        if (static_cast<int>(reinterpret_cast<unsigned short>(ACCESS(STACKVAR(-20, 4), 0, 2))) <= 0)
+        {
+            ACCESS(STACKVAR(-20, 4), 0, 2) = ACCESS(STACKVAR(-20, 4), 0, 2) - 0x0001;
+        }
+        STACKVAR(-8, 4) = reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + 0x00000003;
+        goto l10024F29;
     }
-    STACKVAR(-20, 4) = ARRPTR(reinterpret_cast<any_int32>(ACCESS(ARRPTR(STACKVAR(-24, 4), 0x04, static_cast<int>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-8, 4), 0, 1))) >> 3, 0), 0, 4)) + 0x00000040 * (static_cast<int>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-8, 4), 1, 1))) >> 2), 0x02, static_cast<int>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-8, 4), 2, 1))) >> 3, 0);
-    ACCESS(STACKVAR(-20, 4), 0, 2) = ACCESS(STACKVAR(-20, 4), 0, 2) + 0x0001;
-    REGDEF(ecx=static_cast<any_int32>(reinterpret_cast<unsigned short>(ACCESS(STACKVAR(-20, 4), 0, 2))))
+    goto l10024F00;
+l10024FA5:
 }
-Error: "Failed to find pattern for 'test ecx, ecx'"
 
 // address: 0x10024FA9
 p10024FA9
@@ -20538,9 +20543,76 @@ l10029272:
     {
         goto l100292BF;
     }
-    REGDEF(eax=reinterpret_cast<any_int32>(STACKVAR(-44, 4)) & 0x0000FFFF)
+    if (reinterpret_cast<int>(reinterpret_cast<any_int32>(STACKVAR(-44, 4)) & 0x0000FFFF) > 0)
+    {
+        goto l100292BF;
+    }
+    if (reinterpret_cast<unsigned int>(STACKVAR(-32, 4)) > 0)
+    {
+        goto l100292BF;
+    }
+    if (reinterpret_cast<int>(STACKVAR(-84, 4)) < 1)
+    {
+        goto l100292BF;
+    }
+    if (STACKVAR(-80, 4) != 0x00000000)
+    {
+        goto l100292C9;
+    }
+l100292BF:
+    REGDEF(eax=0x000003E9)
+    goto l10029506;
+l100292C9:
+    if (reinterpret_cast<int>(STACKVAR(-80, 4)) >= 0)
+    {
+        goto l100292E0;
+    }
+    STACKVAR(-20, 4) = 0x00000000;
+    STACKVAR(-80, 4) = -reinterpret_cast<int>(STACKVAR(-80, 4));
+    goto l100292E7;
+l100292E0:
+    STACKVAR(-20, 4) = 0x00000001;
+l100292E7:
+    if (static_cast<int>(reinterpret_cast<short>(STACKVAR(-76, 2))) > 1)
+    {
+        goto l1002933A;
+    }
+    if ((reinterpret_cast<any_int32>(STACKVAR(-74, 4)) & 0x0000FFFF) == 0x00000001)
+    {
+        goto l10029334;
+    }
+    if ((reinterpret_cast<any_int32>(STACKVAR(-74, 4)) & 0x0000FFFF) == 0x00000004)
+    {
+        goto l10029334;
+    }
+    if ((reinterpret_cast<any_int32>(STACKVAR(-74, 4)) & 0x0000FFFF) == 0x00000008)
+    {
+        goto l10029334;
+    }
+    if ((reinterpret_cast<any_int32>(STACKVAR(-74, 4)) & 0x0000FFFF) == 0x00000010)
+    {
+        goto l10029334;
+    }
+    if ((reinterpret_cast<any_int32>(STACKVAR(-74, 4)) & 0x0000FFFF) != 0x00000018)
+    {
+        goto l1002933A;
+    }
+l10029334:
+    if (STACKVAR(-72, 4) == 0x00000000)
+    {
+        goto l10029344;
+    }
+l1002933A:
+    REGDEF(eax=0x000003EA)
+    goto l10029506;
+l10029344:
+    if (reinterpret_cast<int>(STACKVAR(-12, 4)) >= 24)
+    {
+        goto l10029400;
+    }
+    REGDEF(edx=0x00000001, ecx=STACKVAR(-12, 4))
 }
-Error: "Failed to find pattern for 'test eax, eax'"
+Error: "Failed to find pattern for 'shl edx, cl'"
 
 // address: 0x10029510
 p10029510
