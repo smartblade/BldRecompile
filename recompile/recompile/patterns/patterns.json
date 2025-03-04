@@ -508,9 +508,9 @@
 	},
 	{
 		"instructions": [
-			{"sub":  ["%eax-ecx-edx%", "%src-operand%"]}
+			{"sub":  ["%reg-operand%", "%src-operand%"]}
 		],
-		"action": {"tmpreg": {"dst": "%eax-ecx-edx%", "src": "I(REGVALUE(%eax-ecx-edx%)) - I(%src-operand%)"}}
+		"action": {"tmpreg": {"dst": "%reg-operand%", "src": "I(REGVALUE(%reg-operand%)) - I(%src-operand%)"}}
 	},
 	{
 		"instructions": [

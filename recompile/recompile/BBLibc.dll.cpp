@@ -6675,9 +6675,26 @@ l1000C3E1:
     STACKVAR(-2116, 4) = reinterpret_cast<any_int32>(STACKVAR(-2116, 4)) - 0x00000001;
     goto l1000C3E1;
 l1000C405:
-    REGDEF(al=ACCESS(ARRPTR(LOCAL(-1076), 1, STACKVAR(-2112, 4), 0), 0, 1))
+    ACCESS(ARRPTR(LOCAL(-1076), 1, STACKVAR(-2112, 4), 0), 0, 1) = reinterpret_cast<any_int8>(ACCESS(ARRPTR(LOCAL(-1076), 1, STACKVAR(-2112, 4), 0), 0, 1)) - 0x02;
+    ACCESS(ARRPTR(LOCAL(-1077), 1, STACKVAR(-2112, 4), 0), 0, 1) = reinterpret_cast<any_int8>(ACCESS(ARRPTR(LOCAL(-1077), 1, STACKVAR(-2112, 4), 0), 0, 1)) + 0x01;
+    ACCESS(ARRPTR(LOCAL(-1075), 1, STACKVAR(-2116, 4), 0), 0, 1) = reinterpret_cast<any_int8>(ACCESS(ARRPTR(LOCAL(-1075), 1, STACKVAR(-2116, 4), 0), 0, 1)) + 0x02;
+    ACCESS(ARRPTR(LOCAL(-1076), 1, STACKVAR(-2116, 4), 0), 0, 1) = reinterpret_cast<any_int8>(ACCESS(ARRPTR(LOCAL(-1076), 1, STACKVAR(-2116, 4), 0), 0, 1)) - 0x01;
+    goto l1000C3BB;
+l1000C47A:
+    goto l1000C39F;
+l1000C47F:
+    if (static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(ARRPTR(LOCAL(-1076), 1, STACKVAR(-2112, 4), 0), 0, 1))) != 0x00000000)
+    {
+        goto l1000C4A3;
+    }
+    STACKVAR(-2112, 4) = reinterpret_cast<any_int32>(STACKVAR(-2112, 4)) - 0x00000001;
+    goto l1000C47F;
+l1000C4A3:
+    ACCESS(ARRPTR(LOCAL(-1076), 1, STACKVAR(-2112, 4), 0), 0, 1) = reinterpret_cast<any_int8>(ACCESS(ARRPTR(LOCAL(-1076), 1, STACKVAR(-2112, 4), 0), 0, 1)) - 0x01;
+    ACCESS(STACKVAR(12, 4), 0, 4) = STACKVAR(-1076, 4);
+    REGDEF(ecx=STACKVAR(-1072, 4))
 }
-Error: "Failed to find pattern for 'sub al, 002h'"
+Error: "'edx'"
 
 // address: 0x1000C580
 p1000C580
@@ -15136,13 +15153,35 @@ l1001C511:
 // address: 0x1001C61D
 p1001C61D
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=8, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=8, stack_delta=0)
     STACKVAR(-4, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x00000580);
     STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000100;
     ACCESS(STACKVAR(8, 4), 288, 4) = STACKVAR(-4, 4);
-    REGDEF(ecx=0x00000040, eax=0x00000000, edi=STACKVAR(-4, 4))
+    memset(reinterpret_cast<any_int32>(STACKVAR(-4, 4)) - 0x00000100, 0x00000000, 0x00000100);
+    STACKVAR(-8, 4) = 0x00000000;
+    goto l1001C679;
+l1001C670:
+    STACKVAR(-8, 4) = reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + 0x00000001;
+l1001C679:
+    if (reinterpret_cast<int>(STACKVAR(-8, 4)) <= 255)
+    {
+        ACCESS(reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + reinterpret_cast<any_int32>(STACKVAR(-8, 4)), 0, 1) = STACKVAR(-8, 1);
+        goto l1001C670;
+    }
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000080;
+    STACKVAR(-8, 4) = 0x00000080;
+    goto l1001C6AC;
+l1001C6A3:
+    STACKVAR(-8, 4) = reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + 0x00000001;
+l1001C6AC:
+    if (reinterpret_cast<int>(STACKVAR(-8, 4)) < 512)
+    {
+        ACCESS(reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + reinterpret_cast<any_int32>(STACKVAR(-8, 4)), 0, 1) = 0xFF;
+        goto l1001C6A3;
+    }
+    memset(reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000200, 0x00000000, 0x00000180);
+    memcpy(reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000380, ACCESS(STACKVAR(8, 4), 288, 4), 0x00000080); // TODO improve emitting of memcpy instructions
 }
-Error: "Failed to find pattern for 'sub edi, 000000100h'"
 
 // address: 0x1001C6F1
 p1001C6F1
