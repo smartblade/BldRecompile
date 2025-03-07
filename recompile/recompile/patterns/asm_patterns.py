@@ -3,8 +3,10 @@ import os
 import re
 
 from hex_conversion import from_hex, to_hex
+from make_tuple import add_attributes
 import parser
 from patterns.apply_pattern import apply_pattern
+from patterns.collect_string_constants import collect_string_constants
 from patterns.match_operand import match_operand
 from patterns.parse_asm_lines import parse_asm_lines
 from patterns.builder import ProcedureBuilder
@@ -27,6 +29,9 @@ def process_asm_patterns(lines, declarations):
     smallest_failed_proc_exc = None
     smallest_failed_proc_addr = None
     standard_inlines = {}
+    string_constants = collect_string_constants(lines)
+    declarations = add_attributes(
+        declarations, string_constants=string_constants)
     for line in lines:
         if line.startswith("l") and line.find("PROC") >= 0:
             proc_addr = from_hex(line[1:9])

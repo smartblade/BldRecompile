@@ -29,6 +29,11 @@ class FieldAccess:
         on_expression_visited(self, **kwargs)
         self._expression.visit(on_expression_visited, **kwargs)
 
+    def transform(self, transform_callback, **kwargs):
+        expression = self._expression.transform(transform_callback, **kwargs)
+        fa = self.__class__(expression, self._field_name)
+        return transform_callback(fa, **kwargs)
+
     def emit_code(self):
         expression = self._expression
         if isinstance(expression, expressions.AddressOf):

@@ -14,6 +14,7 @@ from .transform_binary import transform_binary
 from .transform_global import transform_global
 from .transform_stackvar import transform_stackvar
 from .transform_procedure_call import transform_procedure_call
+from .transform_reinterpret import transform_reinterpret
 from .transform_returns import transform_returns
 
 
@@ -24,25 +25,30 @@ def make_high_level_code(
     stack_vars = proc_info.stack_variables
     if proc_decl is not None:
         stack_vars.update(proc_decl.stack_variables)
+    instrs = _transform_instructions(
+        instrs, stack_vars=stack_vars, declarations=declarations)
+    _validate_procedure_info(proc_info, proc_decl)
+    if proc_decl is not None:
+        instrs = _eliminate_procedure_info(proc_info, instrs)
+    instrs = transform_returns(proc_info, proc_decl, characteristics, instrs)
+    instrs = _transform_instructions(
+        instrs, stack_vars=stack_vars, declarations=declarations)
+    return instrs
+
+
+def _transform_instructions(instrs, **kwargs):
     new_instructions = []
     call_args_matcher = CallArgumentsMatcher()
     for instr in instrs:
         instr = instr.transform(
             lambda e: _transform(
                 e,
-                stack_vars=stack_vars,
-                declarations=declarations,
                 call_args_matcher=call_args_matcher,
+                **kwargs,
             )
         )
         new_instructions.append(instr)
     call_args_matcher.expect_all_args_are_matched()
-    _validate_procedure_info(proc_info, proc_decl)
-    if proc_decl is not None:
-        new_instructions = _eliminate_procedure_info(
-            proc_info, new_instructions)
-    new_instructions = transform_returns(
-        proc_info, proc_decl, characteristics, new_instructions)
     return new_instructions
 
 
@@ -52,7 +58,7 @@ def _transform(e, **kwargs):
     if isinstance(e, expressions.Bin):
         return transform_binary(e, **kwargs)
     if isinstance(e, expressions.ReinterpretCast):
-        return expressions.do_reinterpret(e.data_type, e.expression)
+        return transform_reinterpret(e, **kwargs)
     if isinstance(e, expressions.StaticCast):
         return expressions.do_static_cast(e.data_type, e.expression)
     if isinstance(e, instructions.IfInstruction):

@@ -11,6 +11,7 @@ from .float_type import Float
 from .function import Function
 from .int32 import Int32
 from .named_type import NamedType, make_named_type
+from .nullptr_t import NullptrType
 from .pointer32 import Pointer32
 from .reference import Reference
 from .short import Short

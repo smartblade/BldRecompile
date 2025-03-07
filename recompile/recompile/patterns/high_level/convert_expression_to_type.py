@@ -48,6 +48,9 @@ def _try_convert_pointers_or_references(e, src_type, target_type):
     converted = _convert_pointees(e, src_type_pointee, target_type_pointee)
     if isinstance(target_type, data_types.Reference):
         converted = expressions.do_dereference(converted)
+        if not isinstance(converted.data_type, data_types.Reference):
+            converted = expressions.ImplicitCast(
+                data_types.Reference(converted.data_type), converted)
     return converted
 
 

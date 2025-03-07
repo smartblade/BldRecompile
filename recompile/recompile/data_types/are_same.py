@@ -14,6 +14,8 @@ def are_same(first, second):
         data_types.UnknownByte,
         data_types.Char,
         data_types.UChar,
+        data_types.Short,
+        data_types.UShort,
         data_types.Unknown32,
         data_types.Int32,
         data_types.UInt32,

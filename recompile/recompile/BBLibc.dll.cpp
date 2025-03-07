@@ -788,7 +788,7 @@ B_MessageChannel::B_MessageChannel(B_Name &name)
 p100024F0
 {
     ProcedureInfo(this=Id(this), this_offset=-12, local_size=12, stack_delta=0)
-    reinterpret_cast<B_Name *>(LOCAL(-8))->B_Name(reinterpret_cast<char *>(GLOBAL(0x10049F08)));
+    reinterpret_cast<B_Name *>(LOCAL(-8))->B_Name("");
     reinterpret_cast<B_NamedObj *>(this)->B_NamedObj(*reinterpret_cast<B_Name *>(LOCAL(-8)));
     reinterpret_cast<B_Name *>(LOCAL(-8))->~B_Name();
     ACCESS(this, 0, 4) = GLOBAL(0x10042180);
@@ -956,7 +956,7 @@ unsigned int B_List::AddAfter(B_ListElement *existing, B_ListElement *newElement
 {
     if (existing->list == this)
     {
-        mout << reinterpret_cast<char *>(GLOBAL(0x10047248));
+        mout << "Error -> Adding element twice.\n";
     }
     if (newElement == this->head)
     {
@@ -1928,11 +1928,11 @@ B_Resource *B_ResourceLocation::GetResource(unsigned short resourceId)
     reinterpret_cast<B_IDataFile *>(LOCAL(-16408))->B_IDataFile(reinterpret_cast<char *>(STACKVAR(-16420, 4)), 32768);
     if (static_cast<any_int32>(STACKVAR(-16408, 4) != 0xFFFFFFFF) == 0x00000000)
     {
-        mout << reinterpret_cast<char *>(GLOBAL(0x10047268));
-        mout << reinterpret_cast<char *>(GLOBAL(0x100472B4));
+        mout << "B_ResourceLocation::GetResource -> ERROR: No se ha podido abrir archivo:\n";
+        mout << "  ";
         STACKVAR(-16424, 4) = ACCESS(this, 12, 4);
         mout << reinterpret_cast<char *>(STACKVAR(-16424, 4));
-        mout << reinterpret_cast<char *>(GLOBAL(0x100472B8));
+        mout << "\n";
         STACKVAR(-16412, 4) = 0x00000000;
         reinterpret_cast<B_IDataFile *>(LOCAL(-16408))->~B_IDataFile();
         return reinterpret_cast<B_Resource *>(STACKVAR(-16412, 4));
@@ -2441,7 +2441,7 @@ l10004E35:
     reinterpret_cast<B_IDataFile *>(LOCAL(-16408))->B_IDataFile(id.String(), 32768);
     if (static_cast<any_int32>(STACKVAR(-16408, 4) != 0xFFFFFFFF) == 0x00000000)
     {
-        mout << vararg(reinterpret_cast<char *>(GLOBAL(0x100472BC)), id.String());
+        mout << vararg("B_ResourceManager::LocateResourceIn() -> Error opening file: %s\n", id.String());
         STACKVAR(-16440, 4) = 0x00000000;
         reinterpret_cast<B_IDataFile *>(LOCAL(-16408))->~B_IDataFile();
         reinterpret_cast<B_Name *>(LOCAL(-16416))->~B_Name();
@@ -2985,7 +2985,7 @@ void B_ResourceManager::FreeResource(B_Resource *resource)
 {
     if (resource == nullptr)
     {
-        mout << reinterpret_cast<char *>(GLOBAL(0x100473BC));
+        mout << "B_ResourceManager::FreeResource() -> Warning, trying to free null resource.\n";
         return;
     }
     if (ACCESS(ARRPTR(this, 0x04, reinterpret_cast<any_int32>(resource->(ACCESS(ACCESS(resource, 0, 4), 4, 4))()) & 0x0000FFFF, 0), 0, 4) == 0x00000000)
@@ -20060,7 +20060,7 @@ p10027E11
     ProcedureInfo(this=Id(this), this_offset=-44, local_size=44, stack_delta=4)
     reinterpret_cast<B_Name *>(LOCAL(-8))->B_Name(reinterpret_cast<char *>(STACKVAR(8, 4)));
     *reinterpret_cast<B_Name *>(LOCAL(-16)) = reinterpret_cast<B_Name *>(LOCAL(-8))->Right(4);
-    if (reinterpret_cast<B_Name *>(LOCAL(-16))->CompareNoCase(reinterpret_cast<char *>(GLOBAL(0x100487F4))) != 0)
+    if (reinterpret_cast<B_Name *>(LOCAL(-16))->CompareNoCase(".BMP") != 0)
     {
         STACKVAR(-20, 4) = this->unknown_method_10027D86(STACKVAR(8, 4));
         reinterpret_cast<B_Name *>(LOCAL(-16))->~B_Name();
@@ -20068,7 +20068,7 @@ p10027E11
         REGDEF(eax=STACKVAR(-20, 4))
         return;
     }
-    if (reinterpret_cast<B_Name *>(LOCAL(-16))->CompareNoCase(reinterpret_cast<char *>(GLOBAL(0x100487FC))) != 0)
+    if (reinterpret_cast<B_Name *>(LOCAL(-16))->CompareNoCase(".JPG") != 0)
     {
         STACKVAR(-24, 4) = this->unknown_method_10029510(STACKVAR(8, 4));
         reinterpret_cast<B_Name *>(LOCAL(-16))->~B_Name();
@@ -20078,7 +20078,7 @@ p10027E11
     }
     *reinterpret_cast<B_Name *>(LOCAL(-16)) = *reinterpret_cast<B_Name *>(LOCAL(-32)) = reinterpret_cast<B_Name *>(LOCAL(-8))->Right(5);
     reinterpret_cast<B_Name *>(LOCAL(-32))->~B_Name();
-    if (reinterpret_cast<B_Name *>(LOCAL(-16))->CompareNoCase(reinterpret_cast<char *>(GLOBAL(0x10048804))) != 0)
+    if (reinterpret_cast<B_Name *>(LOCAL(-16))->CompareNoCase(".JPEG") != 0)
     {
         STACKVAR(-36, 4) = this->unknown_method_10029510(STACKVAR(8, 4));
         reinterpret_cast<B_Name *>(LOCAL(-16))->~B_Name();
@@ -20097,14 +20097,14 @@ int B_BitMap24::SaveToFile(const char *arg_1, int arg_2)
 {
     reinterpret_cast<B_Name *>(LOCAL(-8))->B_Name(arg_1);
     *reinterpret_cast<B_Name *>(LOCAL(-16)) = reinterpret_cast<B_Name *>(LOCAL(-8))->Right(4);
-    if (reinterpret_cast<B_Name *>(LOCAL(-16))->CompareNoCase(reinterpret_cast<char *>(GLOBAL(0x1004880C))) != 0)
+    if (reinterpret_cast<B_Name *>(LOCAL(-16))->CompareNoCase(".BMP") != 0)
     {
         STACKVAR(-20, 4) = this->SaveToBMP(arg_1);
         reinterpret_cast<B_Name *>(LOCAL(-16))->~B_Name();
         reinterpret_cast<B_Name *>(LOCAL(-8))->~B_Name();
         return reinterpret_cast<int>(STACKVAR(-20, 4));
     }
-    if (reinterpret_cast<B_Name *>(LOCAL(-16))->CompareNoCase(reinterpret_cast<char *>(GLOBAL(0x10048814))) != 0)
+    if (reinterpret_cast<B_Name *>(LOCAL(-16))->CompareNoCase(".JPG") != 0)
     {
         STACKVAR(-24, 4) = this->SaveToJPEG(arg_1, arg_2);
         reinterpret_cast<B_Name *>(LOCAL(-16))->~B_Name();
@@ -20113,7 +20113,7 @@ int B_BitMap24::SaveToFile(const char *arg_1, int arg_2)
     }
     *reinterpret_cast<B_Name *>(LOCAL(-16)) = *reinterpret_cast<B_Name *>(LOCAL(-32)) = reinterpret_cast<B_Name *>(LOCAL(-8))->Right(5);
     reinterpret_cast<B_Name *>(LOCAL(-32))->~B_Name();
-    if (reinterpret_cast<B_Name *>(LOCAL(-16))->CompareNoCase(reinterpret_cast<char *>(GLOBAL(0x1004881C))) != 0)
+    if (reinterpret_cast<B_Name *>(LOCAL(-16))->CompareNoCase(".JPEG") != 0)
     {
         STACKVAR(-36, 4) = this->SaveToJPEG(arg_1, arg_2);
         reinterpret_cast<B_Name *>(LOCAL(-16))->~B_Name();
@@ -20623,7 +20623,7 @@ p10029510
     STACKVAR(-432, 4) = fopen(STACKVAR(8, 4), GLOBAL(0x10048828));
     if (STACKVAR(-432, 4) == 0x00000000)
     {
-        mout << vararg(reinterpret_cast<char *>(GLOBAL(0x1004882C)), STACKVAR(8, 4));
+        mout << vararg("B_BitMap24: can't open %s\n", STACKVAR(8, 4));
         REGDEF(eax=0x00000000)
         return;
     }
@@ -20631,7 +20631,7 @@ p10029510
     unknown_function_10013624(LOCAL(-428), 0x00000001);
     if (STACKVAR(-392, 4) != 0x00000003)
     {
-        mout << reinterpret_cast<char *>(GLOBAL(0x10048848));
+        mout << "B_BitMap24: wrong number of components\n";
         REGDEF(eax=0x00000000)
         return;
     }
@@ -20671,7 +20671,7 @@ int B_BitMap24::SaveToJPEG(const char *arg_1, int arg_2)
     STACKVAR(-368, 4) = fopen(arg_1, GLOBAL(0x10048870));
     if (STACKVAR(-368, 4) == 0x00000000)
     {
-        mout << vararg(reinterpret_cast<char *>(GLOBAL(0x10048874)), arg_1);
+        mout << vararg("B_BitMap24: can't open %s\n", arg_1);
         return 0;
     }
     unknown_function_10014240(LOCAL(-356), STACKVAR(-368, 4));
@@ -23175,7 +23175,7 @@ l10035BF7:
     {
         ACCESS(GLOBAL(0x100488B8), 0, 4) = 0x3F800000;
     }
-    if (reinterpret_cast<B_Name &>(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000004) == reinterpret_cast<char *>(GLOBAL(0x10048904)) != 0)
+    if (reinterpret_cast<B_Name &>(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000004) == "Amazon" != 0)
     {
         ACCESS(GLOBAL(0x100488B8), 0, 4) = 0x3F800000;
     }
@@ -23438,7 +23438,7 @@ l1003655C:
 l100365DF:
     unknown_function_1003CFD0(STACKVAR(8, 4), reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x0000008C);
 l100365F5:
-    reinterpret_cast<B_Name *>(LOCAL(-336))->B_Name(reinterpret_cast<char *>(GLOBAL(0x1004890C)));
+    reinterpret_cast<B_Name *>(LOCAL(-336))->B_Name("Crush");
     STACKVAR(-676, 4) = reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x000000D0;
     STACKVAR(-672, 4) = 0x00000000;
     goto l1003662E;
@@ -23470,7 +23470,7 @@ l100366A9:
 l100366B2:
     if (reinterpret_cast<unsigned int>(STACKVAR(-24, 4)) < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 264, 4)))
     {
-        reinterpret_cast<B_Name *>(LOCAL(-344))->B_Name(reinterpret_cast<char *>(GLOBAL(0x10048914)));
+        reinterpret_cast<B_Name *>(LOCAL(-344))->B_Name("C");
         reinterpret_cast<B_Name &>(reinterpret_cast<any_int32>(ACCESS(ARRPTR(ACCESS(STACKVAR(12, 4), 260, 4), 0x04, STACKVAR(-24, 4), 0), 0, 4)) + 0x00000004) = *reinterpret_cast<B_Name *>(LOCAL(-344));
         reinterpret_cast<B_Name *>(LOCAL(-344))->~B_Name();
         goto l100366A9;
@@ -23482,7 +23482,7 @@ l100366FB:
         {
             if (ACCESS(STACKVAR(12, 4), 84, 4) == 0x00000001)
             {
-                reinterpret_cast<B_Name *>(LOCAL(-352))->B_Name(reinterpret_cast<char *>(GLOBAL(0x10048918)));
+                reinterpret_cast<B_Name *>(LOCAL(-352))->B_Name("1H_R");
                 STACKVAR(-28, 4) = (reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x000000D0)->unknown_method_1003A1E0(LOCAL(-352));
                 reinterpret_cast<B_Name *>(LOCAL(-352))->~B_Name();
                 if (STACKVAR(-28, 4) != 0x00000000)
@@ -23497,7 +23497,7 @@ l100366FB:
                         STACKVAR(-708, 4) = 0x00000000;
                     }
                     STACKVAR(-32, 4) = STACKVAR(-708, 4);
-                    reinterpret_cast<B_Name *>(LOCAL(-364))->B_Name(reinterpret_cast<char *>(GLOBAL(0x10048920)));
+                    reinterpret_cast<B_Name *>(LOCAL(-364))->B_Name("C0");
                     reinterpret_cast<B_Name &>(reinterpret_cast<any_int32>(STACKVAR(-32, 4)) + 0x00000004) = *reinterpret_cast<B_Name *>(LOCAL(-364));
                     reinterpret_cast<B_Name *>(LOCAL(-364))->~B_Name();
                     ACCESS(STACKVAR(-32, 4), 12, 4) = 0x00000000;
@@ -24564,7 +24564,7 @@ l10039287:
         {
             if (ACCESS(this, 84, 4) == 0x00000001)
             {
-                reinterpret_cast<B_Name *>(LOCAL(-24))->B_Name(reinterpret_cast<char *>(GLOBAL(0x10048924)));
+                reinterpret_cast<B_Name *>(LOCAL(-24))->B_Name("1H_R");
                 STACKVAR(-8, 4) = (reinterpret_cast<any_int32>(this) + 0x000000D0)->unknown_method_1003A1E0(LOCAL(-24));
                 reinterpret_cast<B_Name *>(LOCAL(-24))->~B_Name();
                 if (STACKVAR(-8, 4) != 0x00000000)
@@ -24579,7 +24579,7 @@ l10039287:
                         STACKVAR(-332, 4) = 0x00000000;
                     }
                     STACKVAR(-12, 4) = STACKVAR(-332, 4);
-                    reinterpret_cast<B_Name *>(LOCAL(-36))->B_Name(reinterpret_cast<char *>(GLOBAL(0x1004892C)));
+                    reinterpret_cast<B_Name *>(LOCAL(-36))->B_Name("C0");
                     reinterpret_cast<B_Name &>(reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + 0x00000004) = *reinterpret_cast<B_Name *>(LOCAL(-36));
                     reinterpret_cast<B_Name *>(LOCAL(-36))->~B_Name();
                     ACCESS(STACKVAR(-12, 4), 12, 4) = 0x00000000;
@@ -24591,7 +24591,7 @@ l10039287:
             }
         }
     }
-    reinterpret_cast<B_Name *>(LOCAL(-192))->B_Name(reinterpret_cast<char *>(GLOBAL(0x10048930)));
+    reinterpret_cast<B_Name *>(LOCAL(-192))->B_Name("Crush");
     STACKVAR(-184, 4) = (reinterpret_cast<any_int32>(this) + 0x000000D0)->unknown_method_1003A1E0(LOCAL(-192));
     reinterpret_cast<B_Name *>(LOCAL(-192))->~B_Name();
     if (STACKVAR(-184, 4) == 0x00000000)
@@ -24605,7 +24605,7 @@ l10039579:
 l10039582:
     if (reinterpret_cast<unsigned int>(STACKVAR(-16, 4)) < reinterpret_cast<unsigned int>(ACCESS(this, 264, 4)))
     {
-        reinterpret_cast<B_Name *>(LOCAL(-200))->B_Name(reinterpret_cast<char *>(GLOBAL(0x10048938)));
+        reinterpret_cast<B_Name *>(LOCAL(-200))->B_Name("C");
         reinterpret_cast<B_Name &>(reinterpret_cast<any_int32>(ACCESS(ARRPTR(ACCESS(this, 260, 4), 0x04, STACKVAR(-16, 4), 0), 0, 4)) + 0x00000004) = *reinterpret_cast<B_Name *>(LOCAL(-200));
         reinterpret_cast<B_Name *>(LOCAL(-200))->~B_Name();
         goto l10039579;
@@ -28112,7 +28112,7 @@ unsigned int ReadCSV(const char *file_name, B_NDataBase<B_ElementCSV> *csvs)
     STACKVAR(-4, 4) = fopen(file_name, GLOBAL(0x1004893C));
     if (STACKVAR(-4, 4) == 0x00000000)
     {
-        mout << vararg(reinterpret_cast<char *>(GLOBAL(0x10048940)), file_name);
+        mout << vararg("ReadCSV() -> No se ha podido abrir el archivo %s.\n", file_name);
         return 0;
     }
 l1003DC48:
@@ -28411,7 +28411,7 @@ p1003E280
         goto l1003E330;
     }
     STACKVAR(-4, 4) = PyTuple_Size(STACKVAR(8, 4));
-    mout << vararg(reinterpret_cast<char *>(GLOBAL(0x10048988)), STACKVAR(-4, 4));
+    mout << vararg("Tuple with %d args\n", STACKVAR(-4, 4));
     STACKVAR(-8, 4) = 0x00000000;
     goto l1003E2D9;
 l1003E2D0:
@@ -28419,9 +28419,9 @@ l1003E2D0:
 l1003E2D9:
     if (reinterpret_cast<int>(STACKVAR(-8, 4)) < reinterpret_cast<int>(STACKVAR(-4, 4)))
     {
-        mout << vararg(reinterpret_cast<char *>(GLOBAL(0x1004899C)), STACKVAR(-8, 4));
+        mout << vararg("Item %d is: ", STACKVAR(-8, 4));
         unknown_function_1003E280(PyTuple_GetItem(STACKVAR(8, 4), STACKVAR(-8, 4)));
-        mout << reinterpret_cast<char *>(GLOBAL(0x100489AC));
+        mout << "\n";
         goto l1003E2D0;
     }
     return;
@@ -28456,7 +28456,7 @@ PyObject *CallPythonObject(PyObject *func, PyObject *args)
             STACKVAR(-12, 4) = PyObject_Str(func);
             if (STACKVAR(-12, 4) != 0x00000000)
             {
-                mout << vararg(reinterpret_cast<char *>(GLOBAL(0x100489B0)), PyString_AsString(STACKVAR(-12, 4)));
+                mout << vararg("Function (method): %s\n", PyString_AsString(STACKVAR(-12, 4)));
             }
             if (STACKVAR(-12, 4) != 0x00000000)
             {
@@ -28483,7 +28483,7 @@ PyObject *CallPythonObject(PyObject *func, PyObject *args)
             STACKVAR(-20, 4) = PyObject_Str(func);
             if (STACKVAR(-20, 4) != 0x00000000)
             {
-                mout << vararg(reinterpret_cast<char *>(GLOBAL(0x100489C8)), PyString_AsString(STACKVAR(-20, 4)));
+                mout << vararg("Function (method): %s\n", PyString_AsString(STACKVAR(-20, 4)));
             }
             if (STACKVAR(-20, 4) != 0x00000000)
             {
@@ -28509,7 +28509,7 @@ PyObject *CallPythonObject(PyObject *func, PyObject *args)
         STACKVAR(-24, 4) = PyObject_Str(func);
         if (STACKVAR(-24, 4) != 0x00000000)
         {
-            mout << vararg(reinterpret_cast<char *>(GLOBAL(0x100489E0)), PyString_AsString(STACKVAR(-24, 4)));
+            mout << vararg("Function (method): %s\n", PyString_AsString(STACKVAR(-24, 4)));
         }
         if (STACKVAR(-24, 4) != 0x00000000)
         {

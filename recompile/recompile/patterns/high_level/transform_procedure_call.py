@@ -101,6 +101,9 @@ def _convert_argument_to_parameters_type(argument, parameter, proc_decl):
 def _convert_struct_return_implicit_arg(pc, proc_decl):
     if not isinstance(proc_decl.return_type, data_types.ClassType):
         return None
+    # Check if it was already transformed
+    if data_types.are_same(proc_decl.return_type, pc.proc_decl.return_type):
+        return None
     assert (
         pc.proc_decl.return_type is None or
         isinstance(pc.proc_decl.return_type, data_types.Unknown32)

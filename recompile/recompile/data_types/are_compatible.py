@@ -18,6 +18,11 @@ def are_compatible(child, parent):
         if parent.pointee is None:
             return True
     if (
+        child == data_types.NullptrType and
+        isinstance(parent, data_types.Pointer32)
+    ):
+        return True
+    if (
         not isinstance(child, data_types.UnknownTypes) and
         isinstance(parent, data_types.UnknownTypes)
     ):

@@ -14,5 +14,10 @@ class Dereference:
         assert isinstance(data_type, data_types.Pointer32)
         return data_type.pointee
 
+    def transform(self, transform_callback, **kwargs):
+        expression = self._expression.transform(transform_callback, **kwargs)
+        dereference = self.__class__(expression)
+        return transform_callback(dereference, **kwargs)
+
     def emit_code(self):
         return "*{}".format(self._expression.emit_code())
