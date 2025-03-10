@@ -895,11 +895,11 @@ Error: "Failed to find pattern for 'repnz scasb'"
 // address: 0x100028EC
 char *GetCurrentLanguage()
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=256, stack_delta=None)
-    strcpy(LOCAL(-256), unknown_function_10002740());
-    REGDEF(edi=LOCAL(-256), ecx=0xFFFFFFFF, eax=0x00000000)
+    strcpy(LOCAL(-256), GetConfigDirectory());
+    strcat(LOCAL(-256), GLOBAL(0x10047218));
+    GetPrivateProfileStringA(GLOBAL(0x1004723C), GLOBAL(0x1004722C), GLOBAL(0x10047224), GLOBAL(0x10049F0C), 0x00000100, LOCAL(-256));
+    return reinterpret_cast<char *>(GLOBAL(0x10049F0C));
 }
-Error: "Failed to find pattern for 'repnz scasb'"
 
 // address: 0x10002980
 B_ListElement::~B_ListElement()

@@ -3,11 +3,14 @@ import expressions
 from expressions.operator import Operator
 
 
-def evaluate_expression(e):
+def evaluate_expression(e, **kwargs):
     result = _evaluate_constant(e)
     if result is not None:
         return result
     result = _evaluate_binary(e)
+    if result is not None:
+        return result
+    result = _evaluate_strlen(e, **kwargs)
     if result is not None:
         return result
     raise Exception("Can't evaluate {}".format(e))
@@ -47,3 +50,15 @@ def _make_constant(data_size, value):
         if data_size == 4:
             data_type = data_types.Int32()
     return expressions.Constant(data_type, value)
+
+
+def _evaluate_strlen(pc, string_constants, **kwargs):
+    if not isinstance(pc, expressions.ProcedureCall):
+        return None
+    if pc.name != "strlen":
+        return None
+    assert len(pc.arguments) == 1
+    addr = pc.arguments[0]
+    assert isinstance(addr, expressions.Constant)
+    s = string_constants[addr.value]
+    return expressions.Constant(data_types.Int32(), len(s))

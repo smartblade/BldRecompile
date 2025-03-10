@@ -82,7 +82,8 @@ def _build_proc(
     writer.write_line(decl_string)
     builder = ProcedureBuilder(proc_decl, proc_addr, standard_inlines)
     try:
-        _parse_asm_proc(builder, patterns, proc_lines)
+        _parse_asm_proc(
+            builder, declarations.string_constants, patterns, proc_lines)
     except Exception as exc:
         builder.emit_code(writer)
         writer.write_line('Error: "{}"'.format(str(exc)))
@@ -92,13 +93,13 @@ def _build_proc(
         builder.emit_code(writer)
 
 
-def _parse_asm_proc(builder, patterns, lines):
+def _parse_asm_proc(builder, string_constants, patterns, lines):
     lines = parse_asm_lines(lines)
     cur_index = 0
     while cur_index < len(lines):
         pattern, match_dict, cur_index = _match_patterns(
             patterns, cur_index, lines)
-        apply_pattern(builder, pattern, match_dict)
+        apply_pattern(builder, string_constants, pattern, match_dict)
 
 
 def _match_patterns(patterns, first_index, lines):

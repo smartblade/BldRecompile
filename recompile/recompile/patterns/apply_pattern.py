@@ -37,20 +37,24 @@ _actions = {
 }
 
 
-def apply_pattern(builder, pattern, match_dict):
+def apply_pattern(builder, string_constants, pattern, match_dict):
     actions = pattern.get("actions")
     if actions is None:
-        apply_action(builder, pattern["action"], match_dict)
+        apply_action(builder, string_constants, pattern["action"], match_dict)
         return
     for action in actions:
-        apply_action(builder, action, match_dict)
+        apply_action(builder, string_constants, action, match_dict)
 
 
-def apply_action(builder, action, match_dict):
+def apply_action(builder, string_constants, action, match_dict):
     action_name = next(iter(action.keys()))
     action_args = next(iter(action.values()))
     action_args = _evaluate_args(
-        action_args, builder=builder, match_dict=match_dict)
+        action_args,
+        builder=builder,
+        string_constants=string_constants,
+        match_dict=match_dict,
+    )
     _actions[action_name](builder=builder, **action_args)
 
 
@@ -67,11 +71,11 @@ def _evaluate_args(args, **kwargs):
     return evaluated_args
 
 
-def _evaluate_expression(expression, builder, match_dict):
+def _evaluate_expression(expression, match_dict, **kwargs):
     expression = replace_variables(expression, match_dict)
     expression = parser.parse_cpp_expression(expression, {}, {})
     return expression.transform(
-        lambda e: _evaluate_procedure_calls(e, builder=builder))
+        lambda e: _evaluate_procedure_calls(e, **kwargs))
 
 
 def _evaluate_procedure_calls(expression, **kwargs):
@@ -104,11 +108,11 @@ def _evaluate_procedure_calls(expression, **kwargs):
     return e
 
 
-def _evaluate_reg_value(reg, builder):
+def _evaluate_reg_value(reg, builder, **kwargs):
     return builder.pop_reg_value(reg)
 
 
-def _evaluate_pop_fpu(builder):
+def _evaluate_pop_fpu(builder, **kwargs):
     return builder.pop_fpu()
 
 
@@ -134,7 +138,7 @@ def _evaluate_expect(expression, const, **kwargs):
 
 
 def _evaluate_constants(expression, **kwargs):
-    return evaluate_expression(expression)
+    return evaluate_expression(expression, **kwargs)
 
 
 def _evaluate_zeroextend(size, expression, **kwargs):

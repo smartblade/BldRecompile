@@ -284,6 +284,26 @@
 	},
 	{
 		"instructions": [
+			{"or":    ["ecx", "0FFFFFFFFh"]},
+			{"xor":   ["eax", "eax"]},
+			{"repnz": ["scasb"]},
+			{"add":   ["edi", "0FFFFFFFFh"]},
+			{"mov":   ["ecx", "[%label%]"]},
+			{"mov":   ["[edi]", "ecx"]},
+			{"mov":   ["edx", "[%label004%]"]},
+			{"mov":   ["[edi+004h]", "edx"]},
+			{"mov":   ["ax", "[%label008%]"]},
+			{"mov":   ["[edi+008h]", "ax"]}
+		],
+		"actions": [
+			{"validate": {"expect": "EXPECT(EVAL(%label004% - %label%), 4)"}},
+			{"validate": {"expect": "EXPECT(EVAL(%label008% - %label004%), 4)"}},
+			{"validate": {"expect": "EXPECT(EVAL(strlen(%label%)), 9)"}},
+			{"instruction": {"expression": "strcat(REGVALUE(edi), GLOBAL(%label%))"}}
+		]
+	},
+	{
+		"instructions": [
 			{"label": ["%label-loop%"]},
 			{"mov":   ["%eax-ecx-edx-1%", "[ebp%offset-str1%]"]},
 			{"mov":   ["%al-cl-dl-1%", "[%eax-ecx-edx-1%]"]},
