@@ -546,6 +546,12 @@
 	},
 	{
 		"instructions": [
+			{"imul":  ["%tmpreg32%", "%src-operand%", "-%hex%"]}
+		],
+		"action": {"tmpreg": {"dst": "%tmpreg32%", "src": "I(EVAL(0xFFFFFFFF - %hex% + 1)) * I(%src-operand%)"}}
+	},
+	{
+		"instructions": [
 			{"cdq":   []},
 			{"idiv":  ["%src-operand%"]},
 			{"mov":   ["eax", "%src-operand-left%"]},
