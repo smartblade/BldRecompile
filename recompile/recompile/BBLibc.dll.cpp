@@ -4998,10 +4998,10 @@ l100090DB:
 // address: 0x10009110
 p10009110
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=8, stack_delta=None)
-    REGDEF(ecx=static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-4, 4), 4, 1))) - static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(8, 4), 4, 1))), eax=static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-4, 4), 4, 1))), edx=STACKVAR(8, 4))
+    ProcedureInfo(this=Id(this), this_offset=-4, local_size=8, stack_delta=4)
+    STACKVAR(-8, 4) = (static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(this, 4, 1))) - static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(8, 4), 4, 1)))) * (static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(this, 4, 1))) - static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(8, 4), 4, 1)))) + (static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(this, 5, 1))) - static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(8, 4), 5, 1)))) * (static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(this, 5, 1))) - static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(8, 4), 5, 1)))) + (static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(this, 6, 1))) - static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(8, 4), 6, 1)))) * (static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(this, 6, 1))) - static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(8, 4), 6, 1))));
+    REGDEF(ST(0)=static_cast<double>(reinterpret_cast<int>(STACKVAR(-8, 4))))
 }
-Error: "Failed to find pattern for 'xor ebx, ebx'"
 
 // address: 0x100091A4
 B_IDataFile &operator >>(B_IDataFile &file, B_Color &color)
@@ -5147,11 +5147,26 @@ p1000944E
 // address: 0x1000946B
 p1000946B
 {
-    ProcedureInfo(this=Id(this), this_offset=-20, local_size=20, stack_delta=None)
+    ProcedureInfo(this=Id(this), this_offset=-20, local_size=20, stack_delta=16)
     STACKVAR(-16, 4) = STACKVAR(20, 4);
-    REGDEF(esi=((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x000000FF) - (reinterpret_cast<any_int32>(STACKVAR(-20, 4)->unknown_method_100093C8(STACKVAR(20, 4))) & 0x000000FF)) * ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x000000FF) - (reinterpret_cast<any_int32>(STACKVAR(-20, 4)->unknown_method_100093C8(STACKVAR(20, 4))) & 0x000000FF)), edi=(reinterpret_cast<any_int32>(STACKVAR(12, 4)) & 0x000000FF) - (reinterpret_cast<any_int32>(STACKVAR(-20, 4)->unknown_method_100093E1(STACKVAR(20, 4))) & 0x000000FF))
+    STACKVAR(-4, 4) = ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x000000FF) - static_cast<any_int32>(reinterpret_cast<B_Pal *>(this)->GetRed(reinterpret_cast<unsigned int>(STACKVAR(20, 4))))) * ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x000000FF) - static_cast<any_int32>(reinterpret_cast<B_Pal *>(this)->GetRed(reinterpret_cast<unsigned int>(STACKVAR(20, 4))))) + ((reinterpret_cast<any_int32>(STACKVAR(12, 4)) & 0x000000FF) - static_cast<any_int32>(reinterpret_cast<B_Pal *>(this)->GetGreen(reinterpret_cast<unsigned int>(STACKVAR(20, 4))))) * ((reinterpret_cast<any_int32>(STACKVAR(12, 4)) & 0x000000FF) - static_cast<any_int32>(reinterpret_cast<B_Pal *>(this)->GetGreen(reinterpret_cast<unsigned int>(STACKVAR(20, 4))))) + ((reinterpret_cast<any_int32>(STACKVAR(16, 4)) & 0x000000FF) - static_cast<any_int32>(reinterpret_cast<B_Pal *>(this)->GetBlue(reinterpret_cast<unsigned int>(STACKVAR(20, 4))))) * ((reinterpret_cast<any_int32>(STACKVAR(16, 4)) & 0x000000FF) - static_cast<any_int32>(reinterpret_cast<B_Pal *>(this)->GetBlue(reinterpret_cast<unsigned int>(STACKVAR(20, 4)))));
+    STACKVAR(-8, 4) = reinterpret_cast<any_int32>(STACKVAR(20, 4)) + 0x00000001;
+    goto l10009549;
+l10009540:
+    STACKVAR(-8, 4) = reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + 0x00000001;
+l10009549:
+    if (reinterpret_cast<unsigned int>(STACKVAR(-8, 4)) < 256)
+    {
+        STACKVAR(-12, 4) = ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x000000FF) - static_cast<any_int32>(reinterpret_cast<B_Pal *>(this)->GetRed(reinterpret_cast<unsigned int>(STACKVAR(-8, 4))))) * ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x000000FF) - static_cast<any_int32>(reinterpret_cast<B_Pal *>(this)->GetRed(reinterpret_cast<unsigned int>(STACKVAR(-8, 4))))) + ((reinterpret_cast<any_int32>(STACKVAR(12, 4)) & 0x000000FF) - static_cast<any_int32>(reinterpret_cast<B_Pal *>(this)->GetGreen(reinterpret_cast<unsigned int>(STACKVAR(-8, 4))))) * ((reinterpret_cast<any_int32>(STACKVAR(12, 4)) & 0x000000FF) - static_cast<any_int32>(reinterpret_cast<B_Pal *>(this)->GetGreen(reinterpret_cast<unsigned int>(STACKVAR(-8, 4))))) + ((reinterpret_cast<any_int32>(STACKVAR(16, 4)) & 0x000000FF) - static_cast<any_int32>(reinterpret_cast<B_Pal *>(this)->GetBlue(reinterpret_cast<unsigned int>(STACKVAR(-8, 4))))) * ((reinterpret_cast<any_int32>(STACKVAR(16, 4)) & 0x000000FF) - static_cast<any_int32>(reinterpret_cast<B_Pal *>(this)->GetBlue(reinterpret_cast<unsigned int>(STACKVAR(-8, 4)))));
+        if (reinterpret_cast<int>(STACKVAR(-12, 4)) < reinterpret_cast<int>(STACKVAR(-4, 4)))
+        {
+            STACKVAR(-16, 4) = STACKVAR(-8, 4);
+            STACKVAR(-4, 4) = STACKVAR(-12, 4);
+        }
+        goto l10009540;
+    }
+    REGDEF(eax=STACKVAR(-16, 4))
 }
-Error: "Failed to find pattern for 'mov ebx, dword ptr [ebp+00Ch]'"
 
 // address: 0x10009633
 p10009633
@@ -10145,9 +10160,11 @@ l10012585:
     {
         goto l100125E2;
     }
-    REGDEF(edx=static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-16, 4), 0, 1))) + static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-16, 4), 1, 1))), ecx=static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-8, 4), 0, 1))) + reinterpret_cast<any_int32>(STACKVAR(-20, 4)), eax=STACKVAR(-8, 4))
+    ACCESS(STACKVAR(-28, 4), 0, 1) = static_cast<any_int8>(reinterpret_cast<int>(static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-8, 4), 1, 1))) + static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-8, 4), 0, 1))) + reinterpret_cast<any_int32>(STACKVAR(-20, 4)) + static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-16, 4), 0, 1))) + static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-16, 4), 1, 1)))) >> 2);
+    STACKVAR(-28, 4) = reinterpret_cast<any_int32>(STACKVAR(-28, 4)) + 0x00000001;
+    REGDEF(eax=STACKVAR(-20, 4))
 }
-Error: "Failed to find pattern for 'xor ebx, ebx'"
+Error: "Failed to find pattern for 'xor eax, 000000003h'"
 
 // address: 0x100125F5
 p100125F5

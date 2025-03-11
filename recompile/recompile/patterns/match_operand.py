@@ -7,11 +7,11 @@ operand_regexp = re.compile(
     r'^(?P<size>(byte|word|dword|qword|near)\s+ptr\s+)?(?P<operand>.+)$')
 
 _regexp_map = {
-    "a-c-d": (r"a|c|d", None),
-    "al-cl-dl": (r"al|cl|dl", None),
+    "a-b-c-d": (r"a|b|c|d", None),
+    "al-bl-cl-dl": (r"al|bl|cl|dl", None),
     "ax-cx-dx": (r"ax|cx|dx", None),
     "eax-ecx-edx": (r"eax|ecx|edx", None),
-    "tmpreg32": (r"eax|ecx|edx|edi|esi", None),
+    "tmpreg32": (r"eax|ebx|ecx|edx|edi|esi", None),
     "label": (
         r"(offset\s+)?(g|l)(?P<inner_hex>[\dABCDEF]+)",
         lambda **kwargs: _convert_hex(**kwargs)),

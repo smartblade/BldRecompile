@@ -18,7 +18,7 @@
 		],
 		"reg-operand": [
 			{"operand": "%tmpreg32%", "expression": "%tmpreg32%"},
-			{"operand": "%al-cl-dl%", "expression": "%al-cl-dl%"},
+			{"operand": "%al-bl-cl-dl%", "expression": "%al-bl-cl-dl%"},
 			{"operand": "%ax-cx-dx%", "expression": "%ax-cx-dx%"}
 		],
 		"src-operand": [
@@ -306,18 +306,18 @@
 		"instructions": [
 			{"label": ["%label-loop%"]},
 			{"mov":   ["%eax-ecx-edx-1%", "[ebp%offset-str1%]"]},
-			{"mov":   ["%al-cl-dl-1%", "[%eax-ecx-edx-1%]"]},
-			{"mov":   ["[ebp-%hex-first_char%]", "%al-cl-dl-1%"]},
+			{"mov":   ["%al-bl-cl-dl-1%", "[%eax-ecx-edx-1%]"]},
+			{"mov":   ["[ebp-%hex-first_char%]", "%al-bl-cl-dl-1%"]},
 			{"mov":   ["%eax-ecx-edx-2%", "[ebp%offset-str2%]"]},
-			{"cmp":   ["%al-cl-dl-1%", "[%eax-ecx-edx-2%]"]},
+			{"cmp":   ["%al-bl-cl-dl-1%", "[%eax-ecx-edx-2%]"]},
 			{"jne":   ["%label-not-equal%"]},
 			{"cmp":   ["[ebp-%hex-first_char%]", "000h"]},
 			{"je":    ["%label-equal%"]},
 			{"mov":   ["%eax-ecx-edx-3%", "[ebp%offset-str1%]"]},
-			{"mov":   ["%al-cl-dl-2%", "[%eax-ecx-edx-3%+001h]"]},
-			{"mov":   ["[ebp-%hex-second_char%]", "%al-cl-dl-2%"]},
+			{"mov":   ["%al-bl-cl-dl-2%", "[%eax-ecx-edx-3%+001h]"]},
+			{"mov":   ["[ebp-%hex-second_char%]", "%al-bl-cl-dl-2%"]},
 			{"mov":   ["%eax-ecx-edx-4%", "[ebp%offset-str2%]"]},
-			{"cmp":   ["%al-cl-dl-2%", "[%eax-ecx-edx-4%+001h]"]},
+			{"cmp":   ["%al-bl-cl-dl-2%", "[%eax-ecx-edx-4%+001h]"]},
 			{"jne":   ["%label-not-equal%"]},
 			{"add":   ["[ebp%offset-str1%]", "000000002h"]},
 			{"add":   ["[ebp%offset-str2%]", "000000002h"]},
@@ -338,49 +338,49 @@
 	},
 	{
 		"instructions": [
-			{"xor":  ["e%a-c-d%x", "e%a-c-d%x"]},
-			{"mov":  ["%a-c-d%l", "%src-operand%"]}
+			{"xor":  ["e%a-b-c-d%x", "e%a-b-c-d%x"]},
+			{"mov":  ["%a-b-c-d%l", "%src-operand%"]}
 		],
-		"action": {"tmpreg": {"dst": "e%a-c-d%x", "src": "ZEROEXTEND(4, %src-operand%)"}}
+		"action": {"tmpreg": {"dst": "e%a-b-c-d%x", "src": "ZEROEXTEND(4, %src-operand%)"}}
 	},
 	{
 		"instructions": [
-			{"xor":  ["e%a-c-d%x", "e%a-c-d%x"]},
-			{"mov":  ["%a-c-d%x", "%src-operand%"]}
+			{"xor":  ["e%a-b-c-d%x", "e%a-b-c-d%x"]},
+			{"mov":  ["%a-b-c-d%x", "%src-operand%"]}
 		],
-		"action": {"tmpreg": {"dst": "e%a-c-d%x", "src": "ZEROEXTEND(4, %src-operand%)"}}
+		"action": {"tmpreg": {"dst": "e%a-b-c-d%x", "src": "ZEROEXTEND(4, %src-operand%)"}}
 	},
 	{
 		"instructions": [
-			{"xor":  ["e%a-c-d%x", "e%a-c-d%x"]},
+			{"xor":  ["e%a-b-c-d%x", "e%a-b-c-d%x"]},
 			{"cmp":  ["%src-operand-left%", "%src-operand-right%"]},
-			{"sete":  ["%a-c-d%l"]}
+			{"sete":  ["%a-b-c-d%l"]}
 		],
-		"action": {"tmpreg": {"dst": "e%a-c-d%x", "src": "ZEROEXTEND(4, %src-operand-left% == %src-operand-right%)"}}
+		"action": {"tmpreg": {"dst": "e%a-b-c-d%x", "src": "ZEROEXTEND(4, %src-operand-left% == %src-operand-right%)"}}
 	},
 	{
 		"instructions": [
-			{"xor":  ["e%a-c-d%x", "e%a-c-d%x"]},
+			{"xor":  ["e%a-b-c-d%x", "e%a-b-c-d%x"]},
 			{"cmp":  ["%src-operand-left%", "%src-operand-right%"]},
-			{"setne":  ["%a-c-d%l"]}
+			{"setne":  ["%a-b-c-d%l"]}
 		],
-		"action": {"tmpreg": {"dst": "e%a-c-d%x", "src": "ZEROEXTEND(4, %src-operand-left% != %src-operand-right%)"}}
+		"action": {"tmpreg": {"dst": "e%a-b-c-d%x", "src": "ZEROEXTEND(4, %src-operand-left% != %src-operand-right%)"}}
 	},
 	{
 		"instructions": [
-			{"xor":  ["e%a-c-d%x", "e%a-c-d%x"]},
+			{"xor":  ["e%a-b-c-d%x", "e%a-b-c-d%x"]},
 			{"cmp":  ["%src-operand-left%", "%src-operand-right%"]},
-			{"setg":  ["%a-c-d%l"]}
+			{"setg":  ["%a-b-c-d%l"]}
 		],
-		"action": {"tmpreg": {"dst": "e%a-c-d%x", "src": "ZEROEXTEND(4, S(%src-operand-left%) > S(%src-operand-right%))"}}
+		"action": {"tmpreg": {"dst": "e%a-b-c-d%x", "src": "ZEROEXTEND(4, S(%src-operand-left%) > S(%src-operand-right%))"}}
 	},
 	{
 		"instructions": [
-			{"xor":  ["e%a-c-d%x", "e%a-c-d%x"]},
+			{"xor":  ["e%a-b-c-d%x", "e%a-b-c-d%x"]},
 			{"cmp":  ["%src-operand-left%", "%src-operand-right%"]},
-			{"setl":  ["%a-c-d%l"]}
+			{"setl":  ["%a-b-c-d%l"]}
 		],
-		"action": {"tmpreg": {"dst": "e%a-c-d%x", "src": "ZEROEXTEND(4, S(%src-operand-left%) < S(%src-operand-right%))"}}
+		"action": {"tmpreg": {"dst": "e%a-b-c-d%x", "src": "ZEROEXTEND(4, S(%src-operand-left%) < S(%src-operand-right%))"}}
 	},
 	{
 		"instructions": [
@@ -407,15 +407,15 @@
 	},
 	{
 		"instructions": [
-			{"mov":  ["%a-c-d%l", "%src-operand%"]},
-			{"push":  ["e%a-c-d%x"]}
+			{"mov":  ["%a-b-c-d%l", "%src-operand%"]},
+			{"push":  ["e%a-b-c-d%x"]}
 		],
 		"action": {"stackarg": {"arg": "ARG(%src-operand%)"}}
 	},
 	{
 		"instructions": [
-			{"mov":  ["%a-c-d%x", "%src-operand%"]},
-			{"push":  ["e%a-c-d%x"]}
+			{"mov":  ["%a-b-c-d%x", "%src-operand%"]},
+			{"push":  ["e%a-b-c-d%x"]}
 		],
 		"action": {"stackarg": {"arg": "ARG(%src-operand%)"}}
 	},
@@ -607,9 +607,9 @@
 	},
 	{
 		"instructions": [
-			{"xor":  ["%al-cl-dl%", "%al-cl-dl%"]}
+			{"xor":  ["%al-bl-cl-dl%", "%al-bl-cl-dl%"]}
 		],
-		"action": {"tmpreg": {"dst": "%al-cl-dl%", "src": "0x00"}}
+		"action": {"tmpreg": {"dst": "%al-bl-cl-dl%", "src": "0x00"}}
 	},
 	{
 		"instructions": [
