@@ -12596,11 +12596,32 @@ Error: "Unexpected instruction type <class 'instructions.assignment.Assignment'>
 // address: 0x10017795
 p10017795
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=8, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=8, stack_delta=0)
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 408, 4);
-    REGDEF(ecx=ACCESS(STACKVAR(8, 4), 404, 4), eax=ACCESS(STACKVAR(-4, 4), 16, 4))
+    ACCESS(ACCESS(STACKVAR(8, 4), 404, 4), 20, 4) = reinterpret_cast<any_int32>(ACCESS(ACCESS(STACKVAR(8, 4), 404, 4), 20, 4)) + reinterpret_cast<int>(ACCESS(STACKVAR(-4, 4), 16, 4)) / 8;
+    ACCESS(STACKVAR(-4, 4), 16, 4) = 0x00000000;
+    if ((reinterpret_cast<any_int32>(ACCESS(ACCESS(STACKVAR(8, 4), 404, 4), 8, 4)(STACKVAR(8, 4))) & 0x000000FF) == 0x00000000)
+    {
+        REGDEF(al=0)
+        return;
+    }
+    STACKVAR(-8, 4) = 0x00000000;
+    goto l1001780C;
+l10017803:
+    STACKVAR(-8, 4) = reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + 0x00000001;
+l1001780C:
+    if (reinterpret_cast<int>(STACKVAR(-8, 4)) < reinterpret_cast<int>(ACCESS(STACKVAR(8, 4), 292, 4)))
+    {
+        ACCESS(ARRPTR(STACKVAR(-4, 4), 0x04, STACKVAR(-8, 4), 20), 0, 4) = 0x00000000;
+        goto l10017803;
+    }
+    ACCESS(STACKVAR(-4, 4), 36, 4) = ACCESS(STACKVAR(8, 4), 252, 4);
+    if (ACCESS(STACKVAR(8, 4), 380, 4) == 0x00000000)
+    {
+        ACCESS(STACKVAR(-4, 4), 8, 1) = 0;
+    }
+    REGDEF(al=0x01)
 }
-Error: "Failed to find pattern for 'cdq'"
 
 // address: 0x10017860
 p10017860
@@ -15992,11 +16013,33 @@ Error: "Failed to find pattern for 'sar edx, cl'"
 // address: 0x1001D97A
 p1001D97A
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=8, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=8, stack_delta=0)
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 408, 4);
-    REGDEF(ecx=ACCESS(STACKVAR(8, 4), 404, 4), eax=ACCESS(STACKVAR(-4, 4), 16, 4))
+    ACCESS(ACCESS(STACKVAR(8, 4), 404, 4), 20, 4) = reinterpret_cast<any_int32>(ACCESS(ACCESS(STACKVAR(8, 4), 404, 4), 20, 4)) + reinterpret_cast<int>(ACCESS(STACKVAR(-4, 4), 16, 4)) / 8;
+    ACCESS(STACKVAR(-4, 4), 16, 4) = 0x00000000;
+    if ((reinterpret_cast<any_int32>(ACCESS(ACCESS(STACKVAR(8, 4), 404, 4), 8, 4)(STACKVAR(8, 4))) & 0x000000FF) == 0x00000000)
+    {
+        REGDEF(al=0)
+        return;
+    }
+    STACKVAR(-8, 4) = 0x00000000;
+    goto l1001D9F1;
+l1001D9E8:
+    STACKVAR(-8, 4) = reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + 0x00000001;
+l1001D9F1:
+    if (reinterpret_cast<int>(STACKVAR(-8, 4)) < reinterpret_cast<int>(ACCESS(STACKVAR(8, 4), 292, 4)))
+    {
+        ACCESS(ARRPTR(STACKVAR(-4, 4), 0x04, STACKVAR(-8, 4), 24), 0, 4) = 0x00000000;
+        goto l1001D9E8;
+    }
+    ACCESS(STACKVAR(-4, 4), 20, 4) = 0x00000000;
+    ACCESS(STACKVAR(-4, 4), 40, 4) = ACCESS(STACKVAR(8, 4), 252, 4);
+    if (ACCESS(STACKVAR(8, 4), 380, 4) == 0x00000000)
+    {
+        ACCESS(STACKVAR(-4, 4), 8, 1) = 0;
+    }
+    REGDEF(al=0x01)
 }
-Error: "Failed to find pattern for 'cdq'"
 
 // address: 0x1001DA41
 p1001DA41

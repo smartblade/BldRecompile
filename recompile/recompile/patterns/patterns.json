@@ -589,6 +589,15 @@
 	},
 	{
 		"instructions": [
+			{"cdq":   []},
+			{"and":   ["edx", "000000007h"]},
+			{"add":   ["eax", "edx"]},
+			{"sar":   ["eax", "003h"]}
+		],
+		"action": {"tmpreg": {"dst": "eax", "src": "S(REGVALUE(eax)) / S(8)"}}
+	},
+	{
+		"instructions": [
 			{"neg":  ["%tmpreg32%"]}
 		],
 		"action": {"tmpreg": {"dst": "%tmpreg32%", "src": "-S(REGVALUE(%tmpreg32%))"}}
