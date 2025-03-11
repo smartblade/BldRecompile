@@ -10,8 +10,8 @@
 		],
 		"mem-operand": [
 			{"operand": "[ebp%offset%]", "expression": "STACKVAR(%offset%, %size%)"},
-			{"operand": "[%eax-ecx-edx%]", "expression": "ACCESS(REGVALUE(%eax-ecx-edx%), 0, %size%)"},
-			{"operand": "[%eax-ecx-edx%%offset%]", "expression": "ACCESS(REGVALUE(%eax-ecx-edx%), %offset%, %size%)"},
+			{"operand": "[%tmpreg32%]", "expression": "ACCESS(REGVALUE(%tmpreg32%), 0, %size%)"},
+			{"operand": "[%tmpreg32%%offset%]", "expression": "ACCESS(REGVALUE(%tmpreg32%), %offset%, %size%)"},
 			{"operand": "[%label%]", "expression": "ACCESS(GLOBAL(%label%), 0, %size%)"},
 			{"operand": "%external%", "expression": "EXTERNVAR(%external%)"},
 			{"operand": "%effective-addr-operand%", "expression": "ACCESS(%effective-addr-operand%, 0, %size%)"}
