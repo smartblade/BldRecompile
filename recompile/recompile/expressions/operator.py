@@ -16,6 +16,7 @@ class Operator(Enum):
     EQ = "=="
     NE = "!="
     BIT_AND = "&"
+    BIT_OR = "|"
     AND = "&&"
     ASS = "="
     ADD_ASS = "+="
@@ -39,6 +40,7 @@ priorities = {
     Operator.EQ: 9,
     Operator.NE: 9,
     Operator.BIT_AND: 10,
+    Operator.BIT_OR: 12,
     Operator.AND: 13,
     Operator.ASS: 15,
     Operator.ADD_ASS: 15,

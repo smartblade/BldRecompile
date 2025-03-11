@@ -433,10 +433,21 @@ B_ODataFile::B_ODataFile(const char *file_name, int flags)
     ACCESS(STACKVAR(-4, 4), 16392, 4) = 0x00000000;
     ACCESS(STACKVAR(-4, 4), 16396, 4) = 0x00000000;
     ACCESS(STACKVAR(-4, 4), 4, 4) = _strdup(STACKVAR(8, 4));
-    ARG(0x00000180);
-    REGDEF(edx=STACKVAR(12, 4))
+    ACCESS(STACKVAR(-4, 4), 0, 4) = _open(STACKVAR(8, 4), reinterpret_cast<any_int32>(STACKVAR(12, 4)) | 0x00000301, 0x00000180);
+    if (ACCESS(STACKVAR(-4, 4), 0, 4) != 0xFFFFFFFF)
+    {
+        goto l10001D68;
+    }
+    unknown_function_1002A2C3(GLOBAL(0x1004A53C), unknown_function_10029BE0(GLOBAL(0x1004705C), STACKVAR(8, 4)));
+    STACKVAR(-8, 4) = ACCESS(_errno(), 0, 4);
+    STACKVAR(-8, 4) = reinterpret_cast<any_int32>(STACKVAR(-8, 4)) - 0x00000002;
+    if (reinterpret_cast<unsigned int>(STACKVAR(-8, 4)) > 22)
+    {
+        goto l10001D56;
+    }
+    REGDEF(ecx=STACKVAR(-8, 4), eax=0x00000000)
 }
-Error: "Failed to find pattern for 'or edx, 000000301h'"
+Error: "Failed to find pattern for 'mov al, byte ptr [ecx+offset g10001D89]'"
 
 // address: 0x10001DA0
 p10001DA0
@@ -12445,9 +12456,27 @@ l10016D04:
     ACCESS(STACKVAR(-4, 4), 380, 4) = STACKVAR(-16, 4);
     goto l10016D2E;
 l10016D12:
-    REGDEF(edx=0x00000100 * reinterpret_cast<any_int32>(STACKVAR(12, 4)))
+    STACKVAR(12, 4) = 0x00000100 * reinterpret_cast<any_int32>(STACKVAR(12, 4)) | reinterpret_cast<any_int32>(STACKVAR(-16, 4));
+    STACKVAR(16, 4) = reinterpret_cast<any_int32>(STACKVAR(16, 4)) + 0x00000008;
+    goto l10016C27;
+l10016D2C:
+    goto l10016D89;
+l10016D2E:
+    if (reinterpret_cast<int>(STACKVAR(20, 4)) <= reinterpret_cast<int>(STACKVAR(16, 4)))
+    {
+        goto l10016D89;
+    }
+    if (static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(ACCESS(STACKVAR(-4, 4), 408, 4), 8, 1))) != 0x00000000)
+    {
+        goto l10016D72;
+    }
+    ACCESS(ACCESS(STACKVAR(-4, 4), 0, 4), 20, 4) = 0x00000075;
+    ACCESS(ACCESS(STACKVAR(-4, 4), 0, 4), 4, 4)(STACKVAR(-4, 4), 0xFFFFFFFF);
+    ACCESS(ACCESS(STACKVAR(-4, 4), 408, 4), 8, 1) = 0x01;
+l10016D72:
+    REGDEF(ecx=0x00000019 - reinterpret_cast<any_int32>(STACKVAR(16, 4)), eax=STACKVAR(12, 4))
 }
-Error: "Failed to find pattern for 'or edx, dword ptr [ebp-010h]'"
+Error: "Failed to find pattern for 'shl eax, cl'"
 
 // address: 0x10016DB2
 p10016DB2
@@ -20479,14 +20508,53 @@ p100269E0
 // address: 0x100269F2
 p100269F2
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=24, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=24, stack_delta=0)
     if ((static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(GLOBAL(0x1004A538), 0, 1))) & 0x00000001) != 0x00000000)
     {
         goto l10026AD1;
     }
-    REGDEF(cl=ACCESS(GLOBAL(0x1004A538), 0, 1))
+    ACCESS(GLOBAL(0x1004A538), 0, 1) = reinterpret_cast<any_int8>(ACCESS(GLOBAL(0x1004A538), 0, 1)) | 0x01;
+    ACCESS(&B_BitMap24::BitMap24DataList(1), 0, 4) = GLOBAL(0x10042CB8);
+    if (ACCESS(GLOBAL(0x1004A530), 0, 4) == 0x00000000)
+    {
+        goto l10026AD1;
+    }
+    STACKVAR(-20, 4) = ACCESS(GLOBAL(0x1004A534), 0, 4);
+    if (ACCESS(GLOBAL(0x1004A530), 0, 4) == 0x00000000)
+    {
+        return;
+    }
+    if (STACKVAR(-20, 4) == 0x00000000)
+    {
+        goto l10026A9F;
+    }
+    STACKVAR(-4, 4) = 0x00000000;
+    goto l10026A5F;
+l10026A56:
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000001;
+l10026A5F:
+    if (reinterpret_cast<unsigned int>(STACKVAR(-4, 4)) < reinterpret_cast<unsigned int>(ACCESS(GLOBAL(0x1004A528), 0, 4)))
+    {
+        STACKVAR(-12, 4) = ACCESS(ARRPTR(ACCESS(GLOBAL(0x1004A524), 0, 4), 0x04, STACKVAR(-4, 4), 0), 0, 4);
+        STACKVAR(-8, 4) = STACKVAR(-12, 4);
+        if (STACKVAR(-8, 4) != 0x00000000)
+        {
+            STACKVAR(-24, 4) = STACKVAR(-8, 4)->(ACCESS(ACCESS(STACKVAR(-8, 4), 0, 4), 0, 4))(0x00000001);
+        }
+        else
+        {
+            STACKVAR(-24, 4) = 0x00000000;
+        }
+        goto l10026A56;
+    }
+l10026A9F:
+    STACKVAR(-16, 4) = ACCESS(GLOBAL(0x1004A524), 0, 4);
+    ??3@YAXPAX@Z(STACKVAR(-16, 4));
+    ACCESS(GLOBAL(0x1004A524), 0, 4) = 0x00000000;
+    ACCESS(GLOBAL(0x1004A528), 0, 4) = 0x00000000;
+    ACCESS(GLOBAL(0x1004A530), 0, 4) = 0x00000000;
+l10026AD1:
 }
-Error: "Failed to find pattern for 'or cl, 001h'"
 
 // address: 0x10026AD5
 B_BitMap24::B_BitMap24(const B_BitMap24 &that)

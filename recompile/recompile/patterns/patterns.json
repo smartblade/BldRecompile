@@ -622,6 +622,12 @@
 	},
 	{
 		"instructions": [
+			{"or":  ["%reg-operand%", "%src-operand%"]}
+		],
+		"action": {"tmpreg": {"dst": "%reg-operand%", "src": "I(REGVALUE(%reg-operand%)) | I(%src-operand%)"}}
+	},
+	{
+		"instructions": [
 			{"xor":  ["%al-bl-cl-dl%", "%al-bl-cl-dl%"]}
 		],
 		"action": {"tmpreg": {"dst": "%al-bl-cl-dl%", "src": "0x00"}}
