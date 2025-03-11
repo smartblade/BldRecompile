@@ -5149,9 +5149,9 @@ p1000946B
 {
     ProcedureInfo(this=Id(this), this_offset=-20, local_size=20, stack_delta=None)
     STACKVAR(-16, 4) = STACKVAR(20, 4);
-    REGDEF(esi=STACKVAR(8, 4))
+    REGDEF(esi=((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x000000FF) - (reinterpret_cast<any_int32>(STACKVAR(-20, 4)->unknown_method_100093C8(STACKVAR(20, 4))) & 0x000000FF)) * ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x000000FF) - (reinterpret_cast<any_int32>(STACKVAR(-20, 4)->unknown_method_100093C8(STACKVAR(20, 4))) & 0x000000FF)), edi=(reinterpret_cast<any_int32>(STACKVAR(12, 4)) & 0x000000FF) - (reinterpret_cast<any_int32>(STACKVAR(-20, 4)->unknown_method_100093E1(STACKVAR(20, 4))) & 0x000000FF))
 }
-Error: "Failed to find pattern for 'and esi, 0000000FFh'"
+Error: "Failed to find pattern for 'mov ebx, dword ptr [ebp+00Ch]'"
 
 // address: 0x10009633
 p10009633

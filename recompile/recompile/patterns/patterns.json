@@ -384,26 +384,26 @@
 	},
 	{
 		"instructions": [
-			{"neg":  ["%eax-ecx-edx%"]},
-			{"sbb":  ["%eax-ecx-edx%", "%eax-ecx-edx%"]},
-			{"inc":  ["%eax-ecx-edx%"]}
+			{"neg":  ["%tmpreg32%"]},
+			{"sbb":  ["%tmpreg32%", "%tmpreg32%"]},
+			{"inc":  ["%tmpreg32%"]}
 		],
-		"action": {"tmpreg": {"dst": "%eax-ecx-edx%", "src": "ZEROEXTEND(4, REGVALUE(%eax-ecx-edx%) == 0x00000000)"}}
+		"action": {"tmpreg": {"dst": "%tmpreg32%", "src": "ZEROEXTEND(4, REGVALUE(%tmpreg32%) == 0x00000000)"}}
 	},
 	{
 		"instructions": [
-			{"neg":  ["%eax-ecx-edx%"]},
-			{"sbb":  ["%eax-ecx-edx%", "%eax-ecx-edx%"]},
-			{"neg":  ["%eax-ecx-edx%"]}
+			{"neg":  ["%tmpreg32%"]},
+			{"sbb":  ["%tmpreg32%", "%tmpreg32%"]},
+			{"neg":  ["%tmpreg32%"]}
 		],
-		"action": {"tmpreg": {"dst": "%eax-ecx-edx%", "src": "ZEROEXTEND(4, REGVALUE(%eax-ecx-edx%) != 0x00000000)"}}
+		"action": {"tmpreg": {"dst": "%tmpreg32%", "src": "ZEROEXTEND(4, REGVALUE(%tmpreg32%) != 0x00000000)"}}
 	},
 	{
 		"instructions": [
-			{"sbb":  ["%eax-ecx-edx%", "%eax-ecx-edx%"]},
-			{"inc":  ["%eax-ecx-edx%"]}
+			{"sbb":  ["%tmpreg32%", "%tmpreg32%"]},
+			{"inc":  ["%tmpreg32%"]}
 		],
-		"action": {"tmpreg": {"dst": "%eax-ecx-edx%", "src": "ZEROEXTEND(4, U(REGVALUE(cmpl)) >= U(REGVALUE(cmpr)))"}}
+		"action": {"tmpreg": {"dst": "%tmpreg32%", "src": "ZEROEXTEND(4, U(REGVALUE(cmpl)) >= U(REGVALUE(cmpr)))"}}
 	},
 	{
 		"instructions": [
@@ -421,17 +421,17 @@
 	},
 	{
 		"instructions": [
-			{"mov":  ["[%eax-ecx-edx%]", "%hex-low%"]},
-			{"mov":  ["[%eax-ecx-edx%+004h]", "%hex-high%"]}
+			{"mov":  ["[%tmpreg32%]", "%hex-low%"]},
+			{"mov":  ["[%tmpreg32%+004h]", "%hex-high%"]}
 		],
-		"action": {"assignment": {"dst": "ACCESS(REGVALUE(%eax-ecx-edx%), 0, 8)", "src": "REAL64(%hex-high%, %hex-low%)"}}
+		"action": {"assignment": {"dst": "ACCESS(REGVALUE(%tmpreg32%), 0, 8)", "src": "REAL64(%hex-high%, %hex-low%)"}}
 	},
 	{
 		"instructions": [
-			{"mov":  ["[%eax-ecx-edx%%offset-low%]", "%hex-low%"]},
-			{"mov":  ["[%eax-ecx-edx%%offset-high%]", "%hex-high%"]}
+			{"mov":  ["[%tmpreg32%%offset-low%]", "%hex-low%"]},
+			{"mov":  ["[%tmpreg32%%offset-high%]", "%hex-high%"]}
 		],
-		"action": {"assignment": {"dst": "ACCESS(REGVALUE(%eax-ecx-edx%), EXPECT(%offset-low%, EVAL(%offset-high% - 4)), 8)", "src": "REAL64(%hex-high%, %hex-low%)"}}
+		"action": {"assignment": {"dst": "ACCESS(REGVALUE(%tmpreg32%), EXPECT(%offset-low%, EVAL(%offset-high% - 4)), 8)", "src": "REAL64(%hex-high%, %hex-low%)"}}
 	},
 	{
 		"instructions": [
@@ -492,21 +492,21 @@
 	},
 	{
 		"instructions": [
-			{"movsx":  ["%eax-ecx-edx%", "%src-operand%"]}
+			{"movsx":  ["%tmpreg32%", "%src-operand%"]}
 		],
-		"action": {"tmpreg": {"dst": "%eax-ecx-edx%", "src": "SIGNEXTEND(4, %src-operand%)"}}
+		"action": {"tmpreg": {"dst": "%tmpreg32%", "src": "SIGNEXTEND(4, %src-operand%)"}}
 	},
 	{
 		"instructions": [
-			{"lea":  ["%tmpreg32%", "[%eax-ecx-edx-index%+%eax-ecx-edx-index%%offset%]"]}
+			{"lea":  ["%tmpreg32%", "[%tmpreg32-index%+%tmpreg32-index%%offset%]"]}
 		],
-		"action": {"tmpreg": {"dst": "%tmpreg32%", "src": "2 * I(REGVALUE(%eax-ecx-edx-index%)) + %offset%"}}
+		"action": {"tmpreg": {"dst": "%tmpreg32%", "src": "2 * I(REGVALUE(%tmpreg32-index%)) + %offset%"}}
 	},
 	{
 		"instructions": [
-			{"lea":  ["%tmpreg32%", "[%eax-ecx-edx-base%+%eax-ecx-edx-index%%offset%]"]}
+			{"lea":  ["%tmpreg32%", "[%tmpreg32-base%+%tmpreg32-index%%offset%]"]}
 		],
-		"action": {"tmpreg": {"dst": "%tmpreg32%", "src": "I(REGVALUE(%eax-ecx-edx-base%)) + I(REGVALUE(%eax-ecx-edx-index%)) + %offset%"}}
+		"action": {"tmpreg": {"dst": "%tmpreg32%", "src": "I(REGVALUE(%tmpreg32-base%)) + I(REGVALUE(%tmpreg32-index%)) + %offset%"}}
 	},
 	{
 		"instructions": [
@@ -534,15 +534,15 @@
 	},
 	{
 		"instructions": [
-			{"imul":  ["%eax-ecx-edx%", "%src-operand%"]}
+			{"imul":  ["%tmpreg32%", "%src-operand%"]}
 		],
-		"action": {"tmpreg": {"dst": "%eax-ecx-edx%", "src": "I(REGVALUE(%eax-ecx-edx%)) * I(%src-operand%)"}}
+		"action": {"tmpreg": {"dst": "%tmpreg32%", "src": "I(REGVALUE(%tmpreg32%)) * I(%src-operand%)"}}
 	},
 	{
 		"instructions": [
-			{"imul":  ["%eax-ecx-edx%", "%src-operand%", "%hex%"]}
+			{"imul":  ["%tmpreg32%", "%src-operand%", "%hex%"]}
 		],
-		"action": {"tmpreg": {"dst": "%eax-ecx-edx%", "src": "I(%hex%) * I(%src-operand%)"}}
+		"action": {"tmpreg": {"dst": "%tmpreg32%", "src": "I(%hex%) * I(%src-operand%)"}}
 	},
 	{
 		"instructions": [
@@ -589,21 +589,21 @@
 	},
 	{
 		"instructions": [
-			{"neg":  ["%eax-ecx-edx%"]}
+			{"neg":  ["%tmpreg32%"]}
 		],
-		"action": {"tmpreg": {"dst": "%eax-ecx-edx%", "src": "-S(REGVALUE(%eax-ecx-edx%))"}}
+		"action": {"tmpreg": {"dst": "%tmpreg32%", "src": "-S(REGVALUE(%tmpreg32%))"}}
 	},
 	{
 		"instructions": [
-			{"and":  ["%eax-ecx-edx%", "%src-operand%"]}
+			{"and":  ["%tmpreg32%", "%src-operand%"]}
 		],
-		"action": {"tmpreg": {"dst": "%eax-ecx-edx%", "src": "I(REGVALUE(%eax-ecx-edx%)) & I(%src-operand%)"}}
+		"action": {"tmpreg": {"dst": "%tmpreg32%", "src": "I(REGVALUE(%tmpreg32%)) & I(%src-operand%)"}}
 	},
 	{
 		"instructions": [
-			{"or":  ["%eax-ecx-edx%", "0FFFFFFFFh"]}
+			{"or":  ["%tmpreg32%", "0FFFFFFFFh"]}
 		],
-		"action": {"tmpreg": {"dst": "%eax-ecx-edx%", "src": "0xFFFFFFFF"}}
+		"action": {"tmpreg": {"dst": "%tmpreg32%", "src": "0xFFFFFFFF"}}
 	},
 	{
 		"instructions": [
@@ -613,21 +613,21 @@
 	},
 	{
 		"instructions": [
-			{"xor":  ["%eax-ecx-edx%", "%eax-ecx-edx%"]}
+			{"xor":  ["%tmpreg32%", "%tmpreg32%"]}
 		],
-		"action": {"tmpreg": {"dst": "%eax-ecx-edx%", "src": "0x00000000"}}
+		"action": {"tmpreg": {"dst": "%tmpreg32%", "src": "0x00000000"}}
 	},
 	{
 		"instructions": [
-			{"shl":  ["%eax-ecx-edx%", "%hex%"]}
+			{"shl":  ["%tmpreg32%", "%hex%"]}
 		],
-		"action": {"tmpreg": {"dst": "%eax-ecx-edx%", "src": "EVAL(1 << %hex%) * I(REGVALUE(%eax-ecx-edx%))"}}
+		"action": {"tmpreg": {"dst": "%tmpreg32%", "src": "EVAL(1 << %hex%) * I(REGVALUE(%tmpreg32%))"}}
 	},
 	{
 		"instructions": [
-			{"sar":  ["%eax-ecx-edx%", "%hex%"]}
+			{"sar":  ["%tmpreg32%", "%hex%"]}
 		],
-		"action": {"tmpreg": {"dst": "%eax-ecx-edx%", "src": "S(REGVALUE(%eax-ecx-edx%)) >> U(%hex%)"}}
+		"action": {"tmpreg": {"dst": "%tmpreg32%", "src": "S(REGVALUE(%tmpreg32%)) >> U(%hex%)"}}
 	},
 	{
 		"instructions": [
@@ -770,31 +770,31 @@
 	},
 	{
 		"instructions": [
-			{"test": ["%eax-ecx-edx%", "%eax-ecx-edx%"]},
+			{"test": ["%tmpreg32%", "%tmpreg32%"]},
 			{"je": ["%label%"]}
 		],
-		"action": {"jump": {"condition": "REGVALUE(%eax-ecx-edx%) == 0x00000000", "address": "%label%"}}
+		"action": {"jump": {"condition": "REGVALUE(%tmpreg32%) == 0x00000000", "address": "%label%"}}
 	},
 	{
 		"instructions": [
-			{"test": ["%eax-ecx-edx%", "%eax-ecx-edx%"]},
+			{"test": ["%tmpreg32%", "%tmpreg32%"]},
 			{"jne": ["%label%"]}
 		],
-		"action": {"jump": {"condition": "REGVALUE(%eax-ecx-edx%) != 0x00000000", "address": "%label%"}}
+		"action": {"jump": {"condition": "REGVALUE(%tmpreg32%) != 0x00000000", "address": "%label%"}}
 	},
 	{
 		"instructions": [
-			{"test": ["%eax-ecx-edx%", "%eax-ecx-edx%"]},
+			{"test": ["%tmpreg32%", "%tmpreg32%"]},
 			{"jg":  ["%label%"]}
 		],
-		"action": {"jump": {"condition": "S(REGVALUE(%eax-ecx-edx%)) > S(0x00000000)", "address": "%label%"}}
+		"action": {"jump": {"condition": "S(REGVALUE(%tmpreg32%)) > S(0x00000000)", "address": "%label%"}}
 	},
 	{
 		"instructions": [
-			{"test": ["%eax-ecx-edx%", "%eax-ecx-edx%"]},
+			{"test": ["%tmpreg32%", "%tmpreg32%"]},
 			{"jle":  ["%label%"]}
 		],
-		"action": {"jump": {"condition": "S(REGVALUE(%eax-ecx-edx%)) <= S(0x00000000)", "address": "%label%"}}
+		"action": {"jump": {"condition": "S(REGVALUE(%tmpreg32%)) <= S(0x00000000)", "address": "%label%"}}
 	},
 	{
 		"instructions": [
@@ -876,9 +876,9 @@
 	},
 	{
 		"instructions": [
-			{"jmp":  ["[%label%+%eax-ecx-edx%*04h]"]}
+			{"jmp":  ["[%label%+%tmpreg32%*04h]"]}
 		],
-		"action": {"switch": {"index": "REGVALUE(%eax-ecx-edx%)", "address": "%label%"}}
+		"action": {"switch": {"index": "REGVALUE(%tmpreg32%)", "address": "%label%"}}
 	},
 	{
 		"instructions": [
