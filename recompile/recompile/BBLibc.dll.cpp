@@ -30953,11 +30953,13 @@ p10041600
 // address: 0x100416B4
 p100416B4
 {
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    initialize_data_0x10047000_0x1004702C();
 }
-Error: "Failed to find pattern for 'mov eax, dword ptr [esp+008h]'"
 
 // address: 0x10041808
 p10041808
 {
+    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
+    disable_thread_library_calls_0x10041822();
 }
-Error: "Failed to find pattern for 'cmp dword ptr [esp+008h], 000000001h'"
