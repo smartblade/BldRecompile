@@ -647,6 +647,12 @@
 	},
 	{
 		"instructions": [
+			{"xor":  ["%reg-operand%", "%src-operand%"]}
+		],
+		"action": {"tmpreg": {"dst": "%reg-operand%", "src": "I(REGVALUE(%reg-operand%)) ^ I(%src-operand%)"}}
+	},
+	{
+		"instructions": [
 			{"shl":  ["%tmpreg32%", "%hex%"]}
 		],
 		"action": {"tmpreg": {"dst": "%tmpreg32%", "src": "EVAL(1 << %hex%) * I(REGVALUE(%tmpreg32%))"}}
