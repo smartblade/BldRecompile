@@ -227,6 +227,13 @@
 	},
 	{
 		"instructions": [
+			{"rep":   ["movsd"]},
+			{"movsw": []}
+		],
+		"action": {"instruction": {"expression": "memcpy(REGVALUE(edi), REGVALUE(esi), EVAL(4 * REGVALUE(ecx) + 2))"}}
+	},
+	{
+		"instructions": [
 			{"rep": ["movsd"]}
 		],
 		"action": {"instruction": {"expression": "memcpy(REGVALUE(edi), REGVALUE(esi), EVAL(4 * REGVALUE(ecx)))"}}

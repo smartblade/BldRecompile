@@ -12772,7 +12772,7 @@ Error: "Unexpected instruction type <class 'instructions.assignment.Assignment'>
 // address: 0x10017BC0
 p10017BC0
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=16, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=16, stack_delta=0)
     STACKVAR(-16, 4) = 0x00000000;
     goto l10017BDA;
 l10017BD1:
@@ -12783,12 +12783,10 @@ l10017BDA:
         goto l10017C91;
     }
     STACKVAR(-12, 4) = ACCESS(ARRPTR(STACKVAR(8, 4), 0x04, STACKVAR(-16, 4), 296), 0, 4);
-    if (ACCESS(STACKVAR(-12, 4), 76, 4) == 0x00000000)
+    if (ACCESS(STACKVAR(-12, 4), 76, 4) != 0x00000000)
     {
-        goto l10017C07;
+        goto l10017BD1;
     }
-    goto l10017BD1;
-l10017C07:
     STACKVAR(-4, 4) = ACCESS(STACKVAR(-12, 4), 16, 4);
     if (reinterpret_cast<int>(STACKVAR(-4, 4)) < 0)
     {
@@ -12808,9 +12806,11 @@ l10017C2C:
     ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 0, 4)(STACKVAR(8, 4));
 l10017C51:
     STACKVAR(-8, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x00000082);
-    memcpy(STACKVAR(-8, 4), ACCESS(ARRPTR(STACKVAR(8, 4), 0x04, STACKVAR(-4, 4), 144), 0, 4), 0x00000080); // TODO improve emitting of memcpy instructions
+    memcpy(STACKVAR(-8, 4), ACCESS(ARRPTR(STACKVAR(8, 4), 0x04, STACKVAR(-4, 4), 144), 0, 4), 0x00000082); // TODO improve emitting of memcpy instructions
+    ACCESS(STACKVAR(-12, 4), 76, 4) = STACKVAR(-8, 4);
+    goto l10017BD1;
+l10017C91:
 }
-Error: "Failed to find pattern for 'movsw'"
 
 // address: 0x10017C97
 p10017C97
