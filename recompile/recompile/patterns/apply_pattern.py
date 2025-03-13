@@ -31,6 +31,10 @@ _actions = {
     "jump": lambda builder, **kwargs: builder.make_jump(**kwargs),
     "switch": lambda builder, **kwargs: builder.make_switch(**kwargs),
     "addrentry": lambda builder, **kwargs: builder.add_address_entry(**kwargs),
+    "index32entry": lambda builder, **kwargs: builder.add_32bit_index_entry(
+        **kwargs),
+    "index8entry": lambda builder, **kwargs: builder.add_8bit_index_entry(
+        **kwargs),
     "varlabel": lambda builder, **kwargs: builder.start_labeled_variable(
         **kwargs),
     "label": lambda builder, **kwargs: builder.start_labeled_block(**kwargs),

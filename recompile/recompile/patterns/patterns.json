@@ -428,6 +428,20 @@
 	},
 	{
 		"instructions": [
+			{"xor":  ["e%a-b-c-d%x", "e%a-b-c-d%x"]},
+			{"mov":  ["%a-b-c-d%l", "[%tmpreg32%+%label-index-table%]"]},
+			{"jmp":  ["[%label-address-table%+e%a-b-c-d%x*04h]"]}
+		],
+		"action": {"switch": {"index": "REGVALUE(%tmpreg32%)", "addresses": "%label-address-table%", "indices": "%label-index-table%"}}
+	},
+	{
+		"instructions": [
+			{"jmp":  ["[%label%+%tmpreg32%*04h]"]}
+		],
+		"action": {"switch": {"index": "REGVALUE(%tmpreg32%)", "addresses": "%label%"}}
+	},
+	{
+		"instructions": [
 			{"mov":  ["[%tmpreg32%]", "%hex-low%"]},
 			{"mov":  ["[%tmpreg32%+004h]", "%hex-high%"]}
 		],
@@ -910,15 +924,21 @@
 	},
 	{
 		"instructions": [
-			{"jmp":  ["[%label%+%tmpreg32%*04h]"]}
-		],
-		"action": {"switch": {"index": "REGVALUE(%tmpreg32%)", "address": "%label%"}}
-	},
-	{
-		"instructions": [
 			{"dd":  ["%label%"]}
 		],
 		"action": {"addrentry": {"address": "%label%"}}
+	},
+	{
+		"instructions": [
+			{"dd":  ["%hex%"]}
+		],
+		"action": {"index32entry": {"index32": "%hex%"}}
+	},
+	{
+		"instructions": [
+			{"db":  ["%hex%"]}
+		],
+		"action": {"index8entry": {"index8": "%hex%"}}
 	},
 	{
 		"instructions": [

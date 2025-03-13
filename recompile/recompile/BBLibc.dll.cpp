@@ -429,25 +429,61 @@ B_IDataFile::~B_IDataFile()
 // address: 0x10001C44
 B_ODataFile::B_ODataFile(const char *file_name, int flags)
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=8, stack_delta=None)
-    ACCESS(STACKVAR(-4, 4), 16392, 4) = 0x00000000;
-    ACCESS(STACKVAR(-4, 4), 16396, 4) = 0x00000000;
-    ACCESS(STACKVAR(-4, 4), 4, 4) = _strdup(STACKVAR(8, 4));
-    ACCESS(STACKVAR(-4, 4), 0, 4) = _open(STACKVAR(8, 4), reinterpret_cast<any_int32>(STACKVAR(12, 4)) | 0x00000301, 0x00000180);
-    if (ACCESS(STACKVAR(-4, 4), 0, 4) != 0xFFFFFFFF)
+    ACCESS(this, 16392, 4) = 0x00000000;
+    ACCESS(this, 16396, 4) = 0x00000000;
+    this->file_name = reinterpret_cast<char *>(_strdup(file_name));
+    this->fd = reinterpret_cast<int>(_open(file_name, flags | 0x00000301, 0x00000180));
+    if (this->fd != -1)
     {
         goto l10001D68;
     }
-    unknown_function_1002A2C3(GLOBAL(0x1004A53C), unknown_function_10029BE0(GLOBAL(0x1004705C), STACKVAR(8, 4)));
+    mout << vararg("Could not write to the file %s.\n", file_name);
     STACKVAR(-8, 4) = ACCESS(_errno(), 0, 4);
     STACKVAR(-8, 4) = reinterpret_cast<any_int32>(STACKVAR(-8, 4)) - 0x00000002;
     if (reinterpret_cast<unsigned int>(STACKVAR(-8, 4)) > 22)
     {
         goto l10001D56;
     }
-    REGDEF(ecx=STACKVAR(-8, 4), eax=0x00000000)
+    switch (STACKVAR(-8, 4))
+    {
+        case 11:
+            mout << reinterpret_cast<char *>(GLOBAL(0x10047080));
+            goto l10001D68;
+        case 15:
+            mout << "_O_CREAT and _O_EXCL flags specified, but filename already exists\n";
+            goto l10001D68;
+        case 20:
+            mout << "Invalid oflag or pmode argument\n";
+            goto l10001D68;
+        case 22:
+            mout << "No more file handles available (too many open files)\n";
+            goto l10001D68;
+        case 0:
+            mout << "File or path not found\n";
+            goto l10001D68;
+        case 1:
+        case 2:
+        case 3:
+        case 4:
+        case 5:
+        case 6:
+        case 7:
+        case 8:
+        case 9:
+        case 10:
+        case 12:
+        case 13:
+        case 14:
+        case 16:
+        case 17:
+        case 18:
+        case 19:
+        case 21:
+l10001D56:
+            mout << "Unknown error!!!!!!!!1\n";
+    }
+l10001D68:
 }
-Error: "Failed to find pattern for 'mov al, byte ptr [ecx+offset g10001D89]'"
 
 // address: 0x10001DA0
 p10001DA0
@@ -10623,7 +10659,7 @@ l100136D0:
 // address: 0x100136D7
 p100136D7
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=8, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=8, stack_delta=0)
     STACKVAR(-4, 4) = 0x00000000;
     STACKVAR(-8, 4) = ACCESS(STACKVAR(8, 4), 20, 4);
     STACKVAR(-8, 4) = reinterpret_cast<any_int32>(STACKVAR(-8, 4)) - 0x000000C8;
@@ -10631,9 +10667,41 @@ p100136D7
     {
         goto l10013795;
     }
-    REGDEF(ecx=STACKVAR(-8, 4), eax=0x00000000)
+    switch (STACKVAR(-8, 4))
+    {
+        case 0:
+            ACCESS(ACCESS(STACKVAR(8, 4), 400, 4), 4, 4)(STACKVAR(8, 4));
+            ACCESS(ACCESS(STACKVAR(8, 4), 24, 4), 8, 4)(STACKVAR(8, 4));
+            ACCESS(STACKVAR(8, 4), 20, 4) = 0x000000C9;
+        case 1:
+            STACKVAR(-4, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 400, 4), 0, 4)(STACKVAR(8, 4));
+            if (STACKVAR(-4, 4) == 0x00000001)
+            {
+                unknown_function_100137E3(STACKVAR(8, 4));
+                ACCESS(STACKVAR(8, 4), 20, 4) = 0x000000CA;
+            }
+            goto l100137BD;
+        case 2:
+            STACKVAR(-4, 4) = 0x00000001;
+            goto l100137BD;
+        case 3:
+        case 4:
+        case 5:
+        case 6:
+        case 7:
+        case 8:
+        case 10:
+            STACKVAR(-4, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 400, 4), 0, 4)(STACKVAR(8, 4));
+            goto l100137BD;
+        case 9:
+l10013795:
+            ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x00000014;
+            ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 24, 4) = ACCESS(STACKVAR(8, 4), 20, 4);
+            ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 0, 4)(STACKVAR(8, 4));
+    }
+l100137BD:
+    REGDEF(eax=STACKVAR(-4, 4))
 }
-Error: "Failed to find pattern for 'mov al, byte ptr [ecx+offset g100137D8]'"
 
 // address: 0x100137E3
 p100137E3
@@ -13815,41 +13883,388 @@ l1001964B:
 // address: 0x10019770
 p10019770
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=0)
 l10019774:
-    if (ACCESS(STACKVAR(8, 4), 380, 4) != 0x00000000)
+    if (ACCESS(STACKVAR(8, 4), 380, 4) == 0x00000000)
     {
-        goto l100197CC;
+        if (static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(ACCESS(STACKVAR(8, 4), 404, 4), 12, 1))) == 0x00000000)
+        {
+            if ((reinterpret_cast<any_int32>(unknown_function_1001B595(STACKVAR(8, 4))) & 0x000000FF) == 0x00000000)
+            {
+                REGDEF(eax=0x00000000)
+                return;
+            }
+        }
+        else if ((reinterpret_cast<any_int32>(unknown_function_10018C16(STACKVAR(8, 4))) & 0x000000FF) == 0x00000000)
+        {
+            REGDEF(eax=0x00000000)
+            return;
+        }
     }
-    if (static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(ACCESS(STACKVAR(8, 4), 404, 4), 12, 1))) != 0x00000000)
-    {
-        goto l100197B0;
-    }
-    if ((reinterpret_cast<any_int32>(unknown_function_1001B595(STACKVAR(8, 4))) & 0x000000FF) != 0x00000000)
-    {
-        goto l100197AE;
-    }
-    REGDEF(eax=0x00000000)
-    goto l10019AB2;
-l100197AE:
-    goto l100197CC;
-l100197B0:
-    if ((reinterpret_cast<any_int32>(unknown_function_10018C16(STACKVAR(8, 4))) & 0x000000FF) != 0x00000000)
-    {
-        goto l100197CC;
-    }
-    REGDEF(eax=0x00000000)
-    goto l10019AB2;
-l100197CC:
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 380, 4);
     STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) - 0x00000001;
     if (reinterpret_cast<unsigned int>(STACKVAR(-4, 4)) > 253)
     {
         goto l10019A75;
     }
-    REGDEF(ecx=STACKVAR(-4, 4), eax=0x00000000)
+    switch (STACKVAR(-4, 4))
+    {
+        case 215:
+            if ((reinterpret_cast<any_int32>(unknown_function_10019BF8(STACKVAR(8, 4))) & 0x000000FF) == 0x00000000)
+            {
+                REGDEF(eax=0x00000000)
+                return;
+            }
+            goto l10019AA0;
+        case 192:
+        case 191:
+            if ((reinterpret_cast<any_int32>(unknown_function_10019D0E(STACKVAR(8, 4), 0x00000000, 0x00000000)) & 0x000000FF) == 0x00000000)
+            {
+                REGDEF(eax=0x00000000)
+                return;
+            }
+            goto l10019AA0;
+        case 193:
+            if ((reinterpret_cast<any_int32>(unknown_function_10019D0E(STACKVAR(8, 4), 0x00000001, 0x00000000)) & 0x000000FF) == 0x00000000)
+            {
+                REGDEF(eax=0x00000000)
+                return;
+            }
+            goto l10019AA0;
+        case 200:
+            if ((reinterpret_cast<any_int32>(unknown_function_10019D0E(STACKVAR(8, 4), 0x00000000, 0x00000001)) & 0x000000FF) == 0x00000000)
+            {
+                REGDEF(eax=0x00000000)
+                return;
+            }
+            goto l10019AA0;
+        case 201:
+            if ((reinterpret_cast<any_int32>(unknown_function_10019D0E(STACKVAR(8, 4), 0x00000001, 0x00000001)) & 0x000000FF) == 0x00000000)
+            {
+                REGDEF(eax=0x00000000)
+                return;
+            }
+            goto l10019AA0;
+        case 194:
+        case 196:
+        case 197:
+        case 198:
+        case 199:
+        case 202:
+        case 204:
+        case 205:
+        case 206:
+            ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x0000003C;
+            ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 24, 4) = ACCESS(STACKVAR(8, 4), 380, 4);
+            ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 0, 4)(STACKVAR(8, 4));
+            goto l10019AA0;
+        case 217:
+            if ((reinterpret_cast<any_int32>(unknown_function_1001A32B(STACKVAR(8, 4))) & 0x000000FF) == 0x00000000)
+            {
+                REGDEF(eax=0x00000000)
+                return;
+            }
+            ACCESS(STACKVAR(8, 4), 380, 4) = 0x00000000;
+            REGDEF(eax=0x00000001)
+            return;
+        case 216:
+            ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x00000055;
+            ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 4, 4)(STACKVAR(8, 4), 0x00000001);
+            ACCESS(STACKVAR(8, 4), 380, 4) = 0x00000000;
+            REGDEF(eax=0x00000002)
+            return;
+        case 203:
+            if ((reinterpret_cast<any_int32>(unknown_function_1001962B(STACKVAR(8, 4))) & 0x000000FF) == 0x00000000)
+            {
+                REGDEF(eax=0x00000000)
+                return;
+            }
+            goto l10019AA0;
+        case 195:
+            if ((reinterpret_cast<any_int32>(unknown_function_1001A86C(STACKVAR(8, 4))) & 0x000000FF) == 0x00000000)
+            {
+                REGDEF(eax=0x00000000)
+                return;
+            }
+            goto l10019AA0;
+        case 218:
+            if ((reinterpret_cast<any_int32>(unknown_function_1001AF2C(STACKVAR(8, 4))) & 0x000000FF) == 0x00000000)
+            {
+                REGDEF(eax=0x00000000)
+                return;
+            }
+            goto l10019AA0;
+        case 220:
+            if ((reinterpret_cast<any_int32>(unknown_function_1001B3A6(STACKVAR(8, 4))) & 0x000000FF) == 0x00000000)
+            {
+                REGDEF(eax=0x00000000)
+                return;
+            }
+            goto l10019AA0;
+        case 224:
+        case 225:
+        case 226:
+        case 227:
+        case 228:
+        case 229:
+        case 230:
+        case 231:
+        case 232:
+        case 233:
+        case 234:
+        case 235:
+        case 236:
+        case 237:
+        case 238:
+        case 223:
+            if ((reinterpret_cast<any_int32>(ACCESS(ARRPTR(ACCESS(STACKVAR(8, 4), 404, 4), 0x04, ACCESS(STACKVAR(8, 4), 380, 4), -868), 0, 4)(STACKVAR(8, 4))) & 0x000000FF) == 0x00000000)
+            {
+                REGDEF(eax=0x00000000)
+                return;
+            }
+            goto l10019AA0;
+        case 253:
+            if ((reinterpret_cast<any_int32>(ACCESS(ACCESS(STACKVAR(8, 4), 404, 4), 24, 4)(STACKVAR(8, 4))) & 0x000000FF) == 0x00000000)
+            {
+                REGDEF(eax=0x00000000)
+                return;
+            }
+            goto l10019AA0;
+        case 0:
+        case 207:
+        case 208:
+        case 209:
+        case 210:
+        case 211:
+        case 212:
+        case 213:
+        case 214:
+            ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x0000005C;
+            ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 24, 4) = ACCESS(STACKVAR(8, 4), 380, 4);
+            ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 4, 4)(STACKVAR(8, 4), 0x00000001);
+            goto l10019AA0;
+        case 219:
+            if ((reinterpret_cast<any_int32>(unknown_function_1001962B(STACKVAR(8, 4))) & 0x000000FF) == 0x00000000)
+            {
+                REGDEF(eax=0x00000000)
+                return;
+            }
+            goto l10019AA0;
+        case 1:
+        case 2:
+        case 3:
+        case 4:
+        case 5:
+        case 6:
+        case 7:
+        case 8:
+        case 9:
+        case 10:
+        case 11:
+        case 12:
+        case 13:
+        case 14:
+        case 15:
+        case 16:
+        case 17:
+        case 18:
+        case 19:
+        case 20:
+        case 21:
+        case 22:
+        case 23:
+        case 24:
+        case 25:
+        case 26:
+        case 27:
+        case 28:
+        case 29:
+        case 30:
+        case 31:
+        case 32:
+        case 33:
+        case 34:
+        case 35:
+        case 36:
+        case 37:
+        case 38:
+        case 39:
+        case 40:
+        case 41:
+        case 42:
+        case 43:
+        case 44:
+        case 45:
+        case 46:
+        case 47:
+        case 48:
+        case 49:
+        case 50:
+        case 51:
+        case 52:
+        case 53:
+        case 54:
+        case 55:
+        case 56:
+        case 57:
+        case 58:
+        case 59:
+        case 60:
+        case 61:
+        case 62:
+        case 63:
+        case 64:
+        case 65:
+        case 66:
+        case 67:
+        case 68:
+        case 69:
+        case 70:
+        case 71:
+        case 72:
+        case 73:
+        case 74:
+        case 75:
+        case 76:
+        case 77:
+        case 78:
+        case 79:
+        case 80:
+        case 81:
+        case 82:
+        case 83:
+        case 84:
+        case 85:
+        case 86:
+        case 87:
+        case 88:
+        case 89:
+        case 90:
+        case 91:
+        case 92:
+        case 93:
+        case 94:
+        case 95:
+        case 96:
+        case 97:
+        case 98:
+        case 99:
+        case 100:
+        case 101:
+        case 102:
+        case 103:
+        case 104:
+        case 105:
+        case 106:
+        case 107:
+        case 108:
+        case 109:
+        case 110:
+        case 111:
+        case 112:
+        case 113:
+        case 114:
+        case 115:
+        case 116:
+        case 117:
+        case 118:
+        case 119:
+        case 120:
+        case 121:
+        case 122:
+        case 123:
+        case 124:
+        case 125:
+        case 126:
+        case 127:
+        case 128:
+        case 129:
+        case 130:
+        case 131:
+        case 132:
+        case 133:
+        case 134:
+        case 135:
+        case 136:
+        case 137:
+        case 138:
+        case 139:
+        case 140:
+        case 141:
+        case 142:
+        case 143:
+        case 144:
+        case 145:
+        case 146:
+        case 147:
+        case 148:
+        case 149:
+        case 150:
+        case 151:
+        case 152:
+        case 153:
+        case 154:
+        case 155:
+        case 156:
+        case 157:
+        case 158:
+        case 159:
+        case 160:
+        case 161:
+        case 162:
+        case 163:
+        case 164:
+        case 165:
+        case 166:
+        case 167:
+        case 168:
+        case 169:
+        case 170:
+        case 171:
+        case 172:
+        case 173:
+        case 174:
+        case 175:
+        case 176:
+        case 177:
+        case 178:
+        case 179:
+        case 180:
+        case 181:
+        case 182:
+        case 183:
+        case 184:
+        case 185:
+        case 186:
+        case 187:
+        case 188:
+        case 189:
+        case 190:
+        case 221:
+        case 222:
+        case 239:
+        case 240:
+        case 241:
+        case 242:
+        case 243:
+        case 244:
+        case 245:
+        case 246:
+        case 247:
+        case 248:
+        case 249:
+        case 250:
+        case 251:
+        case 252:
+l10019A75:
+            ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x00000044;
+            ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 24, 4) = ACCESS(STACKVAR(8, 4), 380, 4);
+            ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 0, 4)(STACKVAR(8, 4));
+    }
+l10019AA0:
+    ACCESS(STACKVAR(8, 4), 380, 4) = 0x00000000;
+    goto l10019774;
 }
-Error: "Failed to find pattern for 'mov al, byte ptr [ecx+offset g10019AFA]'"
 
 // address: 0x10019BF8
 p10019BF8
@@ -21387,9 +21802,14 @@ p10028A19
     {
         goto l1002913A;
     }
-    REGDEF(eax=STACKVAR(-48, 4), edx=0x00000000)
+    switch (STACKVAR(-48, 4))
+    {
+    }
+l10028A4A:
+    STACKVAR(-28, 4) = 0x00000000;
+    REGDEF(ecx=reinterpret_cast<any_int32>(STACKVAR(16, 4)) & 0x8000001F)
 }
-Error: "Failed to find pattern for 'mov dl, byte ptr [eax+offset g10029158]'"
+Error: "Failed to find pattern for 'jns l10028A61'"
 
 // address: 0x10029170
 p10029170

@@ -89,14 +89,25 @@ class ProcedureBuilder:
             return
         self._add_instruction(instructions.IfInstruction(condition, [goto]))
 
-    def make_switch(self, index, address):
-        hex_addr = address.emit_code()
-        assert hex_addr.startswith("0x")
-        switch = self._switch_builder.make_switch(index, hex_addr)
+    def make_switch(self, index, addresses, indices=None):
+        hex_addr_addresses = addresses.emit_code()
+        assert hex_addr_addresses.startswith("0x")
+        hex_addr_indices = None
+        if indices is not None:
+            hex_addr_indices = indices.emit_code()
+            assert hex_addr_indices.startswith("0x")
+        switch = self._switch_builder.make_switch(
+            index, hex_addr_addresses, hex_addr_indices)
         self._add_instruction(switch)
 
     def add_address_entry(self, address):
         self._switch_builder.add_address_entry(address.emit_code())
+
+    def add_32bit_index_entry(self, index32):
+        self._switch_builder.add_32bit_index_entry(index32)
+
+    def add_8bit_index_entry(self, index8):
+        self._switch_builder.add_8bit_index_entry(index8)
 
     def start_labeled_variable(self, address):
         hex_addr = address.emit_code()
