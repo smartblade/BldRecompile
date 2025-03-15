@@ -1,4 +1,6 @@
 import data_types
+from expressions.operator import Operator
+import expressions.writer
 
 
 class Dereference:
@@ -20,4 +22,4 @@ class Dereference:
         return transform_callback(dereference, **kwargs)
 
     def emit_code(self):
-        return "*{}".format(self._expression.emit_code())
+        return expressions.writer.write_unary(Operator.DEREF, self._expression)

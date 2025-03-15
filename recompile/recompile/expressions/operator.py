@@ -2,6 +2,9 @@ from enum import Enum
 
 
 class Operator(Enum):
+    NEG = '-'
+    ADDR_OF = "&"
+    DEREF = "*"
     ADD = "+"
     SUB = "-"
     MUL = "*"
@@ -27,6 +30,9 @@ class Operator(Enum):
 # C++ operand priorities:
 # https://learn.microsoft.com/en-us/cpp/cpp/cpp-built-in-operators-precedence-and-associativity?view=msvc-170
 priorities = {
+    Operator.NEG: 3,
+    Operator.ADDR_OF: 3,
+    Operator.DEREF: 3,
     Operator.MUL: 5,
     Operator.DIV: 5,
     Operator.MOD: 5,

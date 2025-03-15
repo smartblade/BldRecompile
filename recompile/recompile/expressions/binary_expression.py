@@ -1,6 +1,7 @@
 import data_types
 import expressions
-from expressions.operator import logical, Operator, priorities, is_associative
+from expressions.operator import logical, Operator
+import expressions.writer
 
 
 class BinaryExpression:
@@ -75,28 +76,9 @@ class BinaryExpression:
         bin_exp = BinaryExpression(self._operator, left, right)
         return transform_callback(bin_exp, **kwargs)
 
-    def _emit_left(self):
-        if not isinstance(self._left, BinaryExpression):
-            return self._left
-        if priorities[self.operator] >= priorities[self._left.operator]:
-            return self._left
-        return expressions.BracketsExpression(self._left)
-
-    def _emit_right(self):
-        if not isinstance(self._right, BinaryExpression):
-            return self._right
-        if priorities[self.operator] > priorities[self._right.operator]:
-            return self._right
-        if priorities[self.operator] < priorities[self._right.operator]:
-            return expressions.BracketsExpression(self._right)
-        if is_associative[self.operator]:
-            return self._right
-        else:
-            return expressions.BracketsExpression(self._right)
-
     def emit_code(self):
-        return "{} {} {}".format(
-            self._emit_left().emit_code(),
-            self._operator.value,
-            self._emit_right().emit_code(),
+        return expressions.writer.write_binary(
+            self._operator,
+            self._left,
+            self._right,
         )

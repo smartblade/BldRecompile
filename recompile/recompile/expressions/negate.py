@@ -1,3 +1,7 @@
+from expressions.operator import Operator
+import expressions.writer
+
+
 class Negate:
     def __init__(self, expression):
         self._expression = expression
@@ -18,4 +22,4 @@ class Negate:
         return transform_callback(self.__class__(expression), **kwargs)
 
     def emit_code(self):
-        return "-{}".format(self._expression.emit_code())
+        return expressions.writer.write_unary(Operator.NEG, self._expression)

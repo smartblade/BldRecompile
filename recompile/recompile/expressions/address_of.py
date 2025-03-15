@@ -1,4 +1,7 @@
 import data_types
+from expressions.operator import Operator
+import expressions.writer
+
 
 class AddressOf:
     def __init__(self, expression):
@@ -31,4 +34,7 @@ class AddressOf:
         return transform_callback(AddressOf(expression), **kwargs)
 
     def emit_code(self):
-        return "&{}".format(self._expression.emit_code())
+        return expressions.writer.write_unary(
+            Operator.ADDR_OF,
+            self._expression,
+        )
