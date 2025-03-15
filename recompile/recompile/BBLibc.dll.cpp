@@ -19639,7 +19639,7 @@ l10024292:
 // address: 0x10024296
 p10024296
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=24, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=24, stack_delta=0)
     STACKVAR(-20, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x00000400);
     STACKVAR(-4, 4) = 0x00000200 * (reinterpret_cast<any_int32>(STACKVAR(12, 4)) - 0x00000001);
     STACKVAR(-8, 4) = 0x00000000;
@@ -19656,13 +19656,24 @@ l100242D3:
 l100242E2:
     STACKVAR(-12, 4) = reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + 0x00000001;
 l100242EB:
-    if (reinterpret_cast<int>(STACKVAR(-12, 4)) >= 16)
+    if (reinterpret_cast<int>(STACKVAR(-12, 4)) < 16)
     {
-        goto l1002434B;
+        STACKVAR(-16, 4) = 0x000000FF * (0x000000FF - 0x00000002 * static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(ARRPTR(GLOBAL(0x10042A6C), 1, 0x00000010 * reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + STACKVAR(-12, 4), 0), 0, 1))));
+        if (reinterpret_cast<int>(STACKVAR(-16, 4)) < 0)
+        {
+            STACKVAR(-24, 4) = --reinterpret_cast<int>(STACKVAR(-16, 4)) / reinterpret_cast<int>(STACKVAR(-4, 4));
+        }
+        else
+        {
+            STACKVAR(-24, 4) = reinterpret_cast<int>(STACKVAR(-16, 4)) / reinterpret_cast<int>(STACKVAR(-4, 4));
+        }
+        ACCESS(ARRPTR(reinterpret_cast<any_int32>(STACKVAR(-20, 4)) + 0x00000040 * reinterpret_cast<any_int32>(STACKVAR(-8, 4)), 0x04, STACKVAR(-12, 4), 0), 0, 4) = STACKVAR(-24, 4);
+        goto l100242E2;
     }
-    REGDEF(eax=0x00000010 * reinterpret_cast<any_int32>(STACKVAR(-8, 4)), ecx=STACKVAR(-12, 4), edx=0x00000000)
+    goto l100242CA;
+l10024350:
+    REGDEF(eax=STACKVAR(-20, 4))
 }
-Error: "Failed to find pattern for 'mov dl, byte ptr [eax+ecx+offset g10042A6C]'"
 
 // address: 0x10024357
 p10024357
