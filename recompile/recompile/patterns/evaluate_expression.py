@@ -7,7 +7,7 @@ def evaluate_expression(e, **kwargs):
     result = _evaluate_constant(e)
     if result is not None:
         return result
-    result = _evaluate_binary(e)
+    result = _evaluate_binary(e, **kwargs)
     if result is not None:
         return result
     result = _evaluate_strlen(e, **kwargs)
@@ -27,11 +27,11 @@ def _evaluate_constant(c):
     return None
 
 
-def _evaluate_binary(b):
+def _evaluate_binary(b, **kwargs):
     if not isinstance(b, expressions.Bin):
         return None
-    left = evaluate_expression(b.left)
-    right = evaluate_expression(b.right)
+    left = evaluate_expression(b.left, **kwargs)
+    right = evaluate_expression(b.right, **kwargs)
     max_size = max(left.data_type.size, right.data_type.size)
     if b.operator == Operator.MUL:
         return _make_constant(max_size, left.value * right.value)

@@ -373,6 +373,20 @@
 	},
 	{
 		"instructions": [
+			{"mov": ["edi", "%label-string%"]},
+			{"mov": ["esi", "%src-operand%"]},
+			{"mov": ["ecx", "%hex%"]},
+			{"xor": ["eax", "eax"]},
+			{"rep": ["cmpsb"]},
+			{"jne": ["%label%"]}
+		],
+		"actions": [
+			{"validate": {"expect": "EXPECT(EVAL(strlen(%label-string%) + 1), %hex%)"}},
+			{"jump": {"condition": "strcmp(%src-operand%, GLOBAL(%label-string%)) != 0x00000000", "address": "%label%"}}
+		]
+	},
+	{
+		"instructions": [
 			{"xor":  ["e%a-b-c-d%x", "e%a-b-c-d%x"]},
 			{"mov":  ["%a-b-c-d%l", "%src-operand%"]}
 		],

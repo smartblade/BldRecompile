@@ -21316,10 +21316,35 @@ l10027270:
 // address: 0x100272A5
 unsigned int B_BitMap24::SetBits(int arg_1, int arg_2, const char *arg_3, const char *arg_4)
 {
-    ProcedureInfo(this=Id(this), this_offset=-12, local_size=12, stack_delta=None)
-    REGDEF(edi=GLOBAL(0x100487C8), esi=STACKVAR(20, 4), ecx=0x00000004, eax=0x00000000)
+    if (strcmp(arg_4, GLOBAL(0x100487C8)) != 0)
+    {
+        goto l10027378;
+    }
+    if (this->dimension1 != reinterpret_cast<unsigned int>(arg_1))
+    {
+        goto l100272DD;
+    }
+    if (this->dimension2 == reinterpret_cast<unsigned int>(arg_2))
+    {
+        goto l1002734A;
+    }
+l100272DD:
+    STACKVAR(-4, 4) = this->data;
+    ??3@YAXPAX@Z(STACKVAR(-4, 4));
+    this->dimension1 = reinterpret_cast<unsigned int>(arg_1);
+    this->dimension2 = reinterpret_cast<unsigned int>(arg_2);
+    STACKVAR(-8, 4) = ??2@YAPAXI@Z(3 * this->dimension1 * this->dimension2);
+    this->data = reinterpret_cast<void *>(STACKVAR(-8, 4));
+    if (this->data == nullptr)
+    {
+        _assert(GLOBAL(0x100487EC), GLOBAL(0x100487CC), 0x0000008D);
+    }
+l1002734A:
+    memcpy(this->data, arg_3, 3 * this->dimension1 * this->dimension2); // TODO improve emitting of memcpy instructions
+    return 1;
+l10027378:
+    return 0;
 }
-Error: "Failed to find pattern for 'rep cmpsb'"
 
 // address: 0x10027382
 int B_BitMap24::SaveToBMP(const char *fileName)
