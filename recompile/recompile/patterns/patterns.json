@@ -91,6 +91,33 @@
 	},
 	{
 		"instructions": [
+			{"mov": ["%tmpreg32-1%", "[%tmpreg32-src%]"]},
+			{"mov": ["[%tmpreg32-dst%]", "%tmpreg32-1%"]},
+			{"mov": ["%tmpreg32-2%", "[%tmpreg32-src%+004h]"]},
+			{"mov": ["[%tmpreg32-dst%+004h]", "%tmpreg32-2%"]},
+			{"mov": ["%tmpreg32-3%", "[%tmpreg32-src%+008h]"]},
+			{"mov": ["[%tmpreg32-dst%+008h]", "%tmpreg32-3%"]},
+			{"mov": ["%tmpreg32-4%", "[%tmpreg32-src%+00Ch]"]},
+			{"mov": ["[%tmpreg32-dst%+00Ch]", "%tmpreg32-4%"]},
+			{"mov": ["%a-b-c-d%l", "[%tmpreg32-src%+010h]"]},
+			{"mov": ["[%tmpreg32-dst%+010h]", "%a-b-c-d%l"]}
+		],
+		"action": {"instruction": {"expression": "memcpy(REGVALUE(%tmpreg32-dst%), REGVALUE(%tmpreg32-src%), 17)"}},
+		"restrictions": [
+			"%tmpreg32-src% != %tmpreg32-dst%",
+			"%tmpreg32-1% != %tmpreg32-src%",
+			"%tmpreg32-1% != %tmpreg32-dst%",
+			"%tmpreg32-2% != %tmpreg32-src%",
+			"%tmpreg32-2% != %tmpreg32-dst%",
+			"%tmpreg32-3% != %tmpreg32-src%",
+			"%tmpreg32-3% != %tmpreg32-dst%",
+			"%tmpreg32-4% != %tmpreg32-src%",
+			"%tmpreg32-4% != %tmpreg32-dst%",
+			"e%a-b-c-d%x != %tmpreg32-dst%"
+		]
+	},
+	{
+		"instructions": [
 			{"push": ["ebp"]},
 			{"mov":  ["ebp", "esp"]},
 			{"push": ["ecx"]}

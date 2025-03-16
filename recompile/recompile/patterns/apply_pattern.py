@@ -5,6 +5,7 @@ import expressions
 from hex_conversion import to_hex
 import parser
 from expressions.operator import Operator
+from patterns.apply_restriction import apply_restriction
 from patterns.evaluate_expression import evaluate_expression
 from patterns.make_proc_decl_from_args import make_proc_decl_from_args
 from patterns.predefined_procedures import visit_predefined_procedures
@@ -42,6 +43,24 @@ _actions = {
 
 
 def apply_pattern(builder, string_constants, pattern, match_dict):
+    unknown_attributes = set(pattern.keys()) - {
+        'instructions',
+        'action',
+        'actions',
+        'restrictions',
+    }
+    if unknown_attributes:
+        raise Exception(
+            "Unknown pattern attributes: {}".format(unknown_attributes))
+    _apply_actions(builder, string_constants, pattern, match_dict)
+    restrictions = pattern.get("restrictions")
+    if restrictions is not None:
+        for restriction in restrictions:
+            restriction = _evaluate_expression(restriction, match_dict)
+            apply_restriction(restriction)
+
+
+def _apply_actions(builder, string_constants, pattern, match_dict):
     actions = pattern.get("actions")
     if actions is None:
         apply_action(builder, string_constants, pattern["action"], match_dict)

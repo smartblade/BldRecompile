@@ -8880,16 +8880,38 @@ p1000FA22
 // address: 0x1000FA9B
 p1000FA9B
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=8, stack_delta=None)
-    if (ACCESS(STACKVAR(12, 4), 0, 4) != 0x00000000)
+    ProcedureInfo(this=None, this_offset=None, local_size=8, stack_delta=0)
+    if (ACCESS(STACKVAR(12, 4), 0, 4) == 0x00000000)
     {
-        goto l1000FABC;
+        ACCESS(STACKVAR(12, 4), 0, 4) = unknown_function_1000F6A0(STACKVAR(8, 4));
     }
-    ACCESS(STACKVAR(12, 4), 0, 4) = unknown_function_1000F6A0(STACKVAR(8, 4));
-l1000FABC:
-    ACCESS(ACCESS(STACKVAR(12, 4), 0, 4), 0, 4) = ACCESS(STACKVAR(16, 4), 0, 4);
+    memcpy(ACCESS(STACKVAR(12, 4), 0, 4), STACKVAR(16, 4), 17); // TODO improve emitting of memcpy instructions
+    STACKVAR(-4, 4) = 0x00000000;
+    STACKVAR(-8, 4) = 0x00000001;
+    goto l1000FAF9;
+l1000FAF0:
+    STACKVAR(-8, 4) = reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + 0x00000001;
+l1000FAF9:
+    if (reinterpret_cast<int>(STACKVAR(-8, 4)) <= 16)
+    {
+        STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(reinterpret_cast<any_int32>(STACKVAR(16, 4)) + reinterpret_cast<any_int32>(STACKVAR(-8, 4)), 0, 1)));
+        goto l1000FAF0;
+    }
+    if (reinterpret_cast<int>(STACKVAR(-4, 4)) < 1)
+    {
+        goto l1000FB22;
+    }
+    if (reinterpret_cast<int>(STACKVAR(-4, 4)) <= 256)
+    {
+        goto l1000FB3C;
+    }
+l1000FB22:
+    ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x00000008;
+    ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 0, 4)(STACKVAR(8, 4));
+l1000FB3C:
+    memcpy(reinterpret_cast<any_int32>(ACCESS(STACKVAR(12, 4), 0, 4)) + 0x00000011, STACKVAR(20, 4), STACKVAR(-4, 4)); // TODO improve emitting of memcpy instructions
+    ACCESS(ACCESS(STACKVAR(12, 4), 0, 4), 273, 1) = 0;
 }
-Error: "Unexpected instruction type <class 'instructions.assignment.Assignment'>"
 
 // address: 0x1000FB6A
 p1000FB6A
