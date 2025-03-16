@@ -30265,9 +30265,11 @@ l1003EF1F:
         goto l1003EF50;
     }
     STACKVAR(-12, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) & 0x0000000F;
-    REGDEF(eax=STACKVAR(-8, 4), ecx=STACKVAR(-12, 4))
+    ACCESS(STACKVAR(-8, 4), 0, 1) = ACCESS(ARRPTR(GLOBAL(0x10048A68), 1, STACKVAR(-12, 4), 0), 0, 1);
+    STACKVAR(-8, 4) = reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + 0x00000001;
+    REGDEF(ecx=STACKVAR(-4, 4))
 }
-Error: "Failed to find pattern for 'mov dl, byte ptr [ecx+offset g10048A68]'"
+Error: "Failed to find pattern for 'shr ecx, 004h'"
 
 // address: 0x1003EFD4
 p1003EFD4

@@ -7,7 +7,8 @@
 			{"operand": "[%tmpreg32-base%+%tmpreg32-index%*%hex-scale%]", "expression": "ARRPTR(REGVALUE(%tmpreg32-base%), %hex-scale%, REGVALUE(%tmpreg32-index%), 0)"},
 			{"operand": "[%tmpreg32-base%+%tmpreg32-index%%offset%]", "expression": "ARRPTR(REGVALUE(%tmpreg32-base%), 1, REGVALUE(%tmpreg32-index%), %offset%)"},
 			{"operand": "[%tmpreg32-base%+%tmpreg32-index%*%hex-scale%%offset%]", "expression": "ARRPTR(REGVALUE(%tmpreg32-base%), %hex-scale%, REGVALUE(%tmpreg32-index%), %offset%)"},
-			{"operand": "[%tmpreg32-base%+%tmpreg32-index%+%label%]", "expression": "ARRPTR(GLOBAL(%label%), 1, REGVALUE(%tmpreg32-base%) + REGVALUE(%tmpreg32-index%), 0)"}
+			{"operand": "[%tmpreg32-base%+%tmpreg32-index%+%label%]", "expression": "ARRPTR(GLOBAL(%label%), 1, REGVALUE(%tmpreg32-base%) + REGVALUE(%tmpreg32-index%), 0)"},
+			{"operand": "[%tmpreg32-base%+%label%]", "expression": "ARRPTR(GLOBAL(%label%), 1, REGVALUE(%tmpreg32-base%), 0)"}
 		],
 		"mem-operand": [
 			{"operand": "[ebp%offset%]", "expression": "STACKVAR(%offset%, %size%)"},
@@ -388,6 +389,20 @@
 	{
 		"instructions": [
 			{"xor":  ["e%a-b-c-d%x", "e%a-b-c-d%x"]},
+			{"mov":  ["%a-b-c-d%l", "[%tmpreg32%+%label-index-table%]"]},
+			{"jmp":  ["[%label-address-table%+e%a-b-c-d%x*04h]"]}
+		],
+		"action": {"switch": {"index": "REGVALUE(%tmpreg32%)", "addresses": "%label-address-table%", "indices": "%label-index-table%"}}
+	},
+	{
+		"instructions": [
+			{"jmp":  ["[%label%+%tmpreg32%*04h]"]}
+		],
+		"action": {"switch": {"index": "REGVALUE(%tmpreg32%)", "addresses": "%label%"}}
+	},
+	{
+		"instructions": [
+			{"xor":  ["e%a-b-c-d%x", "e%a-b-c-d%x"]},
 			{"mov":  ["%a-b-c-d%l", "%src-operand%"]}
 		],
 		"action": {"tmpreg": {"dst": "e%a-b-c-d%x", "src": "ZEROEXTEND(4, %src-operand%)"}}
@@ -467,20 +482,6 @@
 			{"push":  ["e%a-b-c-d%x"]}
 		],
 		"action": {"stackarg": {"arg": "ARG(%src-operand%)"}}
-	},
-	{
-		"instructions": [
-			{"xor":  ["e%a-b-c-d%x", "e%a-b-c-d%x"]},
-			{"mov":  ["%a-b-c-d%l", "[%tmpreg32%+%label-index-table%]"]},
-			{"jmp":  ["[%label-address-table%+e%a-b-c-d%x*04h]"]}
-		],
-		"action": {"switch": {"index": "REGVALUE(%tmpreg32%)", "addresses": "%label-address-table%", "indices": "%label-index-table%"}}
-	},
-	{
-		"instructions": [
-			{"jmp":  ["[%label%+%tmpreg32%*04h]"]}
-		],
-		"action": {"switch": {"index": "REGVALUE(%tmpreg32%)", "addresses": "%label%"}}
 	},
 	{
 		"instructions": [
