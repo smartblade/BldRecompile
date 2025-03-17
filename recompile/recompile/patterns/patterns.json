@@ -3,8 +3,6 @@
 		"effective-addr-operand": [
 			{"operand": "[ebp+%tmpreg32-index%*%hex-scale%%offset%]", "expression": "ARRPTR(LOCAL(%offset%), %hex-scale%, REGVALUE(%tmpreg32-index%), 0)"},
 			{"operand": "[ebp+%tmpreg32-index%%offset%]", "expression": "ARRPTR(LOCAL(%offset%), 1, REGVALUE(%tmpreg32-index%), 0)"},
-			{"operand": "[%tmpreg32-base%+%tmpreg32-index%]", "expression": "ARRPTR(REGVALUE(%tmpreg32-base%), 1, REGVALUE(%tmpreg32-index%), 0)"},
-			{"operand": "[%tmpreg32-base%+%tmpreg32-index%*%hex-scale%]", "expression": "ARRPTR(REGVALUE(%tmpreg32-base%), %hex-scale%, REGVALUE(%tmpreg32-index%), 0)"},
 			{"operand": "[%tmpreg32-base%+%tmpreg32-index%%offset%]", "expression": "ARRPTR(REGVALUE(%tmpreg32-base%), 1, REGVALUE(%tmpreg32-index%), %offset%)"},
 			{"operand": "[%tmpreg32-base%+%tmpreg32-index%*%hex-scale%%offset%]", "expression": "ARRPTR(REGVALUE(%tmpreg32-base%), %hex-scale%, REGVALUE(%tmpreg32-index%), %offset%)"},
 			{"operand": "[%tmpreg32-base%+%tmpreg32-index%+%label%]", "expression": "ARRPTR(GLOBAL(%label%), 1, REGVALUE(%tmpreg32-base%) + REGVALUE(%tmpreg32-index%), 0)"},
@@ -12,7 +10,6 @@
 		],
 		"mem-operand": [
 			{"operand": "[ebp%offset%]", "expression": "STACKVAR(%offset%, %size%)"},
-			{"operand": "[%tmpreg32%]", "expression": "ACCESS(REGVALUE(%tmpreg32%), 0, %size%)"},
 			{"operand": "[%tmpreg32%%offset%]", "expression": "ACCESS(REGVALUE(%tmpreg32%), %offset%, %size%)"},
 			{"operand": "[%label%]", "expression": "ACCESS(GLOBAL(%label%), 0, %size%)"},
 			{"operand": "%external%", "expression": "EXTERNVAR(%external%)"},
@@ -485,13 +482,6 @@
 	},
 	{
 		"instructions": [
-			{"mov":  ["[%tmpreg32%]", "%hex-low%"]},
-			{"mov":  ["[%tmpreg32%+004h]", "%hex-high%"]}
-		],
-		"action": {"assignment": {"dst": "ACCESS(REGVALUE(%tmpreg32%), 0, 8)", "src": "REAL64(%hex-high%, %hex-low%)"}}
-	},
-	{
-		"instructions": [
 			{"mov":  ["[%tmpreg32%%offset-low%]", "%hex-low%"]},
 			{"mov":  ["[%tmpreg32%%offset-high%]", "%hex-high%"]}
 		],
@@ -505,15 +495,6 @@
 			{"mov": ["[ecx%offset-left-high%]", "eax"]}
 		],
 		"action": {"assignment": {"dst": "ACCESS(REGVALUE(ecx), EXPECT(%offset-left-low%, EVAL(%offset-left-high% - 4)), 8)", "src": "ACCESS(REGVALUE(eax), EXPECT(%offset-right-low%, EVAL(%offset-right-high% - 4)), 8)"}}
-	},
-	{
-		"instructions": [
-			{"mov": ["ecx", "[ebp%offset-right-low%]"]},
-			{"mov": ["[eax]", "ecx"]},
-			{"mov": ["edx", "[ebp%offset-right-high%]"]},
-			{"mov": ["[eax+004h]", "edx"]}
-		],
-		"action": {"assignment": {"dst": "ACCESS(REGVALUE(eax), 0, 8)", "src": "STACKVAR(EXPECT(%offset-right-low%, EVAL(%offset-right-high% - 4)), 8)"}}
 	},
 	{
 		"instructions": [

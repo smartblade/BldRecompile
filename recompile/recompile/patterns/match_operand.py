@@ -22,7 +22,7 @@ _regexp_map = {
         r"0(?P<inner_hex>[\dABCDEF]+)h",
         lambda **kwargs: _convert_hex(**kwargs)),
     "offset": (
-        r"(?P<inner_offset>[\+\-][\dABCDEF]+)h",
+        r"((?P<inner_offset>[\+\-][\dABCDEF]+)h)?",
         lambda **kwargs: _convert_offset(**kwargs)),
     "external": (
         r"[^\s;]+;\s+\[\w+\.(?P<inner_id>.+)\]\.",
@@ -153,7 +153,12 @@ def _convert_hex(match_dict):
 
 
 def _convert_offset(match_dict):
-    return str(from_hex(match_dict["inner_offset"]))
+    hex_offset = match_dict["inner_offset"]
+    if hex_offset is not None:
+        int_offset = from_hex(hex_offset)
+    else:
+        int_offset = 0
+    return str(int_offset)
 
 
 def _convert_external(match_dict):
