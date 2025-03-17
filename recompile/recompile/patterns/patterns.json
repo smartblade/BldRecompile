@@ -722,6 +722,12 @@
 	},
 	{
 		"instructions": [
+			{"shr":  ["%tmpreg32%", "%hex%"]}
+		],
+		"action": {"tmpreg": {"dst": "%tmpreg32%", "src": "U(REGVALUE(%tmpreg32%)) / U(EVAL(1 << %hex%))"}}
+	},
+	{
+		"instructions": [
 			{"fld":  ["%mem-operand%"]}
 		],
 		"action": {"pushfpu": {"src": "F(%mem-operand%)"}}
