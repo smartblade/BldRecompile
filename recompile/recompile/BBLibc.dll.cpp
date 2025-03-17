@@ -23068,7 +23068,12 @@ l1002F087:
     {
         goto l1002F0B9;
     }
-    ACCESS(ARRPTR(reinterpret_cast<any_int32>(STACKVAR(8, 4)) + 0x00000020 * reinterpret_cast<any_int32>(STACKVAR(-4, 4)), 0x08, STACKVAR(-32, 4), 0), 0, 4) = ACCESS(ARRPTR(reinterpret_cast<any_int32>(STACKVAR(-84, 4)) + 0x00000020 * reinterpret_cast<any_int32>(STACKVAR(-32, 4)), 0x08, STACKVAR(-4, 4), 0), 0, 4);
+    ACCESS(ARRPTR(reinterpret_cast<any_int32>(STACKVAR(8, 4)) + 0x00000020 * reinterpret_cast<any_int32>(STACKVAR(-4, 4)), 8, STACKVAR(-32, 4), 0), 0, 8) = ACCESS(ARRPTR(reinterpret_cast<any_int32>(STACKVAR(-84, 4)) + 0x00000020 * reinterpret_cast<any_int32>(STACKVAR(-32, 4)), 8, STACKVAR(-4, 4), 0), 0, 8);
+    goto l1002F07E;
+l1002F0B9:
+    goto l1002F066;
+l1002F0BB:
+    STACKVAR(-80, 4) = ACCESS(STACKVAR(-84, 4), 112, 4);
 }
 Error: "Unexpected instruction type <class 'instructions.assignment.Assignment'>"
 
