@@ -544,6 +544,18 @@
 	},
 	{
 		"instructions": [
+			{"mov": ["%tmpreg32-low%", "[%tmpreg32-src%%offset-src-low%]"]},
+			{"mov": ["[ebp%offset-dst-low%]", "%tmpreg32-low%"]},
+			{"mov": ["%tmpreg32-high%", "[%tmpreg32-src%%offset-src-high%]"]},
+			{"mov": ["[ebp%offset-dst-high%]", "%tmpreg32-high%"]}
+		],
+		"action": {"assignment": {"dst": "STACKVAR(EXPECT(%offset-dst-low%, EVAL(%offset-dst-high% - 4)), 8)", "src": "ACCESS(REGVALUE(%tmpreg32-src%), EXPECT(%offset-src-low%, EVAL(%offset-src-high% - 4)), 8)"}},
+		"restrictions": [
+			"%tmpreg32-low% != %tmpreg32-src%"
+		]
+	},
+	{
+		"instructions": [
 			{"mov": ["%tmpreg32-low%", "[%tmpreg32-src-base%+%tmpreg32-src-index%*08h]"]},
 			{"mov": ["[%tmpreg32-dst-base%+%tmpreg32-dst-index%*08h]", "%tmpreg32-low%"]},
 			{"mov": ["%tmpreg32-high%", "[%tmpreg32-src-base%+%tmpreg32-src-index%*08h+004h]"]},

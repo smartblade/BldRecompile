@@ -23049,7 +23049,7 @@ p1002EF9F
 // address: 0x1002F052
 p1002F052
 {
-    ProcedureInfo(this=Id(this), this_offset=-84, local_size=84, stack_delta=None)
+    ProcedureInfo(this=Id(this), this_offset=-84, local_size=84, stack_delta=4)
     STACKVAR(-4, 4) = 0x00000000;
     goto l1002F06F;
 l1002F066:
@@ -23064,18 +23064,25 @@ l1002F06F:
 l1002F07E:
     STACKVAR(-32, 4) = reinterpret_cast<any_int32>(STACKVAR(-32, 4)) + 0x00000001;
 l1002F087:
-    if (reinterpret_cast<unsigned int>(STACKVAR(-32, 4)) >= 3)
+    if (reinterpret_cast<unsigned int>(STACKVAR(-32, 4)) < 3)
     {
-        goto l1002F0B9;
+        ACCESS(ARRPTR(reinterpret_cast<any_int32>(STACKVAR(8, 4)) + 0x00000020 * reinterpret_cast<any_int32>(STACKVAR(-4, 4)), 8, STACKVAR(-32, 4), 0), 0, 8) = ACCESS(ARRPTR(reinterpret_cast<any_int32>(this) + 0x00000020 * reinterpret_cast<any_int32>(STACKVAR(-32, 4)), 8, STACKVAR(-4, 4), 0), 0, 8);
+        goto l1002F07E;
     }
-    ACCESS(ARRPTR(reinterpret_cast<any_int32>(STACKVAR(8, 4)) + 0x00000020 * reinterpret_cast<any_int32>(STACKVAR(-4, 4)), 8, STACKVAR(-32, 4), 0), 0, 8) = ACCESS(ARRPTR(reinterpret_cast<any_int32>(STACKVAR(-84, 4)) + 0x00000020 * reinterpret_cast<any_int32>(STACKVAR(-32, 4)), 8, STACKVAR(-4, 4), 0), 0, 8);
-    goto l1002F07E;
-l1002F0B9:
     goto l1002F066;
 l1002F0BB:
-    STACKVAR(-80, 4) = ACCESS(STACKVAR(-84, 4), 112, 4);
+    STACKVAR(-80, 8) = ACCESS(this, 112, 8);
+    STACKVAR(-72, 8) = ACCESS(this, 104, 8);
+    STACKVAR(-64, 8) = ACCESS(this, 96, 8);
+    STACKVAR(-28, 4) = STACKVAR(-64, 4);
+    STACKVAR(-24, 4) = STACKVAR(-60, 4);
+    ACCESS(LOCAL(-20), 0, 8) = STACKVAR(-72, 8);
+    ACCESS(LOCAL(-12), 0, 8) = STACKVAR(-80, 8);
+    memcpy(LOCAL(-28), unknown_function_100300A1(LOCAL(-56), LOCAL(-28), STACKVAR(8, 4)), 0x00000018); // TODO improve emitting of memcpy instructions
+    ACCESS(STACKVAR(8, 4), 96, 8) = -reinterpret_cast<double>(STACKVAR(-28, 8));
+    ACCESS(STACKVAR(8, 4), 104, 8) = -reinterpret_cast<double>(STACKVAR(-20, 8));
+    ACCESS(STACKVAR(8, 4), 112, 8) = -reinterpret_cast<double>(STACKVAR(-12, 8));
 }
-Error: "Unexpected instruction type <class 'instructions.assignment.Assignment'>"
 
 // address: 0x1002F159
 p1002F159
@@ -23092,9 +23099,15 @@ p1002F159
     STACKVAR(-112, 8) = (reinterpret_cast<double>(ACCESS(STACKVAR(-212, 4), 8, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(-212, 4), 48, 8)) - reinterpret_cast<double>(ACCESS(STACKVAR(-212, 4), 16, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(-212, 4), 40, 8))) / reinterpret_cast<double>(STACKVAR(-160, 8));
     STACKVAR(-80, 8) = -(reinterpret_cast<double>(ACCESS(STACKVAR(-212, 4), 0, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(-212, 4), 48, 8)) - reinterpret_cast<double>(ACCESS(STACKVAR(-212, 4), 16, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(-212, 4), 32, 8))) / reinterpret_cast<double>(STACKVAR(-160, 8));
     STACKVAR(-48, 8) = (reinterpret_cast<double>(ACCESS(STACKVAR(-212, 4), 0, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(-212, 4), 40, 8)) - reinterpret_cast<double>(ACCESS(STACKVAR(-212, 4), 8, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(-212, 4), 32, 8))) / reinterpret_cast<double>(STACKVAR(-160, 8));
-    STACKVAR(-208, 4) = ACCESS(STACKVAR(-212, 4), 112, 4);
+    STACKVAR(-208, 8) = ACCESS(STACKVAR(-212, 4), 112, 8);
+    STACKVAR(-200, 8) = ACCESS(STACKVAR(-212, 4), 104, 8);
+    STACKVAR(-192, 8) = ACCESS(STACKVAR(-212, 4), 96, 8);
+    STACKVAR(-152, 4) = STACKVAR(-192, 4);
+    STACKVAR(-148, 4) = STACKVAR(-188, 4);
+    ACCESS(LOCAL(-144), 0, 4) = STACKVAR(-200, 4);
+    REGDEF(ecx=STACKVAR(-196, 4))
 }
-Error: "Unexpected instruction type <class 'instructions.assignment.Assignment'>"
+Error: "'edx'"
 
 // address: 0x1002F537
 p1002F537
