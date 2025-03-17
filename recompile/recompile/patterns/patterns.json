@@ -661,6 +661,14 @@
 	},
 	{
 		"instructions": [
+			{"cdq":   []},
+			{"mov":   ["ecx", "%hex%"]},
+			{"idiv":  ["ecx"]}
+		],
+		"action": {"tmpreg": {"dst": "eax", "src": "S(REGVALUE(eax)) / S(%hex%)"}}
+	},
+	{
+		"instructions": [
 			{"div":  ["%src-operand%"]},
 			{"mov":   ["%mem-operand%", "edx"]}
 		],

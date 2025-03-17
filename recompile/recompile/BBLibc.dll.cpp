@@ -8735,15 +8735,13 @@ p1000F6A0
 // address: 0x1000F6D0
 p1000F6D0
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=None)
-    if (ACCESS(STACKVAR(8, 4), 20, 4) == 0x00000064)
+    ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=0)
+    if (ACCESS(STACKVAR(8, 4), 20, 4) != 0x00000064)
     {
-        goto l1000F707;
+        ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x00000014;
+        ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 24, 4) = ACCESS(STACKVAR(8, 4), 20, 4);
+        ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 0, 4)(STACKVAR(8, 4));
     }
-    ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x00000014;
-    ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 24, 4) = ACCESS(STACKVAR(8, 4), 20, 4);
-    ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 0, 4)(STACKVAR(8, 4));
-l1000F707:
     if (reinterpret_cast<int>(STACKVAR(12, 4)) < 0)
     {
         goto l1000F713;
@@ -8758,24 +8756,38 @@ l1000F713:
     ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 0, 4)(STACKVAR(8, 4));
 l1000F738:
     STACKVAR(-4, 4) = ARRPTR(STACKVAR(8, 4), 0x04, STACKVAR(12, 4), 68);
-    if (ACCESS(STACKVAR(-4, 4), 0, 4) != 0x00000000)
+    if (ACCESS(STACKVAR(-4, 4), 0, 4) == 0x00000000)
     {
-        goto l1000F75E;
+        ACCESS(STACKVAR(-4, 4), 0, 4) = unknown_function_1000F672(STACKVAR(8, 4));
     }
-    ACCESS(STACKVAR(-4, 4), 0, 4) = unknown_function_1000F672(STACKVAR(8, 4));
-l1000F75E:
     STACKVAR(-12, 4) = 0x00000000;
     goto l1000F770;
 l1000F767:
     STACKVAR(-12, 4) = reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + 0x00000001;
 l1000F770:
-    if (reinterpret_cast<int>(STACKVAR(-12, 4)) >= 64)
+    if (reinterpret_cast<int>(STACKVAR(-12, 4)) < 64)
     {
-        goto l1000F7DD;
+        STACKVAR(-8, 4) = (reinterpret_cast<int>(ACCESS(ARRPTR(STACKVAR(16, 4), 0x04, STACKVAR(-12, 4), 0), 0, 4)) * reinterpret_cast<int>(STACKVAR(20, 4)) + 0x00000032) / 100;
+        if (reinterpret_cast<int>(STACKVAR(-8, 4)) <= 0)
+        {
+            STACKVAR(-8, 4) = 0x00000001;
+        }
+        if (reinterpret_cast<int>(STACKVAR(-8, 4)) > 32767)
+        {
+            STACKVAR(-8, 4) = 0x00007FFF;
+        }
+        if ((reinterpret_cast<any_int32>(STACKVAR(24, 4)) & 0x000000FF) != 0x00000000)
+        {
+            if (reinterpret_cast<int>(STACKVAR(-8, 4)) > 255)
+            {
+                STACKVAR(-8, 4) = 0x000000FF;
+            }
+        }
+        ACCESS(ARRPTR(ACCESS(STACKVAR(-4, 4), 0, 4), 0x02, STACKVAR(-12, 4), 0), 0, 2) = STACKVAR(-8, 2);
+        goto l1000F767;
     }
-    REGDEF(eax=reinterpret_cast<any_int32>(ACCESS(ARRPTR(STACKVAR(16, 4), 0x04, STACKVAR(-12, 4), 0), 0, 4)) * reinterpret_cast<any_int32>(STACKVAR(20, 4)) + 0x00000032)
+    ACCESS(ACCESS(STACKVAR(-4, 4), 0, 4), 128, 1) = 0;
 }
-Error: "Failed to find pattern for 'cdq'"
 
 // address: 0x1000F7ED
 p1000F7ED
