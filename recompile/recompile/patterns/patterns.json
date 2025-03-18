@@ -734,6 +734,12 @@
 	},
 	{
 		"instructions": [
+			{"shl":  ["%tmpreg32%", "%al-bl-cl-dl%"]}
+		],
+		"action": {"tmpreg": {"dst": "%tmpreg32%", "src": "I(REGVALUE(%tmpreg32%) << U(REGVALUE(%al-bl-cl-dl%))"}}
+	},
+	{
+		"instructions": [
 			{"sar":  ["%tmpreg32%", "%hex%"]}
 		],
 		"action": {"tmpreg": {"dst": "%tmpreg32%", "src": "S(REGVALUE(%tmpreg32%)) >> U(%hex%)"}}
