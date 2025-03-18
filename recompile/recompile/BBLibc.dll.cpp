@@ -23138,15 +23138,30 @@ p1002E2AD
 // address: 0x1002E600
 p1002E600
 {
-    ProcedureInfo(this=Id(this), this_offset=-44, local_size=44, stack_delta=None)
+    ProcedureInfo(this=Id(this), this_offset=-44, local_size=44, stack_delta=12)
     STACKVAR(-16, 8) = cos(reinterpret_cast<double>(STACKVAR(12, 8)));
     STACKVAR(-8, 8) = sin(reinterpret_cast<double>(STACKVAR(12, 8)));
     STACKVAR(-24, 8) = ACCESS(STACKVAR(8, 4), 0, 8);
     STACKVAR(-32, 8) = ACCESS(STACKVAR(8, 4), 8, 8);
     STACKVAR(-40, 8) = ACCESS(STACKVAR(8, 4), 16, 8);
-    REGDEF(ST(0)=reinterpret_cast<double>(ACCESS(GLOBAL(0x100422C0), 0, 8)) - reinterpret_cast<double>(STACKVAR(-16, 8)), ST(1)=reinterpret_cast<double>(STACKVAR(-24, 8)) * reinterpret_cast<double>(STACKVAR(-24, 8)))
+    ACCESS(this, 0, 8) = reinterpret_cast<double>(STACKVAR(-24, 8)) * reinterpret_cast<double>(STACKVAR(-24, 8)) * (reinterpret_cast<double>(ACCESS(GLOBAL(0x100422C0), 0, 8)) - reinterpret_cast<double>(STACKVAR(-16, 8))) + reinterpret_cast<double>(STACKVAR(-16, 8));
+    ACCESS(this, 8, 8) = reinterpret_cast<double>(STACKVAR(-24, 8)) * reinterpret_cast<double>(STACKVAR(-32, 8)) * (reinterpret_cast<double>(ACCESS(GLOBAL(0x100422C0), 0, 8)) - reinterpret_cast<double>(STACKVAR(-16, 8))) + reinterpret_cast<double>(STACKVAR(-40, 8)) * reinterpret_cast<double>(STACKVAR(-8, 8));
+    ACCESS(this, 16, 8) = reinterpret_cast<double>(STACKVAR(-24, 8)) * reinterpret_cast<double>(STACKVAR(-40, 8)) * (reinterpret_cast<double>(ACCESS(GLOBAL(0x100422C0), 0, 8)) - reinterpret_cast<double>(STACKVAR(-16, 8))) - reinterpret_cast<double>(STACKVAR(-32, 8)) * reinterpret_cast<double>(STACKVAR(-8, 8));
+    ACCESS(this, 24, 8) = 0.0;
+    ACCESS(this, 32, 8) = reinterpret_cast<double>(STACKVAR(-24, 8)) * reinterpret_cast<double>(STACKVAR(-32, 8)) * (reinterpret_cast<double>(ACCESS(GLOBAL(0x100422C0), 0, 8)) - reinterpret_cast<double>(STACKVAR(-16, 8))) - reinterpret_cast<double>(STACKVAR(-40, 8)) * reinterpret_cast<double>(STACKVAR(-8, 8));
+    ACCESS(this, 40, 8) = reinterpret_cast<double>(STACKVAR(-32, 8)) * reinterpret_cast<double>(STACKVAR(-32, 8)) + (reinterpret_cast<double>(STACKVAR(-24, 8)) * reinterpret_cast<double>(STACKVAR(-24, 8)) + reinterpret_cast<double>(STACKVAR(-40, 8)) * reinterpret_cast<double>(STACKVAR(-40, 8))) * reinterpret_cast<double>(STACKVAR(-16, 8));
+    ACCESS(this, 48, 8) = reinterpret_cast<double>(STACKVAR(-32, 8)) * reinterpret_cast<double>(STACKVAR(-40, 8)) * (reinterpret_cast<double>(ACCESS(GLOBAL(0x100422C0), 0, 8)) - reinterpret_cast<double>(STACKVAR(-16, 8))) + reinterpret_cast<double>(STACKVAR(-24, 8)) * reinterpret_cast<double>(STACKVAR(-8, 8));
+    ACCESS(this, 56, 8) = 0.0;
+    ACCESS(this, 64, 8) = reinterpret_cast<double>(STACKVAR(-24, 8)) * reinterpret_cast<double>(STACKVAR(-40, 8)) * (reinterpret_cast<double>(ACCESS(GLOBAL(0x100422C0), 0, 8)) - reinterpret_cast<double>(STACKVAR(-16, 8))) + reinterpret_cast<double>(STACKVAR(-32, 8)) * reinterpret_cast<double>(STACKVAR(-8, 8));
+    ACCESS(this, 72, 8) = reinterpret_cast<double>(STACKVAR(-32, 8)) * reinterpret_cast<double>(STACKVAR(-40, 8)) * (reinterpret_cast<double>(ACCESS(GLOBAL(0x100422C0), 0, 8)) - reinterpret_cast<double>(STACKVAR(-16, 8))) - reinterpret_cast<double>(STACKVAR(-24, 8)) * reinterpret_cast<double>(STACKVAR(-8, 8));
+    ACCESS(this, 80, 8) = reinterpret_cast<double>(STACKVAR(-40, 8)) * reinterpret_cast<double>(STACKVAR(-40, 8)) * (reinterpret_cast<double>(ACCESS(GLOBAL(0x100422C0), 0, 8)) - reinterpret_cast<double>(STACKVAR(-16, 8))) + reinterpret_cast<double>(STACKVAR(-16, 8));
+    ACCESS(this, 88, 8) = 0.0;
+    ACCESS(this, 96, 8) = 0.0;
+    ACCESS(this, 104, 8) = 0.0;
+    ACCESS(this, 112, 8) = 0.0;
+    ACCESS(this, 120, 8) = 1.0;
+    REGDEF(eax=this)
 }
-Error: "Failed to find pattern for 'fmulp st(01h), st(00h)'"
 
 // address: 0x1002ED7C
 p1002ED7C
