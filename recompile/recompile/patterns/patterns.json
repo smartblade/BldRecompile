@@ -461,6 +461,15 @@
 	},
 	{
 		"instructions": [
+			{"neg":  ["%tmpreg32%"]},
+			{"sbb":  ["%tmpreg32%", "%tmpreg32%"]},
+			{"and":  ["%tmpreg32%", "%hex-1%"]},
+			{"add":  ["%tmpreg32%", "%hex-2%"]}
+		],
+		"action": {"tmpreg": {"dst": "%tmpreg32%", "src": "REGVALUE(%tmpreg32%) == 0x00000000 ? I(%hex-2%) : I(EVAL(S(%hex-1%) + S(%hex-2%)))"}}
+	},
+	{
+		"instructions": [
 			{"sbb":  ["%tmpreg32%", "%tmpreg32%"]},
 			{"inc":  ["%tmpreg32%"]}
 		],

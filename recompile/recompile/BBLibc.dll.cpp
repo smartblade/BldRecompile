@@ -7731,9 +7731,20 @@ l1000DC79:
         goto l1000DD37;
     }
     unknown_function_1000D764(STACKVAR(8, 4), 0x000000DB);
-    REGDEF(eax=-reinterpret_cast<int>(STACKVAR(-12, 4)))
+    unknown_function_1000D7FA(STACKVAR(8, 4), STACKVAR(-12, 4) == 0x00000000 ? 0x00000043 : 0x00000083);
+    unknown_function_1000D78A(STACKVAR(8, 4), reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000010 * reinterpret_cast<any_int32>(STACKVAR(-12, 4)));
+    STACKVAR(-8, 4) = 0x00000000;
+    goto l1000DCE1;
+l1000DCD8:
+    STACKVAR(-8, 4) = reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + 0x00000001;
+l1000DCE1:
+    if (reinterpret_cast<int>(STACKVAR(-8, 4)) >= 64)
+    {
+        goto l1000DD2D;
+    }
+    REGDEF(eax=STACKVAR(-8, 4))
 }
-Error: "Failed to find pattern for 'sbb eax, eax'"
+Error: "Failed to find pattern for 'mov ecx, dword ptr [offset g10042B78+eax*04h]'"
 
 // address: 0x1000DD3E
 p1000DD3E

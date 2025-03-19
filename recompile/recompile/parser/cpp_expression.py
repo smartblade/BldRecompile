@@ -209,6 +209,15 @@ def _new_array_access(state, prefix, brackets_tokens):
     )
 
 
+def _new_binary(operator, left, right):
+    if (
+        operator == Operator.COND_SEP and
+        isinstance(left, expressions.Bin) and
+        left.operator == Operator.COND
+    ):
+        return expressions.ConditionalOperator(left.left, left.right, right)
+    return expressions.Bin(operator, left, right)
+
 def _new_state(**kwargs):
     return namedtuple('State', kwargs.keys())(**kwargs)
 
@@ -249,7 +258,7 @@ def _make_expression_from_tokens(tokens):
                 while True:
                     if priorities[prev_op] <= priorities[cur_op]:
                         cur_tokens = [
-                            expressions.Bin(
+                            _new_binary(
                                 prev_op,
                                 _make_operand(prev_tokens),
                                 _make_operand(cur_tokens),
@@ -270,14 +279,14 @@ def _make_expression_from_tokens(tokens):
         else:
             cur_tokens.append(token)
     if len(cur_tokens) > 0 and prev_tokens is not None:
-        bin = expressions.Bin(
+        bin = _new_binary(
             prev_op,
             _make_operand(prev_tokens),
             _make_operand(cur_tokens),
         )
         while len(states) > 0:
             (prev_tokens, prev_op) = states.pop()
-            bin = expressions.Bin(
+            bin = _new_binary(
                 prev_op,
                 _make_operand(prev_tokens),
                 bin,

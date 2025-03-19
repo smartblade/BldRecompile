@@ -22,6 +22,8 @@ class Operator(Enum):
     XOR = "^"
     BIT_OR = "|"
     AND = "&&"
+    COND = "?"
+    COND_SEP = ":"
     ASS = "="
     ADD_ASS = "+="
     DIV_ASS = "/="
@@ -50,6 +52,8 @@ priorities = {
     Operator.XOR: 11,
     Operator.BIT_OR: 12,
     Operator.AND: 13,
+    Operator.COND: 15,
+    Operator.COND_SEP: 15,
     Operator.ASS: 15,
     Operator.ADD_ASS: 15,
     Operator.DIV_ASS: 15,
