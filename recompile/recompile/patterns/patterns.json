@@ -6,7 +6,8 @@
 			{"operand": "[%tmpreg32-base%+%tmpreg32-index%%offset%]", "expression": "ARRPTR(REGVALUE(%tmpreg32-base%), 1, REGVALUE(%tmpreg32-index%), %offset%)"},
 			{"operand": "[%tmpreg32-base%+%tmpreg32-index%*%hex-scale%%offset%]", "expression": "ARRPTR(REGVALUE(%tmpreg32-base%), %hex-scale%, REGVALUE(%tmpreg32-index%), %offset%)"},
 			{"operand": "[%tmpreg32-base%+%tmpreg32-index%+%label%]", "expression": "ARRPTR(GLOBAL(%label%), 1, REGVALUE(%tmpreg32-base%) + REGVALUE(%tmpreg32-index%), 0)"},
-			{"operand": "[%tmpreg32-base%+%label%]", "expression": "ARRPTR(GLOBAL(%label%), 1, REGVALUE(%tmpreg32-base%), 0)"}
+			{"operand": "[%tmpreg32-base%+%label%]", "expression": "ARRPTR(GLOBAL(%label%), 1, REGVALUE(%tmpreg32-base%), 0)"},
+			{"operand": "[%label%+%tmpreg32-index%*%hex-scale%]", "expression": "ARRPTR(GLOBAL(%label%), %hex-scale%, REGVALUE(%tmpreg32-index%), 0)"}
 		],
 		"mem-operand": [
 			{"operand": "[ebp%offset%]", "expression": "STACKVAR(%offset%, %size%)"},

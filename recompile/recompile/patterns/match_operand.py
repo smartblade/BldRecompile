@@ -13,14 +13,14 @@ _regexp_map = {
     "eax-ecx-edx": (r"eax|ecx|edx", None),
     "tmpreg32": (r"eax|ebx|ecx|edx|edi|esi", None),
     "label": (
-        r"(offset\s+)?(g|l)(?P<inner_hex>[\dABCDEF]+)",
-        lambda **kwargs: _convert_hex(**kwargs)),
+        r"(offset\s+)?(g|l)(?P<inner_label>[\dABCDEF]+)",
+        lambda **kwargs: _convert_hex("inner_label", **kwargs)),
     "variable-label": (
-        r"(offset\s+)?g(?P<inner_hex>[\dABCDEF]+)",
-        lambda **kwargs: _convert_hex(**kwargs)),
+        r"(offset\s+)?g(?P<inner_var>[\dABCDEF]+)",
+        lambda **kwargs: _convert_hex("inner_var", **kwargs)),
     "hex": (
         r"0(?P<inner_hex>[\dABCDEF]+)h",
-        lambda **kwargs: _convert_hex(**kwargs)),
+        lambda **kwargs: _convert_hex("inner_hex", **kwargs)),
     "offset": (
         r"((?P<inner_offset>[\+\-][\dABCDEF]+)h)?",
         lambda **kwargs: _convert_offset(**kwargs)),
@@ -148,8 +148,8 @@ def _convert_variable_value(var_name, value):
     return value
 
 
-def _convert_hex(match_dict):
-    return "0x{}".format(match_dict["inner_hex"])
+def _convert_hex(inner_attr, match_dict):
+    return "0x{}".format(match_dict[inner_attr])
 
 
 def _convert_offset(match_dict):
