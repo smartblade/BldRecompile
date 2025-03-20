@@ -3,6 +3,7 @@ import expressions
 import instructions
 from patterns.make_proc_decl_from_args import make_proc_decl_from_args
 
+from .try_build_post_increment import try_build_post_increment
 from .try_make_fpu_call import try_make_fpu_call
 
 
@@ -46,6 +47,9 @@ class BlockBuilder:
             return value
         if isinstance(self.last_instruction, instructions.CodeInstruction):
             return self._extract_call_return(reg)
+        value = try_build_post_increment(self, reg)
+        if value is not None:
+            return value
         raise Exception(
             "Unexpected instruction type {}".format(
                 type(self.last_instruction)))

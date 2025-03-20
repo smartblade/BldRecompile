@@ -5,6 +5,7 @@ from .brackets_expression import BracketsExpression
 from .cast import Cast
 from .conditional_operator import ConditionalOperator
 from .constant import Constant
+from .decrement import Decrement
 from .dereference import Dereference
 from .do_dereference import do_dereference
 from .do_logical_not import do_logical_not
