@@ -85,12 +85,16 @@ class TemporaryRegisterDefinition:
 def _32_bit_alias(reg):
     if reg.endswith("l"):
         return "e{}x".format(reg[:-1])
+    if reg.endswith("x"):
+        return "e{}".format(reg)
     return None
 
 
 def _reg_size(reg):
     if reg.endswith("l"):
         return 1
+    if len(reg) == 2 and reg.endswith("x"):
+        return 2
     if reg.startswith("e") and reg.endswith("x"):
         return 4
-    raise Exception("Can't defined size for {}".format(reg))
+    raise Exception("Can't define size for {}".format(reg))
