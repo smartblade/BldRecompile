@@ -33076,31 +33076,29 @@ B_RDataTriangle::B_RDataTriangle()
 // address: 0x10040F69
 B_ParticleGType::B_ParticleGType(const B_Name &new_type, const B_Name &parent_type, unsigned long operation_type, unsigned int duration)
 {
-    ProcedureInfo(this=Id(this), this_offset=-44, local_size=48, stack_delta=None)
-    STACKVAR(-44, 4)->unknown_method_10003A07(STACKVAR(8, 4));
-    STACKVAR(-8, 4) = reinterpret_cast<any_int32>(STACKVAR(-44, 4)) + 0x0000000C;
+    this->B_NamedObj(new_type);
+    STACKVAR(-8, 4) = &this->a00C;
     ACCESS(STACKVAR(-8, 4), 4, 4) = 0x00000000;
     ACCESS(STACKVAR(-8, 4), 8, 4) = 0x00000000;
     ACCESS(STACKVAR(-8, 4), 12, 4) = 0x00000001;
     ACCESS(STACKVAR(-8, 4), 16, 4) = 0x00000000;
     ACCESS(STACKVAR(-8, 4), 0, 4) = GLOBAL(0x10042E68);
-    ACCESS(STACKVAR(-44, 4), 32, 4) = STACKVAR(20, 4);
-    ACCESS(STACKVAR(-44, 4), 40, 4) = STACKVAR(16, 4);
-    ACCESS(STACKVAR(-44, 4), 0, 4) = GLOBAL(0x10042E64);
-    ACCESS(STACKVAR(-44, 4), 12, 4) = GLOBAL(0x10042E60);
-    ACCESS(STACKVAR(-44, 4), 36, 4) = ACCESS(&?B_3D_raster_device@@3PAVB_3DRasterDevice@@A, 0, 4)->(ACCESS(ACCESS(ACCESS(&?B_3D_raster_device@@3PAVB_3DRasterDevice@@A, 0, 4), 0, 4), 64, 4))(STACKVAR(12, 4)->unknown_method_10003457());
-    STACKVAR(-40, 4) = reinterpret_cast<any_int32>(STACKVAR(20, 4)) + 0x00000001;
-    STACKVAR(-36, 4) = reinterpret_cast<any_int32>(STACKVAR(-44, 4)) + 0x0000000C;
+    this->duration = duration;
+    this->operation_type = reinterpret_cast<int>(operation_type);
+    ACCESS(this, 0, 4) = GLOBAL(0x10042E64);
+    ACCESS(this, 12, 4) = GLOBAL(0x10042E60);
+    this->bmpHandle = reinterpret_cast<int>(ACCESS(&?B_3D_raster_device@@3PAVB_3DRasterDevice@@A, 0, 4)->(ACCESS(ACCESS(ACCESS(&?B_3D_raster_device@@3PAVB_3DRasterDevice@@A, 0, 4), 0, 4), 64, 4))(parent_type.String()));
+    STACKVAR(-40, 4) = duration + 0x00000001;
+    STACKVAR(-36, 4) = &this->a00C;
     STACKVAR(-12, 4) = (reinterpret_cast<unsigned int>(STACKVAR(-40, 4)) + reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-36, 4), 12, 4)) - 1) / reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-36, 4), 12, 4)) * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-36, 4), 12, 4));
-    if (reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-36, 4), 8, 4)) >= reinterpret_cast<unsigned int>(STACKVAR(-40, 4)))
+    if (reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-36, 4), 8, 4)) < reinterpret_cast<unsigned int>(STACKVAR(-40, 4)))
     {
-        goto l10041049;
+        STACKVAR(-48, 4) = ACCESS(STACKVAR(-36, 4), 8, 4);
     }
-    STACKVAR(-48, 4) = ACCESS(STACKVAR(-36, 4), 8, 4);
-    goto l1004104F;
-l10041049:
-    STACKVAR(-48, 4) = STACKVAR(-40, 4);
-l1004104F:
+    else
+    {
+        STACKVAR(-48, 4) = STACKVAR(-40, 4);
+    }
     STACKVAR(-20, 4) = STACKVAR(-48, 4);
     if (ACCESS(STACKVAR(-36, 4), 16, 4) == STACKVAR(-12, 4))
     {
@@ -33108,22 +33106,19 @@ l1004104F:
     }
     STACKVAR(-16, 4) = ACCESS(STACKVAR(-36, 4), 4, 4);
     ACCESS(STACKVAR(-36, 4), 16, 4) = STACKVAR(-12, 4);
-    if (ACCESS(STACKVAR(-36, 4), 16, 4) == 0x00000000)
+    if (ACCESS(STACKVAR(-36, 4), 16, 4) != 0x00000000)
     {
-        goto l100410B4;
+        STACKVAR(-28, 4) = ??2@YAPAXI@Z(0x00000008 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-36, 4), 16, 4)));
+        ACCESS(STACKVAR(-36, 4), 4, 4) = STACKVAR(-28, 4);
+        if (ACCESS(STACKVAR(-36, 4), 4, 4) == 0x00000000)
+        {
+            ACCESS(STACKVAR(-36, 4), 4, 4) = ACCESS(STACKVAR(-36, 4), 4, 4);
+        }
     }
-    STACKVAR(-28, 4) = ??2@YAPAXI@Z(0x00000008 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-36, 4), 16, 4)));
-    ACCESS(STACKVAR(-36, 4), 4, 4) = STACKVAR(-28, 4);
-    if (ACCESS(STACKVAR(-36, 4), 4, 4) != 0x00000000)
+    else
     {
-        goto l100410B2;
+        ACCESS(STACKVAR(-36, 4), 4, 4) = 0x00000000;
     }
-    ACCESS(STACKVAR(-36, 4), 4, 4) = ACCESS(STACKVAR(-36, 4), 4, 4);
-l100410B2:
-    goto l100410BE;
-l100410B4:
-    ACCESS(STACKVAR(-36, 4), 4, 4) = 0x00000000;
-l100410BE:
     if (0x00000000 == 0x00000000)
     {
         goto l100410FD;
@@ -33133,13 +33128,34 @@ l100410BE:
 l100410CD:
     STACKVAR(-24, 4) = reinterpret_cast<any_int32>(STACKVAR(-24, 4)) + 0x00000001;
 l100410D6:
-    if (reinterpret_cast<unsigned int>(STACKVAR(-24, 4)) >= reinterpret_cast<unsigned int>(STACKVAR(-20, 4)))
+    if (reinterpret_cast<unsigned int>(STACKVAR(-24, 4)) < reinterpret_cast<unsigned int>(STACKVAR(-20, 4)))
     {
-        goto l100410FD;
+        ACCESS(ARRPTR(ACCESS(STACKVAR(-36, 4), 4, 4), 8, STACKVAR(-24, 4), 0), 0, 8) = ACCESS(ARRPTR(STACKVAR(-16, 4), 8, STACKVAR(-24, 4), 0), 0, 8);
+        goto l100410CD;
     }
-    REGDEF(eax=ACCESS(ARRPTR(STACKVAR(-16, 4), 0x08, STACKVAR(-24, 4), 0), 0, 4))
+l100410FD:
+    if (STACKVAR(-16, 4) != 0x00000000)
+    {
+        STACKVAR(-32, 4) = STACKVAR(-16, 4);
+        ??3@YAXPAX@Z(STACKVAR(-32, 4));
+    }
+l10041115:
+    ACCESS(STACKVAR(-36, 4), 8, 4) = STACKVAR(-40, 4);
+    STACKVAR(-4, 4) = 0x00000000;
+    goto l10041130;
+l10041127:
+    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000001;
+l10041130:
+    if (reinterpret_cast<unsigned int>(STACKVAR(-4, 4)) < this->a00C.size)
+    {
+        ACCESS(ARRPTR(this->a00C.elements, 0x08, STACKVAR(-4, 4), 0), 0, 1) = 0xFF;
+        ACCESS(ARRPTR(this->a00C.elements, 0x08, STACKVAR(-4, 4), 1), 0, 1) = 0xFF;
+        ACCESS(ARRPTR(this->a00C.elements, 0x08, STACKVAR(-4, 4), 2), 0, 1) = 0xFF;
+        ACCESS(ARRPTR(this->a00C.elements, 0x08, STACKVAR(-4, 4), 3), 0, 1) = 0xFF;
+        ACCESS(ARRPTR(this->a00C.elements, 0x08, STACKVAR(-4, 4), 4), 0, 4) = 0x42480000;
+        goto l10041127;
+    }
 }
-Error: "'edx'"
 
 // address: 0x1004118F
 B_ParticleGType::~B_ParticleGType()
@@ -33173,24 +33189,22 @@ B_ParticleGType::~B_ParticleGType()
 // address: 0x1004122B
 B_IDataFile &operator >>(B_IDataFile &file, B_ParticleGType &particleType)
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=52, stack_delta=None)
-    unknown_function_10003A40(STACKVAR(8, 4), STACKVAR(12, 4));
-    LOCAL(-8)->unknown_method_10003300();
-    unknown_function_10001BD9(unknown_function_10003904(unknown_function_10001BEF(STACKVAR(8, 4), reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000020), LOCAL(-8)), reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000028);
-    ACCESS(STACKVAR(12, 4), 36, 4) = ACCESS(&?B_3D_raster_device@@3PAVB_3DRasterDevice@@A, 0, 4)->(ACCESS(ACCESS(ACCESS(&?B_3D_raster_device@@3PAVB_3DRasterDevice@@A, 0, 4), 0, 4), 64, 4))(STACKVAR(-8, 4));
-    unknown_function_10001BEF(STACKVAR(8, 4), LOCAL(-12));
+    file >> static_cast<B_NamedObj &>(particleType);
+    reinterpret_cast<B_Name *>(LOCAL(-8))->B_Name();
+    file >> particleType.duration >> *reinterpret_cast<B_Name *>(LOCAL(-8)) >> *reinterpret_cast<unsigned long *>(&particleType.operation_type);
+    particleType.bmpHandle = reinterpret_cast<int>(ACCESS(&?B_3D_raster_device@@3PAVB_3DRasterDevice@@A, 0, 4)->(ACCESS(ACCESS(ACCESS(&?B_3D_raster_device@@3PAVB_3DRasterDevice@@A, 0, 4), 0, 4), 64, 4))(STACKVAR(-8, 4)));
+    file >> *reinterpret_cast<unsigned int *>(LOCAL(-12));
     STACKVAR(-48, 4) = STACKVAR(-12, 4);
-    STACKVAR(-44, 4) = reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x0000000C;
+    STACKVAR(-44, 4) = &particleType.a00C;
     STACKVAR(-20, 4) = (reinterpret_cast<unsigned int>(STACKVAR(-48, 4)) + reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-44, 4), 12, 4)) - 1) / reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-44, 4), 12, 4)) * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-44, 4), 12, 4));
-    if (reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-44, 4), 8, 4)) >= reinterpret_cast<unsigned int>(STACKVAR(-48, 4)))
+    if (reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-44, 4), 8, 4)) < reinterpret_cast<unsigned int>(STACKVAR(-48, 4)))
     {
-        goto l100412ED;
+        STACKVAR(-52, 4) = ACCESS(STACKVAR(-44, 4), 8, 4);
     }
-    STACKVAR(-52, 4) = ACCESS(STACKVAR(-44, 4), 8, 4);
-    goto l100412F3;
-l100412ED:
-    STACKVAR(-52, 4) = STACKVAR(-48, 4);
-l100412F3:
+    else
+    {
+        STACKVAR(-52, 4) = STACKVAR(-48, 4);
+    }
     STACKVAR(-28, 4) = STACKVAR(-52, 4);
     if (ACCESS(STACKVAR(-44, 4), 16, 4) == STACKVAR(-20, 4))
     {
@@ -33198,22 +33212,19 @@ l100412F3:
     }
     STACKVAR(-24, 4) = ACCESS(STACKVAR(-44, 4), 4, 4);
     ACCESS(STACKVAR(-44, 4), 16, 4) = STACKVAR(-20, 4);
-    if (ACCESS(STACKVAR(-44, 4), 16, 4) == 0x00000000)
+    if (ACCESS(STACKVAR(-44, 4), 16, 4) != 0x00000000)
     {
-        goto l10041358;
+        STACKVAR(-36, 4) = ??2@YAPAXI@Z(0x00000008 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-44, 4), 16, 4)));
+        ACCESS(STACKVAR(-44, 4), 4, 4) = STACKVAR(-36, 4);
+        if (ACCESS(STACKVAR(-44, 4), 4, 4) == 0x00000000)
+        {
+            ACCESS(STACKVAR(-44, 4), 4, 4) = ACCESS(STACKVAR(-44, 4), 4, 4);
+        }
     }
-    STACKVAR(-36, 4) = ??2@YAPAXI@Z(0x00000008 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-44, 4), 16, 4)));
-    ACCESS(STACKVAR(-44, 4), 4, 4) = STACKVAR(-36, 4);
-    if (ACCESS(STACKVAR(-44, 4), 4, 4) != 0x00000000)
+    else
     {
-        goto l10041356;
+        ACCESS(STACKVAR(-44, 4), 4, 4) = 0x00000000;
     }
-    ACCESS(STACKVAR(-44, 4), 4, 4) = ACCESS(STACKVAR(-44, 4), 4, 4);
-l10041356:
-    goto l10041362;
-l10041358:
-    ACCESS(STACKVAR(-44, 4), 4, 4) = 0x00000000;
-l10041362:
     if (0x00000000 == 0x00000000)
     {
         goto l100413A1;
@@ -33223,13 +33234,24 @@ l10041362:
 l10041371:
     STACKVAR(-32, 4) = reinterpret_cast<any_int32>(STACKVAR(-32, 4)) + 0x00000001;
 l1004137A:
-    if (reinterpret_cast<unsigned int>(STACKVAR(-32, 4)) >= reinterpret_cast<unsigned int>(STACKVAR(-28, 4)))
+    if (reinterpret_cast<unsigned int>(STACKVAR(-32, 4)) < reinterpret_cast<unsigned int>(STACKVAR(-28, 4)))
     {
-        goto l100413A1;
+        ACCESS(ARRPTR(ACCESS(STACKVAR(-44, 4), 4, 4), 8, STACKVAR(-32, 4), 0), 0, 8) = ACCESS(ARRPTR(STACKVAR(-24, 4), 8, STACKVAR(-32, 4), 0), 0, 8);
+        goto l10041371;
     }
-    REGDEF(eax=ACCESS(ARRPTR(STACKVAR(-24, 4), 0x08, STACKVAR(-32, 4), 0), 0, 4))
+l100413A1:
+    if (STACKVAR(-24, 4) != 0x00000000)
+    {
+        STACKVAR(-40, 4) = STACKVAR(-24, 4);
+        ??3@YAXPAX@Z(STACKVAR(-40, 4));
+    }
+l100413B9:
+    ACCESS(STACKVAR(-44, 4), 8, 4) = STACKVAR(-48, 4);
+    file.Read(particleType.a00C.elements, 8 * reinterpret_cast<unsigned int>(STACKVAR(-12, 4)));
+    STACKVAR(-16, 4) = file;
+    reinterpret_cast<B_Name *>(LOCAL(-8))->~B_Name();
+    return reinterpret_cast<B_IDataFile &>(STACKVAR(-16, 4));
 }
-Error: "'edx'"
 
 // address: 0x100413EE
 B_ODataFile &operator <<(B_ODataFile &file, const B_ParticleGType &particleType)

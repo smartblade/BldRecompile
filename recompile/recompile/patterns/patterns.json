@@ -564,6 +564,38 @@
 	},
 	{
 		"instructions": [
+			{"mov": ["%tmpreg32-low%", "[%tmpreg32-src-base%+%tmpreg32-src-index%*08h]"]},
+			{"mov": ["%tmpreg32-high%", "[%tmpreg32-src-base%+%tmpreg32-src-index%*08h+004h]"]}
+		],
+		"actions": [
+			{"tmpreg": {"dst": "%tmpreg32-low%_%tmpreg32-high%", "src": "ACCESS(ARRPTR(REGVALUE(%tmpreg32-src-base%), 8, REGVALUE(%tmpreg32-src-index%), 0), 0, 8)"}},
+			{"tmpreg": {"dst": "%tmpreg32-low%", "src": "0xBADDDDD1"}},
+			{"tmpreg": {"dst": "%tmpreg32-high%", "src": "0xBADDDDD2"}}
+		],
+		"restrictions": [
+			"%tmpreg32-low% != %tmpreg32-src-base%",
+			"%tmpreg32-low% != %tmpreg32-src-index%"
+		]
+	},
+	{
+		"instructions": [
+			{"mov": ["[%tmpreg32-dst-base%+%tmpreg32-dst-index%*08h]", "%tmpreg32-low%"]},
+			{"mov": ["[%tmpreg32-dst-base%+%tmpreg32-dst-index%*08h+004h]", "%tmpreg32-high%"]}
+		],
+		"actions": [
+			{"validate": {"expect": "EXPECT(REGVALUE(%tmpreg32-low%), 0xBADDDDD1)"}},
+			{"validate": {"expect": "EXPECT(REGVALUE(%tmpreg32-high%), 0xBADDDDD2)"}},
+			{"assignment": {"dst": "ACCESS(ARRPTR(REGVALUE(%tmpreg32-dst-base%), 8, REGVALUE(%tmpreg32-dst-index%), 0), 0, 8)", "src": "REGVALUE(%tmpreg32-low%_%tmpreg32-high%)"}}
+		],
+		"restrictions": [
+			"%tmpreg32-low% != %tmpreg32-dst-base%",
+			"%tmpreg32-low% != %tmpreg32-dst-index%",
+			"%tmpreg32-high% != %tmpreg32-dst-base%",
+			"%tmpreg32-high% != %tmpreg32-dst-index%"
+		]
+	},
+	{
+		"instructions": [
 			{"mov":  ["%mem-operand%", "%src-operand%"]}
 		],
 		"action": {"assignment": {"dst": "%mem-operand%", "src": "%src-operand%"}}
