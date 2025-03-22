@@ -594,6 +594,12 @@
 	},
 	{
 		"instructions": [
+			{"lea":  ["%tmpreg32%", "[%hex-offset%+%tmpreg32-index%*%hex-scale%]"]}
+		],
+		"action": {"tmpreg": {"dst": "%tmpreg32%", "src": "I(%hex-scale%) * I(REGVALUE(%tmpreg32-index%)) + I(%hex-offset%)"}}
+	},
+	{
+		"instructions": [
 			{"lea":  ["%tmpreg32%", "[ebp%offset%]"]}
 		],
 		"action": {"tmpreg": {"dst": "%tmpreg32%", "src": "LOCAL(%offset%)"}}

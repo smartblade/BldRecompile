@@ -38,6 +38,8 @@ class BinaryExpression:
                 return left_type
             if isinstance(self._right, expressions.Constant):
                 return left_type
+            if isinstance(self._left, expressions.Constant):
+                return right_type
             if left_type.size == right_type.size:
                 return data_types.AnyInt(left_type.size)
         if (

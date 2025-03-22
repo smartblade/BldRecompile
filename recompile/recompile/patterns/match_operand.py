@@ -13,19 +13,19 @@ _regexp_map = {
     "eax-ecx-edx": (r"eax|ecx|edx", None),
     "tmpreg32": (r"eax|ebx|ecx|edx|edi|esi", None),
     "label": (
-        r"(offset\s+)?(g|l)(?P<inner_label>[\dABCDEF]+)",
-        lambda **kwargs: _convert_hex("inner_label", **kwargs)),
+        r"(offset\s+)?(g|l)(?P<{}>[\dABCDEF]+)",
+        lambda **kwargs: _convert_hex(**kwargs)),
     "variable-label": (
-        r"(offset\s+)?g(?P<inner_var>[\dABCDEF]+)",
-        lambda **kwargs: _convert_hex("inner_var", **kwargs)),
+        r"(offset\s+)?g(?P<{}>[\dABCDEF]+)",
+        lambda **kwargs: _convert_hex(**kwargs)),
     "hex": (
-        r"0(?P<inner_hex>[\dABCDEF]+)h",
-        lambda **kwargs: _convert_hex("inner_hex", **kwargs)),
+        r"0(?P<{}>[\dABCDEF]+)h",
+        lambda **kwargs: _convert_hex(**kwargs)),
     "offset": (
-        r"((?P<inner_offset>[\+\-][\dABCDEF]+)h)?",
+        r"((?P<{}>[\+\-][\dABCDEF]+)h)?",
         lambda **kwargs: _convert_offset(**kwargs)),
     "external": (
-        r"[^\s;]+;\s+\[\w+\.(?P<inner_id>.+)\]\.",
+        r"[^\s;]+;\s+\[\w+\.(?P<{}>.+)\]\.",
         lambda **kwargs: _convert_external(**kwargs)),
 }
 
@@ -136,24 +136,33 @@ def _define_variable_regexp(matchobj, defined_groups):
 def _find_pattern_variable_by_name(var_name):
     for key, variable_info in _regexp_map.items():
         if var_name.startswith(key):
-            return variable_info
+            regexp_value, convertor = variable_info
+            inner_var_name = _make_inner_var_name(var_name)
+            return regexp_value.format(inner_var_name), convertor
     return None, None
+
+
+def _make_inner_var_name(var_name):
+    return "inner_{}".format(var_name.replace("-", "_"))
 
 
 def _convert_variable_value(var_name, value):
     regexp_value, convertor = _find_pattern_variable_by_name(var_name)
     if convertor is not None:
         match = re.search(regexp_value, value)
-        return convertor(match_dict=match.groupdict())
+        return convertor(
+            inner_var_name=_make_inner_var_name(var_name),
+            match_dict=match.groupdict(),
+        )
     return value
 
 
-def _convert_hex(inner_attr, match_dict):
-    return "0x{}".format(match_dict[inner_attr])
+def _convert_hex(inner_var_name, match_dict):
+    return "0x{}".format(match_dict[inner_var_name])
 
 
-def _convert_offset(match_dict):
-    hex_offset = match_dict["inner_offset"]
+def _convert_offset(inner_var_name, match_dict):
+    hex_offset = match_dict[inner_var_name]
     if hex_offset is not None:
         int_offset = from_hex(hex_offset)
     else:
@@ -161,5 +170,5 @@ def _convert_offset(match_dict):
     return str(int_offset)
 
 
-def _convert_external(match_dict):
-    return match_dict["inner_id"]
+def _convert_external(inner_var_name, match_dict):
+    return match_dict[inner_var_name]
