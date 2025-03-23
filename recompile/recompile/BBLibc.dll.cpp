@@ -20743,19 +20743,18 @@ p10023E52
 // address: 0x10023E6E
 p10023E6E
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=36, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=36, stack_delta=0)
     STACKVAR(-28, 4) = ACCESS(STACKVAR(8, 4), 424, 4);
-    if (ACCESS(STACKVAR(8, 4), 76, 4) != 0x00000001)
+    if (ACCESS(STACKVAR(8, 4), 76, 4) == 0x00000001)
     {
-        goto l10023E99;
+        STACKVAR(-12, 4) = 0x000001FE;
+        ACCESS(STACKVAR(-28, 4), 28, 1) = 0x01;
     }
-    STACKVAR(-12, 4) = 0x000001FE;
-    ACCESS(STACKVAR(-28, 4), 28, 1) = 0x01;
-    goto l10023EA7;
-l10023E99:
-    STACKVAR(-12, 4) = 0x00000000;
-    ACCESS(STACKVAR(-28, 4), 28, 1) = 0;
-l10023EA7:
+    else
+    {
+        STACKVAR(-12, 4) = 0x00000000;
+        ACCESS(STACKVAR(-28, 4), 28, 1) = 0;
+    }
     ACCESS(STACKVAR(-28, 4), 24, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 8, 4)(STACKVAR(8, 4), 0x00000001, reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + 0x00000100, ACCESS(STACKVAR(8, 4), 100, 4));
     STACKVAR(-8, 4) = ACCESS(STACKVAR(-28, 4), 20, 4);
     STACKVAR(-16, 4) = 0x00000000;
@@ -20769,12 +20768,10 @@ l10023EEB:
     }
     STACKVAR(-36, 4) = ACCESS(ARRPTR(STACKVAR(-28, 4), 0x04, STACKVAR(-16, 4), 32), 0, 4);
     STACKVAR(-8, 4) = reinterpret_cast<int>(STACKVAR(-8, 4)) / reinterpret_cast<int>(STACKVAR(-36, 4));
-    if (STACKVAR(-12, 4) == 0x00000000)
+    if (STACKVAR(-12, 4) != 0x00000000)
     {
-        goto l10023F35;
+        ACCESS(ARRPTR(ACCESS(STACKVAR(-28, 4), 24, 4), 0x04, STACKVAR(-16, 4), 0), 0, 4) = reinterpret_cast<any_int32>(ACCESS(ARRPTR(ACCESS(STACKVAR(-28, 4), 24, 4), 0x04, STACKVAR(-16, 4), 0), 0, 4)) + 0x000000FF;
     }
-    ACCESS(ARRPTR(ACCESS(STACKVAR(-28, 4), 24, 4), 0x04, STACKVAR(-16, 4), 0), 0, 4) = reinterpret_cast<any_int32>(ACCESS(ARRPTR(ACCESS(STACKVAR(-28, 4), 24, 4), 0x04, STACKVAR(-16, 4), 0), 0, 4)) + 0x000000FF;
-l10023F35:
     STACKVAR(-32, 4) = ACCESS(ARRPTR(ACCESS(STACKVAR(-28, 4), 24, 4), 0x04, STACKVAR(-16, 4), 0), 0, 4);
     STACKVAR(-4, 4) = 0x00000000;
     STACKVAR(-24, 4) = unknown_function_10024015(STACKVAR(8, 4), STACKVAR(-16, 4), 0x00000000, reinterpret_cast<any_int32>(STACKVAR(-36, 4)) - 0x00000001);
@@ -20783,19 +20780,34 @@ l10023F35:
 l10023F70:
     STACKVAR(-20, 4) = reinterpret_cast<any_int32>(STACKVAR(-20, 4)) + 0x00000001;
 l10023F79:
-    if (reinterpret_cast<int>(STACKVAR(-20, 4)) > 255)
+    if (reinterpret_cast<int>(STACKVAR(-20, 4)) <= 255)
     {
-        goto l10023FC4;
+        while (reinterpret_cast<int>(STACKVAR(-20, 4)) > reinterpret_cast<int>(STACKVAR(-24, 4)))
+        {
+            STACKVAR(-24, 4) = unknown_function_10024015(STACKVAR(8, 4), STACKVAR(-16, 4), ++reinterpret_cast<any_int32>(STACKVAR(-4, 4)), reinterpret_cast<any_int32>(STACKVAR(-36, 4)) - 0x00000001);
+        }
+        ACCESS(reinterpret_cast<any_int32>(STACKVAR(-32, 4)) + reinterpret_cast<any_int32>(STACKVAR(-20, 4)), 0, 1) = static_cast<any_int8>(reinterpret_cast<any_int32>(STACKVAR(-4, 4)) * reinterpret_cast<any_int32>(STACKVAR(-8, 4)));
+        goto l10023F70;
     }
-l10023F82:
-    if (reinterpret_cast<int>(STACKVAR(-20, 4)) <= reinterpret_cast<int>(STACKVAR(-24, 4)))
+    if (STACKVAR(-12, 4) == 0x00000000)
     {
-        goto l10023FB3;
+        goto l1002400C;
     }
-    ARG(reinterpret_cast<any_int32>(STACKVAR(-36, 4)) - 0x00000001);
-    STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000001;
+    STACKVAR(-20, 4) = 0x00000001;
+    goto l10023FDC;
+l10023FD3:
+    STACKVAR(-20, 4) = reinterpret_cast<any_int32>(STACKVAR(-20, 4)) + 0x00000001;
+l10023FDC:
+    if (reinterpret_cast<int>(STACKVAR(-20, 4)) <= 255)
+    {
+        ACCESS(ARRPTR(STACKVAR(-32, 4), 1, -reinterpret_cast<int>(STACKVAR(-20, 4)), 0), 0, 1) = ACCESS(STACKVAR(-32, 4), 0, 1);
+        ACCESS(reinterpret_cast<any_int32>(STACKVAR(-32, 4)) + reinterpret_cast<any_int32>(STACKVAR(-20, 4)), 255, 1) = ACCESS(STACKVAR(-32, 4), 255, 1);
+        goto l10023FD3;
+    }
+l1002400C:
+    goto l10023EE2;
+l10024011:
 }
-Error: "Expected arguments size: 16, but was: 12."
 
 // address: 0x10024015
 p10024015

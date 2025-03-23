@@ -3,7 +3,7 @@ import expressions
 import instructions
 from patterns.make_proc_decl_from_args import make_proc_decl_from_args
 
-from .try_build_post_increment import try_build_post_increment
+from .increment import try_build_post_increment, try_build_pre_increment
 from .try_make_fpu_call import try_make_fpu_call
 
 
@@ -19,7 +19,7 @@ class BlockBuilder:
         size = 0
         args = []
         while size < expected_size:
-            arg = self._try_pop_arg_instruction()
+            arg = self._try_build_arg(args)
             if arg is None:
                 break
             args.append(arg)
@@ -34,6 +34,16 @@ class BlockBuilder:
         assert pc.proc_decl is None
         pc = pc.copy(arguments=args, proc_decl=proc_decl)
         self.add_instruction(instructions.CodeInstruction(pc))
+
+    def _try_build_arg(self, args):
+        arg = self._try_pop_arg_instruction()
+        if arg is not None:
+            return arg
+        pre_inc = try_build_pre_increment(self, args[-1])
+        if pre_inc is None:
+            return None
+        args[-1] = pre_inc
+        return self._try_pop_arg_instruction()
 
     def pop_reg_value(self, reg):
         if isinstance(self.last_instruction, instructions.ProcedureInfo):

@@ -17,6 +17,7 @@ from .implicit_cast import ImplicitCast
 from .increment import Increment
 from .negate import Negate
 from .null import Null
+from .pre_increment import PreIncrement
 from .procedure_call import ProcedureCall
 from .reinterpret_cast import ReinterpretCast
 from .static_cast import StaticCast
