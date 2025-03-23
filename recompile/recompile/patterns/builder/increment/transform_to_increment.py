@@ -3,9 +3,11 @@ import expressions
 from expressions.operator import Operator
 
 
-def transform_to_increment(reg_expression, **kwargs):
+def transform_to_increment(expression, **kwargs):
     transformer = _Transformer(**kwargs)
-    return reg_expression.transform(transformer.transform)
+    e = expression.transform(transformer.transform)
+    transformer.validate()
+    return e
 
 
 def _make_increment(incremented_expression, step, pre_increment):
@@ -38,6 +40,7 @@ class _Transformer:
         self._replacing_expression = replacing_expression
         self._expression_replaced = False
         self._incremented_expression = incremented_expression
+        self._increment_created = False
         self._increment_step = increment_step
         self._pre_increment = pre_increment
 
@@ -57,7 +60,13 @@ class _Transformer:
             src = ass_instr.src.transform(self.transform)
             return expressions.Bin(Operator.ASS, ass_instr.dst, src)
         elif e.emit_code() == self._incremented_expression.emit_code():
+            assert not self._increment_created
+            self._increment_created = True
             return _make_increment(
                 self._incremented_expression, self._increment_step,
                 self._pre_increment)
         return e
+
+    def validate(self):
+        if not self._increment_created:
+            raise Exception("Increment was not created.")
