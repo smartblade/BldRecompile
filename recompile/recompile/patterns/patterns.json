@@ -732,6 +732,15 @@
 	{
 		"instructions": [
 			{"cdq":   []},
+			{"idiv":  ["%src-operand%"]},
+			{"test":  ["edx", "edx"]},
+			{"jne":   ["%label%"]}
+		],
+		"action": {"jump": {"condition": "S(REGVALUE(eax)) % S(%src-operand%) != 0x00000000", "address": "%label%"}}
+	},
+	{
+		"instructions": [
+			{"cdq":   []},
 			{"idiv":  ["%src-operand%"]}
 		],
 		"action": {"tmpreg": {"dst": "eax", "src": "S(REGVALUE(eax)) / S(%src-operand%)"}}
