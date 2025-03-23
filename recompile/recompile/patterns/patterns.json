@@ -277,6 +277,17 @@
 	},
 	{
 		"instructions": [
+		    {"mov":   ["edi", "%label%"]},
+			{"or":    ["ecx", "0FFFFFFFFh"]},
+			{"xor":   ["eax", "eax"]},
+			{"repnz": ["scasb"]},
+			{"not":   ["ecx"]},
+			{"lea":   ["%tmpreg32%", "[ecx+%label-2%]"]}
+		],
+		"action": {"tmpreg": {"dst": "%tmpreg32%", "src": "ARRPTR(GLOBAL(%label%), 1, strlen(GLOBAL(%label%)) + EVAL(%label-2% - %label% + 1), 0)"}}
+	},
+	{
+		"instructions": [
 			{"or":    ["ecx", "0FFFFFFFFh"]},
 			{"xor":   ["eax", "eax"]},
 			{"repnz": ["scasb"]},

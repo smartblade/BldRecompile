@@ -935,6 +935,32 @@ char *GetConfigDirectory()
         goto l10002899;
     }
     _getcwd(GLOBAL(0x1004A00C), 0x00000104);
+    STACKVAR(-12, 4) = ARRPTR(GLOBAL(0x1004A00C), 1, strlen(GLOBAL(0x1004A00C)) - 1, 0);
+l10002780:
+    if (static_cast<any_int32>(reinterpret_cast<char>(ACCESS(STACKVAR(-12, 4), 0, 1))) == 0x0000005C)
+    {
+        goto l10002796;
+    }
+    if (static_cast<any_int32>(reinterpret_cast<char>(ACCESS(STACKVAR(-12, 4), 0, 1))) != 0x0000002F)
+    {
+        goto l100027A1;
+    }
+l10002796:
+    STACKVAR(-12, 4) = reinterpret_cast<any_int32>(STACKVAR(-12, 4)) - 0x00000001;
+    goto l10002780;
+l100027A1:
+    if (static_cast<any_int32>(reinterpret_cast<char>(ACCESS(STACKVAR(-12, 4), 0, 1))) == 0x0000005C)
+    {
+        goto l100027C2;
+    }
+    if (static_cast<any_int32>(reinterpret_cast<char>(ACCESS(STACKVAR(-12, 4), 0, 1))) == 0x0000002F)
+    {
+        goto l100027C2;
+    }
+    STACKVAR(-12, 4) = reinterpret_cast<any_int32>(STACKVAR(-12, 4)) - 0x00000001;
+    goto l100027A1;
+l100027C2:
+    ACCESS(STACKVAR(-12, 4), 1, 1) = 0;
     REGDEF(edi=GLOBAL(0x1004A00C), ecx=0xFFFFFFFF, eax=0x00000000)
 }
 Error: "Failed to find pattern for 'repnz scasb'"
