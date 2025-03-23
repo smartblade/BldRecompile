@@ -929,7 +929,6 @@ B_MessageManager &B_MessageManager::operator=(const B_MessageManager &that)
 // address: 0x10002740
 char *GetConfigDirectory()
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=None)
     if (static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(GLOBAL(0x1004A110), 0, 1))) != 0x00000000)
     {
         goto l10002899;
@@ -953,17 +952,65 @@ l100027A1:
     {
         goto l100027C2;
     }
-    if (static_cast<any_int32>(reinterpret_cast<char>(ACCESS(STACKVAR(-12, 4), 0, 1))) == 0x0000002F)
+    if (static_cast<any_int32>(reinterpret_cast<char>(ACCESS(STACKVAR(-12, 4), 0, 1))) != 0x0000002F)
     {
-        goto l100027C2;
+        STACKVAR(-12, 4) = reinterpret_cast<any_int32>(STACKVAR(-12, 4)) - 0x00000001;
+        goto l100027A1;
     }
-    STACKVAR(-12, 4) = reinterpret_cast<any_int32>(STACKVAR(-12, 4)) - 0x00000001;
-    goto l100027A1;
 l100027C2:
     ACCESS(STACKVAR(-12, 4), 1, 1) = 0;
-    REGDEF(edi=GLOBAL(0x1004A00C), ecx=0xFFFFFFFF, eax=0x00000000)
+    strcat(GLOBAL(0x1004A00C), GLOBAL(0x10047208));
+    if (_access(GLOBAL(0x1004A00C), 0x00000000) == 0x00000000)
+    {
+        goto l1000283F;
+    }
+l100027FD:
+    if (static_cast<any_int32>(reinterpret_cast<char>(ACCESS(STACKVAR(-12, 4), 0, 1))) == 0x0000005C)
+    {
+        goto l10002813;
+    }
+    if (static_cast<any_int32>(reinterpret_cast<char>(ACCESS(STACKVAR(-12, 4), 0, 1))) != 0x0000002F)
+    {
+        goto l1000281E;
+    }
+l10002813:
+    STACKVAR(-12, 4) = reinterpret_cast<any_int32>(STACKVAR(-12, 4)) - 0x00000001;
+    goto l100027FD;
+l1000281E:
+    if (static_cast<any_int32>(reinterpret_cast<char>(ACCESS(STACKVAR(-12, 4), 0, 1))) == 0x0000005C)
+    {
+        goto l1000283F;
+    }
+    if (static_cast<any_int32>(reinterpret_cast<char>(ACCESS(STACKVAR(-12, 4), 0, 1))) != 0x0000002F)
+    {
+        STACKVAR(-12, 4) = reinterpret_cast<any_int32>(STACKVAR(-12, 4)) - 0x00000001;
+        goto l1000281E;
+    }
+l1000283F:
+    ACCESS(STACKVAR(-12, 4), 1, 1) = 0;
+    strcat(GLOBAL(0x1004A00C), GLOBAL(0x10047210));
+    if (_access(GLOBAL(0x1004A00C), 0x00000000) != 0x00000000)
+    {
+        _mkdir(GLOBAL(0x1004A00C));
+    }
+    ACCESS(GLOBAL(0x1004A110), 0, 1) = 0x01;
+l10002899:
+    STACKVAR(-4, 4) = strlen(GLOBAL(0x1004A00C));
+    STACKVAR(-8, 4) = 0x00000000;
+    goto l100028BF;
+l100028B6:
+    STACKVAR(-8, 4) = reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + 0x00000001;
+l100028BF:
+    if (reinterpret_cast<int>(STACKVAR(-8, 4)) < reinterpret_cast<int>(STACKVAR(-4, 4)))
+    {
+        if (static_cast<any_int32>(reinterpret_cast<char>(ACCESS(ARRPTR(GLOBAL(0x1004A00C), 1, STACKVAR(-8, 4), 0), 0, 1))) == 0x0000005C)
+        {
+            ACCESS(ARRPTR(GLOBAL(0x1004A00C), 1, STACKVAR(-8, 4), 0), 0, 1) = 0x2F;
+        }
+        goto l100028B6;
+    }
+    return reinterpret_cast<char *>(GLOBAL(0x1004A00C));
 }
-Error: "Failed to find pattern for 'repnz scasb'"
 
 // address: 0x100028EC
 char *GetCurrentLanguage()

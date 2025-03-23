@@ -27,7 +27,10 @@ def collect_string_constants(code_lines):
             if variables_count.get(new_label_addr) == 1:
                 if (
                     current_label_addr is not None and
-                    new_label_addr - prev_label_addr == 4 and
+                    (
+                        new_label_addr - prev_label_addr == 2 or
+                        new_label_addr - prev_label_addr == 4
+                    ) and
                     (
                         len(current_bytes) ==
                         new_label_addr - current_label_addr

@@ -333,12 +333,49 @@
 			{"xor":   ["eax", "eax"]},
 			{"repnz": ["scasb"]},
 			{"add":   ["edi", "0FFFFFFFFh"]},
-			{"mov":   ["ecx", "[%label%]"]},
-			{"mov":   ["[edi]", "ecx"]},
-			{"mov":   ["edx", "[%label004%]"]},
-			{"mov":   ["[edi+004h]", "edx"]},
-			{"mov":   ["ax", "[%label008%]"]},
-			{"mov":   ["[edi+008h]", "ax"]}
+			{"mov":   ["e%a-b-c-d-1%x", "[%label%]"]},
+			{"mov":   ["[edi]", "e%a-b-c-d-1%x"]},
+			{"mov":   ["%a-b-c-d-2%l", "[%label004%]"]},
+			{"mov":   ["[edi+004h]", "%a-b-c-d-2%l"]}
+		],
+		"actions": [
+			{"validate": {"expect": "EXPECT(EVAL(%label004% - %label%), 4)"}},
+			{"validate": {"expect": "EXPECT(EVAL(strlen(%label%)), 4)"}},
+			{"instruction": {"expression": "strcat(REGVALUE(edi), GLOBAL(%label%))"}}
+		]
+	},
+	{
+		"instructions": [
+			{"or":    ["ecx", "0FFFFFFFFh"]},
+			{"xor":   ["eax", "eax"]},
+			{"repnz": ["scasb"]},
+			{"add":   ["edi", "0FFFFFFFFh"]},
+			{"mov":   ["e%a-b-c-d-1%x", "[%label%]"]},
+			{"mov":   ["[edi]", "e%a-b-c-d-1%x"]},
+			{"mov":   ["%a-b-c-d-2%x", "[%label004%]"]},
+			{"mov":   ["[edi+004h]", "%a-b-c-d-2%x"]},
+			{"mov":   ["%a-b-c-d-3%l", "[%label006%]"]},
+			{"mov":   ["[edi+006h]", "%a-b-c-d-3%l"]}
+		],
+		"actions": [
+			{"validate": {"expect": "EXPECT(EVAL(%label004% - %label%), 4)"}},
+			{"validate": {"expect": "EXPECT(EVAL(%label006% - %label004%), 2)"}},
+			{"validate": {"expect": "EXPECT(EVAL(strlen(%label%)), 6)"}},
+			{"instruction": {"expression": "strcat(REGVALUE(edi), GLOBAL(%label%))"}}
+		]
+	},
+	{
+		"instructions": [
+			{"or":    ["ecx", "0FFFFFFFFh"]},
+			{"xor":   ["eax", "eax"]},
+			{"repnz": ["scasb"]},
+			{"add":   ["edi", "0FFFFFFFFh"]},
+			{"mov":   ["e%a-b-c-d-1%x", "[%label%]"]},
+			{"mov":   ["[edi]", "e%a-b-c-d-1%x"]},
+			{"mov":   ["e%a-b-c-d-2%x", "[%label004%]"]},
+			{"mov":   ["[edi+004h]", "e%a-b-c-d-2%x"]},
+			{"mov":   ["%a-b-c-d-3%x", "[%label008%]"]},
+			{"mov":   ["[edi+008h]", "%a-b-c-d-3%x"]}
 		],
 		"actions": [
 			{"validate": {"expect": "EXPECT(EVAL(%label004% - %label%), 4)"}},
