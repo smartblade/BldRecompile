@@ -811,6 +811,12 @@
 	},
 	{
 		"instructions": [
+			{"and":  ["%mem-operand%", "%src-operand%"]}
+		],
+		"action": {"assignment": {"dst": "%mem-operand%", "src": "I(%mem-operand%) & I(%src-operand%)"}}
+	},
+	{
+		"instructions": [
 			{"or":  ["%tmpreg32%", "0FFFFFFFFh"]}
 		],
 		"action": {"tmpreg": {"dst": "%tmpreg32%", "src": "0xFFFFFFFF"}}
@@ -820,6 +826,12 @@
 			{"or":  ["%reg-operand%", "%src-operand%"]}
 		],
 		"action": {"tmpreg": {"dst": "%reg-operand%", "src": "I(REGVALUE(%reg-operand%)) | I(%src-operand%)"}}
+	},
+	{
+		"instructions": [
+			{"or":  ["%mem-operand%", "%src-operand%"]}
+		],
+		"action": {"assignment": {"dst": "%mem-operand%", "src": "I(%mem-operand%) | I(%src-operand%)"}}
 	},
 	{
 		"instructions": [

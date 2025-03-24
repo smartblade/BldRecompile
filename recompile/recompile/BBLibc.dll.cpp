@@ -3128,38 +3128,86 @@ unsigned int B_ResourceManager::NResources(unsigned short arg_1)
 // address: 0x10005F66
 void B_ResourceManager::AddBodLink(const char *c, int i, const char *pc, int i1)
 {
-    ProcedureInfo(this=Id(this), this_offset=-60, local_size=64, stack_delta=None)
     STACKVAR(-28, 4) = 0x00000000;
-    if (ACCESS(STACKVAR(-60, 4), 4, 4) != 0x00000000)
+    if (this->size == 0)
     {
-        goto l10005FB0;
+        STACKVAR(-4, 4) = ??2@YAPAXI@Z(0x00000018);
+        if (STACKVAR(-4, 4) != 0x00000000)
+        {
+            STACKVAR(-64, 4) = STACKVAR(-4, 4)->unknown_method_100046A6();
+        }
+        else
+        {
+            STACKVAR(-64, 4) = 0x00000000;
+        }
+        this->size = reinterpret_cast<int>(STACKVAR(-64, 4));
     }
-    STACKVAR(-4, 4) = ??2@YAPAXI@Z(0x00000018);
-    if (STACKVAR(-4, 4) == 0x00000000)
-    {
-        goto l10005FA0;
-    }
-    STACKVAR(-64, 4) = STACKVAR(-4, 4)->unknown_method_100046A6();
-    goto l10005FA7;
-l10005FA0:
-    STACKVAR(-64, 4) = 0x00000000;
-l10005FA7:
-    ACCESS(STACKVAR(-60, 4), 4, 4) = STACKVAR(-64, 4);
-l10005FB0:
-    if (STACKVAR(-60, 4)->unknown_method_10005D06(0x00000001, STACKVAR(16, 4)) != 0x00000000)
+    if (this->unknown_method_10005D06(0x00000001, pc) != 0x00000000)
     {
         goto l10006151;
     }
     STACKVAR(-8, 4) = ??2@YAPAXI@Z(0x00000024);
-    if (STACKVAR(-8, 4) == 0x00000000)
+    if (STACKVAR(-8, 4) != 0x00000000)
     {
-        goto l10006016;
+        reinterpret_cast<B_Name *>(LOCAL(-16))->B_Name(pc);
+        STACKVAR(-28, 4) = reinterpret_cast<any_int32>(STACKVAR(-28, 4)) | 0x00000001;
+        reinterpret_cast<B_Name *>(LOCAL(-24))->B_Name(c);
+        STACKVAR(-28, 4) = reinterpret_cast<any_int32>(STACKVAR(-28, 4)) | 0x00000002;
+        STACKVAR(-56, 4) = STACKVAR(-8, 4)->unknown_method_10004371(LOCAL(-24), i, LOCAL(-16), i);
     }
-    ARG(STACKVAR(16, 4));
-    REGDEF(ecx=LOCAL(-16))
-    unknown_function_10003337();
+    else
+    {
+        STACKVAR(-56, 4) = 0x00000000;
+    }
+    STACKVAR(-52, 4) = this->size;
+    if (reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-52, 4), 16, 4)) > reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-52, 4), 8, 4)))
+    {
+        ACCESS(ARRPTR(ACCESS(STACKVAR(-52, 4), 4, 4), 0x04, ACCESS(STACKVAR(-52, 4), 8, 4), 0), 0, 4) = STACKVAR(-56, 4);
+        ACCESS(STACKVAR(-52, 4), 8, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-52, 4), 8, 4)) + 0x00000001;
+        goto l10006123;
+    }
+    ACCESS(STACKVAR(-52, 4), 16, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-52, 4), 16, 4)) + reinterpret_cast<any_int32>(ACCESS(STACKVAR(-52, 4), 12, 4));
+    if (ACCESS(STACKVAR(-52, 4), 8, 4) == 0x00000000)
+    {
+        goto l100060E4;
+    }
+    STACKVAR(-40, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-52, 4), 16, 4)));
+    STACKVAR(-32, 4) = STACKVAR(-40, 4);
+    STACKVAR(-36, 4) = 0x00000000;
+    goto l100060A2;
+l10006099:
+    STACKVAR(-36, 4) = reinterpret_cast<any_int32>(STACKVAR(-36, 4)) + 0x00000001;
+l100060A2:
+    if (reinterpret_cast<unsigned int>(STACKVAR(-36, 4)) < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-52, 4), 8, 4)))
+    {
+        ACCESS(ARRPTR(STACKVAR(-32, 4), 0x04, STACKVAR(-36, 4), 0), 0, 4) = ACCESS(ARRPTR(ACCESS(STACKVAR(-52, 4), 4, 4), 0x04, STACKVAR(-36, 4), 0), 0, 4);
+        goto l10006099;
+    }
+    STACKVAR(-44, 4) = ACCESS(STACKVAR(-52, 4), 4, 4);
+    ??3@YAXPAX@Z(STACKVAR(-44, 4));
+    ACCESS(STACKVAR(-52, 4), 4, 4) = STACKVAR(-32, 4);
+    goto l10006102;
+l100060E4:
+    STACKVAR(-48, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-52, 4), 16, 4)));
+    ACCESS(STACKVAR(-52, 4), 4, 4) = STACKVAR(-48, 4);
+l10006102:
+    ACCESS(ARRPTR(ACCESS(STACKVAR(-52, 4), 4, 4), 0x04, ACCESS(STACKVAR(-52, 4), 8, 4), 0), 0, 4) = STACKVAR(-56, 4);
+    ACCESS(STACKVAR(-52, 4), 8, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-52, 4), 8, 4)) + 0x00000001;
+l10006123:
+    if ((reinterpret_cast<any_int32>(STACKVAR(-28, 4)) & 0x00000002) != 0x00000000)
+    {
+        STACKVAR(-28, 4) = reinterpret_cast<any_int32>(STACKVAR(-28, 4)) & 0xFFFFFFFD;
+        reinterpret_cast<B_Name *>(LOCAL(-24))->~B_Name();
+    }
+    if ((reinterpret_cast<any_int32>(STACKVAR(-28, 4)) & 0x00000001) != 0x00000000)
+    {
+        STACKVAR(-28, 4) = reinterpret_cast<any_int32>(STACKVAR(-28, 4)) & 0xFFFFFFFE;
+        reinterpret_cast<B_Name *>(LOCAL(-16))->~B_Name();
+    }
+    return;
+l10006151:
+    mout << vararg("B_ResourceManager::AddBodLink() -> the file %s called %s is duplicated\n", c, pc);
 }
-Error: "Failed to find pattern for 'or dword ptr [ebp-01Ch], 000000001h'"
 
 // address: 0x1000617B
 p1000617B
