@@ -16835,18 +16835,16 @@ l1001C6AC:
 // address: 0x1001C6F1
 p1001C6F1
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=0)
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 384, 4);
-    if (static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-4, 4), 8, 1))) == 0x00000000)
+    if (static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-4, 4), 8, 1))) != 0x00000000)
     {
-        goto l1001C755;
+        ACCESS(STACKVAR(-4, 4), 8, 1) = 0;
+        ACCESS(ACCESS(STACKVAR(8, 4), 424, 4), 0, 4)(STACKVAR(8, 4), 0x00000000);
+        ACCESS(ACCESS(STACKVAR(8, 4), 396, 4), 0, 4)(STACKVAR(8, 4), 0x00000002);
+        ACCESS(ACCESS(STACKVAR(8, 4), 388, 4), 0, 4)(STACKVAR(8, 4), 0x00000002);
+        goto l1001C891;
     }
-    ACCESS(STACKVAR(-4, 4), 8, 1) = 0;
-    ACCESS(ACCESS(STACKVAR(8, 4), 424, 4), 0, 4)(STACKVAR(8, 4), 0x00000000);
-    ACCESS(ACCESS(STACKVAR(8, 4), 396, 4), 0, 4)(STACKVAR(8, 4), 0x00000002);
-    ACCESS(ACCESS(STACKVAR(8, 4), 388, 4), 0, 4)(STACKVAR(8, 4), 0x00000002);
-    goto l1001C891;
-l1001C755:
     if (static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(8, 4), 74, 1))) == 0x00000000)
     {
         goto l1001C7D1;
@@ -16859,46 +16857,53 @@ l1001C755:
     {
         goto l1001C79A;
     }
-    if (static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(8, 4), 90, 1))) == 0x00000000)
+    if (static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(8, 4), 90, 1))) != 0x00000000)
     {
-        goto l1001C79A;
+        ACCESS(STACKVAR(8, 4), 424, 4) = ACCESS(STACKVAR(-4, 4), 24, 4);
+        ACCESS(STACKVAR(-4, 4), 8, 1) = 0x01;
+        goto l1001C7D1;
     }
-    ACCESS(STACKVAR(8, 4), 424, 4) = ACCESS(STACKVAR(-4, 4), 24, 4);
-    ACCESS(STACKVAR(-4, 4), 8, 1) = 0x01;
-    goto l1001C7D1;
 l1001C79A:
-    if (static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(8, 4), 88, 1))) == 0x00000000)
+    if (static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(8, 4), 88, 1))) != 0x00000000)
     {
-        goto l1001C7B7;
+        ACCESS(STACKVAR(8, 4), 424, 4) = ACCESS(STACKVAR(-4, 4), 20, 4);
     }
-    ACCESS(STACKVAR(8, 4), 424, 4) = ACCESS(STACKVAR(-4, 4), 20, 4);
-    goto l1001C7D1;
-l1001C7B7:
-    ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x0000002E;
-    ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 0, 4)(STACKVAR(8, 4));
+    else
+    {
+        ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x0000002E;
+        ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 0, 4)(STACKVAR(8, 4));
+    }
 l1001C7D1:
     ACCESS(ACCESS(STACKVAR(8, 4), 412, 4), 0, 4)(STACKVAR(8, 4));
     ACCESS(ACCESS(STACKVAR(8, 4), 392, 4), 8, 4)(STACKVAR(8, 4));
-    if (static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(8, 4), 65, 1))) != 0x00000000)
+    if (static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(8, 4), 65, 1))) == 0x00000000)
     {
-        goto l1001C891;
+        if (static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-4, 4), 16, 1))) == 0x00000000)
+        {
+            ACCESS(ACCESS(STACKVAR(8, 4), 420, 4), 0, 4)(STACKVAR(8, 4));
+        }
+        ACCESS(ACCESS(STACKVAR(8, 4), 416, 4), 0, 4)(STACKVAR(8, 4));
+        if (static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(8, 4), 74, 1))) != 0x00000000)
+        {
+            ACCESS(ACCESS(STACKVAR(8, 4), 424, 4), 0, 4)(STACKVAR(8, 4), ACCESS(STACKVAR(-4, 4), 8, 1));
+        }
+        ACCESS(ACCESS(STACKVAR(8, 4), 396, 4), 0, 4)(STACKVAR(8, 4), static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-4, 4), 8, 1))) == 0x00000000 ? 0x00000000 : 0x00000003);
+        ACCESS(ACCESS(STACKVAR(8, 4), 388, 4), 0, 4)(STACKVAR(8, 4), 0x00000000);
     }
-    if (static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-4, 4), 16, 1))) != 0x00000000)
+l1001C891:
+    if (ACCESS(STACKVAR(8, 4), 8, 4) != 0x00000000)
     {
-        goto l1001C824;
+        ACCESS(ACCESS(STACKVAR(8, 4), 8, 4), 12, 4) = ACCESS(STACKVAR(-4, 4), 12, 4);
+        ACCESS(ACCESS(STACKVAR(8, 4), 8, 4), 16, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-4, 4), 12, 4)) + static_cast<any_int32>(static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-4, 4), 8, 1))) != 0x00000000) + 0x00000001;
+        if (static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(8, 4), 64, 1))) != 0x00000000)
+        {
+            if (static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(ACCESS(STACKVAR(8, 4), 400, 4), 17, 1))) == 0x00000000)
+            {
+                ACCESS(ACCESS(STACKVAR(8, 4), 8, 4), 16, 4) = reinterpret_cast<any_int32>(ACCESS(ACCESS(STACKVAR(8, 4), 8, 4), 16, 4)) + static_cast<any_int32>(static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(8, 4), 90, 1))) != 0x00000000) + 0x00000001;
+            }
+        }
     }
-    ACCESS(ACCESS(STACKVAR(8, 4), 420, 4), 0, 4)(STACKVAR(8, 4));
-l1001C824:
-    ACCESS(ACCESS(STACKVAR(8, 4), 416, 4), 0, 4)(STACKVAR(8, 4));
-    if (static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(8, 4), 74, 1))) == 0x00000000)
-    {
-        goto l1001C85B;
-    }
-    ACCESS(ACCESS(STACKVAR(8, 4), 424, 4), 0, 4)(STACKVAR(8, 4), ACCESS(STACKVAR(-4, 4), 8, 1));
-l1001C85B:
-    REGDEF(edx=-static_cast<int>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-4, 4), 8, 1))))
 }
-Error: "Failed to find pattern for 'sbb edx, edx'"
 
 // address: 0x1001C912
 p1001C912
