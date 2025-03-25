@@ -41,6 +41,8 @@ def _evaluate_binary(b, **kwargs):
         return _make_constant(max_size, left.value - right.value)
     if b.operator == Operator.SHL:
         return _make_constant(max_size, left.value << right.value)
+    if b.operator == Operator.BIT_AND:
+        return _make_constant(max_size, left.value & right.value)
     return None
 
 

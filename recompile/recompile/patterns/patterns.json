@@ -799,6 +799,22 @@
 	},
 	{
 		"instructions": [
+			{"and":   ["%tmpreg32%", "%hex-and-mask%"]},
+			{"jns": ["%label%"]},
+			{"dec": ["%tmpreg32%"]},
+			{"or": ["%tmpreg32%", "%hex-or-mask%"]},
+			{"inc": ["%tmpreg32%"]},
+			{"label": ["%label%"]}
+		],
+		"actions": [
+			{"validate": {"expect": "EXPECT(EVAL(%hex-and-mask% + %hex-or-mask% + 1), EVAL(0x18 << 28))"}},
+			{"validate": {"expect": "EXPECT(EVAL(%hex-and-mask% - 0x7FFFFFFF & %hex-and-mask% - 0x80000000), 0)"}},
+			{"validate": {"expect": "EXPECT(EVAL(%hex-and-mask% & 0x80000000), 0x80000000)"}},
+			{"tmpreg": {"dst": "%tmpreg32%", "src": "S(REGVALUE(%tmpreg32%)) % S(EVAL(%hex-and-mask% - 0x7FFFFFFF))"}}
+		]
+	},
+	{
+		"instructions": [
 			{"neg":  ["%tmpreg32%"]}
 		],
 		"action": {"tmpreg": {"dst": "%tmpreg32%", "src": "-S(REGVALUE(%tmpreg32%))"}}

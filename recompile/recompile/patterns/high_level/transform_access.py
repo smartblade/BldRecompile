@@ -41,7 +41,11 @@ def transform_access(expression, offset, size, **kwargs):
             data_types.Pointer32,
         )
     ):
+        dereference = expressions.do_dereference(expression)
         if size is not None and pointee.size != size:
+            if pointee.is_any_int and size < pointee.size:
+                return expressions.do_static_cast(
+                    data_types.AnyInt(size), dereference)
             raise Exception(
                 "Data type size expected to be {} but was: {}.".format(
                     size, pointee.size))
@@ -49,5 +53,5 @@ def transform_access(expression, offset, size, **kwargs):
             raise Exception(
                 "Data access offset expected to be {} but was: {}.".format(
                     0, offset))
-        return expressions.do_dereference(expression)
+        return dereference
     return None
