@@ -8762,7 +8762,7 @@ l1000EDA4:
 // address: 0x1000EDE2
 p1000EDE2
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=8, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=8, stack_delta=0)
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 312, 4);
     STACKVAR(-8, 4) = ACCESS(STACKVAR(-4, 4), 16, 4);
     if (STACKVAR(-8, 4) == 0x00000000)
@@ -8781,19 +8781,74 @@ p1000EDE2
 l1000EE1C:
     unknown_function_1000F076(STACKVAR(8, 4));
     unknown_function_1000F1FC(STACKVAR(8, 4));
-    if (static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(8, 4), 172, 1))) != 0x00000000)
+    if (static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(8, 4), 172, 1))) == 0x00000000)
     {
-        goto l1000EE7B;
+        ACCESS(ACCESS(STACKVAR(8, 4), 332, 4), 0, 4)(STACKVAR(8, 4));
+        ACCESS(ACCESS(STACKVAR(8, 4), 336, 4), 0, 4)(STACKVAR(8, 4));
+        ACCESS(ACCESS(STACKVAR(8, 4), 320, 4), 0, 4)(STACKVAR(8, 4), 0x00000000);
     }
-    ACCESS(ACCESS(STACKVAR(8, 4), 332, 4), 0, 4)(STACKVAR(8, 4));
-    ACCESS(ACCESS(STACKVAR(8, 4), 336, 4), 0, 4)(STACKVAR(8, 4));
-    ACCESS(ACCESS(STACKVAR(8, 4), 320, 4), 0, 4)(STACKVAR(8, 4), 0x00000000);
-l1000EE7B:
     ACCESS(ACCESS(STACKVAR(8, 4), 340, 4), 0, 4)(STACKVAR(8, 4));
     ACCESS(ACCESS(STACKVAR(8, 4), 344, 4), 0, 4)(STACKVAR(8, 4), ACCESS(STACKVAR(8, 4), 174, 1));
-    REGDEF(edx=0x00000000, cmpl=ACCESS(STACKVAR(-4, 4), 24, 4), cmpr=0x00000001)
+    ACCESS(ACCESS(STACKVAR(8, 4), 324, 4), 0, 4)(STACKVAR(8, 4), reinterpret_cast<int>(ACCESS(STACKVAR(-4, 4), 24, 4)) <= 1 ? 0x00000000 : 0x00000003);
+    ACCESS(ACCESS(STACKVAR(8, 4), 316, 4), 0, 4)(STACKVAR(8, 4), 0x00000000);
+    if (static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(8, 4), 174, 1))) != 0x00000000)
+    {
+        ACCESS(STACKVAR(-4, 4), 12, 1) = 0;
+    }
+    else
+    {
+        ACCESS(STACKVAR(-4, 4), 12, 1) = 0x01;
+    }
+    goto l1000F031;
+l1000EF04:
+    unknown_function_1000F076(STACKVAR(8, 4));
+    unknown_function_1000F1FC(STACKVAR(8, 4));
+    if (ACCESS(STACKVAR(8, 4), 296, 4) != 0x00000000)
+    {
+        goto l1000EF43;
+    }
+    if (ACCESS(STACKVAR(8, 4), 304, 4) == 0x00000000)
+    {
+        goto l1000EF43;
+    }
+    if (static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(8, 4), 173, 1))) == 0x00000000)
+    {
+        goto l1000EF77;
+    }
+l1000EF43:
+    ACCESS(ACCESS(STACKVAR(8, 4), 344, 4), 0, 4)(STACKVAR(8, 4), 0x00000001);
+    ACCESS(ACCESS(STACKVAR(8, 4), 324, 4), 0, 4)(STACKVAR(8, 4), 0x00000002);
+    ACCESS(STACKVAR(-4, 4), 12, 1) = 0;
+    goto l1000F031;
+l1000EF77:
+    ACCESS(STACKVAR(-4, 4), 16, 4) = 0x00000002;
+    ACCESS(STACKVAR(-4, 4), 20, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-4, 4), 20, 4)) + 0x00000001;
+l1000EF90:
+    if (static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(8, 4), 174, 1))) == 0x00000000)
+    {
+        unknown_function_1000F076(STACKVAR(8, 4));
+        unknown_function_1000F1FC(STACKVAR(8, 4));
+    }
+    ACCESS(ACCESS(STACKVAR(8, 4), 344, 4), 0, 4)(STACKVAR(8, 4), 0x00000000);
+    ACCESS(ACCESS(STACKVAR(8, 4), 324, 4), 0, 4)(STACKVAR(8, 4), 0x00000002);
+    if (ACCESS(STACKVAR(-4, 4), 28, 4) == 0x00000000)
+    {
+        ACCESS(ACCESS(STACKVAR(8, 4), 328, 4), 4, 4)(STACKVAR(8, 4));
+    }
+    ACCESS(ACCESS(STACKVAR(8, 4), 328, 4), 8, 4)(STACKVAR(8, 4));
+    ACCESS(STACKVAR(-4, 4), 12, 1) = 0;
+    goto l1000F031;
+l1000F017:
+    ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x00000030;
+    ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 0, 4)(STACKVAR(8, 4));
+l1000F031:
+    ACCESS(STACKVAR(-4, 4), 13, 1) = static_cast<any_int8>(reinterpret_cast<any_int32>(ACCESS(STACKVAR(-4, 4), 20, 4)) == reinterpret_cast<any_int32>(ACCESS(STACKVAR(-4, 4), 24, 4)) - 0x00000001);
+    if (ACCESS(STACKVAR(8, 4), 8, 4) != 0x00000000)
+    {
+        ACCESS(ACCESS(STACKVAR(8, 4), 8, 4), 12, 4) = ACCESS(STACKVAR(-4, 4), 20, 4);
+        ACCESS(ACCESS(STACKVAR(8, 4), 8, 4), 16, 4) = ACCESS(STACKVAR(-4, 4), 24, 4);
+    }
 }
-Error: "Failed to find pattern for 'setle dl'"
 
 // address: 0x1000F076
 p1000F076

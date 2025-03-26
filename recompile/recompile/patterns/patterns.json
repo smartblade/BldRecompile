@@ -527,6 +527,16 @@
 	},
 	{
 		"instructions": [
+			{"xor":   ["e%a-b-c-d%x", "e%a-b-c-d%x"]},
+			{"cmp":   ["%src-operand-left%", "%src-operand-right%"]},
+			{"setle": ["%a-b-c-d%l"]},
+			{"dec":   ["e%a-b-c-d%x"]},
+			{"and":   ["e%a-b-c-d%x", "%hex%"]}
+		],
+		"action": {"tmpreg": {"dst": "e%a-b-c-d%x", "src": "S(%src-operand-left%) <= S(%src-operand-right%) ? I(0x00000000) : I(%hex%)"}}
+	},
+	{
+		"instructions": [
 			{"sbb":  ["%tmpreg32%", "%tmpreg32%"]},
 			{"inc":  ["%tmpreg32%"]}
 		],
