@@ -821,6 +821,12 @@
 	},
 	{
 		"instructions": [
+			{"not":  ["%tmpreg32%"]}
+		],
+		"action": {"tmpreg": {"dst": "%tmpreg32%", "src": "~I(REGVALUE(%tmpreg32%))"}}
+	},
+	{
+		"instructions": [
 			{"and":  ["%tmpreg32%", "%src-operand%"]}
 		],
 		"action": {"tmpreg": {"dst": "%tmpreg32%", "src": "I(REGVALUE(%tmpreg32%)) & I(%src-operand%)"}}

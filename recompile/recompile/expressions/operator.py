@@ -3,6 +3,7 @@ from enum import Enum
 
 class Operator(Enum):
     PRE_INC = '++'
+    BIT_NOT = '~'
     NEG = '-'
     ADDR_OF = "&"
     DEREF = "*"
@@ -34,6 +35,7 @@ class Operator(Enum):
 # https://learn.microsoft.com/en-us/cpp/cpp/cpp-built-in-operators-precedence-and-associativity?view=msvc-170
 priorities = {
     Operator.PRE_INC: 3,
+    Operator.BIT_NOT: 3,
     Operator.NEG: 3,
     Operator.ADDR_OF: 3,
     Operator.DEREF: 3,

@@ -1,6 +1,7 @@
 from .address_of import AddressOf
 from .array_access import ArrayAccess
 from .binary_expression import BinaryExpression as Bin
+from .bit_not import BitNot
 from .brackets_expression import BracketsExpression
 from .cast import Cast
 from .conditional_operator import ConditionalOperator

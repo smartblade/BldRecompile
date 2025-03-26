@@ -151,6 +151,9 @@ def _new_brackets_expression(state, prefix, brackets_tokens):
             return expressions.Negate(
                 _new_brackets_expression(state, prefix[1:], brackets_tokens)
             )
+        if prefix.startswith("~"):
+            return expressions.BitNot(
+                _new_brackets_expression(state, prefix[1:], brackets_tokens))
         operator = None
         if (
             prefix in operators and
