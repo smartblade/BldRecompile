@@ -6762,7 +6762,7 @@ l1000BD70:
 // address: 0x1000BD80
 p1000BD80
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=1328, stack_delta=None)
+    ProcedureInfo(this=None, this_offset=None, local_size=1328, stack_delta=0)
     if (reinterpret_cast<int>(STACKVAR(16, 4)) < 0)
     {
         goto l1000BD96;
@@ -6776,30 +6776,25 @@ l1000BD96:
     ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 24, 4) = STACKVAR(16, 4);
     ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 0, 4)(STACKVAR(8, 4));
 l1000BDBB:
-    if ((reinterpret_cast<any_int32>(STACKVAR(12, 4)) & 0x000000FF) == 0x00000000)
+    if ((reinterpret_cast<any_int32>(STACKVAR(12, 4)) & 0x000000FF) != 0x00000000)
     {
-        goto l1000BDDA;
+        STACKVAR(-1328, 4) = ACCESS(ARRPTR(STACKVAR(8, 4), 0x04, STACKVAR(16, 4), 84), 0, 4);
     }
-    STACKVAR(-1328, 4) = ACCESS(ARRPTR(STACKVAR(8, 4), 0x04, STACKVAR(16, 4), 84), 0, 4);
-    goto l1000BDEA;
-l1000BDDA:
-    STACKVAR(-1328, 4) = ACCESS(ARRPTR(STACKVAR(8, 4), 0x04, STACKVAR(16, 4), 100), 0, 4);
-l1000BDEA:
+    else
+    {
+        STACKVAR(-1328, 4) = ACCESS(ARRPTR(STACKVAR(8, 4), 0x04, STACKVAR(16, 4), 100), 0, 4);
+    }
     STACKVAR(-1040, 4) = STACKVAR(-1328, 4);
-    if (STACKVAR(-1040, 4) != 0x00000000)
+    if (STACKVAR(-1040, 4) == 0x00000000)
     {
-        goto l1000BE24;
+        ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x00000032;
+        ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 24, 4) = STACKVAR(16, 4);
+        ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 0, 4)(STACKVAR(8, 4));
     }
-    ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x00000032;
-    ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 24, 4) = STACKVAR(16, 4);
-    ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 0, 4)(STACKVAR(8, 4));
-l1000BE24:
-    if (ACCESS(STACKVAR(20, 4), 0, 4) != 0x00000000)
+    if (ACCESS(STACKVAR(20, 4), 0, 4) == 0x00000000)
     {
-        goto l1000BE47;
+        ACCESS(STACKVAR(20, 4), 0, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x00000500);
     }
-    ACCESS(STACKVAR(20, 4), 0, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x00000500);
-l1000BE47:
     STACKVAR(-1324, 4) = ACCESS(STACKVAR(20, 4), 0, 4);
     STACKVAR(-8, 4) = 0x00000000;
     STACKVAR(-1316, 4) = 0x00000001;
@@ -6824,14 +6819,11 @@ l1000BEB1:
     ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x00000008;
     ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 0, 4)(STACKVAR(8, 4));
 l1000BECB:
-    if (reinterpret_cast<any_int32>(STACKVAR(-1048, 4))-- == 0x00000000)
+    while (reinterpret_cast<any_int32>(STACKVAR(-1048, 4))-- != 0x00000000)
     {
-        goto l1000BEFF;
+        ACCESS(ARRPTR(LOCAL(-1308), 1, STACKVAR(-8, 4), 0), 0, 1) = STACKVAR(-1316, 1);
+        STACKVAR(-8, 4) = reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + 0x00000001;
     }
-    ACCESS(ARRPTR(LOCAL(-1308), 1, STACKVAR(-8, 4), 0), 0, 1) = STACKVAR(-1316, 1);
-    STACKVAR(-8, 4) = reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + 0x00000001;
-    goto l1000BECB;
-l1000BEFF:
     goto l1000BE65;
 l1000BF04:
     ACCESS(ARRPTR(LOCAL(-1308), 1, STACKVAR(-8, 4), 0), 0, 1) = 0;
@@ -6839,36 +6831,55 @@ l1000BF04:
     STACKVAR(-1320, 4) = 0x00000000;
     STACKVAR(-1312, 4) = static_cast<any_int32>(reinterpret_cast<char>(STACKVAR(-1308, 1)));
     STACKVAR(-8, 4) = 0x00000000;
-l1000BF36:
-    if (static_cast<any_int32>(reinterpret_cast<char>(ACCESS(ARRPTR(LOCAL(-1308), 1, STACKVAR(-8, 4), 0), 0, 1))) == 0x00000000)
+    while (static_cast<any_int32>(reinterpret_cast<char>(ACCESS(ARRPTR(LOCAL(-1308), 1, STACKVAR(-8, 4), 0), 0, 1))) != 0x00000000)
     {
-        goto l1000BFD7;
+        while (static_cast<any_int32>(reinterpret_cast<char>(ACCESS(ARRPTR(LOCAL(-1308), 1, STACKVAR(-8, 4), 0), 0, 1))) == reinterpret_cast<any_int32>(STACKVAR(-1312, 4)))
+        {
+            ACCESS(ARRPTR(LOCAL(-1036), 0x04, STACKVAR(-8, 4), 0), 0, 4) = STACKVAR(-1320, 4);
+            STACKVAR(-8, 4) = reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + 0x00000001;
+            STACKVAR(-1320, 4) = reinterpret_cast<any_int32>(STACKVAR(-1320, 4)) + 0x00000001;
+        }
+        if (reinterpret_cast<int>(STACKVAR(-1320, 4)) >= reinterpret_cast<int>(0x00000001 << reinterpret_cast<unsigned char>(static_cast<any_int8>(reinterpret_cast<any_int32>(STACKVAR(-1312, 4))))))
+        {
+            ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x00000008;
+            ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 0, 4)(STACKVAR(8, 4));
+        }
+        STACKVAR(-1320, 4) = 0x00000002 * reinterpret_cast<any_int32>(STACKVAR(-1320, 4));
+        STACKVAR(-1312, 4) = reinterpret_cast<any_int32>(STACKVAR(-1312, 4)) + 0x00000001;
     }
-l1000BF49:
-    if (static_cast<any_int32>(reinterpret_cast<char>(ACCESS(ARRPTR(LOCAL(-1308), 1, STACKVAR(-8, 4), 0), 0, 1))) != STACKVAR(-1312, 4))
-    {
-        goto l1000BF86;
-    }
-    ACCESS(ARRPTR(LOCAL(-1036), 0x04, STACKVAR(-8, 4), 0), 0, 4) = STACKVAR(-1320, 4);
+    memset(reinterpret_cast<any_int32>(STACKVAR(-1324, 4)) + 0x00000400, 0x00000000, 0x00000100);
+    STACKVAR(-4, 4) = (reinterpret_cast<any_int32>(STACKVAR(12, 4)) & 0x000000FF) == 0x00000000 ? 0x000000FF : 0x0000000F;
+    STACKVAR(-8, 4) = 0x00000000;
+    goto l1000C017;
+l1000C00E:
     STACKVAR(-8, 4) = reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + 0x00000001;
-    STACKVAR(-1320, 4) = reinterpret_cast<any_int32>(STACKVAR(-1320, 4)) + 0x00000001;
-    goto l1000BF49;
-l1000BF86:
-    if (reinterpret_cast<int>(STACKVAR(-1320, 4)) < reinterpret_cast<int>(0x00000001 << reinterpret_cast<unsigned char>(static_cast<any_int8>(reinterpret_cast<any_int32>(STACKVAR(-1312, 4))))))
+l1000C017:
+    if (reinterpret_cast<int>(STACKVAR(-8, 4)) >= reinterpret_cast<int>(STACKVAR(-1044, 4)))
     {
-        goto l1000BFB5;
+        goto l1000C0B9;
     }
+    STACKVAR(-1048, 4) = static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(reinterpret_cast<any_int32>(STACKVAR(-1040, 4)) + reinterpret_cast<any_int32>(STACKVAR(-8, 4)), 17, 1)));
+    if (reinterpret_cast<int>(STACKVAR(-1048, 4)) < 0)
+    {
+        goto l1000C065;
+    }
+    if (reinterpret_cast<int>(STACKVAR(-1048, 4)) > reinterpret_cast<int>(STACKVAR(-4, 4)))
+    {
+        goto l1000C065;
+    }
+    if (static_cast<any_int32>(reinterpret_cast<char>(ACCESS(reinterpret_cast<any_int32>(STACKVAR(-1324, 4)) + reinterpret_cast<any_int32>(STACKVAR(-1048, 4)), 1024, 1))) == 0x00000000)
+    {
+        goto l1000C07F;
+    }
+l1000C065:
     ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x00000008;
     ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 0, 4)(STACKVAR(8, 4));
-l1000BFB5:
-    STACKVAR(-1320, 4) = 0x00000002 * reinterpret_cast<any_int32>(STACKVAR(-1320, 4));
-    STACKVAR(-1312, 4) = reinterpret_cast<any_int32>(STACKVAR(-1312, 4)) + 0x00000001;
-    goto l1000BF36;
-l1000BFD7:
-    memset(reinterpret_cast<any_int32>(STACKVAR(-1324, 4)) + 0x00000400, 0x00000000, 0x00000100);
-    REGDEF(ecx=-reinterpret_cast<int>(reinterpret_cast<any_int32>(STACKVAR(12, 4)) & 0x000000FF))
+l1000C07F:
+    ACCESS(ARRPTR(STACKVAR(-1324, 4), 0x04, STACKVAR(-1048, 4), 0), 0, 4) = ACCESS(ARRPTR(LOCAL(-1036), 0x04, STACKVAR(-8, 4), 0), 0, 4);
+    ACCESS(reinterpret_cast<any_int32>(STACKVAR(-1324, 4)) + reinterpret_cast<any_int32>(STACKVAR(-1048, 4)), 1024, 1) = ACCESS(ARRPTR(LOCAL(-1308), 1, STACKVAR(-8, 4), 0), 0, 1);
+    goto l1000C00E;
+l1000C0B9:
 }
-Error: "Failed to find pattern for 'sbb ecx, ecx'"
 
 // address: 0x1000C0BE
 p1000C0BE

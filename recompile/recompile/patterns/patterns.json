@@ -519,6 +519,15 @@
 	},
 	{
 		"instructions": [
+			{"neg":  ["e%a-b-c-d%x"]},
+			{"sbb":  ["e%a-b-c-d%x", "e%a-b-c-d%x"]},
+			{"and":  ["%a-b-c-d%l", "%hex-1%"]},
+			{"add":  ["e%a-b-c-d%x", "%hex-2%"]}
+		],
+		"action": {"tmpreg": {"dst": "e%a-b-c-d%x", "src": "REGVALUE(e%a-b-c-d%x) == 0x00000000 ? I(%hex-2%) : I(EVAL(S(I(0xFFFFFF00) + I(%hex-1%)) + S(%hex-2%)))"}}
+	},
+	{
+		"instructions": [
 			{"neg":  ["%tmpreg32%"]},
 			{"sbb":  ["%tmpreg32%", "%tmpreg32%"]},
 			{"and":  ["%tmpreg32%", "%hex%"]}
