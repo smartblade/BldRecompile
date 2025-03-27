@@ -32,6 +32,10 @@ def _transform_int_sum(left, right):
         return None
     if not isinstance(right, expressions.Constant):
         return None
+    if not isinstance(
+        left.expression.data_type, (data_types.Pointer32, data_types.Reference)
+    ):
+        return None
     e = transform_access(left.expression, right.value, None)
     if e is None:
         return None
