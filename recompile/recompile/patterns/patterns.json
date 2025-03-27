@@ -487,6 +487,14 @@
 	{
 		"instructions": [
 			{"xor":  ["e%a-b-c-d%x", "e%a-b-c-d%x"]},
+			{"test": ["%tmpreg32%", "%tmpreg32%"]},
+			{"setnl":  ["%a-b-c-d%l"]}
+		],
+		"action": {"tmpreg": {"dst": "e%a-b-c-d%x", "src": "ZEROEXTEND(4, S(REGVALUE(%tmpreg32%)) >= S(0x00000000))"}}
+	},
+	{
+		"instructions": [
+			{"xor":  ["e%a-b-c-d%x", "e%a-b-c-d%x"]},
 			{"cmp":  ["%src-operand-left%", "%src-operand-right%"]},
 			{"setl":  ["%a-b-c-d%l"]}
 		],
