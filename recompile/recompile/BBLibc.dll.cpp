@@ -2858,64 +2858,115 @@ l100057FB:
 // address: 0x1000582E
 unsigned int B_ResourceManager::AddAutoResource(const B_Name &arg_1, B_Resource *arg_2, int arg_3)
 {
-    ProcedureInfo(this=Id(this), this_offset=-64, local_size=72, stack_delta=None)
     STACKVAR(-36, 4) = 0x00000000;
-    if (STACKVAR(12, 4) != 0x00000000)
+    if (arg_2 == nullptr)
     {
-        goto l1000585D;
+        _assert(GLOBAL(0x1004731C), GLOBAL(0x10047300), 0x000001EC);
     }
-    _assert(GLOBAL(0x1004731C), GLOBAL(0x10047300), 0x000001EC);
-l1000585D:
-    if (reinterpret_cast<int>(STACKVAR(16, 4)) < 0)
+    if (arg_3 < 0)
     {
         goto l1000586C;
     }
-    if (reinterpret_cast<int>(STACKVAR(16, 4)) <= 256)
+    if (arg_3 <= 256)
     {
         goto l10005873;
     }
 l1000586C:
-    REGDEF(eax=0x00000000)
-    goto l10005AE9;
+    return 0;
 l10005873:
-    if (ACCESS(ARRPTR(STACKVAR(-64, 4), 0x04, STACKVAR(16, 4), 0), 0, 4) != 0x00000000)
+    if (ACCESS(ARRPTR(this, 0x04, arg_3, 0), 0, 4) == 0x00000000)
     {
-        goto l100058B2;
+        STACKVAR(-20, 4) = ??2@YAPAXI@Z(0x00000018);
+        if (STACKVAR(-20, 4) != 0x00000000)
+        {
+            STACKVAR(-68, 4) = STACKVAR(-20, 4)->unknown_method_100046A6();
+        }
+        else
+        {
+            STACKVAR(-68, 4) = 0x00000000;
+        }
+        ACCESS(ARRPTR(this, 0x04, arg_3, 0), 0, 4) = STACKVAR(-68, 4);
     }
-    STACKVAR(-20, 4) = ??2@YAPAXI@Z(0x00000018);
-    if (STACKVAR(-20, 4) == 0x00000000)
-    {
-        goto l1000589F;
-    }
-    STACKVAR(-68, 4) = STACKVAR(-20, 4)->unknown_method_100046A6();
-    goto l100058A6;
-l1000589F:
-    STACKVAR(-68, 4) = 0x00000000;
-l100058A6:
-    ACCESS(ARRPTR(STACKVAR(-64, 4), 0x04, STACKVAR(16, 4), 0), 0, 4) = STACKVAR(-68, 4);
-l100058B2:
-    STACKVAR(-4, 4) = ACCESS(ACCESS(ARRPTR(STACKVAR(-64, 4), 0x04, STACKVAR(16, 4), 0), 0, 4), 8, 4);
+    STACKVAR(-4, 4) = ACCESS(ACCESS(ARRPTR(this, 0x04, arg_3, 0), 0, 4), 8, 4);
     STACKVAR(-8, 4) = 0x00000000;
     goto l100058D3;
 l100058CA:
     STACKVAR(-8, 4) = reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + 0x00000001;
 l100058D3:
-    if (reinterpret_cast<unsigned int>(STACKVAR(-8, 4)) >= reinterpret_cast<unsigned int>(STACKVAR(-4, 4)))
+    if (reinterpret_cast<unsigned int>(STACKVAR(-8, 4)) < reinterpret_cast<unsigned int>(STACKVAR(-4, 4)))
     {
-        goto l10005954;
+        STACKVAR(-16, 4) = ACCESS(ARRPTR(ACCESS(ACCESS(ARRPTR(this, 0x04, arg_3, 0), 0, 4), 4, 4), 0x04, STACKVAR(-8, 4), 0), 0, 4);
+        if (reinterpret_cast<B_Name &>(reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000004) == arg_2->name != 0)
+        {
+            if (ACCESS(STACKVAR(-16, 4), 28, 4) != 0x00000000)
+            {
+                mout << vararg("B_ResourceManager::AddAutoResource():  Performance Warning.. Loading resource %s twice.\n", ACCESS(STACKVAR(-16, 4), 4, 8));
+                return 0;
+            }
+            ACCESS(STACKVAR(-16, 4), 28, 4) = arg_2;
+            return 1;
+        }
+        goto l100058CA;
     }
-    STACKVAR(-16, 4) = ACCESS(ARRPTR(ACCESS(ACCESS(ARRPTR(STACKVAR(-64, 4), 0x04, STACKVAR(16, 4), 0), 0, 4), 4, 4), 0x04, STACKVAR(-8, 4), 0), 0, 4);
-    if ((reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000004)->unknown_method_1000354D(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000004) == 0x00000000)
+    STACKVAR(-24, 4) = ??2@YAPAXI@Z(0x00000024);
+    if (STACKVAR(-24, 4) != 0x00000000)
     {
-        goto l1000594F;
+        reinterpret_cast<B_Name *>(LOCAL(-32))->B_Name("<Blade Internal>");
+        STACKVAR(-36, 4) = reinterpret_cast<any_int32>(STACKVAR(-36, 4)) | 0x00000001;
+        STACKVAR(-72, 4) = STACKVAR(-24, 4)->unknown_method_10004371(LOCAL(-32), 0x00000000, arg_1, 0x00000000);
     }
-    if (ACCESS(STACKVAR(-16, 4), 28, 4) == 0x00000000)
+    else
     {
-        goto l1000593C;
+        STACKVAR(-72, 4) = 0x00000000;
     }
-    ARG(ACCESS(STACKVAR(-16, 4), 8, 4));
+    STACKVAR(-12, 4) = STACKVAR(-72, 4);
+    if ((reinterpret_cast<any_int32>(STACKVAR(-36, 4)) & 0x00000001) != 0x00000000)
+    {
+        STACKVAR(-36, 4) = reinterpret_cast<any_int32>(STACKVAR(-36, 4)) & 0xFFFFFFFE;
+        reinterpret_cast<B_Name *>(LOCAL(-32))->~B_Name();
+    }
+    if (STACKVAR(-12, 4) == 0x00000000)
+    {
+        _assert(GLOBAL(0x100473B4), GLOBAL(0x10047398), 0x00000206);
+    }
+    ACCESS(STACKVAR(-12, 4), 28, 4) = arg_2;
+    STACKVAR(-60, 4) = ACCESS(ARRPTR(this, 0x04, arg_3, 0), 0, 4);
+    if (reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-60, 4), 16, 4)) > reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-60, 4), 8, 4)))
+    {
+        ACCESS(ARRPTR(ACCESS(STACKVAR(-60, 4), 4, 4), 0x04, ACCESS(STACKVAR(-60, 4), 8, 4), 0), 0, 4) = STACKVAR(-12, 4);
+        ACCESS(STACKVAR(-60, 4), 8, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-60, 4), 8, 4)) + 0x00000001;
+        goto l10005AE4;
+    }
+    ACCESS(STACKVAR(-60, 4), 16, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-60, 4), 16, 4)) + reinterpret_cast<any_int32>(ACCESS(STACKVAR(-60, 4), 12, 4));
+    if (ACCESS(STACKVAR(-60, 4), 8, 4) == 0x00000000)
+    {
+        goto l10005AA5;
+    }
+    STACKVAR(-48, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-60, 4), 16, 4)));
+    STACKVAR(-40, 4) = STACKVAR(-48, 4);
+    STACKVAR(-44, 4) = 0x00000000;
+    goto l10005A63;
+l10005A5A:
+    STACKVAR(-44, 4) = reinterpret_cast<any_int32>(STACKVAR(-44, 4)) + 0x00000001;
+l10005A63:
+    if (reinterpret_cast<unsigned int>(STACKVAR(-44, 4)) < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-60, 4), 8, 4)))
+    {
+        ACCESS(ARRPTR(STACKVAR(-40, 4), 0x04, STACKVAR(-44, 4), 0), 0, 4) = ACCESS(ARRPTR(ACCESS(STACKVAR(-60, 4), 4, 4), 0x04, STACKVAR(-44, 4), 0), 0, 4);
+        goto l10005A5A;
+    }
+    STACKVAR(-52, 4) = ACCESS(STACKVAR(-60, 4), 4, 4);
+    ??3@YAXPAX@Z(STACKVAR(-52, 4));
+    ACCESS(STACKVAR(-60, 4), 4, 4) = STACKVAR(-40, 4);
+    goto l10005AC3;
+l10005AA5:
+    STACKVAR(-56, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-60, 4), 16, 4)));
+    ACCESS(STACKVAR(-60, 4), 4, 4) = STACKVAR(-56, 4);
+l10005AC3:
+    ACCESS(ARRPTR(ACCESS(STACKVAR(-60, 4), 4, 4), 0x04, ACCESS(STACKVAR(-60, 4), 8, 4), 0), 0, 4) = STACKVAR(-12, 4);
+    ACCESS(STACKVAR(-60, 4), 8, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-60, 4), 8, 4)) + 0x00000001;
+l10005AE4:
+    return 1;
 }
-Error: "'edx'"
 
 // address: 0x10005AF0
 B_Resource *B_ResourceManager::GetResource(unsigned short resourceId, const B_Name &name)

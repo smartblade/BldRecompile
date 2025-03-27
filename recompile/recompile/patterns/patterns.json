@@ -679,6 +679,18 @@
 	},
 	{
 		"instructions": [
+			{"mov": ["%tmpreg32-high%", "[%tmpreg32-src%%offset-src-high%]"]},
+			{"push": ["%tmpreg32-high%"]},
+			{"mov": ["%tmpreg32-low%", "[%tmpreg32-src%%offset-src-low%]"]},
+			{"push": ["%tmpreg32-low%"]}
+		],
+		"action": {"stackarg": {"arg": "ARG(ACCESS(REGVALUE(%tmpreg32-src%), EXPECT(%offset-src-low%, EVAL(%offset-src-high% - 4)), 8))"}},
+		"restrictions": [
+			"%tmpreg32-high% != %tmpreg32-src%"
+		]
+	},
+	{
+		"instructions": [
 			{"mov":  ["%mem-operand%", "%src-operand%"]}
 		],
 		"action": {"assignment": {"dst": "%mem-operand%", "src": "%src-operand%"}}
