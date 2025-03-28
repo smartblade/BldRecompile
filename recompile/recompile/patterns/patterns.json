@@ -1148,6 +1148,13 @@
 	{
 		"instructions": [
 			{"test": ["%tmpreg32%", "%tmpreg32%"]},
+			{"jl":  ["%label%"]}
+		],
+		"action": {"jump": {"condition": "S(REGVALUE(%tmpreg32%)) < S(0x00000000)", "address": "%label%"}}
+	},
+	{
+		"instructions": [
+			{"test": ["%tmpreg32%", "%tmpreg32%"]},
 			{"jle":  ["%label%"]}
 		],
 		"action": {"jump": {"condition": "S(REGVALUE(%tmpreg32%)) <= S(0x00000000)", "address": "%label%"}}
