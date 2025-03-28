@@ -1314,12 +1314,6 @@
 	},
 	{
 		"instructions": [
-			{"push":  ["%src-operand%"]}
-		],
-		"action": {"stackarg": {"arg": "ARG(%src-operand%)"}}
-	},
-	{
-		"instructions": [
 			{"sub":  ["esp", "000000008h"]},
 			{"fstp":  ["[esp]"]}
 		],
@@ -1327,6 +1321,22 @@
 			{"validate": {"expect": "EXPECT(%size%, 8)"}},
 			{"stackarg": {"arg": "ARG((real64)F(POPFPU()))"}}
 		]
+	},
+	{
+		"instructions": [
+			{"push":  ["ecx"]},
+			{"fstp":  ["[esp]"]}
+		],
+		"actions": [
+			{"validate": {"expect": "EXPECT(%size%, 4)"}},
+			{"stackarg": {"arg": "ARG((real32)F(POPFPU()))"}}
+		]
+	},
+	{
+		"instructions": [
+			{"push":  ["%src-operand%"]}
+		],
+		"action": {"stackarg": {"arg": "ARG(%src-operand%)"}}
 	},
 	{
 		"instructions": [
