@@ -27479,9 +27479,39 @@ l10035376:
     {
         goto l10035401;
     }
-    REGDEF(ST(0)=(reinterpret_cast<float>(STACKVAR(24, 4)) - reinterpret_cast<float>(STACKVAR(16, 4))) / (reinterpret_cast<double>(STACKVAR(-212, 8)) - reinterpret_cast<double>(STACKVAR(-252, 8))), ST(1)=(reinterpret_cast<float>(STACKVAR(20, 4)) - reinterpret_cast<float>(STACKVAR(12, 4))) / (reinterpret_cast<double>(STACKVAR(-260, 8)) - reinterpret_cast<double>(STACKVAR(-244, 8))))
+    if ((reinterpret_cast<float>(STACKVAR(24, 4)) - reinterpret_cast<float>(STACKVAR(16, 4))) / (reinterpret_cast<double>(STACKVAR(-212, 8)) - reinterpret_cast<double>(STACKVAR(-252, 8))) <= (reinterpret_cast<float>(STACKVAR(20, 4)) - reinterpret_cast<float>(STACKVAR(12, 4))) / (reinterpret_cast<double>(STACKVAR(-260, 8)) - reinterpret_cast<double>(STACKVAR(-244, 8))))
+    {
+        goto l100353D3;
+    }
+    STACKVAR(-1088, 8) = (reinterpret_cast<float>(STACKVAR(20, 4)) - reinterpret_cast<float>(STACKVAR(12, 4))) / (reinterpret_cast<double>(STACKVAR(-260, 8)) - reinterpret_cast<double>(STACKVAR(-244, 8)));
+    goto l100353ED;
+l100353D3:
+    STACKVAR(-1088, 8) = (reinterpret_cast<float>(STACKVAR(24, 4)) - reinterpret_cast<float>(STACKVAR(16, 4))) / (reinterpret_cast<double>(STACKVAR(-212, 8)) - reinterpret_cast<double>(STACKVAR(-252, 8)));
+l100353ED:
+    STACKVAR(-40, 4) = STACKVAR(-1088, 4);
+    STACKVAR(-36, 4) = STACKVAR(-1084, 4);
+    goto l10035407;
+l10035401:
+    STACKVAR(-40, 8) = static_cast<double>(reinterpret_cast<float>(STACKVAR(28, 4)));
+l10035407:
+    STACKVAR(-20, 8) = (reinterpret_cast<float>(STACKVAR(12, 4)) + reinterpret_cast<float>(STACKVAR(20, 4)) - (reinterpret_cast<double>(STACKVAR(-244, 8)) + reinterpret_cast<double>(STACKVAR(-260, 8))) * reinterpret_cast<double>(STACKVAR(-40, 8))) * reinterpret_cast<double>(ACCESS(GLOBAL(0x10042CE8), 0, 8));
+    STACKVAR(-28, 8) = (reinterpret_cast<float>(STACKVAR(16, 4)) + reinterpret_cast<float>(STACKVAR(24, 4)) - (reinterpret_cast<double>(STACKVAR(-252, 8)) + reinterpret_cast<double>(STACKVAR(-212, 8))) * reinterpret_cast<double>(STACKVAR(-40, 8))) * reinterpret_cast<double>(ACCESS(GLOBAL(0x10042CE8), 0, 8));
+    STACKVAR(-236, 4) = 0x00000000;
+    STACKVAR(-232, 4) = 0x00000000;
+    ACCESS(LOCAL(-228), 0, 8) = 0.0;
+    ACCESS(LOCAL(-220), 0, 8) = 0.0;
+    STACKVAR(-204, 8) = reinterpret_cast<double>(STACKVAR(-204, 8)) - reinterpret_cast<double>(ACCESS(GLOBAL(0x10042D88), 0, 8));
+    STACKVAR(8, 4)->(ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 108, 4))();
+    if (STACKVAR(32, 4) == 0x00000000)
+    {
+        goto l10035712;
+    }
+    STACKVAR(8, 4)->(ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 276, 4))(0x00000002);
+    STACKVAR(-548, 4) = static_cast<float>(STACKVAR(8, 4)->(ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 384, 4))());
+    STACKVAR(-1092, 4) = static_cast<float>(reinterpret_cast<float>(STACKVAR(-548, 4)) * reinterpret_cast<double>(ACCESS(GLOBAL(0x10042D80), 0, 8)));
+    REGDEF(ST(0)=reinterpret_cast<float>(STACKVAR(-1092, 4)))
 }
-Error: "Failed to find pattern for 'fcompp'"
+Error: "'ecx'"
 
 // address: 0x1003590B
 p1003590B

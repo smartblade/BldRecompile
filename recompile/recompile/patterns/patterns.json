@@ -1127,6 +1127,16 @@
 	},
 	{
 		"instructions": [
+			{"fcompp":  []},
+			{"fnstsw":  ["ax"]}
+		],
+		"actions": [
+			{"tmpreg": {"dst": "cmpfl", "src": "F(POPFPU())"}},
+			{"tmpreg": {"dst": "cmpfr", "src": "F(POPFPU())"}}
+		]
+	},
+	{
+		"instructions": [
 			{"test": ["ah", "001h"]},
 			{"je": ["%label%"]}
 		],
