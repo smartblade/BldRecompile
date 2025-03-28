@@ -157,6 +157,25 @@
 	},
 	{
 		"instructions": [
+			{"mov": ["%tmpreg32-1%", "[ebp%offset-src-00%]"]},
+			{"mov": ["[%tmpreg32-dst%]", "%tmpreg32-1%"]},
+			{"mov": ["%tmpreg32-2%", "[ebp%offset-src-04%]"]},
+			{"mov": ["[%tmpreg32-dst%+004h]", "%tmpreg32-2%"]},
+			{"mov": ["%tmpreg32-3%", "[ebp%offset-src-08%]"]},
+			{"mov": ["[%tmpreg32-dst%+008h]", "%tmpreg32-3%"]},
+			{"mov": ["%tmpreg32-4%", "[ebp%offset-src-0C%]"]},
+			{"mov": ["[%tmpreg32-dst%+00Ch]", "%tmpreg32-4%"]}
+		],
+		"action": {"instruction": {"expression": "memcpy(REGVALUE(%tmpreg32-dst%), LOCAL(EXPECT(EXPECT(EXPECT(%offset-src-00%, EVAL(%offset-src-04% - 4)), EVAL(%offset-src-08% - 8)), EVAL(%offset-src-0C% - 12))), 16)"}},
+		"restrictions": [
+			"%tmpreg32-1% != %tmpreg32-dst%",
+			"%tmpreg32-2% != %tmpreg32-dst%",
+			"%tmpreg32-3% != %tmpreg32-dst%",
+			"%tmpreg32-4% != %tmpreg32-dst%"
+		]
+	},
+	{
+		"instructions": [
 			{"push": ["ebp"]},
 			{"mov":  ["ebp", "esp"]},
 			{"push": ["ecx"]}
