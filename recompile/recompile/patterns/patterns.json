@@ -604,12 +604,17 @@
 	},
 	{
 		"instructions": [
-			{"mov": ["edx", "[eax%offset-right-low%]"]},
-			{"mov": ["[ecx%offset-left-low%]", "edx"]},
-			{"mov": ["eax", "[eax%offset-right-high%]"]},
-			{"mov": ["[ecx%offset-left-high%]", "eax"]}
+			{"mov": ["%tmpreg32-low%", "[%tmpreg32-src%%offset-right-low%]"]},
+			{"mov": ["[%tmpreg32-dst%%offset-left-low%]", "%tmpreg32-low%"]},
+			{"mov": ["%tmpreg32-high%", "[%tmpreg32-src%%offset-right-high%]"]},
+			{"mov": ["[%tmpreg32-dst%%offset-left-high%]", "%tmpreg32-high%"]}
 		],
-		"action": {"assignment": {"dst": "ACCESS(REGVALUE(ecx), EXPECT(%offset-left-low%, EVAL(%offset-left-high% - 4)), 8)", "src": "ACCESS(REGVALUE(eax), EXPECT(%offset-right-low%, EVAL(%offset-right-high% - 4)), 8)"}}
+		"action": {"assignment": {"dst": "ACCESS(REGVALUE(%tmpreg32-dst%), EXPECT(%offset-left-low%, EVAL(%offset-left-high% - 4)), 8)", "src": "ACCESS(REGVALUE(%tmpreg32-src%), EXPECT(%offset-right-low%, EVAL(%offset-right-high% - 4)), 8)"}},
+		"restrictions": [
+			"%tmpreg32-low% != %tmpreg32-src%",
+			"%tmpreg32-low% != %tmpreg32-dst%",
+			"%tmpreg32-high% != %tmpreg32-dst%"
+		]
 	},
 	{
 		"instructions": [

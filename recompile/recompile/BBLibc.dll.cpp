@@ -26717,52 +26717,44 @@ p10034467
 // address: 0x100344BF
 p100344BF
 {
-    ProcedureInfo(this=Id(this), this_offset=-168, local_size=192, stack_delta=None)
-    STACKVAR(-4, 4) = STACKVAR(-168, 4)->unknown_method_100342BD(STACKVAR(8, 4));
-    LOCAL(-28)->unknown_method_1003221C(STACKVAR(8, 4), STACKVAR(12, 4), STACKVAR(-4, 4));
+    ProcedureInfo(this=Id(this), this_offset=-168, local_size=192, stack_delta=12)
+    STACKVAR(-4, 4) = reinterpret_cast<B_ObjDscr *>(this)->GetVtxNode(reinterpret_cast<unsigned int>(STACKVAR(8, 4)));
+    reinterpret_cast<B_MeshEdge *>(LOCAL(-28))->B_MeshEdge(reinterpret_cast<unsigned int>(STACKVAR(8, 4)), reinterpret_cast<unsigned int>(STACKVAR(12, 4)), reinterpret_cast<unsigned int>(STACKVAR(-4, 4)));
     STACKVAR(-32, 4) = 0x00000000;
     goto l10034508;
 l100344FF:
     STACKVAR(-32, 4) = reinterpret_cast<any_int32>(STACKVAR(-32, 4)) + 0x00000001;
 l10034508:
-    if (reinterpret_cast<unsigned int>(STACKVAR(-32, 4)) >= reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-168, 4), 196, 4)))
+    if (reinterpret_cast<unsigned int>(STACKVAR(-32, 4)) < reinterpret_cast<unsigned int>(ACCESS(this, 196, 4)))
     {
-        goto l100345D3;
+        if (*reinterpret_cast<B_MeshEdge *>(LOCAL(-28)) == reinterpret_cast<B_MeshEdge &>(reinterpret_cast<any_int32>(ACCESS(this, 192, 4)) + 0x00000018 * reinterpret_cast<any_int32>(STACKVAR(-32, 4))) != 0)
+        {
+            if (ACCESS(ARRPTR(ACCESS(GLOBAL(0x1004A9AC), 0, 4), 0x04, STACKVAR(-32, 4), 0), 0, 4) == 0x00000001)
+            {
+                if ((0x00000024 * reinterpret_cast<any_int32>(STACKVAR(-32, 4)) + reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A994), 0, 4)))->unknown_method_100312FC(STACKVAR(16, 4)) != 0x00000000)
+                {
+                    ACCESS(ARRPTR(ACCESS(this, 192, 4), 1, 0x00000018 * reinterpret_cast<any_int32>(STACKVAR(-32, 4)), 20), 0, 4) = 0x00000000;
+                }
+                else
+                {
+                    ACCESS(ARRPTR(ACCESS(this, 192, 4), 1, 0x00000018 * reinterpret_cast<any_int32>(STACKVAR(-32, 4)), 20), 0, 4) = 0x00000001;
+                    STACKVAR(-172, 4) = ARRPTR(ACCESS(GLOBAL(0x1004A9AC), 0, 4), 0x04, STACKVAR(-32, 4), 0);
+                    ACCESS(STACKVAR(-172, 4), 0, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-172, 4), 0, 4)) + 0x00000001;
+                }
+            }
+            REGDEF(eax=STACKVAR(-32, 4))
+            return;
+        }
+        goto l100344FF;
     }
-    if (LOCAL(-28)->unknown_method_1003227E(reinterpret_cast<any_int32>(ACCESS(STACKVAR(-168, 4), 192, 4)) + 0x00000018 * reinterpret_cast<any_int32>(STACKVAR(-32, 4))) == 0x00000000)
+    STACKVAR(-16, 8) = reinterpret_cast<double>(ACCESS(GLOBAL(0x100422C0), 0, 8)) / (0x00000030 * reinterpret_cast<any_int32>(STACKVAR(12, 4)) + reinterpret_cast<any_int32>(ACCESS(this, 40, 4)))->unknown_method_10031760(LOCAL(-56), reinterpret_cast<any_int32>(ACCESS(this, 40, 4)) + 0x00000030 * reinterpret_cast<any_int32>(STACKVAR(8, 4)))->unknown_method_10031913();
+    STACKVAR(-116, 4) = reinterpret_cast<any_int32>(this) + 0x000000BC;
+    if (reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-116, 4), 16, 4)) > reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-116, 4), 8, 4)))
     {
-        goto l100345CE;
+        memcpy(reinterpret_cast<any_int32>(ACCESS(STACKVAR(-116, 4), 4, 4)) + 0x00000018 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-116, 4), 8, 4)), LOCAL(-28), 0x00000018); // TODO improve emitting of memcpy instructions
+        ACCESS(STACKVAR(-116, 4), 8, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-116, 4), 8, 4)) + 0x00000001;
+        goto l100347EE;
     }
-    if (ACCESS(ARRPTR(ACCESS(GLOBAL(0x1004A9AC), 0, 4), 0x04, STACKVAR(-32, 4), 0), 0, 4) != 0x00000001)
-    {
-        goto l100345C6;
-    }
-    if ((0x00000024 * reinterpret_cast<any_int32>(STACKVAR(-32, 4)) + reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A994), 0, 4)))->unknown_method_100312FC(STACKVAR(16, 4)) == 0x00000000)
-    {
-        goto l10034588;
-    }
-    ACCESS(ARRPTR(ACCESS(STACKVAR(-168, 4), 192, 4), 1, 0x00000018 * reinterpret_cast<any_int32>(STACKVAR(-32, 4)), 20), 0, 4) = 0x00000000;
-    goto l100345C6;
-l10034588:
-    ACCESS(ARRPTR(ACCESS(STACKVAR(-168, 4), 192, 4), 1, 0x00000018 * reinterpret_cast<any_int32>(STACKVAR(-32, 4)), 20), 0, 4) = 0x00000001;
-    STACKVAR(-172, 4) = ARRPTR(ACCESS(GLOBAL(0x1004A9AC), 0, 4), 0x04, STACKVAR(-32, 4), 0);
-    ACCESS(STACKVAR(-172, 4), 0, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-172, 4), 0, 4)) + 0x00000001;
-l100345C6:
-    REGDEF(eax=STACKVAR(-32, 4))
-    goto l10034A82;
-l100345CE:
-    goto l100344FF;
-l100345D3:
-    STACKVAR(-16, 8) = reinterpret_cast<double>(ACCESS(GLOBAL(0x100422C0), 0, 8)) / (0x00000030 * reinterpret_cast<any_int32>(STACKVAR(12, 4)) + reinterpret_cast<any_int32>(ACCESS(STACKVAR(-168, 4), 40, 4)))->unknown_method_10031760(LOCAL(-56), reinterpret_cast<any_int32>(ACCESS(STACKVAR(-168, 4), 40, 4)) + 0x00000030 * reinterpret_cast<any_int32>(STACKVAR(8, 4)))->unknown_method_10031913();
-    STACKVAR(-116, 4) = reinterpret_cast<any_int32>(STACKVAR(-168, 4)) + 0x000000BC;
-    if (reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-116, 4), 16, 4)) <= reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-116, 4), 8, 4)))
-    {
-        goto l1003465B;
-    }
-    memcpy(reinterpret_cast<any_int32>(ACCESS(STACKVAR(-116, 4), 4, 4)) + 0x00000018 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-116, 4), 8, 4)), LOCAL(-28), 0x00000018); // TODO improve emitting of memcpy instructions
-    ACCESS(STACKVAR(-116, 4), 8, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-116, 4), 8, 4)) + 0x00000001;
-    goto l100347EE;
-l1003465B:
     ACCESS(STACKVAR(-116, 4), 16, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-116, 4), 16, 4)) + reinterpret_cast<any_int32>(ACCESS(STACKVAR(-116, 4), 12, 4));
     if (ACCESS(STACKVAR(-116, 4), 8, 4) == 0x00000000)
     {
@@ -26779,14 +26771,12 @@ l1003465B:
     STACKVAR(-92, 4) = STACKVAR(-80, 4);
 l100346AE:
     STACKVAR(-100, 4) = reinterpret_cast<any_int32>(STACKVAR(-100, 4)) - 0x00000001;
-    if (reinterpret_cast<int>(STACKVAR(-100, 4)) < 0)
+    if (reinterpret_cast<int>(STACKVAR(-100, 4)) >= 0)
     {
-        goto l100346D0;
+        reinterpret_cast<B_MeshEdge *>(STACKVAR(-92, 4))->B_MeshEdge();
+        STACKVAR(-92, 4) = reinterpret_cast<any_int32>(STACKVAR(-92, 4)) + reinterpret_cast<any_int32>(STACKVAR(-96, 4));
+        goto l100346AE;
     }
-    STACKVAR(-92, 4)->unknown_method_100321F0();
-    STACKVAR(-92, 4) = reinterpret_cast<any_int32>(STACKVAR(-92, 4)) + reinterpret_cast<any_int32>(STACKVAR(-96, 4));
-    goto l100346AE;
-l100346D0:
     STACKVAR(-176, 4) = STACKVAR(-80, 4);
     goto l100346E5;
 l100346DB:
@@ -26798,13 +26788,11 @@ l100346E5:
 l100346F7:
     STACKVAR(-72, 4) = reinterpret_cast<any_int32>(STACKVAR(-72, 4)) + 0x00000001;
 l10034700:
-    if (reinterpret_cast<unsigned int>(STACKVAR(-72, 4)) >= reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-116, 4), 8, 4)))
+    if (reinterpret_cast<unsigned int>(STACKVAR(-72, 4)) < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-116, 4), 8, 4)))
     {
-        goto l1003472D;
+        memcpy(reinterpret_cast<any_int32>(STACKVAR(-68, 4)) + 0x00000018 * reinterpret_cast<any_int32>(STACKVAR(-72, 4)), reinterpret_cast<any_int32>(ACCESS(STACKVAR(-116, 4), 4, 4)) + 0x00000018 * reinterpret_cast<any_int32>(STACKVAR(-72, 4)), 0x00000018); // TODO improve emitting of memcpy instructions
+        goto l100346F7;
     }
-    memcpy(reinterpret_cast<any_int32>(STACKVAR(-68, 4)) + 0x00000018 * reinterpret_cast<any_int32>(STACKVAR(-72, 4)), reinterpret_cast<any_int32>(ACCESS(STACKVAR(-116, 4), 4, 4)) + 0x00000018 * reinterpret_cast<any_int32>(STACKVAR(-72, 4)), 0x00000018); // TODO improve emitting of memcpy instructions
-    goto l100346F7;
-l1003472D:
     STACKVAR(-84, 4) = ACCESS(STACKVAR(-116, 4), 4, 4);
     ??3@YAXPAX@Z(STACKVAR(-84, 4));
     ACCESS(STACKVAR(-116, 4), 4, 4) = STACKVAR(-68, 4);
@@ -26821,14 +26809,12 @@ l1003474D:
     STACKVAR(-104, 4) = STACKVAR(-88, 4);
 l10034781:
     STACKVAR(-112, 4) = reinterpret_cast<any_int32>(STACKVAR(-112, 4)) - 0x00000001;
-    if (reinterpret_cast<int>(STACKVAR(-112, 4)) < 0)
+    if (reinterpret_cast<int>(STACKVAR(-112, 4)) >= 0)
     {
-        goto l100347A3;
+        reinterpret_cast<B_MeshEdge *>(STACKVAR(-104, 4))->B_MeshEdge();
+        STACKVAR(-104, 4) = reinterpret_cast<any_int32>(STACKVAR(-104, 4)) + reinterpret_cast<any_int32>(STACKVAR(-108, 4));
+        goto l10034781;
     }
-    STACKVAR(-104, 4)->unknown_method_100321F0();
-    STACKVAR(-104, 4) = reinterpret_cast<any_int32>(STACKVAR(-104, 4)) + reinterpret_cast<any_int32>(STACKVAR(-108, 4));
-    goto l10034781;
-l100347A3:
     STACKVAR(-180, 4) = STACKVAR(-88, 4);
     goto l100347B8;
 l100347AE:
@@ -26839,15 +26825,89 @@ l100347C4:
     memcpy(reinterpret_cast<any_int32>(ACCESS(STACKVAR(-116, 4), 4, 4)) + 0x00000018 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-116, 4), 8, 4)), LOCAL(-28), 0x00000018); // TODO improve emitting of memcpy instructions
     ACCESS(STACKVAR(-116, 4), 8, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-116, 4), 8, 4)) + 0x00000001;
 l100347EE:
-    if (reinterpret_cast<unsigned int>(ACCESS(GLOBAL(0x1004A9A0), 0, 4)) <= reinterpret_cast<unsigned int>(ACCESS(GLOBAL(0x1004A998), 0, 4)))
+    if (reinterpret_cast<unsigned int>(ACCESS(GLOBAL(0x1004A9A0), 0, 4)) > reinterpret_cast<unsigned int>(ACCESS(GLOBAL(0x1004A998), 0, 4)))
     {
-        goto l10034851;
+        STACKVAR(-152, 4) = reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A994), 0, 4)) + 0x00000024 * reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A998), 0, 4));
+        memcpy(reinterpret_cast<any_int32>(STACKVAR(-152, 4)) + 0x00000004, reinterpret_cast<any_int32>(STACKVAR(16, 4)) + 0x00000004, 0x00000018); // TODO improve emitting of memcpy instructions
+        ACCESS(STACKVAR(-152, 4), 28, 8) = ACCESS(STACKVAR(16, 4), 28, 8);
+        ACCESS(GLOBAL(0x1004A998), 0, 4) = reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A998), 0, 4)) + 0x00000001;
+        goto l10034A6A;
     }
-    STACKVAR(-152, 4) = reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A994), 0, 4)) + 0x00000024 * reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A998), 0, 4));
-    memcpy(reinterpret_cast<any_int32>(STACKVAR(-152, 4)) + 0x00000004, reinterpret_cast<any_int32>(STACKVAR(16, 4)) + 0x00000004, 0x00000018); // TODO improve emitting of memcpy instructions
-    ACCESS(STACKVAR(-152, 4), 28, 4) = ACCESS(STACKVAR(16, 4), 28, 4);
+    ACCESS(GLOBAL(0x1004A9A0), 0, 4) = reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A9A0), 0, 4)) + reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A99C), 0, 4));
+    if (ACCESS(GLOBAL(0x1004A998), 0, 4) == 0x00000000)
+    {
+        goto l100349C2;
+    }
+    STACKVAR(-120, 4) = ACCESS(GLOBAL(0x1004A9A0), 0, 4);
+    STACKVAR(-136, 4) = ??2@YAPAXI@Z(0x00000024 * reinterpret_cast<any_int32>(STACKVAR(-120, 4)) + 0x00000004);
+    if (STACKVAR(-136, 4) == 0x00000000)
+    {
+        goto l10034920;
+    }
+    ACCESS(STACKVAR(-136, 4), 0, 4) = STACKVAR(-120, 4);
+    STACKVAR(-164, 4) = STACKVAR(-120, 4);
+    STACKVAR(-160, 4) = 0x00000024;
+    STACKVAR(-156, 4) = reinterpret_cast<any_int32>(STACKVAR(-136, 4)) + 0x00000004;
+l100348C9:
+    STACKVAR(-164, 4) = reinterpret_cast<any_int32>(STACKVAR(-164, 4)) - 0x00000001;
+    if (reinterpret_cast<int>(STACKVAR(-164, 4)) >= 0)
+    {
+        (reinterpret_cast<any_int32>(STACKVAR(-156, 4)) + 0x00000004)->unknown_method_1002DEF0();
+        ACCESS(STACKVAR(-156, 4), 0, 4) = GLOBAL(0x10042D3C);
+        STACKVAR(-156, 4) = reinterpret_cast<any_int32>(STACKVAR(-156, 4)) + reinterpret_cast<any_int32>(STACKVAR(-160, 4));
+        goto l100348C9;
+    }
+    STACKVAR(-184, 4) = reinterpret_cast<any_int32>(STACKVAR(-136, 4)) + 0x00000004;
+    goto l1003492A;
+l10034920:
+    STACKVAR(-184, 4) = 0x00000000;
+l1003492A:
+    STACKVAR(-124, 4) = STACKVAR(-184, 4);
+    STACKVAR(-128, 4) = 0x00000000;
+    goto l10034945;
+l1003493C:
+    STACKVAR(-128, 4) = reinterpret_cast<any_int32>(STACKVAR(-128, 4)) + 0x00000001;
+l10034945:
+    if (reinterpret_cast<unsigned int>(STACKVAR(-128, 4)) < reinterpret_cast<unsigned int>(ACCESS(GLOBAL(0x1004A998), 0, 4)))
+    {
+        (0x00000024 * reinterpret_cast<any_int32>(STACKVAR(-128, 4)) + reinterpret_cast<any_int32>(STACKVAR(-124, 4)))->unknown_method_1003B780(reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A994), 0, 4)) + 0x00000024 * reinterpret_cast<any_int32>(STACKVAR(-128, 4)));
+        goto l1003493C;
+    }
+    STACKVAR(-144, 4) = ACCESS(GLOBAL(0x1004A994), 0, 4);
+    STACKVAR(-140, 4) = STACKVAR(-144, 4);
+    if (STACKVAR(-140, 4) != 0x00000000)
+    {
+        STACKVAR(-188, 4) = STACKVAR(-140, 4)->(ACCESS(ACCESS(STACKVAR(-140, 4), 0, 4), 0, 4))(0x00000003);
+    }
+    else
+    {
+        STACKVAR(-188, 4) = 0x00000000;
+    }
+    ACCESS(GLOBAL(0x1004A994), 0, 4) = STACKVAR(-124, 4);
+    goto l10034A43;
+l100349C2:
+    STACKVAR(-132, 4) = ACCESS(GLOBAL(0x1004A9A0), 0, 4);
+    STACKVAR(-148, 4) = ??2@YAPAXI@Z(0x00000024 * reinterpret_cast<any_int32>(STACKVAR(-132, 4)) + 0x00000004);
+    if (STACKVAR(-148, 4) != 0x00000000)
+    {
+        ARG(GLOBAL(0x10039610));
+        ACCESS(STACKVAR(-148, 4), 0, 4) = STACKVAR(-132, 4);
+        unknown_function_100395E0(reinterpret_cast<any_int32>(STACKVAR(-148, 4)) + 0x00000004, 0x00000024, STACKVAR(-132, 4));
+        STACKVAR(-192, 4) = reinterpret_cast<any_int32>(STACKVAR(-148, 4)) + 0x00000004;
+    }
+    else
+    {
+        STACKVAR(-192, 4) = 0x00000000;
+    }
+    ACCESS(GLOBAL(0x1004A994), 0, 4) = STACKVAR(-192, 4);
+l10034A43:
+    (reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A994), 0, 4)) + 0x00000024 * reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A998), 0, 4)))->unknown_method_1003B780(STACKVAR(16, 4));
+    ACCESS(GLOBAL(0x1004A998), 0, 4) = reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A998), 0, 4)) + 0x00000001;
+l10034A6A:
+    STACKVAR(-60, 4) = 0x00000001;
+    GLOBAL(0x1004A9A8)->unknown_method_1003A3C0(LOCAL(-60));
+    REGDEF(eax=STACKVAR(-32, 4))
 }
-Error: "Unexpected instruction type <class 'instructions.assignment.Assignment'>"
 
 // address: 0x10034A8A
 void B_ObjDscr::SetUpEdges()
