@@ -27479,9 +27479,9 @@ l10035376:
     {
         goto l10035401;
     }
-    REGDEF(ST(0)=reinterpret_cast<double>(STACKVAR(-260, 8)) - reinterpret_cast<double>(STACKVAR(-244, 8)), ST(1)=reinterpret_cast<float>(STACKVAR(20, 4)) - reinterpret_cast<float>(STACKVAR(12, 4)))
+    REGDEF(ST(0)=(reinterpret_cast<float>(STACKVAR(24, 4)) - reinterpret_cast<float>(STACKVAR(16, 4))) / (reinterpret_cast<double>(STACKVAR(-212, 8)) - reinterpret_cast<double>(STACKVAR(-252, 8))), ST(1)=(reinterpret_cast<float>(STACKVAR(20, 4)) - reinterpret_cast<float>(STACKVAR(12, 4))) / (reinterpret_cast<double>(STACKVAR(-260, 8)) - reinterpret_cast<double>(STACKVAR(-244, 8))))
 }
-Error: "Failed to find pattern for 'fdivp st(01h), st(00h)'"
+Error: "Failed to find pattern for 'fcompp'"
 
 // address: 0x1003590B
 p1003590B

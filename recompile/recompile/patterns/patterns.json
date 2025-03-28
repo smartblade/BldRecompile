@@ -1095,6 +1095,16 @@
 	},
 	{
 		"instructions": [
+			{"fdivp":  ["st(01h)", "st(00h)"]}
+		],
+		"actions": [
+			{"tmpreg": {"dst": "ST0", "src": "POPFPU()"}},
+			{"tmpreg": {"dst": "ST1", "src": "POPFPU()"}},
+			{"pushfpu": {"src": "F(REGVALUE(ST1)) / F(REGVALUE(ST0))"}}
+		]
+	},
+	{
+		"instructions": [
 			{"fabs":  []}
 		],
 		"action": {"pushfpu": {"src": "fabs(F(POPFPU()))"}}
