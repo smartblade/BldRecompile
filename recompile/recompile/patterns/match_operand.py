@@ -79,7 +79,7 @@ def _apply_operand_pattern(
 
 
 def _match_operand(operand, operand_pattern):
-    match = re.search(operand_regexp, operand.strip())
+    match = re.search(operand_regexp, operand)
     operand = match.group("operand")
     operand_size = _get_operand_size(match.group("size"))
     defined_groups = set()

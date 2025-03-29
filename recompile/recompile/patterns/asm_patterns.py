@@ -1,6 +1,5 @@
 import json
 import os
-import re
 
 from hex_conversion import from_hex, to_hex
 from make_tuple import add_attributes
@@ -8,11 +7,11 @@ import parser
 from patterns.apply_pattern import apply_pattern
 from patterns.collect_string_constants import collect_string_constants
 from patterns.match_operand import match_operand
-from patterns.parse_asm_lines import parse_asm_lines
+from patterns.asm_parser import parse_asm_lines
+from patterns.prefix_status import PrefixStatus
+from patterns.structure import Patterns
 from patterns.builder import ProcedureBuilder
 from writer import Writer
-
-command_regexp = re.compile(r'^(?P<cmd>\w+)(\s+(?P<operands>.+))?$')
 
 
 def process_asm_patterns(lines, declarations):
@@ -21,7 +20,7 @@ def process_asm_patterns(lines, declarations):
     patterns_path = os.path.join(
         os.path.dirname(os.path.realpath(__file__)), "patterns.json")
     with open(patterns_path, "rt") as f:
-        patterns = json.load(f)
+        patterns = Patterns(json.load(f))
     proc_addr = None
     proc_lines = []
     writer = Writer()
@@ -94,60 +93,50 @@ def _build_proc(
 
 
 def _parse_asm_proc(builder, string_constants, patterns, lines):
-    lines = parse_asm_lines(lines)
+    instrs = parse_asm_lines(lines, patterns.commands_code_dict)
+    prefix_status = PrefixStatus(patterns.make_prefix_builder(), instrs)
     cur_index = 0
-    while cur_index < len(lines):
+    while cur_index < len(instrs):
         pattern, match_dict, cur_index = _match_patterns(
-            patterns, cur_index, lines)
+            prefix_status, patterns, cur_index, instrs)
         apply_pattern(builder, string_constants, pattern, match_dict)
 
 
-def _match_patterns(patterns, first_index, lines):
-    instructions_patterns = patterns["instructions-patterns"]
-    operand_pattern_sets = patterns["operand-patterns"]
+def _match_patterns(prefix_status, patterns, first_index, instrs):
+    instructions_patterns = patterns.instructions_patterns_by_prefix(
+        prefix_status.prefix)
     for pattern in instructions_patterns:
         last_index, match_dict = _match_instructions_pattern(
-            pattern, operand_pattern_sets, first_index, lines)
+            pattern, patterns.operand_sets, first_index, instrs)
         if last_index > first_index:
+            prefix_status.update(last_index - first_index)
             return pattern, match_dict, last_index
     raise Exception(
-        "Failed to find pattern for '{}'".format(lines[first_index]))
+        "Failed to find pattern for '{}'".format(instrs[first_index]))
 
 
 def _match_instructions_pattern(
-    pattern, operand_pattern_sets, first_index, lines
+    pattern, operand_pattern_sets, first_index, instrs
 ):
     match_dict = dict()
-    instructions = pattern["instructions"]
     cur_index = first_index
-    for instr_pattern in instructions:
+    for instr_pattern in pattern.instructions:
         if not _match_instruction(
-            instr_pattern, operand_pattern_sets, lines[cur_index], match_dict
+            instr_pattern, operand_pattern_sets, instrs[cur_index], match_dict
         ):
             return -1, None
         cur_index += 1
     return cur_index, match_dict
 
 
-def _match_instruction(instr_pattern, operand_pattern_sets, line, match_dict):
-    line = _add_size_to_call_operand(line)
-    expected_cmd = next(iter(instr_pattern.keys()))
-    expected_operands = next(iter(instr_pattern.values()))
-    match = re.search(command_regexp, line)
-    if not match:
-        raise Exception("Can't parse line: {}".format(line))
-    if expected_cmd != match.group("cmd"):
+def _match_instruction(instr_pattern, operand_pattern_sets, instr, match_dict):
+    if instr_pattern.command_code != instr.command_code:
         return False
-    operands_str = match.group("operands")
-    if operands_str is not None:
-        operands = operands_str.split(",")
-    else:
-        operands = []
-    if len(expected_operands) != len(operands):
+    if len(instr_pattern.operands) != len(instr.operands):
         return False
-    for op_index in range(len(operands)):
+    for op_index in range(len(instr.operands)):
         cur_match_dict = match_operand(
-            operands[op_index], expected_operands[op_index],
+            instr.operands[op_index], instr_pattern.operands[op_index],
             operand_pattern_sets
         )
         if cur_match_dict is None:
@@ -161,9 +150,3 @@ def _match_instruction(instr_pattern, operand_pattern_sets, line, match_dict):
                 else:
                     return False
     return True
-
-
-def _add_size_to_call_operand(line):
-    if not line.startswith("call"):
-        return line
-    return line.replace("call [", "call dword ptr [")

@@ -43,29 +43,18 @@ _actions = {
 
 
 def apply_pattern(builder, string_constants, pattern, match_dict):
-    unknown_attributes = set(pattern.keys()) - {
-        'instructions',
-        'action',
-        'actions',
-        'restrictions',
-    }
-    if unknown_attributes:
-        raise Exception(
-            "Unknown pattern attributes: {}".format(unknown_attributes))
     _apply_actions(builder, string_constants, pattern, match_dict)
-    restrictions = pattern.get("restrictions")
-    if restrictions is not None:
-        for restriction in restrictions:
+    if pattern.restrictions is not None:
+        for restriction in pattern.restrictions:
             restriction = _evaluate_expression(restriction, match_dict)
             apply_restriction(restriction)
 
 
 def _apply_actions(builder, string_constants, pattern, match_dict):
-    actions = pattern.get("actions")
-    if actions is None:
-        apply_action(builder, string_constants, pattern["action"], match_dict)
+    if pattern.actions is None:
+        apply_action(builder, string_constants, pattern.action, match_dict)
         return
-    for action in actions:
+    for action in pattern.actions:
         apply_action(builder, string_constants, action, match_dict)
 
 
