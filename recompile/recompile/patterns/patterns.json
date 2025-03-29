@@ -743,6 +743,13 @@
 	},
 	{
 		"instructions": [
+			{"mov": ["[%tmpreg32-dst-base%+%tmpreg32-dst-index%*08h]", "%hex-low%"]},
+			{"mov": ["[%tmpreg32-dst-base%+%tmpreg32-dst-index%*08h+004h]", "%hex-high%"]}
+		],
+		"action": {"assignment": {"dst": "ACCESS(ARRPTR(REGVALUE(%tmpreg32-dst-base%), 8, REGVALUE(%tmpreg32-dst-index%), 0), 0, 8)", "src": "REAL64(%hex-high%, %hex-low%)"}}
+	},
+	{
+		"instructions": [
 			{"mov": ["%tmpreg32-high%", "[%tmpreg32-src%%offset-src-high%]"]},
 			{"push": ["%tmpreg32-high%"]},
 			{"mov": ["%tmpreg32-low%", "[%tmpreg32-src%%offset-src-low%]"]},
