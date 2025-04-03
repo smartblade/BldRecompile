@@ -3,9 +3,6 @@ import re
 from hex_conversion import from_hex
 from patterns.apply_pattern import replace_variables
 
-operand_regexp = re.compile(
-    r'^(?P<size>(byte|word|dword|qword|near)\s+ptr\s+)?(?P<operand>.+)$')
-
 _regexp_map = {
     "a-b-c-d": (r"a|b|c|d", None),
     "al-bl-cl-dl": (r"al|bl|cl|dl", None),
@@ -79,9 +76,6 @@ def _apply_operand_pattern(
 
 
 def _match_operand(operand, operand_pattern):
-    match = re.search(operand_regexp, operand)
-    operand = match.group("operand")
-    operand_size = _get_operand_size(match.group("size"))
     defined_groups = set()
     expected_operand_regexp = re.escape(operand_pattern)
     expected_operand_regexp = re.sub(
@@ -89,7 +83,7 @@ def _match_operand(operand, operand_pattern):
         lambda matchobj: _define_variable_regexp(matchobj, defined_groups),
         expected_operand_regexp)
     expected_operand_regexp = r"^{}$".format(expected_operand_regexp)
-    match = re.search(expected_operand_regexp, operand)
+    match = re.search(expected_operand_regexp, operand.asm)
     if not match:
         return None
     operand_match_dict = {}
@@ -98,25 +92,9 @@ def _match_operand(operand, operand_pattern):
             continue
         param = param.replace("_", "-")
         operand_match_dict[param] = _convert_variable_value(param, value)
-    if operand_size is not None:
-        operand_match_dict["size"] = str(operand_size)
+    if operand.size is not None:
+        operand_match_dict["size"] = str(operand.size)
     return operand_match_dict
-
-
-def _get_operand_size(s):
-    if s is None:
-        return None
-    if s.startswith("byte"):
-        return 1
-    if s.startswith("word"):
-        return 2
-    if s.startswith("dword"):
-        return 4
-    if s.startswith("qword"):
-        return 8
-    if s.startswith("near"):
-        return None
-    raise Exception("Unknown operand size: {}.".format(s))
 
 
 def _define_variable_regexp(matchobj, defined_groups):
