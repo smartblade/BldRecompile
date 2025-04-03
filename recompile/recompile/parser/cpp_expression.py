@@ -1,4 +1,3 @@
-from collections import namedtuple
 import re
 
 import data_types
@@ -6,7 +5,13 @@ from exceptions import UnknownTypeException
 import expressions
 from expressions.operator import Operator, operators, priorities
 from hex_conversion import from_hex
+from make_tuple import make_tuple_type
 import parser
+
+State = make_tuple_type(
+    'State', bracket=None, cur_token=None, tokens=None,
+    declared_identifiers=None, defined_types=None
+)
 
 const_regexp = re.compile(
     r'^((?P<float>-?\d+\.\d+F?)|(?P<hex>0x[\dABCDEF]+)|(?P<int>-?\d+)|'
@@ -221,8 +226,9 @@ def _new_binary(operator, left, right):
         return expressions.ConditionalOperator(left.left, left.right, right)
     return expressions.Bin(operator, left, right)
 
+
 def _new_state(**kwargs):
-    return namedtuple('State', kwargs.keys())(**kwargs)
+    return State(**kwargs)
 
 
 def _opening_bracket(states, state, bracket):
