@@ -2,11 +2,12 @@ from .instruction import Instruction
 
 
 class InstructionsPattern:
-    def __init__(self, json, cmd_code_dict):
+    def __init__(self, json, operand_sets, cmd_code_dict):
         self._instructions = json["instructions"]
         self._instructions = []
         for instruction in json["instructions"]:
-            self._instructions.append(Instruction(instruction, cmd_code_dict))
+            self._instructions.append(
+                Instruction(instruction, operand_sets, cmd_code_dict))
         self._action = json.get("action")
         self._actions = json.get("actions")
         self._restrictions = json.get("restrictions")

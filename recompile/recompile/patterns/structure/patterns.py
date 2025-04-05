@@ -1,5 +1,6 @@
 from .prefix_builder import PrefixBuilder
 from .instructions_pattern import InstructionsPattern
+from .read_operand_patterns import read_operand_patterns
 
 
 class Patterns:
@@ -11,11 +12,12 @@ class Patterns:
         self._build_patterns_by_prefix()
 
     def _read_json(self, json):
-        self._operand_sets = json["operand-patterns"]
+        operand_sets = read_operand_patterns(json["operand-patterns"])
         self._instructions_patterns = []
         for instructions_pattern in json["instructions-patterns"]:
             self._instructions_patterns.append(
-                InstructionsPattern(instructions_pattern, self._cmd_code_dict))
+                InstructionsPattern(
+                    instructions_pattern, operand_sets, self._cmd_code_dict))
 
     def _build_patterns_by_prefix(self):
         prefix_builder = self.make_prefix_builder()
@@ -40,10 +42,6 @@ class Patterns:
     def instructions_patterns_by_prefix(self, prefix):
         for index in self._patterns_by_prefix[prefix]:
             yield self._instructions_patterns[index]
-
-    @property
-    def operand_sets(self):
-        return self._operand_sets
 
     def make_prefix_builder(self):
         return PrefixBuilder(self._most_frequent_cmd_code)

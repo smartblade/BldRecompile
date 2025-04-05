@@ -6,7 +6,6 @@ from make_tuple import add_attributes
 import parser
 from patterns.apply_pattern import apply_pattern
 from patterns.collect_string_constants import collect_string_constants
-from patterns.match_operand import match_operand
 from patterns.asm_parser import parse_asm_lines
 from patterns.prefix_status import PrefixStatus
 from patterns.structure import Patterns
@@ -107,7 +106,7 @@ def _match_patterns(prefix_status, patterns, first_index, instrs):
         prefix_status.prefix)
     for pattern in instructions_patterns:
         last_index, match_dict = _match_instructions_pattern(
-            pattern, patterns.operand_sets, first_index, instrs)
+            pattern, first_index, instrs)
         if last_index > first_index:
             prefix_status.update(last_index - first_index)
             return pattern, match_dict, last_index
@@ -115,30 +114,25 @@ def _match_patterns(prefix_status, patterns, first_index, instrs):
         "Failed to find pattern for '{}'".format(instrs[first_index]))
 
 
-def _match_instructions_pattern(
-    pattern, operand_pattern_sets, first_index, instrs
-):
+def _match_instructions_pattern(pattern, first_index, instrs):
     match_dict = dict()
     cur_index = first_index
     for instr_pattern in pattern.instructions:
-        if not _match_instruction(
-            instr_pattern, operand_pattern_sets, instrs[cur_index], match_dict
-        ):
+        if not _match_instruction(instr_pattern, instrs[cur_index], match_dict):
             return -1, None
         cur_index += 1
     return cur_index, match_dict
 
 
-def _match_instruction(instr_pattern, operand_pattern_sets, instr, match_dict):
+def _match_instruction(instr_pattern, instr, match_dict):
     if instr_pattern.command_code != instr.command_code:
         return False
     if len(instr_pattern.operands) != len(instr.operands):
         return False
     for op_index in range(len(instr.operands)):
-        cur_match_dict = match_operand(
-            instr.operands[op_index], instr_pattern.operands[op_index],
-            operand_pattern_sets
-        )
+        operand = instr.operands[op_index]
+        operand_pattern = instr_pattern.operands[op_index]
+        cur_match_dict = operand_pattern.match(operand.asm, operand.size)
         if cur_match_dict is None:
             return False
         for param, value in cur_match_dict.items():
