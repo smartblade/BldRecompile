@@ -17,7 +17,7 @@ def collect_string_constants(code_lines):
             continue
         if line.startswith("l"):
             current_label_addr = None
-        match = re.search(labeled_instr_regexp, line)
+        match = labeled_instr_regexp.search(line)
         if match:
             new_label_addr = from_hex(match.group("addr"))
             if current_label_addr is not None:
@@ -51,7 +51,7 @@ def collect_string_constants(code_lines):
                 current_label_addr = None
             else:
                 continue
-        match = re.search(variable_regexp, line)
+        match = variable_regexp.search(line)
         while match:
             variable_addr = from_hex(match.group("addr"))
             variable_count = variables_count.get(variable_addr, 0)

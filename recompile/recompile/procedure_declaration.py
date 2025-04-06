@@ -100,7 +100,7 @@ class ProcedureDeclaration:
     def _get_operator(self):
         if self._proc_name is None:
             return None
-        match = re.search(operator_regexp, self._proc_name)
+        match = operator_regexp.search(self._proc_name)
         if match:
             return operators[match.group("op")]
         return None

@@ -28,7 +28,7 @@ def parse_cpp_function(class_name, func, declared_types):
             var_type, var_name = parser.parse_cpp_variable_declaration(
                 var_decl, declared_types)
         parameters.append((var_type, var_name))
-    match = re.search(procedure_regexp, func)
+    match = procedure_regexp.search(func)
     if not match:
         raise Exception(
             "Failed to parse procedure declaration: {}".format(func))

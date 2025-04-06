@@ -6,7 +6,7 @@ operand_regexp = re.compile(
 
 class Operand:
     def __init__(self, operand):
-        match = re.search(operand_regexp, operand)
+        match = operand_regexp.search(operand)
         self._asm = match.group("operand")
         self._size = _get_operand_size(match.group("size"))
 

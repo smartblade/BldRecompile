@@ -11,7 +11,7 @@ def parse_asm_lines(lines, cmd_code_dict):
     for line in lines:
         if line.startswith(";"):
             continue
-        match = re.search(asm_line_regexp, line)
+        match = asm_line_regexp.search(line)
         if not match:
             raise Exception("Can't parse line: {}".format(line))
         label = match.group("label")
@@ -25,7 +25,7 @@ def parse_asm_lines(lines, cmd_code_dict):
 
 def _parse_command_line(line, cmd_code_dict):
     line = _add_size_to_call_operand(line)
-    match = re.search(command_regexp, line)
+    match = command_regexp.search(line)
     if not match:
         raise Exception("Can't parse line: {}".format(line))
     cmd_name = match.group("cmd")

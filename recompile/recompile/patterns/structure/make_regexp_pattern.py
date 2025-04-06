@@ -32,7 +32,7 @@ class RegexpPattern:
         self._defined_groups = defined_groups
 
     def match(self, s, operand_size):
-        match = re.search(self._pattern, s)
+        match = self._pattern.search(s)
         if not match:
             return None
         match_dict = {}

@@ -10,7 +10,7 @@ array_size_regexp = re.compile(r'(?P<name>.+)\[(?P<size>(0x[\dABCDEF]+)|\d+)]$')
 
 
 def parse_cpp_variable_declaration(s, declared_types):
-    match = re.search(variable_decl_regexp, s)
+    match = variable_decl_regexp.search(s)
     if not match:
         raise Exception("'{}' is not variable declaration.".format(s))
     field_type = match.group("type").strip()
@@ -21,7 +21,7 @@ def parse_cpp_variable_declaration(s, declared_types):
 
 
 def _extract_array_size(field_type, field_name):
-    match = re.search(array_size_regexp, field_name)
+    match = array_size_regexp.search(field_name)
     if not match:
         return field_type, field_name
     size_str = match.group("size")

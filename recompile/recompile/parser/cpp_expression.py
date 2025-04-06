@@ -98,7 +98,7 @@ def _append_token(state, token):
 
 
 def _new_token(state, s):
-    match = re.search(const_regexp, s)
+    match = const_regexp.search(s)
     if match:
         if s.startswith("0x"):
             if len(s) == 3 or len(s) == 4:
@@ -128,7 +128,7 @@ def _new_token(state, s):
         s != Operator.AND.value
     ):
         return expressions.AddressOf(_new_token(state, s[1:]))
-    match = re.search(field_access_regexp, s)
+    match = field_access_regexp.search(s)
     if match:
         expression = match.group('expression')
         field_name = match.group('field')

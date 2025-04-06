@@ -62,7 +62,7 @@ class HeaderState:
             line, is_comment = _strip_comments(line, is_comment)
             self._try_parse_include_file(line)
             line = self._try_parse_template(line)
-            match = re.search(class_regexp, line)
+            match = class_regexp.search(line)
             if match and brackets_depth == 0:
                 class_name = match.group("class")
                 parent_name = match.group("parent")
@@ -140,14 +140,14 @@ class HeaderState:
             return
         if definition.startswith("enum"):
             return
-        if re.search(class_regexp, definition):
+        if class_regexp.search(definition):
             return
         field_type, field_name = parser.parse_cpp_variable_declaration(
             definition, self._declared_types)
         return field_type, field_name
 
     def _try_parse_include_file(self, line):
-        match = re.search(include_regexp, line)
+        match = include_regexp.search(line)
         if not match:
             return
         include_file = match.group("file")
@@ -156,7 +156,7 @@ class HeaderState:
             included_header_state.parse()
 
     def _try_parse_template(self, line):
-        match = re.search(template_regexp, line)
+        match = template_regexp.search(line)
         if not match:
             return line
         arg_class = match.group("class")
@@ -171,15 +171,15 @@ def _strip_start(definition, start):
 
 
 def _strip_comments(line, is_comment):
-    match = re.search(comment_regexp, line)
+    match = comment_regexp.search(line)
     if match:
         line = match.group("line")
-    match = re.search(comment_start_regexp, line)
+    match = comment_start_regexp.search(line)
     if match:
         line = match.group("line")
         is_comment = True
     if is_comment:
-        match = re.search(comment_end_regexp, line)
+        match = comment_end_regexp.search(line)
         if match:
             line = match.group("line")
             is_comment = False
