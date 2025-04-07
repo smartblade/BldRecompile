@@ -1,6 +1,5 @@
 from patterns.apply_pattern import replace_variables
 
-from .make_regexp_pattern import make_regexp_pattern
 from .operand_set import OperandSet
 
 
@@ -29,5 +28,4 @@ def _read_operand_pattern(operand, expression, operand_sets):
             pattern_expression = replace_variables(expression, match_dict)
             yield pattern_operand, pattern_expression
         return
-    operand_pattern = make_regexp_pattern(operand)
-    yield operand_pattern, expression
+    yield operand, expression

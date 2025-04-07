@@ -1,10 +1,24 @@
+import re
+
 from patterns.apply_pattern import replace_variables
+
+from .make_regexp_pattern import make_regexp_string
 
 
 class OperandSet:
     def __init__(self, name, patterns):
         self._name = name
         self._patterns = patterns
+        self._items = []
+        patterns_strings = []
+        for i, (pattern, expression) in enumerate(patterns):
+            defined_groups, regexp_string = make_regexp_string(pattern, i)
+            group_name = "g{}".format(i)
+            patterns_strings.append(
+                "(?P<{}>{})".format(group_name, regexp_string))
+            expression = _add_index_expression_variables(expression, pattern, i)
+            self._items.append((group_name, defined_groups, expression))
+        self._compiled_pattern = re.compile("|".join(patterns_strings))
 
     @property
     def name(self):
@@ -15,8 +29,45 @@ class OperandSet:
         return self._patterns
 
     def match(self, operand, operand_size):
-        for pattern, expression in self._patterns:
-            match_dict = pattern.match(operand, operand_size)
-            if match_dict is not None:
-                return {self._name: replace_variables(expression, match_dict)}
-        return None
+        match = self._compiled_pattern.fullmatch(operand)
+        if not match:
+            return None
+        group_dict = match.groupdict()
+        item = self._find_matched_item(group_dict)
+        matched_group_name, defined_groups, expression = item
+        match_dict = {}
+        for group_name in defined_groups.keys():
+            value = group_dict[group_name]
+            var_name = group_name.replace("_", "-")
+            match_dict[var_name] = _convert_variable_value(
+                defined_groups, group_name, value)
+        if operand_size is not None:
+            match_dict["size"] = str(operand_size)
+        return {
+            self._name: replace_variables(expression, match_dict)
+        }
+
+    def _find_matched_item(self, group_dict):
+        for group_name, defined_groups, expression in self._items:
+            if group_dict[group_name] is not None:
+                return group_name, defined_groups, expression
+        raise Exception("Can't find matched item.")
+
+
+def _convert_variable_value(defined_groups, group_name, value):
+    convertor = defined_groups[group_name]
+    if convertor is not None:
+        return convertor(value=value)
+    return value
+
+
+def _add_index_expression_variables(expression, pattern, group_index):
+    defined_groups, regexp_string = make_regexp_string(pattern, group_index)
+    group_names_with_index = list(defined_groups.keys())
+    defined_groups, regexp_string = make_regexp_string(pattern)
+    group_names = list(defined_groups.keys())
+    match_dict = {}
+    for i, group_name in enumerate(group_names):
+        match_dict[group_name.replace("_", "-")] = "%{}%".format(
+            group_names_with_index[i].replace("_", "-"))
+    return replace_variables(expression, match_dict)

@@ -52,23 +52,29 @@ class RegexpPattern:
 
 
 def make_regexp_pattern(operand_pattern):
+    defined_groups, operand_regexp = make_regexp_string(operand_pattern)
+    operand_regexp = r"^{}$".format(operand_regexp)
+    compiled_regexp = re.compile(operand_regexp)
+    return RegexpPattern(compiled_regexp, defined_groups)
+
+
+def make_regexp_string(operand_pattern, suffix=None):
     defined_groups = {}
     expected_operand_regexp = re.escape(operand_pattern)
     expected_operand_regexp = re.sub(
         r"%(?P<variable>[\w\\-]*)%",
-        lambda matchobj: _define_variable_regexp(matchobj, defined_groups),
+        lambda matchobj: _define_variable_regexp(
+            matchobj, defined_groups, suffix),
         expected_operand_regexp)
-    expected_operand_regexp = r"^{}$".format(expected_operand_regexp)
-    compiled_regexp = re.compile(expected_operand_regexp)
-    return RegexpPattern(compiled_regexp, defined_groups)
+    return defined_groups, expected_operand_regexp
 
 
-def _define_variable_regexp(matchobj, defined_groups):
+def _define_variable_regexp(matchobj, defined_groups, suffix):
     var_name = matchobj.group("variable")
     var_name = var_name.replace("\\-", "-")
-    regexp_value, convertor = _find_pattern_variable_by_name(var_name)
+    regexp_value, convertor = _find_pattern_variable_by_name(var_name, suffix)
     if regexp_value is not None:
-        group_name = _make_group_name(var_name)
+        group_name = _make_group_name(var_name, suffix)
         if convertor is not None:
             defined_groups[group_name] = convertor
             return r"({})".format(regexp_value)
@@ -80,17 +86,20 @@ def _define_variable_regexp(matchobj, defined_groups):
     raise Exception("Unexpected variable: %{}%".format(var_name))
 
 
-def _find_pattern_variable_by_name(var_name):
+def _find_pattern_variable_by_name(var_name, suffix):
     for key, variable_info in _regexp_map.items():
         if var_name.startswith(key):
             regexp_value, convertor = variable_info
-            var_name = _make_group_name(var_name)
+            var_name = _make_group_name(var_name, suffix)
             return regexp_value.format(var_name), convertor
     return None, None
 
 
-def _make_group_name(var_name):
-    return var_name.replace("-", "_")
+def _make_group_name(var_name, suffix):
+    group_name = var_name.replace("-", "_")
+    if suffix is not None:
+        group_name = "{}_{}".format(group_name, suffix)
+    return group_name
 
 
 def _convert_hex(value):
