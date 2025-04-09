@@ -70,21 +70,22 @@ class DataTypeDefiner:
         return DataTypeDefiner.unknown_type(size)
 
 
-def visit_predefined_procedures(e, **kwargs):
-    if not isinstance(e, expressions.ProcedureCall):
-        return e
+def make_predefined_procedure_visitor(**kwargs):
     cb_map = {}
-    cb_args = {}
     for name, value in kwargs.items():
         if name.startswith("on_"):
             proc_name = name[3:].upper()
             cb_map[proc_name] = value
-        else:
-            cb_args[name] = value
-    callback = cb_map.get(e.name)
+    return cb_map
+
+
+def visit_predefined_procedures(e, callbacks, **kwargs):
+    if not isinstance(e, expressions.ProcedureCall):
+        return e
+    callback = callbacks.get(e.name)
     if callback is None:
         return e
-    return _procedures[e.name](e, callback, cb_args)
+    return _procedures[e.name](e, callback, kwargs)
 
 
 def _unpack_args(procedure_call, callback, cb_args, **kwargs):

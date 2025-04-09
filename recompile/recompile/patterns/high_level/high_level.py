@@ -2,6 +2,7 @@ import instructions
 import expressions
 import patterns.high_level.goto_eliminator as goto_eliminator
 import patterns.high_level.inline_functions as inline_functions
+from patterns.predefined_procedures import make_predefined_procedure_visitor
 from patterns.predefined_procedures import visit_predefined_procedures
 from patterns.validate_procedure_declaration import \
     validate_procedure_declaration
@@ -66,11 +67,7 @@ def _transform(e, **kwargs):
     if isinstance(e, expressions.ProcedureCall) and not e.is_predefined:
         return transform_procedure_call(e, **kwargs)
     e = visit_predefined_procedures(
-        e, **kwargs,
-        on_stackvar=transform_stackvar,
-        on_access=transform_access,
-        on_global=transform_global,
-        on_arrptr=transform_arrptr,
+        e, _predefined_procedure_visitor, **kwargs,
     )
     return e
 
@@ -86,3 +83,11 @@ def _eliminate_procedure_info(proc_info, instrs):
     if instrs[0] == proc_info:
         instrs.pop(0)
     return instrs
+
+
+_predefined_procedure_visitor = make_predefined_procedure_visitor(
+    on_stackvar=transform_stackvar,
+    on_access=transform_access,
+    on_global=transform_global,
+    on_arrptr=transform_arrptr,
+)

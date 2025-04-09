@@ -8,6 +8,7 @@ from expressions.operator import Operator
 from patterns.apply_restriction import apply_restriction
 from patterns.evaluate_expression import evaluate_expression
 from patterns.make_proc_decl_from_args import make_proc_decl_from_args
+from patterns.predefined_procedures import make_predefined_procedure_visitor
 from patterns.predefined_procedures import visit_predefined_procedures
 
 _actions = {
@@ -97,23 +98,7 @@ def _evaluate_procedure_calls(expression, **kwargs):
         return _evaluate_cast(expression)
     e = visit_predefined_procedures(
         expression,
-        on_regvalue=_evaluate_reg_value,
-        on_popfpu=_evaluate_pop_fpu,
-        on_access=_keep,
-        on_global=_keep,
-        on_local=_keep,
-        on_externvar=_evaluate_externvar,
-        on_stackvar=_keep,
-        on_arrptr=_keep,
-        on_real64=_evaluate_real64,
-        on_expect=_evaluate_expect,
-        on_eval=_evaluate_constants,
-        on_zeroextend=_evaluate_zeroextend,
-        on_signextend=_evaluate_signextend,
-        on_i=_evaluate_any_int_conversion,
-        on_s=_evaluate_int_conversion,
-        on_u=_evaluate_uint_conversion,
-        on_f=evaluate_float_conversion,
+        _predefined_procedure_visitor,
         **kwargs)
     if isinstance(e, expressions.ProcedureCall):
         return _evaluate_procedure_call(e)
@@ -241,3 +226,24 @@ def _evaluate_procedure_call(pc):
         proc_decl.change_return_type(data_types.Int32())
         pc = pc.copy(proc_decl=proc_decl)
     return pc
+
+
+_predefined_procedure_visitor = make_predefined_procedure_visitor(
+    on_regvalue=_evaluate_reg_value,
+    on_popfpu=_evaluate_pop_fpu,
+    on_access=_keep,
+    on_global=_keep,
+    on_local=_keep,
+    on_externvar=_evaluate_externvar,
+    on_stackvar=_keep,
+    on_arrptr=_keep,
+    on_real64=_evaluate_real64,
+    on_expect=_evaluate_expect,
+    on_eval=_evaluate_constants,
+    on_zeroextend=_evaluate_zeroextend,
+    on_signextend=_evaluate_signextend,
+    on_i=_evaluate_any_int_conversion,
+    on_s=_evaluate_int_conversion,
+    on_u=_evaluate_uint_conversion,
+    on_f=evaluate_float_conversion,
+)
