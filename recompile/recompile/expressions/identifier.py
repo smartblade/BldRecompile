@@ -31,8 +31,11 @@ class Identifier:
     def visit(self, on_expression_visited, **kwargs):
         on_expression_visited(self, **kwargs)
 
-    def transform(self, transform_callback, **kwargs):
-        return transform_callback(self, **kwargs)
+    def transform(self, transformer, **kwargs):
+        e = transformer.transform_identifier(self, **kwargs)
+        if e is not None:
+            return e
+        return self
 
     def emit_code(self):
         return self._name

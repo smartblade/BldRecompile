@@ -1,5 +1,6 @@
 import instructions
 import expressions
+from expression_transformer import ExpressionTransformer
 import patterns.high_level.goto_eliminator as goto_eliminator
 import patterns.high_level.inline_functions as inline_functions
 from patterns.predefined_procedures import make_predefined_procedure_visitor
@@ -42,34 +43,13 @@ def _transform_instructions(instrs, **kwargs):
     call_args_matcher = CallArgumentsMatcher()
     for instr in instrs:
         instr = instr.transform(
-            lambda e: _transform(
-                e,
-                call_args_matcher=call_args_matcher,
-                **kwargs,
-            )
+            _ExpressionTransformer,
+            call_args_matcher=call_args_matcher,
+            **kwargs,
         )
         new_instructions.append(instr)
     call_args_matcher.expect_all_args_are_matched()
     return new_instructions
-
-
-def _transform(e, **kwargs):
-    if isinstance(e, instructions.Assignment):
-        return transform_assignment(e, **kwargs)
-    if isinstance(e, expressions.Bin):
-        return transform_binary(e, **kwargs)
-    if isinstance(e, expressions.ReinterpretCast):
-        return transform_reinterpret(e, **kwargs)
-    if isinstance(e, expressions.StaticCast):
-        return expressions.do_static_cast(e.data_type, e.expression)
-    if isinstance(e, instructions.IfInstruction):
-        return inline_functions.transform_if(e)
-    if isinstance(e, expressions.ProcedureCall) and not e.is_predefined:
-        return transform_procedure_call(e, **kwargs)
-    e = visit_predefined_procedures(
-        e, _predefined_procedure_visitor, **kwargs,
-    )
-    return e
 
 
 def _validate_procedure_info(proc_info, proc_decl):
@@ -83,6 +63,35 @@ def _eliminate_procedure_info(proc_info, instrs):
     if instrs[0] == proc_info:
         instrs.pop(0)
     return instrs
+
+
+class _ExpressionTransformer(ExpressionTransformer):
+    @staticmethod
+    def transform_assignment(dst, src, **kwargs):
+        return transform_assignment(dst, src, **kwargs)
+
+    @staticmethod
+    def transform_if(if_clause, if_block, else_block, **kwargs):
+        return inline_functions.transform_if(if_clause, if_block, else_block)
+
+    @staticmethod
+    def transform_binary(operator, left, right, **kwargs):
+        return transform_binary(operator, left, right)
+
+    @staticmethod
+    def transform_procedure_call(
+        copy_pc, proc_name, arguments, is_predefined, **kwargs
+    ):
+        if not is_predefined:
+            return transform_procedure_call(copy_pc(), **kwargs)
+        return visit_predefined_procedures(
+            copy_pc, proc_name, arguments, is_predefined,
+            _predefined_procedure_visitor, **kwargs,
+        )
+
+    @staticmethod
+    def transform_reinterpret_cast(data_type, expression, **kwargs):
+        return transform_reinterpret(data_type, expression, **kwargs)
 
 
 _predefined_procedure_visitor = make_predefined_procedure_visitor(

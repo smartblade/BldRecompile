@@ -5,6 +5,7 @@ import expressions
 from hex_conversion import to_hex
 import parser
 from expressions.operator import Operator
+from expression_transformer import ExpressionTransformer
 from patterns.apply_restriction import apply_restriction
 from patterns.evaluate_expression import evaluate_expression
 from patterns.make_proc_decl_from_args import make_proc_decl_from_args
@@ -87,22 +88,7 @@ def _evaluate_args(args, **kwargs):
 def _evaluate_expression(expression, match_dict, **kwargs):
     expression = replace_variables(expression, match_dict)
     expression = parser.parse_cpp_expression(expression, {}, {})
-    return expression.transform(
-        lambda e: _evaluate_procedure_calls(e, **kwargs))
-
-
-def _evaluate_procedure_calls(expression, **kwargs):
-    if isinstance(expression, expressions.Bin):
-        return _evaluate_binary(expression)
-    if isinstance(expression, expressions.Cast):
-        return _evaluate_cast(expression)
-    e = visit_predefined_procedures(
-        expression,
-        _predefined_procedure_visitor,
-        **kwargs)
-    if isinstance(e, expressions.ProcedureCall):
-        return _evaluate_procedure_call(e)
-    return e
+    return expression.transform(_ExpressionTransformer, **kwargs)
 
 
 def _evaluate_reg_value(reg, builder, **kwargs):
@@ -190,33 +176,14 @@ def _keep(**kwargs):
     return None
 
 
-def _evaluate_binary(b):
-    if (
-        b.operator == Operator.ADD and
-        isinstance(b.right, expressions.Constant) and
-        isinstance(b.right.data_type, data_types.Int32) and
-        b.right.value < 0
-    ):
-        right = expressions.Constant(b.right.data_type, -b.right.value)
-        return expressions.Bin(Operator.SUB, b.left, right)
-    return b
-
-
-def _evaluate_cast(cast):
-    expression = cast.expression
-    if isinstance(expression, expressions.BracketsExpression):
-        expression = expression.expression
-    return expressions.do_static_cast(cast.data_type, expression)
-
-
-def _evaluate_procedure_call(pc):
-    if pc.name == "fabs":
+def _evaluate_procedure_call(copy_pc, name):
+    if name == "fabs":
         proc_decl = make_proc_decl_from_args(
             is_method=False,
             args=[expressions.Identifier(data_types.Double(), None)])
         proc_decl.change_return_type(data_types.Double())
-        pc = pc.copy(proc_decl=proc_decl)
-    elif pc.name == "strcmp":
+        return copy_pc(proc_decl=proc_decl)
+    elif name == "strcmp":
         char_ptr = data_types.Pointer32(data_types.Char())
         proc_decl = make_proc_decl_from_args(
             is_method=False,
@@ -224,8 +191,40 @@ def _evaluate_procedure_call(pc):
                 expressions.Identifier(char_ptr, None),
                 expressions.Identifier(char_ptr, None)])
         proc_decl.change_return_type(data_types.Int32())
-        pc = pc.copy(proc_decl=proc_decl)
-    return pc
+        return copy_pc(proc_decl=proc_decl)
+    return None
+
+
+class _ExpressionTransformer(ExpressionTransformer):
+    @staticmethod
+    def transform_cast(data_type, expression, **kwargs):
+        if isinstance(expression, expressions.BracketsExpression):
+            expression = expression.expression
+        return expressions.do_static_cast(data_type, expression)
+
+    @staticmethod
+    def transform_binary(operator, left, right, **kwargs):
+        if (
+            operator == Operator.ADD and
+            isinstance(right, expressions.Constant) and
+            isinstance(right.data_type, data_types.Int32) and
+            right.value < 0
+        ):
+            right = expressions.Constant(right.data_type, -right.value)
+            return expressions.Bin(Operator.SUB, left, right)
+        return None
+
+    @staticmethod
+    def transform_procedure_call(
+        copy_pc, proc_name, arguments, is_predefined, **kwargs
+    ):
+        e = visit_predefined_procedures(
+            copy_pc, proc_name, arguments, is_predefined,
+            _predefined_procedure_visitor,
+            **kwargs)
+        if e is None:
+            return _evaluate_procedure_call(copy_pc, proc_name)
+        return e
 
 
 _predefined_procedure_visitor = make_predefined_procedure_visitor(

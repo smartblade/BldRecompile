@@ -42,13 +42,16 @@ class ReturnInstruction:
         if self._expression is not None:
             self._expression.visit(on_expression_visited, **kwargs)
 
-    def transform(self, transform_callback, **kwargs):
+    def transform(self, transformer, **kwargs):
         expression = None
         if self._expression is not None:
-            expression = self._expression.transform(
-                transform_callback, **kwargs)
-        ri = ReturnInstruction(expression)
-        return transform_callback(ri, **kwargs)
+            expression = self._expression.transform(transformer, **kwargs)
+        e = transformer.transform_return(expression, **kwargs)
+        if e is not None:
+            return e
+        if expression == self._expression:
+            return self
+        return self.__class__(expression)
 
     def emit_code(self, writer):
         if self._expression is None:

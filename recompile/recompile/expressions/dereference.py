@@ -16,10 +16,14 @@ class Dereference:
         assert isinstance(data_type, data_types.Pointer32)
         return data_type.pointee
 
-    def transform(self, transform_callback, **kwargs):
-        expression = self._expression.transform(transform_callback, **kwargs)
-        dereference = self.__class__(expression)
-        return transform_callback(dereference, **kwargs)
+    def transform(self, transformer, **kwargs):
+        expression = self._expression.transform(transformer, **kwargs)
+        e = transformer.transform_unary(Operator.DEREF, expression, **kwargs)
+        if e is not None:
+            return e
+        if expression == self._expression:
+            return self
+        return self.__class__(expression)
 
     def emit_code(self):
         return expressions.writer.write_unary(Operator.DEREF, self._expression)

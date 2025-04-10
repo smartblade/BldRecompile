@@ -64,14 +64,14 @@ class TemporaryRegisterDefinition:
         for value in self._values.values():
             value.visit(on_expression_visited, **kwargs)
 
-    def transform(self, transform_callback, **kwargs):
+    def transform(self, transformer, **kwargs):
         regdef = TemporaryRegisterDefinition()
         for reg, value in self._reg_values.items():
             regdef.define_reg_value(
-                reg, value.transform(transform_callback, **kwargs))
+                reg, value.transform(transformer, **kwargs))
         for value in self._fpu_stack:
-            regdef.push_fpu(value.transform(transform_callback, **kwargs))
-        return transform_callback(regdef, **kwargs)
+            regdef.push_fpu(value.transform(transformer, **kwargs))
+        return regdef
 
     def emit_code(self, writer):
         code = "REGDEF({})".format(

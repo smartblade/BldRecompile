@@ -5,18 +5,17 @@ from expressions.operator import Operator
 from .transform_access import transform_access
 
 
-def transform_binary(bin_exp, **kwargs):
-    if _is_integer_operation(bin_exp.left, bin_exp.right):
-        if bin_exp.operator == Operator.ADD:
-            return _transform_int_sum(bin_exp.left, bin_exp.right) or bin_exp
-        if bin_exp.operator == Operator.MUL:
-            return _transform_int_mul(bin_exp.left, bin_exp.right) or bin_exp
-        if bin_exp.operator == Operator.BIT_AND:
-            return _transform_bit_and(bin_exp.left, bin_exp.right) or bin_exp
-    if bin_exp.operator == Operator.EQ or bin_exp.operator == Operator.NE:
-        return _transform_eq_ne(
-            bin_exp.operator, bin_exp.left, bin_exp.right) or bin_exp
-    return bin_exp
+def transform_binary(operator, left, right, **kwargs):
+    if _is_integer_operation(left, right):
+        if operator == Operator.ADD:
+            return _transform_int_sum(left, right)
+        if operator == Operator.MUL:
+            return _transform_int_mul(left, right)
+        if operator == Operator.BIT_AND:
+            return _transform_bit_and(left, right)
+    if operator == Operator.EQ or operator == Operator.NE:
+        return _transform_eq_ne(operator, left, right)
+    return None
 
 
 def _is_integer_operation(left, right):

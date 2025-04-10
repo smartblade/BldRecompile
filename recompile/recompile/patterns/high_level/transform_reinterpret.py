@@ -3,19 +3,19 @@ import data_types
 from hex_conversion import from_hex
 
 
-def transform_reinterpret(cast, **kwargs):
-    result = _transform_string_constant(cast, **kwargs)
+def transform_reinterpret(data_type, expression, **kwargs):
+    result = _transform_string_constant(data_type, expression, **kwargs)
     if result is not None:
         return result
-    return expressions.do_reinterpret(cast.data_type, cast.expression)
+    return expressions.do_reinterpret(data_type, expression)
 
 
-def _transform_string_constant(cast, declarations, **kwargs):
-    if not isinstance(cast.data_type, data_types.Pointer32):
+def _transform_string_constant(data_type, expression, declarations, **kwargs):
+    if not isinstance(data_type, data_types.Pointer32):
         return None
-    if not isinstance(cast.data_type.pointee, data_types.Char):
+    if not isinstance(data_type.pointee, data_types.Char):
         return None
-    global_variable = cast.expression
+    global_variable = expression
     if not isinstance(global_variable, expressions.ProcedureCall):
         return None
     if not global_variable.is_predefined:

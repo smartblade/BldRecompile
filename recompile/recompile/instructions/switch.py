@@ -32,15 +32,18 @@ class Switch:
         for label, block in self._blocks_dict.items():
             visit_block(block, on_expression_visited, **kwargs)
 
-    def transform(self, transform_callback, **kwargs):
-        index = self._index.transform(transform_callback, **kwargs)
+    def transform(self, transformer, **kwargs):
+        index = self._index.transform(transformer, **kwargs)
         blocks_dict = {}
         self._ensure_blocks_dict()
         for label, block in self._blocks_dict.items():
             blocks_dict[label] = transform_block(
-                block, transform_callback, **kwargs)
-        while_instr = self.__class__(index, self._case_set_dict, blocks_dict)
-        return transform_callback(while_instr, **kwargs)
+                block, transformer, **kwargs)
+        instr = transformer.transform_switch(
+            index, self._case_set_dict, blocks_dict, **kwargs)
+        if instr is not None:
+            return instr
+        return self.__class__(index, self._case_set_dict, blocks_dict)
 
     def emit_code(self, writer):
         index = self._index.emit_code()

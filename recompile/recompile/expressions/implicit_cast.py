@@ -19,10 +19,15 @@ class ImplicitCast:
         on_expression_visited(self, **kwargs)
         self._expression.visit(on_expression_visited, **kwargs)
 
-    def transform(self, transform_callback, **kwargs):
-        expression = self._expression.transform(transform_callback, **kwargs)
-        cast = ImplicitCast(self._data_type, expression)
-        return transform_callback(cast, **kwargs)
+    def transform(self, transformer, **kwargs):
+        expression = self._expression.transform(transformer, **kwargs)
+        e = transformer.transform_implicit_cast(
+            self._data_type, expression, **kwargs)
+        if e is not None:
+            return e
+        if expression == self._expression:
+            return self
+        return self.__class__(self._data_type, expression)
 
     def emit_code(self):
         return self._expression.emit_code()

@@ -22,11 +22,15 @@ class ArrayAccess:
         self._array.visit(on_expression_visited, **kwargs)
         self._index.visit(on_expression_visited, **kwargs)
 
-    def transform(self, transform_callback, **kwargs):
-        array = self._array.transform(transform_callback, **kwargs)
-        index = self._index.transform(transform_callback, **kwargs)
-        array_access = self.__class__(array, index)
-        return transform_callback(array_access, **kwargs)
+    def transform(self, transformer, **kwargs):
+        array = self._array.transform(transformer, **kwargs)
+        index = self._index.transform(transformer, **kwargs)
+        e = transformer.transform_array_access(array, index, **kwargs)
+        if e is not None:
+            return e
+        if array == self._array and index == self._index:
+            return self
+        return self.__class__(array, index)
 
     def emit_code(self):
         return "{}[{}]".format(self._array.emit_code(), self._index.emit_code())

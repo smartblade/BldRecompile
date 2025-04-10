@@ -1,11 +1,12 @@
 import data_types
 import expressions
+from expression_transformer import ExpressionTransformer
 from expressions.operator import Operator
 
 
 def transform_to_increment(expression, **kwargs):
     transformer = _Transformer(**kwargs)
-    e = expression.transform(transformer.transform)
+    e = expression.transform(transformer)
     transformer.validate()
     return e
 
@@ -31,7 +32,7 @@ def _make_increment(incremented_expression, step, pre_increment):
             return expressions.Decrement(cast)
 
 
-class _Transformer:
+class _Transformer(ExpressionTransformer):
     def __init__(
         self, block_builder, replacing_expression, incremented_expression,
         increment_step, pre_increment,
@@ -44,28 +45,29 @@ class _Transformer:
         self._increment_step = increment_step
         self._pre_increment = pre_increment
 
-    def transform(self, e):
-        if not isinstance(e, expressions.ProcedureCall):
-            return e
-        if not e.is_predefined:
-            return e
+    def transform_procedure_call(
+        self, copy_pc, is_predefined, **kwargs
+    ):
+        if not is_predefined:
+            return None
+        pc = copy_pc()
         if (
             self._replacing_expression is not None and
-            e.emit_code() == self._replacing_expression.emit_code()
+            pc.emit_code() == self._replacing_expression.emit_code()
         ):
             assert not self._expression_replaced
             ass_instr = self._block_builder.pop_instruction()
             assert ass_instr.dst == self._replacing_expression
             self._expression_replaced = True
-            src = ass_instr.src.transform(self.transform)
+            src = ass_instr.src.transform(self)
             return expressions.Bin(Operator.ASS, ass_instr.dst, src)
-        elif e.emit_code() == self._incremented_expression.emit_code():
+        elif pc.emit_code() == self._incremented_expression.emit_code():
             assert not self._increment_created
             self._increment_created = True
             return _make_increment(
                 self._incremented_expression, self._increment_step,
                 self._pre_increment)
-        return e
+        return None
 
     def validate(self):
         if not self._increment_created:

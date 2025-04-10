@@ -14,10 +14,14 @@ class Increment:
         on_expression_visited(self, **kwargs)
         self._expression.visit(on_expression_visited, **kwargs)
 
-    def transform(self, transform_callback, **kwargs):
-        expression = self._expression.transform(transform_callback, **kwargs)
-        cast = self.__class__(expression)
-        return transform_callback(cast, **kwargs)
+    def transform(self, transformer, **kwargs):
+        expression = self._expression.transform(transformer, **kwargs)
+        e = transformer.transform_increment(expression, **kwargs)
+        if e is not None:
+            return e
+        if expression == self._expression:
+            return self
+        return self.__class__(expression)
 
     def emit_code(self):
         return "{}++".format(self._expression.emit_code())

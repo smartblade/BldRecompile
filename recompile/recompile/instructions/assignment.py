@@ -55,11 +55,15 @@ class Assignment:
         self._src.visit(on_expression_visited, **kwargs)
         self._dst.visit(on_expression_visited, **kwargs)
 
-    def transform(self, transform_callback, **kwargs):
-        src = self._src.transform(transform_callback, **kwargs)
-        dst = self._dst.transform(transform_callback, **kwargs)
-        instruction = Assignment(dst, src)
-        return transform_callback(instruction, **kwargs)
+    def transform(self, transformer, **kwargs):
+        src = self._src.transform(transformer, **kwargs)
+        dst = self._dst.transform(transformer, **kwargs)
+        instr = transformer.transform_assignment(dst, src, **kwargs)
+        if instr is not None:
+            return instr
+        if src == self._src and dst == self._dst:
+            return self
+        return self.__class__(dst, src)
 
     def emit_code(self, writer):
         dst = self._dst.emit_code()

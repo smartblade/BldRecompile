@@ -23,11 +23,13 @@ class WhileInstruction:
         clause = self._clause.transform_expression(**kwargs)
         return self.__class__(clause, block)
 
-    def transform(self, transform_callback, **kwargs):
-        clause = self._clause.transform(transform_callback, **kwargs)
-        block = transform_block(self._block, transform_callback, **kwargs)
-        while_instr = WhileInstruction(clause, block)
-        return transform_callback(while_instr, **kwargs)
+    def transform(self, transformer, **kwargs):
+        clause = self._clause.transform(transformer, **kwargs)
+        block = transform_block(self._block, transformer, **kwargs)
+        instr = transformer.transform_while(clause, block, **kwargs)
+        if instr is not None:
+            return instr
+        return self.__class__(clause, block)
 
     def emit_code(self, writer):
         clause = self._clause.emit_code()

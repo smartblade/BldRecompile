@@ -17,9 +17,15 @@ class Negate:
         on_expression_visited(self, **kwargs)
         self._expression.visit(on_expression_visited, **kwargs)
 
-    def transform(self, transform_callback, **kwargs):
-        expression = self._expression.transform(transform_callback, **kwargs)
-        return transform_callback(self.__class__(expression), **kwargs)
+    def transform(self, transformer, **kwargs):
+        expression = self._expression.transform(transformer, **kwargs)
+        e = transformer.transform_unary(Operator.NEG, expression, **kwargs)
+        if e is not None:
+            return e
+        if expression == self._expression:
+            return self
+        return self.__class__(expression)
+
 
     def emit_code(self):
         return expressions.writer.write_unary(Operator.NEG, self._expression)

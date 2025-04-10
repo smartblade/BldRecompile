@@ -23,14 +23,21 @@ class ConditionalOperator:
         self._then_expression.visit(on_expression_visited, **kwargs)
         self._else_expression.visit(on_expression_visited, **kwargs)
 
-    def transform(self, transform_callback, **kwargs):
-        if_clause = self._if_clause.transform(transform_callback, **kwargs)
-        then_expression = self._then_expression.transform(
-            transform_callback, **kwargs)
-        else_expression = self._else_expression.transform(
-            transform_callback, **kwargs)
-        if_instr = self.__class__(if_clause, then_expression, else_expression)
-        return transform_callback(if_instr, **kwargs)
+    def transform(self, transformer, **kwargs):
+        if_clause = self._if_clause.transform(transformer, **kwargs)
+        then_expression = self._then_expression.transform(transformer, **kwargs)
+        else_expression = self._else_expression.transform(transformer, **kwargs)
+        e = transformer.transform_conditional_operator(
+            if_clause, then_expression, else_expression, **kwargs)
+        if e is not None:
+            return e
+        if (
+            if_clause == self._if_clause and
+            then_expression == self._then_expression and
+            else_expression == self._else_expression
+        ):
+            return self
+        return self.__class__(if_clause, then_expression, else_expression)
 
     def emit_code(self):
         return "{} ? {} : {}".format(

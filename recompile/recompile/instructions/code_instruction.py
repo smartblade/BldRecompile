@@ -18,10 +18,14 @@ class CodeInstruction:
     def visit(self, on_expression_visited, **kwargs):
         self._tokens.visit(on_expression_visited, **kwargs)
 
-    def transform(self, transform_callback, **kwargs):
-        expression = self._tokens.transform(transform_callback, **kwargs)
-        instruction = CodeInstruction(expression)
-        return transform_callback(instruction, **kwargs)
+    def transform(self, transformer, **kwargs):
+        expression = self._tokens.transform(transformer, **kwargs)
+        e = transformer.transform_code_instruction(expression, **kwargs)
+        if e is not None:
+            return e
+        if expression == self._tokens:
+            return self
+        return self.__class__(expression)
 
     def emit_code(self, writer):
         instr = self._tokens.emit_code()

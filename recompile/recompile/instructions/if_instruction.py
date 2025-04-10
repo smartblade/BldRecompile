@@ -47,15 +47,18 @@ class IfInstruction:
         if self._else_block is not None:
             visit_block(self._else_block, on_expression_visited, **kwargs)
 
-    def transform(self, transform_callback, **kwargs):
-        if_clause = self._if_clause.transform(transform_callback, **kwargs)
-        if_block = transform_block(self._if_block, transform_callback, **kwargs)
+    def transform(self, transformer, **kwargs):
+        if_clause = self._if_clause.transform(transformer, **kwargs)
+        if_block = transform_block(self._if_block, transformer, **kwargs)
         else_block = None
         if self._else_block is not None:
             else_block = transform_block(
-                self._else_block, transform_callback, **kwargs)
-        if_instr = IfInstruction(if_clause, if_block, else_block)
-        return transform_callback(if_instr, **kwargs)
+                self._else_block, transformer, **kwargs)
+        instr = transformer.transform_if(
+            if_clause, if_block, else_block, **kwargs)
+        if instr is not None:
+            return instr
+        return self.__class__(if_clause, if_block, else_block)
 
     def emit_code(self, writer, is_elif=False):
         if_clause = self._if_clause.emit_code()

@@ -72,11 +72,16 @@ class BinaryExpression:
         self._left.visit(on_expression_visited, **kwargs)
         self._right.visit(on_expression_visited, **kwargs)
 
-    def transform(self, transform_callback, **kwargs):
-        left = self._left.transform(transform_callback, **kwargs)
-        right = self._right.transform(transform_callback, **kwargs)
-        bin_exp = BinaryExpression(self._operator, left, right)
-        return transform_callback(bin_exp, **kwargs)
+    def transform(self, transformer, **kwargs):
+        left = self._left.transform(transformer, **kwargs)
+        right = self._right.transform(transformer, **kwargs)
+        e = transformer.transform_binary(
+            self._operator, left, right, **kwargs)
+        if e is not None:
+            return e
+        if left == self._left and right == self._right:
+            return self
+        return self.__class__(self._operator, left, right)
 
     def emit_code(self):
         return expressions.writer.write_binary(

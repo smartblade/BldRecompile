@@ -3,24 +3,24 @@ import instructions
 from expressions.operator import Operator
 
 
-def transform_if(if_instr):
-    if not isinstance(if_instr.if_clause, expressions.Bin):
-        return if_instr
-    if if_instr.if_clause.operator != Operator.NE:
-        return if_instr
-    if if_instr.if_clause.right != expressions.Null:
-        return if_instr
-    if if_instr.else_block is not None:
-        return if_instr
-    if len(if_instr.if_block) == 1:
+def transform_if(if_clause, if_block, else_block):
+    if not isinstance(if_clause, expressions.Bin):
+        return None
+    if if_clause.operator != Operator.NE:
+        return None
+    if if_clause.right != expressions.Null:
+        return None
+    if else_block is not None:
+        return None
+    if len(if_block) == 1:
         return _transform_single_instruction(
-            if_instr.if_clause.left, if_instr.if_block[0]
-        ) or if_instr
-    if len(if_instr.if_block) == 2:
+            if_clause.left, if_block[0]
+        )
+    if len(if_block) == 2:
         return _transform_two_instructions(
-            if_instr.if_clause.left, if_instr.if_block[0], if_instr.if_block[1]
-        ) or if_instr
-    return if_instr
+            if_clause.left, if_block[0], if_block[1]
+        )
+    return None
 
 
 def _transform_single_instruction(obj, instr):

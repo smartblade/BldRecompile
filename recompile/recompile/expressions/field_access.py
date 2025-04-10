@@ -29,10 +29,15 @@ class FieldAccess:
         on_expression_visited(self, **kwargs)
         self._expression.visit(on_expression_visited, **kwargs)
 
-    def transform(self, transform_callback, **kwargs):
-        expression = self._expression.transform(transform_callback, **kwargs)
-        fa = self.__class__(expression, self._field_name)
-        return transform_callback(fa, **kwargs)
+    def transform(self, transformer, **kwargs):
+        expression = self._expression.transform(transformer, **kwargs)
+        e = transformer.transform_field_access(
+            expression, self._field_name, **kwargs)
+        if e is not None:
+            return e
+        if expression == self._expression:
+            return self
+        return self.__class__(expression, self._field_name)
 
     def emit_code(self):
         expression = self._expression

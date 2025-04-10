@@ -151,22 +151,32 @@ class ProcedureCall:
         for arg in self._arguments:
             arg.visit(on_expression_visited, **kwargs)
 
-    def transform(self, transform_callback, **kwargs):
-        arguments = list(
-            map(
-                lambda a: a.transform(transform_callback, **kwargs),
-                self._arguments,
-            )
-        )
+    def transform(self, transformer, **kwargs):
+        def transform_arg(a):
+            nonlocal changed
+            new_a = a.transform(transformer, **kwargs)
+            if new_a != a:
+                changed = True
+            return new_a
+
+        def copy_pc(**pc_kwargs):
+            return self.copy(callee=callee, arguments=arguments, **pc_kwargs)
+        changed = False
+        arguments = list(map(transform_arg, self._arguments))
         if self._callee is not None:
-            callee = self._callee.transform(transform_callback, **kwargs)
+            callee = self._callee.transform(transformer, **kwargs)
+            if callee != self._callee:
+                changed = True
         else:
             callee = None
-        pc = self.copy(
-            callee=callee,
-            arguments=arguments,
-        )
-        return transform_callback(pc, **kwargs)
+        e = transformer.transform_procedure_call(
+            copy_pc=copy_pc, proc_name=self._name, arguments=arguments,
+            is_predefined=self._is_predefined, **kwargs)
+        if e is not None:
+            return e
+        if not changed:
+            return self
+        return copy_pc()
 
     def emit_code(self):
         if self._operator is not None and len(self._arguments) == 2:
