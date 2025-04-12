@@ -2,6 +2,9 @@ import re
 
 from hex_conversion import from_hex
 
+from .hex_match import HexMatch
+from .offset_match import OffsetMatch
+
 _regexp_map = {
     "a-b-c-d": (r"a|b|c|d", None),
     "al-bl-cl-dl": (r"al|bl|cl|dl", None),
@@ -41,7 +44,7 @@ class RegexpPattern:
             match_dict[var_name] = self._convert_variable_value(
                 group_name, value)
         if operand_size is not None:
-            match_dict["size"] = str(operand_size)
+            match_dict["size"] = OffsetMatch(operand_size)
         return match_dict
 
     def _convert_variable_value(self, group_name, value):
@@ -103,7 +106,7 @@ def _make_group_name(var_name, suffix):
 
 
 def _convert_hex(value):
-    return "0x{}".format(value)
+    return HexMatch(value)
 
 
 def _convert_offset(value):
@@ -112,7 +115,7 @@ def _convert_offset(value):
         int_offset = from_hex(hex_offset)
     else:
         int_offset = 0
-    return str(int_offset)
+    return OffsetMatch(int_offset)
 
 
 def _convert_external(value):

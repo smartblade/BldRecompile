@@ -1,3 +1,4 @@
+import re
 import struct
 
 import data_types
@@ -11,6 +12,8 @@ from patterns.evaluate_expression import evaluate_expression
 from patterns.make_proc_decl_from_args import make_proc_decl_from_args
 from patterns.predefined_procedures import make_predefined_procedure_visitor
 from patterns.predefined_procedures import visit_predefined_procedures
+
+variable_pattern = re.compile(r"%(?P<variable>[\w\\-]*)%")
 
 _actions = {
     "standard-proc": lambda builder, **kwargs: builder.make_standard(**kwargs),
@@ -61,15 +64,13 @@ def _apply_actions(builder, string_constants, pattern, match_dict):
 
 
 def apply_action(builder, string_constants, action, match_dict):
-    action_name = next(iter(action.keys()))
-    action_args = next(iter(action.values()))
     action_args = _evaluate_args(
-        action_args,
+        action.arguments,
         builder=builder,
         string_constants=string_constants,
         match_dict=match_dict,
     )
-    _actions[action_name](builder=builder, **action_args)
+    _actions[action.name](builder=builder, **action_args)
 
 
 def replace_variables(expression, match_dict):
@@ -86,9 +87,8 @@ def _evaluate_args(args, **kwargs):
 
 
 def _evaluate_expression(expression, match_dict, **kwargs):
-    expression = replace_variables(expression, match_dict)
-    expression = parser.parse_cpp_expression(expression, {}, {})
-    return expression.transform(_ExpressionTransformer, **kwargs)
+    transformer = _ExpressionTransformer(match_dict, kwargs)
+    return expression.transform(transformer)
 
 
 def _evaluate_reg_value(reg, builder, **kwargs):
@@ -196,14 +196,20 @@ def _evaluate_procedure_call(copy_pc, name):
 
 
 class _ExpressionTransformer(ExpressionTransformer):
-    @staticmethod
-    def transform_cast(data_type, expression, **kwargs):
+    def __init__(self, match_dict, arguments):
+        self._match_dict = match_dict
+        self._arguments = arguments
+
+    def transform_expression(self, expression, match_dict):
+        transformer = _ExpressionTransformer(match_dict, self._arguments)
+        return expression.transform(transformer)
+
+    def transform_cast(self, data_type, expression, **kwargs):
         if isinstance(expression, expressions.BracketsExpression):
             expression = expression.expression
         return expressions.do_static_cast(data_type, expression)
 
-    @staticmethod
-    def transform_binary(operator, left, right, **kwargs):
+    def transform_binary(self, operator, left, right, **kwargs):
         if (
             operator == Operator.ADD and
             isinstance(right, expressions.Constant) and
@@ -214,17 +220,31 @@ class _ExpressionTransformer(ExpressionTransformer):
             return expressions.Bin(Operator.SUB, left, right)
         return None
 
-    @staticmethod
     def transform_procedure_call(
-        copy_pc, proc_name, arguments, is_predefined, **kwargs
+        self, copy_pc, proc_name, arguments, is_predefined
     ):
         e = visit_predefined_procedures(
             copy_pc, proc_name, arguments, is_predefined,
             _predefined_procedure_visitor,
-            **kwargs)
+            **self._arguments)
         if e is None:
             return _evaluate_procedure_call(copy_pc, proc_name)
         return e
+
+    def transform_pattern_text(self, text, **kwargs):
+        return expressions.UnparsedToken(
+            re.sub(variable_pattern, self._replace_variable, text)
+        )
+
+    def transform_pattern_variable(self, var_name, **kwargs):
+        value = self._match_dict[var_name]
+        if not isinstance(value, str):
+            return value.make_expression(self)
+        return expressions.UnparsedToken(value)
+
+    def _replace_variable(self, matchobj):
+        var_name = matchobj.group("variable")
+        return str(self._match_dict[var_name])
 
 
 _predefined_procedure_visitor = make_predefined_procedure_visitor(

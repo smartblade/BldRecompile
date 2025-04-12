@@ -140,7 +140,7 @@ def _match_instruction(instr_pattern, instr, match_dict):
                 match_dict[param] = value
             elif match_dict[param] != value:
                 if param == "size":
-                    match_dict[param] = "<different-sizes>"
+                    match_dict[param].invalidate()
                 else:
                     return False
     return True

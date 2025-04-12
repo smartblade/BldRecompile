@@ -70,6 +70,12 @@ class ExpressionTransformer:
         return None
 
     @staticmethod
+    def transform_procedure_call(
+        copy_pc, proc_name, arguments, is_predefined, **kwargs
+    ):
+        return None
+
+    @staticmethod
     def transform_static_cast(data_type, expression, **kwargs):
         return None
 
@@ -83,4 +89,12 @@ class ExpressionTransformer:
 
     @staticmethod
     def transform_unparsed_token(s, **kwargs):
+        return None
+
+    @staticmethod
+    def transform_pattern_text(text, **kwargs):
+        return None
+
+    @staticmethod
+    def transform_pattern_variable(var_name, **kwargs):
         return None

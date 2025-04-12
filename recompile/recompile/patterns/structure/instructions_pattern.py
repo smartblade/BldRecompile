@@ -1,3 +1,5 @@
+from .action import Action
+from .expression_pattern import ExpressionPattern
 from .instruction import Instruction
 
 
@@ -8,9 +10,22 @@ class InstructionsPattern:
         for instruction in json["instructions"]:
             self._instructions.append(
                 Instruction(instruction, operand_sets, cmd_code_dict))
-        self._action = json.get("action")
-        self._actions = json.get("actions")
-        self._restrictions = json.get("restrictions")
+        action_json = json.get("action")
+        self._action = None
+        if action_json is not None:
+            self._action = Action(action_json)
+        actions_json = json.get("actions")
+        self._actions = None
+        if actions_json is not None:
+            self._actions = []
+            for action_json in actions_json:
+                self._actions.append(Action(action_json))
+        restrictions_json = json.get("restrictions")
+        self._restrictions = None
+        if restrictions_json is not None:
+            self._restrictions = []
+            for restriction_json in restrictions_json:
+                self._restrictions.append(ExpressionPattern(restriction_json))
         _validate_instructions_pattern_attributes(json)
 
     @property

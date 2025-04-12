@@ -2,7 +2,10 @@ import re
 
 from patterns.apply_pattern import replace_variables
 
+from .expression_pattern import ExpressionPattern
+from .expression_pattern_match import ExpressionPatternMatch
 from .make_regexp_pattern import make_regexp_string
+from .offset_match import OffsetMatch
 
 
 class OperandSet:
@@ -17,7 +20,8 @@ class OperandSet:
             patterns_strings.append(
                 "(?P<{}>{})".format(group_name, regexp_string))
             expression = _add_index_expression_variables(expression, pattern, i)
-            self._items.append((group_name, defined_groups, expression))
+            self._items.append(
+                (group_name, defined_groups, ExpressionPattern(expression)))
         self._compiled_pattern = re.compile("|".join(patterns_strings))
 
     @property
@@ -42,9 +46,9 @@ class OperandSet:
             match_dict[var_name] = _convert_variable_value(
                 defined_groups, group_name, value)
         if operand_size is not None:
-            match_dict["size"] = str(operand_size)
+            match_dict["size"] = OffsetMatch(operand_size)
         return {
-            self._name: replace_variables(expression, match_dict)
+            self._name: ExpressionPatternMatch(expression, match_dict)
         }
 
     def _find_matched_item(self, group_dict):
