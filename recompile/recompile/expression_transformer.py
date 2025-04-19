@@ -71,7 +71,7 @@ class ExpressionTransformer:
 
     @staticmethod
     def transform_procedure_call(
-        copy_pc, proc_name, arguments, is_predefined, **kwargs
+        copy_pc, proc_name, arguments, **kwargs
     ):
         return None
 
@@ -92,9 +92,99 @@ class ExpressionTransformer:
         return None
 
     @staticmethod
+    def transform_access(expression, offset, size, **kwargs):
+        return None
+
+    @staticmethod
+    def transform_access_pattern(expression, offset, size, **kwargs):
+        return None
+
+    @staticmethod
+    def transform_arrptr(base, scale, index, offset, **kwargs):
+        return None
+
+    @staticmethod
+    def transform_arrptr_pattern(
+        base, scale_pattern, index, offset_pattern, **kwargs
+    ):
+        return None
+
+    @staticmethod
+    def transform_eval(expression, **kwargs):
+        return None
+
+    @staticmethod
+    def transform_expect(actual, expected, **kwargs):
+        return None
+
+    @staticmethod
+    def transform_extern_variable_pattern(var_name, **kwargs):
+        return None
+
+    @staticmethod
+    def transform_f(expression, **kwargs):
+        return None
+
+    @staticmethod
+    def transform_global(address, **kwargs):
+        return None
+
+    @staticmethod
+    def transform_global_pattern(var_name, **kwargs):
+        return None
+
+    @staticmethod
+    def transform_i(expression, **kwargs):
+        return None
+
+    @staticmethod
+    def transform_local(offset, **kwargs):
+        return None
+
+    @staticmethod
+    def transform_local_pattern(expression, **kwargs):
+        return None
+
+    @staticmethod
     def transform_pattern_text(text, **kwargs):
         return None
 
     @staticmethod
     def transform_pattern_variable(var_name, **kwargs):
+        return None
+
+    @staticmethod
+    def transform_pop_fpu(**kwargs):
+        return None
+
+    @staticmethod
+    def transform_real64_pattern(high_var_name, low_var_name, **kwargs):
+        return None
+
+    @staticmethod
+    def transform_register_pattern(pattern, **kwargs):
+        return None
+
+    @staticmethod
+    def transform_register_value(reg, **kwargs):
+        return None
+
+    @staticmethod
+    def transform_s(expression, **kwargs):
+        return None
+
+    @staticmethod
+    def transform_stackvar(offset, size, **kwargs):
+        return None
+
+    @staticmethod
+    def transform_stackvar_pattern(offset_pattern, size_pattern, **kwargs):
+        return None
+
+    @staticmethod
+    def transform_trash_extend(data_type, expression, **kwargs):
+        return None
+
+    @staticmethod
+    def transform_u(expression, **kwargs):
         return None

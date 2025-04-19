@@ -25,9 +25,9 @@ def try_build_post_increment(block_builder, reg):
     replacing_expression = None
     if isinstance(block_builder.last_instruction, instructions.Assignment):
         replacing_expression = block_builder.last_instruction.dst
-        if not isinstance(replacing_expression, expressions.ProcedureCall):
-            replacing_expression = None
-        if not replacing_expression.is_predefined:
+        if not isinstance(
+            replacing_expression, expressions.intermediate.Stackvar
+        ):
             replacing_expression = None
     return transform_to_increment(
         reg_expression,

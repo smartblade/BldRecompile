@@ -22,4 +22,5 @@ from .unknown32 import Unknown32
 from .unknown64 import Unknown64
 from .unknown_byte import UnknownByte
 from .unknown_class import UnknownClass
+from .unknown_types import unknown_types
 UnknownTypes = (UnknownByte, Unknown32, Unknown64)

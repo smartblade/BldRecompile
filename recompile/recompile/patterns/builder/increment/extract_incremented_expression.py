@@ -23,14 +23,10 @@ def extract_incremented_expression(ass):
     if not isinstance(left_cast, expressions.ReinterpretCast):
         return None
     dst = ass.dst
-    if not isinstance(dst, expressions.ProcedureCall):
-        return None
-    if not dst.is_predefined:
+    if not isinstance(dst, expressions.intermediate.Stackvar):
         return None
     left = left_cast.expression
-    if not isinstance(left, expressions.ProcedureCall):
-        return None
-    if not left.is_predefined:
+    if not isinstance(left, expressions.intermediate.Stackvar):
         return None
     if dst.emit_code() != left.emit_code():
         return None

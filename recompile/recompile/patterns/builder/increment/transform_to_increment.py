@@ -45,15 +45,11 @@ class _Transformer(ExpressionTransformer):
         self._increment_step = increment_step
         self._pre_increment = pre_increment
 
-    def transform_procedure_call(
-        self, copy_pc, is_predefined, **kwargs
-    ):
-        if not is_predefined:
-            return None
-        pc = copy_pc()
+    def transform_stackvar(self, offset, size):
+        e = expressions.intermediate.Stackvar(offset, size)
         if (
             self._replacing_expression is not None and
-            pc.emit_code() == self._replacing_expression.emit_code()
+            e.emit_code() == self._replacing_expression.emit_code()
         ):
             assert not self._expression_replaced
             ass_instr = self._block_builder.pop_instruction()
@@ -61,7 +57,7 @@ class _Transformer(ExpressionTransformer):
             self._expression_replaced = True
             src = ass_instr.src.transform(self)
             return expressions.Bin(Operator.ASS, ass_instr.dst, src)
-        elif pc.emit_code() == self._incremented_expression.emit_code():
+        elif e.emit_code() == self._incremented_expression.emit_code():
             assert not self._increment_created
             self._increment_created = True
             return _make_increment(

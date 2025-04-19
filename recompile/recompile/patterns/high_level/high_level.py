@@ -1,10 +1,6 @@
-import instructions
-import expressions
 from expression_transformer import ExpressionTransformer
 import patterns.high_level.goto_eliminator as goto_eliminator
 import patterns.high_level.inline_functions as inline_functions
-from patterns.predefined_procedures import make_predefined_procedure_visitor
-from patterns.predefined_procedures import visit_predefined_procedures
 from patterns.validate_procedure_declaration import \
     validate_procedure_declaration
 
@@ -79,24 +75,25 @@ class _ExpressionTransformer(ExpressionTransformer):
         return transform_binary(operator, left, right)
 
     @staticmethod
-    def transform_procedure_call(
-        copy_pc, proc_name, arguments, is_predefined, **kwargs
-    ):
-        if not is_predefined:
-            return transform_procedure_call(copy_pc(), **kwargs)
-        return visit_predefined_procedures(
-            copy_pc, proc_name, arguments, is_predefined,
-            _predefined_procedure_visitor, **kwargs,
-        )
+    def transform_procedure_call(copy_pc, proc_name, arguments, **kwargs):
+        return transform_procedure_call(copy_pc(), **kwargs)
 
     @staticmethod
     def transform_reinterpret_cast(data_type, expression, **kwargs):
         return transform_reinterpret(data_type, expression, **kwargs)
 
+    @staticmethod
+    def transform_access(*args, **kwargs):
+        return transform_access(*args, **kwargs)
 
-_predefined_procedure_visitor = make_predefined_procedure_visitor(
-    on_stackvar=transform_stackvar,
-    on_access=transform_access,
-    on_global=transform_global,
-    on_arrptr=transform_arrptr,
-)
+    @staticmethod
+    def transform_arrptr(*args, **kwargs):
+        return transform_arrptr(*args, **kwargs)
+
+    @staticmethod
+    def transform_global(*args, **kwargs):
+        return transform_global(*args, **kwargs)
+
+    @staticmethod
+    def transform_stackvar(*args, **kwargs):
+        return transform_stackvar(*args, **kwargs)

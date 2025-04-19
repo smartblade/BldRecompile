@@ -73,13 +73,10 @@ def _transform_bit_and(left, right):
     src_type = data_types.UChar()
     if not isinstance(left, expressions.ReinterpretCast):
         return None
-    pc = left.expression
-    if not isinstance(pc, expressions.ProcedureCall):
+    trash_extend = left.expression
+    if not isinstance(trash_extend, expressions.intermediate.TrashExtend):
         return None
-    if not pc.is_predefined or pc.name != "TRASHEXTEND":
-        return None
-    assert len(pc.arguments) == 1
-    expression = pc.arguments[0]
+    expression = trash_extend.expression
     if not expression.data_type.is_any_int:
         return None
     if expression.data_type.size != src_type.size:

@@ -5,7 +5,6 @@ import parser
 from calling_convention import CallingConvention
 from patterns.validate_procedure_declaration import \
     validate_procedure_declaration
-from procedure_declaration import ProcedureDeclaration
 
 from .convert_expression_to_type import convert_expression_to_type
 from .explicit_arg_cast import explicit_arg_cast
@@ -136,19 +135,8 @@ def _convert_to_return_type(pc, return_type):
         isinstance(return_type, data_types.Unknown32) and
         pc.data_type.is_any_int and pc.data_type.size == 1
     ):
-        return _trash_extend(return_type, pc)
+        return expressions.intermediate.TrashExtend(return_type, pc)
     raise Exception(
         'Incompatible return type of {} procedure: {}, can\'t be converted to '
         '{}'.format(pc.name, pc.data_type, return_type)
-    )
-
-
-def _trash_extend(return_type, pc):
-    proc_decl = ProcedureDeclaration(
-        pc.name, CallingConvention.CDECL, None, [], return_type)
-    return expressions.ProcedureCall(
-        name="TRASHEXTEND",
-        arguments=[pc],
-        proc_decl=proc_decl,
-        is_predefined=True,
     )

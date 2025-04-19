@@ -1,22 +1,16 @@
-from calling_convention import CallingConvention
-import data_types
-from hex_conversion import from_hex, to_int
-from procedure_declaration import ProcedureDeclaration
-
 _procedures = {
-    "REGVALUE": lambda *args: _unpack_args(*args, reg=str),
+    "REGVALUE": lambda *args: _unpack_args(*args, reg=None),
     "POPFPU": lambda *args: _unpack_args(*args),
-    "STACKVAR": lambda *args: _unpack_args(*args, offset=int, size=int),
+    "STACKVAR": lambda *args: _unpack_args(*args, offset=None, size=None),
     "ACCESS": lambda *args: _unpack_args(
-        *args, expression=None, offset=int, size=int),
-    "GLOBAL": lambda *args: _unpack_args(*args, address=from_hex),
-    "LOCAL": lambda *args: _unpack_args(*args, offset=int),
-    "EXTERNVAR": lambda *args: _unpack_args(*args, name=str),
+        *args, expression=None, offset=None, size=None),
+    "GLOBAL": lambda *args: _unpack_args(*args, address=None),
+    "LOCAL": lambda *args: _unpack_args(*args, offset=None),
+    "EXTERNVAR": lambda *args: _unpack_args(*args, name=None),
     "ARRPTR": lambda *args: _unpack_args(
-        *args, base=None, scale=from_hex, index=None, offset=int),
-    "REAL64": lambda *args: _unpack_args(*args, high=from_hex, low=from_hex),
-    "EXPECT": lambda *args: _unpack_args(
-        *args, expression=None, const=to_int),
+        *args, base=None, scale=None, index=None, offset=None),
+    "REAL64": lambda *args: _unpack_args(*args, high=None, low=None),
+    "EXPECT": lambda *args: _unpack_args(*args, expression=None, const=None),
     "EVAL": lambda *args: _unpack_args(*args, expression=None),
     "ZEROEXTEND": lambda *args: _unpack_args(*args, size=int, expression=None),
     "SIGNEXTEND": lambda *args: _unpack_args(*args, size=int, expression=None),
@@ -25,47 +19,6 @@ _procedures = {
     "U": lambda *args: _unpack_args(*args, expression=None),
     "F": lambda *args: _unpack_args(*args, expression=None),
 }
-
-
-class DataTypeDefiner:
-    @staticmethod
-    def define_data_type(proc_name, **kwargs):
-        cb = getattr(DataTypeDefiner, "on_{}".format(proc_name.lower()))
-        data_type = cb(**kwargs)
-        return ProcedureDeclaration(
-            proc_name, CallingConvention.CDECL, None, [], data_type)
-
-    @staticmethod
-    def unknown_type(size):
-        if size == 1:
-            return data_types.UnknownByte()
-        if size == 2:
-            return data_types.AnyInt16()
-        if size == 4:
-            return data_types.Unknown32()
-        if size == 8:
-            return data_types.Unknown64()
-        raise Exception("Undefined type for size: {}".format(size))
-
-    @staticmethod
-    def on_access(size, **kwargs):
-        return DataTypeDefiner.unknown_type(size)
-
-    @staticmethod
-    def on_arrptr(**kwargs):
-        return data_types.Pointer32()
-
-    @staticmethod
-    def on_global(**kwargs):
-        return data_types.Pointer32()
-
-    @staticmethod
-    def on_local(**kwargs):
-        return data_types.Pointer32()
-
-    @staticmethod
-    def on_stackvar(size, **kwargs):
-        return DataTypeDefiner.unknown_type(size)
 
 
 def make_predefined_procedure_visitor(**kwargs):
@@ -77,19 +30,14 @@ def make_predefined_procedure_visitor(**kwargs):
     return cb_map
 
 
-def visit_predefined_procedures(
-    copy_pc, name, arguments, is_predefined, callbacks, **kwargs
-):
+def visit_predefined_procedures(name, arguments, callbacks, **kwargs):
     callback = callbacks.get(name)
     if callback is None:
         return None
-    return _procedures[name](
-        copy_pc, name, arguments, is_predefined, callback, kwargs)
+    return _procedures[name](name, arguments, callback, kwargs)
 
 
-def _unpack_args(
-    copy_pc, proc_name, args, is_predefined, callback, cb_args, **kwargs
-):
+def _unpack_args(proc_name, args, callback, cb_args, **kwargs):
     if len(args) != len(kwargs):
         raise Exception(
             "Expected {} argument of {} but was {}.".format(
@@ -99,9 +47,4 @@ def _unpack_args(
         values_map[key] = args[index]
         if convert is not None:
             values_map[key] = convert(values_map[key].emit_code())
-    transformed_expression = callback(**cb_args, **values_map)
-    if transformed_expression is None and not is_predefined:
-        proc_decl = DataTypeDefiner.define_data_type(
-            proc_name, **values_map)
-        return copy_pc(is_predefined=True, proc_decl=proc_decl)
-    return transformed_expression
+    return callback(**cb_args, **values_map)

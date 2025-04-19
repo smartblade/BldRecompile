@@ -25,4 +25,7 @@ from .static_cast import StaticCast
 from .string_constant import StringConstant
 from .unparsed_token import UnparsedToken
 from .unparsed_tokens import UnparsedTokens
+
+import expressions.intermediate
+
 ConstantTypes = (Constant, type(Null))

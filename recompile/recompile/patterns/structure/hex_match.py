@@ -18,6 +18,9 @@ class HexMatch:
     def __str__(self):
         return "0x{}".format(self._hex_str)
 
+    def __int__(self):
+        return from_hex(self._hex_str)
+
     def __eq__(self, other):
         assert isinstance(other, HexMatch)
         return self._hex_str == other._hex_str

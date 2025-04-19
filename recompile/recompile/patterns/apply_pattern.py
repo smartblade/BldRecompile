@@ -4,14 +4,11 @@ import struct
 import data_types
 import expressions
 from hex_conversion import to_hex
-import parser
 from expressions.operator import Operator
 from expression_transformer import ExpressionTransformer
 from patterns.apply_restriction import apply_restriction
 from patterns.evaluate_expression import evaluate_expression
 from patterns.make_proc_decl_from_args import make_proc_decl_from_args
-from patterns.predefined_procedures import make_predefined_procedure_visitor
-from patterns.predefined_procedures import visit_predefined_procedures
 
 variable_pattern = re.compile(r"%(?P<variable>[\w\\-]*)%")
 
@@ -99,10 +96,6 @@ def _evaluate_pop_fpu(builder, **kwargs):
     return builder.pop_fpu()
 
 
-def _evaluate_externvar(name, **kwargs):
-    return expressions.AddressOf(expressions.Identifier(None, name))
-
-
 def _evaluate_real64(high, low, **kwargs):
     (double, ) = struct.unpack(
         '>d',
@@ -118,22 +111,6 @@ def _evaluate_expect(expression, const, **kwargs):
     ):
         return expression
     raise Exception("Expected {} but was: {}".format(const, expression))
-
-
-def _evaluate_constants(expression, **kwargs):
-    return evaluate_expression(expression, **kwargs)
-
-
-def _evaluate_zeroextend(size, expression, **kwargs):
-    return expressions.do_static_cast(
-        data_types.AnyInt(size), _evaluate_uint_conversion(expression)
-    )
-
-
-def _evaluate_signextend(size, expression, **kwargs):
-    return expressions.do_static_cast(
-        data_types.AnyInt(size), _evaluate_int_conversion(expression)
-    )
 
 
 def _evaluate_any_int_conversion(expression, **kwargs):
@@ -163,7 +140,7 @@ def _evaluate_int_conversion(expression, **kwargs):
         expression.data_type.size * 8))
 
 
-def evaluate_float_conversion(expression, **kwargs):
+def _evaluate_float_conversion(expression, **kwargs):
     if expression.data_type.size == 4:
         return expressions.do_reinterpret(data_types.Float(), expression)
     if expression.data_type.size == 8:
@@ -220,49 +197,96 @@ class _ExpressionTransformer(ExpressionTransformer):
             return expressions.Bin(Operator.SUB, left, right)
         return None
 
-    def transform_procedure_call(
-        self, copy_pc, proc_name, arguments, is_predefined
-    ):
-        e = visit_predefined_procedures(
-            copy_pc, proc_name, arguments, is_predefined,
-            _predefined_procedure_visitor,
-            **self._arguments)
-        if e is None:
-            return _evaluate_procedure_call(copy_pc, proc_name)
-        return e
+    def transform_procedure_call(self, copy_pc, proc_name, arguments):
+        return _evaluate_procedure_call(copy_pc, proc_name)
 
-    def transform_pattern_text(self, text, **kwargs):
+    def transform_access_pattern(self, expression, offset, size, **kwargs):
+        assert isinstance(offset, expressions.Constant)
+        assert isinstance(offset.value, int)
+        assert isinstance(size, expressions.Constant)
+        assert isinstance(size.value, int)
+        return expressions.intermediate.Access(
+            expression, offset.value, size.value)
+
+    def transform_arrptr_pattern(self, base, scale, index, offset):
+        assert isinstance(scale, expressions.Constant)
+        assert isinstance(scale.value, int)
+        assert isinstance(offset, expressions.Constant)
+        assert isinstance(offset.value, int)
+        return expressions.intermediate.Arrptr(
+            base, scale.value, index, offset.value)
+
+    def transform_eval(self, expression):
+        return evaluate_expression(expression, **self._arguments)
+
+    def transform_expect(self, actual, expected):
+        assert isinstance(expected, expressions.Constant)
+        return _evaluate_expect(actual, expected.value)
+
+    def transform_i(self, expression, **kwargs):
+        return _evaluate_any_int_conversion(expression)
+
+    def transform_local_pattern(self, expression, **kwargs):
+        offset = expression.transform(self)
+        assert isinstance(offset, expressions.Constant)
+        return expressions.intermediate.Local(offset.value)
+
+    def transform_f(self, expression, **kwargs):
+        return _evaluate_float_conversion(expression)
+
+    def transform_global_pattern(self, var_name, **kwargs):
+        address = self._int_variable_value(var_name)
+        return expressions.intermediate.Global(address)
+
+    def transform_extern_variable_pattern(self, var_name):
+        name = self._str_variable_value(var_name)
+        return expressions.AddressOf(expressions.Identifier(None, name))
+
+    def transform_pattern_text(self, text):
         return expressions.UnparsedToken(
             re.sub(variable_pattern, self._replace_variable, text)
         )
 
-    def transform_pattern_variable(self, var_name, **kwargs):
+    def transform_pattern_variable(self, var_name):
         value = self._match_dict[var_name]
         if not isinstance(value, str):
             return value.make_expression(self)
         return expressions.UnparsedToken(value)
 
+    def transform_pop_fpu(self):
+        return _evaluate_pop_fpu(**self._arguments)
+
+    def transform_real64_pattern(self, high_var_name, low_var_name, **kwargs):
+        high = self._int_variable_value(high_var_name)
+        low = self._int_variable_value(low_var_name)
+        return _evaluate_real64(high, low)
+
+    def transform_register_pattern(self, pattern):
+        reg = pattern.transform(self).emit_code()
+        return _evaluate_reg_value(reg, **self._arguments)
+
+    def transform_register_value(self, reg):
+        return _evaluate_reg_value(reg, **self._arguments)
+
+    def transform_s(self, expression):
+        return _evaluate_int_conversion(expression)
+
+    def transform_stackvar_pattern(self, offset, size):
+        assert isinstance(offset, expressions.Constant)
+        assert isinstance(offset.value, int)
+        assert isinstance(size, expressions.Constant)
+        assert isinstance(size.value, int)
+        return expressions.intermediate.Stackvar(offset.value, size.value)
+
+    def transform_u(self, expression):
+        return _evaluate_uint_conversion(expression)
+
     def _replace_variable(self, matchobj):
         var_name = matchobj.group("variable")
         return str(self._match_dict[var_name])
 
+    def _str_variable_value(self, var_name):
+        return str(self._match_dict[var_name])
 
-_predefined_procedure_visitor = make_predefined_procedure_visitor(
-    on_regvalue=_evaluate_reg_value,
-    on_popfpu=_evaluate_pop_fpu,
-    on_access=_keep,
-    on_global=_keep,
-    on_local=_keep,
-    on_externvar=_evaluate_externvar,
-    on_stackvar=_keep,
-    on_arrptr=_keep,
-    on_real64=_evaluate_real64,
-    on_expect=_evaluate_expect,
-    on_eval=_evaluate_constants,
-    on_zeroextend=_evaluate_zeroextend,
-    on_signextend=_evaluate_signextend,
-    on_i=_evaluate_any_int_conversion,
-    on_s=_evaluate_int_conversion,
-    on_u=_evaluate_uint_conversion,
-    on_f=evaluate_float_conversion,
-)
+    def _int_variable_value(self, var_name):
+        return int(self._match_dict[var_name])

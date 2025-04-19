@@ -16,17 +16,9 @@ def _transform_string_constant(data_type, expression, declarations, **kwargs):
     if not isinstance(data_type.pointee, data_types.Char):
         return None
     global_variable = expression
-    if not isinstance(global_variable, expressions.ProcedureCall):
+    if not isinstance(global_variable, expressions.intermediate.Global):
         return None
-    if not global_variable.is_predefined:
-        return None
-    if global_variable.name != 'GLOBAL':
-        return None
-    assert len(global_variable.arguments) == 1
-    global_address_expression = global_variable.arguments[0]
-    assert isinstance(global_address_expression, expressions.Constant)
-    global_address = global_address_expression.value
-    string_const = declarations.string_constants.get(global_address)
+    string_const = declarations.string_constants.get(global_variable.address)
     if string_const is None:
         return None
     return expressions.StringConstant(string_const)

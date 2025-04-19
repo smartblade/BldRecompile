@@ -50,15 +50,9 @@ class ProcedureInfo:
         return e is not None and self._this == e
 
     def define_this_offset(self, e):
-        if (
-            isinstance(e, expressions.ProcedureCall) and
-            e.name == "STACKVAR" and
-            len(e.arguments) == 2
-        ):
-            offset = int(e.arguments[0].emit_code())
-            size = int(e.arguments[1].emit_code())
-            if size == 4:
-                self._this_offset = offset
+        if isinstance(e, expressions.intermediate.Stackvar):
+            if e.size == 4:
+                self._this_offset = e.offset
                 return
         raise Exception(
             "Unexpected expression found when defining 'this' variable "
