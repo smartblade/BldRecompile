@@ -15,6 +15,7 @@ from .do_static_cast import do_static_cast
 from .field_access import FieldAccess
 from .identifier import Identifier
 from .implicit_cast import ImplicitCast
+from .implicit_dereference import ImplicitDereference
 from .increment import Increment
 from .negate import Negate
 from .null import Null

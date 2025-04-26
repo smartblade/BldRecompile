@@ -62,6 +62,10 @@ class ExpressionTransformer:
         return None
 
     @staticmethod
+    def transform_implicit_dereference(expression, **kwargs):
+        return None
+
+    @staticmethod
     def transform_field_access(expression, field_name, **kwargs):
         return None
 

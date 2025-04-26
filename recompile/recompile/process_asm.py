@@ -10,6 +10,7 @@ from make_tuple import make_tuple
 import parser as cpp_parser
 from patterns.asm_patterns import process_asm_patterns
 from patterns.characteristics import ModuleCharacteristics
+from read_exports import read_exports
 
 parser = OptionParser()
 parser.add_option("--show-hex-prefix", dest="show_hex_prefix",
@@ -1469,9 +1470,11 @@ def run():
             print("Processing {}".format(module_name))
             symbols = symbols_dict.get(module_name, SrcSymbols(module_name))
             characteristics = ModuleCharacteristics.read(module_name)
+            exported_procedures = read_exports(asm_files.intermediate_export)
             declarations = make_tuple(
                 "Declarations",
                 symbols=symbols,
+                exported_procedures=exported_procedures,
                 declared_types=declared_types,
                 characteristics=characteristics,
             )

@@ -486,37 +486,35 @@ l10001D68:
 }
 
 // address: 0x10001DA0
-p10001DA0
+void B_ODataFile::WriteCacheBlock()
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=0)
     if (ACCESS(this, 16396, 4) == 0x00000000)
     {
         return;
     }
-    _write(ACCESS(this, 0, 4), reinterpret_cast<any_int32>(this) + 0x00000008, ACCESS(this, 16396, 4));
+    _write(this->fd, &this->unknown_fields, ACCESS(this, 16396, 4));
     ACCESS(this, 16392, 4) = reinterpret_cast<any_int32>(ACCESS(this, 16392, 4)) + reinterpret_cast<any_int32>(ACCESS(this, 16396, 4));
     ACCESS(this, 16396, 4) = 0x00000000;
 }
 
 // address: 0x10001E01
-p10001E01
+long B_ODataFile::Seek(long arg_0)
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=4)
-    if (reinterpret_cast<unsigned int>(STACKVAR(8, 4)) <= reinterpret_cast<unsigned int>(ACCESS(this, 16392, 4)))
+    if (reinterpret_cast<unsigned int>(arg_0) <= reinterpret_cast<unsigned int>(ACCESS(this, 16392, 4)))
     {
         goto l10001E40;
     }
-    if (reinterpret_cast<unsigned int>(STACKVAR(8, 4)) < reinterpret_cast<unsigned int>(ACCESS(this, 16392, 4)) + 0x00004000)
+    if (reinterpret_cast<unsigned int>(arg_0) < reinterpret_cast<unsigned int>(ACCESS(this, 16392, 4)) + 0x00004000)
     {
-        ACCESS(this, 16396, 4) = reinterpret_cast<any_int32>(STACKVAR(8, 4)) - reinterpret_cast<any_int32>(ACCESS(this, 16392, 4));
+        ACCESS(this, 16396, 4) = arg_0 - reinterpret_cast<any_int32>(ACCESS(this, 16392, 4));
         goto l10001E6E;
     }
 l10001E40:
-    ACCESS(this, 16392, 4) = STACKVAR(8, 4);
+    ACCESS(this, 16392, 4) = arg_0;
     ACCESS(this, 16396, 4) = 0x00000000;
-    _lseek(ACCESS(this, 0, 4), STACKVAR(8, 4), 0x00000000);
+    _lseek(this->fd, arg_0, 0x00000000);
 l10001E6E:
-    REGDEF(eax=reinterpret_cast<any_int32>(ACCESS(this, 16392, 4)) + reinterpret_cast<any_int32>(ACCESS(this, 16396, 4)))
+    return reinterpret_cast<long>(ACCESS(this, 16392, 4)) + reinterpret_cast<long>(ACCESS(this, 16396, 4));
 }
 
 // address: 0x10001E86
@@ -539,7 +537,7 @@ void B_ODataFile::Write(const void *data, unsigned int size)
         ACCESS(this, 16396, 4) = 0x00004000;
         size = reinterpret_cast<unsigned int>(size - reinterpret_cast<any_int32>(STACKVAR(-4, 4)));
     }
-    this->unknown_method_10001DA0();
+    this->WriteCacheBlock();
     this->Write(reinterpret_cast<void *>(reinterpret_cast<any_int32>(data) + reinterpret_cast<any_int32>(STACKVAR(-4, 4))), size);
 }
 
@@ -621,11 +619,10 @@ B_ODataFile &operator <<(B_ODataFile &file, const double &f)
 }
 
 // address: 0x10002060
-p10002060
+void B_ODataFile::Flush()
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=0)
-    this->unknown_method_10001DA0();
-    _commit(ACCESS(this, 0, 4));
+    this->WriteCacheBlock();
+    _commit(this->fd);
 }
 
 // address: 0x10002082
@@ -634,37 +631,33 @@ B_ODataFile::~B_ODataFile()
     free(this->file_name);
     if (static_cast<any_int32>(this->fd != -1) != 0x00000000)
     {
-        this->unknown_method_10001DA0();
+        this->WriteCacheBlock();
         _close(this->fd);
     }
 }
 
 // address: 0x100020C3
-p100020C3
+int GetnOpenedInputFiles()
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
-    return B_IDataFile::GetnOpenedFiles();
+    B_IDataFile::GetnOpenedFiles();
 }
 
 // address: 0x100020CD
-p100020CD
+int GetnOpenInputFiles()
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
-    return B_IDataFile::GetnOpenFiles();
+    B_IDataFile::GetnOpenFiles();
 }
 
 // address: 0x100020D7
-p100020D7
+void ResetnOpenedInputFiles()
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
     B_IDataFile::ResetnOpenedFiles();
 }
 
 // address: 0x100020E1
-p100020E1
+int SetOnOpenInputFileFunc(PyObject *arg_0)
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
-    return B_IDataFile::SetOnOpenFunc(reinterpret_cast<PyObject *>(STACKVAR(8, 4)));
+    B_IDataFile::SetOnOpenFunc(arg_0);
 }
 
 // address: 0x100020F2
@@ -733,18 +726,16 @@ unsigned int B_ODataFile::OK()
 }
 
 // address: 0x10002270
-p10002270
+char *B_ODataFile::GetFileName()
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=0)
-    REGDEF(eax=ACCESS(this, 4, 4))
+    return this->file_name;
 }
 
 // address: 0x10002290
-p10002290
+B_ODataFile &B_ODataFile::operator=(const B_ODataFile &arg_0)
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=4)
-    memcpy(this, STACKVAR(8, 4), 0x00004010); // TODO improve emitting of memcpy instructions
-    REGDEF(eax=this)
+    memcpy(this, arg_0, 0x00004010); // TODO improve emitting of memcpy instructions
+    return *this;
 }
 
 // address: 0x100022C0
@@ -832,22 +823,19 @@ B_MessageChannel::B_MessageChannel(B_Name &name)
 }
 
 // address: 0x100024F0
-p100024F0
+B_MessageChannel::B_MessageChannel()
 {
-    ProcedureInfo(this=Id(this), this_offset=-12, local_size=12, stack_delta=0)
     reinterpret_cast<B_Name *>(LOCAL(-8))->B_Name("");
-    reinterpret_cast<B_NamedObj *>(this)->B_NamedObj(*reinterpret_cast<B_Name *>(LOCAL(-8)));
+    this->B_NamedObj(*reinterpret_cast<B_Name *>(LOCAL(-8)));
     reinterpret_cast<B_Name *>(LOCAL(-8))->~B_Name();
     ACCESS(this, 0, 4) = GLOBAL(0x10042180);
-    ACCESS(this, 12, 4) = 0x00000001;
-    REGDEF(eax=this)
+    this->unknown0Ch = 1;
 }
 
 // address: 0x10002540
-p10002540
+int B_MessageChannel::operator==(const B_MessageChannel &arg_0)
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=4)
-    REGDEF(eax=0x00000000)
+    return 0;
 }
 
 // address: 0x10002550
@@ -1032,23 +1020,22 @@ B_ListElement::~B_ListElement()
 }
 
 // address: 0x100029AE
-p100029AE
+void B_List::DeleteList(unsigned int arg_0)
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=4)
-    if (STACKVAR(8, 4) != 0x00000000)
+    if (arg_0 != 0)
     {
-        while (ACCESS(this, 4, 4) != 0x00000000)
+        while (this->numElements != 0)
         {
-            this->unknown_method_10002CAC(0x00000001);
+            this->RemoveFirst(1);
         }
-        ACCESS(this, 4, 4) = 0x00000000;
-        ACCESS(this, 12, 4) = 0x00000000;
-        ACCESS(this, 8, 4) = 0x00000000;
+        this->numElements = 0;
+        this->head = nullptr;
+        this->tail = nullptr;
         return;
     }
-    ACCESS(this, 4, 4) = 0x00000000;
-    ACCESS(this, 12, 4) = 0x00000000;
-    ACCESS(this, 8, 4) = 0x00000000;
+    this->numElements = 0;
+    this->head = nullptr;
+    this->tail = nullptr;
 }
 
 // address: 0x10002A14
@@ -1130,12 +1117,12 @@ unsigned int B_List::Remove(B_ListElement *element, unsigned int index)
     }
     if (element == this->tail)
     {
-        this->unknown_method_10002CAC(index);
+        this->RemoveFirst(index);
         return 1;
     }
     if (element == this->head)
     {
-        this->unknown_method_10002D5D(index);
+        this->RemoveLast(index);
         return 1;
     }
     STACKVAR(-4, 4) = element->prev;
@@ -1163,25 +1150,23 @@ unsigned int B_List::Remove(B_ListElement *element, unsigned int index)
 }
 
 // address: 0x10002CAC
-p10002CAC
+B_ListElement *B_List::RemoveFirst(unsigned int arg_0)
 {
-    ProcedureInfo(this=Id(this), this_offset=-16, local_size=20, stack_delta=4)
-    if (ACCESS(this, 4, 4) == 0x00000000)
+    if (this->numElements == 0)
     {
-        REGDEF(eax=0x00000000)
-        return;
+        return nullptr;
     }
-    ACCESS(this, 4, 4) = reinterpret_cast<any_int32>(ACCESS(this, 4, 4)) - 0x00000001;
-    STACKVAR(-4, 4) = ACCESS(this, 8, 4);
-    ACCESS(this, 8, 4) = ACCESS(ACCESS(this, 8, 4), 8, 4);
-    if (ACCESS(this, 4, 4) != 0x00000000)
+    this->numElements = this->numElements - 0x00000001;
+    STACKVAR(-4, 4) = this->tail;
+    this->tail = this->tail->next;
+    if (this->numElements != 0)
     {
-        ACCESS(ACCESS(this, 8, 4), 12, 4) = 0x00000000;
+        this->tail->prev = nullptr;
     }
     ACCESS(STACKVAR(-4, 4), 4, 4) = 0x00000000;
     ACCESS(STACKVAR(-4, 4), 8, 4) = 0x00000000;
     ACCESS(STACKVAR(-4, 4), 12, 4) = 0x00000000;
-    if (STACKVAR(8, 4) != 0x00000000)
+    if (arg_0 != 0)
     {
         STACKVAR(-12, 4) = STACKVAR(-4, 4);
         STACKVAR(-8, 4) = STACKVAR(-12, 4);
@@ -1193,32 +1178,29 @@ p10002CAC
         {
             STACKVAR(-20, 4) = 0x00000000;
         }
-        REGDEF(eax=0x00000000)
-        return;
+        return nullptr;
     }
-    REGDEF(eax=STACKVAR(-4, 4))
+    return reinterpret_cast<B_ListElement *>(STACKVAR(-4, 4));
 }
 
 // address: 0x10002D5D
-p10002D5D
+B_ListElement *B_List::RemoveLast(unsigned int arg_0)
 {
-    ProcedureInfo(this=Id(this), this_offset=-16, local_size=20, stack_delta=4)
-    if (ACCESS(this, 4, 4) == 0x00000000)
+    if (this->numElements == 0)
     {
-        REGDEF(eax=0x00000000)
-        return;
+        return nullptr;
     }
-    ACCESS(this, 4, 4) = reinterpret_cast<any_int32>(ACCESS(this, 4, 4)) - 0x00000001;
-    STACKVAR(-4, 4) = ACCESS(this, 12, 4);
-    ACCESS(this, 12, 4) = ACCESS(ACCESS(this, 12, 4), 12, 4);
-    if (ACCESS(this, 4, 4) != 0x00000000)
+    this->numElements = this->numElements - 0x00000001;
+    STACKVAR(-4, 4) = this->head;
+    this->head = this->head->prev;
+    if (this->numElements != 0)
     {
-        ACCESS(ACCESS(this, 12, 4), 8, 4) = 0x00000000;
+        this->head->next = nullptr;
     }
     ACCESS(STACKVAR(-4, 4), 4, 4) = 0x00000000;
     ACCESS(STACKVAR(-4, 4), 8, 4) = 0x00000000;
     ACCESS(STACKVAR(-4, 4), 12, 4) = 0x00000000;
-    if (STACKVAR(8, 4) != 0x00000000)
+    if (arg_0 != 0)
     {
         STACKVAR(-12, 4) = STACKVAR(-4, 4);
         STACKVAR(-8, 4) = STACKVAR(-12, 4);
@@ -1230,33 +1212,30 @@ p10002D5D
         {
             STACKVAR(-20, 4) = 0x00000000;
         }
-        REGDEF(eax=0x00000000)
-        return;
+        return nullptr;
     }
-    REGDEF(eax=STACKVAR(-4, 4))
+    return reinterpret_cast<B_ListElement *>(STACKVAR(-4, 4));
 }
 
 // address: 0x10002E0E
-p10002E0E
+B_ListElement *B_List::GetAt(unsigned int arg_0)
 {
-    ProcedureInfo(this=Id(this), this_offset=-12, local_size=12, stack_delta=4)
-    if (reinterpret_cast<unsigned int>(ACCESS(this, 4, 4)) < reinterpret_cast<unsigned int>(STACKVAR(8, 4)))
+    if (reinterpret_cast<unsigned int>(this->numElements) < arg_0)
     {
-        REGDEF(eax=0x00000000)
-        return;
+        return nullptr;
     }
-    STACKVAR(-8, 4) = ACCESS(this, 8, 4);
+    STACKVAR(-8, 4) = this->tail;
     STACKVAR(-4, 4) = 0x00000000;
     goto l10002E41;
 l10002E38:
     STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000001;
 l10002E41:
-    if (reinterpret_cast<unsigned int>(STACKVAR(-4, 4)) < reinterpret_cast<unsigned int>(STACKVAR(8, 4)))
+    if (reinterpret_cast<unsigned int>(STACKVAR(-4, 4)) < arg_0)
     {
         STACKVAR(-8, 4) = ACCESS(STACKVAR(-8, 4), 8, 4);
         goto l10002E38;
     }
-    REGDEF(eax=STACKVAR(-8, 4))
+    return reinterpret_cast<B_ListElement *>(STACKVAR(-8, 4));
 }
 
 // address: 0x10002E5D
@@ -1370,24 +1349,21 @@ B_List::~B_List()
 }
 
 // address: 0x10003100
-p10003100
+unsigned int B_List::nElements()
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=0)
-    REGDEF(eax=ACCESS(this, 4, 4))
+    return reinterpret_cast<unsigned int>(this->numElements);
 }
 
 // address: 0x10003120
-p10003120
+B_ListElement *B_List::GetFirst()
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=0)
-    REGDEF(eax=ACCESS(this, 8, 4))
+    return this->tail;
 }
 
 // address: 0x10003140
-p10003140
+B_ListElement *B_List::GetLast()
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=0)
-    REGDEF(eax=ACCESS(this, 12, 4))
+    return this->head;
 }
 
 // address: 0x10003160
@@ -1409,12 +1385,11 @@ B_List &B_List::operator=(const B_List &that)
 }
 
 // address: 0x100031E0
-p100031E0
+void B_List::default constructor closure()
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=0)
-    ACCESS(this, 4, 4) = 0x00000000;
-    ACCESS(this, 8, 4) = 0x00000000;
-    ACCESS(this, 12, 4) = 0x00000000;
+    this->numElements = 0;
+    this->tail = nullptr;
+    this->head = nullptr;
     ACCESS(this, 0, 4) = GLOBAL(0x10042194);
 }
 
@@ -1559,15 +1534,13 @@ unsigned int B_Name::operator !=(const char *str)
 }
 
 // address: 0x10003730
-p10003730
+unsigned int B_Name::CompareNoCase(const B_Name &arg_0)
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=4)
-    if (ACCESS(this, 4, 4) == ACCESS(STACKVAR(8, 4), 4, 4))
+    if (this->len == arg_0.len)
     {
-        REGDEF(eax=static_cast<any_int32>(_stricmp(ACCESS(this, 0, 4), ACCESS(STACKVAR(8, 4), 0, 4)) == 0x00000000))
-        return;
+        return static_cast<unsigned int>(_stricmp(this->string, arg_0.string) == 0x00000000);
     }
-    REGDEF(eax=0x00000000)
+    return 0;
 }
 
 // address: 0x10003769
@@ -1798,12 +1771,10 @@ B_Resource::B_Resource()
 }
 
 // address: 0x10003ED9
-p10003ED9
+B_Resource::B_Resource(const B_Name &arg_0)
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=4)
-    reinterpret_cast<B_NamedObj *>(this)->B_NamedObj(reinterpret_cast<B_Name &>(STACKVAR(8, 4)));
+    this->B_NamedObj(arg_0);
     ACCESS(this, 0, 4) = GLOBAL(0x10042198);
-    REGDEF(eax=this)
 }
 
 // address: 0x10003EFE
@@ -1815,16 +1786,15 @@ B_Resource::~B_Resource()
 }
 
 // address: 0x10003F26
-p10003F26
+void B_Resource::Save(B_ODataFile &arg_0, const B_Resource *arg_1)
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=16, stack_delta=0)
-    STACKVAR(-4, 2) = STACKVAR(12, 4)->(ACCESS(ACCESS(STACKVAR(12, 4), 0, 4), 4, 4))();
-    reinterpret_cast<B_ODataFile &>(STACKVAR(8, 4)) << *reinterpret_cast<unsigned short *>(LOCAL(-4));
-    STACKVAR(-8, 4) = STACKVAR(12, 4)->(ACCESS(ACCESS(STACKVAR(12, 4), 0, 4), 8, 4))();
-    reinterpret_cast<B_ODataFile &>(STACKVAR(8, 4)) << *reinterpret_cast<unsigned long *>(LOCAL(-8));
-    STACKVAR(-12, 4) = STACKVAR(12, 4)->(ACCESS(ACCESS(STACKVAR(12, 4), 0, 4), 12, 4))();
-    reinterpret_cast<B_ODataFile &>(STACKVAR(8, 4)) << *reinterpret_cast<unsigned int *>(LOCAL(-12));
-    STACKVAR(-16, 4) = reinterpret_cast<any_int32>(STACKVAR(12, 4)->(ACCESS(ACCESS(STACKVAR(12, 4), 0, 4), 4, 4))()) & 0x0000FFFF;
+    STACKVAR(-4, 2) = arg_1->(ACCESS(ACCESS(arg_1, 0, 4), 4, 4))();
+    arg_0 << *reinterpret_cast<unsigned short *>(LOCAL(-4));
+    STACKVAR(-8, 4) = arg_1->(ACCESS(ACCESS(arg_1, 0, 4), 8, 4))();
+    arg_0 << *reinterpret_cast<unsigned long *>(LOCAL(-8));
+    STACKVAR(-12, 4) = arg_1->(ACCESS(ACCESS(arg_1, 0, 4), 12, 4))();
+    arg_0 << *reinterpret_cast<unsigned int *>(LOCAL(-12));
+    STACKVAR(-16, 4) = reinterpret_cast<any_int32>(arg_1->(ACCESS(ACCESS(arg_1, 0, 4), 4, 4))()) & 0x0000FFFF;
     if (STACKVAR(-16, 4) == 0x00000001)
     {
         goto l10003FA8;
@@ -1835,16 +1805,15 @@ p10003F26
     }
     return;
 l10003FA8:
-    unknown_function_100369F0(STACKVAR(8, 4), STACKVAR(12, 4));
+    unknown_function_100369F0(arg_0, arg_1);
     return;
 l10003FBA:
-    unknown_function_100084D6(STACKVAR(8, 4), STACKVAR(12, 4));
+    unknown_function_100084D6(arg_0, arg_1);
 }
 
 // address: 0x10003FCE
-p10003FCE
+B_Resource *B_Resource::Load(B_IDataFile &arg_0, unsigned short arg_1)
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=84, stack_delta=0)
     STACKVAR(-12, 4) = 0x00000000;
     STACKVAR(-8, 4) = 0x00000000;
     STACKVAR(-68, 4) = reinterpret_cast<any_int32>(STACKVAR(12, 4)) & 0x0000FFFF;
@@ -1869,17 +1838,17 @@ p10003FCE
                 STACKVAR(-72, 4) = 0x00000000;
             }
             STACKVAR(-4, 4) = STACKVAR(-72, 4);
-            unknown_function_1003590B(STACKVAR(8, 4), STACKVAR(-4, 4));
+            unknown_function_1003590B(arg_0, STACKVAR(-4, 4));
             goto l10004355;
         case 1:
-            reinterpret_cast<B_IDataFile &>(STACKVAR(8, 4)) >> *reinterpret_cast<unsigned short *>(LOCAL(12));
-            reinterpret_cast<B_IDataFile &>(STACKVAR(8, 4)) >> *reinterpret_cast<unsigned long *>(LOCAL(-12));
-            reinterpret_cast<B_IDataFile &>(STACKVAR(8, 4)) >> *reinterpret_cast<unsigned int *>(LOCAL(-8));
+            arg_0 >> *reinterpret_cast<unsigned short *>(LOCAL(12));
+            arg_0 >> *reinterpret_cast<unsigned long *>(LOCAL(-12));
+            arg_0 >> *reinterpret_cast<unsigned int *>(LOCAL(-8));
             STACKVAR(-20, 4) = ??2@YAPAXI@Z(0x00000024);
             if (STACKVAR(-20, 4) != 0x00000000)
             {
                 reinterpret_cast<B_Resource *>(STACKVAR(-20, 4))->B_Resource();
-                (reinterpret_cast<any_int32>(STACKVAR(-20, 4)) + 0x0000000C)->unknown_method_100085F0();
+                reinterpret_cast<B_BitMap *>(reinterpret_cast<any_int32>(STACKVAR(-20, 4)) + 0x0000000C)->B_BitMap();
                 ACCESS(STACKVAR(-20, 4), 0, 4) = GLOBAL(0x100421CC);
                 STACKVAR(-76, 4) = STACKVAR(-20, 4);
             }
@@ -1888,7 +1857,7 @@ p10003FCE
                 STACKVAR(-76, 4) = 0x00000000;
             }
             STACKVAR(-4, 4) = STACKVAR(-76, 4);
-            unknown_function_100084FB(STACKVAR(8, 4), STACKVAR(-4, 4));
+            unknown_function_100084FB(arg_0, STACKVAR(-4, 4));
             goto l10004355;
         case 2:
             STACKVAR(-24, 4) = ??2@YAPAXI@Z(0x0000001C);
@@ -1956,7 +1925,7 @@ l10004263:
     STACKVAR(-80, 4) = 0x00000000;
 l1000426A:
     STACKVAR(-4, 4) = STACKVAR(-80, 4);
-    unknown_function_10008595(STACKVAR(8, 4), STACKVAR(-4, 4));
+    unknown_function_10008595(arg_0, STACKVAR(-4, 4));
     goto l10004355;
 l10004285:
     STACKVAR(-28, 4) = ??2@YAPAXI@Z(0x0000001C);
@@ -1991,12 +1960,12 @@ l1000432F:
     STACKVAR(-84, 4) = 0x00000000;
 l10004336:
     STACKVAR(-4, 4) = STACKVAR(-84, 4);
-    unknown_function_100085D4(STACKVAR(8, 4), STACKVAR(-4, 4));
+    unknown_function_100085D4(arg_0, STACKVAR(-4, 4));
     goto l10004355;
 l1000434E:
     STACKVAR(-4, 4) = 0x00000000;
 l10004355:
-    REGDEF(eax=STACKVAR(-4, 4))
+    return reinterpret_cast<B_Resource *>(STACKVAR(-4, 4));
 }
 
 // address: 0x10004371
@@ -2058,7 +2027,7 @@ B_Resource *B_ResourceLocation::GetResource(unsigned short resourceId)
         return reinterpret_cast<B_Resource *>(STACKVAR(-16412, 4));
     }
     reinterpret_cast<B_IDataFile *>(LOCAL(-16408))->Seek(reinterpret_cast<long>(ACCESS(this, 20, 4)), 0);
-    ACCESS(this, 28, 4) = unknown_function_10003FCE(LOCAL(-16408), resourceId);
+    ACCESS(this, 28, 4) = B_Resource::Load(*reinterpret_cast<B_IDataFile *>(LOCAL(-16408)), resourceId);
     if (ACCESS(this, 28, 4) == 0x00000000)
     {
         STACKVAR(-16416, 4) = 0x00000000;
@@ -2457,30 +2426,28 @@ l10004BE9:
 }
 
 // address: 0x10004C20
-p10004C20
+unsigned int B_ResourceManager::GetnFiles()
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=0)
-    REGDEF(eax=ACCESS(ACCESS(this, 1024, 4), 8, 4))
+    return reinterpret_cast<unsigned int>(ACCESS(ACCESS(this, 1024, 4), 8, 4));
 }
 
 // address: 0x10004C37
-p10004C37
+char *B_ResourceManager::GetFile(unsigned int arg_0)
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=4)
-    if (reinterpret_cast<unsigned int>(STACKVAR(8, 4)) > 0)
+    if (arg_0 > 0)
     {
-        if (reinterpret_cast<unsigned int>(STACKVAR(8, 4)) < reinterpret_cast<unsigned int>(ACCESS(ACCESS(this, 1024, 4), 8, 4)))
+        if (arg_0 < reinterpret_cast<unsigned int>(ACCESS(ACCESS(this, 1024, 4), 8, 4)))
         {
-            return reinterpret_cast<B_Name *>(ACCESS(ARRPTR(ACCESS(ACCESS(this, 1024, 4), 4, 4), 4, STACKVAR(8, 4), 0), 0, 4))->String();
+            reinterpret_cast<B_Name *>(ACCESS(ARRPTR(ACCESS(ACCESS(this, 1024, 4), 4, 4), 4, arg_0, 0), 0, 4))->String();
+            return;
         }
     }
-    REGDEF(eax=0x00000000)
+    return nullptr;
 }
 
 // address: 0x10004C76
-p10004C76
+unsigned int B_ResourceManager::AddFile(const B_Name &arg_0)
 {
-    ProcedureInfo(this=Id(this), this_offset=-40, local_size=40, stack_delta=4)
     STACKVAR(-4, 4) = 0x00000000;
     goto l10004C92;
 l10004C89:
@@ -2488,17 +2455,16 @@ l10004C89:
 l10004C92:
     if (reinterpret_cast<unsigned int>(STACKVAR(-4, 4)) < reinterpret_cast<unsigned int>(ACCESS(ACCESS(this, 1024, 4), 8, 4)))
     {
-        if (reinterpret_cast<B_Name &>(ACCESS(ARRPTR(ACCESS(ACCESS(this, 1024, 4), 4, 4), 4, STACKVAR(-4, 4), 0), 0, 4)) == reinterpret_cast<B_Name &>(STACKVAR(8, 4)) != 0)
+        if (reinterpret_cast<B_Name &>(ACCESS(ARRPTR(ACCESS(ACCESS(this, 1024, 4), 4, 4), 4, STACKVAR(-4, 4), 0), 0, 4)) == arg_0 != 0)
         {
-            REGDEF(eax=0x00000000)
-            return;
+            return 0;
         }
         goto l10004C89;
     }
     STACKVAR(-8, 4) = ??2@YAPAXI@Z(0x00000008);
     if (STACKVAR(-8, 4) != 0x00000000)
     {
-        STACKVAR(-36, 4) = reinterpret_cast<B_Name *>(STACKVAR(-8, 4))->B_Name(reinterpret_cast<B_Name &>(STACKVAR(8, 4)));
+        STACKVAR(-36, 4) = reinterpret_cast<B_Name *>(STACKVAR(-8, 4))->B_Name(arg_0);
     }
     else
     {
@@ -2539,7 +2505,7 @@ l10004DDE:
     ACCESS(ARRPTR(ACCESS(STACKVAR(-32, 4), 4, 4), 4, ACCESS(STACKVAR(-32, 4), 8, 4), 0), 0, 4) = STACKVAR(-36, 4);
     ACCESS(STACKVAR(-32, 4), 8, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-32, 4), 8, 4)) + 0x00000001;
 l10004DFF:
-    REGDEF(eax=0x00000001)
+    return 1;
 }
 
 // address: 0x10004E0B
@@ -2567,7 +2533,7 @@ l10004E35:
         reinterpret_cast<B_Name *>(LOCAL(-16416))->~B_Name();
         return reinterpret_cast<unsigned int>(STACKVAR(-16440, 4));
     }
-    this->unknown_method_10004C76(id);
+    this->AddFile(id);
     if (ACCESS(ARRPTR(this, 4, reinterpret_cast<any_int32>(STACKVAR(-16420, 4)) & 0x0000FFFF, 0), 0, 4) == 0x00000000)
     {
         STACKVAR(-16444, 4) = ??2@YAPAXI@Z(0x00000018);
@@ -2661,7 +2627,7 @@ l10005231:
 l10005236:
     if ((reinterpret_cast<any_int32>(STACKVAR(-16420, 4)) & 0x0000FFFF) == 0x00000002)
     {
-        STACKVAR(-16456, 4) = this->unknown_method_10005533(id, LOCAL(-16408));
+        STACKVAR(-16456, 4) = this->LocateResourcesIn(id, *reinterpret_cast<B_IDataFile *>(LOCAL(-16408)));
         reinterpret_cast<B_IDataFile *>(LOCAL(-16408))->~B_IDataFile();
         reinterpret_cast<B_Name *>(LOCAL(-16416))->~B_Name();
         return reinterpret_cast<unsigned int>(STACKVAR(-16456, 4));
@@ -2735,15 +2701,14 @@ l10005506:
 }
 
 // address: 0x10005533
-p10005533
+unsigned int B_ResourceManager::LocateResourcesIn(const B_Name &arg_0, B_IDataFile &arg_1)
 {
-    ProcedureInfo(this=Id(this), this_offset=-96, local_size=100, stack_delta=8)
     STACKVAR(-4, 4) = 0x00000000;
     reinterpret_cast<B_Name *>(LOCAL(-28))->B_Name();
     STACKVAR(-36, 2) = 0x0000;
     STACKVAR(-20, 4) = 0x00000000;
     STACKVAR(-8, 4) = 0x00000000;
-    reinterpret_cast<B_IDataFile &>(STACKVAR(12, 4)) >> *reinterpret_cast<unsigned int *>(LOCAL(-16));
+    arg_1 >> *reinterpret_cast<unsigned int *>(LOCAL(-16));
     STACKVAR(-12, 4) = 0x00000000;
     goto l10005582;
 l10005579:
@@ -2753,11 +2718,11 @@ l10005582:
     {
         goto l100057FB;
     }
-    STACKVAR(-32, 4) = reinterpret_cast<B_IDataFile *>(STACKVAR(12, 4))->Tell();
-    reinterpret_cast<B_IDataFile &>(STACKVAR(12, 4)) >> *reinterpret_cast<unsigned short *>(LOCAL(-36));
-    reinterpret_cast<B_IDataFile &>(STACKVAR(12, 4)) >> *reinterpret_cast<unsigned long *>(LOCAL(-20));
-    reinterpret_cast<B_IDataFile &>(STACKVAR(12, 4)) >> *reinterpret_cast<unsigned int *>(LOCAL(-8));
-    reinterpret_cast<B_IDataFile &>(STACKVAR(12, 4)) >> *reinterpret_cast<B_Name *>(LOCAL(-28));
+    STACKVAR(-32, 4) = arg_1.Tell();
+    arg_1 >> *reinterpret_cast<unsigned short *>(LOCAL(-36));
+    arg_1 >> *reinterpret_cast<unsigned long *>(LOCAL(-20));
+    arg_1 >> *reinterpret_cast<unsigned int *>(LOCAL(-8));
+    arg_1 >> *reinterpret_cast<B_Name *>(LOCAL(-28));
     if (ACCESS(ARRPTR(this, 4, reinterpret_cast<any_int32>(STACKVAR(-36, 4)) & 0x0000FFFF, 0), 0, 4) == 0x00000000)
     {
         STACKVAR(-40, 4) = ??2@YAPAXI@Z(0x00000018);
@@ -2797,7 +2762,7 @@ l1000568A:
     STACKVAR(-44, 4) = ??2@YAPAXI@Z(0x00000024);
     if (STACKVAR(-44, 4) != 0x00000000)
     {
-        STACKVAR(-92, 4) = STACKVAR(-44, 4)->unknown_method_10004371(STACKVAR(8, 4), STACKVAR(-32, 4), LOCAL(-28), 0x00000000);
+        STACKVAR(-92, 4) = STACKVAR(-44, 4)->unknown_method_10004371(arg_0, STACKVAR(-32, 4), LOCAL(-28), 0x00000000);
     }
     else
     {
@@ -2840,19 +2805,18 @@ l100057B6:
 l100057D7:
     STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000001;
 l100057E0:
-    reinterpret_cast<B_IDataFile *>(STACKVAR(12, 4))->Seek(reinterpret_cast<long>(reinterpret_cast<B_IDataFile *>(STACKVAR(12, 4))->Tell() + reinterpret_cast<any_int32>(STACKVAR(-8, 4))), 0);
+    arg_1.Seek(reinterpret_cast<long>(arg_1.Tell() + reinterpret_cast<any_int32>(STACKVAR(-8, 4))), 0);
     goto l10005579;
 l100057FB:
     if (STACKVAR(-4, 4) != 0x00000000)
     {
         STACKVAR(-48, 4) = 0x00000001;
         reinterpret_cast<B_Name *>(LOCAL(-28))->~B_Name();
-        REGDEF(eax=STACKVAR(-48, 4))
-        return;
+        return reinterpret_cast<unsigned int>(STACKVAR(-48, 4));
     }
     STACKVAR(-52, 4) = 0x00000000;
     reinterpret_cast<B_Name *>(LOCAL(-28))->~B_Name();
-    REGDEF(eax=STACKVAR(-52, 4))
+    return reinterpret_cast<unsigned int>(STACKVAR(-52, 4));
 }
 
 // address: 0x1000582E
@@ -2979,71 +2943,61 @@ B_Resource *B_ResourceManager::GetResource(unsigned short resourceId, const B_Na
 }
 
 // address: 0x10005B2F
-p10005B2F
+unsigned int B_ResourceManager::GetResourceIndex(unsigned short arg_0, const B_Name &arg_1)
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=8)
     if (ACCESS(ARRPTR(this, 4, reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x0000FFFF, 0), 0, 4) == 0x00000000)
     {
-        REGDEF(eax=0xFFFFFFFF)
-        return;
+        return 4294967295;
     }
-    ACCESS(ARRPTR(this, 4, reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x0000FFFF, 0), 0, 4)->unknown_method_100048EF(STACKVAR(12, 4), STACKVAR(8, 2));
+    ACCESS(ARRPTR(this, 4, reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x0000FFFF, 0), 0, 4)->unknown_method_100048EF(arg_1, arg_0);
 }
 
 // address: 0x10005B6F
-p10005B6F
+B_Resource *B_ResourceManager::GetResource(unsigned short arg_0, unsigned int arg_1)
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=8)
     if (ACCESS(ARRPTR(this, 4, reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x0000FFFF, 0), 0, 4) == 0x00000000)
     {
-        REGDEF(eax=0x00000000)
-        return;
+        return nullptr;
     }
-    return reinterpret_cast<B_ResourceLocation *>(ACCESS(ARRPTR(ACCESS(ACCESS(ARRPTR(this, 4, reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x0000FFFF, 0), 0, 4), 4, 4), 4, STACKVAR(12, 4), 0), 0, 4))->GetResource(reinterpret_cast<unsigned short>(STACKVAR(8, 2)));
+    reinterpret_cast<B_ResourceLocation *>(ACCESS(ARRPTR(ACCESS(ACCESS(ARRPTR(this, 4, reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x0000FFFF, 0), 0, 4), 4, 4), 4, arg_1, 0), 0, 4))->GetResource(arg_0);
 }
 
 // address: 0x10005BB2
-p10005BB2
+unsigned int B_ResourceManager::LoadResourceToMemory(unsigned short arg_0, const char *arg_1)
 {
-    ProcedureInfo(this=Id(this), this_offset=-16, local_size=16, stack_delta=8)
     if (ACCESS(ARRPTR(this, 4, reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x0000FFFF, 0), 0, 4) == 0x00000000)
     {
-        REGDEF(eax=0x00000000)
-        return;
+        return 0;
     }
-    reinterpret_cast<B_Name *>(LOCAL(-12))->B_Name(reinterpret_cast<char *>(STACKVAR(12, 4)));
-    STACKVAR(-4, 4) = static_cast<any_int32>(ACCESS(ARRPTR(this, 4, reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x0000FFFF, 0), 0, 4)->unknown_method_10004874(LOCAL(-12), STACKVAR(8, 2)) != 0x00000000);
+    reinterpret_cast<B_Name *>(LOCAL(-12))->B_Name(arg_1);
+    STACKVAR(-4, 4) = static_cast<any_int32>(ACCESS(ARRPTR(this, 4, reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x0000FFFF, 0), 0, 4)->unknown_method_10004874(LOCAL(-12), arg_0) != 0x00000000);
     reinterpret_cast<B_Name *>(LOCAL(-12))->~B_Name();
-    REGDEF(eax=STACKVAR(-4, 4))
+    return reinterpret_cast<unsigned int>(STACKVAR(-4, 4));
 }
 
 // address: 0x10005C13
-p10005C13
+unsigned int B_ResourceManager::SaveResource(unsigned short arg_0, unsigned int arg_1, const char *arg_2)
 {
-    ProcedureInfo(this=Id(this), this_offset=-16416, local_size=16420, stack_delta=12)
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x0000FFFF) != 0x00000005)
     {
-        REGDEF(eax=0x00000000)
-        return;
+        return 0;
     }
     STACKVAR(-16420, 4) = reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x0000FFFF;
     if (STACKVAR(-16420, 4) == 0x00000005)
     {
-        STACKVAR(-4, 4) = this->unknown_method_10005B6F(STACKVAR(8, 2), STACKVAR(12, 4));
+        STACKVAR(-4, 4) = this->GetResource(arg_0, arg_1);
         if (STACKVAR(-4, 4) == 0x00000000)
         {
-            REGDEF(eax=0x00000000)
-            return;
+            return 0;
         }
         STACKVAR(-16408, 4) = STACKVAR(-4, 4);
-        reinterpret_cast<B_ODataFile *>(LOCAL(-16404))->B_ODataFile(reinterpret_cast<char *>(STACKVAR(16, 4)), 32768);
+        reinterpret_cast<B_ODataFile *>(LOCAL(-16404))->B_ODataFile(arg_2, 32768);
         unknown_function_100369F0(LOCAL(-16404), STACKVAR(-16408, 4));
         STACKVAR(-16412, 4) = 0x00000001;
         reinterpret_cast<B_ODataFile *>(LOCAL(-16404))->~B_ODataFile();
-        REGDEF(eax=STACKVAR(-16412, 4))
-        return;
+        return reinterpret_cast<unsigned int>(STACKVAR(-16412, 4));
     }
-    REGDEF(eax=0x00000000)
+    return 0;
 }
 
 // address: 0x10005CCD
@@ -3057,16 +3011,14 @@ int B_ResourceManager::IsResourceLoaded(int arg_1, int arg_2)
 }
 
 // address: 0x10005D06
-p10005D06
+int B_ResourceManager::IsResourceLoaded(int arg_0, const char *arg_1)
 {
-    ProcedureInfo(this=Id(this), this_offset=-24, local_size=24, stack_delta=8)
-    if (ACCESS(ARRPTR(this, 4, STACKVAR(8, 4), 0), 0, 4) == 0x00000000)
+    if (ACCESS(ARRPTR(this, 4, arg_0, 0), 0, 4) == 0x00000000)
     {
-        REGDEF(eax=0x00000000)
-        return;
+        return 0;
     }
-    reinterpret_cast<B_Name *>(LOCAL(-12))->B_Name(reinterpret_cast<char *>(STACKVAR(12, 4)));
-    STACKVAR(-20, 4) = ACCESS(ARRPTR(this, 4, STACKVAR(8, 4), 0), 0, 4);
+    reinterpret_cast<B_Name *>(LOCAL(-12))->B_Name(arg_1);
+    STACKVAR(-20, 4) = ACCESS(ARRPTR(this, 4, arg_0, 0), 0, 4);
     STACKVAR(-16, 4) = 0x00000000;
     goto l10005D4C;
 l10005D43:
@@ -3088,23 +3040,20 @@ l10005D86:
     reinterpret_cast<B_Name *>(LOCAL(-12))->~B_Name();
     if (STACKVAR(-4, 4) == 0xFFFFFFFF)
     {
-        REGDEF(eax=0x00000000)
-        return;
+        return 0;
     }
-    return reinterpret_cast<B_ResourceManager *>(this)->IsResourceLoaded(reinterpret_cast<int>(STACKVAR(8, 4)), reinterpret_cast<int>(STACKVAR(-4, 4)));
+    this->IsResourceLoaded(arg_0, reinterpret_cast<int>(STACKVAR(-4, 4)));
 }
 
 // address: 0x10005DAE
-p10005DAE
+int B_ResourceManager::IsResourceLinked(int arg_0, const char *arg_1)
 {
-    ProcedureInfo(this=Id(this), this_offset=-24, local_size=24, stack_delta=8)
-    if (ACCESS(ARRPTR(this, 4, STACKVAR(8, 4), 0), 0, 4) == 0x00000000)
+    if (ACCESS(ARRPTR(this, 4, arg_0, 0), 0, 4) == 0x00000000)
     {
-        REGDEF(eax=0x00000000)
-        return;
+        return 0;
     }
-    reinterpret_cast<B_Name *>(LOCAL(-12))->B_Name(reinterpret_cast<char *>(STACKVAR(12, 4)));
-    STACKVAR(-20, 4) = ACCESS(ARRPTR(this, 4, STACKVAR(8, 4), 0), 0, 4);
+    reinterpret_cast<B_Name *>(LOCAL(-12))->B_Name(arg_1);
+    STACKVAR(-20, 4) = ACCESS(ARRPTR(this, 4, arg_0, 0), 0, 4);
     STACKVAR(-16, 4) = 0x00000000;
     goto l10005DF1;
 l10005DE8:
@@ -3124,31 +3073,27 @@ l10005E24:
     STACKVAR(-4, 4) = 0xFFFFFFFF;
 l10005E2B:
     reinterpret_cast<B_Name *>(LOCAL(-12))->~B_Name();
-    REGDEF(eax=static_cast<any_int32>(STACKVAR(-4, 4) == 0xFFFFFFFF))
+    return static_cast<int>(STACKVAR(-4, 4) == 0xFFFFFFFF);
 }
 
 // address: 0x10005E42
-p10005E42
+char *B_ResourceManager::GetResourceName(unsigned short arg_0, unsigned int arg_1)
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=8)
     if (ACCESS(ARRPTR(this, 4, reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x0000FFFF, 0), 0, 4) == 0x00000000)
     {
-        REGDEF(eax=0x00000000)
-        return;
+        return nullptr;
     }
-    return reinterpret_cast<B_ResourceLocation *>(ACCESS(ARRPTR(ACCESS(ACCESS(ARRPTR(this, 4, reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x0000FFFF, 0), 0, 4), 4, 4), 4, STACKVAR(12, 4), 0), 0, 4))->GetResource(reinterpret_cast<unsigned short>(STACKVAR(8, 2)))->name.String();
+    reinterpret_cast<B_ResourceLocation *>(ACCESS(ARRPTR(ACCESS(ACCESS(ARRPTR(this, 4, reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x0000FFFF, 0), 0, 4), 4, 4), 4, arg_1, 0), 0, 4))->GetResource(arg_0)->name.String();
 }
 
 // address: 0x10005E8F
-p10005E8F
+char *B_ResourceManager::GetResourceFile(unsigned short arg_0, unsigned int arg_1)
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=8)
     if (ACCESS(ARRPTR(this, 4, reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x0000FFFF, 0), 0, 4) == 0x00000000)
     {
-        REGDEF(eax=0x00000000)
-        return;
+        return nullptr;
     }
-    return reinterpret_cast<B_Name *>(reinterpret_cast<any_int32>(ACCESS(ARRPTR(ACCESS(ACCESS(ARRPTR(this, 4, reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x0000FFFF, 0), 0, 4), 4, 4), 4, STACKVAR(12, 4), 0), 0, 4)) + 0x0000000C)->String();
+    reinterpret_cast<B_Name *>(reinterpret_cast<any_int32>(ACCESS(ARRPTR(ACCESS(ACCESS(ARRPTR(this, 4, reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x0000FFFF, 0), 0, 4), 4, 4), 4, arg_1, 0), 0, 4)) + 0x0000000C)->String();
 }
 
 // address: 0x10005ED1
@@ -3193,7 +3138,7 @@ void B_ResourceManager::AddBodLink(const char *c, int i, const char *pc, int i1)
         }
         this->size = reinterpret_cast<int>(STACKVAR(-64, 4));
     }
-    if (this->unknown_method_10005D06(0x00000001, pc) != 0x00000000)
+    if (this->IsResourceLoaded(1, pc) != 0)
     {
         goto l10006151;
     }
@@ -3335,30 +3280,27 @@ p10006266
 }
 
 // address: 0x1000629C
-p1000629C
+int B_ResourceManager::SavePackedData(int arg_0, const char *arg_1)
 {
-    ProcedureInfo(this=Id(this), this_offset=-16428, local_size=16428, stack_delta=8)
-    if (STACKVAR(8, 4) != 0x00000001)
+    if (arg_0 != 1)
     {
-        if (STACKVAR(8, 4) != 0x00000005)
+        if (arg_0 != 5)
         {
             _assert(GLOBAL(0x10047470), GLOBAL(0x10047454), 0x000002BF);
         }
     }
-    if (ACCESS(ARRPTR(this, 4, STACKVAR(8, 4), 0), 0, 4) == 0x00000000)
+    if (ACCESS(ARRPTR(this, 4, arg_0, 0), 0, 4) == 0x00000000)
     {
-        REGDEF(eax=0x00000000)
-        return;
+        return 0;
     }
-    reinterpret_cast<B_ODataFile *>(LOCAL(-16404))->B_ODataFile(reinterpret_cast<char *>(STACKVAR(12, 4)), 32768);
+    reinterpret_cast<B_ODataFile *>(LOCAL(-16404))->B_ODataFile(arg_1, 32768);
     if (static_cast<any_int32>(STACKVAR(-16404, 4) != 0xFFFFFFFF) == 0x00000000)
     {
         STACKVAR(-16420, 4) = 0x00000000;
         reinterpret_cast<B_ODataFile *>(LOCAL(-16404))->~B_ODataFile();
-        REGDEF(eax=STACKVAR(-16420, 4))
-        return;
+        return reinterpret_cast<int>(STACKVAR(-16420, 4));
     }
-    STACKVAR(-4, 4) = reinterpret_cast<B_ResourceManager *>(this)->NResources(reinterpret_cast<unsigned short>(STACKVAR(8, 2)));
+    STACKVAR(-4, 4) = this->NResources(reinterpret_cast<unsigned short>(STACKVAR(8, 2)));
     *reinterpret_cast<B_ODataFile *>(LOCAL(-16404)) << *reinterpret_cast<unsigned int *>(LOCAL(-4));
     STACKVAR(-16408, 4) = 0x00000000;
     goto l1000636E;
@@ -3368,13 +3310,13 @@ l1000636E:
     if (reinterpret_cast<unsigned int>(STACKVAR(-16408, 4)) < reinterpret_cast<unsigned int>(STACKVAR(-4, 4)))
     {
         STACKVAR(-16412, 4) = 0x00000001;
-        if (reinterpret_cast<B_ResourceManager *>(this)->IsResourceLoaded(reinterpret_cast<int>(STACKVAR(8, 4)), reinterpret_cast<int>(STACKVAR(-16408, 4))) != 0)
+        if (this->IsResourceLoaded(arg_0, reinterpret_cast<int>(STACKVAR(-16408, 4))) != 0)
         {
             STACKVAR(-16412, 4) = 0x00000001;
             *reinterpret_cast<B_ODataFile *>(LOCAL(-16404)) << *reinterpret_cast<unsigned int *>(LOCAL(-16412));
-            STACKVAR(-16416, 4) = this->unknown_method_10005B6F(STACKVAR(8, 2), STACKVAR(-16408, 4));
-            STACKVAR(-16416, 4)->unknown_method_100384CA(LOCAL(-16404));
-            reinterpret_cast<B_ResourceManager *>(this)->FreeResource(reinterpret_cast<B_Resource *>(STACKVAR(-16416, 4)));
+            STACKVAR(-16416, 4) = this->GetResource(reinterpret_cast<unsigned short>(STACKVAR(8, 2)), reinterpret_cast<unsigned int>(STACKVAR(-16408, 4)));
+            reinterpret_cast<B_ObjDscr *>(STACKVAR(-16416, 4))->SavePacked(*reinterpret_cast<B_ODataFile *>(LOCAL(-16404)));
+            this->FreeResource(reinterpret_cast<B_Resource *>(STACKVAR(-16416, 4)));
         }
         else
         {
@@ -3385,27 +3327,25 @@ l1000636E:
     }
     STACKVAR(-16424, 4) = 0x00000001;
     reinterpret_cast<B_ODataFile *>(LOCAL(-16404))->~B_ODataFile();
-    REGDEF(eax=STACKVAR(-16424, 4))
+    return reinterpret_cast<int>(STACKVAR(-16424, 4));
 }
 
 // address: 0x1000644A
-p1000644A
+int B_ResourceManager::LoadPackedData(int arg_0, const char *arg_1)
 {
-    ProcedureInfo(this=Id(this), this_offset=-16448, local_size=16456, stack_delta=8)
-    if (STACKVAR(8, 4) != 0x00000001)
+    if (arg_0 != 1)
     {
-        if (STACKVAR(8, 4) != 0x00000005)
+        if (arg_0 != 5)
         {
             _assert(GLOBAL(0x100474C4), GLOBAL(0x100474A8), 0x000002E2);
         }
     }
-    reinterpret_cast<B_IDataFile *>(LOCAL(-16412))->B_IDataFile(reinterpret_cast<char *>(STACKVAR(12, 4)), 32768);
+    reinterpret_cast<B_IDataFile *>(LOCAL(-16412))->B_IDataFile(arg_1, 32768);
     if (static_cast<any_int32>(STACKVAR(-16412, 4) != 0xFFFFFFFF) == 0x00000000)
     {
         STACKVAR(-16428, 4) = 0x00000000;
         reinterpret_cast<B_IDataFile *>(LOCAL(-16412))->~B_IDataFile();
-        REGDEF(eax=STACKVAR(-16428, 4))
-        return;
+        return reinterpret_cast<int>(STACKVAR(-16428, 4));
     }
     *reinterpret_cast<B_IDataFile *>(LOCAL(-16412)) >> *reinterpret_cast<unsigned int *>(LOCAL(-4));
     STACKVAR(-16416, 4) = 0x00000000;
@@ -3428,8 +3368,8 @@ l100064F3:
                 STACKVAR(-16452, 4) = 0x00000000;
             }
             STACKVAR(-16424, 4) = STACKVAR(-16452, 4);
-            STACKVAR(-16424, 4)->unknown_method_1003896F(LOCAL(-16412));
-            if (reinterpret_cast<B_ResourceManager *>(this)->AddAutoResource(reinterpret_cast<B_Name &>(reinterpret_cast<any_int32>(STACKVAR(-16424, 4)) + 0x00000004), reinterpret_cast<B_Resource *>(STACKVAR(-16424, 4)), reinterpret_cast<int>(STACKVAR(8, 4))) == 0)
+            reinterpret_cast<B_ObjDscr *>(STACKVAR(-16424, 4))->LoadPacked(*reinterpret_cast<B_IDataFile *>(LOCAL(-16412)));
+            if (this->AddAutoResource(reinterpret_cast<B_Name &>(reinterpret_cast<any_int32>(STACKVAR(-16424, 4)) + 0x00000004), reinterpret_cast<B_Resource *>(STACKVAR(-16424, 4)), arg_0) == 0)
             {
                 STACKVAR(-16440, 4) = STACKVAR(-16424, 4);
                 STACKVAR(-16436, 4) = STACKVAR(-16440, 4);
@@ -3447,42 +3387,42 @@ l100064F3:
     }
     STACKVAR(-16444, 4) = 0x00000001;
     reinterpret_cast<B_IDataFile *>(LOCAL(-16412))->~B_IDataFile();
-    REGDEF(eax=STACKVAR(-16444, 4))
+    return reinterpret_cast<int>(STACKVAR(-16444, 4));
 }
 
 // address: 0x1000660B
 p1000660B
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
-    B_resource_manager.unknown_method_1000629C(0x00000001, STACKVAR(8, 4));
+    return B_resource_manager.SavePackedData(1, reinterpret_cast<char *>(STACKVAR(8, 4)));
 }
 
 // address: 0x10006620
 p10006620
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
-    B_resource_manager.unknown_method_1000644A(0x00000001, STACKVAR(8, 4));
+    return B_resource_manager.LoadPackedData(1, reinterpret_cast<char *>(STACKVAR(8, 4)));
 }
 
 // address: 0x10006635
 p10006635
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
-    B_resource_manager.unknown_method_1000629C(0x00000005, STACKVAR(8, 4));
+    return B_resource_manager.SavePackedData(5, reinterpret_cast<char *>(STACKVAR(8, 4)));
 }
 
 // address: 0x1000664A
 p1000664A
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
-    B_resource_manager.unknown_method_1000644A(0x00000005, STACKVAR(8, 4));
+    return B_resource_manager.LoadPackedData(5, reinterpret_cast<char *>(STACKVAR(8, 4)));
 }
 
 // address: 0x1000665F
 p1000665F
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
-    B_resource_manager.unknown_method_10005BB2(STACKVAR(8, 2), STACKVAR(12, 4));
+    return B_resource_manager.LoadResourceToMemory(reinterpret_cast<unsigned short>(STACKVAR(8, 2)), reinterpret_cast<char *>(STACKVAR(12, 4)));
 }
 
 // address: 0x10006680
@@ -3634,18 +3574,17 @@ B_Color B_Color::operator /(float f)
 }
 
 // address: 0x10006A70
-p10006A70
+unsigned int B_Color::operator==(const B_Color &arg_0)
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=8, stack_delta=4)
-    if (static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(this, 4, 1))) != static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(8, 4), 4, 1))))
+    if (static_cast<any_int32>(this->r) != static_cast<any_int32>(arg_0.r))
     {
         goto l10006ABE;
     }
-    if (static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(this, 5, 1))) != static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(8, 4), 5, 1))))
+    if (static_cast<any_int32>(this->g) != static_cast<any_int32>(arg_0.g))
     {
         goto l10006ABE;
     }
-    if (static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(this, 6, 1))) == static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(8, 4), 6, 1))))
+    if (static_cast<any_int32>(this->b) == static_cast<any_int32>(arg_0.b))
     {
         STACKVAR(-8, 4) = 0x00000001;
         goto l10006AC5;
@@ -3653,22 +3592,21 @@ p10006A70
 l10006ABE:
     STACKVAR(-8, 4) = 0x00000000;
 l10006AC5:
-    REGDEF(eax=STACKVAR(-8, 4))
+    return reinterpret_cast<unsigned int>(STACKVAR(-8, 4));
 }
 
 // address: 0x10006AD0
-p10006AD0
+unsigned int B_Color::operator!=(const B_Color &arg_0)
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=8, stack_delta=4)
-    if (static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(this, 4, 1))) != static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(8, 4), 4, 1))))
+    if (static_cast<any_int32>(this->r) != static_cast<any_int32>(arg_0.r))
     {
         goto l10006B1E;
     }
-    if (static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(this, 5, 1))) != static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(8, 4), 5, 1))))
+    if (static_cast<any_int32>(this->g) != static_cast<any_int32>(arg_0.g))
     {
         goto l10006B1E;
     }
-    if (static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(this, 6, 1))) == static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(8, 4), 6, 1))))
+    if (static_cast<any_int32>(this->b) == static_cast<any_int32>(arg_0.b))
     {
         STACKVAR(-8, 4) = 0x00000000;
         goto l10006B25;
@@ -3676,16 +3614,15 @@ p10006AD0
 l10006B1E:
     STACKVAR(-8, 4) = 0x00000001;
 l10006B25:
-    REGDEF(eax=STACKVAR(-8, 4))
+    return reinterpret_cast<unsigned int>(STACKVAR(-8, 4));
 }
 
 // address: 0x10006B30
-p10006B30
+void B_Color::SetColor(unsigned char arg_0, unsigned char arg_1, unsigned char arg_2)
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=12)
-    ACCESS(this, 4, 1) = STACKVAR(8, 1);
-    ACCESS(this, 6, 1) = STACKVAR(16, 1);
-    ACCESS(this, 5, 1) = STACKVAR(12, 1);
+    this->r = arg_0;
+    this->b = arg_2;
+    this->g = arg_1;
 }
 
 // address: 0x10006B60
@@ -3707,18 +3644,15 @@ B_Color &B_Color::operator =(const B_Color &that)
 }
 
 // address: 0x10006BE0
-p10006BE0
+B_Pal::B_Pal()
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=0)
-    REGDEF(eax=this)
 }
 
 // address: 0x10006BF0
-p10006BF0
+B_Pal &B_Pal::operator=(const B_Pal &arg_0)
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=4)
-    memcpy(this, STACKVAR(8, 4), 0x00000300); // TODO improve emitting of memcpy instructions
-    REGDEF(eax=this)
+    memcpy(this, arg_0, 0x00000300); // TODO improve emitting of memcpy instructions
+    return *this;
 }
 
 // address: 0x10006C20
@@ -3801,17 +3735,16 @@ l10006E09:
 }
 
 // address: 0x10006E20
-p10006E20
+void B_BitMap24::Clear()
 {
-    ProcedureInfo(this=Id(this), this_offset=-8, local_size=8, stack_delta=0)
-    if (ACCESS(this, 12, 4) != 0x00000000)
+    if (this->data != nullptr)
     {
-        STACKVAR(-4, 4) = ACCESS(this, 12, 4);
+        STACKVAR(-4, 4) = this->data;
         ??3@YAXPAX@Z(STACKVAR(-4, 4));
-        ACCESS(this, 12, 4) = 0x00000000;
+        this->data = nullptr;
     }
-    ACCESS(this, 8, 4) = 0x00000000;
-    ACCESS(this, 4, 4) = 0x00000000;
+    this->dimension2 = 0;
+    this->dimension1 = 0;
 }
 
 // address: 0x10006E70
@@ -3915,24 +3848,21 @@ l1000705F:
 }
 
 // address: 0x10007090
-p10007090
+void B_BitMap24::GetDimension(int &arg_0, int &arg_1)
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=8)
-    ACCESS(STACKVAR(8, 4), 0, 4) = ACCESS(this, 4, 4);
-    ACCESS(STACKVAR(12, 4), 0, 4) = ACCESS(this, 8, 4);
+    arg_0 = reinterpret_cast<int>(this->dimension1);
+    arg_1 = reinterpret_cast<int>(this->dimension2);
 }
 
 // address: 0x100070C0
-p100070C0
+unsigned char *B_BitMap24::GetBits()
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=0)
-    REGDEF(eax=ACCESS(this, 12, 4))
+    return reinterpret_cast<unsigned char *>(this->data);
 }
 
 // address: 0x100070E0
-p100070E0
+void B_BitMap24::default constructor closure()
 {
-    ProcedureInfo(this=Id(this), this_offset=-28, local_size=28, stack_delta=0)
     ACCESS(this, 0, 4) = GLOBAL(0x100421C8);
     if (reinterpret_cast<unsigned int>(ACCESS(GLOBAL(0x1004A530), 0, 4)) > reinterpret_cast<unsigned int>(ACCESS(GLOBAL(0x1004A528), 0, 4)))
     {
@@ -3968,18 +3898,18 @@ l100071CA:
     ACCESS(ARRPTR(ACCESS(GLOBAL(0x1004A524), 0, 4), 4, ACCESS(GLOBAL(0x1004A528), 0, 4), 0), 0, 4) = this;
     ACCESS(GLOBAL(0x1004A528), 0, 4) = reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A528), 0, 4)) + 0x00000001;
 l100071EA:
-    ACCESS(this, 4, 4) = 0x00000000;
-    ACCESS(this, 8, 4) = 0x00000000;
+    this->dimension1 = 0;
+    this->dimension2 = 0;
     if (0x00000000 != 0x00000000)
     {
         if (0x00000000 != 0x00000000)
         {
-            STACKVAR(-4, 4) = ??2@YAPAXI@Z(0x00000003 * reinterpret_cast<any_int32>(ACCESS(this, 4, 4)) * reinterpret_cast<any_int32>(ACCESS(this, 8, 4)));
-            ACCESS(this, 12, 4) = STACKVAR(-4, 4);
+            STACKVAR(-4, 4) = ??2@YAPAXI@Z(3 * this->dimension1 * this->dimension2);
+            this->data = reinterpret_cast<void *>(STACKVAR(-4, 4));
             return;
         }
     }
-    ACCESS(this, 12, 4) = 0x00000000;
+    this->data = nullptr;
 }
 
 // address: 0x10007470
@@ -4478,11 +4408,10 @@ B_RDataLight &B_RDataLight::operator=(const B_RDataLight &other)
 }
 
 // address: 0x10007F20
-p10007F20
+B_RItem &B_RItem::operator=(const B_RItem &arg_0)
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=4)
-    ACCESS(this, 0, 4) = ACCESS(STACKVAR(8, 4), 0, 4);
-    REGDEF(eax=this)
+    ACCESS(this, 0, 4) = ACCESS(arg_0, 0, 4);
+    return *this;
 }
 
 // address: 0x10007F40
@@ -4775,7 +4704,7 @@ p10008483
 {
     ProcedureInfo(this=Id(this), this_offset=-12, local_size=12, stack_delta=0)
     STACKVAR(-8, 4) = 0x0000000C;
-    STACKVAR(-4, 4) = (reinterpret_cast<any_int32>(this) + 0x0000000C)->unknown_method_10008AF0();
+    STACKVAR(-4, 4) = reinterpret_cast<B_BitMap *>(reinterpret_cast<any_int32>(this) + 0x0000000C)->BytesPerTexel();
     STACKVAR(-8, 4) = reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + reinterpret_cast<any_int32>(ACCESS(this, 20, 4)) * reinterpret_cast<any_int32>(ACCESS(this, 24, 4)) * reinterpret_cast<any_int32>(STACKVAR(-4, 4));
     if (ACCESS(this, 32, 4) != 0x00000000)
     {
@@ -4841,16 +4770,14 @@ p100085D4
 }
 
 // address: 0x100085F0
-p100085F0
+B_BitMap::B_BitMap()
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=0)
-    ACCESS(this, 4, 4) = 0x00000000;
-    ACCESS(this, 8, 4) = 0x00000000;
-    ACCESS(this, 12, 4) = 0x00000000;
-    ACCESS(this, 16, 4) = 0x00000000;
-    ACCESS(this, 20, 4) = 0x00000000;
+    this->type = 0;
+    this->dimension1 = 0;
+    this->dimension2 = 0;
+    this->data = nullptr;
+    this->pal = nullptr;
     ACCESS(this, 0, 4) = GLOBAL(0x100421F8);
-    REGDEF(eax=this)
 }
 
 // address: 0x10008639
@@ -4860,7 +4787,7 @@ B_BitMap::B_BitMap(BitMapType type, unsigned int arg_2, unsigned int arg_3, cons
     this->dimension1 = arg_2;
     this->dimension2 = arg_3;
     ACCESS(this, 0, 4) = GLOBAL(0x100421F8);
-    STACKVAR(-4, 4) = this->unknown_method_10008AF0();
+    STACKVAR(-4, 4) = this->BytesPerTexel();
     STACKVAR(-8, 4) = ??2@YAPAXI@Z(arg_2 * arg_3 * reinterpret_cast<any_int32>(STACKVAR(-4, 4)));
     this->data = reinterpret_cast<void *>(STACKVAR(-8, 4));
     if (pal != nullptr)
@@ -4868,7 +4795,7 @@ B_BitMap::B_BitMap(BitMapType type, unsigned int arg_2, unsigned int arg_3, cons
         STACKVAR(-12, 4) = ??2@YAPAXI@Z(0x00000300);
         if (STACKVAR(-12, 4) != 0x00000000)
         {
-            STACKVAR(-20, 4) = STACKVAR(-12, 4)->unknown_method_100093A7(pal);
+            STACKVAR(-20, 4) = reinterpret_cast<B_Pal *>(STACKVAR(-12, 4))->B_Pal(*pal);
         }
         else
         {
@@ -4900,7 +4827,7 @@ B_BitMap::B_BitMap(const B_BitMap &src)
                 STACKVAR(-4, 4) = ??2@YAPAXI@Z(0x00000300);
                 if (STACKVAR(-4, 4) != 0x00000000)
                 {
-                    STACKVAR(-40, 4) = STACKVAR(-4, 4)->unknown_method_100093A7(src.pal);
+                    STACKVAR(-40, 4) = reinterpret_cast<B_Pal *>(STACKVAR(-4, 4))->B_Pal(*src.pal);
                 }
                 else
                 {
@@ -4920,7 +4847,7 @@ B_BitMap::B_BitMap(const B_BitMap &src)
                 STACKVAR(-16, 4) = ??2@YAPAXI@Z(0x00000300);
                 if (STACKVAR(-16, 4) != 0x00000000)
                 {
-                    STACKVAR(-44, 4) = STACKVAR(-16, 4)->unknown_method_100093A7(src.pal);
+                    STACKVAR(-44, 4) = reinterpret_cast<B_Pal *>(STACKVAR(-16, 4))->B_Pal(*src.pal);
                 }
                 else
                 {
@@ -4946,12 +4873,11 @@ l10008955:
 }
 
 // address: 0x10008974
-p10008974
+B_BitMap::B_BitMap(B_BitMap::BitMapType arg_0, const B_BitMap24 &arg_1)
 {
-    ProcedureInfo(this=Id(this), this_offset=-24, local_size=28, stack_delta=8)
     ACCESS(this, 0, 4) = GLOBAL(0x100421F8);
-    ACCESS(this, 20, 4) = 0x00000000;
-    STACKVAR(-28, 4) = STACKVAR(8, 4);
+    this->pal = nullptr;
+    STACKVAR(-28, 4) = arg_0;
     if (STACKVAR(-28, 4) == 0x00000002)
     {
         goto l100089AD;
@@ -4962,19 +4888,19 @@ p10008974
     }
     goto l10008ABD;
 l100089AD:
-    ACCESS(this, 4, 4) = 0x00000002;
-    ACCESS(this, 8, 4) = ACCESS(STACKVAR(12, 4), 4, 4);
-    ACCESS(this, 12, 4) = ACCESS(STACKVAR(12, 4), 8, 4);
-    STACKVAR(-16, 4) = ??2@YAPAXI@Z(reinterpret_cast<any_int32>(ACCESS(this, 8, 4)) * reinterpret_cast<any_int32>(ACCESS(this, 12, 4)));
-    ACCESS(this, 16, 4) = STACKVAR(-16, 4);
-    STACKVAR(-12, 4) = ACCESS(this, 16, 4);
-    STACKVAR(-4, 4) = ACCESS(STACKVAR(12, 4), 12, 4);
+    this->type = 2;
+    this->dimension1 = arg_1.dimension1;
+    this->dimension2 = arg_1.dimension2;
+    STACKVAR(-16, 4) = ??2@YAPAXI@Z(this->dimension1 * this->dimension2);
+    this->data = reinterpret_cast<void *>(STACKVAR(-16, 4));
+    STACKVAR(-12, 4) = this->data;
+    STACKVAR(-4, 4) = arg_1.data;
     STACKVAR(-8, 4) = 0x00000000;
     goto l10008A15;
 l10008A0C:
     STACKVAR(-8, 4) = reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + 0x00000001;
 l10008A15:
-    if (reinterpret_cast<unsigned int>(STACKVAR(-8, 4)) < reinterpret_cast<unsigned int>(ACCESS(this, 8, 4)) * reinterpret_cast<unsigned int>(ACCESS(this, 12, 4)))
+    if (reinterpret_cast<unsigned int>(STACKVAR(-8, 4)) < this->dimension1 * this->dimension2)
     {
         ACCESS(STACKVAR(-12, 4), 0, 1) = ACCESS(STACKVAR(-4, 4), 0, 1);
         STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000003;
@@ -4983,27 +4909,25 @@ l10008A15:
     }
     goto l10008AE5;
 l10008A4A:
-    ACCESS(this, 4, 4) = 0x00000004;
-    ACCESS(this, 8, 4) = ACCESS(STACKVAR(12, 4), 4, 4);
-    ACCESS(this, 12, 4) = ACCESS(STACKVAR(12, 4), 8, 4);
-    STACKVAR(-20, 4) = ??2@YAPAXI@Z(0x00000003 * reinterpret_cast<any_int32>(ACCESS(this, 8, 4)) * reinterpret_cast<any_int32>(ACCESS(this, 12, 4)));
-    ACCESS(this, 16, 4) = STACKVAR(-20, 4);
-    memcpy(ACCESS(this, 16, 4), ACCESS(STACKVAR(12, 4), 12, 4), 0x00000003 * reinterpret_cast<any_int32>(ACCESS(this, 8, 4)) * reinterpret_cast<any_int32>(ACCESS(this, 12, 4))); // TODO improve emitting of memcpy instructions
+    this->type = 4;
+    this->dimension1 = arg_1.dimension1;
+    this->dimension2 = arg_1.dimension2;
+    STACKVAR(-20, 4) = ??2@YAPAXI@Z(3 * this->dimension1 * this->dimension2);
+    this->data = reinterpret_cast<void *>(STACKVAR(-20, 4));
+    memcpy(this->data, arg_1.data, 3 * this->dimension1 * this->dimension2); // TODO improve emitting of memcpy instructions
     goto l10008AE5;
 l10008ABD:
-    ACCESS(this, 4, 4) = 0x00000000;
-    ACCESS(this, 8, 4) = 0x00000000;
-    ACCESS(this, 12, 4) = 0x00000000;
-    ACCESS(this, 16, 4) = 0x00000000;
+    this->type = 0;
+    this->dimension1 = 0;
+    this->dimension2 = 0;
+    this->data = nullptr;
 l10008AE5:
-    REGDEF(eax=this)
 }
 
 // address: 0x10008AF0
-p10008AF0
+int B_BitMap::BytesPerTexel()
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=8, stack_delta=0)
-    STACKVAR(-8, 4) = ACCESS(this, 4, 4);
+    STACKVAR(-8, 4) = this->type;
     STACKVAR(-8, 4) = reinterpret_cast<any_int32>(STACKVAR(-8, 4)) - 0x00000001;
     if (reinterpret_cast<unsigned int>(STACKVAR(-8, 4)) <= 4)
     {
@@ -5024,7 +4948,7 @@ p10008AF0
                 return;
         }
     }
-    REGDEF(eax=0x00000000)
+    return 0;
 }
 
 // address: 0x10008B51
@@ -5215,10 +5139,9 @@ l100090DB:
 }
 
 // address: 0x10009110
-p10009110
+float B_Color::DistanceTo(const B_Color &arg_0)
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=8, stack_delta=4)
-    STACKVAR(-8, 4) = (static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(this, 4, 1))) - static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(8, 4), 4, 1)))) * (static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(this, 4, 1))) - static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(8, 4), 4, 1)))) + (static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(this, 5, 1))) - static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(8, 4), 5, 1)))) * (static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(this, 5, 1))) - static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(8, 4), 5, 1)))) + (static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(this, 6, 1))) - static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(8, 4), 6, 1)))) * (static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(this, 6, 1))) - static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(8, 4), 6, 1))));
+    STACKVAR(-8, 4) = (static_cast<any_int32>(this->r) - static_cast<any_int32>(arg_0.r)) * (static_cast<any_int32>(this->r) - static_cast<any_int32>(arg_0.r)) + (static_cast<any_int32>(this->g) - static_cast<any_int32>(arg_0.g)) * (static_cast<any_int32>(this->g) - static_cast<any_int32>(arg_0.g)) + (static_cast<any_int32>(this->b) - static_cast<any_int32>(arg_0.b)) * (static_cast<any_int32>(this->b) - static_cast<any_int32>(arg_0.b));
     REGDEF(ST(0)=static_cast<double>(reinterpret_cast<int>(STACKVAR(-8, 4))))
 }
 
@@ -5317,11 +5240,9 @@ void B_Color::MakeCons()
 }
 
 // address: 0x100093A7
-p100093A7
+B_Pal::B_Pal(const B_Pal &arg_0)
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=4)
-    memcpy(this, STACKVAR(8, 4), 0x00000300); // TODO improve emitting of memcpy instructions
-    REGDEF(eax=this)
+    memcpy(this, arg_0, 0x00000300); // TODO improve emitting of memcpy instructions
 }
 
 // address: 0x100093C8
@@ -5343,40 +5264,36 @@ unsigned char B_Pal::GetBlue(unsigned int val)
 }
 
 // address: 0x10009415
-p10009415
+void B_Pal::SetRed(unsigned int arg_0, unsigned char arg_1)
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=8)
-    ACCESS(ARRPTR(this, 1, 0x00000003 * reinterpret_cast<any_int32>(STACKVAR(8, 4)), 0), 0, 1) = STACKVAR(12, 1);
+    this->data[3 * arg_0] = arg_1;
 }
 
 // address: 0x10009431
-p10009431
+void B_Pal::SetGreen(unsigned int arg_0, unsigned char arg_1)
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=8)
-    ACCESS(ARRPTR(this, 1, 0x00000003 * reinterpret_cast<any_int32>(STACKVAR(8, 4)), 1), 0, 1) = STACKVAR(12, 1);
+    this->data[3 * arg_0 + 1] = arg_1;
 }
 
 // address: 0x1000944E
-p1000944E
+void B_Pal::SetBlue(unsigned int arg_0, unsigned char arg_1)
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=8)
-    ACCESS(ARRPTR(this, 1, 0x00000003 * reinterpret_cast<any_int32>(STACKVAR(8, 4)), 2), 0, 1) = STACKVAR(12, 1);
+    this->data[3 * arg_0 + 2] = arg_1;
 }
 
 // address: 0x1000946B
-p1000946B
+unsigned int B_Pal::GetIndex(unsigned char arg_0, unsigned char arg_1, unsigned char arg_2, unsigned int arg_3)
 {
-    ProcedureInfo(this=Id(this), this_offset=-20, local_size=20, stack_delta=16)
-    STACKVAR(-16, 4) = STACKVAR(20, 4);
-    STACKVAR(-4, 4) = ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x000000FF) - static_cast<any_int32>(reinterpret_cast<B_Pal *>(this)->GetRed(reinterpret_cast<unsigned int>(STACKVAR(20, 4))))) * ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x000000FF) - static_cast<any_int32>(reinterpret_cast<B_Pal *>(this)->GetRed(reinterpret_cast<unsigned int>(STACKVAR(20, 4))))) + ((reinterpret_cast<any_int32>(STACKVAR(12, 4)) & 0x000000FF) - static_cast<any_int32>(reinterpret_cast<B_Pal *>(this)->GetGreen(reinterpret_cast<unsigned int>(STACKVAR(20, 4))))) * ((reinterpret_cast<any_int32>(STACKVAR(12, 4)) & 0x000000FF) - static_cast<any_int32>(reinterpret_cast<B_Pal *>(this)->GetGreen(reinterpret_cast<unsigned int>(STACKVAR(20, 4))))) + ((reinterpret_cast<any_int32>(STACKVAR(16, 4)) & 0x000000FF) - static_cast<any_int32>(reinterpret_cast<B_Pal *>(this)->GetBlue(reinterpret_cast<unsigned int>(STACKVAR(20, 4))))) * ((reinterpret_cast<any_int32>(STACKVAR(16, 4)) & 0x000000FF) - static_cast<any_int32>(reinterpret_cast<B_Pal *>(this)->GetBlue(reinterpret_cast<unsigned int>(STACKVAR(20, 4)))));
-    STACKVAR(-8, 4) = reinterpret_cast<any_int32>(STACKVAR(20, 4)) + 0x00000001;
+    STACKVAR(-16, 4) = arg_3;
+    STACKVAR(-4, 4) = ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x000000FF) - static_cast<any_int32>(this->GetRed(arg_3))) * ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x000000FF) - static_cast<any_int32>(this->GetRed(arg_3))) + ((reinterpret_cast<any_int32>(STACKVAR(12, 4)) & 0x000000FF) - static_cast<any_int32>(this->GetGreen(arg_3))) * ((reinterpret_cast<any_int32>(STACKVAR(12, 4)) & 0x000000FF) - static_cast<any_int32>(this->GetGreen(arg_3))) + ((reinterpret_cast<any_int32>(STACKVAR(16, 4)) & 0x000000FF) - static_cast<any_int32>(this->GetBlue(arg_3))) * ((reinterpret_cast<any_int32>(STACKVAR(16, 4)) & 0x000000FF) - static_cast<any_int32>(this->GetBlue(arg_3)));
+    STACKVAR(-8, 4) = arg_3 + 0x00000001;
     goto l10009549;
 l10009540:
     STACKVAR(-8, 4) = reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + 0x00000001;
 l10009549:
     if (reinterpret_cast<unsigned int>(STACKVAR(-8, 4)) < 256)
     {
-        STACKVAR(-12, 4) = ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x000000FF) - static_cast<any_int32>(reinterpret_cast<B_Pal *>(this)->GetRed(reinterpret_cast<unsigned int>(STACKVAR(-8, 4))))) * ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x000000FF) - static_cast<any_int32>(reinterpret_cast<B_Pal *>(this)->GetRed(reinterpret_cast<unsigned int>(STACKVAR(-8, 4))))) + ((reinterpret_cast<any_int32>(STACKVAR(12, 4)) & 0x000000FF) - static_cast<any_int32>(reinterpret_cast<B_Pal *>(this)->GetGreen(reinterpret_cast<unsigned int>(STACKVAR(-8, 4))))) * ((reinterpret_cast<any_int32>(STACKVAR(12, 4)) & 0x000000FF) - static_cast<any_int32>(reinterpret_cast<B_Pal *>(this)->GetGreen(reinterpret_cast<unsigned int>(STACKVAR(-8, 4))))) + ((reinterpret_cast<any_int32>(STACKVAR(16, 4)) & 0x000000FF) - static_cast<any_int32>(reinterpret_cast<B_Pal *>(this)->GetBlue(reinterpret_cast<unsigned int>(STACKVAR(-8, 4))))) * ((reinterpret_cast<any_int32>(STACKVAR(16, 4)) & 0x000000FF) - static_cast<any_int32>(reinterpret_cast<B_Pal *>(this)->GetBlue(reinterpret_cast<unsigned int>(STACKVAR(-8, 4)))));
+        STACKVAR(-12, 4) = ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x000000FF) - static_cast<any_int32>(this->GetRed(reinterpret_cast<unsigned int>(STACKVAR(-8, 4))))) * ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x000000FF) - static_cast<any_int32>(this->GetRed(reinterpret_cast<unsigned int>(STACKVAR(-8, 4))))) + ((reinterpret_cast<any_int32>(STACKVAR(12, 4)) & 0x000000FF) - static_cast<any_int32>(this->GetGreen(reinterpret_cast<unsigned int>(STACKVAR(-8, 4))))) * ((reinterpret_cast<any_int32>(STACKVAR(12, 4)) & 0x000000FF) - static_cast<any_int32>(this->GetGreen(reinterpret_cast<unsigned int>(STACKVAR(-8, 4))))) + ((reinterpret_cast<any_int32>(STACKVAR(16, 4)) & 0x000000FF) - static_cast<any_int32>(this->GetBlue(reinterpret_cast<unsigned int>(STACKVAR(-8, 4))))) * ((reinterpret_cast<any_int32>(STACKVAR(16, 4)) & 0x000000FF) - static_cast<any_int32>(this->GetBlue(reinterpret_cast<unsigned int>(STACKVAR(-8, 4)))));
         if (reinterpret_cast<int>(STACKVAR(-12, 4)) < reinterpret_cast<int>(STACKVAR(-4, 4)))
         {
             STACKVAR(-16, 4) = STACKVAR(-8, 4);
@@ -5384,14 +5301,13 @@ l10009549:
         }
         goto l10009540;
     }
-    REGDEF(eax=STACKVAR(-16, 4))
+    return reinterpret_cast<unsigned int>(STACKVAR(-16, 4));
 }
 
 // address: 0x10009633
-p10009633
+B_Pal &B_Pal::Id()
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=0)
-    REGDEF(eax=this)
+    return *this;
 }
 
 // address: 0x10009661
@@ -23352,9 +23268,8 @@ l10026D37:
 }
 
 // address: 0x10026D6D
-p10026D6D
+B_BitMap24::B_BitMap24(const B_BitMap &arg_0)
 {
-    ProcedureInfo(this=Id(this), this_offset=-68, local_size=72, stack_delta=4)
     ACCESS(this, 0, 4) = GLOBAL(0x100421C8);
     if (reinterpret_cast<unsigned int>(ACCESS(GLOBAL(0x1004A530), 0, 4)) > reinterpret_cast<unsigned int>(ACCESS(GLOBAL(0x1004A528), 0, 4)))
     {
@@ -23390,21 +23305,21 @@ l10026E58:
     ACCESS(ARRPTR(ACCESS(GLOBAL(0x1004A524), 0, 4), 4, ACCESS(GLOBAL(0x1004A528), 0, 4), 0), 0, 4) = this;
     ACCESS(GLOBAL(0x1004A528), 0, 4) = reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A528), 0, 4)) + 0x00000001;
 l10026E78:
-    if (ACCESS(STACKVAR(8, 4), 8, 4) == 0x00000000)
+    if (arg_0.dimension1 == 0)
     {
         goto l10026E8A;
     }
-    if (ACCESS(STACKVAR(8, 4), 12, 4) != 0x00000000)
+    if (arg_0.dimension2 != 0)
     {
         goto l10026EAD;
     }
 l10026E8A:
-    ACCESS(this, 8, 4) = 0x00000000;
-    ACCESS(this, 4, 4) = 0x00000000;
-    ACCESS(this, 12, 4) = 0x00000000;
+    this->dimension2 = 0;
+    this->dimension1 = 0;
+    this->data = nullptr;
     goto l100271B3;
 l10026EAD:
-    STACKVAR(-72, 4) = ACCESS(STACKVAR(8, 4), 4, 4);
+    STACKVAR(-72, 4) = arg_0.type;
     if (STACKVAR(-72, 4) == 0x00000001)
     {
         goto l10026ED5;
@@ -23419,24 +23334,24 @@ l10026EAD:
     }
     goto l10027195;
 l10026ED5:
-    ACCESS(this, 4, 4) = ACCESS(STACKVAR(8, 4), 8, 4);
-    ACCESS(this, 8, 4) = ACCESS(STACKVAR(8, 4), 12, 4);
-    STACKVAR(-36, 4) = ??2@YAPAXI@Z(0x00000003 * reinterpret_cast<any_int32>(ACCESS(this, 4, 4)) * reinterpret_cast<any_int32>(ACCESS(this, 8, 4)));
-    ACCESS(this, 12, 4) = STACKVAR(-36, 4);
-    if (ACCESS(this, 12, 4) == 0x00000000)
+    this->dimension1 = arg_0.dimension1;
+    this->dimension2 = arg_0.dimension2;
+    STACKVAR(-36, 4) = ??2@YAPAXI@Z(3 * this->dimension1 * this->dimension2);
+    this->data = reinterpret_cast<void *>(STACKVAR(-36, 4));
+    if (this->data == nullptr)
     {
-        ACCESS(this, 8, 4) = 0x00000000;
-        ACCESS(this, 4, 4) = 0x00000000;
+        this->dimension2 = 0;
+        this->dimension1 = 0;
         goto l100271B3;
     }
-    STACKVAR(-4, 4) = ACCESS(this, 12, 4);
-    STACKVAR(-12, 4) = ACCESS(STACKVAR(8, 4), 16, 4);
+    STACKVAR(-4, 4) = this->data;
+    STACKVAR(-12, 4) = arg_0.data;
     STACKVAR(-8, 4) = 0x00000000;
     goto l10026F58;
 l10026F4F:
     STACKVAR(-8, 4) = reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + 0x00000001;
 l10026F58:
-    if (reinterpret_cast<int>(STACKVAR(-8, 4)) >= reinterpret_cast<int>(ACCESS(this, 8, 4)))
+    if (reinterpret_cast<int>(STACKVAR(-8, 4)) >= reinterpret_cast<int>(this->dimension2))
     {
         goto l1002700F;
     }
@@ -23446,13 +23361,13 @@ l10026F70:
     STACKVAR(-16, 4) = reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000001;
     STACKVAR(-12, 4) = reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + 0x00000001;
 l10026F82:
-    if (reinterpret_cast<int>(STACKVAR(-16, 4)) < reinterpret_cast<int>(ACCESS(this, 4, 4)))
+    if (reinterpret_cast<int>(STACKVAR(-16, 4)) < reinterpret_cast<int>(this->dimension1))
     {
-        ACCESS(STACKVAR(-4, 4), 0, 1) = static_cast<any_int8>(0x00000002 * static_cast<any_int32>(reinterpret_cast<B_Pal *>(ACCESS(STACKVAR(8, 4), 20, 4))->GetRed(static_cast<unsigned int>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-12, 4), 0, 1))))));
+        ACCESS(STACKVAR(-4, 4), 0, 1) = static_cast<any_int8>(0x00000002 * static_cast<any_int32>(arg_0.pal->GetRed(static_cast<unsigned int>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-12, 4), 0, 1))))));
         STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000001;
-        ACCESS(STACKVAR(-4, 4), 0, 1) = static_cast<any_int8>(0x00000002 * static_cast<any_int32>(reinterpret_cast<B_Pal *>(ACCESS(STACKVAR(8, 4), 20, 4))->GetGreen(static_cast<unsigned int>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-12, 4), 0, 1))))));
+        ACCESS(STACKVAR(-4, 4), 0, 1) = static_cast<any_int8>(0x00000002 * static_cast<any_int32>(arg_0.pal->GetGreen(static_cast<unsigned int>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-12, 4), 0, 1))))));
         STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000001;
-        ACCESS(STACKVAR(-4, 4), 0, 1) = static_cast<any_int8>(0x00000002 * static_cast<any_int32>(reinterpret_cast<B_Pal *>(ACCESS(STACKVAR(8, 4), 20, 4))->GetBlue(static_cast<unsigned int>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-12, 4), 0, 1))))));
+        ACCESS(STACKVAR(-4, 4), 0, 1) = static_cast<any_int8>(0x00000002 * static_cast<any_int32>(arg_0.pal->GetBlue(static_cast<unsigned int>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-12, 4), 0, 1))))));
         STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000001;
         goto l10026F70;
     }
@@ -23460,37 +23375,37 @@ l10026F82:
 l1002700F:
     goto l100271B3;
 l10027014:
-    ACCESS(this, 4, 4) = ACCESS(STACKVAR(8, 4), 8, 4);
-    ACCESS(this, 8, 4) = ACCESS(STACKVAR(8, 4), 12, 4);
-    STACKVAR(-40, 4) = ??2@YAPAXI@Z(0x00000003 * reinterpret_cast<any_int32>(ACCESS(this, 4, 4)) * reinterpret_cast<any_int32>(ACCESS(this, 8, 4)));
-    ACCESS(this, 12, 4) = STACKVAR(-40, 4);
-    if (ACCESS(this, 12, 4) == 0x00000000)
+    this->dimension1 = arg_0.dimension1;
+    this->dimension2 = arg_0.dimension2;
+    STACKVAR(-40, 4) = ??2@YAPAXI@Z(3 * this->dimension1 * this->dimension2);
+    this->data = reinterpret_cast<void *>(STACKVAR(-40, 4));
+    if (this->data == nullptr)
     {
-        ACCESS(this, 8, 4) = 0x00000000;
-        ACCESS(this, 4, 4) = 0x00000000;
+        this->dimension2 = 0;
+        this->dimension1 = 0;
         goto l100271B3;
     }
-    memcpy(ACCESS(this, 12, 4), ACCESS(STACKVAR(8, 4), 16, 4), 0x00000003 * reinterpret_cast<any_int32>(ACCESS(this, 4, 4)) * reinterpret_cast<any_int32>(ACCESS(this, 8, 4))); // TODO improve emitting of memcpy instructions
+    memcpy(this->data, arg_0.data, 3 * this->dimension1 * this->dimension2); // TODO improve emitting of memcpy instructions
     goto l100271B3;
 l100270A2:
-    ACCESS(this, 4, 4) = ACCESS(STACKVAR(8, 4), 8, 4);
-    ACCESS(this, 8, 4) = ACCESS(STACKVAR(8, 4), 12, 4);
-    STACKVAR(-44, 4) = ??2@YAPAXI@Z(0x00000003 * reinterpret_cast<any_int32>(ACCESS(this, 4, 4)) * reinterpret_cast<any_int32>(ACCESS(this, 8, 4)));
-    ACCESS(this, 12, 4) = STACKVAR(-44, 4);
-    if (ACCESS(this, 12, 4) == 0x00000000)
+    this->dimension1 = arg_0.dimension1;
+    this->dimension2 = arg_0.dimension2;
+    STACKVAR(-44, 4) = ??2@YAPAXI@Z(3 * this->dimension1 * this->dimension2);
+    this->data = reinterpret_cast<void *>(STACKVAR(-44, 4));
+    if (this->data == nullptr)
     {
-        ACCESS(this, 8, 4) = 0x00000000;
-        ACCESS(this, 4, 4) = 0x00000000;
+        this->dimension2 = 0;
+        this->dimension1 = 0;
         goto l100271B3;
     }
-    STACKVAR(-20, 4) = ACCESS(this, 12, 4);
-    STACKVAR(-28, 4) = ACCESS(STACKVAR(8, 4), 16, 4);
+    STACKVAR(-20, 4) = this->data;
+    STACKVAR(-28, 4) = arg_0.data;
     STACKVAR(-24, 4) = 0x00000000;
     goto l10027125;
 l1002711C:
     STACKVAR(-24, 4) = reinterpret_cast<any_int32>(STACKVAR(-24, 4)) + 0x00000001;
 l10027125:
-    if (reinterpret_cast<int>(STACKVAR(-24, 4)) >= reinterpret_cast<int>(ACCESS(this, 8, 4)))
+    if (reinterpret_cast<int>(STACKVAR(-24, 4)) >= reinterpret_cast<int>(this->dimension2))
     {
         goto l10027193;
     }
@@ -23500,7 +23415,7 @@ l10027139:
     STACKVAR(-32, 4) = reinterpret_cast<any_int32>(STACKVAR(-32, 4)) + 0x00000001;
     STACKVAR(-28, 4) = reinterpret_cast<any_int32>(STACKVAR(-28, 4)) + 0x00000001;
 l1002714B:
-    if (reinterpret_cast<int>(STACKVAR(-32, 4)) < reinterpret_cast<int>(ACCESS(this, 4, 4)))
+    if (reinterpret_cast<int>(STACKVAR(-32, 4)) < reinterpret_cast<int>(this->dimension1))
     {
         ACCESS(STACKVAR(-20, 4), 0, 1) = ACCESS(STACKVAR(-28, 4), 0, 1);
         STACKVAR(-20, 4) = reinterpret_cast<any_int32>(STACKVAR(-20, 4)) + 0x00000001;
@@ -23514,11 +23429,10 @@ l1002714B:
 l10027193:
     goto l100271B3;
 l10027195:
-    ACCESS(this, 8, 4) = 0x00000000;
-    ACCESS(this, 4, 4) = 0x00000000;
-    ACCESS(this, 12, 4) = 0x00000000;
+    this->dimension2 = 0;
+    this->dimension1 = 0;
+    this->data = nullptr;
 l100271B3:
-    REGDEF(eax=this)
 }
 
 // address: 0x100271BE
@@ -23804,59 +23718,53 @@ l10027D4D:
 }
 
 // address: 0x10027D86
-p10027D86
+int B_BitMap24::ReadFromBMP(const char *arg_0)
 {
-    ProcedureInfo(this=Id(this), this_offset=-16420, local_size=16420, stack_delta=4)
-    reinterpret_cast<B_IDataFile *>(LOCAL(-16408))->B_IDataFile(reinterpret_cast<char *>(STACKVAR(8, 4)), 32768);
+    reinterpret_cast<B_IDataFile *>(LOCAL(-16408))->B_IDataFile(arg_0, 32768);
     if (static_cast<any_int32>(STACKVAR(-16408, 4) != 0xFFFFFFFF) == 0x00000000)
     {
         STACKVAR(-16412, 4) = 0x00000000;
         reinterpret_cast<B_IDataFile *>(LOCAL(-16408))->~B_IDataFile();
-        REGDEF(eax=STACKVAR(-16412, 4))
-        return;
+        return reinterpret_cast<int>(STACKVAR(-16412, 4));
     }
-    *reinterpret_cast<B_IDataFile *>(LOCAL(-16408)) >> *reinterpret_cast<B_BitMap24 *>(this);
+    *reinterpret_cast<B_IDataFile *>(LOCAL(-16408)) >> *this;
     STACKVAR(-16416, 4) = 0x00000001;
     reinterpret_cast<B_IDataFile *>(LOCAL(-16408))->~B_IDataFile();
-    REGDEF(eax=STACKVAR(-16416, 4))
+    return reinterpret_cast<int>(STACKVAR(-16416, 4));
 }
 
 // address: 0x10027E11
-p10027E11
+int B_BitMap24::ReadFromFile(const char *arg_0)
 {
-    ProcedureInfo(this=Id(this), this_offset=-44, local_size=44, stack_delta=4)
-    reinterpret_cast<B_Name *>(LOCAL(-8))->B_Name(reinterpret_cast<char *>(STACKVAR(8, 4)));
+    reinterpret_cast<B_Name *>(LOCAL(-8))->B_Name(arg_0);
     *reinterpret_cast<B_Name *>(LOCAL(-16)) = reinterpret_cast<B_Name *>(LOCAL(-8))->Right(4);
     if (reinterpret_cast<B_Name *>(LOCAL(-16))->CompareNoCase(".BMP") != 0)
     {
-        STACKVAR(-20, 4) = this->unknown_method_10027D86(STACKVAR(8, 4));
+        STACKVAR(-20, 4) = this->ReadFromBMP(arg_0);
         reinterpret_cast<B_Name *>(LOCAL(-16))->~B_Name();
         reinterpret_cast<B_Name *>(LOCAL(-8))->~B_Name();
-        REGDEF(eax=STACKVAR(-20, 4))
-        return;
+        return reinterpret_cast<int>(STACKVAR(-20, 4));
     }
     if (reinterpret_cast<B_Name *>(LOCAL(-16))->CompareNoCase(".JPG") != 0)
     {
-        STACKVAR(-24, 4) = this->unknown_method_10029510(STACKVAR(8, 4));
+        STACKVAR(-24, 4) = this->ReadFromJPEG(arg_0);
         reinterpret_cast<B_Name *>(LOCAL(-16))->~B_Name();
         reinterpret_cast<B_Name *>(LOCAL(-8))->~B_Name();
-        REGDEF(eax=STACKVAR(-24, 4))
-        return;
+        return reinterpret_cast<int>(STACKVAR(-24, 4));
     }
     *reinterpret_cast<B_Name *>(LOCAL(-16)) = *reinterpret_cast<B_Name *>(LOCAL(-32)) = reinterpret_cast<B_Name *>(LOCAL(-8))->Right(5);
     reinterpret_cast<B_Name *>(LOCAL(-32))->~B_Name();
     if (reinterpret_cast<B_Name *>(LOCAL(-16))->CompareNoCase(".JPEG") != 0)
     {
-        STACKVAR(-36, 4) = this->unknown_method_10029510(STACKVAR(8, 4));
+        STACKVAR(-36, 4) = this->ReadFromJPEG(arg_0);
         reinterpret_cast<B_Name *>(LOCAL(-16))->~B_Name();
         reinterpret_cast<B_Name *>(LOCAL(-8))->~B_Name();
-        REGDEF(eax=STACKVAR(-36, 4))
-        return;
+        return reinterpret_cast<int>(STACKVAR(-36, 4));
     }
     STACKVAR(-40, 4) = 0x00000000;
     reinterpret_cast<B_Name *>(LOCAL(-16))->~B_Name();
     reinterpret_cast<B_Name *>(LOCAL(-8))->~B_Name();
-    REGDEF(eax=STACKVAR(-40, 4))
+    return reinterpret_cast<int>(STACKVAR(-40, 4));
 }
 
 // address: 0x10027F15
@@ -24010,11 +23918,10 @@ void B_BitMap24::EscribeArchivoRAW(const char *arg_1)
 }
 
 // address: 0x100283CD
-p100283CD
+void B_BitMap24::ChangeRGBOrder()
 {
-    ProcedureInfo(this=Id(this), this_offset=-20, local_size=20, stack_delta=0)
-    STACKVAR(-12, 4) = reinterpret_cast<any_int32>(ACCESS(this, 4, 4)) * reinterpret_cast<any_int32>(ACCESS(this, 8, 4));
-    STACKVAR(-4, 4) = ACCESS(this, 12, 4);
+    STACKVAR(-12, 4) = this->dimension1 * this->dimension2;
+    STACKVAR(-4, 4) = this->data;
     STACKVAR(-8, 4) = 0x00000000;
     goto l1002840A;
 l100283F8:
@@ -24031,28 +23938,26 @@ l1002840A:
 }
 
 // address: 0x10028434
-p10028434
+unsigned int B_BitMap24::GetPixelAt(int arg_0, int arg_1, B_Color &arg_2)
 {
-    ProcedureInfo(this=Id(this), this_offset=-8, local_size=8, stack_delta=12)
-    if (reinterpret_cast<int>(STACKVAR(8, 4)) >= 0)
+    if (arg_0 >= 0)
     {
-        if (reinterpret_cast<int>(STACKVAR(8, 4)) < reinterpret_cast<int>(ACCESS(this, 4, 4)))
+        if (arg_0 < reinterpret_cast<int>(this->dimension1))
         {
-            if (reinterpret_cast<int>(STACKVAR(12, 4)) >= 0)
+            if (arg_1 >= 0)
             {
-                if (reinterpret_cast<int>(STACKVAR(12, 4)) < reinterpret_cast<int>(ACCESS(this, 8, 4)))
+                if (arg_1 < reinterpret_cast<int>(this->dimension2))
                 {
-                    STACKVAR(-4, 4) = 0x00000003 * reinterpret_cast<any_int32>(STACKVAR(12, 4)) * reinterpret_cast<any_int32>(ACCESS(this, 4, 4)) + 0x00000003 * reinterpret_cast<any_int32>(STACKVAR(8, 4));
-                    ACCESS(STACKVAR(16, 4), 4, 1) = ACCESS(ARRPTR(ACCESS(this, 12, 4), 1, STACKVAR(-4, 4), 0), 0, 1);
-                    ACCESS(STACKVAR(16, 4), 5, 1) = ACCESS(ARRPTR(ACCESS(this, 12, 4), 1, STACKVAR(-4, 4), 1), 0, 1);
-                    ACCESS(STACKVAR(16, 4), 6, 1) = ACCESS(ARRPTR(ACCESS(this, 12, 4), 1, STACKVAR(-4, 4), 2), 0, 1);
-                    REGDEF(eax=0x00000001)
-                    return;
+                    STACKVAR(-4, 4) = 0x00000003 * arg_1 * this->dimension1 + 3 * arg_0;
+                    arg_2.r = reinterpret_cast<byte>(ACCESS(ARRPTR(this->data, 1, STACKVAR(-4, 4), 0), 0, 1));
+                    arg_2.g = reinterpret_cast<byte>(ACCESS(ARRPTR(this->data, 1, STACKVAR(-4, 4), 1), 0, 1));
+                    arg_2.b = reinterpret_cast<byte>(ACCESS(ARRPTR(this->data, 1, STACKVAR(-4, 4), 2), 0, 1));
+                    return 1;
                 }
             }
         }
     }
-    REGDEF(eax=0x00000000)
+    return 0;
 }
 
 // address: 0x100284C0
@@ -24817,52 +24722,49 @@ l10029400:
 }
 
 // address: 0x10029510
-p10029510
+int B_BitMap24::ReadFromJPEG(const char *arg_0)
 {
-    ProcedureInfo(this=Id(this), this_offset=-580, local_size=580, stack_delta=4)
     STACKVAR(-428, 4) = unknown_function_1001F6E0(LOCAL(-564));
     unknown_function_10013490(LOCAL(-428), 0x0000003E, 0x000001AC);
-    STACKVAR(-432, 4) = fopen(STACKVAR(8, 4), GLOBAL(0x10048828));
+    STACKVAR(-432, 4) = fopen(arg_0, GLOBAL(0x10048828));
     if (STACKVAR(-432, 4) == 0x00000000)
     {
-        mout << vararg("B_BitMap24: can't open %s\n", STACKVAR(8, 4));
-        REGDEF(eax=0x00000000)
-        return;
+        mout << vararg("B_BitMap24: can't open %s\n", arg_0);
+        return 0;
     }
     unknown_function_100143E0(LOCAL(-428), STACKVAR(-432, 4));
     unknown_function_10013624(LOCAL(-428), 0x00000001);
     if (STACKVAR(-392, 4) != 0x00000003)
     {
         mout << "B_BitMap24: wrong number of components\n";
-        REGDEF(eax=0x00000000)
-        return;
+        return 0;
     }
-    if (ACCESS(this, 4, 4) != STACKVAR(-400, 4))
+    if (this->dimension1 != reinterpret_cast<unsigned int>(STACKVAR(-400, 4)))
     {
         goto l100295FC;
     }
-    if (ACCESS(this, 8, 4) == STACKVAR(-396, 4))
+    if (this->dimension2 == reinterpret_cast<unsigned int>(STACKVAR(-396, 4)))
     {
         goto l1002966C;
     }
 l100295FC:
-    STACKVAR(-572, 4) = ACCESS(this, 12, 4);
+    STACKVAR(-572, 4) = this->data;
     ??3@YAXPAX@Z(STACKVAR(-572, 4));
-    ACCESS(this, 4, 4) = STACKVAR(-400, 4);
-    ACCESS(this, 8, 4) = STACKVAR(-396, 4);
-    STACKVAR(-576, 4) = ??2@YAPAXI@Z(0x00000003 * reinterpret_cast<any_int32>(ACCESS(this, 4, 4)) * reinterpret_cast<any_int32>(ACCESS(this, 8, 4)));
-    ACCESS(this, 12, 4) = STACKVAR(-576, 4);
+    this->dimension1 = reinterpret_cast<unsigned int>(STACKVAR(-400, 4));
+    this->dimension2 = reinterpret_cast<unsigned int>(STACKVAR(-396, 4));
+    STACKVAR(-576, 4) = ??2@YAPAXI@Z(3 * this->dimension1 * this->dimension2);
+    this->data = reinterpret_cast<void *>(STACKVAR(-576, 4));
 l1002966C:
     unknown_function_10013C80(LOCAL(-428));
     while (reinterpret_cast<unsigned int>(STACKVAR(-308, 4)) < reinterpret_cast<unsigned int>(STACKVAR(-332, 4)))
     {
-        STACKVAR(-568, 4) = reinterpret_cast<any_int32>(ACCESS(this, 12, 4)) + 0x00000003 * reinterpret_cast<any_int32>(STACKVAR(-308, 4)) * reinterpret_cast<any_int32>(ACCESS(this, 4, 4));
+        STACKVAR(-568, 4) = reinterpret_cast<any_int32>(this->data) + 0x00000003 * reinterpret_cast<any_int32>(STACKVAR(-308, 4)) * this->dimension1;
         unknown_function_10013EFA(LOCAL(-428), LOCAL(-568), 0x00000001);
     }
     unknown_function_10013B69(LOCAL(-428));
     unknown_function_10013602(LOCAL(-428));
     fclose(STACKVAR(-432, 4));
-    REGDEF(eax=0x00000001)
+    return 1;
 }
 
 // address: 0x10029700
@@ -24898,17 +24800,16 @@ int B_BitMap24::SaveToJPEG(const char *arg_1, int arg_2)
 }
 
 // address: 0x100298B0
-p100298B0
+B_ChannelOFile::B_ChannelOFile(B_Name arg_0, const char *arg_1)
 {
-    ProcedureInfo(this=Id(this), this_offset=-8, local_size=12, stack_delta=12)
-    reinterpret_cast<B_NamedObj *>(this)->B_NamedObj(*reinterpret_cast<B_Name *>(LOCAL(8)));
+    this->B_NamedObj(*reinterpret_cast<B_Name *>(LOCAL(8)));
     ACCESS(this, 0, 4) = GLOBAL(0x10042180);
-    ACCESS(this, 12, 4) = 0x00000001;
+    this->unknown0Ch = 1;
     ACCESS(this, 0, 4) = GLOBAL(0x10042CBC);
     STACKVAR(-4, 4) = ??2@YAPAXI@Z(0x00004010);
     if (STACKVAR(-4, 4) != 0x00000000)
     {
-        STACKVAR(-12, 4) = reinterpret_cast<B_ODataFile *>(STACKVAR(-4, 4))->B_ODataFile(reinterpret_cast<char *>(STACKVAR(16, 4)), 16384);
+        STACKVAR(-12, 4) = reinterpret_cast<B_ODataFile *>(STACKVAR(-4, 4))->B_ODataFile(arg_1, 16384);
     }
     else
     {
@@ -24917,20 +24818,18 @@ p100298B0
     ACCESS(this, 16, 4) = STACKVAR(-12, 4);
     if (ACCESS(this, 16, 4) != 0x00000000)
     {
-        ACCESS(this, 12, 4) = 0x00000000;
+        this->unknown0Ch = 0;
     }
     else
     {
-        ACCESS(this, 12, 4) = 0x00000001;
+        this->unknown0Ch = 1;
     }
     reinterpret_cast<B_Name *>(LOCAL(8))->~B_Name();
-    REGDEF(eax=this)
 }
 
 // address: 0x1002994D
-p1002994D
+B_ChannelOFile::~B_ChannelOFile()
 {
-    ProcedureInfo(this=Id(this), this_offset=-12, local_size=16, stack_delta=0)
     ACCESS(this, 0, 4) = GLOBAL(0x10042CBC);
     if (ACCESS(this, 16, 4) != 0x00000000)
     {
@@ -24950,69 +24849,61 @@ p1002994D
             STACKVAR(-16, 4) = 0x00000000;
         }
         ACCESS(this, 16, 4) = 0x00000000;
-        ACCESS(this, 12, 4) = 0x00000001;
+        this->unknown0Ch = 1;
     }
     ACCESS(this, 0, 4) = GLOBAL(0x10042180);
     ACCESS(this, 0, 4) = GLOBAL(0x1004217C);
-    reinterpret_cast<B_Name *>(reinterpret_cast<any_int32>(this) + 0x00000004)->~B_Name();
+    this->name.~B_Name();
 }
 
 // address: 0x100299E1
-p100299E1
+unsigned int B_ChannelOFile::Open()
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=0)
     if (ACCESS(this, 16, 4) != 0x00000000)
     {
-        ACCESS(this, 12, 4) = 0x00000000;
-        REGDEF(eax=0x00000001)
-        return;
+        this->unknown0Ch = 0;
+        return 1;
     }
-    REGDEF(eax=0x00000000)
+    return 0;
 }
 
 // address: 0x10029A08
-p10029A08
+unsigned int B_ChannelOFile::Close()
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=0)
-    ACCESS(this, 12, 4) = 0x00000001;
-    REGDEF(eax=0x00000001)
+    this->unknown0Ch = 1;
+    return 1;
 }
 
 // address: 0x10029A22
-p10029A22
+unsigned int B_ChannelOFile::Message(const char *arg_0)
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=4)
-    if (ACCESS(this, 12, 4) == 0x00000000)
+    if (this->unknown0Ch == 0)
     {
-        reinterpret_cast<B_ODataFile &>(ACCESS(this, 16, 4)) << reinterpret_cast<char *>(STACKVAR(8, 4));
-        ACCESS(this, 16, 4)->unknown_method_10002060();
-        REGDEF(eax=0x00000001)
-        return;
+        reinterpret_cast<B_ODataFile &>(ACCESS(this, 16, 4)) << arg_0;
+        reinterpret_cast<B_ODataFile *>(ACCESS(this, 16, 4))->Flush();
+        return 1;
     }
-    REGDEF(eax=0x00000000)
+    return 0;
 }
 
 // address: 0x10029A60
-p10029A60
+B_ChannelOFile::B_ChannelOFile(const B_ChannelOFile &arg_0)
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=4)
-    reinterpret_cast<B_Name *>(reinterpret_cast<any_int32>(this) + 0x00000004)->B_Name(reinterpret_cast<B_Name &>(reinterpret_cast<any_int32>(STACKVAR(8, 4)) + 0x00000004));
+    this->name.B_Name(arg_0.name);
     ACCESS(this, 0, 4) = GLOBAL(0x1004217C);
-    ACCESS(this, 12, 4) = ACCESS(STACKVAR(8, 4), 12, 4);
+    this->unknown0Ch = arg_0.unknown0Ch;
     ACCESS(this, 0, 4) = GLOBAL(0x10042180);
-    ACCESS(this, 16, 4) = ACCESS(STACKVAR(8, 4), 16, 4);
+    ACCESS(this, 16, 4) = ACCESS(arg_0, 16, 4);
     ACCESS(this, 0, 4) = GLOBAL(0x10042CBC);
-    REGDEF(eax=this)
 }
 
 // address: 0x10029AC0
-p10029AC0
+B_ChannelOFile &B_ChannelOFile::operator=(const B_ChannelOFile &arg_0)
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=4)
-    reinterpret_cast<B_Name &>(reinterpret_cast<any_int32>(this) + 0x00000004) = reinterpret_cast<B_Name &>(reinterpret_cast<any_int32>(STACKVAR(8, 4)) + 0x00000004);
-    ACCESS(this, 12, 4) = ACCESS(STACKVAR(8, 4), 12, 4);
-    ACCESS(this, 16, 4) = ACCESS(STACKVAR(8, 4), 16, 4);
-    REGDEF(eax=this)
+    this->name = arg_0.name;
+    this->unknown0Ch = arg_0.unknown0Ch;
+    ACCESS(this, 16, 4) = ACCESS(arg_0, 16, 4);
+    return *this;
 }
 
 // address: 0x10029B30
@@ -25032,7 +24923,7 @@ l10029B68:
     if (reinterpret_cast<int>(STACKVAR(-12, 4)) >= 0)
     {
         STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) - reinterpret_cast<any_int32>(STACKVAR(-8, 4));
-        STACKVAR(-4, 4)->unknown_method_1002994D();
+        reinterpret_cast<B_ChannelOFile *>(STACKVAR(-4, 4))->~B_ChannelOFile();
         goto l10029B68;
     }
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
@@ -25042,7 +24933,7 @@ l10029B68:
     REGDEF(eax=reinterpret_cast<any_int32>(this) - 0x00000004)
     return;
 l10029BAB:
-    this->unknown_method_1002994D();
+    reinterpret_cast<B_ChannelOFile *>(this)->~B_ChannelOFile();
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
     {
         ??3@YAXPAX@Z(this);
@@ -25071,7 +24962,7 @@ p10029C15
 p10029C24
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
-    mout.unknown_method_10029C4A();
+    return mout.B_MessageManager();
 }
 
 // address: 0x10029C33
@@ -25088,9 +24979,8 @@ p10029C45
 }
 
 // address: 0x10029C4A
-p10029C4A
+B_MessageManager::B_MessageManager()
 {
-    ProcedureInfo(this=Id(this), this_offset=-8, local_size=12, stack_delta=0)
     if (ACCESS(GLOBAL(0x1004A944), 0, 4) == 0x00000000)
     {
         STACKVAR(-4, 4) = ??2@YAPAXI@Z(0x00000018);
@@ -25116,7 +25006,6 @@ p10029C4A
             _assert(GLOBAL(0x100488A8), GLOBAL(0x10048890), 0x00000025);
         }
     }
-    REGDEF(eax=this)
 }
 
 // address: 0x10029CFC
@@ -25317,9 +25206,8 @@ l1002A133:
 }
 
 // address: 0x1002A13C
-p1002A13C
+unsigned int B_MessageManager::Message(const char *arg_0)
 {
-    ProcedureInfo(this=Id(this), this_offset=-16, local_size=16, stack_delta=4)
     STACKVAR(-4, 4) = 0x00000000;
     if (ACCESS(ACCESS(GLOBAL(0x1004A944), 0, 4), 8, 4) == 0x00000000)
     {
@@ -25332,7 +25220,7 @@ l1002A160:
 l1002A169:
     if (reinterpret_cast<unsigned int>(STACKVAR(-8, 4)) < reinterpret_cast<unsigned int>(ACCESS(ACCESS(GLOBAL(0x1004A944), 0, 4), 8, 4)))
     {
-        STACKVAR(-12, 4) = ACCESS(ARRPTR(ACCESS(ACCESS(GLOBAL(0x1004A944), 0, 4), 4, 4), 4, STACKVAR(-8, 4), 0), 0, 4)->(ACCESS(ACCESS(ACCESS(ARRPTR(ACCESS(ACCESS(GLOBAL(0x1004A944), 0, 4), 4, 4), 4, STACKVAR(-8, 4), 0), 0, 4), 0, 4), 12, 4))(STACKVAR(8, 4));
+        STACKVAR(-12, 4) = ACCESS(ARRPTR(ACCESS(ACCESS(GLOBAL(0x1004A944), 0, 4), 4, 4), 4, STACKVAR(-8, 4), 0), 0, 4)->(ACCESS(ACCESS(ACCESS(ARRPTR(ACCESS(ACCESS(GLOBAL(0x1004A944), 0, 4), 4, 4), 4, STACKVAR(-8, 4), 0), 0, 4), 0, 4), 12, 4))(arg_0);
         if (STACKVAR(-12, 4) != 0x00000000)
         {
             STACKVAR(-4, 4) = 0x00000001;
@@ -25340,13 +25228,12 @@ l1002A169:
         goto l1002A160;
     }
 l1002A1B0:
-    REGDEF(eax=STACKVAR(-4, 4))
+    return reinterpret_cast<unsigned int>(STACKVAR(-4, 4));
 }
 
 // address: 0x1002A1B9
-p1002A1B9
+unsigned int B_MessageManager::Message(const char *arg_0, const B_Name &arg_1)
 {
-    ProcedureInfo(this=Id(this), this_offset=-16, local_size=16, stack_delta=8)
     STACKVAR(-12, 4) = ACCESS(GLOBAL(0x1004A944), 0, 4);
     STACKVAR(-8, 4) = 0x00000000;
     goto l1002A1DC;
@@ -25357,7 +25244,7 @@ l1002A1DC:
     {
         goto l1002A218;
     }
-    if (reinterpret_cast<B_Name &>(STACKVAR(12, 4)) == reinterpret_cast<B_NamedObj *>(ACCESS(ARRPTR(ACCESS(STACKVAR(-12, 4), 4, 4), 4, STACKVAR(-8, 4), 0), 0, 4))->Id() != 0)
+    if (arg_1 == reinterpret_cast<B_NamedObj *>(ACCESS(ARRPTR(ACCESS(STACKVAR(-12, 4), 4, 4), 4, STACKVAR(-8, 4), 0), 0, 4))->Id() != 0)
     {
         STACKVAR(-4, 4) = ACCESS(ARRPTR(ACCESS(STACKVAR(-12, 4), 4, 4), 4, STACKVAR(-8, 4), 0), 0, 4);
         goto l1002A21F;
@@ -25368,20 +25255,19 @@ l1002A218:
 l1002A21F:
     if (STACKVAR(-4, 4) != 0x00000000)
     {
-        STACKVAR(-4, 4)->(ACCESS(ACCESS(STACKVAR(-4, 4), 0, 4), 12, 4))(STACKVAR(8, 4));
+        STACKVAR(-4, 4)->(ACCESS(ACCESS(STACKVAR(-4, 4), 0, 4), 12, 4))(arg_0);
         return;
     }
-    REGDEF(eax=0x00000000)
+    return 0;
 }
 
 // address: 0x1002A23E
-p1002A23E
+unsigned int B_MessageManager::Message(char arg_0)
 {
-    ProcedureInfo(this=Id(this), this_offset=-12, local_size=12, stack_delta=4)
     STACKVAR(-8, 4) = 0x00000000;
-    STACKVAR(-4, 1) = STACKVAR(8, 1);
+    STACKVAR(-4, 1) = arg_0;
     STACKVAR(-3, 1) = 0;
-    this->unknown_method_1002A13C(LOCAL(-4));
+    this->Message(reinterpret_cast<char *>(LOCAL(-4)));
 }
 
 // address: 0x1002A26A
@@ -25403,28 +25289,26 @@ unsigned int B_MessageChannel::Message(const char *message)
 }
 
 // address: 0x1002A293
-p1002A293
+unsigned int B_MessageManager::Message(char arg_0, const B_Name &arg_1)
 {
-    ProcedureInfo(this=Id(this), this_offset=-12, local_size=12, stack_delta=8)
     STACKVAR(-8, 4) = 0x00000000;
-    STACKVAR(-4, 1) = STACKVAR(8, 1);
+    STACKVAR(-4, 1) = arg_0;
     STACKVAR(-3, 1) = 0;
-    this->unknown_method_1002A1B9(LOCAL(-4), STACKVAR(12, 4));
+    this->Message(reinterpret_cast<char *>(LOCAL(-4)), arg_1);
 }
 
 // address: 0x1002A2C3
 B_MessageManager &operator<<(B_MessageManager &mout, const char *str)
 {
-    mout->unknown_method_1002A13C(str);
+    mout.Message(str);
     return mout;
 }
 
 // address: 0x1002A2D7
-p1002A2D7
+B_MessageManager &operator<<(B_MessageManager &arg_0, char arg_1)
 {
-    ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
-    STACKVAR(8, 4)->unknown_method_1002A23E(STACKVAR(12, 1));
-    REGDEF(eax=STACKVAR(8, 4))
+    arg_0.Message(arg_1);
+    return arg_0;
 }
 
 // address: 0x1002A2F0
@@ -26560,24 +26444,21 @@ p10032A75
 }
 
 // address: 0x10032ABD
-p10032ABD
+unsigned short B_ObjDscr::ClassId()
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=0)
     REGDEF(ax=0x0001)
 }
 
 // address: 0x10032ACC
-p10032ACC
+unsigned long B_ObjDscr::CheckSum()
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=0)
-    REGDEF(eax=0x00000000)
+    return 0;
 }
 
 // address: 0x10032AD9
-p10032AD9
+unsigned int B_ObjDscr::SerialSize()
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=0)
-    REGDEF(eax=0x00000000)
+    return 0;
 }
 
 // address: 0x10032AE6
@@ -29194,14 +29075,13 @@ B_ObjDscr::~B_ObjDscr()
 }
 
 // address: 0x100384CA
-p100384CA
+unsigned int B_ObjDscr::SavePacked(B_ODataFile &arg_0)
 {
-    ProcedureInfo(this=Id(this), this_offset=-100, local_size=100, stack_delta=4)
     ACCESS(GLOBAL(0x100488B8), 0, 4) = 0x40000000;
     ACCESS(GLOBAL(0x100488B4), 0, 4) = 0x00000002;
-    unknown_function_1000468E(STACKVAR(8, 4), this);
-    STACKVAR(-8, 4) = reinterpret_cast<any_int32>(this) + 0x0000000C;
-    reinterpret_cast<B_ODataFile &>(STACKVAR(8, 4)) << reinterpret_cast<unsigned int &>(reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + 0x00000008);
+    unknown_function_1000468E(arg_0, this);
+    STACKVAR(-8, 4) = &this->data;
+    arg_0 << reinterpret_cast<unsigned int &>(reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + 0x00000008);
     STACKVAR(-4, 4) = 0x00000000;
     goto l10038525;
 l1003851C:
@@ -29209,11 +29089,11 @@ l1003851C:
 l10038525:
     if (reinterpret_cast<unsigned int>(STACKVAR(-4, 4)) < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-8, 4), 8, 4)))
     {
-        unknown_function_10032829(STACKVAR(8, 4), ACCESS(ARRPTR(ACCESS(STACKVAR(-8, 4), 4, 4), 4, STACKVAR(-4, 4), 0), 0, 4));
+        unknown_function_10032829(arg_0, ACCESS(ARRPTR(ACCESS(STACKVAR(-8, 4), 4, 4), 4, STACKVAR(-4, 4), 0), 0, 4));
         goto l1003851C;
     }
     STACKVAR(-16, 4) = reinterpret_cast<any_int32>(this) + 0x00000024;
-    reinterpret_cast<B_ODataFile &>(STACKVAR(8, 4)) << reinterpret_cast<unsigned int &>(reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000008);
+    arg_0 << reinterpret_cast<unsigned int &>(reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000008);
     STACKVAR(-12, 4) = 0x00000000;
     goto l10038579;
 l10038570:
@@ -29221,11 +29101,11 @@ l10038570:
 l10038579:
     if (reinterpret_cast<unsigned int>(STACKVAR(-12, 4)) < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-16, 4), 8, 4)))
     {
-        unknown_function_100321C8(STACKVAR(8, 4), reinterpret_cast<any_int32>(ACCESS(STACKVAR(-16, 4), 4, 4)) + 0x00000030 * reinterpret_cast<any_int32>(STACKVAR(-12, 4)));
+        unknown_function_100321C8(arg_0, reinterpret_cast<any_int32>(ACCESS(STACKVAR(-16, 4), 4, 4)) + 0x00000030 * reinterpret_cast<any_int32>(STACKVAR(-12, 4)));
         goto l10038570;
     }
     STACKVAR(-24, 4) = reinterpret_cast<any_int32>(this) + 0x00000038;
-    reinterpret_cast<B_ODataFile &>(STACKVAR(8, 4)) << reinterpret_cast<unsigned int &>(reinterpret_cast<any_int32>(STACKVAR(-24, 4)) + 0x00000008);
+    arg_0 << reinterpret_cast<unsigned int &>(reinterpret_cast<any_int32>(STACKVAR(-24, 4)) + 0x00000008);
     STACKVAR(-20, 4) = 0x00000000;
     goto l100385CF;
 l100385C6:
@@ -29233,11 +29113,11 @@ l100385C6:
 l100385CF:
     if (reinterpret_cast<unsigned int>(STACKVAR(-20, 4)) < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-24, 4), 8, 4)))
     {
-        unknown_function_10032420(STACKVAR(8, 4), reinterpret_cast<any_int32>(ACCESS(STACKVAR(-24, 4), 4, 4)) + 0x00000038 * reinterpret_cast<any_int32>(STACKVAR(-20, 4)));
+        unknown_function_10032420(arg_0, reinterpret_cast<any_int32>(ACCESS(STACKVAR(-24, 4), 4, 4)) + 0x00000038 * reinterpret_cast<any_int32>(STACKVAR(-20, 4)));
         goto l100385C6;
     }
     STACKVAR(-32, 4) = reinterpret_cast<any_int32>(this) + 0x0000004C;
-    reinterpret_cast<B_ODataFile &>(STACKVAR(8, 4)) << reinterpret_cast<unsigned int &>(reinterpret_cast<any_int32>(STACKVAR(-32, 4)) + 0x00000008);
+    arg_0 << reinterpret_cast<unsigned int &>(reinterpret_cast<any_int32>(STACKVAR(-32, 4)) + 0x00000008);
     STACKVAR(-28, 4) = 0x00000000;
     goto l10038625;
 l1003861C:
@@ -29245,11 +29125,11 @@ l1003861C:
 l10038625:
     if (reinterpret_cast<unsigned int>(STACKVAR(-28, 4)) < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-32, 4), 8, 4)))
     {
-        unknown_function_1003270D(STACKVAR(8, 4), ACCESS(ARRPTR(ACCESS(STACKVAR(-32, 4), 4, 4), 4, STACKVAR(-28, 4), 0), 0, 4));
+        unknown_function_1003270D(arg_0, ACCESS(ARRPTR(ACCESS(STACKVAR(-32, 4), 4, 4), 4, STACKVAR(-28, 4), 0), 0, 4));
         goto l1003861C;
     }
     STACKVAR(-40, 4) = reinterpret_cast<any_int32>(this) + 0x00000064;
-    reinterpret_cast<B_ODataFile &>(STACKVAR(8, 4)) << reinterpret_cast<unsigned int &>(reinterpret_cast<any_int32>(STACKVAR(-40, 4)) + 0x00000008);
+    arg_0 << reinterpret_cast<unsigned int &>(reinterpret_cast<any_int32>(STACKVAR(-40, 4)) + 0x00000008);
     STACKVAR(-36, 4) = 0x00000000;
     goto l10038679;
 l10038670:
@@ -29257,11 +29137,11 @@ l10038670:
 l10038679:
     if (reinterpret_cast<unsigned int>(STACKVAR(-36, 4)) < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-40, 4), 8, 4)))
     {
-        reinterpret_cast<B_ODataFile &>(STACKVAR(8, 4)) << reinterpret_cast<unsigned char &>(reinterpret_cast<any_int32>(ACCESS(STACKVAR(-40, 4), 4, 4)) + reinterpret_cast<any_int32>(STACKVAR(-36, 4)));
+        arg_0 << reinterpret_cast<unsigned char &>(reinterpret_cast<any_int32>(ACCESS(STACKVAR(-40, 4), 4, 4)) + reinterpret_cast<any_int32>(STACKVAR(-36, 4)));
         goto l10038670;
     }
     STACKVAR(-48, 4) = reinterpret_cast<any_int32>(this) + 0x00000078;
-    reinterpret_cast<B_ODataFile &>(STACKVAR(8, 4)) << reinterpret_cast<unsigned int &>(reinterpret_cast<any_int32>(STACKVAR(-48, 4)) + 0x00000008);
+    arg_0 << reinterpret_cast<unsigned int &>(reinterpret_cast<any_int32>(STACKVAR(-48, 4)) + 0x00000008);
     STACKVAR(-44, 4) = 0x00000000;
     goto l100386CA;
 l100386C1:
@@ -29269,11 +29149,11 @@ l100386C1:
 l100386CA:
     if (reinterpret_cast<unsigned int>(STACKVAR(-44, 4)) < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-48, 4), 8, 4)))
     {
-        reinterpret_cast<B_ODataFile &>(STACKVAR(8, 4)) << *reinterpret_cast<unsigned long *>(ARRPTR(ACCESS(STACKVAR(-48, 4), 4, 4), 4, STACKVAR(-44, 4), 0));
+        arg_0 << *reinterpret_cast<unsigned long *>(ARRPTR(ACCESS(STACKVAR(-48, 4), 4, 4), 4, STACKVAR(-44, 4), 0));
         goto l100386C1;
     }
     STACKVAR(-56, 4) = reinterpret_cast<any_int32>(this) + 0x0000008C;
-    reinterpret_cast<B_ODataFile &>(STACKVAR(8, 4)) << reinterpret_cast<unsigned int &>(reinterpret_cast<any_int32>(STACKVAR(-56, 4)) + 0x00000008);
+    arg_0 << reinterpret_cast<unsigned int &>(reinterpret_cast<any_int32>(STACKVAR(-56, 4)) + 0x00000008);
     STACKVAR(-52, 4) = 0x00000000;
     goto l10038721;
 l10038718:
@@ -29281,11 +29161,11 @@ l10038718:
 l10038721:
     if (reinterpret_cast<unsigned int>(STACKVAR(-52, 4)) < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-56, 4), 8, 4)))
     {
-        unknown_function_10032A75(STACKVAR(8, 4), ACCESS(ARRPTR(ACCESS(STACKVAR(-56, 4), 4, 4), 4, STACKVAR(-52, 4), 0), 0, 4));
+        unknown_function_10032A75(arg_0, ACCESS(ARRPTR(ACCESS(STACKVAR(-56, 4), 4, 4), 4, STACKVAR(-52, 4), 0), 0, 4));
         goto l10038718;
     }
     STACKVAR(-64, 4) = reinterpret_cast<any_int32>(this) + 0x000000BC;
-    reinterpret_cast<B_ODataFile &>(STACKVAR(8, 4)) << reinterpret_cast<unsigned int &>(reinterpret_cast<any_int32>(STACKVAR(-64, 4)) + 0x00000008);
+    arg_0 << reinterpret_cast<unsigned int &>(reinterpret_cast<any_int32>(STACKVAR(-64, 4)) + 0x00000008);
     STACKVAR(-60, 4) = 0x00000000;
     goto l10038777;
 l1003876E:
@@ -29293,11 +29173,11 @@ l1003876E:
 l10038777:
     if (reinterpret_cast<unsigned int>(STACKVAR(-60, 4)) < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-64, 4), 8, 4)))
     {
-        unknown_function_10032314(STACKVAR(8, 4), reinterpret_cast<any_int32>(ACCESS(STACKVAR(-64, 4), 4, 4)) + 0x00000018 * reinterpret_cast<any_int32>(STACKVAR(-60, 4)));
+        unknown_function_10032314(arg_0, reinterpret_cast<any_int32>(ACCESS(STACKVAR(-64, 4), 4, 4)) + 0x00000018 * reinterpret_cast<any_int32>(STACKVAR(-60, 4)));
         goto l1003876E;
     }
     STACKVAR(-72, 4) = reinterpret_cast<any_int32>(this) + 0x000000D0;
-    reinterpret_cast<B_ODataFile &>(STACKVAR(8, 4)) << reinterpret_cast<unsigned int &>(reinterpret_cast<any_int32>(STACKVAR(-72, 4)) + 0x00000008);
+    arg_0 << reinterpret_cast<unsigned int &>(reinterpret_cast<any_int32>(STACKVAR(-72, 4)) + 0x00000008);
     STACKVAR(-68, 4) = 0x00000000;
     goto l100387D0;
 l100387C7:
@@ -29305,11 +29185,11 @@ l100387C7:
 l100387D0:
     if (reinterpret_cast<unsigned int>(STACKVAR(-68, 4)) < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-72, 4), 8, 4)))
     {
-        unknown_function_100328B6(STACKVAR(8, 4), ACCESS(ARRPTR(ACCESS(STACKVAR(-72, 4), 4, 4), 4, STACKVAR(-68, 4), 0), 0, 4));
+        unknown_function_100328B6(arg_0, ACCESS(ARRPTR(ACCESS(STACKVAR(-72, 4), 4, 4), 4, STACKVAR(-68, 4), 0), 0, 4));
         goto l100387C7;
     }
     STACKVAR(-80, 4) = reinterpret_cast<any_int32>(this) + 0x000000E8;
-    reinterpret_cast<B_ODataFile &>(STACKVAR(8, 4)) << reinterpret_cast<unsigned int &>(reinterpret_cast<any_int32>(STACKVAR(-80, 4)) + 0x00000008);
+    arg_0 << reinterpret_cast<unsigned int &>(reinterpret_cast<any_int32>(STACKVAR(-80, 4)) + 0x00000008);
     STACKVAR(-76, 4) = 0x00000000;
     goto l10038826;
 l1003881D:
@@ -29317,11 +29197,11 @@ l1003881D:
 l10038826:
     if (reinterpret_cast<unsigned int>(STACKVAR(-76, 4)) < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-80, 4), 8, 4)))
     {
-        unknown_function_10031F82(STACKVAR(8, 4), ACCESS(ARRPTR(ACCESS(STACKVAR(-80, 4), 4, 4), 4, STACKVAR(-76, 4), 0), 0, 4));
+        unknown_function_10031F82(arg_0, ACCESS(ARRPTR(ACCESS(STACKVAR(-80, 4), 4, 4), 4, STACKVAR(-76, 4), 0), 0, 4));
         goto l1003881D;
     }
     STACKVAR(-88, 4) = reinterpret_cast<any_int32>(this) + 0x00000100;
-    reinterpret_cast<B_ODataFile &>(STACKVAR(8, 4)) << reinterpret_cast<unsigned int &>(reinterpret_cast<any_int32>(STACKVAR(-88, 4)) + 0x00000008);
+    arg_0 << reinterpret_cast<unsigned int &>(reinterpret_cast<any_int32>(STACKVAR(-88, 4)) + 0x00000008);
     STACKVAR(-84, 4) = 0x00000000;
     goto l1003887D;
 l10038874:
@@ -29329,11 +29209,11 @@ l10038874:
 l1003887D:
     if (reinterpret_cast<unsigned int>(STACKVAR(-84, 4)) < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-88, 4), 8, 4)))
     {
-        unknown_function_10032945(STACKVAR(8, 4), ACCESS(ARRPTR(ACCESS(STACKVAR(-88, 4), 4, 4), 4, STACKVAR(-84, 4), 0), 0, 4));
+        unknown_function_10032945(arg_0, ACCESS(ARRPTR(ACCESS(STACKVAR(-88, 4), 4, 4), 4, STACKVAR(-84, 4), 0), 0, 4));
         goto l10038874;
     }
     STACKVAR(-96, 4) = reinterpret_cast<any_int32>(this) + 0x00000118;
-    reinterpret_cast<B_ODataFile &>(STACKVAR(8, 4)) << reinterpret_cast<unsigned int &>(reinterpret_cast<any_int32>(STACKVAR(-96, 4)) + 0x00000008);
+    arg_0 << reinterpret_cast<unsigned int &>(reinterpret_cast<any_int32>(STACKVAR(-96, 4)) + 0x00000008);
     STACKVAR(-92, 4) = 0x00000000;
     goto l100388D4;
 l100388CB:
@@ -29341,28 +29221,27 @@ l100388CB:
 l100388D4:
     if (reinterpret_cast<unsigned int>(STACKVAR(-92, 4)) < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-96, 4), 8, 4)))
     {
-        unknown_function_100329E5(STACKVAR(8, 4), ACCESS(ARRPTR(ACCESS(STACKVAR(-96, 4), 4, 4), 4, STACKVAR(-92, 4), 0), 0, 4));
+        unknown_function_100329E5(arg_0, ACCESS(ARRPTR(ACCESS(STACKVAR(-96, 4), 4, 4), 4, STACKVAR(-92, 4), 0), 0, 4));
         goto l100388CB;
     }
-    unknown_function_1002A81A(unknown_function_10031E83(reinterpret_cast<B_ODataFile &>(unknown_function_10030232(unknown_function_10030232(STACKVAR(8, 4), reinterpret_cast<any_int32>(this) + 0x00000130), reinterpret_cast<any_int32>(this) + 0x000001B0)) << reinterpret_cast<double &>(reinterpret_cast<any_int32>(this) + 0x00000238), reinterpret_cast<any_int32>(this) + 0x00000240), reinterpret_cast<any_int32>(this) + 0x00000258);
+    unknown_function_1002A81A(unknown_function_10031E83(reinterpret_cast<B_ODataFile &>(unknown_function_10030232(unknown_function_10030232(arg_0, reinterpret_cast<any_int32>(this) + 0x00000130), reinterpret_cast<any_int32>(this) + 0x000001B0)) << reinterpret_cast<double &>(reinterpret_cast<any_int32>(this) + 0x00000238), reinterpret_cast<any_int32>(this) + 0x00000240), reinterpret_cast<any_int32>(this) + 0x00000258);
     ACCESS(GLOBAL(0x100488B4), 0, 4) = 0x00000001;
-    REGDEF(eax=0x00000001)
+    return 1;
 }
 
 // address: 0x1003896F
-p1003896F
+unsigned int B_ObjDscr::LoadPacked(B_IDataFile &arg_0)
 {
-    ProcedureInfo(this=Id(this), this_offset=-312, local_size=332, stack_delta=4)
     ACCESS(GLOBAL(0x100488B8), 0, 4) = 0x40000000;
     ACCESS(GLOBAL(0x100488B4), 0, 4) = 0x00000002;
     ACCESS(GLOBAL(0x1004BF6C), 0, 4) = 0x00000001;
-    unknown_function_10004676(STACKVAR(8, 4), this);
-    STACKVAR(-220, 4) = reinterpret_cast<any_int32>(this) + 0x0000000C;
+    unknown_function_10004676(arg_0, this);
+    STACKVAR(-220, 4) = &this->data;
     if (ACCESS(STACKVAR(-220, 4), 16, 4) != 0x00000000)
     {
         STACKVAR(-220, 4)->unknown_method_1003B840(0x00000001);
     }
-    reinterpret_cast<B_IDataFile &>(STACKVAR(8, 4)) >> reinterpret_cast<unsigned int &>(reinterpret_cast<any_int32>(STACKVAR(-220, 4)) + 0x00000008);
+    arg_0 >> reinterpret_cast<unsigned int &>(reinterpret_cast<any_int32>(STACKVAR(-220, 4)) + 0x00000008);
     ACCESS(STACKVAR(-220, 4), 16, 4) = (reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-220, 4), 8, 4)) + reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-220, 4), 12, 4)) - 1) / reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-220, 4), 12, 4)) * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-220, 4), 12, 4));
     if (ACCESS(STACKVAR(-220, 4), 16, 4) == 0x00000000)
     {
@@ -29391,7 +29270,7 @@ l10038A78:
             STACKVAR(-316, 4) = 0x00000000;
         }
         ACCESS(ARRPTR(ACCESS(STACKVAR(-220, 4), 4, 4), 4, STACKVAR(-204, 4), 0), 0, 4) = STACKVAR(-316, 4);
-        unknown_function_100327E1(STACKVAR(8, 4), ACCESS(ARRPTR(ACCESS(STACKVAR(-220, 4), 4, 4), 4, STACKVAR(-204, 4), 0), 0, 4));
+        unknown_function_100327E1(arg_0, ACCESS(ARRPTR(ACCESS(STACKVAR(-220, 4), 4, 4), 4, STACKVAR(-204, 4), 0), 0, 4));
         goto l10038A69;
     }
 l10038B44:
@@ -29407,7 +29286,7 @@ l10038B44:
             ACCESS(STACKVAR(-240, 4), 16, 4) = 0x00000000;
         }
     }
-    reinterpret_cast<B_IDataFile &>(STACKVAR(8, 4)) >> reinterpret_cast<unsigned int &>(reinterpret_cast<any_int32>(STACKVAR(-240, 4)) + 0x00000008);
+    arg_0 >> reinterpret_cast<unsigned int &>(reinterpret_cast<any_int32>(STACKVAR(-240, 4)) + 0x00000008);
     ACCESS(STACKVAR(-240, 4), 16, 4) = (reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-240, 4), 8, 4)) + reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-240, 4), 12, 4)) - 1) / reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-240, 4), 12, 4)) * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-240, 4), 12, 4));
     if (ACCESS(STACKVAR(-240, 4), 16, 4) == 0x00000000)
     {
@@ -29432,7 +29311,7 @@ l10038C89:
 l10038C98:
     if (reinterpret_cast<unsigned int>(STACKVAR(-228, 4)) < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-240, 4), 8, 4)))
     {
-        unknown_function_100321A0(STACKVAR(8, 4), reinterpret_cast<any_int32>(ACCESS(STACKVAR(-240, 4), 4, 4)) + 0x00000030 * reinterpret_cast<any_int32>(STACKVAR(-228, 4)));
+        unknown_function_100321A0(arg_0, reinterpret_cast<any_int32>(ACCESS(STACKVAR(-240, 4), 4, 4)) + 0x00000030 * reinterpret_cast<any_int32>(STACKVAR(-228, 4)));
         goto l10038C89;
     }
 l10038CCC:
@@ -29441,7 +29320,7 @@ l10038CCC:
     {
         STACKVAR(-252, 4)->unknown_method_1003B8D0();
     }
-    reinterpret_cast<B_IDataFile &>(STACKVAR(8, 4)) >> reinterpret_cast<unsigned int &>(reinterpret_cast<any_int32>(STACKVAR(-252, 4)) + 0x00000008);
+    arg_0 >> reinterpret_cast<unsigned int &>(reinterpret_cast<any_int32>(STACKVAR(-252, 4)) + 0x00000008);
     ACCESS(STACKVAR(-252, 4), 16, 4) = (reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-252, 4), 8, 4)) + reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-252, 4), 12, 4)) - 1) / reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-252, 4), 12, 4)) * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-252, 4), 12, 4));
     if (ACCESS(STACKVAR(-252, 4), 16, 4) == 0x00000000)
     {
@@ -29456,7 +29335,7 @@ l10038D7E:
 l10038D8D:
     if (reinterpret_cast<unsigned int>(STACKVAR(-244, 4)) < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-252, 4), 8, 4)))
     {
-        unknown_function_1003236C(STACKVAR(8, 4), reinterpret_cast<any_int32>(ACCESS(STACKVAR(-252, 4), 4, 4)) + 0x00000038 * reinterpret_cast<any_int32>(STACKVAR(-244, 4)));
+        unknown_function_1003236C(arg_0, reinterpret_cast<any_int32>(ACCESS(STACKVAR(-252, 4), 4, 4)) + 0x00000038 * reinterpret_cast<any_int32>(STACKVAR(-244, 4)));
         goto l10038D7E;
     }
 l10038DC1:
@@ -29465,7 +29344,7 @@ l10038DC1:
     {
         STACKVAR(-268, 4)->unknown_method_10039F60(0x00000001);
     }
-    reinterpret_cast<B_IDataFile &>(STACKVAR(8, 4)) >> reinterpret_cast<unsigned int &>(reinterpret_cast<any_int32>(STACKVAR(-268, 4)) + 0x00000008);
+    arg_0 >> reinterpret_cast<unsigned int &>(reinterpret_cast<any_int32>(STACKVAR(-268, 4)) + 0x00000008);
     ACCESS(STACKVAR(-268, 4), 16, 4) = (reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-268, 4), 8, 4)) + reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-268, 4), 12, 4)) - 1) / reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-268, 4), 12, 4)) * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-268, 4), 12, 4));
     if (ACCESS(STACKVAR(-268, 4), 16, 4) == 0x00000000)
     {
@@ -29490,7 +29369,7 @@ l10038E88:
             STACKVAR(-324, 4) = 0x00000000;
         }
         ACCESS(ARRPTR(ACCESS(STACKVAR(-268, 4), 4, 4), 4, STACKVAR(-256, 4), 0), 0, 4) = STACKVAR(-324, 4);
-        unknown_function_10032524(STACKVAR(8, 4), ACCESS(ARRPTR(ACCESS(STACKVAR(-268, 4), 4, 4), 4, STACKVAR(-256, 4), 0), 0, 4));
+        unknown_function_10032524(arg_0, ACCESS(ARRPTR(ACCESS(STACKVAR(-268, 4), 4, 4), 4, STACKVAR(-256, 4), 0), 0, 4));
         goto l10038E79;
     }
 l10038F0E:
@@ -29499,7 +29378,7 @@ l10038F0E:
     {
         STACKVAR(-280, 4)->unknown_method_1003B980();
     }
-    reinterpret_cast<B_IDataFile &>(STACKVAR(8, 4)) >> reinterpret_cast<unsigned int &>(reinterpret_cast<any_int32>(STACKVAR(-280, 4)) + 0x00000008);
+    arg_0 >> reinterpret_cast<unsigned int &>(reinterpret_cast<any_int32>(STACKVAR(-280, 4)) + 0x00000008);
     ACCESS(STACKVAR(-280, 4), 16, 4) = (reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-280, 4), 8, 4)) + reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-280, 4), 12, 4)) - 1) / reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-280, 4), 12, 4)) * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-280, 4), 12, 4));
     if (ACCESS(STACKVAR(-280, 4), 16, 4) == 0x00000000)
     {
@@ -29514,7 +29393,7 @@ l10038FBD:
 l10038FCC:
     if (reinterpret_cast<unsigned int>(STACKVAR(-272, 4)) < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-280, 4), 8, 4)))
     {
-        reinterpret_cast<B_IDataFile &>(STACKVAR(8, 4)) >> reinterpret_cast<unsigned char &>(reinterpret_cast<any_int32>(ACCESS(STACKVAR(-280, 4), 4, 4)) + reinterpret_cast<any_int32>(STACKVAR(-272, 4)));
+        arg_0 >> reinterpret_cast<unsigned char &>(reinterpret_cast<any_int32>(ACCESS(STACKVAR(-280, 4), 4, 4)) + reinterpret_cast<any_int32>(STACKVAR(-272, 4)));
         goto l10038FBD;
     }
 l10038FFB:
@@ -29523,7 +29402,7 @@ l10038FFB:
     {
         STACKVAR(-292, 4)->unknown_method_1003B9D0();
     }
-    reinterpret_cast<B_IDataFile &>(STACKVAR(8, 4)) >> reinterpret_cast<unsigned int &>(reinterpret_cast<any_int32>(STACKVAR(-292, 4)) + 0x00000008);
+    arg_0 >> reinterpret_cast<unsigned int &>(reinterpret_cast<any_int32>(STACKVAR(-292, 4)) + 0x00000008);
     ACCESS(STACKVAR(-292, 4), 16, 4) = (reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-292, 4), 8, 4)) + reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-292, 4), 12, 4)) - 1) / reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-292, 4), 12, 4)) * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-292, 4), 12, 4));
     if (ACCESS(STACKVAR(-292, 4), 16, 4) == 0x00000000)
     {
@@ -29538,7 +29417,7 @@ l100390AD:
 l100390BC:
     if (reinterpret_cast<unsigned int>(STACKVAR(-284, 4)) < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-292, 4), 8, 4)))
     {
-        reinterpret_cast<B_IDataFile &>(STACKVAR(8, 4)) >> *reinterpret_cast<unsigned long *>(ARRPTR(ACCESS(STACKVAR(-292, 4), 4, 4), 4, STACKVAR(-284, 4), 0));
+        arg_0 >> *reinterpret_cast<unsigned long *>(ARRPTR(ACCESS(STACKVAR(-292, 4), 4, 4), 4, STACKVAR(-284, 4), 0));
         goto l100390AD;
     }
 l100390EE:
@@ -29560,7 +29439,7 @@ l10039100:
     {
         STACKVAR(-308, 4)->unknown_method_1003BA80(0x00000001);
     }
-    reinterpret_cast<B_IDataFile &>(STACKVAR(8, 4)) >> reinterpret_cast<unsigned int &>(reinterpret_cast<any_int32>(STACKVAR(-308, 4)) + 0x00000008);
+    arg_0 >> reinterpret_cast<unsigned int &>(reinterpret_cast<any_int32>(STACKVAR(-308, 4)) + 0x00000008);
     ACCESS(STACKVAR(-308, 4), 16, 4) = (reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-308, 4), 8, 4)) + reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-308, 4), 12, 4)) - 1) / reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-308, 4), 12, 4)) * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-308, 4), 12, 4));
     if (ACCESS(STACKVAR(-308, 4), 16, 4) == 0x00000000)
     {
@@ -29585,14 +29464,14 @@ l10039204:
             STACKVAR(-328, 4) = 0x00000000;
         }
         ACCESS(ARRPTR(ACCESS(STACKVAR(-308, 4), 4, 4), 4, STACKVAR(-296, 4), 0), 0, 4) = STACKVAR(-328, 4);
-        unknown_function_10032A2D(STACKVAR(8, 4), ACCESS(ARRPTR(ACCESS(STACKVAR(-308, 4), 4, 4), 4, STACKVAR(-296, 4), 0), 0, 4));
+        unknown_function_10032A2D(arg_0, ACCESS(ARRPTR(ACCESS(STACKVAR(-308, 4), 4, 4), 4, STACKVAR(-296, 4), 0), 0, 4));
         goto l100391F5;
     }
 l10039287:
-    unknown_function_1002A7F2(unknown_function_10031E6D(reinterpret_cast<B_IDataFile &>(unknown_function_10030219(unknown_function_10030219(unknown_function_1003D3D0(unknown_function_1003CD80(unknown_function_1003C930(unknown_function_1003CBD0(unknown_function_1003D5F0(STACKVAR(8, 4), reinterpret_cast<any_int32>(this) + 0x000000BC), reinterpret_cast<any_int32>(this) + 0x000000D0), reinterpret_cast<any_int32>(this) + 0x000000E8), reinterpret_cast<any_int32>(this) + 0x00000100), reinterpret_cast<any_int32>(this) + 0x00000118), reinterpret_cast<any_int32>(this) + 0x00000130), reinterpret_cast<any_int32>(this) + 0x000001B0)) >> reinterpret_cast<double &>(reinterpret_cast<any_int32>(this) + 0x00000238), reinterpret_cast<any_int32>(this) + 0x00000240), reinterpret_cast<any_int32>(this) + 0x00000258);
+    unknown_function_1002A7F2(unknown_function_10031E6D(reinterpret_cast<B_IDataFile &>(unknown_function_10030219(unknown_function_10030219(unknown_function_1003D3D0(unknown_function_1003CD80(unknown_function_1003C930(unknown_function_1003CBD0(unknown_function_1003D5F0(arg_0, reinterpret_cast<any_int32>(this) + 0x000000BC), reinterpret_cast<any_int32>(this) + 0x000000D0), reinterpret_cast<any_int32>(this) + 0x000000E8), reinterpret_cast<any_int32>(this) + 0x00000100), reinterpret_cast<any_int32>(this) + 0x00000118), reinterpret_cast<any_int32>(this) + 0x00000130), reinterpret_cast<any_int32>(this) + 0x000001B0)) >> reinterpret_cast<double &>(reinterpret_cast<any_int32>(this) + 0x00000238), reinterpret_cast<any_int32>(this) + 0x00000240), reinterpret_cast<any_int32>(this) + 0x00000258);
     if (ACCESS(this, 84, 4) == 0x00000001)
     {
-        reinterpret_cast<B_ObjDscr *>(this)->SetUpBSP();
+        this->SetUpBSP();
     }
     ACCESS(GLOBAL(0x1004BF6C), 0, 4) = 0x00000000;
     ACCESS(GLOBAL(0x100488B4), 0, 4) = 0x00000001;
@@ -29649,7 +29528,7 @@ l10039582:
         goto l10039579;
     }
 l100395D1:
-    REGDEF(eax=0x00000001)
+    return 1;
 }
 
 // address: 0x100395E0
@@ -33643,7 +33522,7 @@ p1003E95C
         REGDEF(eax=0x00000000)
         return;
     }
-    STACKVAR(-8, 4) = unknown_function_100020C3();
+    STACKVAR(-8, 4) = GetnOpenedInputFiles();
     STACKVAR(-4, 4) = Py_BuildValue(GLOBAL(0x10048DB0), STACKVAR(-8, 4));
     REGDEF(eax=STACKVAR(-4, 4))
 }
@@ -33658,7 +33537,7 @@ p1003E9A6
         REGDEF(eax=0x00000000)
         return;
     }
-    STACKVAR(-8, 4) = unknown_function_100020CD();
+    STACKVAR(-8, 4) = GetnOpenInputFiles();
     STACKVAR(-4, 4) = Py_BuildValue(GLOBAL(0x10048DC8), STACKVAR(-8, 4));
     REGDEF(eax=STACKVAR(-4, 4))
 }
@@ -33673,7 +33552,7 @@ p1003E9F0
         REGDEF(eax=0x00000000)
         return;
     }
-    unknown_function_100020D7();
+    ResetnOpenedInputFiles();
     ACCESS(&_Py_NoneStruct, 0, 4) = reinterpret_cast<any_int32>(ACCESS(&_Py_NoneStruct, 0, 4)) + 0x00000001;
     STACKVAR(-4, 4) = &_Py_NoneStruct;
     REGDEF(eax=STACKVAR(-4, 4))
@@ -33698,7 +33577,7 @@ p1003EA3C
     {
         STACKVAR(-8, 4) = 0x00000000;
     }
-    STACKVAR(-16, 4) = unknown_function_100020E1(STACKVAR(-8, 4));
+    STACKVAR(-16, 4) = SetOnOpenInputFileFunc(reinterpret_cast<PyObject *>(STACKVAR(-8, 4)));
     STACKVAR(-4, 4) = Py_BuildValue(GLOBAL(0x10048E00), STACKVAR(-16, 4));
     REGDEF(eax=STACKVAR(-4, 4))
 }
@@ -34486,7 +34365,7 @@ p1003FF12
             return;
         }
     }
-    STACKVAR(-20, 4) = STACKVAR(-8, 4)->unknown_method_10027D86(STACKVAR(-12, 4));
+    STACKVAR(-20, 4) = reinterpret_cast<B_BitMap24 *>(STACKVAR(-8, 4))->ReadFromBMP(reinterpret_cast<char *>(STACKVAR(-12, 4)));
     STACKVAR(-4, 4) = Py_BuildValue(GLOBAL(0x10049218), STACKVAR(-20, 4));
     REGDEF(eax=STACKVAR(-4, 4))
 }
@@ -34537,7 +34416,7 @@ p10040054
             return;
         }
     }
-    STACKVAR(-20, 4) = STACKVAR(-8, 4)->unknown_method_10029510(STACKVAR(-12, 4));
+    STACKVAR(-20, 4) = reinterpret_cast<B_BitMap24 *>(STACKVAR(-8, 4))->ReadFromJPEG(reinterpret_cast<char *>(STACKVAR(-12, 4)));
     STACKVAR(-4, 4) = Py_BuildValue(GLOBAL(0x10049314), STACKVAR(-20, 4));
     REGDEF(eax=STACKVAR(-4, 4))
 }
@@ -34562,7 +34441,7 @@ p100400ED
             return;
         }
     }
-    STACKVAR(-20, 4) = STACKVAR(-8, 4)->unknown_method_10027E11(STACKVAR(-12, 4));
+    STACKVAR(-20, 4) = reinterpret_cast<B_BitMap24 *>(STACKVAR(-8, 4))->ReadFromFile(reinterpret_cast<char *>(STACKVAR(-12, 4)));
     STACKVAR(-4, 4) = Py_BuildValue(GLOBAL(0x10049394), STACKVAR(-20, 4));
     REGDEF(eax=STACKVAR(-4, 4))
 }
@@ -34613,7 +34492,7 @@ p1004022F
             return;
         }
     }
-    STACKVAR(-8, 4)->unknown_method_100283CD();
+    reinterpret_cast<B_BitMap24 *>(STACKVAR(-8, 4))->ChangeRGBOrder();
     ACCESS(&_Py_NoneStruct, 0, 4) = reinterpret_cast<any_int32>(ACCESS(&_Py_NoneStruct, 0, 4)) + 0x00000001;
     STACKVAR(-4, 4) = &_Py_NoneStruct;
     REGDEF(eax=STACKVAR(-4, 4))
@@ -34664,7 +34543,7 @@ p1004035E
             return;
         }
     }
-    STACKVAR(-24, 4) = STACKVAR(-8, 4)->unknown_method_10005E42(STACKVAR(-12, 2), STACKVAR(-16, 4));
+    STACKVAR(-24, 4) = reinterpret_cast<B_ResourceManager *>(STACKVAR(-8, 4))->GetResourceName(reinterpret_cast<unsigned short>(STACKVAR(-12, 2)), reinterpret_cast<unsigned int>(STACKVAR(-16, 4)));
     STACKVAR(-4, 4) = Py_BuildValue(GLOBAL(0x100495C8), STACKVAR(-24, 4));
     REGDEF(eax=STACKVAR(-4, 4))
 }
@@ -34689,7 +34568,7 @@ p10040401
             return;
         }
     }
-    STACKVAR(-24, 4) = STACKVAR(-8, 4)->unknown_method_10005E8F(STACKVAR(-12, 2), STACKVAR(-16, 4));
+    STACKVAR(-24, 4) = reinterpret_cast<B_ResourceManager *>(STACKVAR(-8, 4))->GetResourceFile(reinterpret_cast<unsigned short>(STACKVAR(-12, 2)), reinterpret_cast<unsigned int>(STACKVAR(-16, 4)));
     STACKVAR(-4, 4) = Py_BuildValue(GLOBAL(0x1004966C), STACKVAR(-24, 4));
     REGDEF(eax=STACKVAR(-4, 4))
 }
@@ -34739,7 +34618,7 @@ p10040546
             return;
         }
     }
-    STACKVAR(-28, 4) = STACKVAR(-8, 4)->unknown_method_10005C13(STACKVAR(-12, 2), STACKVAR(-16, 4), STACKVAR(-24, 4));
+    STACKVAR(-28, 4) = reinterpret_cast<B_ResourceManager *>(STACKVAR(-8, 4))->SaveResource(reinterpret_cast<unsigned short>(STACKVAR(-12, 2)), reinterpret_cast<unsigned int>(STACKVAR(-16, 4)), reinterpret_cast<char *>(STACKVAR(-24, 4)));
     STACKVAR(-4, 4) = Py_BuildValue(GLOBAL(0x100497AC), STACKVAR(-28, 4));
     REGDEF(eax=STACKVAR(-4, 4))
 }
@@ -34764,7 +34643,7 @@ p100405F1
             return;
         }
     }
-    STACKVAR(-24, 4) = STACKVAR(-8, 4)->unknown_method_10005BB2(STACKVAR(-12, 2), STACKVAR(-16, 4));
+    STACKVAR(-24, 4) = reinterpret_cast<B_ResourceManager *>(STACKVAR(-8, 4))->LoadResourceToMemory(reinterpret_cast<unsigned short>(STACKVAR(-12, 2)), reinterpret_cast<char *>(STACKVAR(-16, 4)));
     STACKVAR(-4, 4) = Py_BuildValue(GLOBAL(0x10049858), STACKVAR(-24, 4));
     REGDEF(eax=STACKVAR(-4, 4))
 }
@@ -34789,7 +34668,7 @@ p10040694
             return;
         }
     }
-    STACKVAR(-16, 4) = STACKVAR(-8, 4)->unknown_method_10004C20();
+    STACKVAR(-16, 4) = reinterpret_cast<B_ResourceManager *>(STACKVAR(-8, 4))->GetnFiles();
     STACKVAR(-4, 4) = Py_BuildValue(GLOBAL(0x100498EC), STACKVAR(-16, 4));
     REGDEF(eax=STACKVAR(-4, 4))
 }
@@ -34814,7 +34693,7 @@ p10040726
             return;
         }
     }
-    STACKVAR(-20, 4) = STACKVAR(-8, 4)->unknown_method_10004C37(STACKVAR(-12, 4));
+    STACKVAR(-20, 4) = reinterpret_cast<B_ResourceManager *>(STACKVAR(-8, 4))->GetFile(reinterpret_cast<unsigned int>(STACKVAR(-12, 4)));
     STACKVAR(-4, 4) = Py_BuildValue(GLOBAL(0x10049980), STACKVAR(-20, 4));
     REGDEF(eax=STACKVAR(-4, 4))
 }
@@ -35005,17 +34884,15 @@ p10040E61
 }
 
 // address: 0x10040F39
-p10040F39
+B_RItem::B_RItem(unsigned long arg_0)
 {
-    ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=4)
-    ACCESS(this, 0, 4) = STACKVAR(8, 4);
-    REGDEF(eax=this)
+    ACCESS(this, 0, 4) = arg_0;
 }
 
 // address: 0x10040F51
 B_RDataTriangle::B_RDataTriangle()
 {
-    this->unknown_method_10040F39(0x00000001);
+    this->B_RItem(1);
 }
 
 // address: 0x10040F69

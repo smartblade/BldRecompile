@@ -1,6 +1,7 @@
 from .cpp_expression import parse_cpp_expression
 from .cpp_function import parse_cpp_function
 from .cpp_headers import parse_cpp_header
+from .cpp_mangling import parse_cpp_mangling
 from .cpp_variable_declaration import parse_cpp_variable_declaration
 from .data_type import parse_data_type
 from .define_name import define_field_name

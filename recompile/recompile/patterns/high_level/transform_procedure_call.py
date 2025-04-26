@@ -1,7 +1,7 @@
 import data_types
 import expressions
 from expressions.operator import Operator
-import parser
+from get_procedure_declaration_at import get_procedure_declaration_at
 from calling_convention import CallingConvention
 from patterns.validate_procedure_declaration import \
     validate_procedure_declaration
@@ -37,14 +37,7 @@ def _get_callee_declaration(pc, declarations):
         return _get_declaration_from_callee_expression(pc.callee_expression)
     if pc.callee_address is None:
         return None
-    cpp_declaration = declarations.symbols.procedures.get(pc.callee_address)
-    if cpp_declaration is None:
-        return None
-    return parser.parse_cpp_function(
-        cpp_declaration.class_name,
-        cpp_declaration.declaration,
-        declarations.declared_types,
-    )
+    return get_procedure_declaration_at(declarations, pc.callee_address)
 
 
 def _get_declaration_from_callee_expression(e):

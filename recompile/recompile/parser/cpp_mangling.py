@@ -1,0 +1,237 @@
+from calling_convention import CallingConvention
+import data_types
+from procedure_declaration import ProcedureDeclaration
+
+
+def parse_cpp_mangling(s, declared_types):
+    parser = _CppManglingParser(s, declared_types)
+    return parser.parse()
+
+
+class _Operator:
+    def __init__(self, name=None, is_constructor=False, is_destructor=False):
+        self._name = name
+        self._is_constructor = is_constructor
+        self._is_destructor = is_destructor
+
+    def make_name(self, class_name):
+        if self.is_constructor:
+            return "{}".format(class_name)
+        if self.is_destructor:
+            return "~{}".format(class_name)
+        return  self._name
+
+    @property
+    def is_constructor(self):
+        return self._is_constructor
+
+    @property
+    def is_destructor(self):
+        return self._is_destructor
+
+
+class _CppManglingParser:
+    def __init__(self, s, declared_types):
+        self._pos = 0
+        self._decl_str = s
+        self._declared_types = declared_types
+        self._names = []
+
+    def parse(self):
+        if not self._try_pop_char("?"):
+            return None
+        method_class, proc_name, operator = self._pop_procedure_qualified_name()
+        is_method, is_static, modifier = self._pop_modifier()
+        if is_method and not is_static:
+            self._pop_const_modifier()
+        calling_convention = self._pop_calling_convention()
+        if (
+            operator is not None and
+            (operator.is_constructor or operator.is_destructor)
+        ):
+            return_type = None
+            self._expect("@")
+        else:
+            return_type = self._pop_data_type()
+        parameters = []
+        if not self._try_pop_char("X"):
+            arg_types = []
+            arg_index = 0
+            while not self._try_pop_char("@"):
+                parameter_type = self._pop_data_type(arg_types)
+                parameters.append((parameter_type, "arg_{}".format(arg_index)))
+                arg_index += 1
+        self._expect("Z")
+        return ProcedureDeclaration(
+            proc_name, calling_convention, method_class, parameters,
+            return_type, is_static=is_static)
+
+    def _pop_procedure_qualified_name(self):
+        if self._try_pop_char("?"):
+            operator = self._pop_operator()
+        else:
+            operator = None
+        class_name = None
+        proc_name = None
+        proc_names = self._pop_qualified_identifier()
+        if operator is None:
+            proc_name = proc_names.pop(0)
+        if proc_names:
+            class_name = proc_names.pop()
+        assert len(proc_names) == 0
+        if operator is not None:
+            assert proc_name is None
+            proc_name = operator.make_name(class_name)
+        if not class_name:
+            method_class = None
+        else:
+            method_class = self._ensure_class(class_name)
+        return method_class, proc_name, operator
+
+    def _ensure_class(self, class_name):
+        declared_type = self._declared_types.get(class_name)
+        if declared_type is not None:
+            return declared_type
+        return data_types.ClassType(class_name, {})
+
+    @property
+    def _current_char(self):
+        return self._decl_str[self._pos]
+
+    def _expect(self, c):
+        if self._decl_str[self._pos] != c:
+            raise Exception(
+                "Expected {} but was: {}.".format(c, self._decl_str[self._pos]))
+        self._pos += 1
+
+    def _pop_char(self):
+        c = self._current_char
+        self._pos += 1
+        return c
+
+    def _try_pop_char(self, c):
+        if self._current_char != c:
+            return False
+        self._pos += 1
+        return True
+
+    def _pop_qualified_identifier(self):
+        identifiers = []
+        while not self._try_pop_char("@"):
+            identifiers.append(self._pop_identifier())
+        return identifiers
+
+    def _pop_identifier(self):
+        if self._current_char.isdigit():
+            return self._names[int(self._pop_char())]
+        id_chars = []
+        while not self._try_pop_char("@"):
+            id_chars.append(self._pop_char())
+        identifier = "".join(id_chars)
+        self._names.append(identifier)
+        return identifier
+
+    def _pop_calling_convention(self):
+        return self._calling_conventions[self._pop_char()]
+
+    def _pop_modifier(self):
+        return self._modifiers[self._pop_char()]
+
+    def _pop_const_modifier(self):
+        return self._const_modifiers[self._pop_char()]
+
+    def _pop_operator(self):
+        operator = self._operators[self._pop_char()]
+        if isinstance(operator, dict):
+            return operator[self._pop_char()]
+        return operator
+
+    def _pop_data_type(self, arg_types=None):
+        data_type = self._data_types[self._pop_char()]
+        if callable(data_type):
+            return data_type(self, arg_types)
+        return data_type
+
+    def _pop_reference_type(self, arg_types):
+        return self._pop_pointer_or_reference_type(
+            arg_types, data_types.Reference)
+
+    def _pop_pointer_type(self, arg_types):
+        return self._pop_pointer_or_reference_type(
+            arg_types, data_types.Pointer32)
+
+    def _pop_pointer_or_reference_type(self, arg_types, data_type):
+        const_modifier = self._pop_const_modifier()
+        data_type = data_type(self._pop_data_type())
+        if const_modifier is not None:
+            data_type.add_qualifier(const_modifier)
+        if arg_types is not None:
+            arg_types.append(data_type)
+        return data_type
+
+    def _pop_struct_type(self, arg_types):
+        return self._pop_class_type(arg_types)
+
+    def _pop_class_type(self, arg_types):
+        (class_name,) = self._pop_qualified_identifier()
+        class_type = self._ensure_class(class_name)
+        if arg_types is not None:
+            arg_types.append(class_type)
+        return class_type
+
+    def _pop_enum_type(self, arg_types):
+        self._expect("4")
+        enum_names = self._pop_qualified_identifier()
+        enum_name = "::".join(reversed(enum_names))
+        enum_type = data_types.make_named_type(data_types.Int32(), enum_name)
+        if arg_types is not None:
+            arg_types.append(enum_type)
+        return enum_type
+
+    _calling_conventions = {
+        "A": CallingConvention.CDECL,
+        "E": CallingConvention.THISCALL,
+    }
+
+    _modifiers = {
+        "A": (True, False, "private"),
+        "Q": (True, False, "public"),
+        "S": (True, True, "public"),
+        "U": (True, False, "public virtual"),
+        "Y": (False, False, None)
+    }
+
+    _const_modifiers = {
+        "A": None,
+        "B": "const",
+    }
+
+    _operators = {
+        "0": _Operator(is_constructor=True),
+        "1": _Operator(is_destructor=True),
+        "4": _Operator("operator="),
+        "6": _Operator("operator<<"),
+        "8": _Operator("operator=="),
+        "9": _Operator("operator!="),
+        "_": {
+            "F": _Operator("default constructor closure")
+        }
+    }
+
+    _data_types = {
+        "0": lambda parser, arg_types: arg_types[0],
+        "A": _pop_reference_type,
+        "D": data_types.Char(),
+        "E": data_types.UChar(),
+        "G": data_types.UShort(),
+        "H": data_types.Int32(),
+        "I": data_types.UInt32(),
+        "J": data_types.make_named_type(data_types.Int32(), "long"),
+        "K": data_types.make_named_type(data_types.UInt32(), "unsigned long"),
+        "M": data_types.Float(),
+        "P": _pop_pointer_type,
+        "U": _pop_struct_type,
+        "V": _pop_class_type,
+        "W": _pop_enum_type,
+        "X": None,
+    }

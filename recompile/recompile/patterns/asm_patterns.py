@@ -1,9 +1,9 @@
 import json
 import os
 
+from get_procedure_declaration_at import get_procedure_declaration_at
 from hex_conversion import from_hex, to_hex
 from make_tuple import add_attributes
-import parser
 from patterns.apply_pattern import apply_pattern
 from patterns.collect_string_constants import collect_string_constants
 from patterns.asm_parser import parse_asm_lines
@@ -60,20 +60,11 @@ def process_asm_patterns(lines, declarations):
 def _build_proc(
     writer, declarations, standard_inlines, patterns, proc_addr, proc_lines
 ):
-    if (
-        proc_addr in declarations.symbols.procedures and
-        declarations.symbols.procedures[proc_addr].declaration is not None
-    ):
-        cpp_declaration = declarations.symbols.procedures[proc_addr]
-        proc_decl = parser.parse_cpp_function(
-            cpp_declaration.class_name,
-            cpp_declaration.declaration,
-            declarations.declared_types,
-        )
+    proc_decl = get_procedure_declaration_at(declarations, proc_addr)
+    if proc_decl is not None:
         decl_string = proc_decl.get_declaration(
             is_metafile=False, is_definition=True)
     else:
-        proc_decl = None
         decl_string = "p{}".format(to_hex(proc_addr))
     writer.write_line("")
     writer.write_line("// address: 0x{}".format(to_hex(proc_addr)))
