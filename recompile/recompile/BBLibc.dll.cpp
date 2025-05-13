@@ -111,9 +111,9 @@ void B_IDataFile::Close()
         free(this->file_name);
         this->file_name = nullptr;
     }
-    if (this->filePosition != 0)
+    if (this->fileInfo != nullptr)
     {
-        STACKVAR(-8, 4) = this->filePosition;
+        STACKVAR(-8, 4) = this->fileInfo;
         STACKVAR(-4, 4) = STACKVAR(-8, 4);
         if (STACKVAR(-4, 4) != 0x00000000)
         {
@@ -132,7 +132,7 @@ void B_IDataFile::Close()
         {
             STACKVAR(-16, 4) = 0x00000000;
         }
-        this->filePosition = 0;
+        this->fileInfo = nullptr;
         this->fd = -1;
         return;
     }
@@ -148,8 +148,8 @@ void B_IDataFile::Close()
 void B_IDataFile::Open(const char *src, int flags)
 {
     this->file_name = reinterpret_cast<char *>(_strdup(src));
-    this->filePosition = 0;
-    if (this->filePosition == 0)
+    this->fileInfo = nullptr;
+    if (this->fileInfo == nullptr)
     {
         this->fd = reinterpret_cast<int>(_open(src, flags));
         if (static_cast<any_int32>(this->fd != -1) == 0x00000000)
@@ -192,7 +192,7 @@ B_IDataFile::B_IDataFile()
     this->file_name = nullptr;
     this->cacheBlockStartPos = 4294950912;
     this->cacheBlockPos = 0;
-    this->filePosition = 0;
+    this->fileInfo = nullptr;
 }
 
 // address: 0x10001788
@@ -274,9 +274,9 @@ l100018EF:
     }
 l10001928:
     this->cacheBlockStartPos = reinterpret_cast<unsigned int>(STACKVAR(-4, 4)) - 0x00004000;
-    if (this->filePosition != 0)
+    if (this->fileInfo != nullptr)
     {
-        STACKVAR(-8, 4) = this->filePosition;
+        STACKVAR(-8, 4) = this->fileInfo;
         if (ACCESS(STACKVAR(-8, 4), 12, 4) != 0xFFFFFFFF)
         {
             _lseek(ACCESS(STACKVAR(-8, 4), 8, 4), reinterpret_cast<any_int32>(ACCESS(STACKVAR(-8, 4), 16, 4)) + reinterpret_cast<any_int32>(STACKVAR(-4, 4)), 0x00000000);
