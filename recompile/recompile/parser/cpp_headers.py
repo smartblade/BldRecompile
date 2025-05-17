@@ -2,12 +2,17 @@ import os
 import re
 
 import data_types
+from hex_conversion import from_hex
 import parser
 from procedure_declaration import ProcedureDeclaration
 
+from .constants import Constants
 from .xml_metadata import XmlMetadata
 
-include_regexp = re.compile(r'^#include\s+["<](?P<file>.+)[">]')
+preprocessor_regexp = re.compile(
+    r'^#(include\s+["<](?P<file>.+)[">])|'
+    r'(define\s+(?P<const_name>\S+)\s+(?P<const_value>.+))'
+)
 comment_regexp = re.compile(r'^(?P<line>.*)//')
 comment_start_regexp = re.compile(r'^(?P<line>.*)/\*')
 comment_end_regexp = re.compile(r'\*/(?P<line>.*)$')
@@ -38,12 +43,14 @@ _standard_types = {
 
 class HeaderState:
     def __init__(
-            self, file_name, header_states, declared_types, incomplete_types
+        self, file_name, header_states, declared_types, incomplete_types,
+        constants
     ):
         self._file_name = file_name
         self._header_states = header_states
         self._declared_types = declared_types
         self._incomplete_types = incomplete_types
+        self._constants = constants
         self._visited = False
 
     def parse(self):
@@ -60,7 +67,7 @@ class HeaderState:
         brackets_depth = 0
         for line in lines:
             line, is_comment = _strip_comments(line, is_comment)
-            self._try_parse_include_file(line)
+            self._try_parse_preprocessor_directive(line)
             line = self._try_parse_template(line)
             match = class_regexp.search(line)
             if match and brackets_depth == 0:
@@ -143,14 +150,28 @@ class HeaderState:
         if class_regexp.search(definition):
             return
         field_type, field_name = parser.parse_cpp_variable_declaration(
-            definition, self._declared_types)
+            definition, self._declared_types, self._constants)
         return field_type, field_name
 
-    def _try_parse_include_file(self, line):
-        match = include_regexp.search(line)
+    def _try_parse_preprocessor_directive(self, line):
+        match = preprocessor_regexp.search(line)
         if not match:
             return
         include_file = match.group("file")
+        if include_file is not None:
+            self._parse_include_file(include_file)
+            return
+        const_name = match.group("const_name")
+        const_value = match.group("const_value")
+        self._parse_define(const_name, const_value)
+
+    def _parse_define(self, const_name, const_value):
+        if const_value.startswith("0x"):
+            self._constants.add(const_name, from_hex(const_value))
+        elif const_value.isdigit():
+            self._constants.add(const_name, int(const_value))
+
+    def _parse_include_file(self, include_file):
         included_header_state = self._header_states.get(include_file)
         if included_header_state is not None:
             included_header_state.parse()
@@ -188,7 +209,7 @@ def _strip_comments(line, is_comment):
     return line, is_comment
 
 
-def _parse_cpp_headers(src_path, declared_types, incomplete_types):
+def _parse_cpp_headers(src_path, declared_types, incomplete_types, constants):
     header_states = {}
     for (root, dirs, files) in os.walk(src_path):
         for file in files:
@@ -196,12 +217,14 @@ def _parse_cpp_headers(src_path, declared_types, incomplete_types):
                 file_name = os.path.join(root, file)
                 head, dir_name1 = os.path.split(root)
                 head, dir_name2 = os.path.split(head)
+                declarations = [declared_types, incomplete_types]
                 if file.lower().endswith(".xml"):
                     metadata_state_class = XmlMetadata
                 else:
                     metadata_state_class = HeaderState
+                    declarations.append(constants)
                 header_state = metadata_state_class(
-                    file_name, header_states, declared_types, incomplete_types)
+                    file_name, header_states, *declarations)
                 header_states[file] = header_state
                 header_states["{}/{}".format(dir_name1, file)] = header_state
                 header_states[
@@ -214,9 +237,10 @@ def _parse_cpp_headers(src_path, declared_types, incomplete_types):
 def parse_cpp_header(src_path):
     declared_types = _standard_types
     incomplete_types = {}
+    constants = Constants()
     extern_definitions_path = os.path.join(
         os.path.dirname(os.path.realpath(__file__)), "externdefs")
     _parse_cpp_headers(
-        extern_definitions_path, declared_types, incomplete_types)
-    _parse_cpp_headers(src_path, declared_types, incomplete_types)
+        extern_definitions_path, declared_types, incomplete_types, constants)
+    _parse_cpp_headers(src_path, declared_types, incomplete_types, constants)
     return declared_types
