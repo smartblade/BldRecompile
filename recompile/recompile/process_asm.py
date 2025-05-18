@@ -1,3 +1,4 @@
+import bisect
 import hashlib
 import json
 from optparse import OptionParser
@@ -899,7 +900,10 @@ class MemoryArea:
 
 
 class CppDeclaration:
-    def __init__(self, mangled_name, declaration, class_name, is_implemented):
+    def __init__(
+        self, file_name, mangled_name, declaration, class_name, is_implemented
+    ):
+        self.file_name = file_name
         self.mangled_name = mangled_name
         self.declaration = declaration
         self.class_name = class_name
@@ -910,6 +914,7 @@ class SrcSymbols:
     def __init__(self, module):
         self.variables = {}
         self.procedures = {}
+        self._sorted_addresses = None
         self.module = module
 
     def is_implemented_procedure(self, addr):
@@ -917,6 +922,16 @@ class SrcSymbols:
 
     def is_implemented_variable(self, addr):
         return addr in self.variables and self.variables[addr].is_implemented
+
+    def get_file_declarations(self, addr, files_declarations):
+        if addr in self.procedures:
+            found_addr = addr
+        else:
+            if self._sorted_addresses is None:
+                self._sorted_addresses = sorted(self.procedures.keys())
+            index = bisect.bisect_left(self._sorted_addresses, addr) - 1
+            found_addr = self._sorted_addresses[index]
+        return files_declarations[self.procedures[found_addr].file_name]
 
     @staticmethod
     def ensure_symbols_for_module(symbols_dict, module):
@@ -1240,7 +1255,7 @@ def collectProceduresFromFile(fileName):
             declaration = None
             class_name = None
         procedures_dict[key] = CppDeclaration(
-            mangled_name, declaration, class_name, is_implemented)
+            fileName, mangled_name, declaration, class_name, is_implemented)
     return procedures_dict
 
 def collectVariablesFromFile(fileName):
@@ -1294,12 +1309,12 @@ def collectVariablesFromFile(fileName):
     for key, mangled_name in varNames.items():
         is_implemented = key not in nativeVariables
         variables_dict[key] = CppDeclaration(
-            mangled_name, declarations.get(key), None, is_implemented)
+            fileName, mangled_name, declarations.get(key), None, is_implemented)
     return variables_dict
 
 def collectSymbolsFromSources(src_dir):
     if options.write_proc_dict:
-        return SrcSymbols.create_symbols_dict({}, set(), {}, set())
+        return SrcSymbols.create_symbols_dict({}, {})
     variables = {}
     procedures = {}
     for (root, dirs, files) in os.walk(src_dir):
@@ -1460,9 +1475,9 @@ def run():
     print("Collect symbols from sources...")
     symbols_dict = collectSymbolsFromSources(src_dir)
     if options.asm_patterns:
-        declared_types = cpp_parser.parse_cpp_header(src_dir)
+        files_declarations, declared_types = cpp_parser.parse_cpp_header(src_dir)
     else:
-        declared_types = {}
+        files_declarations, declared_types = {}, {}
     for (root, dirs, files) in os.walk(src_dir):
         if "raw.txt" in files:
             asm_files = AsmFiles(root)
@@ -1475,6 +1490,7 @@ def run():
                 "Declarations",
                 symbols=symbols,
                 exported_procedures=exported_procedures,
+                files_declarations=files_declarations,
                 declared_types=declared_types,
                 characteristics=characteristics,
             )

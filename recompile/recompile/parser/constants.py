@@ -17,6 +17,11 @@ class Constants:
             self._values[name] = None
             self._names[old_value].remove(name)
 
+    def update(self, other):
+        assert isinstance(other, Constants)
+        for name, value in other._values.items():
+            self.add(name, value)
+
     def get_value(self, name):
         return self._values.get(name)
 

@@ -20,6 +20,8 @@ def do_reinterpret(data_type, e):
     result = _reinterpret_bin(data_type, e)
     if result is not None:
         return result
+    if isinstance(e, expressions.NamedConstant):
+        return _reinterpret_named_const(data_type, e)
     return expressions.ReinterpretCast(data_type, e)
 
 
@@ -69,6 +71,20 @@ def _reinterpret_const(data_type, c):
             c.data_type, data_type))
 
 
+def _reinterpret_named_const(data_type, c):
+    if (
+        isinstance(
+            data_type,
+            (data_types.Int32, data_types.UInt32, data_types.UChar)) and
+        isinstance(c.data_type, data_types.AnyInt) and
+        data_type.size == c.data_type.size
+    ):
+        return expressions.ImplicitCast(data_type, c)
+    raise Exception(
+        "Unimplemented reinterpret cast from {} to {}".format(
+            c.data_type, data_type))
+
+
 def _eliminate_reinterpret(data_type, cast):
     return do_reinterpret(data_type, cast.expression)
 
@@ -92,10 +108,10 @@ def _reinterpret_bin(data_type, b):
         return None
     left = b.left
     right = b.right
-    if isinstance(right, expressions.Constant):
+    if isinstance(right, (expressions.Constant, expressions.NamedConstant)):
         left = do_reinterpret(data_type, left)
         return expressions.Bin(b.operator, left, right)
-    if isinstance(left, expressions.Constant):
+    if isinstance(left, (expressions.Constant, expressions.NamedConstant)):
         right = do_reinterpret(data_type, right)
         return expressions.Bin(b.operator, left, right)
     if isinstance(left, expressions.Bin):

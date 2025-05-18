@@ -44,14 +44,23 @@ _standard_types = {
 class HeaderState:
     def __init__(
         self, file_name, header_states, declared_types, incomplete_types,
-        constants
     ):
         self._file_name = file_name
         self._header_states = header_states
         self._declared_types = declared_types
         self._incomplete_types = incomplete_types
-        self._constants = constants
+        self._constants = Constants()
         self._visited = False
+
+    @property
+    def constants(self):
+        return self._constants
+
+    def update_declarations(self, header_state):
+        if isinstance(header_state, XmlMetadata):
+            return
+        assert isinstance(header_state, HeaderState)
+        self._constants.update(header_state._constants)
 
     def parse(self):
         if self._visited:
@@ -175,6 +184,7 @@ class HeaderState:
         included_header_state = self._header_states.get(include_file)
         if included_header_state is not None:
             included_header_state.parse()
+            self.update_declarations(included_header_state)
 
     def _try_parse_template(self, line):
         match = template_regexp.search(line)
@@ -209,11 +219,17 @@ def _strip_comments(line, is_comment):
     return line, is_comment
 
 
-def _parse_cpp_headers(src_path, declared_types, incomplete_types, constants):
+def _collect_cpp_declarations(
+    src_path, files_declarations, declared_types, incomplete_types
+):
     header_states = {}
     for (root, dirs, files) in os.walk(src_path):
         for file in files:
-            if file.lower().endswith(".h") or file.lower().endswith(".xml"):
+            if (
+                file.lower().endswith(".cpp") or
+                file.lower().endswith(".h") or
+                file.lower().endswith(".xml")
+            ):
                 file_name = os.path.join(root, file)
                 head, dir_name1 = os.path.split(root)
                 head, dir_name2 = os.path.split(head)
@@ -222,7 +238,6 @@ def _parse_cpp_headers(src_path, declared_types, incomplete_types, constants):
                     metadata_state_class = XmlMetadata
                 else:
                     metadata_state_class = HeaderState
-                    declarations.append(constants)
                 header_state = metadata_state_class(
                     file_name, header_states, *declarations)
                 header_states[file] = header_state
@@ -230,17 +245,20 @@ def _parse_cpp_headers(src_path, declared_types, incomplete_types, constants):
                 header_states[
                     "{}/{}/{}".format(
                         dir_name2, dir_name1, file)] = header_state
-    for header_state in header_states.values():
-        header_state.parse()
+                files_declarations[file_name] = header_state
 
 
 def parse_cpp_header(src_path):
+    files_declarations = {}
     declared_types = _standard_types
     incomplete_types = {}
-    constants = Constants()
     extern_definitions_path = os.path.join(
         os.path.dirname(os.path.realpath(__file__)), "externdefs")
-    _parse_cpp_headers(
-        extern_definitions_path, declared_types, incomplete_types, constants)
-    _parse_cpp_headers(src_path, declared_types, incomplete_types, constants)
-    return declared_types
+    _collect_cpp_declarations(
+        extern_definitions_path, files_declarations, declared_types,
+        incomplete_types)
+    _collect_cpp_declarations(
+        src_path, files_declarations, declared_types, incomplete_types)
+    for file_declaration in files_declarations.values():
+        file_declaration.parse()
+    return files_declarations, declared_types

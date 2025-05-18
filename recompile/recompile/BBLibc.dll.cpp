@@ -104,7 +104,7 @@ l10001241:
 // address: 0x100014D2
 void B_IDataFile::Close()
 {
-    this->cacheBlockStartPos = 4294950912;
+    this->cacheBlockStartPos = -IFILE_CACHE_SIZE;
     this->cacheBlockPos = 0;
     if (this->file_name != nullptr)
     {
@@ -190,7 +190,7 @@ B_IDataFile::B_IDataFile()
 {
     this->fd = -1;
     this->file_name = nullptr;
-    this->cacheBlockStartPos = 4294950912;
+    this->cacheBlockStartPos = -IFILE_CACHE_SIZE;
     this->cacheBlockPos = 0;
     this->fileInfo = nullptr;
 }
@@ -198,7 +198,7 @@ B_IDataFile::B_IDataFile()
 // address: 0x10001788
 B_IDataFile::B_IDataFile(const char *file_name, int flags)
 {
-    this->cacheBlockStartPos = 4294950912;
+    this->cacheBlockStartPos = -IFILE_CACHE_SIZE;
     this->cacheBlockPos = 0;
     this->Open(file_name, flags);
 }
@@ -208,18 +208,18 @@ unsigned int B_IDataFile::ReadCacheBlock()
 {
     if (static_cast<any_int32>(this->fd != -1) != 0x00000000)
     {
-        if (this->cacheBlockStartPos + 0x00004000 < this->file_size)
+        if (this->cacheBlockStartPos + IFILE_CACHE_SIZE < this->file_size)
         {
-            if (this->file_size - this->cacheBlockStartPos - 0x00004000 > 16384)
+            if (this->file_size - this->cacheBlockStartPos - IFILE_CACHE_SIZE > IFILE_CACHE_SIZE)
             {
                 STACKVAR(-8, 4) = 0x00004000;
             }
             else
             {
-                STACKVAR(-8, 4) = this->file_size - this->cacheBlockStartPos - 0x00004000;
+                STACKVAR(-8, 4) = this->file_size - this->cacheBlockStartPos - IFILE_CACHE_SIZE;
             }
             _read(this->fd, &this->fileCache, STACKVAR(-8, 4));
-            this->cacheBlockStartPos = this->cacheBlockStartPos + 0x00004000;
+            this->cacheBlockStartPos = this->cacheBlockStartPos + IFILE_CACHE_SIZE;
             this->cacheBlockPos = 0;
             return 1;
         }
@@ -267,13 +267,13 @@ l100018EF:
     {
         goto l10001928;
     }
-    if (reinterpret_cast<unsigned int>(STACKVAR(-4, 4)) < this->cacheBlockStartPos + 0x00004000)
+    if (reinterpret_cast<unsigned int>(STACKVAR(-4, 4)) < this->cacheBlockStartPos + IFILE_CACHE_SIZE)
     {
         this->cacheBlockPos = reinterpret_cast<unsigned int>(reinterpret_cast<any_int32>(STACKVAR(-4, 4)) - this->cacheBlockStartPos);
         goto l10001997;
     }
 l10001928:
-    this->cacheBlockStartPos = reinterpret_cast<unsigned int>(STACKVAR(-4, 4)) - 0x00004000;
+    this->cacheBlockStartPos = reinterpret_cast<unsigned int>(STACKVAR(-4, 4)) - IFILE_CACHE_SIZE;
     if (this->fileInfo != nullptr)
     {
         STACKVAR(-8, 4) = this->fileInfo;
@@ -331,17 +331,17 @@ void B_IDataFile::Read(void *data, unsigned int size)
     {
         return;
     }
-    if (size < 0x00004000 - this->cacheBlockPos)
+    if (size < IFILE_CACHE_SIZE - this->cacheBlockPos)
     {
         memcpy(data, reinterpret_cast<any_int32>(this) + this->cacheBlockPos + 12, size); // TODO improve emitting of memcpy instructions
         this->cacheBlockPos = this->cacheBlockPos + size;
         return;
     }
-    STACKVAR(-4, 4) = 0x00004000 - this->cacheBlockPos;
+    STACKVAR(-4, 4) = IFILE_CACHE_SIZE - this->cacheBlockPos;
     if (STACKVAR(-4, 4) != 0x00000000)
     {
         memcpy(data, reinterpret_cast<any_int32>(this) + this->cacheBlockPos + 12, STACKVAR(-4, 4)); // TODO improve emitting of memcpy instructions
-        this->cacheBlockPos = 16384;
+        this->cacheBlockPos = IFILE_CACHE_SIZE;
         size = reinterpret_cast<unsigned int>(size - reinterpret_cast<any_int32>(STACKVAR(-4, 4)));
     }
     if (this->ReadCacheBlock() != 0)

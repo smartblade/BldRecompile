@@ -9,6 +9,7 @@ from .transform_access import transform_access
 from .transform_arrptr import transform_arrptr
 from .transform_assignment import transform_assignment
 from .transform_binary import transform_binary
+from .transform_constant import transform_constant
 from .transform_global import transform_global
 from .transform_stackvar import transform_stackvar
 from .transform_procedure_call import transform_procedure_call
@@ -17,20 +18,23 @@ from .transform_returns import transform_returns
 
 
 def make_high_level_code(
-    proc_info, proc_decl, characteristics, declarations, instrs
+    proc_info, proc_decl, characteristics, file_declarations, declarations,
+    instrs
 ):
     instrs = goto_eliminator.transform(instrs)
     stack_vars = proc_info.stack_variables
     if proc_decl is not None:
         stack_vars.update(proc_decl.stack_variables)
     instrs = _transform_instructions(
-        instrs, stack_vars=stack_vars, declarations=declarations)
+        instrs, stack_vars=stack_vars, file_declarations=file_declarations,
+        declarations=declarations)
     _validate_procedure_info(proc_info, proc_decl)
     if proc_decl is not None:
         instrs = _eliminate_procedure_info(proc_info, instrs)
     instrs = transform_returns(proc_info, proc_decl, characteristics, instrs)
     instrs = _transform_instructions(
-        instrs, stack_vars=stack_vars, declarations=declarations)
+        instrs, stack_vars=stack_vars, file_declarations=file_declarations,
+        declarations=declarations)
     return instrs
 
 
@@ -73,6 +77,10 @@ class _ExpressionTransformer(ExpressionTransformer):
     @staticmethod
     def transform_binary(operator, left, right, **kwargs):
         return transform_binary(operator, left, right)
+
+    @staticmethod
+    def transform_constant(c, **kwargs):
+        return transform_constant(c, **kwargs)
 
     @staticmethod
     def transform_procedure_call(copy_pc, proc_name, arguments, **kwargs):

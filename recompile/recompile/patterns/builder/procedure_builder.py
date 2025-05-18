@@ -196,10 +196,13 @@ class ProcedureBuilder:
         return first_instruction
 
     def make_high_level_code(self, declarations):
+        file_declarations = declarations.symbols.get_file_declarations(
+            self._proc_addr, declarations.files_declarations)
         self._instructions = make_high_level_code(
             self._expect_first_procedure_info(),
             self._proc_decl,
             declarations.characteristics[self._proc_addr],
+            file_declarations,
             declarations,
             self._instructions,
         )
