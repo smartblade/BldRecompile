@@ -140,7 +140,7 @@ void B_IDataFile::Close()
     {
         _close(this->fd);
         this->fd = -1;
-        B_IDataFile::n_open_files = B_IDataFile::n_open_files - 0x00000001;
+        B_IDataFile::n_open_files--;
     }
 }
 
@@ -157,8 +157,8 @@ void B_IDataFile::Open(const char *src, int flags)
             return;
         }
         this->file_size = reinterpret_cast<unsigned int>(_filelength(this->fd));
-        B_IDataFile::n_opened_files = B_IDataFile::n_opened_files + 0x00000001;
-        B_IDataFile::n_open_files = B_IDataFile::n_open_files + 0x00000001;
+        B_IDataFile::n_opened_files++;
+        B_IDataFile::n_open_files++;
         if (B_IDataFile::OnOpenFunc != nullptr)
         {
             STACKVAR(-16, 4) = PyTuple_New(0x00000002);
