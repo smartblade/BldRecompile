@@ -18,23 +18,23 @@ from .transform_returns import transform_returns
 
 
 def make_high_level_code(
-    proc_info, proc_decl, characteristics, file_declarations, declarations,
-    instrs
+    proc_info, cur_proc_addr, proc_decl, characteristics, file_declarations,
+    declarations, instrs
 ):
     instrs = goto_eliminator.transform(instrs)
     stack_vars = proc_info.stack_variables
     if proc_decl is not None:
         stack_vars.update(proc_decl.stack_variables)
     instrs = _transform_instructions(
-        instrs, stack_vars=stack_vars, file_declarations=file_declarations,
-        declarations=declarations)
+        instrs, cur_proc_addr=cur_proc_addr, stack_vars=stack_vars,
+        file_declarations=file_declarations, declarations=declarations)
     _validate_procedure_info(proc_info, proc_decl)
     if proc_decl is not None:
         instrs = _eliminate_procedure_info(proc_info, instrs)
     instrs = transform_returns(proc_info, proc_decl, characteristics, instrs)
     instrs = _transform_instructions(
-        instrs, stack_vars=stack_vars, file_declarations=file_declarations,
-        declarations=declarations)
+        instrs, cur_proc_addr=cur_proc_addr, stack_vars=stack_vars,
+        file_declarations=file_declarations, declarations=declarations)
     return instrs
 
 
@@ -85,6 +85,11 @@ class _ExpressionTransformer(ExpressionTransformer):
     @staticmethod
     def transform_procedure_call(copy_pc, proc_name, arguments, **kwargs):
         return transform_procedure_call(copy_pc(), **kwargs)
+
+    @staticmethod
+    def transform_static_cast(data_type, expression, **kwargs):
+        return inline_functions.transform_static_cast(
+            data_type, expression, **kwargs)
 
     @staticmethod
     def transform_reinterpret_cast(data_type, expression, **kwargs):

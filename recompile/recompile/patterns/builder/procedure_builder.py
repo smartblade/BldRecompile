@@ -200,6 +200,7 @@ class ProcedureBuilder:
             self._proc_addr, declarations.files_declarations)
         self._instructions = make_high_level_code(
             self._expect_first_procedure_info(),
+            self._proc_addr,
             self._proc_decl,
             declarations.characteristics[self._proc_addr],
             file_declarations,
