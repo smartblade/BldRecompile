@@ -3,5 +3,15 @@
 		"return": {
 			"boolean": "yes"
 		}
+	},
+	"100021E0": {
+		"return": {
+			"boolean": "yes"
+		}
+	},
+	"10002250": {
+		"return": {
+			"boolean": "yes"
+		}
 	}
 }

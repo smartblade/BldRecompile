@@ -136,7 +136,7 @@ void B_IDataFile::Close()
         this->fd = -1;
         return;
     }
-    if (this->OK() != 0)
+    if (this->OK())
     {
         _close(this->fd);
         this->fd = -1;
@@ -152,7 +152,7 @@ void B_IDataFile::Open(const char *src, int flags)
     if (this->fileInfo == nullptr)
     {
         this->fd = reinterpret_cast<int>(_open(src, flags));
-        if (this->OK() == 0)
+        if (!this->OK())
         {
             return;
         }
@@ -206,7 +206,7 @@ B_IDataFile::B_IDataFile(const char *file_name, int flags)
 // address: 0x100017C2
 unsigned int B_IDataFile::ReadCacheBlock()
 {
-    if (this->OK() != 0)
+    if (this->OK())
     {
         if (this->cacheBlockStartPos + IFILE_CACHE_SIZE < this->file_size)
         {
@@ -230,7 +230,7 @@ unsigned int B_IDataFile::ReadCacheBlock()
 // address: 0x10001882
 long B_IDataFile::Length()
 {
-    if (this->OK() != 0)
+    if (this->OK())
     {
         return reinterpret_cast<long>(this->file_size);
     }
@@ -629,7 +629,7 @@ void B_ODataFile::Flush()
 B_ODataFile::~B_ODataFile()
 {
     free(this->file_name);
-    if (this->OK() != 0)
+    if (this->OK())
     {
         this->WriteCacheBlock();
         _close(this->fd);

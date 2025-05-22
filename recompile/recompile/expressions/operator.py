@@ -4,6 +4,7 @@ from enum import Enum
 class Operator(Enum):
     PRE_INC = '++'
     BIT_NOT = '~'
+    NOT = '!'
     NEG = '-'
     ADDR_OF = "&"
     DEREF = "*"

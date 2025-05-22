@@ -76,7 +76,7 @@ class _ExpressionTransformer(ExpressionTransformer):
 
     @staticmethod
     def transform_binary(operator, left, right, **kwargs):
-        return transform_binary(operator, left, right)
+        return transform_binary(operator, left, right, **kwargs)
 
     @staticmethod
     def transform_constant(c, **kwargs):

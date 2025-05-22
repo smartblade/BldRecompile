@@ -17,6 +17,7 @@ from .identifier import Identifier
 from .implicit_cast import ImplicitCast
 from .implicit_dereference import ImplicitDereference
 from .increment import Increment
+from .logical_not import LogicalNot
 from .named_constant import NamedConstant
 from .negate import Negate
 from .null import Null

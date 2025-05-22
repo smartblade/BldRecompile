@@ -14,7 +14,7 @@ def transform_binary(operator, left, right, **kwargs):
         if operator == Operator.BIT_AND:
             return _transform_bit_and(left, right)
     if operator == Operator.EQ or operator == Operator.NE:
-        return _transform_eq_ne(operator, left, right)
+        return _transform_eq_ne(operator, left, right, **kwargs)
     return None
 
 
@@ -53,7 +53,10 @@ def _transform_int_mul(left, right):
     return None
 
 
-def _transform_eq_ne(operator, left, right):
+def _transform_eq_ne(operator, left, right, **kwargs):
+    result = _try_cast_to_bool(operator, left, right, **kwargs)
+    if result is not None:
+        return result
     if (
         isinstance(left.data_type, (data_types.Float, data_types.Double)) and
         isinstance(right.data_type, (data_types.Float, data_types.Double))
@@ -63,6 +66,28 @@ def _transform_eq_ne(operator, left, right):
     if not isinstance(right, expressions.ConstantTypes):
         left = expressions.do_reinterpret(right.data_type, left)
     return expressions.Bin(operator, left, right)
+
+
+def _try_cast_to_bool(operator, left, right, declarations, **kwargs):
+    if not isinstance(left, expressions.ProcedureCall):
+        return None
+    if not left.data_type.is_any_int:
+        return None
+    if left.callee_address is None:
+        return None
+    if not isinstance(right, expressions.Constant):
+        return None
+    if not right.data_type.is_any_int:
+        return None
+    if right.value != 0:
+        return None
+    characteristics = declarations.characteristics[left.callee_address]
+    if characteristics.is_boolean_return:
+        if operator == Operator.NE:
+            return left
+        elif operator == Operator.EQ:
+            return expressions.LogicalNot(left)
+    return None
 
 
 def _transform_bit_and(left, right):
