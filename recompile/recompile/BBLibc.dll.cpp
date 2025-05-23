@@ -62,13 +62,13 @@ p100010F3
     _read(ACCESS(GLOBAL(0x10049EE8), 0, 4), LOCAL(-20), 0x00000012);
     STACKVAR(-24, 4) = GLOBAL(0x100471F8);
     STACKVAR(-28, 4) = LOCAL(-20);
-    STACKVAR(-40, 4) = strcmp(STACKVAR(-28, 4), STACKVAR(-24, 4));
+    STACKVAR(-40, 4) = strcmp(reinterpret_cast<char *>(STACKVAR(-28, 4)), reinterpret_cast<char *>(STACKVAR(-24, 4)));
     if (STACKVAR(-40, 4) != 0x00000000)
     {
-        _assert(GLOBAL(0x100471B4), GLOBAL(0x100471DC), 0x00000052);
+        _assert("strcmp(ph.MagicWord,PAK_MAGIC_WORD)==0", "C:\code\GDS\../pak/pak.h", 82);
     }
     ACCESS(GLOBAL(0x10049EE0), 0, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) & 0x0000FFFF;
-    ACCESS(GLOBAL(0x10049EE4), 0, 4) = malloc(0x00000048 * reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x10049EE0), 0, 4)));
+    ACCESS(GLOBAL(0x10049EE4), 0, 4) = malloc(72 * reinterpret_cast<size_t>(ACCESS(GLOBAL(0x10049EE0), 0, 4)));
     _read(ACCESS(GLOBAL(0x10049EE8), 0, 4), ACCESS(GLOBAL(0x10049EE4), 0, 4), 0x00000048 * reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x10049EE0), 0, 4)));
 }
 
@@ -95,7 +95,7 @@ l10001241:
         if (ACCESS(STACKVAR(-4, 4), 8, 4) != 0xFFFFFFFF)
         {
             _close(ACCESS(STACKVAR(-4, 4), 8, 4));
-            free(ACCESS(STACKVAR(-4, 4), 4, 4));
+            free(reinterpret_cast<void *>(ACCESS(STACKVAR(-4, 4), 4, 4)));
         }
         goto l10001241;
     }
@@ -120,7 +120,7 @@ void B_IDataFile::Close()
             if (ACCESS(STACKVAR(-4, 4), 8, 4) != 0xFFFFFFFF)
             {
                 _close(ACCESS(STACKVAR(-4, 4), 8, 4));
-                free(ACCESS(STACKVAR(-4, 4), 4, 4));
+                free(reinterpret_cast<void *>(ACCESS(STACKVAR(-4, 4), 4, 4)));
             }
             if ((0x00000001 & 0x00000001) != 0x00000000)
             {
@@ -147,7 +147,7 @@ void B_IDataFile::Close()
 // address: 0x100015E2
 void B_IDataFile::Open(const char *src, int flags)
 {
-    this->file_name = reinterpret_cast<char *>(_strdup(src));
+    this->file_name = _strdup(src);
     this->fileInfo = nullptr;
     if (this->fileInfo == nullptr)
     {
@@ -161,7 +161,7 @@ void B_IDataFile::Open(const char *src, int flags)
         B_IDataFile::n_open_files++;
         if (B_IDataFile::OnOpenFunc != nullptr)
         {
-            STACKVAR(-16, 4) = PyTuple_New(0x00000002);
+            STACKVAR(-16, 4) = PyTuple_New(2);
             STACKVAR(-8, 4) = PyInt_FromLong(B_IDataFile::n_opened_files);
             STACKVAR(-12, 4) = PyString_FromString(this->file_name);
             ACCESS(STACKVAR(-16, 4), 12, 4) = STACKVAR(-8, 4);
@@ -333,14 +333,14 @@ void B_IDataFile::Read(void *data, unsigned int size)
     }
     if (size < IFILE_CACHE_SIZE - this->cacheBlockPos)
     {
-        memcpy(data, reinterpret_cast<any_int32>(this) + this->cacheBlockPos + 12, size); // TODO improve emitting of memcpy instructions
+        memcpy(data, reinterpret_cast<void *>(reinterpret_cast<any_int32>(this) + this->cacheBlockPos + 12), size); // TODO improve emitting of memcpy instructions
         this->cacheBlockPos = this->cacheBlockPos + size;
         return;
     }
     STACKVAR(-4, 4) = IFILE_CACHE_SIZE - this->cacheBlockPos;
     if (STACKVAR(-4, 4) != 0x00000000)
     {
-        memcpy(data, reinterpret_cast<any_int32>(this) + this->cacheBlockPos + 12, STACKVAR(-4, 4)); // TODO improve emitting of memcpy instructions
+        memcpy(data, reinterpret_cast<void *>(reinterpret_cast<any_int32>(this) + this->cacheBlockPos + 12), reinterpret_cast<size_t>(STACKVAR(-4, 4))); // TODO improve emitting of memcpy instructions
         this->cacheBlockPos = IFILE_CACHE_SIZE;
         size = reinterpret_cast<unsigned int>(size - reinterpret_cast<any_int32>(STACKVAR(-4, 4)));
     }
@@ -431,14 +431,14 @@ B_ODataFile::B_ODataFile(const char *file_name, int flags)
 {
     ACCESS(this, 16392, 4) = 0x00000000;
     ACCESS(this, 16396, 4) = 0x00000000;
-    this->file_name = reinterpret_cast<char *>(_strdup(file_name));
+    this->file_name = _strdup(file_name);
     this->fd = reinterpret_cast<int>(_open(file_name, flags | 0x00000301, 0x00000180));
     if (this->fd != -1)
     {
         goto l10001D68;
     }
     mout << vararg("Could not write to the file %s.\n", file_name);
-    STACKVAR(-8, 4) = ACCESS(_errno(), 0, 4);
+    STACKVAR(-8, 4) = *_errno();
     STACKVAR(-8, 4) = reinterpret_cast<any_int32>(STACKVAR(-8, 4)) - 0x00000002;
     if (reinterpret_cast<unsigned int>(STACKVAR(-8, 4)) > 22)
     {
@@ -526,14 +526,14 @@ void B_ODataFile::Write(const void *data, unsigned int size)
     }
     if (size < 0x00004000 - reinterpret_cast<unsigned int>(ACCESS(this, 16396, 4)))
     {
-        memcpy(reinterpret_cast<any_int32>(this) + reinterpret_cast<any_int32>(ACCESS(this, 16396, 4)) + 8, data, size); // TODO improve emitting of memcpy instructions
+        memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(this) + reinterpret_cast<any_int32>(ACCESS(this, 16396, 4)) + 8), data, size); // TODO improve emitting of memcpy instructions
         ACCESS(this, 16396, 4) = reinterpret_cast<any_int32>(ACCESS(this, 16396, 4)) + size;
         return;
     }
     STACKVAR(-4, 4) = 0x00004000 - reinterpret_cast<any_int32>(ACCESS(this, 16396, 4));
     if (STACKVAR(-4, 4) != 0x00000000)
     {
-        memcpy(reinterpret_cast<any_int32>(this) + reinterpret_cast<any_int32>(ACCESS(this, 16396, 4)) + 8, data, STACKVAR(-4, 4)); // TODO improve emitting of memcpy instructions
+        memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(this) + reinterpret_cast<any_int32>(ACCESS(this, 16396, 4)) + 8), data, reinterpret_cast<size_t>(STACKVAR(-4, 4))); // TODO improve emitting of memcpy instructions
         ACCESS(this, 16396, 4) = 0x00004000;
         size = reinterpret_cast<unsigned int>(size - reinterpret_cast<any_int32>(STACKVAR(-4, 4)));
     }
@@ -676,13 +676,13 @@ p10002100
         return;
     }
     STACKVAR(-8, 4) = (reinterpret_cast<int>(STACKVAR(12, 4)) + reinterpret_cast<int>(STACKVAR(8, 4))) / 2;
-    STACKVAR(-4, 4) = _stricmp(reinterpret_cast<any_int32>(ACCESS(this, 4, 4)) + 0x00000048 * reinterpret_cast<any_int32>(STACKVAR(-8, 4)), ACCESS(this, 24, 4));
-    if (_stricmp(reinterpret_cast<any_int32>(ACCESS(this, 4, 4)) + 0x00000048 * reinterpret_cast<any_int32>(STACKVAR(12, 4)), ACCESS(this, 24, 4)) == 0x00000000)
+    STACKVAR(-4, 4) = _stricmp(reinterpret_cast<char *>(reinterpret_cast<any_int32>(ACCESS(this, 4, 4)) + 0x00000048 * reinterpret_cast<any_int32>(STACKVAR(-8, 4))), reinterpret_cast<char *>(ACCESS(this, 24, 4)));
+    if (_stricmp(reinterpret_cast<char *>(reinterpret_cast<any_int32>(ACCESS(this, 4, 4)) + 0x00000048 * reinterpret_cast<any_int32>(STACKVAR(12, 4))), reinterpret_cast<char *>(ACCESS(this, 24, 4))) == 0)
     {
         REGDEF(eax=STACKVAR(12, 4))
         return;
     }
-    if (_stricmp(reinterpret_cast<any_int32>(ACCESS(this, 4, 4)) + 0x00000048 * reinterpret_cast<any_int32>(STACKVAR(8, 4)), ACCESS(this, 24, 4)) == 0x00000000)
+    if (_stricmp(reinterpret_cast<char *>(reinterpret_cast<any_int32>(ACCESS(this, 4, 4)) + 0x00000048 * reinterpret_cast<any_int32>(STACKVAR(8, 4))), reinterpret_cast<char *>(ACCESS(this, 24, 4))) == 0)
     {
         REGDEF(eax=STACKVAR(8, 4))
         return;
@@ -715,7 +715,7 @@ char *B_IDataFile::GetFileName()
 // address: 0x10002220
 B_IDataFile &B_IDataFile::operator =(const B_IDataFile &file)
 {
-    memcpy(this, file, 0x00004018); // TODO improve emitting of memcpy instructions
+    memcpy(this, &file, 16408); // TODO improve emitting of memcpy instructions
     return *this;
 }
 
@@ -734,7 +734,7 @@ char *B_ODataFile::GetFileName()
 // address: 0x10002290
 B_ODataFile &B_ODataFile::operator=(const B_ODataFile &arg_0)
 {
-    memcpy(this, arg_0, 0x00004010); // TODO improve emitting of memcpy instructions
+    memcpy(this, &arg_0, 16400); // TODO improve emitting of memcpy instructions
     return *this;
 }
 
@@ -921,8 +921,8 @@ char *GetConfigDirectory()
     {
         goto l10002899;
     }
-    _getcwd(GLOBAL(0x1004A00C), 0x00000104);
-    STACKVAR(-12, 4) = ARRPTR(GLOBAL(0x1004A00C), 1, strlen(GLOBAL(0x1004A00C)) - 1, 0);
+    _getcwd(reinterpret_cast<char *>(GLOBAL(0x1004A00C)), 260);
+    STACKVAR(-12, 4) = ARRPTR(GLOBAL(0x1004A00C), 1, strlen(reinterpret_cast<char *>(GLOBAL(0x1004A00C))) - 1, 0);
 l10002780:
     if (static_cast<any_int32>(reinterpret_cast<char>(ACCESS(STACKVAR(-12, 4), 0, 1))) == 0x0000005C)
     {
@@ -947,7 +947,7 @@ l100027A1:
     }
 l100027C2:
     ACCESS(STACKVAR(-12, 4), 1, 1) = 0;
-    strcat(GLOBAL(0x1004A00C), GLOBAL(0x10047208));
+    strcat(reinterpret_cast<char *>(GLOBAL(0x1004A00C)), "Maps");
     if (_access(GLOBAL(0x1004A00C), 0x00000000) == 0x00000000)
     {
         goto l1000283F;
@@ -976,14 +976,14 @@ l1000281E:
     }
 l1000283F:
     ACCESS(STACKVAR(-12, 4), 1, 1) = 0;
-    strcat(GLOBAL(0x1004A00C), GLOBAL(0x10047210));
+    strcat(reinterpret_cast<char *>(GLOBAL(0x1004A00C)), "Config");
     if (_access(GLOBAL(0x1004A00C), 0x00000000) != 0x00000000)
     {
-        _mkdir(GLOBAL(0x1004A00C));
+        _mkdir(reinterpret_cast<char *>(GLOBAL(0x1004A00C)));
     }
     ACCESS(GLOBAL(0x1004A110), 0, 1) = 0x01;
 l10002899:
-    STACKVAR(-4, 4) = strlen(GLOBAL(0x1004A00C));
+    STACKVAR(-4, 4) = strlen(reinterpret_cast<char *>(GLOBAL(0x1004A00C)));
     STACKVAR(-8, 4) = 0x00000000;
     goto l100028BF;
 l100028B6:
@@ -1003,9 +1003,9 @@ l100028BF:
 // address: 0x100028EC
 char *GetCurrentLanguage()
 {
-    strcpy(LOCAL(-256), GetConfigDirectory());
-    strcat(LOCAL(-256), GLOBAL(0x10047218));
-    GetPrivateProfileStringA(GLOBAL(0x1004723C), GLOBAL(0x1004722C), GLOBAL(0x10047224), GLOBAL(0x10049F0C), 0x00000100, LOCAL(-256));
+    strcpy(reinterpret_cast<char *>(LOCAL(-256)), GetConfigDirectory());
+    strcat(reinterpret_cast<char *>(LOCAL(-256)), "/Lang.ini");
+    GetPrivateProfileStringA("Language", "CurrentLanguage", "English", reinterpret_cast<CHAR *>(GLOBAL(0x10049F0C)), 256, reinterpret_cast<CHAR *>(LOCAL(-256)));
     return reinterpret_cast<char *>(GLOBAL(0x10049F0C));
 }
 
@@ -1476,7 +1476,7 @@ unsigned int B_Name::operator >(const B_Name &rhs)
 {
     STACKVAR(-8, 4) = rhs.string;
     STACKVAR(-12, 4) = this->string;
-    STACKVAR(-24, 4) = strcmp(STACKVAR(-12, 4), STACKVAR(-8, 4));
+    STACKVAR(-24, 4) = strcmp(reinterpret_cast<char *>(STACKVAR(-12, 4)), reinterpret_cast<char *>(STACKVAR(-8, 4)));
     return static_cast<unsigned int>(reinterpret_cast<int>(STACKVAR(-24, 4)) > 0);
 }
 
@@ -1485,7 +1485,7 @@ unsigned int B_Name::operator <(const B_Name &rhs)
 {
     STACKVAR(-8, 4) = rhs.string;
     STACKVAR(-12, 4) = this->string;
-    STACKVAR(-24, 4) = strcmp(STACKVAR(-12, 4), STACKVAR(-8, 4));
+    STACKVAR(-24, 4) = strcmp(reinterpret_cast<char *>(STACKVAR(-12, 4)), reinterpret_cast<char *>(STACKVAR(-8, 4)));
     return static_cast<unsigned int>(reinterpret_cast<int>(STACKVAR(-24, 4)) < 0);
 }
 
@@ -1496,7 +1496,7 @@ unsigned int B_Name::operator ==(const B_Name &rhs)
     {
         STACKVAR(-8, 4) = rhs.string;
         STACKVAR(-12, 4) = this->string;
-        STACKVAR(-24, 4) = strcmp(STACKVAR(-12, 4), STACKVAR(-8, 4));
+        STACKVAR(-24, 4) = strcmp(reinterpret_cast<char *>(STACKVAR(-12, 4)), reinterpret_cast<char *>(STACKVAR(-8, 4)));
         return static_cast<unsigned int>(STACKVAR(-24, 4) == 0x00000000);
     }
     return 0;
@@ -1507,7 +1507,7 @@ unsigned int B_Name::operator ==(const char *str)
 {
     STACKVAR(-8, 4) = str;
     STACKVAR(-12, 4) = this->string;
-    STACKVAR(-24, 4) = strcmp(STACKVAR(-12, 4), STACKVAR(-8, 4));
+    STACKVAR(-24, 4) = strcmp(reinterpret_cast<char *>(STACKVAR(-12, 4)), reinterpret_cast<char *>(STACKVAR(-8, 4)));
     return static_cast<unsigned int>(STACKVAR(-24, 4) == 0x00000000);
 }
 
@@ -1520,7 +1520,7 @@ unsigned int B_Name::operator !=(const B_Name &rhs)
     }
     STACKVAR(-8, 4) = rhs.string;
     STACKVAR(-12, 4) = this->string;
-    STACKVAR(-24, 4) = strcmp(STACKVAR(-12, 4), STACKVAR(-8, 4));
+    STACKVAR(-24, 4) = strcmp(reinterpret_cast<char *>(STACKVAR(-12, 4)), reinterpret_cast<char *>(STACKVAR(-8, 4)));
     return reinterpret_cast<unsigned int>(STACKVAR(-24, 4));
 }
 
@@ -1529,7 +1529,7 @@ unsigned int B_Name::operator !=(const char *str)
 {
     STACKVAR(-8, 4) = str;
     STACKVAR(-12, 4) = this->string;
-    STACKVAR(-24, 4) = strcmp(STACKVAR(-12, 4), STACKVAR(-8, 4));
+    STACKVAR(-24, 4) = strcmp(reinterpret_cast<char *>(STACKVAR(-12, 4)), reinterpret_cast<char *>(STACKVAR(-8, 4)));
     return reinterpret_cast<unsigned int>(STACKVAR(-24, 4));
 }
 
@@ -1538,7 +1538,7 @@ unsigned int B_Name::CompareNoCase(const B_Name &arg_0)
 {
     if (this->len == arg_0.len)
     {
-        return static_cast<unsigned int>(_stricmp(this->string, arg_0.string) == 0x00000000);
+        return static_cast<unsigned int>(_stricmp(this->string, arg_0.string) == 0);
     }
     return 0;
 }
@@ -1546,7 +1546,7 @@ unsigned int B_Name::CompareNoCase(const B_Name &arg_0)
 // address: 0x10003769
 unsigned int B_Name::CompareNoCase(const char *str)
 {
-    return static_cast<unsigned int>(_stricmp(this->string, str) == 0x00000000);
+    return static_cast<unsigned int>(_stricmp(this->string, str) == 0);
 }
 
 // address: 0x1000378E
@@ -1576,7 +1576,7 @@ B_Name B_Name::Right(unsigned int count)
         count = this->len;
     }
     reinterpret_cast<B_Name *>(LOCAL(-8))->B_Name(count);
-    strncpy(STACKVAR(-8, 4), reinterpret_cast<any_int32>(this->string) + this->len - count, count);
+    strncpy(reinterpret_cast<char *>(STACKVAR(-8, 4)), reinterpret_cast<char *>(reinterpret_cast<any_int32>(this->string) + this->len - count), count);
     __result->B_Name(*reinterpret_cast<B_Name *>(LOCAL(-8)));
     reinterpret_cast<B_Name *>(LOCAL(-8))->~B_Name();
     REGDEF(eax=__result)
@@ -1594,7 +1594,7 @@ B_Name B_Name::Left(unsigned int count)
         count = this->len;
     }
     reinterpret_cast<B_Name *>(LOCAL(-8))->B_Name(count);
-    strncpy(STACKVAR(-8, 4), this->string, count);
+    strncpy(reinterpret_cast<char *>(STACKVAR(-8, 4)), this->string, count);
     __result->B_Name(*reinterpret_cast<B_Name *>(LOCAL(-8)));
     reinterpret_cast<B_Name *>(LOCAL(-8))->~B_Name();
     REGDEF(eax=__result)
@@ -1672,9 +1672,9 @@ B_Name operator +(const B_Name &lother, const B_Name &rother)
     STACKVAR(-16, 4) = rother.len;
     reinterpret_cast<B_Name *>(LOCAL(-8))->B_Name(reinterpret_cast<unsigned int>(STACKVAR(-12, 4)) + reinterpret_cast<unsigned int>(STACKVAR(-16, 4)) + 1);
     STACKVAR(-20, 4) = lother.string;
-    strcpy(STACKVAR(-8, 4), STACKVAR(-20, 4));
+    strcpy(reinterpret_cast<char *>(STACKVAR(-8, 4)), reinterpret_cast<char *>(STACKVAR(-20, 4)));
     STACKVAR(-24, 4) = rother.string;
-    strcat(STACKVAR(-8, 4), STACKVAR(-24, 4));
+    strcat(reinterpret_cast<char *>(STACKVAR(-8, 4)), reinterpret_cast<char *>(STACKVAR(-24, 4)));
     __result->B_Name(*reinterpret_cast<B_Name *>(LOCAL(-8)));
     reinterpret_cast<B_Name *>(LOCAL(-8))->~B_Name();
     REGDEF(eax=__result)
@@ -1686,8 +1686,8 @@ B_Name operator +(const B_Name &other, const char *str)
     STACKVAR(-12, 4) = other.len;
     reinterpret_cast<B_Name *>(LOCAL(-8))->B_Name(reinterpret_cast<unsigned int>(reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + strlen(str)) + 1);
     STACKVAR(-16, 4) = other.string;
-    strcpy(STACKVAR(-8, 4), STACKVAR(-16, 4));
-    strcat(STACKVAR(-8, 4), str);
+    strcpy(reinterpret_cast<char *>(STACKVAR(-8, 4)), reinterpret_cast<char *>(STACKVAR(-16, 4)));
+    strcat(reinterpret_cast<char *>(STACKVAR(-8, 4)), str);
     __result->B_Name(*reinterpret_cast<B_Name *>(LOCAL(-8)));
     reinterpret_cast<B_Name *>(LOCAL(-8))->~B_Name();
     REGDEF(eax=__result)
@@ -1698,9 +1698,9 @@ B_Name operator +(const char *str, const B_Name &bName)
 {
     STACKVAR(-12, 4) = bName.len;
     reinterpret_cast<B_Name *>(LOCAL(-8))->B_Name(reinterpret_cast<unsigned int>(strlen(str) + reinterpret_cast<any_int32>(STACKVAR(-12, 4))) + 1);
-    strcpy(STACKVAR(-8, 4), str);
+    strcpy(reinterpret_cast<char *>(STACKVAR(-8, 4)), str);
     STACKVAR(-16, 4) = bName.string;
-    strcat(STACKVAR(-8, 4), STACKVAR(-16, 4));
+    strcat(reinterpret_cast<char *>(STACKVAR(-8, 4)), reinterpret_cast<char *>(STACKVAR(-16, 4)));
     __result->B_Name(*reinterpret_cast<B_Name *>(LOCAL(-8)));
     reinterpret_cast<B_Name *>(LOCAL(-8))->~B_Name();
     REGDEF(eax=__result)
@@ -1712,8 +1712,8 @@ B_Name &B_Name::operator +=(const char *str)
     this->len = this->len + strlen(str);
     STACKVAR(-8, 4) = ??2@YAPAXI@Z(this->len + 0x00000001);
     STACKVAR(-4, 4) = STACKVAR(-8, 4);
-    strcpy(STACKVAR(-4, 4), this->string);
-    strcat(STACKVAR(-4, 4), str);
+    strcpy(reinterpret_cast<char *>(STACKVAR(-4, 4)), this->string);
+    strcat(reinterpret_cast<char *>(STACKVAR(-4, 4)), str);
     STACKVAR(-12, 4) = this->string;
     ??3@YAXPAX@Z(STACKVAR(-12, 4));
     this->string = reinterpret_cast<char *>(STACKVAR(-4, 4));
@@ -1726,7 +1726,7 @@ B_Name &B_Name::operator+=(char c)
     this->len = this->len + 0x00000001;
     STACKVAR(-8, 4) = ??2@YAPAXI@Z(this->len + 0x00000001);
     STACKVAR(-4, 4) = STACKVAR(-8, 4);
-    strcpy(STACKVAR(-4, 4), this->string);
+    strcpy(reinterpret_cast<char *>(STACKVAR(-4, 4)), this->string);
     ACCESS(ARRPTR(STACKVAR(-4, 4), 1, this->len, -1), 0, 1) = c;
     ACCESS(ARRPTR(STACKVAR(-4, 4), 1, this->len, 0), 0, 1) = 0;
     STACKVAR(-12, 4) = this->string;
@@ -1742,9 +1742,9 @@ B_Name &B_Name::operator +=(const B_Name &other)
     this->len = reinterpret_cast<unsigned int>(this->len + reinterpret_cast<any_int32>(STACKVAR(-16, 4)));
     STACKVAR(-8, 4) = ??2@YAPAXI@Z(this->len + 0x00000001);
     STACKVAR(-4, 4) = STACKVAR(-8, 4);
-    strcpy(STACKVAR(-4, 4), this->string);
+    strcpy(reinterpret_cast<char *>(STACKVAR(-4, 4)), this->string);
     STACKVAR(-20, 4) = other.string;
-    strcat(STACKVAR(-4, 4), STACKVAR(-20, 4));
+    strcat(reinterpret_cast<char *>(STACKVAR(-4, 4)), reinterpret_cast<char *>(STACKVAR(-20, 4)));
     STACKVAR(-12, 4) = this->string;
     ??3@YAXPAX@Z(STACKVAR(-12, 4));
     this->string = reinterpret_cast<char *>(STACKVAR(-4, 4));
@@ -2825,7 +2825,7 @@ unsigned int B_ResourceManager::AddAutoResource(const B_Name &arg_1, B_Resource 
     STACKVAR(-36, 4) = 0x00000000;
     if (arg_2 == nullptr)
     {
-        _assert(GLOBAL(0x1004731C), GLOBAL(0x10047300), 0x000001EC);
+        _assert("resource", "C:\code\GDS\Resource.cpp", 492);
     }
     if (arg_3 < 0)
     {
@@ -2891,7 +2891,7 @@ l100058D3:
     }
     if (STACKVAR(-12, 4) == 0x00000000)
     {
-        _assert(GLOBAL(0x100473B4), GLOBAL(0x10047398), 0x00000206);
+        _assert("res_loc", "C:\code\GDS\Resource.cpp", 518);
     }
     ACCESS(STACKVAR(-12, 4), 28, 4) = arg_2;
     STACKVAR(-60, 4) = ACCESS(ARRPTR(this, 4, arg_3, 0), 0, 4);
@@ -3286,7 +3286,7 @@ int B_ResourceManager::SavePackedData(int arg_0, const char *arg_1)
     {
         if (arg_0 != 5)
         {
-            _assert(GLOBAL(0x10047470), GLOBAL(0x10047454), 0x000002BF);
+            _assert("class_id==B_CID_OBJDSCR || class_id==B_CID_AUTO_OBJDSCR", "C:\code\GDS\Resource.cpp", 703);
         }
     }
     if (ACCESS(ARRPTR(this, 4, arg_0, 0), 0, 4) == 0x00000000)
@@ -3337,7 +3337,7 @@ int B_ResourceManager::LoadPackedData(int arg_0, const char *arg_1)
     {
         if (arg_0 != 5)
         {
-            _assert(GLOBAL(0x100474C4), GLOBAL(0x100474A8), 0x000002E2);
+            _assert("class_id==B_CID_OBJDSCR || class_id==B_CID_AUTO_OBJDSCR", "C:\code\GDS\Resource.cpp", 738);
         }
     }
     reinterpret_cast<B_IDataFile *>(LOCAL(-16412))->B_IDataFile(arg_1, 32768);
@@ -3502,7 +3502,7 @@ l100067FB:
 // address: 0x10006830
 B_ResourceManager &B_ResourceManager::operator =(const B_ResourceManager &that)
 {
-    memcpy(this, that, 0x00000404); // TODO improve emitting of memcpy instructions
+    memcpy(this, &that, 1028); // TODO improve emitting of memcpy instructions
     return *this;
 }
 
@@ -3651,7 +3651,7 @@ B_Pal::B_Pal()
 // address: 0x10006BF0
 B_Pal &B_Pal::operator=(const B_Pal &arg_0)
 {
-    memcpy(this, arg_0, 0x00000300); // TODO improve emitting of memcpy instructions
+    memcpy(this, &arg_0, 768); // TODO improve emitting of memcpy instructions
     return *this;
 }
 
@@ -4403,7 +4403,7 @@ l10007ECF:
 // address: 0x10007EF0
 B_RDataLight &B_RDataLight::operator=(const B_RDataLight &other)
 {
-    memcpy(this, other, 16); // TODO improve emitting of memcpy instructions
+    memcpy(this, &other, 16); // TODO improve emitting of memcpy instructions
     return *this;
 }
 
@@ -4417,14 +4417,14 @@ B_RItem &B_RItem::operator=(const B_RItem &arg_0)
 // address: 0x10007F40
 B_RDataTriangle &B_RDataTriangle::operator=(const B_RDataTriangle &other)
 {
-    memcpy(this, other, 0x0000001C); // TODO improve emitting of memcpy instructions
+    memcpy(this, &other, 28); // TODO improve emitting of memcpy instructions
     return *this;
 }
 
 // address: 0x10007F70
 B_MeshEdge &B_MeshEdge::operator=(const B_MeshEdge &other)
 {
-    memcpy(this, other, 0x00000018); // TODO improve emitting of memcpy instructions
+    memcpy(this, &other, 24); // TODO improve emitting of memcpy instructions
     return *this;
 }
 
@@ -5027,7 +5027,7 @@ B_IDataFile &operator >>(B_IDataFile &file, B_BitMap &bitMap)
 l10008D86:
     if (bitMap.data != nullptr)
     {
-        _assert(GLOBAL(0x10047518), GLOBAL(0x100474FC), 0x000000BC);
+        _assert("b.texels==NULL", "C:\code\BITMAP\BITMAP.CPP", 188);
     }
     STACKVAR(-48, 4) = bitMap.type;
     STACKVAR(-48, 4) = reinterpret_cast<any_int32>(STACKVAR(-48, 4)) - 0x00000001;
@@ -5242,7 +5242,7 @@ void B_Color::MakeCons()
 // address: 0x100093A7
 B_Pal::B_Pal(const B_Pal &arg_0)
 {
-    memcpy(this, arg_0, 0x00000300); // TODO improve emitting of memcpy instructions
+    memcpy(this, &arg_0, 768); // TODO improve emitting of memcpy instructions
 }
 
 // address: 0x100093C8
@@ -5347,7 +5347,7 @@ p100096A0
     }
     STACKVAR(-8, 4) = ACCESS(STACKVAR(8, 4), 0, 4);
     STACKVAR(-12, 4) = ACCESS(STACKVAR(8, 4), 12, 4);
-    memset(STACKVAR(8, 4), 0x00000000, 0x00000164);
+    memset(reinterpret_cast<void *>(STACKVAR(8, 4)), 0, 356);
     ACCESS(STACKVAR(8, 4), 0, 4) = STACKVAR(-8, 4);
     ACCESS(STACKVAR(8, 4), 12, 4) = STACKVAR(-12, 4);
     ACCESS(STACKVAR(8, 4), 16, 1) = 0;
@@ -6814,7 +6814,7 @@ l1000BF04:
         STACKVAR(-1320, 4) = 0x00000002 * reinterpret_cast<any_int32>(STACKVAR(-1320, 4));
         STACKVAR(-1312, 4) = reinterpret_cast<any_int32>(STACKVAR(-1312, 4)) + 0x00000001;
     }
-    memset(reinterpret_cast<any_int32>(STACKVAR(-1324, 4)) + 0x00000400, 0x00000000, 0x00000100);
+    memset(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-1324, 4)) + 0x00000400), 0, 256);
     STACKVAR(-4, 4) = (reinterpret_cast<any_int32>(STACKVAR(12, 4)) & 0x000000FF) == 0x00000000 ? 0x000000FF : 0x0000000F;
     STACKVAR(-8, 4) = 0x00000000;
     goto l1000C017;
@@ -6852,8 +6852,8 @@ l1000C0B9:
 p1000C0BE
 {
     ProcedureInfo(this=None, this_offset=None, local_size=2116, stack_delta=0)
-    memset(LOCAL(-1076), 0x00000000, 0x00000021);
-    memset(LOCAL(-1040), 0x00000000, 0x00000404);
+    memset(LOCAL(-1076), 0, 33);
+    memset(LOCAL(-1040), 0, 1028);
     STACKVAR(-2112, 4) = 0x00000000;
     goto l1000C102;
 l1000C0F3:
@@ -6970,7 +6970,7 @@ l1000C3AE:
         STACKVAR(-2112, 4) = reinterpret_cast<any_int32>(STACKVAR(-2112, 4)) - 0x00000001;
     }
     ACCESS(ARRPTR(LOCAL(-1076), 1, STACKVAR(-2112, 4), 0), 0, 1) = reinterpret_cast<any_int8>(ACCESS(ARRPTR(LOCAL(-1076), 1, STACKVAR(-2112, 4), 0), 0, 1)) - 0x01;
-    memcpy(STACKVAR(12, 4), LOCAL(-1076), 17); // TODO improve emitting of memcpy instructions
+    memcpy(reinterpret_cast<void *>(STACKVAR(12, 4)), LOCAL(-1076), 17); // TODO improve emitting of memcpy instructions
     STACKVAR(-4, 4) = 0x00000000;
     STACKVAR(-2112, 4) = 0x00000001;
     goto l1000C510;
@@ -7083,12 +7083,12 @@ l1000C70B:
     {
         ACCESS(ARRPTR(STACKVAR(-8, 4), 4, STACKVAR(-20, 4), 76), 0, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x00000404);
     }
-    memset(ACCESS(ARRPTR(STACKVAR(-8, 4), 4, STACKVAR(-20, 4), 76), 0, 4), 0x00000000, 0x00000404);
+    memset(reinterpret_cast<void *>(ACCESS(ARRPTR(STACKVAR(-8, 4), 4, STACKVAR(-20, 4), 76), 0, 4)), 0, 1028);
     if (ACCESS(ARRPTR(STACKVAR(-8, 4), 4, STACKVAR(-4, 4), 92), 0, 4) == 0x00000000)
     {
         ACCESS(ARRPTR(STACKVAR(-8, 4), 4, STACKVAR(-4, 4), 92), 0, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x00000404);
     }
-    memset(ACCESS(ARRPTR(STACKVAR(-8, 4), 4, STACKVAR(-4, 4), 92), 0, 4), 0x00000000, 0x00000404);
+    memset(reinterpret_cast<void *>(ACCESS(ARRPTR(STACKVAR(-8, 4), 4, STACKVAR(-4, 4), 92), 0, 4)), 0, 1028);
     goto l1000C7C7;
 l1000C78D:
     unknown_function_1000BD80(STACKVAR(8, 4), 0x00000001, STACKVAR(-20, 4), ARRPTR(STACKVAR(-8, 4), 4, STACKVAR(-20, 4), 44));
@@ -7110,7 +7110,7 @@ p1000C80D
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 344, 4);
     STACKVAR(-40, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 24, 4), 0, 4);
     STACKVAR(-36, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 24, 4), 4, 4);
-    memcpy(LOCAL(-32), reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x0000000C, 0x00000018); // TODO improve emitting of memcpy instructions
+    memcpy(LOCAL(-32), reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x0000000C), 24); // TODO improve emitting of memcpy instructions
     STACKVAR(-8, 4) = STACKVAR(8, 4);
     if (ACCESS(STACKVAR(8, 4), 184, 4) != 0x00000000)
     {
@@ -7142,7 +7142,7 @@ l1000C898:
     }
     ACCESS(ACCESS(STACKVAR(8, 4), 24, 4), 0, 4) = STACKVAR(-40, 4);
     ACCESS(ACCESS(STACKVAR(8, 4), 24, 4), 4, 4) = STACKVAR(-36, 4);
-    memcpy(reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x0000000C, LOCAL(-32), 0x00000018); // TODO improve emitting of memcpy instructions
+    memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x0000000C), LOCAL(-32), 24); // TODO improve emitting of memcpy instructions
     if (ACCESS(STACKVAR(8, 4), 184, 4) != 0x00000000)
     {
         if (ACCESS(STACKVAR(-4, 4), 36, 4) == 0x00000000)
@@ -7392,7 +7392,7 @@ p1000CEDD
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 344, 4);
     STACKVAR(-40, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 24, 4), 0, 4);
     STACKVAR(-36, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 24, 4), 4, 4);
-    memcpy(LOCAL(-32), reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x0000000C, 0x00000018); // TODO improve emitting of memcpy instructions
+    memcpy(LOCAL(-32), reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x0000000C), 24); // TODO improve emitting of memcpy instructions
     STACKVAR(-8, 4) = STACKVAR(8, 4);
     if ((reinterpret_cast<any_int32>(unknown_function_1000CEA5(LOCAL(-40))) & 0x000000FF) == 0x00000000)
     {
@@ -7401,7 +7401,7 @@ p1000CEDD
     }
     ACCESS(ACCESS(STACKVAR(8, 4), 24, 4), 0, 4) = STACKVAR(-40, 4);
     ACCESS(ACCESS(STACKVAR(8, 4), 24, 4), 4, 4) = STACKVAR(-36, 4);
-    memcpy(reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x0000000C, LOCAL(-32), 0x00000018); // TODO improve emitting of memcpy instructions
+    return memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x0000000C), LOCAL(-32), 24);
 }
 
 // address: 0x1000CF7A
@@ -9225,7 +9225,7 @@ p1000FA9B
     {
         ACCESS(STACKVAR(12, 4), 0, 4) = unknown_function_1000F6A0(STACKVAR(8, 4));
     }
-    memcpy(ACCESS(STACKVAR(12, 4), 0, 4), STACKVAR(16, 4), 17); // TODO improve emitting of memcpy instructions
+    memcpy(reinterpret_cast<void *>(ACCESS(STACKVAR(12, 4), 0, 4)), reinterpret_cast<void *>(STACKVAR(16, 4)), 17); // TODO improve emitting of memcpy instructions
     STACKVAR(-4, 4) = 0x00000000;
     STACKVAR(-8, 4) = 0x00000001;
     goto l1000FAF9;
@@ -9249,7 +9249,7 @@ l1000FB22:
     ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x00000008;
     ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 0, 4)(STACKVAR(8, 4));
 l1000FB3C:
-    memcpy(reinterpret_cast<any_int32>(ACCESS(STACKVAR(12, 4), 0, 4)) + 0x00000011, STACKVAR(20, 4), STACKVAR(-4, 4)); // TODO improve emitting of memcpy instructions
+    memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(ACCESS(STACKVAR(12, 4), 0, 4)) + 0x00000011), reinterpret_cast<void *>(STACKVAR(20, 4)), reinterpret_cast<size_t>(STACKVAR(-4, 4))); // TODO improve emitting of memcpy instructions
     ACCESS(ACCESS(STACKVAR(12, 4), 0, 4), 273, 1) = 0;
 }
 
@@ -9644,7 +9644,7 @@ l1001081E:
     {
         ACCESS(ARRPTR(STACKVAR(-12, 4), 4, STACKVAR(-4, 4), 92), 0, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x00000404);
     }
-    memset(ACCESS(ARRPTR(STACKVAR(-12, 4), 4, STACKVAR(-4, 4), 92), 0, 4), 0x00000000, 0x00000404);
+    memset(reinterpret_cast<void *>(ACCESS(ARRPTR(STACKVAR(-12, 4), 4, STACKVAR(-4, 4), 92), 0, 4)), 0, 1028);
     goto l1001087F;
 l10010860:
     unknown_function_1000BD80(STACKVAR(8, 4), STACKVAR(-8, 1), STACKVAR(-4, 4), ARRPTR(STACKVAR(-12, 4), 4, STACKVAR(-4, 4), 76));
@@ -10493,7 +10493,7 @@ l10011E47:
         goto l10011F23;
     }
     STACKVAR(-16, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 8, 4)(STACKVAR(8, 4), 0x00000001, 8 * reinterpret_cast<int>(ACCESS(STACKVAR(-20, 4), 28, 4)) * reinterpret_cast<int>(ACCESS(STACKVAR(8, 4), 212, 4)) / reinterpret_cast<int>(ACCESS(STACKVAR(-20, 4), 8, 4)), 0x00000003 * reinterpret_cast<any_int32>(STACKVAR(-28, 4)));
-    memcpy(ARRPTR(STACKVAR(-8, 4), 4, STACKVAR(-28, 4), 0), STACKVAR(-16, 4), 0x00000004 * 0x00000003 * reinterpret_cast<any_int32>(STACKVAR(-28, 4))); // TODO improve emitting of memcpy instructions
+    memcpy(ARRPTR(STACKVAR(-8, 4), 4, STACKVAR(-28, 4), 0), reinterpret_cast<void *>(STACKVAR(-16, 4)), 4 * 3 * reinterpret_cast<size_t>(STACKVAR(-28, 4))); // TODO improve emitting of memcpy instructions
     STACKVAR(-12, 4) = 0x00000000;
     goto l10011EC2;
 l10011EB9:
@@ -11173,7 +11173,7 @@ p10013490
     }
     STACKVAR(-8, 4) = ACCESS(STACKVAR(8, 4), 0, 4);
     STACKVAR(-12, 4) = ACCESS(STACKVAR(8, 4), 12, 4);
-    memset(STACKVAR(8, 4), 0x00000000, 0x000001AC);
+    memset(reinterpret_cast<void *>(STACKVAR(8, 4)), 0, 428);
     ACCESS(STACKVAR(8, 4), 0, 4) = STACKVAR(-8, 4);
     ACCESS(STACKVAR(8, 4), 12, 4) = STACKVAR(-12, 4);
     ACCESS(STACKVAR(8, 4), 16, 1) = 0x01;
@@ -11672,7 +11672,7 @@ p100142DC
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=0)
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 24, 4);
-    if (fwrite(ACCESS(STACKVAR(-4, 4), 24, 4), 0x00000001, 0x00001000, ACCESS(STACKVAR(-4, 4), 20, 4)) != 0x00001000)
+    if (fwrite(reinterpret_cast<void *>(ACCESS(STACKVAR(-4, 4), 24, 4)), 1, 4096, reinterpret_cast<FILE *>(ACCESS(STACKVAR(-4, 4), 20, 4))) != 4096)
     {
         ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x00000025;
         ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 0, 4)(STACKVAR(8, 4));
@@ -11690,13 +11690,13 @@ p10014343
     STACKVAR(-8, 4) = 0x00001000 - reinterpret_cast<any_int32>(ACCESS(STACKVAR(-4, 4), 4, 4));
     if (reinterpret_cast<unsigned int>(STACKVAR(-8, 4)) > 0)
     {
-        if (fwrite(ACCESS(STACKVAR(-4, 4), 24, 4), 0x00000001, STACKVAR(-8, 4), ACCESS(STACKVAR(-4, 4), 20, 4)) != STACKVAR(-8, 4))
+        if (fwrite(reinterpret_cast<void *>(ACCESS(STACKVAR(-4, 4), 24, 4)), 1, reinterpret_cast<size_t>(STACKVAR(-8, 4)), reinterpret_cast<FILE *>(ACCESS(STACKVAR(-4, 4), 20, 4))) != reinterpret_cast<size_t>(STACKVAR(-8, 4)))
         {
             ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x00000025;
             ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 0, 4)(STACKVAR(8, 4));
         }
     }
-    fflush(ACCESS(STACKVAR(-4, 4), 20, 4));
+    fflush(reinterpret_cast<FILE *>(ACCESS(STACKVAR(-4, 4), 20, 4)));
     if ((reinterpret_cast<any_int32>(ACCESS(ACCESS(STACKVAR(-4, 4), 20, 4), 12, 4)) & 0x00000020) != 0x00000000)
     {
         ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x00000025;
@@ -11738,7 +11738,7 @@ p1001449E
 {
     ProcedureInfo(this=None, this_offset=None, local_size=8, stack_delta=0)
     STACKVAR(-8, 4) = ACCESS(STACKVAR(8, 4), 24, 4);
-    STACKVAR(-4, 4) = fread(ACCESS(STACKVAR(-8, 4), 32, 4), 0x00000001, 0x00001000, ACCESS(STACKVAR(-8, 4), 28, 4));
+    STACKVAR(-4, 4) = fread(reinterpret_cast<void *>(ACCESS(STACKVAR(-8, 4), 32, 4)), 1, 4096, reinterpret_cast<FILE *>(ACCESS(STACKVAR(-8, 4), 28, 4)));
     if (reinterpret_cast<unsigned int>(STACKVAR(-4, 4)) <= 0)
     {
         if (static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-8, 4), 36, 1))) != 0x00000000)
@@ -12990,7 +12990,7 @@ l100163D9:
     if (reinterpret_cast<int>(STACKVAR(-8, 4)) < reinterpret_cast<int>(ACCESS(STACKVAR(8, 4), 36, 4)))
     {
         ACCESS(STACKVAR(-4, 4), 80, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x00000100);
-        memset(ACCESS(STACKVAR(-4, 4), 80, 4), 0x00000000, 0x00000100);
+        memset(reinterpret_cast<void *>(ACCESS(STACKVAR(-4, 4), 80, 4)), 0, 256);
         ACCESS(ARRPTR(STACKVAR(-12, 4), 4, STACKVAR(-8, 4), 44), 0, 4) = 0xFFFFFFFF;
         goto l100163C7;
     }
@@ -13280,7 +13280,7 @@ l100169C0:
         goto l100169B1;
     }
     ACCESS(STACKVAR(-1328, 4), 68, 4) = 0x000FFFFF;
-    memset(reinterpret_cast<any_int32>(STACKVAR(-1328, 4)) + 0x00000090, 0x00000000, 0x00000400);
+    memset(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-1328, 4)) + 0x00000090), 0, 1024);
     STACKVAR(-4, 4) = 0x00000000;
     STACKVAR(-1320, 4) = 0x00000001;
     goto l10016A89;
@@ -13595,7 +13595,7 @@ p10017160
     STACKVAR(-44, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 24, 4), 4, 4);
     STACKVAR(-4, 4) = ACCESS(STACKVAR(-8, 4), 12, 4);
     STACKVAR(-28, 4) = ACCESS(STACKVAR(-8, 4), 16, 4);
-    memcpy(LOCAL(-24), reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + 0x00000014, 16); // TODO improve emitting of memcpy instructions
+    memcpy(LOCAL(-24), reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + 0x00000014), 16); // TODO improve emitting of memcpy instructions
     STACKVAR(-52, 4) = 0x00000000;
     goto l10017211;
 l10017208:
@@ -13840,7 +13840,7 @@ l1001773A:
     ACCESS(ACCESS(STACKVAR(8, 4), 24, 4), 4, 4) = STACKVAR(-44, 4);
     ACCESS(STACKVAR(-8, 4), 12, 4) = STACKVAR(-4, 4);
     ACCESS(STACKVAR(-8, 4), 16, 4) = STACKVAR(-28, 4);
-    memcpy(reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + 0x00000014, LOCAL(-24), 16); // TODO improve emitting of memcpy instructions
+    memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + 0x00000014), LOCAL(-24), 16); // TODO improve emitting of memcpy instructions
 l10017780:
     ACCESS(STACKVAR(-8, 4), 36, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-8, 4), 36, 4)) - 0x00000001;
     REGDEF(al=0x01)
@@ -14019,7 +14019,7 @@ l10017C2C:
     ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 0, 4)(STACKVAR(8, 4));
 l10017C51:
     STACKVAR(-8, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x00000082);
-    memcpy(STACKVAR(-8, 4), ACCESS(ARRPTR(STACKVAR(8, 4), 4, STACKVAR(-4, 4), 144), 0, 4), 0x00000082); // TODO improve emitting of memcpy instructions
+    memcpy(reinterpret_cast<void *>(STACKVAR(-8, 4)), reinterpret_cast<void *>(ACCESS(ARRPTR(STACKVAR(8, 4), 4, STACKVAR(-4, 4), 144), 0, 4)), 130); // TODO improve emitting of memcpy instructions
     ACCESS(STACKVAR(-12, 4), 76, 4) = STACKVAR(-8, 4);
     goto l10017BD1;
 l10017C91:
@@ -16249,8 +16249,8 @@ l1001AE74:
     {
         ACCESS(STACKVAR(-308, 4), 0, 4) = unknown_function_1000F6A0(STACKVAR(8, 4));
     }
-    memcpy(ACCESS(STACKVAR(-308, 4), 0, 4), LOCAL(-280), 17); // TODO improve emitting of memcpy instructions
-    memcpy(reinterpret_cast<any_int32>(ACCESS(STACKVAR(-308, 4), 0, 4)) + 0x00000011, LOCAL(-256), 0x00000100); // TODO improve emitting of memcpy instructions
+    memcpy(reinterpret_cast<void *>(ACCESS(STACKVAR(-308, 4), 0, 4)), LOCAL(-280), 17); // TODO improve emitting of memcpy instructions
+    memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(ACCESS(STACKVAR(-308, 4), 0, 4)) + 0x00000011), LOCAL(-256), 256); // TODO improve emitting of memcpy instructions
     goto l1001A9AC;
 l1001AEE4:
     if (STACKVAR(-284, 4) != 0x00000000)
@@ -17177,7 +17177,7 @@ p1001C61D
     STACKVAR(-4, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x00000580);
     STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000100;
     ACCESS(STACKVAR(8, 4), 288, 4) = STACKVAR(-4, 4);
-    memset(reinterpret_cast<any_int32>(STACKVAR(-4, 4)) - 0x00000100, 0x00000000, 0x00000100);
+    memset(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-4, 4)) - 0x00000100), 0, 256);
     STACKVAR(-8, 4) = 0x00000000;
     goto l1001C679;
 l1001C670:
@@ -17199,8 +17199,8 @@ l1001C6AC:
         ACCESS(reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + reinterpret_cast<any_int32>(STACKVAR(-8, 4)), 0, 1) = 0xFF;
         goto l1001C6A3;
     }
-    memset(reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000200, 0x00000000, 0x00000180);
-    memcpy(reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000380, ACCESS(STACKVAR(8, 4), 288, 4), 0x00000080); // TODO improve emitting of memcpy instructions
+    memset(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000200), 0, 384);
+    return memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000380), reinterpret_cast<void *>(ACCESS(STACKVAR(8, 4), 288, 4)), 128);
 }
 
 // address: 0x1001C6F1
@@ -17750,7 +17750,7 @@ p1001D69E
     STACKVAR(-72, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 24, 4), 4, 4);
     STACKVAR(-4, 4) = ACCESS(STACKVAR(-24, 4), 12, 4);
     STACKVAR(-56, 4) = ACCESS(STACKVAR(-24, 4), 16, 4);
-    memcpy(LOCAL(-44), reinterpret_cast<any_int32>(STACKVAR(-24, 4)) + 0x00000014, 0x00000014); // TODO improve emitting of memcpy instructions
+    memcpy(LOCAL(-44), reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-24, 4)) + 0x00000014), 20); // TODO improve emitting of memcpy instructions
     STACKVAR(-80, 4) = 0x00000000;
     goto l1001D750;
 l1001D747:
@@ -17833,7 +17833,7 @@ l1001D92A:
     ACCESS(ACCESS(STACKVAR(8, 4), 24, 4), 4, 4) = STACKVAR(-72, 4);
     ACCESS(STACKVAR(-24, 4), 12, 4) = STACKVAR(-4, 4);
     ACCESS(STACKVAR(-24, 4), 16, 4) = STACKVAR(-56, 4);
-    memcpy(reinterpret_cast<any_int32>(STACKVAR(-24, 4)) + 0x00000014, LOCAL(-44), 0x00000014); // TODO improve emitting of memcpy instructions
+    memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-24, 4)) + 0x00000014), LOCAL(-44), 20); // TODO improve emitting of memcpy instructions
 l1001D963:
     ACCESS(STACKVAR(-24, 4), 40, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-24, 4), 40, 4)) - 0x00000001;
     REGDEF(al=0x01)
@@ -18963,7 +18963,7 @@ p1001F76C
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
     ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 8, 4)(STACKVAR(8, 4));
     unknown_function_1000F640(STACKVAR(8, 4));
-    exit(0x00000001);
+    exit(1);
 }
 
 // address: 0x1001F794
@@ -18971,7 +18971,7 @@ p1001F794
 {
     ProcedureInfo(this=None, this_offset=None, local_size=200, stack_delta=0)
     ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 12, 4)(STACKVAR(8, 4), LOCAL(-200));
-    fprintf(reinterpret_cast<any_int32>(&_iob) + 0x00000040, GLOBAL(0x100487B4), LOCAL(-200));
+    return fprintf(reinterpret_cast<FILE *>(reinterpret_cast<any_int32>(&_iob) + 0x00000040), "%s\n", LOCAL(-200));
 }
 
 // address: 0x1001F7D6
@@ -19055,10 +19055,9 @@ l1001F8CF:
     }
     if ((reinterpret_cast<any_int32>(STACKVAR(-12, 4)) & 0x000000FF) != 0x00000000)
     {
-        sprintf(STACKVAR(12, 4), STACKVAR(-16, 4), reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + 0x00000018);
-        return;
+        return sprintf(reinterpret_cast<char *>(STACKVAR(12, 4)), reinterpret_cast<char *>(STACKVAR(-16, 4)), reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + 0x00000018);
     }
-    sprintf(STACKVAR(12, 4), STACKVAR(-16, 4), ACCESS(STACKVAR(-8, 4), 24, 4), ACCESS(STACKVAR(-8, 4), 28, 4), ACCESS(STACKVAR(-8, 4), 32, 4), ACCESS(STACKVAR(-8, 4), 36, 4), ACCESS(STACKVAR(-8, 4), 40, 4), ACCESS(STACKVAR(-8, 4), 44, 4), ACCESS(STACKVAR(-8, 4), 48, 4), ACCESS(STACKVAR(-8, 4), 52, 4));
+    return sprintf(reinterpret_cast<char *>(STACKVAR(12, 4)), reinterpret_cast<char *>(STACKVAR(-16, 4)), ACCESS(STACKVAR(-8, 4), 24, 4), ACCESS(STACKVAR(-8, 4), 28, 4), ACCESS(STACKVAR(-8, 4), 32, 4), ACCESS(STACKVAR(-8, 4), 36, 4), ACCESS(STACKVAR(-8, 4), 40, 4), ACCESS(STACKVAR(-8, 4), 44, 4), ACCESS(STACKVAR(-8, 4), 48, 4), ACCESS(STACKVAR(-8, 4), 52, 4));
 }
 
 // address: 0x1001F977
@@ -20196,13 +20195,13 @@ l1002272A:
     ACCESS(STACKVAR(-8, 4), 72, 4) = 0x00000000;
     ACCESS(STACKVAR(-8, 4), 76, 4) = 0x00000054;
     ACCESS(STACKVAR(8, 4), 4, 4) = STACKVAR(-8, 4);
-    STACKVAR(-20, 4) = getenv(GLOBAL(0x100487B8));
+    STACKVAR(-20, 4) = getenv("JPEGMEM");
     if (STACKVAR(-20, 4) == 0x00000000)
     {
         goto l100227DB;
     }
     STACKVAR(-24, 1) = 0x78;
-    if (reinterpret_cast<int>(sscanf(STACKVAR(-20, 4), GLOBAL(0x100487C0), LOCAL(-12), LOCAL(-24))) <= 0)
+    if (sscanf(reinterpret_cast<char *>(STACKVAR(-20, 4)), "%ld%c", LOCAL(-12), LOCAL(-24)) <= 0)
     {
         goto l100227DB;
     }
@@ -21035,28 +21034,28 @@ l10023964:
 p100239B0
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
-    malloc(STACKVAR(12, 4));
+    return malloc(reinterpret_cast<size_t>(STACKVAR(12, 4)));
 }
 
 // address: 0x100239C2
 p100239C2
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
-    free(STACKVAR(12, 4));
+    free(reinterpret_cast<void *>(STACKVAR(12, 4)));
 }
 
 // address: 0x100239D4
 p100239D4
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
-    malloc(STACKVAR(12, 4));
+    return malloc(reinterpret_cast<size_t>(STACKVAR(12, 4)));
 }
 
 // address: 0x100239E6
 p100239E6
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
-    free(STACKVAR(12, 4));
+    free(reinterpret_cast<void *>(STACKVAR(12, 4)));
 }
 
 // address: 0x100239F8
@@ -23062,7 +23061,7 @@ l10026908:
         STACKVAR(8, 4) = reinterpret_cast<any_int32>(STACKVAR(8, 4)) + 0x00000004;
         STACKVAR(-12, 4) = ACCESS(STACKVAR(16, 4), 0, 4);
         STACKVAR(16, 4) = reinterpret_cast<any_int32>(STACKVAR(16, 4)) + 0x00000004;
-        memcpy(STACKVAR(-12, 4), STACKVAR(-16, 4), STACKVAR(-8, 4)); // TODO improve emitting of memcpy instructions
+        memcpy(reinterpret_cast<void *>(STACKVAR(-12, 4)), reinterpret_cast<void *>(STACKVAR(-16, 4)), reinterpret_cast<size_t>(STACKVAR(-8, 4))); // TODO improve emitting of memcpy instructions
         goto l100268FF;
     }
 }
@@ -23071,14 +23070,14 @@ l10026908:
 p1002694F
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
-    memcpy(STACKVAR(12, 4), STACKVAR(8, 4), 0x00000080 * reinterpret_cast<any_int32>(STACKVAR(16, 4))); // TODO improve emitting of memcpy instructions
+    return memcpy(reinterpret_cast<void *>(STACKVAR(12, 4)), reinterpret_cast<void *>(STACKVAR(8, 4)), 128 * reinterpret_cast<size_t>(STACKVAR(16, 4)));
 }
 
 // address: 0x10026972
 p10026972
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
-    memset(STACKVAR(8, 4), 0x00000000, STACKVAR(12, 4));
+    return memset(reinterpret_cast<void *>(STACKVAR(8, 4)), 0, reinterpret_cast<size_t>(STACKVAR(12, 4)));
 }
 
 // address: 0x10026990
@@ -23475,7 +23474,7 @@ l10027270:
 // address: 0x100272A5
 unsigned int B_BitMap24::SetBits(int arg_1, int arg_2, const char *arg_3, const char *arg_4)
 {
-    if (strcmp(arg_4, GLOBAL(0x100487C8)) != 0)
+    if (strcmp(arg_4, "RGB") != 0)
     {
         goto l10027378;
     }
@@ -23496,7 +23495,7 @@ l100272DD:
     this->data = reinterpret_cast<void *>(STACKVAR(-8, 4));
     if (this->data == nullptr)
     {
-        _assert(GLOBAL(0x100487EC), GLOBAL(0x100487CC), 0x0000008D);
+        _assert("Bits", "C:\code\BITMAP24\BITMAP24.CPP", 141);
     }
 l1002734A:
     memcpy(this->data, arg_3, 3 * this->dimension1 * this->dimension2); // TODO improve emitting of memcpy instructions
@@ -23904,17 +23903,17 @@ l1002833A:
 void B_BitMap24::EscribeArchivoRAW(const char *arg_1)
 {
     STACKVAR(-8, 4) = 3 * this->dimension1 * this->dimension2;
-    STACKVAR(-4, 4) = fopen(arg_1, GLOBAL(0x10048824));
+    STACKVAR(-4, 4) = fopen(arg_1, "wb");
     if (STACKVAR(-4, 4) == 0x00000000)
     {
         return;
     }
-    if (STACKVAR(-8, 4) != fwrite(this->data, 0x00000001, STACKVAR(-8, 4), STACKVAR(-4, 4)))
+    if (reinterpret_cast<size_t>(STACKVAR(-8, 4)) != fwrite(this->data, 1, reinterpret_cast<size_t>(STACKVAR(-8, 4)), reinterpret_cast<FILE *>(STACKVAR(-4, 4))))
     {
-        fclose(STACKVAR(-4, 4));
+        fclose(reinterpret_cast<FILE *>(STACKVAR(-4, 4)));
         return;
     }
-    fclose(STACKVAR(-4, 4));
+    fclose(reinterpret_cast<FILE *>(STACKVAR(-4, 4)));
 }
 
 // address: 0x100283CD
@@ -24022,7 +24021,7 @@ p100285A0
 p100285F5
 {
     ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=0)
-    memset(STACKVAR(12, 4), 0x00000000, 0x00000040);
+    memset(reinterpret_cast<void *>(STACKVAR(12, 4)), 0, 64);
     reinterpret_cast<B_IDataFile &>(STACKVAR(8, 4)) >> reinterpret_cast<unsigned long &>(STACKVAR(12, 4));
     STACKVAR(-4, 4) = 0x00000004;
     if (reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 0, 4)) <= 12)
@@ -24726,7 +24725,7 @@ int B_BitMap24::ReadFromJPEG(const char *arg_0)
 {
     STACKVAR(-428, 4) = unknown_function_1001F6E0(LOCAL(-564));
     unknown_function_10013490(LOCAL(-428), 0x0000003E, 0x000001AC);
-    STACKVAR(-432, 4) = fopen(arg_0, GLOBAL(0x10048828));
+    STACKVAR(-432, 4) = fopen(arg_0, "rb");
     if (STACKVAR(-432, 4) == 0x00000000)
     {
         mout << vararg("B_BitMap24: can't open %s\n", arg_0);
@@ -24763,7 +24762,7 @@ l1002966C:
     }
     unknown_function_10013B69(LOCAL(-428));
     unknown_function_10013602(LOCAL(-428));
-    fclose(STACKVAR(-432, 4));
+    fclose(reinterpret_cast<FILE *>(STACKVAR(-432, 4)));
     return 1;
 }
 
@@ -24772,7 +24771,7 @@ int B_BitMap24::SaveToJPEG(const char *arg_1, int arg_2)
 {
     STACKVAR(-356, 4) = unknown_function_1001F6E0(LOCAL(-500));
     unknown_function_100096A0(LOCAL(-356), 0x0000003E, 0x00000164);
-    STACKVAR(-368, 4) = fopen(arg_1, GLOBAL(0x10048870));
+    STACKVAR(-368, 4) = fopen(arg_1, "wb");
     if (STACKVAR(-368, 4) == 0x00000000)
     {
         mout << vararg("B_BitMap24: can't open %s\n", arg_1);
@@ -24794,7 +24793,7 @@ int B_BitMap24::SaveToJPEG(const char *arg_1, int arg_2)
         unknown_function_10009CD5(LOCAL(-356), LOCAL(-364), 0x00000001);
     }
     unknown_function_100098C9(LOCAL(-356));
-    fclose(STACKVAR(-368, 4));
+    fclose(reinterpret_cast<FILE *>(STACKVAR(-368, 4)));
     unknown_function_1000980C(LOCAL(-356));
     return 1;
 }
@@ -25003,7 +25002,7 @@ B_MessageManager::B_MessageManager()
         ACCESS(GLOBAL(0x1004A944), 0, 4) = STACKVAR(-12, 4);
         if (ACCESS(GLOBAL(0x1004A944), 0, 4) == 0x00000000)
         {
-            _assert(GLOBAL(0x100488A8), GLOBAL(0x10048890), 0x00000025);
+            _assert("db!=NULL", "C:\code\DEBUG\DEBUG.CPP", 37);
         }
     }
 }
@@ -25469,9 +25468,9 @@ void OutputWin32Error(const char *message)
 {
     STACKVAR(-4, 4) = GetLastError();
     mout << message;
-    FormatMessageA(0x00001100, 0x00000000, STACKVAR(-4, 4), 0x00000400, LOCAL(-8), 0x00000000, 0x00000000);
+    FormatMessageA(4352, nullptr, reinterpret_cast<DWORD>(STACKVAR(-4, 4)), RASTER_MODE_ADD_SCR_RGB, reinterpret_cast<CHAR *>(LOCAL(-8)), 0, nullptr);
     mout << reinterpret_cast<char *>(STACKVAR(-8, 4));
-    LocalFree(STACKVAR(-8, 4));
+    LocalFree(reinterpret_cast<HLOCAL>(STACKVAR(-8, 4)));
 }
 
 // address: 0x1002A5F0
@@ -25535,9 +25534,9 @@ p1002DF30
 p1002E0B0
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=12)
-    memcpy(this, STACKVAR(8, 4), 0x00000018); // TODO improve emitting of memcpy instructions
-    memcpy(reinterpret_cast<any_int32>(this) + 0x00000018, STACKVAR(12, 4), 0x00000018); // TODO improve emitting of memcpy instructions
-    memcpy(reinterpret_cast<any_int32>(this) + 0x00000030, STACKVAR(16, 4), 0x00000018); // TODO improve emitting of memcpy instructions
+    memcpy(this, reinterpret_cast<void *>(STACKVAR(8, 4)), 24); // TODO improve emitting of memcpy instructions
+    memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(this) + 0x00000018), reinterpret_cast<void *>(STACKVAR(12, 4)), 24); // TODO improve emitting of memcpy instructions
+    return memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(this) + 0x00000030), reinterpret_cast<void *>(STACKVAR(16, 4)), 24);
 }
 
 // address: 0x1002E0F0
@@ -25703,7 +25702,7 @@ l1002F0BB:
     STACKVAR(-24, 4) = STACKVAR(-60, 4);
     ACCESS(LOCAL(-20), 0, 8) = STACKVAR(-72, 8);
     ACCESS(LOCAL(-12), 0, 8) = STACKVAR(-80, 8);
-    memcpy(LOCAL(-28), unknown_function_100300A1(LOCAL(-56), LOCAL(-28), STACKVAR(8, 4)), 0x00000018); // TODO improve emitting of memcpy instructions
+    memcpy(LOCAL(-28), reinterpret_cast<void *>(unknown_function_100300A1(LOCAL(-56), LOCAL(-28), STACKVAR(8, 4))), 24); // TODO improve emitting of memcpy instructions
     ACCESS(STACKVAR(8, 4), 96, 8) = -reinterpret_cast<double>(STACKVAR(-28, 8));
     ACCESS(STACKVAR(8, 4), 104, 8) = -reinterpret_cast<double>(STACKVAR(-20, 8));
     ACCESS(STACKVAR(8, 4), 112, 8) = -reinterpret_cast<double>(STACKVAR(-12, 8));
@@ -25731,11 +25730,11 @@ p1002F159
     STACKVAR(-148, 4) = STACKVAR(-188, 4);
     ACCESS(LOCAL(-144), 0, 8) = STACKVAR(-200, 8);
     ACCESS(LOCAL(-136), 0, 8) = STACKVAR(-208, 8);
-    memcpy(LOCAL(-152), unknown_function_100300A1(LOCAL(-184), LOCAL(-152), LOCAL(-128)), 0x00000018); // TODO improve emitting of memcpy instructions
+    memcpy(LOCAL(-152), reinterpret_cast<void *>(unknown_function_100300A1(LOCAL(-184), LOCAL(-152), LOCAL(-128))), 24); // TODO improve emitting of memcpy instructions
     STACKVAR(-32, 8) = -reinterpret_cast<double>(STACKVAR(-152, 8));
     STACKVAR(-24, 8) = -reinterpret_cast<double>(STACKVAR(-144, 8));
     STACKVAR(-16, 8) = -reinterpret_cast<double>(STACKVAR(-136, 8));
-    memcpy(STACKVAR(8, 4), LOCAL(-128), 0x00000080); // TODO improve emitting of memcpy instructions
+    memcpy(reinterpret_cast<void *>(STACKVAR(8, 4)), LOCAL(-128), 128); // TODO improve emitting of memcpy instructions
     REGDEF(eax=STACKVAR(8, 4))
 }
 
@@ -25760,7 +25759,7 @@ p1002F537
     STACKVAR(-24, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 96, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 8, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 104, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 40, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 112, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 72, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 120, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 104, 8));
     STACKVAR(-16, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 96, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 16, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 104, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 48, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 112, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 80, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 120, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 112, 8));
     STACKVAR(-8, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 96, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 24, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 104, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 56, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 112, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 88, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 120, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 120, 8));
-    memcpy(STACKVAR(8, 4), LOCAL(-128), 0x00000080); // TODO improve emitting of memcpy instructions
+    memcpy(reinterpret_cast<void *>(STACKVAR(8, 4)), LOCAL(-128), 128); // TODO improve emitting of memcpy instructions
     REGDEF(eax=STACKVAR(8, 4))
 }
 
@@ -25810,8 +25809,8 @@ p10030232
 p10031284
 {
     ProcedureInfo(this=Id(this), this_offset=-52, local_size=52, stack_delta=12)
-    memcpy(reinterpret_cast<any_int32>(this) + 0x00000004, STACKVAR(12, 4)->unknown_method_10031882(LOCAL(-24), STACKVAR(16, 4)), 0x00000018); // TODO improve emitting of memcpy instructions
-    memcpy(reinterpret_cast<any_int32>(this) + 0x00000004, (reinterpret_cast<any_int32>(this) + 0x00000004)->unknown_method_100315C2(LOCAL(-48), (reinterpret_cast<any_int32>(this) + 0x00000004)->unknown_method_10031913()), 0x00000018); // TODO improve emitting of memcpy instructions
+    memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(this) + 0x00000004), reinterpret_cast<void *>(STACKVAR(12, 4)->unknown_method_10031882(LOCAL(-24), STACKVAR(16, 4))), 24); // TODO improve emitting of memcpy instructions
+    memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(this) + 0x00000004), reinterpret_cast<void *>((reinterpret_cast<any_int32>(this) + 0x00000004)->unknown_method_100315C2(LOCAL(-48), (reinterpret_cast<any_int32>(this) + 0x00000004)->unknown_method_10031913())), 24); // TODO improve emitting of memcpy instructions
     ACCESS(this, 28, 8) = -STACKVAR(8, 4)->unknown_method_1003184F(reinterpret_cast<any_int32>(this) + 0x00000004);
 }
 
@@ -26500,7 +26499,7 @@ l10032BDE:
         STACKVAR(-224, 4) = 0x00000000;
         ACCESS(LOCAL(-220), 0, 8) = 0.0;
         ACCESS(LOCAL(-212), 0, 8) = 0.0;
-        memcpy(reinterpret_cast<any_int32>(ACCESS(this, 40, 4)) + 0x00000030 * reinterpret_cast<any_int32>(STACKVAR(-24, 4)) + 24, LOCAL(-228), 0x00000018); // TODO improve emitting of memcpy instructions
+        memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(ACCESS(this, 40, 4)) + 0x00000030 * reinterpret_cast<any_int32>(STACKVAR(-24, 4)) + 24), LOCAL(-228), 24); // TODO improve emitting of memcpy instructions
         goto l10032BD5;
     }
     STACKVAR(-16, 4) = 0x00000000;
@@ -26526,7 +26525,7 @@ l10032C7D:
     STACKVAR(-532, 4) = reinterpret_cast<any_int32>(STACKVAR(-500, 4)) + 0x00000010;
     if (reinterpret_cast<unsigned int>(STACKVAR(-4, 4)) > reinterpret_cast<unsigned int>(STACKVAR(-12, 4)))
     {
-        memcpy(reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-12, 4)), STACKVAR(-532, 4), 0x00000080); // TODO improve emitting of memcpy instructions
+        memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-12, 4))), reinterpret_cast<void *>(STACKVAR(-532, 4)), 128); // TODO improve emitting of memcpy instructions
         STACKVAR(-12, 4) = reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + 0x00000001;
         goto l10032E7E;
     }
@@ -26554,7 +26553,7 @@ l10032D90:
 l10032D9F:
     if (reinterpret_cast<unsigned int>(STACKVAR(-512, 4)) < reinterpret_cast<unsigned int>(STACKVAR(-12, 4)))
     {
-        memcpy(reinterpret_cast<any_int32>(STACKVAR(-504, 4)) + 0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-512, 4)), reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-512, 4)), 0x00000080); // TODO improve emitting of memcpy instructions
+        memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-504, 4)) + 0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-512, 4))), reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-512, 4))), 128); // TODO improve emitting of memcpy instructions
         goto l10032D90;
     }
     STACKVAR(-524, 4) = STACKVAR(-16, 4);
@@ -26575,7 +26574,7 @@ l10032DF5:
     }
     STACKVAR(-16, 4) = STACKVAR(-640, 4);
 l10032E5D:
-    memcpy(reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-12, 4)), STACKVAR(-532, 4), 0x00000080); // TODO improve emitting of memcpy instructions
+    memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-12, 4))), reinterpret_cast<void *>(STACKVAR(-532, 4)), 128); // TODO improve emitting of memcpy instructions
     STACKVAR(-12, 4) = reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + 0x00000001;
 l10032E7E:
     goto l10033084;
@@ -26585,7 +26584,7 @@ l10032E83:
     STACKVAR(-572, 4) = unknown_function_1002F537(LOCAL(-356), reinterpret_cast<any_int32>(STACKVAR(-540, 4)) + 0x00000010, reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000080 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-536, 4), 12, 4)));
     if (reinterpret_cast<unsigned int>(STACKVAR(-4, 4)) > reinterpret_cast<unsigned int>(STACKVAR(-12, 4)))
     {
-        memcpy(reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-12, 4)), STACKVAR(-572, 4), 0x00000080); // TODO improve emitting of memcpy instructions
+        memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-12, 4))), reinterpret_cast<void *>(STACKVAR(-572, 4)), 128); // TODO improve emitting of memcpy instructions
         STACKVAR(-12, 4) = reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + 0x00000001;
         goto l10033084;
     }
@@ -26613,7 +26612,7 @@ l10032F96:
 l10032FA5:
     if (reinterpret_cast<unsigned int>(STACKVAR(-552, 4)) < reinterpret_cast<unsigned int>(STACKVAR(-12, 4)))
     {
-        memcpy(reinterpret_cast<any_int32>(STACKVAR(-544, 4)) + 0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-552, 4)), reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-552, 4)), 0x00000080); // TODO improve emitting of memcpy instructions
+        memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-544, 4)) + 0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-552, 4))), reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-552, 4))), 128); // TODO improve emitting of memcpy instructions
         goto l10032F96;
     }
     STACKVAR(-564, 4) = STACKVAR(-16, 4);
@@ -26634,7 +26633,7 @@ l10032FFB:
     }
     STACKVAR(-16, 4) = STACKVAR(-648, 4);
 l10033063:
-    memcpy(reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-12, 4)), STACKVAR(-572, 4), 0x00000080); // TODO improve emitting of memcpy instructions
+    memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-12, 4))), reinterpret_cast<void *>(STACKVAR(-572, 4)), 128); // TODO improve emitting of memcpy instructions
     STACKVAR(-12, 4) = reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + 0x00000001;
 l10033084:
     goto l10032C74;
@@ -26658,7 +26657,7 @@ l100330D1:
     {
         STACKVAR(-576, 4) = ACCESS(ARRPTR(ACCESS(this, 80, 4), 4, STACKVAR(-24, 4), 0), 0, 4);
         STACKVAR(-580, 4) = ACCESS(ARRPTR(ACCESS(this, 80, 4), 4, STACKVAR(-24, 4), 0), 0, 4);
-        memcpy(reinterpret_cast<any_int32>(STACKVAR(-32, 4)) + 0x00000018 * (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-580, 4), 168, 4)) + reinterpret_cast<any_int32>(STACKVAR(-40, 4))), unknown_function_1002FEB3(LOCAL(-380), reinterpret_cast<any_int32>(ACCESS(this, 40, 4)) + 0x00000030 * (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-576, 4), 168, 4)) + reinterpret_cast<any_int32>(STACKVAR(-40, 4))), reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-24, 4))), 0x00000018); // TODO improve emitting of memcpy instructions
+        memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-32, 4)) + 0x00000018 * (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-580, 4), 168, 4)) + reinterpret_cast<any_int32>(STACKVAR(-40, 4)))), reinterpret_cast<void *>(unknown_function_1002FEB3(LOCAL(-380), reinterpret_cast<any_int32>(ACCESS(this, 40, 4)) + 0x00000030 * (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-576, 4), 168, 4)) + reinterpret_cast<any_int32>(STACKVAR(-40, 4))), reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-24, 4)))), 24); // TODO improve emitting of memcpy instructions
         goto l100330C8;
     }
     goto l10033092;
@@ -26676,7 +26675,7 @@ l10033182:
         ACCESS(LOCAL(-48), 0, 8) = 0.0;
         STACKVAR(-584, 4) = reinterpret_cast<any_int32>(ACCESS(this, 60, 4)) + 0x00000038 * reinterpret_cast<any_int32>(STACKVAR(-24, 4));
         STACKVAR(-588, 4) = reinterpret_cast<any_int32>(ACCESS(this, 60, 4)) + 0x00000038 * reinterpret_cast<any_int32>(STACKVAR(-24, 4));
-        memcpy(LOCAL(-64), (reinterpret_cast<any_int32>(STACKVAR(-32, 4)) + 0x00000018 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-588, 4), 4, 4)))->unknown_method_10031760(LOCAL(-404), reinterpret_cast<any_int32>(STACKVAR(-32, 4)) + 0x00000018 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-584, 4), 0, 4)), LOCAL(-452), (reinterpret_cast<any_int32>(STACKVAR(-32, 4)) + 0x00000018 * reinterpret_cast<any_int32>(ACCESS(ARRPTR(ACCESS(this, 60, 4), 1, 0x00000038 * reinterpret_cast<any_int32>(STACKVAR(-24, 4)), 8), 0, 4)))->unknown_method_10031760(LOCAL(-428), reinterpret_cast<any_int32>(STACKVAR(-32, 4)) + 0x00000018 * reinterpret_cast<any_int32>(ACCESS(ARRPTR(ACCESS(this, 60, 4), 1, 0x00000038 * reinterpret_cast<any_int32>(STACKVAR(-24, 4)), 0), 0, 4))))->unknown_method_10031882(), 0x00000018); // TODO improve emitting of memcpy instructions
+        memcpy(LOCAL(-64), reinterpret_cast<void *>((reinterpret_cast<any_int32>(STACKVAR(-32, 4)) + 0x00000018 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-588, 4), 4, 4)))->unknown_method_10031760(LOCAL(-404), reinterpret_cast<any_int32>(STACKVAR(-32, 4)) + 0x00000018 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-584, 4), 0, 4)), LOCAL(-452), (reinterpret_cast<any_int32>(STACKVAR(-32, 4)) + 0x00000018 * reinterpret_cast<any_int32>(ACCESS(ARRPTR(ACCESS(this, 60, 4), 1, 0x00000038 * reinterpret_cast<any_int32>(STACKVAR(-24, 4)), 8), 0, 4)))->unknown_method_10031760(LOCAL(-428), reinterpret_cast<any_int32>(STACKVAR(-32, 4)) + 0x00000018 * reinterpret_cast<any_int32>(ACCESS(ARRPTR(ACCESS(this, 60, 4), 1, 0x00000038 * reinterpret_cast<any_int32>(STACKVAR(-24, 4)), 0), 0, 4))))->unknown_method_10031882()), 24); // TODO improve emitting of memcpy instructions
         LOCAL(-64)->unknown_method_1003165E(LOCAL(-64)->unknown_method_10031913());
         (reinterpret_cast<any_int32>(ACCESS(this, 40, 4)) + 0x00000030 * reinterpret_cast<any_int32>(ACCESS(ARRPTR(ACCESS(this, 60, 4), 1, 0x00000038 * reinterpret_cast<any_int32>(STACKVAR(-24, 4)), 0), 0, 4)) + 24)->unknown_method_100317C9(LOCAL(-64));
         (reinterpret_cast<any_int32>(ACCESS(this, 40, 4)) + 0x00000030 * reinterpret_cast<any_int32>(ACCESS(ARRPTR(ACCESS(this, 60, 4), 1, 0x00000038 * reinterpret_cast<any_int32>(STACKVAR(-24, 4)), 4), 0, 4)) + 24)->unknown_method_100317C9(LOCAL(-64));
@@ -26705,7 +26704,7 @@ l1003338C:
         STACKVAR(-592, 4) = ACCESS(ARRPTR(ACCESS(this, 80, 4), 4, STACKVAR(-24, 4), 0), 0, 4);
         STACKVAR(-596, 4) = ACCESS(ARRPTR(ACCESS(this, 80, 4), 4, STACKVAR(-24, 4), 0), 0, 4);
         STACKVAR(-600, 4) = reinterpret_cast<any_int32>(ACCESS(this, 40, 4)) + 0x00000030 * (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-596, 4), 168, 4)) + reinterpret_cast<any_int32>(STACKVAR(-200, 4)));
-        memcpy(reinterpret_cast<any_int32>(STACKVAR(-600, 4)) + 0x00000018, unknown_function_100300A1(LOCAL(-476), reinterpret_cast<any_int32>(ACCESS(this, 40, 4)) + 0x00000030 * (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-592, 4), 168, 4)) + reinterpret_cast<any_int32>(STACKVAR(-200, 4))) + 24, LOCAL(-196)), 0x00000018); // TODO improve emitting of memcpy instructions
+        memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-600, 4)) + 0x00000018), reinterpret_cast<void *>(unknown_function_100300A1(LOCAL(-476), reinterpret_cast<any_int32>(ACCESS(this, 40, 4)) + 0x00000030 * (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-592, 4), 168, 4)) + reinterpret_cast<any_int32>(STACKVAR(-200, 4))) + 24, LOCAL(-196))), 24); // TODO improve emitting of memcpy instructions
         STACKVAR(-604, 4) = ACCESS(ARRPTR(ACCESS(this, 80, 4), 4, STACKVAR(-24, 4), 0), 0, 4);
         if ((reinterpret_cast<any_int32>(ACCESS(this, 40, 4)) + 0x00000030 * (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-604, 4), 168, 4)) + reinterpret_cast<any_int32>(STACKVAR(-200, 4))) + 24)->unknown_method_10031913() > reinterpret_cast<double>(ACCESS(GLOBAL(0x10042CE0), 0, 8)))
         {
@@ -26717,7 +26716,7 @@ l1003338C:
         else
         {
             STACKVAR(-620, 4) = ACCESS(ARRPTR(ACCESS(this, 80, 4), 4, STACKVAR(-24, 4), 0), 0, 4);
-            memcpy(reinterpret_cast<any_int32>(ACCESS(this, 40, 4)) + 0x00000030 * (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-620, 4), 168, 4)) + reinterpret_cast<any_int32>(STACKVAR(-200, 4))) + 24, GLOBAL(0x1004A948), 0x00000018); // TODO improve emitting of memcpy instructions
+            memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(ACCESS(this, 40, 4)) + 0x00000030 * (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-620, 4), 168, 4)) + reinterpret_cast<any_int32>(STACKVAR(-200, 4))) + 24), GLOBAL(0x1004A948), 24); // TODO improve emitting of memcpy instructions
         }
         goto l1003337D;
     }
@@ -26803,7 +26802,7 @@ l10033727:
     STACKVAR(-572, 4) = reinterpret_cast<any_int32>(STACKVAR(-528, 4)) + 0x00000010;
     if (reinterpret_cast<unsigned int>(STACKVAR(-4, 4)) > reinterpret_cast<unsigned int>(STACKVAR(-12, 4)))
     {
-        memcpy(reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-12, 4)), STACKVAR(-572, 4), 0x00000080); // TODO improve emitting of memcpy instructions
+        memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-12, 4))), reinterpret_cast<void *>(STACKVAR(-572, 4)), 128); // TODO improve emitting of memcpy instructions
         STACKVAR(-12, 4) = reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + 0x00000001;
         goto l10033964;
     }
@@ -26842,7 +26841,7 @@ l10033876:
 l10033885:
     if (reinterpret_cast<unsigned int>(STACKVAR(-540, 4)) < reinterpret_cast<unsigned int>(STACKVAR(-12, 4)))
     {
-        memcpy(reinterpret_cast<any_int32>(STACKVAR(-532, 4)) + 0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-540, 4)), reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-540, 4)), 0x00000080); // TODO improve emitting of memcpy instructions
+        memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-532, 4)) + 0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-540, 4))), reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-540, 4))), 128); // TODO improve emitting of memcpy instructions
         goto l10033876;
     }
     STACKVAR(-552, 4) = STACKVAR(-16, 4);
@@ -26863,7 +26862,7 @@ l100338DB:
     }
     STACKVAR(-16, 4) = STACKVAR(-672, 4);
 l10033943:
-    memcpy(reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-12, 4)), STACKVAR(-572, 4), 0x00000080); // TODO improve emitting of memcpy instructions
+    memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-12, 4))), reinterpret_cast<void *>(STACKVAR(-572, 4)), 128); // TODO improve emitting of memcpy instructions
     STACKVAR(-12, 4) = reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + 0x00000001;
 l10033964:
     goto l10033BE5;
@@ -26873,7 +26872,7 @@ l10033969:
     STACKVAR(-636, 4) = unknown_function_1002F537(LOCAL(-252), reinterpret_cast<any_int32>(STACKVAR(-580, 4)) + 0x00000010, reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000080 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-576, 4), 12, 4)));
     if (reinterpret_cast<unsigned int>(STACKVAR(-4, 4)) > reinterpret_cast<unsigned int>(STACKVAR(-12, 4)))
     {
-        memcpy(reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-12, 4)), STACKVAR(-636, 4), 0x00000080); // TODO improve emitting of memcpy instructions
+        memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-12, 4))), reinterpret_cast<void *>(STACKVAR(-636, 4)), 128); // TODO improve emitting of memcpy instructions
         STACKVAR(-12, 4) = reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + 0x00000001;
         goto l10033BE5;
     }
@@ -26912,7 +26911,7 @@ l10033AB8:
 l10033AC7:
     if (reinterpret_cast<unsigned int>(STACKVAR(-592, 4)) < reinterpret_cast<unsigned int>(STACKVAR(-12, 4)))
     {
-        memcpy(reinterpret_cast<any_int32>(STACKVAR(-584, 4)) + 0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-592, 4)), reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-592, 4)), 0x00000080); // TODO improve emitting of memcpy instructions
+        memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-584, 4)) + 0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-592, 4))), reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-592, 4))), 128); // TODO improve emitting of memcpy instructions
         goto l10033AB8;
     }
     STACKVAR(-604, 4) = STACKVAR(-16, 4);
@@ -26944,7 +26943,7 @@ l10033BB1:
 l10033BBB:
     STACKVAR(-16, 4) = STACKVAR(-680, 4);
 l10033BC4:
-    memcpy(reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-12, 4)), STACKVAR(-636, 4), 0x00000080); // TODO improve emitting of memcpy instructions
+    memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-12, 4))), reinterpret_cast<void *>(STACKVAR(-636, 4)), 128); // TODO improve emitting of memcpy instructions
     STACKVAR(-12, 4) = reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + 0x00000001;
 l10033BE5:
     goto l1003371E;
@@ -26968,7 +26967,7 @@ l10033C32:
     {
         STACKVAR(-640, 4) = ACCESS(ARRPTR(ACCESS(this, 80, 4), 4, STACKVAR(-28, 4), 0), 0, 4);
         STACKVAR(-644, 4) = ACCESS(ARRPTR(ACCESS(this, 80, 4), 4, STACKVAR(-28, 4), 0), 0, 4);
-        memcpy(reinterpret_cast<any_int32>(STACKVAR(-36, 4)) + 0x00000018 * (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-644, 4), 168, 4)) + reinterpret_cast<any_int32>(STACKVAR(-44, 4))), unknown_function_1002FEB3(LOCAL(-276), reinterpret_cast<any_int32>(ACCESS(this, 40, 4)) + 0x00000030 * (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-640, 4), 168, 4)) + reinterpret_cast<any_int32>(STACKVAR(-44, 4))), reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-28, 4))), 0x00000018); // TODO improve emitting of memcpy instructions
+        memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-36, 4)) + 0x00000018 * (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-644, 4), 168, 4)) + reinterpret_cast<any_int32>(STACKVAR(-44, 4)))), reinterpret_cast<void *>(unknown_function_1002FEB3(LOCAL(-276), reinterpret_cast<any_int32>(ACCESS(this, 40, 4)) + 0x00000030 * (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-640, 4), 168, 4)) + reinterpret_cast<any_int32>(STACKVAR(-44, 4))), reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-28, 4)))), 24); // TODO improve emitting of memcpy instructions
         goto l10033C29;
     }
     goto l10033BF3;
@@ -26987,7 +26986,7 @@ l10033CFD:
         ACCESS(LOCAL(-52), 0, 8) = 0.0;
         STACKVAR(-648, 4) = reinterpret_cast<any_int32>(ACCESS(this, 60, 4)) + 0x00000038 * reinterpret_cast<any_int32>(STACKVAR(-28, 4));
         STACKVAR(-652, 4) = reinterpret_cast<any_int32>(ACCESS(this, 60, 4)) + 0x00000038 * reinterpret_cast<any_int32>(STACKVAR(-28, 4));
-        memcpy(LOCAL(-68), (0x00000018 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-652, 4), 4, 4)) + reinterpret_cast<any_int32>(STACKVAR(-36, 4)))->unknown_method_10031760(LOCAL(-300), reinterpret_cast<any_int32>(STACKVAR(-36, 4)) + 0x00000018 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-648, 4), 0, 4)), LOCAL(-348), (reinterpret_cast<any_int32>(STACKVAR(-36, 4)) + 0x00000018 * reinterpret_cast<any_int32>(ACCESS(ARRPTR(ACCESS(this, 60, 4), 1, 0x00000038 * reinterpret_cast<any_int32>(STACKVAR(-28, 4)), 8), 0, 4)))->unknown_method_10031760(LOCAL(-324), reinterpret_cast<any_int32>(STACKVAR(-36, 4)) + 0x00000018 * reinterpret_cast<any_int32>(ACCESS(ARRPTR(ACCESS(this, 60, 4), 1, 0x00000038 * reinterpret_cast<any_int32>(STACKVAR(-28, 4)), 0), 0, 4))))->unknown_method_10031882(), 0x00000018); // TODO improve emitting of memcpy instructions
+        memcpy(LOCAL(-68), reinterpret_cast<void *>((0x00000018 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-652, 4), 4, 4)) + reinterpret_cast<any_int32>(STACKVAR(-36, 4)))->unknown_method_10031760(LOCAL(-300), reinterpret_cast<any_int32>(STACKVAR(-36, 4)) + 0x00000018 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-648, 4), 0, 4)), LOCAL(-348), (reinterpret_cast<any_int32>(STACKVAR(-36, 4)) + 0x00000018 * reinterpret_cast<any_int32>(ACCESS(ARRPTR(ACCESS(this, 60, 4), 1, 0x00000038 * reinterpret_cast<any_int32>(STACKVAR(-28, 4)), 8), 0, 4)))->unknown_method_10031760(LOCAL(-324), reinterpret_cast<any_int32>(STACKVAR(-36, 4)) + 0x00000018 * reinterpret_cast<any_int32>(ACCESS(ARRPTR(ACCESS(this, 60, 4), 1, 0x00000038 * reinterpret_cast<any_int32>(STACKVAR(-28, 4)), 0), 0, 4))))->unknown_method_10031882()), 24); // TODO improve emitting of memcpy instructions
         STACKVAR(-76, 8) = LOCAL(-68)->unknown_method_10031913() / reinterpret_cast<double>(ACCESS(GLOBAL(0x10042CD8), 0, 8));
         ACCESS(this, 560, 8) = reinterpret_cast<double>(STACKVAR(-76, 8)) + reinterpret_cast<double>(ACCESS(this, 560, 8));
         ACCESS(ARRPTR(STACKVAR(-24, 4), 8, ACCESS(ARRPTR(ACCESS(this, 60, 4), 1, 0x00000038 * reinterpret_cast<any_int32>(STACKVAR(-28, 4)), 0), 0, 4), 0), 0, 8) = reinterpret_cast<double>(STACKVAR(-76, 8)) / reinterpret_cast<double>(ACCESS(GLOBAL(0x10042D70), 0, 8));
@@ -27019,7 +27018,7 @@ l10033F31:
     if (reinterpret_cast<unsigned int>(STACKVAR(-112, 4)) < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-116, 4), 164, 4)))
     {
         STACKVAR(-108, 8) = ACCESS(ARRPTR(STACKVAR(-24, 4), 8, reinterpret_cast<any_int32>(ACCESS(STACKVAR(-116, 4), 168, 4)) + reinterpret_cast<any_int32>(STACKVAR(-112, 4)), 0), 0, 8);
-        memcpy(LOCAL(-100), reinterpret_cast<any_int32>(ACCESS(this, 40, 4)) + 0x00000030 * (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-116, 4), 168, 4)) + reinterpret_cast<any_int32>(STACKVAR(-112, 4))), 0x00000018); // TODO improve emitting of memcpy instructions
+        memcpy(LOCAL(-100), reinterpret_cast<void *>(reinterpret_cast<any_int32>(ACCESS(this, 40, 4)) + 0x00000030 * (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-116, 4), 168, 4)) + reinterpret_cast<any_int32>(STACKVAR(-112, 4)))), 24); // TODO improve emitting of memcpy instructions
         (reinterpret_cast<any_int32>(this) + 0x00000240)->unknown_method_100317C9(LOCAL(-100)->unknown_method_10031561(LOCAL(-372), STACKVAR(-108, 4), STACKVAR(-104, 4)));
         ACCESS(this, 568, 8) = reinterpret_cast<double>(STACKVAR(-108, 8)) + reinterpret_cast<double>(ACCESS(this, 568, 8));
         ACCESS(this, 304, 8) = (reinterpret_cast<double>(STACKVAR(-92, 8)) * reinterpret_cast<double>(STACKVAR(-92, 8)) + reinterpret_cast<double>(STACKVAR(-84, 8)) * reinterpret_cast<double>(STACKVAR(-84, 8))) * reinterpret_cast<double>(STACKVAR(-108, 8)) + reinterpret_cast<double>(ACCESS(this, 304, 8));
@@ -27041,7 +27040,7 @@ l100340AF:
     ACCESS(this, 336, 8) = ACCESS(this, 312, 8);
     ACCESS(this, 368, 8) = ACCESS(this, 368, 8);
     ACCESS(this, 376, 8) = ACCESS(this, 376, 8);
-    memcpy(reinterpret_cast<any_int32>(this) + 0x000001B0, (reinterpret_cast<any_int32>(this) + 0x00000130)->unknown_method_1002F159(LOCAL(-500)), 0x00000080); // TODO improve emitting of memcpy instructions
+    memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(this) + 0x000001B0), reinterpret_cast<void *>((reinterpret_cast<any_int32>(this) + 0x00000130)->unknown_method_1002F159(LOCAL(-500))), 128); // TODO improve emitting of memcpy instructions
     (reinterpret_cast<any_int32>(this) + 0x00000240)->unknown_method_1003165E(ACCESS(this, 568, 8));
     STACKVAR(-504, 4) = STACKVAR(-36, 4);
     ??3@YAXPAX@Z(STACKVAR(-504, 4));
@@ -27222,7 +27221,7 @@ l10034508:
     STACKVAR(-116, 4) = reinterpret_cast<any_int32>(this) + 0x000000BC;
     if (reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-116, 4), 16, 4)) > reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-116, 4), 8, 4)))
     {
-        memcpy(reinterpret_cast<any_int32>(ACCESS(STACKVAR(-116, 4), 4, 4)) + 0x00000018 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-116, 4), 8, 4)), LOCAL(-28), 0x00000018); // TODO improve emitting of memcpy instructions
+        memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(ACCESS(STACKVAR(-116, 4), 4, 4)) + 0x00000018 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-116, 4), 8, 4))), LOCAL(-28), 24); // TODO improve emitting of memcpy instructions
         ACCESS(STACKVAR(-116, 4), 8, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-116, 4), 8, 4)) + 0x00000001;
         goto l100347EE;
     }
@@ -27261,7 +27260,7 @@ l100346F7:
 l10034700:
     if (reinterpret_cast<unsigned int>(STACKVAR(-72, 4)) < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-116, 4), 8, 4)))
     {
-        memcpy(reinterpret_cast<any_int32>(STACKVAR(-68, 4)) + 0x00000018 * reinterpret_cast<any_int32>(STACKVAR(-72, 4)), reinterpret_cast<any_int32>(ACCESS(STACKVAR(-116, 4), 4, 4)) + 0x00000018 * reinterpret_cast<any_int32>(STACKVAR(-72, 4)), 0x00000018); // TODO improve emitting of memcpy instructions
+        memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-68, 4)) + 0x00000018 * reinterpret_cast<any_int32>(STACKVAR(-72, 4))), reinterpret_cast<void *>(reinterpret_cast<any_int32>(ACCESS(STACKVAR(-116, 4), 4, 4)) + 0x00000018 * reinterpret_cast<any_int32>(STACKVAR(-72, 4))), 24); // TODO improve emitting of memcpy instructions
         goto l100346F7;
     }
     STACKVAR(-84, 4) = ACCESS(STACKVAR(-116, 4), 4, 4);
@@ -27293,13 +27292,13 @@ l100347AE:
 l100347B8:
     ACCESS(STACKVAR(-116, 4), 4, 4) = STACKVAR(-180, 4);
 l100347C4:
-    memcpy(reinterpret_cast<any_int32>(ACCESS(STACKVAR(-116, 4), 4, 4)) + 0x00000018 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-116, 4), 8, 4)), LOCAL(-28), 0x00000018); // TODO improve emitting of memcpy instructions
+    memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(ACCESS(STACKVAR(-116, 4), 4, 4)) + 0x00000018 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-116, 4), 8, 4))), LOCAL(-28), 24); // TODO improve emitting of memcpy instructions
     ACCESS(STACKVAR(-116, 4), 8, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-116, 4), 8, 4)) + 0x00000001;
 l100347EE:
     if (reinterpret_cast<unsigned int>(ACCESS(GLOBAL(0x1004A9A0), 0, 4)) > reinterpret_cast<unsigned int>(ACCESS(GLOBAL(0x1004A998), 0, 4)))
     {
         STACKVAR(-152, 4) = reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A994), 0, 4)) + 0x00000024 * reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A998), 0, 4));
-        memcpy(reinterpret_cast<any_int32>(STACKVAR(-152, 4)) + 0x00000004, reinterpret_cast<any_int32>(STACKVAR(16, 4)) + 0x00000004, 0x00000018); // TODO improve emitting of memcpy instructions
+        memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-152, 4)) + 0x00000004), reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(16, 4)) + 0x00000004), 24); // TODO improve emitting of memcpy instructions
         ACCESS(STACKVAR(-152, 4), 28, 8) = ACCESS(STACKVAR(16, 4), 28, 8);
         ACCESS(GLOBAL(0x1004A998), 0, 4) = reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A998), 0, 4)) + 0x00000001;
         goto l10034A6A;
@@ -27530,7 +27529,7 @@ l10034FEB:
     {
         LOCAL(-392)->unknown_method_1002E190();
         (reinterpret_cast<any_int32>(STACKVAR(-32, 4)) + 0x0000000C)->unknown_method_1002F052(LOCAL(-392));
-        memcpy(LOCAL(-172), unknown_function_1002F537(LOCAL(-692), LOCAL(-172), LOCAL(-392)), 0x00000080); // TODO improve emitting of memcpy instructions
+        memcpy(LOCAL(-172), reinterpret_cast<void *>(unknown_function_1002F537(LOCAL(-692), LOCAL(-172), LOCAL(-392))), 128); // TODO improve emitting of memcpy instructions
     }
     else
     {
@@ -27539,7 +27538,7 @@ l10034FEB:
         ACCESS(LOCAL(-708), 0, 8) = 0.0;
         ACCESS(LOCAL(-700), 0, 8) = 0.0;
         LOCAL(-520)->unknown_method_1002E600(LOCAL(-716), 0x54442EEA, 0x3FF921FB);
-        memcpy(LOCAL(-172), unknown_function_1002F537(LOCAL(-844), LOCAL(-172), LOCAL(-520)), 0x00000080); // TODO improve emitting of memcpy instructions
+        memcpy(LOCAL(-172), reinterpret_cast<void *>(unknown_function_1002F537(LOCAL(-844), LOCAL(-172), LOCAL(-520))), 128); // TODO improve emitting of memcpy instructions
     }
     STACKVAR(-196, 4) = 0x00000000;
     STACKVAR(-192, 4) = 0x3FF00000;
@@ -27553,8 +27552,8 @@ l1003512B:
 l10035134:
     if (reinterpret_cast<unsigned int>(STACKVAR(-44, 4)) < reinterpret_cast<unsigned int>(ACCESS(this, 44, 4)))
     {
-        memcpy(reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A9BC), 0, 4)) + 0x00000018 * reinterpret_cast<any_int32>(STACKVAR(-44, 4)), unknown_function_100300A1(LOCAL(-868), reinterpret_cast<any_int32>(ACCESS(this, 40, 4)) + 0x00000030 * reinterpret_cast<any_int32>(STACKVAR(-44, 4)), LOCAL(-172)), 0x00000018); // TODO improve emitting of memcpy instructions
-        memcpy(LOCAL(-544), reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A9BC), 0, 4)) + 0x00000018 * reinterpret_cast<any_int32>(STACKVAR(-44, 4)), 0x00000018); // TODO improve emitting of memcpy instructions
+        memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A9BC), 0, 4)) + 0x00000018 * reinterpret_cast<any_int32>(STACKVAR(-44, 4))), reinterpret_cast<void *>(unknown_function_100300A1(LOCAL(-868), reinterpret_cast<any_int32>(ACCESS(this, 40, 4)) + 0x00000030 * reinterpret_cast<any_int32>(STACKVAR(-44, 4)), LOCAL(-172))), 24); // TODO improve emitting of memcpy instructions
+        memcpy(LOCAL(-544), reinterpret_cast<void *>(reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A9BC), 0, 4)) + 0x00000018 * reinterpret_cast<any_int32>(STACKVAR(-44, 4))), 24); // TODO improve emitting of memcpy instructions
         if (reinterpret_cast<double>(STACKVAR(-260, 8)) > reinterpret_cast<double>(STACKVAR(-544, 8)))
         {
             STACKVAR(-1048, 4) = STACKVAR(-260, 4);
@@ -27660,7 +27659,7 @@ l100354FC:
         STACKVAR(-4, 4) = reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A9BC), 0, 4)) + 0x00000018 * reinterpret_cast<any_int32>(ACCESS(ARRPTR(ACCESS(this, 60, 4), 1, 0x00000038 * reinterpret_cast<any_int32>(STACKVAR(-44, 4)), 0), 0, 4));
         STACKVAR(-8, 4) = reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A9BC), 0, 4)) + 0x00000018 * reinterpret_cast<any_int32>(ACCESS(ARRPTR(ACCESS(this, 60, 4), 1, 0x00000038 * reinterpret_cast<any_int32>(STACKVAR(-44, 4)), 4), 0, 4));
         STACKVAR(-12, 4) = reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A9BC), 0, 4)) + 0x00000018 * reinterpret_cast<any_int32>(ACCESS(ARRPTR(ACCESS(this, 60, 4), 1, 0x00000038 * reinterpret_cast<any_int32>(STACKVAR(-44, 4)), 8), 0, 4));
-        memcpy(LOCAL(-236), STACKVAR(-8, 4)->unknown_method_10031760(LOCAL(-892), STACKVAR(-4, 4), LOCAL(-940), STACKVAR(-12, 4)->unknown_method_10031760(LOCAL(-916), STACKVAR(-4, 4)))->unknown_method_10031882(), 0x00000018); // TODO improve emitting of memcpy instructions
+        memcpy(LOCAL(-236), reinterpret_cast<void *>(STACKVAR(-8, 4)->unknown_method_10031760(LOCAL(-892), STACKVAR(-4, 4), LOCAL(-940), STACKVAR(-12, 4)->unknown_method_10031760(LOCAL(-916), STACKVAR(-4, 4)))->unknown_method_10031882()), 24); // TODO improve emitting of memcpy instructions
         if (reinterpret_cast<double>(STACKVAR(-220, 8)) < reinterpret_cast<double>(ACCESS(GLOBAL(0x10042CF0), 0, 8)))
         {
             raster->(ACCESS(ACCESS(raster, 0, 4), 172, 4))(ACCESS(ARRPTR(ACCESS(this, 60, 4), 1, 0x00000038 * reinterpret_cast<any_int32>(STACKVAR(-44, 4)), 24), 0, 4));
@@ -27702,7 +27701,7 @@ l10035734:
         STACKVAR(-4, 4) = reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A9BC), 0, 4)) + 0x00000018 * reinterpret_cast<any_int32>(ACCESS(ARRPTR(ACCESS(this, 60, 4), 1, 0x00000038 * reinterpret_cast<any_int32>(STACKVAR(-44, 4)), 0), 0, 4));
         STACKVAR(-8, 4) = reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A9BC), 0, 4)) + 0x00000018 * reinterpret_cast<any_int32>(ACCESS(ARRPTR(ACCESS(this, 60, 4), 1, 0x00000038 * reinterpret_cast<any_int32>(STACKVAR(-44, 4)), 4), 0, 4));
         STACKVAR(-12, 4) = reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A9BC), 0, 4)) + 0x00000018 * reinterpret_cast<any_int32>(ACCESS(ARRPTR(ACCESS(this, 60, 4), 1, 0x00000038 * reinterpret_cast<any_int32>(STACKVAR(-44, 4)), 8), 0, 4));
-        memcpy(LOCAL(-236), STACKVAR(-8, 4)->unknown_method_10031760(LOCAL(-964), STACKVAR(-4, 4), LOCAL(-1012), STACKVAR(-12, 4)->unknown_method_10031760(LOCAL(-988), STACKVAR(-4, 4)))->unknown_method_10031882(), 0x00000018); // TODO improve emitting of memcpy instructions
+        memcpy(LOCAL(-236), reinterpret_cast<void *>(STACKVAR(-8, 4)->unknown_method_10031760(LOCAL(-964), STACKVAR(-4, 4), LOCAL(-1012), STACKVAR(-12, 4)->unknown_method_10031760(LOCAL(-988), STACKVAR(-4, 4)))->unknown_method_10031882()), 24); // TODO improve emitting of memcpy instructions
         if (reinterpret_cast<double>(STACKVAR(-220, 8)) < reinterpret_cast<double>(ACCESS(GLOBAL(0x10042CF0), 0, 8)))
         {
             ARG(reinterpret_cast<any_int32>(ACCESS(this, 60, 4)) + 0x00000038 * reinterpret_cast<any_int32>(STACKVAR(-44, 4)) + 24);
@@ -27921,8 +27920,8 @@ l10035F1D:
 l10035F4A:
     goto l10035D34;
 l10035F4F:
-    memcpy(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000130, LOCAL(-172)->unknown_method_1002E2AD(0x00000000, 0x00000000), 0x00000080); // TODO improve emitting of memcpy instructions
-    memcpy(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x000001B0, LOCAL(-300)->unknown_method_1002E2AD(0x00000000, 0x00000000), 0x00000080); // TODO improve emitting of memcpy instructions
+    memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000130), reinterpret_cast<void *>(LOCAL(-172)->unknown_method_1002E2AD(0x00000000, 0x00000000)), 128); // TODO improve emitting of memcpy instructions
+    memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x000001B0), reinterpret_cast<void *>(LOCAL(-300)->unknown_method_1002E2AD(0x00000000, 0x00000000)), 128); // TODO improve emitting of memcpy instructions
     (reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000240)->unknown_method_10031623(0x00000000, 0x00000000);
     STACKVAR(-612, 4) = unknown_function_1002A7F2(STACKVAR(8, 4), reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000258);
     STACKVAR(-616, 4) = reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x000000E8;
@@ -28039,7 +28038,7 @@ l10036408:
         STACKVAR(-320, 4) = 0x00000000;
         ACCESS(LOCAL(-316), 0, 8) = 0.0;
         ACCESS(LOCAL(-308), 0, 8) = 0.0;
-        memcpy(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000258, LOCAL(-324), 0x00000018); // TODO improve emitting of memcpy instructions
+        memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000258), LOCAL(-324), 24); // TODO improve emitting of memcpy instructions
         ACCESS(STACKVAR(12, 4), 624, 8) = 2000.0;
     }
     if (reinterpret_cast<unsigned int>(STACKVAR(-8, 4)) <= 0)
@@ -28145,9 +28144,9 @@ l100366FB:
                     reinterpret_cast<B_Name &>(reinterpret_cast<any_int32>(STACKVAR(-32, 4)) + 0x00000004) = *reinterpret_cast<B_Name *>(LOCAL(-364));
                     reinterpret_cast<B_Name *>(LOCAL(-364))->~B_Name();
                     ACCESS(STACKVAR(-32, 4), 12, 4) = 0x00000000;
-                    memcpy(reinterpret_cast<any_int32>(STACKVAR(-32, 4)) + 0x00000010, unknown_function_1002FEB3(LOCAL(-412), unknown_function_10031505(LOCAL(-388), 0x00000000, 0x407F4000, GLOBAL(0x1004A978)), reinterpret_cast<any_int32>(STACKVAR(-28, 4)) + 0x0000000C), 0x00000018); // TODO improve emitting of memcpy instructions
-                    memcpy(reinterpret_cast<any_int32>(STACKVAR(-32, 4)) + 0x00000028, unknown_function_100300A1(LOCAL(-460), unknown_function_10031505(LOCAL(-436), 0x00000000, 0x407F4000, GLOBAL(0x1004A978)), reinterpret_cast<any_int32>(STACKVAR(-28, 4)) + 0x0000000C), 0x00000018); // TODO improve emitting of memcpy instructions
-                    memcpy(reinterpret_cast<any_int32>(STACKVAR(-32, 4)) + 0x00000040, unknown_function_100300A1(LOCAL(-508), unknown_function_10031505(LOCAL(-484), 0x00000000, 0x40590000, GLOBAL(0x1004A960)), reinterpret_cast<any_int32>(STACKVAR(-28, 4)) + 0x0000000C), 0x00000018); // TODO improve emitting of memcpy instructions
+                    memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-32, 4)) + 0x00000010), reinterpret_cast<void *>(unknown_function_1002FEB3(LOCAL(-412), unknown_function_10031505(LOCAL(-388), 0x00000000, 0x407F4000, GLOBAL(0x1004A978)), reinterpret_cast<any_int32>(STACKVAR(-28, 4)) + 0x0000000C)), 24); // TODO improve emitting of memcpy instructions
+                    memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-32, 4)) + 0x00000028), reinterpret_cast<void *>(unknown_function_100300A1(LOCAL(-460), unknown_function_10031505(LOCAL(-436), 0x00000000, 0x407F4000, GLOBAL(0x1004A978)), reinterpret_cast<any_int32>(STACKVAR(-28, 4)) + 0x0000000C)), 24); // TODO improve emitting of memcpy instructions
+                    memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-32, 4)) + 0x00000040), reinterpret_cast<void *>(unknown_function_100300A1(LOCAL(-508), unknown_function_10031505(LOCAL(-484), 0x00000000, 0x40590000, GLOBAL(0x1004A960)), reinterpret_cast<any_int32>(STACKVAR(-28, 4)) + 0x0000000C)), 24); // TODO improve emitting of memcpy instructions
                     (reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000100)->unknown_method_1003A240(STACKVAR(-32, 4));
                 }
             }
@@ -29500,9 +29499,9 @@ l10039287:
                     reinterpret_cast<B_Name &>(reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + 0x00000004) = *reinterpret_cast<B_Name *>(LOCAL(-36));
                     reinterpret_cast<B_Name *>(LOCAL(-36))->~B_Name();
                     ACCESS(STACKVAR(-12, 4), 12, 4) = 0x00000000;
-                    memcpy(reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + 0x00000010, unknown_function_1002FEB3(LOCAL(-84), unknown_function_10031505(LOCAL(-60), 0x00000000, 0x407F4000, GLOBAL(0x1004A978)), reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + 0x0000000C), 0x00000018); // TODO improve emitting of memcpy instructions
-                    memcpy(reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + 0x00000028, unknown_function_100300A1(LOCAL(-132), unknown_function_10031505(LOCAL(-108), 0x00000000, 0x407F4000, GLOBAL(0x1004A978)), reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + 0x0000000C), 0x00000018); // TODO improve emitting of memcpy instructions
-                    memcpy(reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + 0x00000040, unknown_function_100300A1(LOCAL(-180), unknown_function_10031505(LOCAL(-156), 0x00000000, 0x40590000, GLOBAL(0x1004A960)), reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + 0x0000000C), 0x00000018); // TODO improve emitting of memcpy instructions
+                    memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + 0x00000010), reinterpret_cast<void *>(unknown_function_1002FEB3(LOCAL(-84), unknown_function_10031505(LOCAL(-60), 0x00000000, 0x407F4000, GLOBAL(0x1004A978)), reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + 0x0000000C)), 24); // TODO improve emitting of memcpy instructions
+                    memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + 0x00000028), reinterpret_cast<void *>(unknown_function_100300A1(LOCAL(-132), unknown_function_10031505(LOCAL(-108), 0x00000000, 0x407F4000, GLOBAL(0x1004A978)), reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + 0x0000000C)), 24); // TODO improve emitting of memcpy instructions
+                    memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + 0x00000040), reinterpret_cast<void *>(unknown_function_100300A1(LOCAL(-180), unknown_function_10031505(LOCAL(-156), 0x00000000, 0x40590000, GLOBAL(0x1004A960)), reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + 0x0000000C)), 24); // TODO improve emitting of memcpy instructions
                     (reinterpret_cast<any_int32>(this) + 0x00000100)->unknown_method_1003A240(STACKVAR(-12, 4));
                 }
             }
@@ -31263,7 +31262,7 @@ p1003B6F0
 p1003B780
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=4)
-    memcpy(reinterpret_cast<any_int32>(this) + 0x00000004, reinterpret_cast<any_int32>(STACKVAR(8, 4)) + 0x00000004, 0x00000018); // TODO improve emitting of memcpy instructions
+    memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(this) + 0x00000004), reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(8, 4)) + 0x00000004), 24); // TODO improve emitting of memcpy instructions
     ACCESS(this, 28, 8) = ACCESS(STACKVAR(8, 4), 28, 8);
     REGDEF(eax=this)
 }
@@ -33026,14 +33025,14 @@ B_ElementCSV::~B_ElementCSV()
 unsigned int ReadCSV(const char *file_name, B_NDataBase<B_ElementCSV> *csvs)
 {
     STACKVAR(-264, 4) = 0x00000000;
-    STACKVAR(-4, 4) = fopen(file_name, GLOBAL(0x1004893C));
+    STACKVAR(-4, 4) = fopen(file_name, "rt");
     if (STACKVAR(-4, 4) == 0x00000000)
     {
         mout << vararg("ReadCSV() -> No se ha podido abrir el archivo %s.\n", file_name);
         return 0;
     }
 l1003DC48:
-    STACKVAR(-272, 4) = fscanf(STACKVAR(-4, 4), GLOBAL(0x10048974), LOCAL(-784), LOCAL(-260), LOCAL(-788), LOCAL(-268), LOCAL(-528));
+    STACKVAR(-272, 4) = fscanf(reinterpret_cast<FILE *>(STACKVAR(-4, 4)), "%s %s %f %d %s", LOCAL(-784), LOCAL(-260), LOCAL(-788), LOCAL(-268), LOCAL(-528));
     if (STACKVAR(-272, 4) != 0x00000005)
     {
         goto l1003DEAA;
@@ -33099,7 +33098,7 @@ l1003DEAA:
 l1003DEAC:
     goto l1003DC48;
 l1003DEB1:
-    fclose(STACKVAR(-4, 4));
+    fclose(reinterpret_cast<FILE *>(STACKVAR(-4, 4)));
     return reinterpret_cast<unsigned int>(STACKVAR(-264, 4));
 }
 
@@ -33327,7 +33326,7 @@ p1003E280
     {
         goto l1003E330;
     }
-    STACKVAR(-4, 4) = PyTuple_Size(STACKVAR(8, 4));
+    STACKVAR(-4, 4) = PyTuple_Size(reinterpret_cast<PyObject *>(STACKVAR(8, 4)));
     mout << vararg("Tuple with %d args\n", STACKVAR(-4, 4));
     STACKVAR(-8, 4) = 0x00000000;
     goto l1003E2D9;
@@ -33337,14 +33336,14 @@ l1003E2D9:
     if (reinterpret_cast<int>(STACKVAR(-8, 4)) < reinterpret_cast<int>(STACKVAR(-4, 4)))
     {
         mout << vararg("Item %d is: ", STACKVAR(-8, 4));
-        unknown_function_1003E280(PyTuple_GetItem(STACKVAR(8, 4), STACKVAR(-8, 4)));
+        unknown_function_1003E280(PyTuple_GetItem(reinterpret_cast<PyObject *>(STACKVAR(8, 4)), reinterpret_cast<int>(STACKVAR(-8, 4))));
         mout << "\n";
         goto l1003E2D0;
     }
     return;
 l1003E330:
-    STACKVAR(-12, 4) = PyObject_Str(STACKVAR(8, 4));
-    mout << reinterpret_cast<char *>(PyString_AsString(STACKVAR(-12, 4)));
+    STACKVAR(-12, 4) = PyObject_Str(reinterpret_cast<PyObject *>(STACKVAR(8, 4)));
+    mout << PyString_AsString(reinterpret_cast<PyObject *>(STACKVAR(-12, 4)));
     if (STACKVAR(-12, 4) == 0x00000000)
     {
         return;
@@ -33373,7 +33372,7 @@ PyObject *CallPythonObject(PyObject *func, PyObject *args)
             STACKVAR(-12, 4) = PyObject_Str(func);
             if (STACKVAR(-12, 4) != 0x00000000)
             {
-                mout << vararg("Function (method): %s\n", PyString_AsString(STACKVAR(-12, 4)));
+                mout << vararg("Function (method): %s\n", PyString_AsString(reinterpret_cast<PyObject *>(STACKVAR(-12, 4))));
             }
             if (STACKVAR(-12, 4) != 0x00000000)
             {
@@ -33386,7 +33385,7 @@ PyObject *CallPythonObject(PyObject *func, PyObject *args)
             PyErr_Clear();
         }
     }
-    STACKVAR(-4, 4) = PyEval_CallObjectWithKeywords(func, args, 0x00000000);
+    STACKVAR(-4, 4) = PyEval_CallObjectWithKeywords(func, args, nullptr);
     if ((CheckErrors & 0x00000001) != 0)
     {
         STACKVAR(-16, 4) = PyErr_Occurred();
@@ -33400,7 +33399,7 @@ PyObject *CallPythonObject(PyObject *func, PyObject *args)
             STACKVAR(-20, 4) = PyObject_Str(func);
             if (STACKVAR(-20, 4) != 0x00000000)
             {
-                mout << vararg("Function (method): %s\n", PyString_AsString(STACKVAR(-20, 4)));
+                mout << vararg("Function (method): %s\n", PyString_AsString(reinterpret_cast<PyObject *>(STACKVAR(-20, 4))));
             }
             if (STACKVAR(-20, 4) != 0x00000000)
             {
@@ -33413,7 +33412,7 @@ PyObject *CallPythonObject(PyObject *func, PyObject *args)
             PyErr_Clear();
         }
     }
-    else if (PyErr_Occurred() != 0x00000000)
+    else if (PyErr_Occurred() != nullptr)
     {
         PyErr_Clear();
     }
@@ -33426,7 +33425,7 @@ PyObject *CallPythonObject(PyObject *func, PyObject *args)
         STACKVAR(-24, 4) = PyObject_Str(func);
         if (STACKVAR(-24, 4) != 0x00000000)
         {
-            mout << vararg("Function (method): %s\n", PyString_AsString(STACKVAR(-24, 4)));
+            mout << vararg("Function (method): %s\n", PyString_AsString(reinterpret_cast<PyObject *>(STACKVAR(-24, 4))));
         }
         if (STACKVAR(-24, 4) != 0x00000000)
         {
@@ -33445,7 +33444,7 @@ p1003E660
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    PyString_FromString(GLOBAL(0x10048CD8));
+    return PyString_FromString("<Global variables>");
 }
 
 // address: 0x1003E679
@@ -33454,17 +33453,17 @@ p1003E679
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=0)
     STACKVAR(-4, 4) = 0x00000000;
     STACKVAR(16, 4) = STACKVAR(16, 4);
-    fprintf(STACKVAR(12, 4), GLOBAL(0x10048CEC));
+    fprintf(reinterpret_cast<FILE *>(STACKVAR(12, 4)), "Global variables { ");
     while (ACCESS(ARRPTR(ACCESS(STACKVAR(8, 4), 8, 4), 4, STACKVAR(-4, 4), 0), 0, 4) != 0x00000000)
     {
-        fprintf(STACKVAR(12, 4), GLOBAL(0x10048D00), ACCESS(ACCESS(ARRPTR(ACCESS(STACKVAR(8, 4), 8, 4), 4, STACKVAR(-4, 4), 0), 0, 4), 0, 4));
+        fprintf(reinterpret_cast<FILE *>(STACKVAR(12, 4)), "%s", ACCESS(ACCESS(ARRPTR(ACCESS(STACKVAR(8, 4), 8, 4), 4, STACKVAR(-4, 4), 0), 0, 4), 0, 4));
         STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x00000001;
         if (ACCESS(ARRPTR(ACCESS(STACKVAR(8, 4), 8, 4), 4, STACKVAR(-4, 4), 0), 0, 4) != 0x00000000)
         {
-            fprintf(STACKVAR(12, 4), GLOBAL(0x10048D04));
+            fprintf(reinterpret_cast<FILE *>(STACKVAR(12, 4)), ", ");
         }
     }
-    fprintf(STACKVAR(12, 4), GLOBAL(0x10048D08));
+    fprintf(reinterpret_cast<FILE *>(STACKVAR(12, 4)), " }\n");
     REGDEF(eax=0x00000000)
 }
 
@@ -33477,7 +33476,7 @@ p1003E710
     {
         STACKVAR(-136, 4) = STACKVAR(12, 4);
         STACKVAR(-140, 4) = ACCESS(ACCESS(ARRPTR(ACCESS(STACKVAR(8, 4), 8, 4), 4, STACKVAR(-132, 4), 0), 0, 4), 0, 4);
-        STACKVAR(-152, 4) = strcmp(STACKVAR(-140, 4), STACKVAR(-136, 4));
+        STACKVAR(-152, 4) = strcmp(reinterpret_cast<char *>(STACKVAR(-140, 4)), reinterpret_cast<char *>(STACKVAR(-136, 4)));
         if (STACKVAR(-152, 4) == 0x00000000)
         {
             ACCESS(ACCESS(ARRPTR(ACCESS(STACKVAR(8, 4), 8, 4), 4, STACKVAR(-132, 4), 0), 0, 4), 4, 4)();
@@ -33485,8 +33484,8 @@ p1003E710
         }
         STACKVAR(-132, 4) = reinterpret_cast<any_int32>(STACKVAR(-132, 4)) + 0x00000001;
     }
-    sprintf(LOCAL(-128), GLOBAL(0x10048D0C), STACKVAR(12, 4));
-    PyErr_SetString(ACCESS(&PyExc_NameError, 0, 4), LOCAL(-128));
+    sprintf(reinterpret_cast<char *>(LOCAL(-128)), "C global variable %s not found.", STACKVAR(12, 4));
+    PyErr_SetString(reinterpret_cast<PyObject *>(ACCESS(&PyExc_NameError, 0, 4)), reinterpret_cast<char *>(LOCAL(-128)));
     REGDEF(eax=0x00000000)
 }
 
@@ -33499,7 +33498,7 @@ p1003E831
     {
         STACKVAR(-136, 4) = STACKVAR(12, 4);
         STACKVAR(-140, 4) = ACCESS(ACCESS(ARRPTR(ACCESS(STACKVAR(8, 4), 8, 4), 4, STACKVAR(-132, 4), 0), 0, 4), 0, 4);
-        STACKVAR(-152, 4) = strcmp(STACKVAR(-140, 4), STACKVAR(-136, 4));
+        STACKVAR(-152, 4) = strcmp(reinterpret_cast<char *>(STACKVAR(-140, 4)), reinterpret_cast<char *>(STACKVAR(-136, 4)));
         if (STACKVAR(-152, 4) == 0x00000000)
         {
             ACCESS(ACCESS(ARRPTR(ACCESS(STACKVAR(8, 4), 8, 4), 4, STACKVAR(-132, 4), 0), 0, 4), 8, 4)(STACKVAR(16, 4));
@@ -33507,8 +33506,8 @@ p1003E831
         }
         STACKVAR(-132, 4) = reinterpret_cast<any_int32>(STACKVAR(-132, 4)) + 0x00000001;
     }
-    sprintf(LOCAL(-128), GLOBAL(0x10048D2C), STACKVAR(12, 4));
-    PyErr_SetString(ACCESS(&PyExc_NameError, 0, 4), LOCAL(-128));
+    sprintf(reinterpret_cast<char *>(LOCAL(-128)), "C global variable %s not found.", STACKVAR(12, 4));
+    PyErr_SetString(reinterpret_cast<PyObject *>(ACCESS(&PyExc_NameError, 0, 4)), reinterpret_cast<char *>(LOCAL(-128)));
     REGDEF(eax=0x00000001)
 }
 
@@ -33517,13 +33516,13 @@ p1003E95C
 {
     ProcedureInfo(this=None, this_offset=None, local_size=8, stack_delta=0)
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048D98)) == 0x00000000)
+    if (PyArg_ParseTuple(reinterpret_cast<PyObject *>(STACKVAR(12, 4)), ":GetnOpenedInputFiles") == 0)
     {
         REGDEF(eax=0x00000000)
         return;
     }
     STACKVAR(-8, 4) = GetnOpenedInputFiles();
-    STACKVAR(-4, 4) = Py_BuildValue(GLOBAL(0x10048DB0), STACKVAR(-8, 4));
+    STACKVAR(-4, 4) = Py_BuildValue("i", STACKVAR(-8, 4));
     REGDEF(eax=STACKVAR(-4, 4))
 }
 
@@ -33532,13 +33531,13 @@ p1003E9A6
 {
     ProcedureInfo(this=None, this_offset=None, local_size=8, stack_delta=0)
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048DB4)) == 0x00000000)
+    if (PyArg_ParseTuple(reinterpret_cast<PyObject *>(STACKVAR(12, 4)), ":GetnOpenInputFiles") == 0)
     {
         REGDEF(eax=0x00000000)
         return;
     }
     STACKVAR(-8, 4) = GetnOpenInputFiles();
-    STACKVAR(-4, 4) = Py_BuildValue(GLOBAL(0x10048DC8), STACKVAR(-8, 4));
+    STACKVAR(-4, 4) = Py_BuildValue("i", STACKVAR(-8, 4));
     REGDEF(eax=STACKVAR(-4, 4))
 }
 
@@ -33547,7 +33546,7 @@ p1003E9F0
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=0)
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048DCC)) == 0x00000000)
+    if (PyArg_ParseTuple(reinterpret_cast<PyObject *>(STACKVAR(12, 4)), ":ResetnOpenedInputFiles") == 0)
     {
         REGDEF(eax=0x00000000)
         return;
@@ -33564,12 +33563,12 @@ p1003EA3C
     ProcedureInfo(this=None, this_offset=None, local_size=16, stack_delta=0)
     STACKVAR(-12, 4) = 0x00000000;
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048DE4), LOCAL(-12)) == 0x00000000)
+    if (PyArg_ParseTuple(reinterpret_cast<PyObject *>(STACKVAR(12, 4)), "O:SetOnOpenInputFileFunc", LOCAL(-12)) == 0)
     {
         REGDEF(eax=0x00000000)
         return;
     }
-    if (PyCallable_Check(STACKVAR(-12, 4)) != 0x00000000)
+    if (PyCallable_Check(reinterpret_cast<PyObject *>(STACKVAR(-12, 4))) != 0)
     {
         STACKVAR(-8, 4) = STACKVAR(-12, 4);
     }
@@ -33578,7 +33577,7 @@ p1003EA3C
         STACKVAR(-8, 4) = 0x00000000;
     }
     STACKVAR(-16, 4) = SetOnOpenInputFileFunc(reinterpret_cast<PyObject *>(STACKVAR(-8, 4)));
-    STACKVAR(-4, 4) = Py_BuildValue(GLOBAL(0x10048E00), STACKVAR(-16, 4));
+    STACKVAR(-4, 4) = Py_BuildValue("i", STACKVAR(-16, 4));
     REGDEF(eax=STACKVAR(-4, 4))
 }
 
@@ -33587,7 +33586,7 @@ p1003EAB8
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=0)
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048E04)) == 0x00000000)
+    if (PyArg_ParseTuple(reinterpret_cast<PyObject *>(STACKVAR(12, 4)), ":RemoveOnOpenInputFileFunc") == 0)
     {
         REGDEF(eax=0x00000000)
         return;
@@ -33603,13 +33602,13 @@ p1003EB04
 {
     ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=0)
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048E20), LOCAL(-8)) == 0x00000000)
+    if (PyArg_ParseTuple(reinterpret_cast<PyObject *>(STACKVAR(12, 4)), "s:ReadBOD", LOCAL(-8)) == 0)
     {
         REGDEF(eax=0x00000000)
         return;
     }
     STACKVAR(-12, 4) = unknown_function_100061BA(STACKVAR(-8, 4));
-    STACKVAR(-4, 4) = Py_BuildValue(GLOBAL(0x10048E2C), STACKVAR(-12, 4));
+    STACKVAR(-4, 4) = Py_BuildValue("i", STACKVAR(-12, 4));
     REGDEF(eax=STACKVAR(-4, 4))
 }
 
@@ -33618,13 +33617,13 @@ p1003EB59
 {
     ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=0)
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048E30), LOCAL(-8)) == 0x00000000)
+    if (PyArg_ParseTuple(reinterpret_cast<PyObject *>(STACKVAR(12, 4)), "s:LoadBOD", LOCAL(-8)) == 0)
     {
         REGDEF(eax=0x00000000)
         return;
     }
     STACKVAR(-12, 4) = unknown_function_100061F0(STACKVAR(-8, 4));
-    STACKVAR(-4, 4) = Py_BuildValue(GLOBAL(0x10048E3C), STACKVAR(-12, 4));
+    STACKVAR(-4, 4) = Py_BuildValue("i", STACKVAR(-12, 4));
     REGDEF(eax=STACKVAR(-4, 4))
 }
 
@@ -33633,13 +33632,13 @@ p1003EBAE
 {
     ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=0)
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048E40), LOCAL(-8)) == 0x00000000)
+    if (PyArg_ParseTuple(reinterpret_cast<PyObject *>(STACKVAR(12, 4)), "s:ReadAutoBOD", LOCAL(-8)) == 0)
     {
         REGDEF(eax=0x00000000)
         return;
     }
     STACKVAR(-12, 4) = unknown_function_10006266(STACKVAR(-8, 4));
-    STACKVAR(-4, 4) = Py_BuildValue(GLOBAL(0x10048E50), STACKVAR(-12, 4));
+    STACKVAR(-4, 4) = Py_BuildValue("i", STACKVAR(-12, 4));
     REGDEF(eax=STACKVAR(-4, 4))
 }
 
@@ -33648,13 +33647,13 @@ p1003EC03
 {
     ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=0)
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048E54), LOCAL(-8)) == 0x00000000)
+    if (PyArg_ParseTuple(reinterpret_cast<PyObject *>(STACKVAR(12, 4)), "s:ReadMMP", LOCAL(-8)) == 0)
     {
         REGDEF(eax=0x00000000)
         return;
     }
     STACKVAR(-12, 4) = unknown_function_10006230(STACKVAR(-8, 4));
-    STACKVAR(-4, 4) = Py_BuildValue(GLOBAL(0x10048E60), STACKVAR(-12, 4));
+    STACKVAR(-4, 4) = Py_BuildValue("i", STACKVAR(-12, 4));
     REGDEF(eax=STACKVAR(-4, 4))
 }
 
@@ -33663,13 +33662,13 @@ p1003EC58
 {
     ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=0)
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048E64), LOCAL(-8)) == 0x00000000)
+    if (PyArg_ParseTuple(reinterpret_cast<PyObject *>(STACKVAR(12, 4)), "s:SaveBODData", LOCAL(-8)) == 0)
     {
         REGDEF(eax=0x00000000)
         return;
     }
     STACKVAR(-12, 4) = unknown_function_1000660B(STACKVAR(-8, 4));
-    STACKVAR(-4, 4) = Py_BuildValue(GLOBAL(0x10048E74), STACKVAR(-12, 4));
+    STACKVAR(-4, 4) = Py_BuildValue("i", STACKVAR(-12, 4));
     REGDEF(eax=STACKVAR(-4, 4))
 }
 
@@ -33678,13 +33677,13 @@ p1003ECAD
 {
     ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=0)
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048E78), LOCAL(-8)) == 0x00000000)
+    if (PyArg_ParseTuple(reinterpret_cast<PyObject *>(STACKVAR(12, 4)), "s:LoadBODData", LOCAL(-8)) == 0)
     {
         REGDEF(eax=0x00000000)
         return;
     }
     STACKVAR(-12, 4) = unknown_function_10006620(STACKVAR(-8, 4));
-    STACKVAR(-4, 4) = Py_BuildValue(GLOBAL(0x10048E88), STACKVAR(-12, 4));
+    STACKVAR(-4, 4) = Py_BuildValue("i", STACKVAR(-12, 4));
     REGDEF(eax=STACKVAR(-4, 4))
 }
 
@@ -33693,13 +33692,13 @@ p1003ED02
 {
     ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=0)
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048E8C), LOCAL(-8)) == 0x00000000)
+    if (PyArg_ParseTuple(reinterpret_cast<PyObject *>(STACKVAR(12, 4)), "s:SaveAutoBODData", LOCAL(-8)) == 0)
     {
         REGDEF(eax=0x00000000)
         return;
     }
     STACKVAR(-12, 4) = unknown_function_10006635(STACKVAR(-8, 4));
-    STACKVAR(-4, 4) = Py_BuildValue(GLOBAL(0x10048EA0), STACKVAR(-12, 4));
+    STACKVAR(-4, 4) = Py_BuildValue("i", STACKVAR(-12, 4));
     REGDEF(eax=STACKVAR(-4, 4))
 }
 
@@ -33708,13 +33707,13 @@ p1003ED57
 {
     ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=0)
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048EA4), LOCAL(-8)) == 0x00000000)
+    if (PyArg_ParseTuple(reinterpret_cast<PyObject *>(STACKVAR(12, 4)), "s:LoadAutoBODData", LOCAL(-8)) == 0)
     {
         REGDEF(eax=0x00000000)
         return;
     }
     STACKVAR(-12, 4) = unknown_function_1000664A(STACKVAR(-8, 4));
-    STACKVAR(-4, 4) = Py_BuildValue(GLOBAL(0x10048EB8), STACKVAR(-12, 4));
+    STACKVAR(-4, 4) = Py_BuildValue("i", STACKVAR(-12, 4));
     REGDEF(eax=STACKVAR(-4, 4))
 }
 
@@ -33723,13 +33722,13 @@ p1003EDAC
 {
     ProcedureInfo(this=None, this_offset=None, local_size=16, stack_delta=0)
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048EBC), LOCAL(-8), LOCAL(-12)) == 0x00000000)
+    if (PyArg_ParseTuple(reinterpret_cast<PyObject *>(STACKVAR(12, 4)), "is:LoadResourceToMemory", LOCAL(-8), LOCAL(-12)) == 0)
     {
         REGDEF(eax=0x00000000)
         return;
     }
     STACKVAR(-16, 4) = unknown_function_1000665F(STACKVAR(-8, 4), STACKVAR(-12, 4));
-    STACKVAR(-4, 4) = Py_BuildValue(GLOBAL(0x10048ED4), STACKVAR(-16, 4));
+    STACKVAR(-4, 4) = Py_BuildValue("i", STACKVAR(-16, 4));
     REGDEF(eax=STACKVAR(-4, 4))
 }
 
@@ -33738,13 +33737,13 @@ p1003EE09
 {
     ProcedureInfo(this=None, this_offset=None, local_size=8, stack_delta=0)
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048ED8)) == 0x00000000)
+    if (PyArg_ParseTuple(reinterpret_cast<PyObject *>(STACKVAR(12, 4)), ":GetCurrentLanguage") == 0)
     {
         REGDEF(eax=0x00000000)
         return;
     }
     STACKVAR(-8, 4) = GetCurrentLanguage();
-    STACKVAR(-4, 4) = Py_BuildValue(GLOBAL(0x10048EEC), STACKVAR(-8, 4));
+    STACKVAR(-4, 4) = Py_BuildValue("s", STACKVAR(-8, 4));
     REGDEF(eax=STACKVAR(-4, 4))
 }
 
@@ -33753,13 +33752,13 @@ p1003EE53
 {
     ProcedureInfo(this=None, this_offset=None, local_size=8, stack_delta=0)
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048EF0)) == 0x00000000)
+    if (PyArg_ParseTuple(reinterpret_cast<PyObject *>(STACKVAR(12, 4)), ":GetConfigDirectory") == 0)
     {
         REGDEF(eax=0x00000000)
         return;
     }
     STACKVAR(-8, 4) = GetConfigDirectory();
-    STACKVAR(-4, 4) = Py_BuildValue(GLOBAL(0x10048F04), STACKVAR(-8, 4));
+    STACKVAR(-4, 4) = Py_BuildValue("s", STACKVAR(-8, 4));
     REGDEF(eax=STACKVAR(-4, 4))
 }
 
@@ -33768,14 +33767,14 @@ p1003EE9D
 {
     ProcedureInfo(this=None, this_offset=None, local_size=136, stack_delta=0)
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048F08)) == 0x00000000)
+    if (PyArg_ParseTuple(reinterpret_cast<PyObject *>(STACKVAR(12, 4)), ":GetResourceManager") == 0)
     {
         REGDEF(eax=0x00000000)
         return;
     }
     STACKVAR(-8, 4) = GetResourceManager();
     unknown_function_1003EF05(LOCAL(-136), STACKVAR(-8, 4), GLOBAL(0x10048F1C));
-    STACKVAR(-4, 4) = Py_BuildValue(GLOBAL(0x10048F34), LOCAL(-136));
+    STACKVAR(-4, 4) = Py_BuildValue("s", LOCAL(-136));
     REGDEF(eax=STACKVAR(-4, 4))
 }
 
@@ -33804,11 +33803,11 @@ p1003EF05
     }
     else
     {
-        strcpy(STACKVAR(8, 4), GLOBAL(0x10048D88));
+        strcpy(reinterpret_cast<char *>(STACKVAR(8, 4)), "NULL");
     }
     if (STACKVAR(12, 4) != 0x00000000)
     {
-        strcpy(STACKVAR(8, 4), STACKVAR(16, 4));
+        strcpy(reinterpret_cast<char *>(STACKVAR(8, 4)), reinterpret_cast<char *>(STACKVAR(16, 4)));
     }
 }
 
@@ -33819,7 +33818,7 @@ p1003EFD4
     STACKVAR(-8, 4) = 0x00000000;
     STACKVAR(-12, 4) = 0x00000000;
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048F38), LOCAL(-8), LOCAL(-12)) == 0x00000000)
+    if (PyArg_ParseTuple(reinterpret_cast<PyObject *>(STACKVAR(12, 4)), "|ii:new_B_BitMap24", LOCAL(-8), LOCAL(-12)) == 0)
     {
         REGDEF(eax=0x00000000)
         return;
@@ -33888,7 +33887,7 @@ l1003F201:
 l1003F20B:
     STACKVAR(-16, 4) = STACKVAR(-184, 4);
     unknown_function_1003EF05(LOCAL(-144), STACKVAR(-16, 4), GLOBAL(0x10048F4C));
-    STACKVAR(-4, 4) = Py_BuildValue(GLOBAL(0x10048F5C), LOCAL(-144));
+    STACKVAR(-4, 4) = Py_BuildValue("s", LOCAL(-144));
     REGDEF(eax=STACKVAR(-4, 4))
 }
 
@@ -33898,7 +33897,7 @@ p1003F24C
     ProcedureInfo(this=None, this_offset=None, local_size=24, stack_delta=0)
     STACKVAR(-12, 4) = 0x00000000;
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048F60), LOCAL(-12)) == 0x00000000)
+    if (PyArg_ParseTuple(reinterpret_cast<PyObject *>(STACKVAR(12, 4)), "s:delete_B_BitMap24", LOCAL(-12)) == 0)
     {
         REGDEF(eax=0x00000000)
         return;
@@ -33907,7 +33906,7 @@ p1003F24C
     {
         if (unknown_function_1003F305(STACKVAR(-12, 4), LOCAL(-8), GLOBAL(0x10048F74)) != 0x00000000)
         {
-            PyErr_SetString(ACCESS(&PyExc_TypeError, 0, 4), GLOBAL(0x10048F84));
+            PyErr_SetString(reinterpret_cast<PyObject *>(ACCESS(&PyExc_TypeError, 0, 4)), "Type error in argument 1 of delete_B_BitMap24. Expected _B_BitMap24_p.");
             REGDEF(eax=0x00000000)
             return;
         }
@@ -33973,7 +33972,7 @@ l1003F39C:
     }
     STACKVAR(-296, 4) = STACKVAR(8, 4);
     STACKVAR(-300, 4) = STACKVAR(16, 4);
-    STACKVAR(-312, 4) = strcmp(STACKVAR(-300, 4), STACKVAR(-296, 4));
+    STACKVAR(-312, 4) = strcmp(reinterpret_cast<char *>(STACKVAR(-300, 4)), reinterpret_cast<char *>(STACKVAR(-296, 4)));
     if (STACKVAR(-312, 4) == 0x00000000)
     {
         goto l1003F9DA;
@@ -33982,7 +33981,7 @@ l1003F39C:
     {
         goto l1003F547;
     }
-    qsort(ACCESS(GLOBAL(0x1004BF60), 0, 4), ACCESS(GLOBAL(0x1004BF58), 0, 4), 0x00000010, GLOBAL(0x1003FA24));
+    qsort(reinterpret_cast<void *>(ACCESS(GLOBAL(0x1004BF60), 0, 4)), reinterpret_cast<size_t>(ACCESS(GLOBAL(0x1004BF58), 0, 4)), 16, reinterpret_cast<_CoreCrtNonSecureSearchSortCompareFunction>(GLOBAL(0x1003FA24)));
     STACKVAR(-24, 4) = 0x00000000;
     goto l1003F476;
 l1003F46D:
@@ -34040,12 +34039,12 @@ l1003F56E:
         {
             STACKVAR(-316, 4) = reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000008;
             STACKVAR(-320, 4) = STACKVAR(16, 4);
-            STACKVAR(-332, 4) = strcmp(STACKVAR(-320, 4), STACKVAR(-316, 4));
+            STACKVAR(-332, 4) = strcmp(reinterpret_cast<char *>(STACKVAR(-320, 4)), reinterpret_cast<char *>(STACKVAR(-316, 4)));
             if (STACKVAR(-332, 4) == 0x00000000)
             {
                 STACKVAR(-336, 4) = reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000108;
                 STACKVAR(-340, 4) = STACKVAR(8, 4);
-                STACKVAR(-352, 4) = strcmp(STACKVAR(-340, 4), STACKVAR(-336, 4));
+                STACKVAR(-352, 4) = strcmp(reinterpret_cast<char *>(STACKVAR(-340, 4)), reinterpret_cast<char *>(STACKVAR(-336, 4)));
                 if (STACKVAR(-352, 4) == 0x00000000)
                 {
                     ACCESS(STACKVAR(-16, 4), 0, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-16, 4), 0, 4)) + 0x00000001;
@@ -34103,15 +34102,15 @@ l1003F797:
                     REGDEF(eax=STACKVAR(8, 4))
                     return;
                 }
-                strcpy(LOCAL(-284), ACCESS(STACKVAR(-20, 4), 0, 4));
-                strncat(LOCAL(-284), reinterpret_cast<any_int32>(STACKVAR(16, 4)) + reinterpret_cast<any_int32>(STACKVAR(-28, 4)), 0x000000FF - reinterpret_cast<any_int32>(ACCESS(STACKVAR(-20, 4), 4, 4)));
+                strcpy(reinterpret_cast<char *>(LOCAL(-284)), reinterpret_cast<char *>(ACCESS(STACKVAR(-20, 4), 0, 4)));
+                strncat(reinterpret_cast<char *>(LOCAL(-284)), reinterpret_cast<char *>(reinterpret_cast<any_int32>(STACKVAR(16, 4)) + reinterpret_cast<any_int32>(STACKVAR(-28, 4))), 0x000000FF - reinterpret_cast<size_t>(ACCESS(STACKVAR(-20, 4), 4, 4)));
                 STACKVAR(-356, 4) = LOCAL(-284);
                 STACKVAR(-360, 4) = STACKVAR(8, 4);
-                STACKVAR(-372, 4) = strcmp(STACKVAR(-360, 4), STACKVAR(-356, 4));
+                STACKVAR(-372, 4) = strcmp(reinterpret_cast<char *>(STACKVAR(-360, 4)), reinterpret_cast<char *>(STACKVAR(-356, 4)));
                 if (STACKVAR(-372, 4) == 0x00000000)
                 {
-                    strcpy(0x00000208 * reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004BF64), 0, 4)) + reinterpret_cast<any_int32>(GLOBAL(0x1004AC20)), STACKVAR(8, 4));
-                    strcpy(0x00000208 * reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004BF64), 0, 4)) + reinterpret_cast<any_int32>(GLOBAL(0x1004AB20)), STACKVAR(16, 4));
+                    strcpy(reinterpret_cast<char *>(0x00000208 * reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004BF64), 0, 4)) + reinterpret_cast<any_int32>(GLOBAL(0x1004AC20))), reinterpret_cast<char *>(STACKVAR(8, 4)));
+                    strcpy(reinterpret_cast<char *>(0x00000208 * reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004BF64), 0, 4)) + reinterpret_cast<any_int32>(GLOBAL(0x1004AB20))), reinterpret_cast<char *>(STACKVAR(16, 4)));
                     ACCESS(ARRPTR(GLOBAL(0x1004AB18), 1, 0x00000208 * reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004BF64), 0, 4)), 0), 0, 4) = 0x00000001;
                     ACCESS(ARRPTR(GLOBAL(0x1004AB1C), 1, 0x00000208 * reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004BF64), 0, 4)), 0), 0, 4) = STACKVAR(-20, 4);
                     ACCESS(GLOBAL(0x1004BF64), 0, 4) = reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004BF64), 0, 4)) & 0x00000007;
@@ -34140,7 +34139,7 @@ l1003F9E6:
     REGDEF(eax=0x00000000)
     return;
 l1003F9F2:
-    if (strcmp(STACKVAR(8, 4), GLOBAL(0x10048D90)) == 0)
+    if (strcmp(reinterpret_cast<char *>(STACKVAR(8, 4)), "NULL") == 0)
     {
         ACCESS(STACKVAR(12, 4), 0, 4) = 0x00000000;
         REGDEF(eax=0x00000000)
@@ -34158,7 +34157,7 @@ p1003FA24
     STACKVAR(-8, 4) = STACKVAR(12, 4);
     STACKVAR(-12, 4) = ACCESS(STACKVAR(-8, 4), 0, 4);
     STACKVAR(-16, 4) = ACCESS(STACKVAR(-4, 4), 0, 4);
-    STACKVAR(-28, 4) = strcmp(STACKVAR(-16, 4), STACKVAR(-12, 4));
+    STACKVAR(-28, 4) = strcmp(reinterpret_cast<char *>(STACKVAR(-16, 4)), reinterpret_cast<char *>(STACKVAR(-12, 4)));
     REGDEF(eax=STACKVAR(-28, 4))
 }
 
@@ -34168,7 +34167,7 @@ p1003FA98
     ProcedureInfo(this=None, this_offset=None, local_size=8, stack_delta=0)
     STACKVAR(-8, 4) = STACKVAR(8, 4);
     STACKVAR(-4, 4) = STACKVAR(12, 4);
-    strncmp(STACKVAR(-8, 4), ACCESS(STACKVAR(-4, 4), 0, 4), ACCESS(STACKVAR(-4, 4), 4, 4));
+    return strncmp(reinterpret_cast<char *>(STACKVAR(-8, 4)), reinterpret_cast<char *>(ACCESS(STACKVAR(-4, 4), 0, 4)), reinterpret_cast<size_t>(ACCESS(STACKVAR(-4, 4), 4, 4)));
 }
 
 // address: 0x1003FAC8
@@ -34179,7 +34178,7 @@ p1003FAC8
     STACKVAR(8, 4) = STACKVAR(8, 4);
     STACKVAR(-16, 4) = LOCAL(-28);
     STACKVAR(-20, 4) = LOCAL(-4);
-    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10048FCC), LOCAL(-24)) == 0x00000000)
+    if (PyArg_ParseTuple(reinterpret_cast<PyObject *>(STACKVAR(12, 4)), "s:B_BitMap24_GetDimension", LOCAL(-24)) == 0)
     {
         REGDEF(eax=0x00000000)
         return;
@@ -34188,7 +34187,7 @@ p1003FAC8
     {
         if (unknown_function_1003F305(STACKVAR(-24, 4), LOCAL(-12), GLOBAL(0x10048FE8)) != 0x00000000)
         {
-            PyErr_SetString(ACCESS(&PyExc_TypeError, 0, 4), GLOBAL(0x10048FF8));
+            PyErr_SetString(reinterpret_cast<PyObject *>(ACCESS(&PyExc_TypeError, 0, 4)), "Type error in argument 1 of B_BitMap24_GetDimension. Expected _B_BitMap24_p.");
             REGDEF(eax=0x00000000)
             return;
         }
@@ -34198,9 +34197,9 @@ p1003FAC8
     ACCESS(STACKVAR(-20, 4), 0, 4) = ACCESS(STACKVAR(-40, 4), 8, 4);
     ACCESS(&_Py_NoneStruct, 0, 4) = reinterpret_cast<any_int32>(ACCESS(&_Py_NoneStruct, 0, 4)) + 0x00000001;
     STACKVAR(-8, 4) = &_Py_NoneStruct;
-    STACKVAR(-32, 4) = PyInt_FromLong(ACCESS(STACKVAR(-16, 4), 0, 4));
+    STACKVAR(-32, 4) = PyInt_FromLong(reinterpret_cast<int>(ACCESS(STACKVAR(-16, 4), 0, 4)));
     STACKVAR(-8, 4) = unknown_function_1003FBCD(STACKVAR(-8, 4), STACKVAR(-32, 4));
-    STACKVAR(-36, 4) = PyInt_FromLong(ACCESS(STACKVAR(-20, 4), 0, 4));
+    STACKVAR(-36, 4) = PyInt_FromLong(reinterpret_cast<int>(ACCESS(STACKVAR(-20, 4), 0, 4)));
     STACKVAR(-8, 4) = unknown_function_1003FBCD(STACKVAR(-8, 4), STACKVAR(-36, 4));
     REGDEF(eax=STACKVAR(-8, 4))
 }
@@ -34227,13 +34226,13 @@ p1003FBCD
         if (reinterpret_cast<void *>(ACCESS(STACKVAR(8, 4), 4, 4)) != &PyTuple_Type)
         {
             STACKVAR(-4, 4) = STACKVAR(8, 4);
-            STACKVAR(8, 4) = PyTuple_New(0x00000001);
-            PyTuple_SetItem(STACKVAR(8, 4), 0x00000000, STACKVAR(-4, 4));
+            STACKVAR(8, 4) = PyTuple_New(1);
+            PyTuple_SetItem(reinterpret_cast<PyObject *>(STACKVAR(8, 4)), 0, reinterpret_cast<PyObject *>(STACKVAR(-4, 4)));
         }
-        STACKVAR(-8, 4) = PyTuple_New(0x00000001);
-        PyTuple_SetItem(STACKVAR(-8, 4), 0x00000000, STACKVAR(12, 4));
+        STACKVAR(-8, 4) = PyTuple_New(1);
+        PyTuple_SetItem(reinterpret_cast<PyObject *>(STACKVAR(-8, 4)), 0, reinterpret_cast<PyObject *>(STACKVAR(12, 4)));
         STACKVAR(-4, 4) = STACKVAR(8, 4);
-        STACKVAR(8, 4) = PySequence_Concat(STACKVAR(-4, 4), STACKVAR(-8, 4));
+        STACKVAR(8, 4) = PySequence_Concat(reinterpret_cast<PyObject *>(STACKVAR(-4, 4)), reinterpret_cast<PyObject *>(STACKVAR(-8, 4)));
         ACCESS(STACKVAR(-4, 4), 0, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-4, 4), 0, 4)) - 0x00000001;
         if (ACCESS(STACKVAR(-4, 4), 0, 4) == 0x00000000)
         {
@@ -34254,7 +34253,7 @@ p1003FCF4
     ProcedureInfo(this=None, this_offset=None, local_size=16, stack_delta=0)
     STACKVAR(-12, 4) = 0x00000000;
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10049048), LOCAL(-12)) == 0x00000000)
+    if (PyArg_ParseTuple(reinterpret_cast<PyObject *>(STACKVAR(12, 4)), "s:B_BitMap24_GetData", LOCAL(-12)) == 0)
     {
         REGDEF(eax=0x00000000)
         return;
@@ -34263,13 +34262,13 @@ p1003FCF4
     {
         if (unknown_function_1003F305(STACKVAR(-12, 4), LOCAL(-8), GLOBAL(0x10049060)) != 0x00000000)
         {
-            PyErr_SetString(ACCESS(&PyExc_TypeError, 0, 4), GLOBAL(0x10049070));
+            PyErr_SetString(reinterpret_cast<PyObject *>(ACCESS(&PyExc_TypeError, 0, 4)), "Type error in argument 1 of B_BitMap24_GetData. Expected _B_BitMap24_p.");
             REGDEF(eax=0x00000000)
             return;
         }
     }
     STACKVAR(-16, 4) = unknown_function_1003FD8A(STACKVAR(-8, 4));
-    STACKVAR(-4, 4) = Py_BuildValue(GLOBAL(0x100490B8), STACKVAR(-16, 4));
+    STACKVAR(-4, 4) = Py_BuildValue("l", STACKVAR(-16, 4));
     REGDEF(eax=STACKVAR(-4, 4))
 }
 
@@ -34292,7 +34291,7 @@ p1003FDA8
     ProcedureInfo(this=None, this_offset=None, local_size=20, stack_delta=0)
     STACKVAR(-12, 4) = 0x00000000;
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x100490BC), LOCAL(-12)) == 0x00000000)
+    if (PyArg_ParseTuple(reinterpret_cast<PyObject *>(STACKVAR(12, 4)), "s:B_BitMap24_Clear", LOCAL(-12)) == 0)
     {
         REGDEF(eax=0x00000000)
         return;
@@ -34301,7 +34300,7 @@ p1003FDA8
     {
         if (unknown_function_1003F305(STACKVAR(-12, 4), LOCAL(-8), GLOBAL(0x100490D0)) != 0x00000000)
         {
-            PyErr_SetString(ACCESS(&PyExc_TypeError, 0, 4), GLOBAL(0x100490E0));
+            PyErr_SetString(reinterpret_cast<PyObject *>(ACCESS(&PyExc_TypeError, 0, 4)), "Type error in argument 1 of B_BitMap24_Clear. Expected _B_BitMap24_p.");
             REGDEF(eax=0x00000000)
             return;
         }
@@ -34326,7 +34325,7 @@ p1003FE79
     ProcedureInfo(this=None, this_offset=None, local_size=20, stack_delta=0)
     STACKVAR(-16, 4) = 0x00000000;
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10049128), LOCAL(-16), LOCAL(-12)) == 0x00000000)
+    if (PyArg_ParseTuple(reinterpret_cast<PyObject *>(STACKVAR(12, 4)), "ss:B_BitMap24_SaveToBMP", LOCAL(-16), LOCAL(-12)) == 0)
     {
         REGDEF(eax=0x00000000)
         return;
@@ -34335,13 +34334,13 @@ p1003FE79
     {
         if (unknown_function_1003F305(STACKVAR(-16, 4), LOCAL(-8), GLOBAL(0x10049140)) != 0x00000000)
         {
-            PyErr_SetString(ACCESS(&PyExc_TypeError, 0, 4), GLOBAL(0x10049150));
+            PyErr_SetString(reinterpret_cast<PyObject *>(ACCESS(&PyExc_TypeError, 0, 4)), "Type error in argument 1 of B_BitMap24_SaveToBMP. Expected _B_BitMap24_p.");
             REGDEF(eax=0x00000000)
             return;
         }
     }
     STACKVAR(-20, 4) = reinterpret_cast<B_BitMap24 *>(STACKVAR(-8, 4))->SaveToBMP(reinterpret_cast<char *>(STACKVAR(-12, 4)));
-    STACKVAR(-4, 4) = Py_BuildValue(GLOBAL(0x1004919C), STACKVAR(-20, 4));
+    STACKVAR(-4, 4) = Py_BuildValue("i", STACKVAR(-20, 4));
     REGDEF(eax=STACKVAR(-4, 4))
 }
 
@@ -34351,7 +34350,7 @@ p1003FF12
     ProcedureInfo(this=None, this_offset=None, local_size=20, stack_delta=0)
     STACKVAR(-16, 4) = 0x00000000;
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x100491A0), LOCAL(-16), LOCAL(-12)) == 0x00000000)
+    if (PyArg_ParseTuple(reinterpret_cast<PyObject *>(STACKVAR(12, 4)), "ss:B_BitMap24_ReadFromBMP", LOCAL(-16), LOCAL(-12)) == 0)
     {
         REGDEF(eax=0x00000000)
         return;
@@ -34360,13 +34359,13 @@ p1003FF12
     {
         if (unknown_function_1003F305(STACKVAR(-16, 4), LOCAL(-8), GLOBAL(0x100491BC)) != 0x00000000)
         {
-            PyErr_SetString(ACCESS(&PyExc_TypeError, 0, 4), GLOBAL(0x100491CC));
+            PyErr_SetString(reinterpret_cast<PyObject *>(ACCESS(&PyExc_TypeError, 0, 4)), "Type error in argument 1 of B_BitMap24_ReadFromBMP. Expected _B_BitMap24_p.");
             REGDEF(eax=0x00000000)
             return;
         }
     }
     STACKVAR(-20, 4) = reinterpret_cast<B_BitMap24 *>(STACKVAR(-8, 4))->ReadFromBMP(reinterpret_cast<char *>(STACKVAR(-12, 4)));
-    STACKVAR(-4, 4) = Py_BuildValue(GLOBAL(0x10049218), STACKVAR(-20, 4));
+    STACKVAR(-4, 4) = Py_BuildValue("i", STACKVAR(-20, 4));
     REGDEF(eax=STACKVAR(-4, 4))
 }
 
@@ -34377,7 +34376,7 @@ p1003FFAB
     STACKVAR(-16, 4) = 0x00000032;
     STACKVAR(-20, 4) = 0x00000000;
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x1004921C), LOCAL(-20), LOCAL(-12), LOCAL(-16)) == 0x00000000)
+    if (PyArg_ParseTuple(reinterpret_cast<PyObject *>(STACKVAR(12, 4)), "ss|i:B_BitMap24_SaveToJPEG", LOCAL(-20), LOCAL(-12), LOCAL(-16)) == 0)
     {
         REGDEF(eax=0x00000000)
         return;
@@ -34386,13 +34385,13 @@ p1003FFAB
     {
         if (unknown_function_1003F305(STACKVAR(-20, 4), LOCAL(-8), GLOBAL(0x10049238)) != 0x00000000)
         {
-            PyErr_SetString(ACCESS(&PyExc_TypeError, 0, 4), GLOBAL(0x10049248));
+            PyErr_SetString(reinterpret_cast<PyObject *>(ACCESS(&PyExc_TypeError, 0, 4)), "Type error in argument 1 of B_BitMap24_SaveToJPEG. Expected _B_BitMap24_p.");
             REGDEF(eax=0x00000000)
             return;
         }
     }
     STACKVAR(-24, 4) = reinterpret_cast<B_BitMap24 *>(STACKVAR(-8, 4))->SaveToJPEG(reinterpret_cast<char *>(STACKVAR(-12, 4)), reinterpret_cast<int>(STACKVAR(-16, 4)));
-    STACKVAR(-4, 4) = Py_BuildValue(GLOBAL(0x10049294), STACKVAR(-24, 4));
+    STACKVAR(-4, 4) = Py_BuildValue("i", STACKVAR(-24, 4));
     REGDEF(eax=STACKVAR(-4, 4))
 }
 
@@ -34402,7 +34401,7 @@ p10040054
     ProcedureInfo(this=None, this_offset=None, local_size=20, stack_delta=0)
     STACKVAR(-16, 4) = 0x00000000;
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10049298), LOCAL(-16), LOCAL(-12)) == 0x00000000)
+    if (PyArg_ParseTuple(reinterpret_cast<PyObject *>(STACKVAR(12, 4)), "ss:B_BitMap24_ReadFromJPEG", LOCAL(-16), LOCAL(-12)) == 0)
     {
         REGDEF(eax=0x00000000)
         return;
@@ -34411,13 +34410,13 @@ p10040054
     {
         if (unknown_function_1003F305(STACKVAR(-16, 4), LOCAL(-8), GLOBAL(0x100492B4)) != 0x00000000)
         {
-            PyErr_SetString(ACCESS(&PyExc_TypeError, 0, 4), GLOBAL(0x100492C4));
+            PyErr_SetString(reinterpret_cast<PyObject *>(ACCESS(&PyExc_TypeError, 0, 4)), "Type error in argument 1 of B_BitMap24_ReadFromJPEG. Expected _B_BitMap24_p.");
             REGDEF(eax=0x00000000)
             return;
         }
     }
     STACKVAR(-20, 4) = reinterpret_cast<B_BitMap24 *>(STACKVAR(-8, 4))->ReadFromJPEG(reinterpret_cast<char *>(STACKVAR(-12, 4)));
-    STACKVAR(-4, 4) = Py_BuildValue(GLOBAL(0x10049314), STACKVAR(-20, 4));
+    STACKVAR(-4, 4) = Py_BuildValue("i", STACKVAR(-20, 4));
     REGDEF(eax=STACKVAR(-4, 4))
 }
 
@@ -34427,7 +34426,7 @@ p100400ED
     ProcedureInfo(this=None, this_offset=None, local_size=20, stack_delta=0)
     STACKVAR(-16, 4) = 0x00000000;
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10049318), LOCAL(-16), LOCAL(-12)) == 0x00000000)
+    if (PyArg_ParseTuple(reinterpret_cast<PyObject *>(STACKVAR(12, 4)), "ss:B_BitMap24_ReadFromFile", LOCAL(-16), LOCAL(-12)) == 0)
     {
         REGDEF(eax=0x00000000)
         return;
@@ -34436,13 +34435,13 @@ p100400ED
     {
         if (unknown_function_1003F305(STACKVAR(-16, 4), LOCAL(-8), GLOBAL(0x10049334)) != 0x00000000)
         {
-            PyErr_SetString(ACCESS(&PyExc_TypeError, 0, 4), GLOBAL(0x10049344));
+            PyErr_SetString(reinterpret_cast<PyObject *>(ACCESS(&PyExc_TypeError, 0, 4)), "Type error in argument 1 of B_BitMap24_ReadFromFile. Expected _B_BitMap24_p.");
             REGDEF(eax=0x00000000)
             return;
         }
     }
     STACKVAR(-20, 4) = reinterpret_cast<B_BitMap24 *>(STACKVAR(-8, 4))->ReadFromFile(reinterpret_cast<char *>(STACKVAR(-12, 4)));
-    STACKVAR(-4, 4) = Py_BuildValue(GLOBAL(0x10049394), STACKVAR(-20, 4));
+    STACKVAR(-4, 4) = Py_BuildValue("i", STACKVAR(-20, 4));
     REGDEF(eax=STACKVAR(-4, 4))
 }
 
@@ -34453,7 +34452,7 @@ p10040186
     STACKVAR(-16, 4) = 0x00000032;
     STACKVAR(-20, 4) = 0x00000000;
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10049398), LOCAL(-20), LOCAL(-12), LOCAL(-16)) == 0x00000000)
+    if (PyArg_ParseTuple(reinterpret_cast<PyObject *>(STACKVAR(12, 4)), "ss|i:B_BitMap24_SaveToFile", LOCAL(-20), LOCAL(-12), LOCAL(-16)) == 0)
     {
         REGDEF(eax=0x00000000)
         return;
@@ -34462,13 +34461,13 @@ p10040186
     {
         if (unknown_function_1003F305(STACKVAR(-20, 4), LOCAL(-8), GLOBAL(0x100493B4)) != 0x00000000)
         {
-            PyErr_SetString(ACCESS(&PyExc_TypeError, 0, 4), GLOBAL(0x100493C4));
+            PyErr_SetString(reinterpret_cast<PyObject *>(ACCESS(&PyExc_TypeError, 0, 4)), "Type error in argument 1 of B_BitMap24_SaveToFile. Expected _B_BitMap24_p.");
             REGDEF(eax=0x00000000)
             return;
         }
     }
     STACKVAR(-24, 4) = reinterpret_cast<B_BitMap24 *>(STACKVAR(-8, 4))->SaveToFile(reinterpret_cast<char *>(STACKVAR(-12, 4)), reinterpret_cast<int>(STACKVAR(-16, 4)));
-    STACKVAR(-4, 4) = Py_BuildValue(GLOBAL(0x10049410), STACKVAR(-24, 4));
+    STACKVAR(-4, 4) = Py_BuildValue("i", STACKVAR(-24, 4));
     REGDEF(eax=STACKVAR(-4, 4))
 }
 
@@ -34478,7 +34477,7 @@ p1004022F
     ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=0)
     STACKVAR(-12, 4) = 0x00000000;
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10049414), LOCAL(-12)) == 0x00000000)
+    if (PyArg_ParseTuple(reinterpret_cast<PyObject *>(STACKVAR(12, 4)), "s:B_BitMap24_ChangeRGBOrder", LOCAL(-12)) == 0)
     {
         REGDEF(eax=0x00000000)
         return;
@@ -34487,7 +34486,7 @@ p1004022F
     {
         if (unknown_function_1003F305(STACKVAR(-12, 4), LOCAL(-8), GLOBAL(0x10049430)) != 0x00000000)
         {
-            PyErr_SetString(ACCESS(&PyExc_TypeError, 0, 4), GLOBAL(0x10049440));
+            PyErr_SetString(reinterpret_cast<PyObject *>(ACCESS(&PyExc_TypeError, 0, 4)), "Type error in argument 1 of B_BitMap24_ChangeRGBOrder. Expected _B_BitMap24_p.");
             REGDEF(eax=0x00000000)
             return;
         }
@@ -34504,7 +34503,7 @@ p100402C4
     ProcedureInfo(this=None, this_offset=None, local_size=20, stack_delta=0)
     STACKVAR(-16, 4) = 0x00000000;
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10049490), LOCAL(-16), LOCAL(-12)) == 0x00000000)
+    if (PyArg_ParseTuple(reinterpret_cast<PyObject *>(STACKVAR(12, 4)), "si:B_ResourceManager_NResources", LOCAL(-16), LOCAL(-12)) == 0)
     {
         REGDEF(eax=0x00000000)
         return;
@@ -34513,13 +34512,13 @@ p100402C4
     {
         if (unknown_function_1003F305(STACKVAR(-16, 4), LOCAL(-8), GLOBAL(0x100494B0)) != 0x00000000)
         {
-            PyErr_SetString(ACCESS(&PyExc_TypeError, 0, 4), GLOBAL(0x100494C8));
+            PyErr_SetString(reinterpret_cast<PyObject *>(ACCESS(&PyExc_TypeError, 0, 4)), "Type error in argument 1 of B_ResourceManager_NResources. Expected _B_ResourceManager_p.");
             REGDEF(eax=0x00000000)
             return;
         }
     }
     STACKVAR(-20, 4) = reinterpret_cast<B_ResourceManager *>(STACKVAR(-8, 4))->NResources(reinterpret_cast<unsigned short>(STACKVAR(-12, 2)));
-    STACKVAR(-4, 4) = Py_BuildValue(GLOBAL(0x10049524), STACKVAR(-20, 4));
+    STACKVAR(-4, 4) = Py_BuildValue("i", STACKVAR(-20, 4));
     REGDEF(eax=STACKVAR(-4, 4))
 }
 
@@ -34529,7 +34528,7 @@ p1004035E
     ProcedureInfo(this=None, this_offset=None, local_size=24, stack_delta=0)
     STACKVAR(-20, 4) = 0x00000000;
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10049528), LOCAL(-20), LOCAL(-12), LOCAL(-16)) == 0x00000000)
+    if (PyArg_ParseTuple(reinterpret_cast<PyObject *>(STACKVAR(12, 4)), "sii:B_ResourceManager_GetResourceName", LOCAL(-20), LOCAL(-12), LOCAL(-16)) == 0)
     {
         REGDEF(eax=0x00000000)
         return;
@@ -34538,13 +34537,13 @@ p1004035E
     {
         if (unknown_function_1003F305(STACKVAR(-20, 4), LOCAL(-8), GLOBAL(0x10049550)) != 0x00000000)
         {
-            PyErr_SetString(ACCESS(&PyExc_TypeError, 0, 4), GLOBAL(0x10049568));
+            PyErr_SetString(reinterpret_cast<PyObject *>(ACCESS(&PyExc_TypeError, 0, 4)), "Type error in argument 1 of B_ResourceManager_GetResourceName. Expected _B_ResourceManager_p.");
             REGDEF(eax=0x00000000)
             return;
         }
     }
     STACKVAR(-24, 4) = reinterpret_cast<B_ResourceManager *>(STACKVAR(-8, 4))->GetResourceName(reinterpret_cast<unsigned short>(STACKVAR(-12, 2)), reinterpret_cast<unsigned int>(STACKVAR(-16, 4)));
-    STACKVAR(-4, 4) = Py_BuildValue(GLOBAL(0x100495C8), STACKVAR(-24, 4));
+    STACKVAR(-4, 4) = Py_BuildValue("s", STACKVAR(-24, 4));
     REGDEF(eax=STACKVAR(-4, 4))
 }
 
@@ -34554,7 +34553,7 @@ p10040401
     ProcedureInfo(this=None, this_offset=None, local_size=24, stack_delta=0)
     STACKVAR(-20, 4) = 0x00000000;
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x100495CC), LOCAL(-20), LOCAL(-12), LOCAL(-16)) == 0x00000000)
+    if (PyArg_ParseTuple(reinterpret_cast<PyObject *>(STACKVAR(12, 4)), "sii:B_ResourceManager_GetResourceFile", LOCAL(-20), LOCAL(-12), LOCAL(-16)) == 0)
     {
         REGDEF(eax=0x00000000)
         return;
@@ -34563,13 +34562,13 @@ p10040401
     {
         if (unknown_function_1003F305(STACKVAR(-20, 4), LOCAL(-8), GLOBAL(0x100495F4)) != 0x00000000)
         {
-            PyErr_SetString(ACCESS(&PyExc_TypeError, 0, 4), GLOBAL(0x1004960C));
+            PyErr_SetString(reinterpret_cast<PyObject *>(ACCESS(&PyExc_TypeError, 0, 4)), "Type error in argument 1 of B_ResourceManager_GetResourceFile. Expected _B_ResourceManager_p.");
             REGDEF(eax=0x00000000)
             return;
         }
     }
     STACKVAR(-24, 4) = reinterpret_cast<B_ResourceManager *>(STACKVAR(-8, 4))->GetResourceFile(reinterpret_cast<unsigned short>(STACKVAR(-12, 2)), reinterpret_cast<unsigned int>(STACKVAR(-16, 4)));
-    STACKVAR(-4, 4) = Py_BuildValue(GLOBAL(0x1004966C), STACKVAR(-24, 4));
+    STACKVAR(-4, 4) = Py_BuildValue("s", STACKVAR(-24, 4));
     REGDEF(eax=STACKVAR(-4, 4))
 }
 
@@ -34579,7 +34578,7 @@ p100404A4
     ProcedureInfo(this=None, this_offset=None, local_size=24, stack_delta=0)
     STACKVAR(-20, 4) = 0x00000000;
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10049670), LOCAL(-20), LOCAL(-12), LOCAL(-16)) == 0x00000000)
+    if (PyArg_ParseTuple(reinterpret_cast<PyObject *>(STACKVAR(12, 4)), "sii:B_ResourceManager_IsResourceLoaded", LOCAL(-20), LOCAL(-12), LOCAL(-16)) == 0)
     {
         REGDEF(eax=0x00000000)
         return;
@@ -34588,13 +34587,13 @@ p100404A4
     {
         if (unknown_function_1003F305(STACKVAR(-20, 4), LOCAL(-8), GLOBAL(0x10049698)) != 0x00000000)
         {
-            PyErr_SetString(ACCESS(&PyExc_TypeError, 0, 4), GLOBAL(0x100496B0));
+            PyErr_SetString(reinterpret_cast<PyObject *>(ACCESS(&PyExc_TypeError, 0, 4)), "Type error in argument 1 of B_ResourceManager_IsResourceLoaded. Expected _B_ResourceManager_p.");
             REGDEF(eax=0x00000000)
             return;
         }
     }
     STACKVAR(-24, 4) = reinterpret_cast<B_ResourceManager *>(STACKVAR(-8, 4))->IsResourceLoaded(reinterpret_cast<int>(STACKVAR(-12, 4)), reinterpret_cast<int>(STACKVAR(-16, 4)));
-    STACKVAR(-4, 4) = Py_BuildValue(GLOBAL(0x10049710), STACKVAR(-24, 4));
+    STACKVAR(-4, 4) = Py_BuildValue("i", STACKVAR(-24, 4));
     REGDEF(eax=STACKVAR(-4, 4))
 }
 
@@ -34604,7 +34603,7 @@ p10040546
     ProcedureInfo(this=None, this_offset=None, local_size=28, stack_delta=0)
     STACKVAR(-20, 4) = 0x00000000;
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x10049714), LOCAL(-20), LOCAL(-12), LOCAL(-16), LOCAL(-24)) == 0x00000000)
+    if (PyArg_ParseTuple(reinterpret_cast<PyObject *>(STACKVAR(12, 4)), "siis:B_ResourceManager_SaveResource", LOCAL(-20), LOCAL(-12), LOCAL(-16), LOCAL(-24)) == 0)
     {
         REGDEF(eax=0x00000000)
         return;
@@ -34613,13 +34612,13 @@ p10040546
     {
         if (unknown_function_1003F305(STACKVAR(-20, 4), LOCAL(-8), GLOBAL(0x10049738)) != 0x00000000)
         {
-            PyErr_SetString(ACCESS(&PyExc_TypeError, 0, 4), GLOBAL(0x10049750));
+            PyErr_SetString(reinterpret_cast<PyObject *>(ACCESS(&PyExc_TypeError, 0, 4)), "Type error in argument 1 of B_ResourceManager_SaveResource. Expected _B_ResourceManager_p.");
             REGDEF(eax=0x00000000)
             return;
         }
     }
     STACKVAR(-28, 4) = reinterpret_cast<B_ResourceManager *>(STACKVAR(-8, 4))->SaveResource(reinterpret_cast<unsigned short>(STACKVAR(-12, 2)), reinterpret_cast<unsigned int>(STACKVAR(-16, 4)), reinterpret_cast<char *>(STACKVAR(-24, 4)));
-    STACKVAR(-4, 4) = Py_BuildValue(GLOBAL(0x100497AC), STACKVAR(-28, 4));
+    STACKVAR(-4, 4) = Py_BuildValue("i", STACKVAR(-28, 4));
     REGDEF(eax=STACKVAR(-4, 4))
 }
 
@@ -34629,7 +34628,7 @@ p100405F1
     ProcedureInfo(this=None, this_offset=None, local_size=24, stack_delta=0)
     STACKVAR(-20, 4) = 0x00000000;
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x100497B0), LOCAL(-20), LOCAL(-12), LOCAL(-16)) == 0x00000000)
+    if (PyArg_ParseTuple(reinterpret_cast<PyObject *>(STACKVAR(12, 4)), "sis:B_ResourceManager_LoadResourceToMemory", LOCAL(-20), LOCAL(-12), LOCAL(-16)) == 0)
     {
         REGDEF(eax=0x00000000)
         return;
@@ -34638,13 +34637,13 @@ p100405F1
     {
         if (unknown_function_1003F305(STACKVAR(-20, 4), LOCAL(-8), GLOBAL(0x100497DC)) != 0x00000000)
         {
-            PyErr_SetString(ACCESS(&PyExc_TypeError, 0, 4), GLOBAL(0x100497F4));
+            PyErr_SetString(reinterpret_cast<PyObject *>(ACCESS(&PyExc_TypeError, 0, 4)), "Type error in argument 1 of B_ResourceManager_LoadResourceToMemory. Expected _B_ResourceManager_p.");
             REGDEF(eax=0x00000000)
             return;
         }
     }
     STACKVAR(-24, 4) = reinterpret_cast<B_ResourceManager *>(STACKVAR(-8, 4))->LoadResourceToMemory(reinterpret_cast<unsigned short>(STACKVAR(-12, 2)), reinterpret_cast<char *>(STACKVAR(-16, 4)));
-    STACKVAR(-4, 4) = Py_BuildValue(GLOBAL(0x10049858), STACKVAR(-24, 4));
+    STACKVAR(-4, 4) = Py_BuildValue("i", STACKVAR(-24, 4));
     REGDEF(eax=STACKVAR(-4, 4))
 }
 
@@ -34654,7 +34653,7 @@ p10040694
     ProcedureInfo(this=None, this_offset=None, local_size=16, stack_delta=0)
     STACKVAR(-12, 4) = 0x00000000;
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x1004985C), LOCAL(-12)) == 0x00000000)
+    if (PyArg_ParseTuple(reinterpret_cast<PyObject *>(STACKVAR(12, 4)), "s:B_ResourceManager_GetnFiles", LOCAL(-12)) == 0)
     {
         REGDEF(eax=0x00000000)
         return;
@@ -34663,13 +34662,13 @@ p10040694
     {
         if (unknown_function_1003F305(STACKVAR(-12, 4), LOCAL(-8), GLOBAL(0x1004987C)) != 0x00000000)
         {
-            PyErr_SetString(ACCESS(&PyExc_TypeError, 0, 4), GLOBAL(0x10049894));
+            PyErr_SetString(reinterpret_cast<PyObject *>(ACCESS(&PyExc_TypeError, 0, 4)), "Type error in argument 1 of B_ResourceManager_GetnFiles. Expected _B_ResourceManager_p.");
             REGDEF(eax=0x00000000)
             return;
         }
     }
     STACKVAR(-16, 4) = reinterpret_cast<B_ResourceManager *>(STACKVAR(-8, 4))->GetnFiles();
-    STACKVAR(-4, 4) = Py_BuildValue(GLOBAL(0x100498EC), STACKVAR(-16, 4));
+    STACKVAR(-4, 4) = Py_BuildValue("i", STACKVAR(-16, 4));
     REGDEF(eax=STACKVAR(-4, 4))
 }
 
@@ -34679,7 +34678,7 @@ p10040726
     ProcedureInfo(this=None, this_offset=None, local_size=20, stack_delta=0)
     STACKVAR(-16, 4) = 0x00000000;
     STACKVAR(8, 4) = STACKVAR(8, 4);
-    if (PyArg_ParseTuple(STACKVAR(12, 4), GLOBAL(0x100498F0), LOCAL(-16), LOCAL(-12)) == 0x00000000)
+    if (PyArg_ParseTuple(reinterpret_cast<PyObject *>(STACKVAR(12, 4)), "si:B_ResourceManager_GetFile", LOCAL(-16), LOCAL(-12)) == 0)
     {
         REGDEF(eax=0x00000000)
         return;
@@ -34688,13 +34687,13 @@ p10040726
     {
         if (unknown_function_1003F305(STACKVAR(-16, 4), LOCAL(-8), GLOBAL(0x10049910)) != 0x00000000)
         {
-            PyErr_SetString(ACCESS(&PyExc_TypeError, 0, 4), GLOBAL(0x10049928));
+            PyErr_SetString(reinterpret_cast<PyObject *>(ACCESS(&PyExc_TypeError, 0, 4)), "Type error in argument 1 of B_ResourceManager_GetFile. Expected _B_ResourceManager_p.");
             REGDEF(eax=0x00000000)
             return;
         }
     }
     STACKVAR(-20, 4) = reinterpret_cast<B_ResourceManager *>(STACKVAR(-8, 4))->GetFile(reinterpret_cast<unsigned int>(STACKVAR(-12, 4)));
-    STACKVAR(-4, 4) = Py_BuildValue(GLOBAL(0x10049980), STACKVAR(-20, 4));
+    STACKVAR(-4, 4) = Py_BuildValue("s", STACKVAR(-20, 4));
     REGDEF(eax=STACKVAR(-4, 4))
 }
 
@@ -34703,13 +34702,13 @@ p100407BF
 {
     ProcedureInfo(this=None, this_offset=None, local_size=8, stack_delta=0)
     ACCESS(GLOBAL(0x1004AB10), 0, 4) = unknown_function_100409D8();
-    STACKVAR(-8, 4) = Py_InitModule4(GLOBAL(0x10049CC8), GLOBAL(0x10048A78), 0x00000000, 0x00000000, 0x000003EF);
-    STACKVAR(-4, 4) = PyModule_GetDict(STACKVAR(-8, 4));
-    PyDict_SetItemString(STACKVAR(-4, 4), GLOBAL(0x10049CD0), PyInt_FromLong(0x00000001));
-    PyDict_SetItemString(STACKVAR(-4, 4), GLOBAL(0x10049CE0), PyInt_FromLong(0x00000002));
-    PyDict_SetItemString(STACKVAR(-4, 4), GLOBAL(0x10049CF0), PyInt_FromLong(0x00000003));
-    PyDict_SetItemString(STACKVAR(-4, 4), GLOBAL(0x10049CFC), PyInt_FromLong(0x00000004));
-    PyDict_SetItemString(STACKVAR(-4, 4), GLOBAL(0x10049D0C), PyInt_FromLong(0x00000005));
+    STACKVAR(-8, 4) = Py_InitModule4("BBLibc", reinterpret_cast<PyMethodDef *>(GLOBAL(0x10048A78)), nullptr, nullptr, 1007);
+    STACKVAR(-4, 4) = PyModule_GetDict(reinterpret_cast<PyObject *>(STACKVAR(-8, 4)));
+    PyDict_SetItemString(reinterpret_cast<PyObject *>(STACKVAR(-4, 4)), "B_CID_OBJDSCR", PyInt_FromLong(1));
+    PyDict_SetItemString(reinterpret_cast<PyObject *>(STACKVAR(-4, 4)), "B_CID_BITMAP", PyInt_FromLong(2));
+    PyDict_SetItemString(reinterpret_cast<PyObject *>(STACKVAR(-4, 4)), "B_CID_BMP", PyInt_FromLong(3));
+    PyDict_SetItemString(reinterpret_cast<PyObject *>(STACKVAR(-4, 4)), "B_CID_ALPHABMP", PyInt_FromLong(4));
+    PyDict_SetItemString(reinterpret_cast<PyObject *>(STACKVAR(-4, 4)), "B_CID_AUTO_OBJDSCR", PyInt_FromLong(5));
     unknown_function_10040A5E(GLOBAL(0x10049D28), GLOBAL(0x10049D20), 0x00000000);
     unknown_function_10040A5E(GLOBAL(0x10049D48), GLOBAL(0x10049D38), 0x00000000);
     unknown_function_10040A5E(GLOBAL(0x10049D60), GLOBAL(0x10049D50), 0x00000000);
@@ -34733,12 +34732,12 @@ p100409D8
 {
     ProcedureInfo(this=None, this_offset=None, local_size=4, stack_delta=0)
     STACKVAR(-4, 4) = 0x00000000;
-    STACKVAR(-4, 4) = malloc(0x00000014);
+    STACKVAR(-4, 4) = malloc(20);
     ACCESS(GLOBAL(0x100489FC), 0, 4) = &PyType_Type;
     ACCESS(STACKVAR(-4, 4), 4, 4) = GLOBAL(0x100489F8);
     ACCESS(STACKVAR(-4, 4), 12, 4) = 0x00000000;
     ACCESS(STACKVAR(-4, 4), 16, 4) = 0x00000040;
-    ACCESS(STACKVAR(-4, 4), 8, 4) = malloc(0x00000100);
+    ACCESS(STACKVAR(-4, 4), 8, 4) = malloc(256);
     ACCESS(ACCESS(STACKVAR(-4, 4), 8, 4), 0, 4) = 0x00000000;
     ACCESS(STACKVAR(-4, 4), 0, 4) = 0x00000000;
     if (STACKVAR(-4, 4) != 0x00000000)
@@ -34755,13 +34754,13 @@ p10040A5E
     STACKVAR(-4, 4) = 0x00000000;
     if (ACCESS(GLOBAL(0x1004BF60), 0, 4) == 0x00000000)
     {
-        ACCESS(GLOBAL(0x1004BF60), 0, 4) = malloc(0x00000010 * reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x10048A64), 0, 4)));
+        ACCESS(GLOBAL(0x1004BF60), 0, 4) = malloc(16 * reinterpret_cast<size_t>(ACCESS(GLOBAL(0x10048A64), 0, 4)));
         ACCESS(GLOBAL(0x1004BF58), 0, 4) = 0x00000000;
     }
     if (reinterpret_cast<int>(ACCESS(GLOBAL(0x1004BF58), 0, 4)) >= reinterpret_cast<int>(ACCESS(GLOBAL(0x10048A64), 0, 4)))
     {
         ACCESS(GLOBAL(0x10048A64), 0, 4) = 0x00000002 * reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x10048A64), 0, 4));
-        ACCESS(GLOBAL(0x1004BF60), 0, 4) = realloc(ACCESS(GLOBAL(0x1004BF60), 0, 4), 0x00000010 * reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x10048A64), 0, 4)));
+        ACCESS(GLOBAL(0x1004BF60), 0, 4) = realloc(reinterpret_cast<void *>(ACCESS(GLOBAL(0x1004BF60), 0, 4)), 16 * reinterpret_cast<size_t>(ACCESS(GLOBAL(0x10048A64), 0, 4)));
     }
     STACKVAR(-12, 4) = 0x00000000;
     goto l10040AE2;
@@ -34772,7 +34771,7 @@ l10040AE2:
     {
         STACKVAR(-16, 4) = STACKVAR(8, 4);
         STACKVAR(-20, 4) = ACCESS(ARRPTR(ACCESS(GLOBAL(0x1004BF60), 0, 4), 1, 0x00000010 * reinterpret_cast<any_int32>(STACKVAR(-12, 4)), 0), 0, 4);
-        STACKVAR(-32, 4) = strcmp(STACKVAR(-20, 4), STACKVAR(-16, 4));
+        STACKVAR(-32, 4) = strcmp(reinterpret_cast<char *>(STACKVAR(-20, 4)), reinterpret_cast<char *>(STACKVAR(-16, 4)));
         if (STACKVAR(-32, 4) == 0x00000000)
         {
             STACKVAR(-4, 4) = reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004BF60), 0, 4)) + 0x00000010 * reinterpret_cast<any_int32>(STACKVAR(-12, 4));
@@ -34786,7 +34785,7 @@ l10040AE2:
     {
         STACKVAR(-4, 4) = reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004BF60), 0, 4)) + 0x00000010 * reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004BF58), 0, 4));
         ACCESS(STACKVAR(-4, 4), 0, 4) = STACKVAR(8, 4);
-        ACCESS(STACKVAR(-4, 4), 4, 4) = strlen(ACCESS(STACKVAR(-4, 4), 0, 4));
+        ACCESS(STACKVAR(-4, 4), 4, 4) = strlen(reinterpret_cast<char *>(ACCESS(STACKVAR(-4, 4), 0, 4)));
         ACCESS(STACKVAR(-4, 4), 8, 4) = 0x00000000;
         ACCESS(STACKVAR(-4, 4), 12, 4) = 0x00000000;
         ACCESS(GLOBAL(0x1004BF58), 0, 4) = reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004BF58), 0, 4)) + 0x00000001;
@@ -34795,7 +34794,7 @@ l10040AE2:
     {
         STACKVAR(-36, 4) = STACKVAR(12, 4);
         STACKVAR(-40, 4) = ACCESS(STACKVAR(-4, 4), 0, 4);
-        STACKVAR(-52, 4) = strcmp(STACKVAR(-40, 4), STACKVAR(-36, 4));
+        STACKVAR(-52, 4) = strcmp(reinterpret_cast<char *>(STACKVAR(-40, 4)), reinterpret_cast<char *>(STACKVAR(-36, 4)));
         if (STACKVAR(-52, 4) == 0x00000000)
         {
             if (STACKVAR(16, 4) != 0x00000000)
@@ -34806,9 +34805,9 @@ l10040AE2:
         }
         STACKVAR(-4, 4) = ACCESS(STACKVAR(-4, 4), 12, 4);
     }
-    STACKVAR(-8, 4) = malloc(0x00000010);
+    STACKVAR(-8, 4) = malloc(16);
     ACCESS(STACKVAR(-8, 4), 0, 4) = STACKVAR(12, 4);
-    ACCESS(STACKVAR(-8, 4), 4, 4) = strlen(ACCESS(STACKVAR(-8, 4), 0, 4));
+    ACCESS(STACKVAR(-8, 4), 4, 4) = strlen(reinterpret_cast<char *>(ACCESS(STACKVAR(-8, 4), 0, 4)));
     ACCESS(STACKVAR(-8, 4), 8, 4) = STACKVAR(16, 4);
     ACCESS(STACKVAR(-8, 4), 12, 4) = 0x00000000;
     ACCESS(STACKVAR(-4, 4), 12, 4) = STACKVAR(-8, 4);

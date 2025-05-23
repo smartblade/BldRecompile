@@ -220,7 +220,8 @@ def _strip_comments(line, is_comment):
 
 
 def _collect_cpp_declarations(
-    src_path, files_declarations, declared_types, incomplete_types
+    src_path, files_declarations, declared_types, incomplete_types,
+    external_procedures
 ):
     header_states = {}
     for (root, dirs, files) in os.walk(src_path):
@@ -236,6 +237,7 @@ def _collect_cpp_declarations(
                 declarations = [declared_types, incomplete_types]
                 if file.lower().endswith(".xml"):
                     metadata_state_class = XmlMetadata
+                    declarations.append(external_procedures)
                 else:
                     metadata_state_class = HeaderState
                 header_state = metadata_state_class(
@@ -245,20 +247,23 @@ def _collect_cpp_declarations(
                 header_states[
                     "{}/{}/{}".format(
                         dir_name2, dir_name1, file)] = header_state
-                files_declarations[file_name] = header_state
+                if not file_name.lower().endswith(".xml"):
+                    files_declarations[file_name] = header_state
 
 
 def parse_cpp_header(src_path):
     files_declarations = {}
     declared_types = _standard_types
     incomplete_types = {}
+    external_procedures = {}
     extern_definitions_path = os.path.join(
         os.path.dirname(os.path.realpath(__file__)), "externdefs")
     _collect_cpp_declarations(
         extern_definitions_path, files_declarations, declared_types,
-        incomplete_types)
+        incomplete_types, external_procedures)
     _collect_cpp_declarations(
-        src_path, files_declarations, declared_types, incomplete_types)
+        src_path, files_declarations, declared_types, incomplete_types,
+        external_procedures)
     for file_declaration in files_declarations.values():
         file_declaration.parse()
-    return files_declarations, declared_types
+    return files_declarations, declared_types, external_procedures

@@ -72,7 +72,12 @@ def _build_proc(
     builder = ProcedureBuilder(proc_decl, proc_addr, standard_inlines)
     try:
         _parse_asm_proc(
-            builder, declarations.string_constants, patterns, proc_lines)
+            patterns,
+            proc_lines,
+            builder=builder,
+            string_constants=declarations.string_constants,
+            external_procedures=declarations.external_procedures,
+        )
     except Exception as exc:
         builder.emit_code(writer)
         writer.write_line('Error: "{}"'.format(str(exc)))
@@ -82,14 +87,14 @@ def _build_proc(
         builder.emit_code(writer)
 
 
-def _parse_asm_proc(builder, string_constants, patterns, lines):
+def _parse_asm_proc(patterns, lines, **kwargs):
     instrs = parse_asm_lines(lines, patterns.commands_code_dict)
     prefix_status = PrefixStatus(patterns.make_prefix_builder(), instrs)
     cur_index = 0
     while cur_index < len(instrs):
         pattern, match_dict, cur_index = _match_patterns(
             prefix_status, patterns, cur_index, instrs)
-        apply_pattern(builder, string_constants, pattern, match_dict)
+        apply_pattern(pattern, match_dict, **kwargs)
 
 
 def _match_patterns(prefix_status, patterns, first_index, instrs):

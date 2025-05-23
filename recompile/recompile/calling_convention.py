@@ -5,6 +5,7 @@ class CallingConvention(Enum):
     THISCALL = "__thiscall"
     STDCALL = "__stdcall"
     CDECL = "__cdecl"
+    FASTCALL = "__fastcall"
 
 
 calling_conventions = dict(

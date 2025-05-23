@@ -16,6 +16,15 @@ class CallArgumentsMatcher:
             return pc
         if pc.proc_decl.stack_delta <= proc_decl.stack_delta:
             return pc
+        if pc.proc_decl.convention != proc_decl.convention:
+            raise Exception(
+                "Calling convention expected to be "
+                "{} for {} but was: {}.".format(
+                    pc.proc_decl.convention,
+                    proc_decl.proc_name,
+                    proc_decl.convention,
+                )
+            )
         message = "Stack delta expected to be {} for {} but was: {}.".format(
             pc.proc_decl.stack_delta,
             proc_decl.proc_name,

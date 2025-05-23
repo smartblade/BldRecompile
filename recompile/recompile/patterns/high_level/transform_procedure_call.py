@@ -36,7 +36,7 @@ def _get_callee_declaration(pc, declarations):
         assert pc.callee_address is None
         return _get_declaration_from_callee_expression(pc.callee_expression)
     if pc.callee_address is None:
-        return None
+        return declarations.external_procedures.get(pc.name)
     return get_procedure_declaration_at(declarations, pc.callee_address)
 
 

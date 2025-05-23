@@ -218137,7 +218137,7 @@
     </signature>
   </procedure>
   <procedure name="exit">
-    <signature convention="__cdecl">
+    <signature convention="__stdcall">
       <return>
         <void />
       </return>

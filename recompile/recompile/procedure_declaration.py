@@ -116,7 +116,10 @@ class ProcedureDeclaration:
             reference_to = self._reference_to_this(expected_args_types)
             param_type = reference_to(self._method_class)
             param_dict[param_name] = make_id(param_type, param_name)
+        param_index = 0
         for param_type, param_name in self._parameters:
+            param_index += 1
+            param_name = _make_parameter_name(param_name, param_index)
             param_dict[param_name] = make_id(param_type, param_name)
         return param_dict
 
@@ -152,7 +155,10 @@ class ProcedureDeclaration:
             else:
                 this_arg = "{} *this".format(self._method_class.class_name)
             parameters.append(this_arg)
+        param_index = 0
         for parameter_type, parameter_name in self._parameters:
+            param_index += 1
+            parameter_name = _make_parameter_name(parameter_name, param_index)
             is_brief = (
                 full_typed_args is not None and
                 parameter_name not in full_typed_args
@@ -204,3 +210,9 @@ class ProcedureDeclaration:
         if is_brief and isinstance(self._return_arg, data_types.Pointer32):
             return "ptr32"
         return self._return_arg.get_type_name(is_metafile=is_metafile)
+
+
+def _make_parameter_name(parameter_name, parameter_index):
+    if parameter_name is not None:
+        return parameter_name
+    return "arg_{}".format(parameter_index)

@@ -2,6 +2,14 @@ import data_types
 
 
 def are_same(first, second):
+    if (
+        isinstance(first, data_types.NamedType) and
+        isinstance(second, data_types.NamedType)
+    ):
+        return (
+            first.get_type_name(is_metafile=False) ==
+            second.get_type_name(is_metafile=False)
+        )
     if isinstance(first, data_types.NamedType):
         return are_same(first.referenced_type, second)
     if isinstance(second, data_types.NamedType):

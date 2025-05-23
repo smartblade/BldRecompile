@@ -27,6 +27,12 @@ def convert_expression_to_type(e, target_type):
         target_type.is_any_int
     ):
         return expressions.do_reinterpret(target_type, e)
+    if (
+        isinstance(src_type, data_types.Pointer32) and
+        src_type.pointee is None and
+        isinstance(target_type, data_types.Function)
+    ):
+        return expressions.do_reinterpret(target_type, e)
     raise Exception("Can't convert {} to {}.".format(src_type, target_type))
 
 

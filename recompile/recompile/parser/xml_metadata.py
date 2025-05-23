@@ -1,19 +1,21 @@
 import xml.etree.ElementTree as ElementTree
 
-from calling_convention import calling_conventions
+from calling_convention import calling_conventions, CallingConvention
 import data_types
 from procedure_declaration import ProcedureDeclaration
 
 
 class XmlMetadata:
     def __init__(
-        self, file_name, header_states, declared_types, incomplete_types
+        self, file_name, header_states, declared_types, incomplete_types,
+        external_procedures
     ):
         self._file_name = file_name
         self._header_states = header_states
         self._declared_types = declared_types
         self._incomplete_types = incomplete_types
         self._structs = {}
+        self._external_procedures = external_procedures
         self._visited = False
 
     def parse(self):
@@ -29,6 +31,9 @@ class XmlMetadata:
                 self._parse_typedef_element(type_elem)
             else:
                 self._parse_type_element(type_elem)
+        procedures = root.findall("procedure", _namespace)
+        for proc_elem in procedures:
+            self._parse_procedure_element(proc_elem)
 
     def _parse_typedef_element(self, typedef_elem):
         type_name = typedef_elem.attrib["name"]
@@ -85,22 +90,36 @@ class XmlMetadata:
         element_type = self._parse_type_element(array_elem[0])
         return data_types.Array(element_type, length)
 
-    def parse_function_element(self, function_elem):
+    def parse_function_element(self, function_elem, name=None):
         convention = calling_conventions[
             function_elem.get("convention", "__cdecl")]
+        if convention == CallingConvention.FASTCALL:
+            return
         return_elem = function_elem.find("return", _namespace)
         assert len(return_elem.attrib) == 0
         return_type = self._parse_type_element(return_elem[0])
         parameters = []
+        is_vararg = False
         for arg_elem in function_elem.findall("arg", _namespace):
+            arg_name = arg_elem.get("name", None)
+            if arg_name == "...":
+                is_vararg = True
+                break
             arg_type = self._parse_type_element(arg_elem[0])
-            parameters.append((arg_type, None))
+            parameters.append((arg_type, arg_name))
         return ProcedureDeclaration(
-            None, convention, None, parameters, return_type)
+            name, convention, None, parameters, return_type,
+            is_vararg=is_vararg)
 
     def parse_named_type_element(self, type_elem):
         assert len(type_elem.attrib) == 0
         return self._declared_types[type_elem.text]
+
+    def _parse_procedure_element(self, proc_elem):
+        name = proc_elem.attrib["name"]
+        signature_element = proc_elem.find("signature", _namespace)
+        proc_decl = self.parse_function_element(signature_element, name)
+        self._external_procedures[name] = proc_decl
 
 
 def _strip_namespace(s):
@@ -133,6 +152,8 @@ _primitive_types = {
     ("UnsignedInt", 1): data_types.UChar,
     ("SignedInt", 2): data_types.Short,
     ("UnsignedInt", 2): data_types.UShort,
+    ("Character", 2): lambda: data_types.make_named_type(
+        data_types.Short(), "wchar_t"),
     ("SignedInt", 4): data_types.Int32,
     ("UnsignedInt", 4): data_types.UInt32,
     ("SignedInt", 8): data_types.Unknown64,

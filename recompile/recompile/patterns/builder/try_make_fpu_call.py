@@ -23,8 +23,7 @@ def try_make_fpu_call(block_builder, pc):
 
 
 def _make_declaration(args):
-    proc_decl = make_proc_decl_from_args(
-        is_method=False, args=args)
+    proc_decl = make_proc_decl_from_args(callee_cleanup=False, args=args)
     proc_decl.change_return_type(data_types.Double())
     return proc_decl
 

@@ -680,7 +680,9 @@
         <void />
       </return>
       <arg name="cond">
-        <prim domain="Character" size="1" />
+        <ptr>
+          <prim domain="Character" size="1" />
+        </ptr>
       </arg>
       <arg name="file">
         <ptr>

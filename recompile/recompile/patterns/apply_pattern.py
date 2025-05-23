@@ -8,7 +8,6 @@ from expressions.operator import Operator
 from expression_transformer import ExpressionTransformer
 from patterns.apply_restriction import apply_restriction
 from patterns.evaluate_expression import evaluate_expression
-from patterns.make_proc_decl_from_args import make_proc_decl_from_args
 
 variable_pattern = re.compile(r"%(?P<variable>[\w\\-]*)%")
 
@@ -44,29 +43,24 @@ _actions = {
 }
 
 
-def apply_pattern(builder, string_constants, pattern, match_dict):
-    _apply_actions(builder, string_constants, pattern, match_dict)
+def apply_pattern(pattern, match_dict, **kwargs):
+    _apply_actions(pattern, match_dict=match_dict, **kwargs)
     if pattern.restrictions is not None:
         for restriction in pattern.restrictions:
             restriction = _evaluate_expression(restriction, match_dict)
             apply_restriction(restriction)
 
 
-def _apply_actions(builder, string_constants, pattern, match_dict):
+def _apply_actions(pattern, **kwargs):
     if pattern.actions is None:
-        apply_action(builder, string_constants, pattern.action, match_dict)
+        apply_action(pattern.action, **kwargs)
         return
     for action in pattern.actions:
-        apply_action(builder, string_constants, action, match_dict)
+        apply_action(action, **kwargs)
 
 
-def apply_action(builder, string_constants, action, match_dict):
-    action_args = _evaluate_args(
-        action.arguments,
-        builder=builder,
-        string_constants=string_constants,
-        match_dict=match_dict,
-    )
+def apply_action(action, builder, **kwargs):
+    action_args = _evaluate_args(action.arguments, builder=builder, **kwargs)
     _actions[action.name](builder=builder, **action_args)
 
 
@@ -149,26 +143,10 @@ def _evaluate_float_conversion(expression, **kwargs):
         expression.data_type.size * 8))
 
 
-def _keep(**kwargs):
-    return None
-
-
-def _evaluate_procedure_call(copy_pc, name):
-    if name == "fabs":
-        proc_decl = make_proc_decl_from_args(
-            is_method=False,
-            args=[expressions.Identifier(data_types.Double(), None)])
-        proc_decl.change_return_type(data_types.Double())
-        return copy_pc(proc_decl=proc_decl)
-    elif name == "strcmp":
-        char_ptr = data_types.Pointer32(data_types.Char())
-        proc_decl = make_proc_decl_from_args(
-            is_method=False,
-            args=[
-                expressions.Identifier(char_ptr, None),
-                expressions.Identifier(char_ptr, None)])
-        proc_decl.change_return_type(data_types.Int32())
-        return copy_pc(proc_decl=proc_decl)
+def _evaluate_procedure_call(copy_pc, name, external_procedures, **kwargs):
+    if name in external_procedures:
+        assert copy_pc().proc_decl is None
+        return copy_pc(proc_decl=external_procedures[name])
     return None
 
 
@@ -198,7 +176,7 @@ class _ExpressionTransformer(ExpressionTransformer):
         return None
 
     def transform_procedure_call(self, copy_pc, proc_name, arguments):
-        return _evaluate_procedure_call(copy_pc, proc_name)
+        return _evaluate_procedure_call(copy_pc, proc_name, **self._arguments)
 
     def transform_access_pattern(self, expression, offset, size, **kwargs):
         assert isinstance(offset, expressions.Constant)

@@ -14,16 +14,14 @@ def parse_cpp_function(class_name, func, declared_types):
     declaration = parser.split_procedure_parameters(func)
     is_vararg = False
     parameters = []
-    arg_index = 0
     for (var_type, var_name) in declaration.parameters:
         if var_name == "...":
             is_vararg = True
             continue
         var_decl = "{} {}".format(var_type, var_name).strip()
-        arg_index += 1
         try:
             var_type = parser.parse_data_type(var_decl, declared_types)
-            var_name = "arg_{}".format(arg_index)
+            var_name = None
         except exceptions.UnknownTypeException:
             var_type, var_name = parser.parse_cpp_variable_declaration(
                 var_decl, declared_types)
