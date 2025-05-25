@@ -54,12 +54,12 @@ p100010F3
     ProcedureInfo(this=None, this_offset=None, local_size=40, stack_delta=0)
     ACCESS(GLOBAL(0x10049EF4), 0, 4) = GLOBAL(0x10047040);
     ACCESS(GLOBAL(0x10049EEC), 0, 4) = 0xFFFFFFFF;
-    ACCESS(GLOBAL(0x10049EE8), 0, 4) = _open(GLOBAL(0x1004704C), 0x00008000);
+    ACCESS(GLOBAL(0x10049EE8), 0, 4) = open("../anm/anm.bld", 32768);
     if (ACCESS(GLOBAL(0x10049EE8), 0, 4) == 0xFFFFFFFF)
     {
         return;
     }
-    _read(ACCESS(GLOBAL(0x10049EE8), 0, 4), LOCAL(-20), 0x00000012);
+    read(reinterpret_cast<int>(ACCESS(GLOBAL(0x10049EE8), 0, 4)), LOCAL(-20), 18);
     STACKVAR(-24, 4) = GLOBAL(0x100471F8);
     STACKVAR(-28, 4) = LOCAL(-20);
     STACKVAR(-40, 4) = strcmp(reinterpret_cast<char *>(STACKVAR(-28, 4)), reinterpret_cast<char *>(STACKVAR(-24, 4)));
@@ -69,7 +69,7 @@ p100010F3
     }
     ACCESS(GLOBAL(0x10049EE0), 0, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) & 0x0000FFFF;
     ACCESS(GLOBAL(0x10049EE4), 0, 4) = malloc(72 * reinterpret_cast<size_t>(ACCESS(GLOBAL(0x10049EE0), 0, 4)));
-    _read(ACCESS(GLOBAL(0x10049EE8), 0, 4), ACCESS(GLOBAL(0x10049EE4), 0, 4), 0x00000048 * reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x10049EE0), 0, 4)));
+    return read(reinterpret_cast<int>(ACCESS(GLOBAL(0x10049EE8), 0, 4)), reinterpret_cast<void *>(ACCESS(GLOBAL(0x10049EE4), 0, 4)), 72 * reinterpret_cast<unsigned int>(ACCESS(GLOBAL(0x10049EE0), 0, 4)));
 }
 
 // address: 0x10001205
@@ -94,7 +94,7 @@ l10001241:
         STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) - reinterpret_cast<any_int32>(STACKVAR(-8, 4));
         if (ACCESS(STACKVAR(-4, 4), 8, 4) != 0xFFFFFFFF)
         {
-            _close(ACCESS(STACKVAR(-4, 4), 8, 4));
+            close(reinterpret_cast<int>(ACCESS(STACKVAR(-4, 4), 8, 4)));
             free(reinterpret_cast<void *>(ACCESS(STACKVAR(-4, 4), 4, 4)));
         }
         goto l10001241;
@@ -119,7 +119,7 @@ void B_IDataFile::Close()
         {
             if (ACCESS(STACKVAR(-4, 4), 8, 4) != 0xFFFFFFFF)
             {
-                _close(ACCESS(STACKVAR(-4, 4), 8, 4));
+                close(reinterpret_cast<int>(ACCESS(STACKVAR(-4, 4), 8, 4)));
                 free(reinterpret_cast<void *>(ACCESS(STACKVAR(-4, 4), 4, 4)));
             }
             if ((0x00000001 & 0x00000001) != 0x00000000)
@@ -138,7 +138,7 @@ void B_IDataFile::Close()
     }
     if (this->OK())
     {
-        _close(this->fd);
+        close(this->fd);
         this->fd = -1;
         B_IDataFile::n_open_files--;
     }
@@ -151,12 +151,12 @@ void B_IDataFile::Open(const char *src, int flags)
     this->fileInfo = nullptr;
     if (this->fileInfo == nullptr)
     {
-        this->fd = reinterpret_cast<int>(_open(src, flags));
+        this->fd = open(src, flags);
         if (!this->OK())
         {
             return;
         }
-        this->file_size = reinterpret_cast<unsigned int>(_filelength(this->fd));
+        this->file_size = reinterpret_cast<unsigned int>(filelength(this->fd));
         B_IDataFile::n_opened_files++;
         B_IDataFile::n_open_files++;
         if (B_IDataFile::OnOpenFunc != nullptr)
@@ -218,7 +218,7 @@ unsigned int B_IDataFile::ReadCacheBlock()
             {
                 STACKVAR(-8, 4) = this->file_size - this->cacheBlockStartPos - IFILE_CACHE_SIZE;
             }
-            _read(this->fd, &this->fileCache, STACKVAR(-8, 4));
+            read(this->fd, &this->fileCache, reinterpret_cast<unsigned int>(STACKVAR(-8, 4)));
             this->cacheBlockStartPos = this->cacheBlockStartPos + IFILE_CACHE_SIZE;
             this->cacheBlockPos = 0;
             return 1;
@@ -279,12 +279,12 @@ l10001928:
         STACKVAR(-8, 4) = this->fileInfo;
         if (ACCESS(STACKVAR(-8, 4), 12, 4) != 0xFFFFFFFF)
         {
-            _lseek(ACCESS(STACKVAR(-8, 4), 8, 4), reinterpret_cast<any_int32>(ACCESS(STACKVAR(-8, 4), 16, 4)) + reinterpret_cast<any_int32>(STACKVAR(-4, 4)), 0x00000000);
+            lseek(reinterpret_cast<int>(ACCESS(STACKVAR(-8, 4), 8, 4)), reinterpret_cast<long>(ACCESS(STACKVAR(-8, 4), 16, 4)) + reinterpret_cast<long>(STACKVAR(-4, 4)), 0);
         }
     }
     else
     {
-        _lseek(this->fd, STACKVAR(-4, 4), 0x00000000);
+        lseek(this->fd, reinterpret_cast<long>(STACKVAR(-4, 4)), 0);
     }
     this->ReadCacheBlock();
 l10001997:
@@ -300,7 +300,7 @@ long B_IDataFile::Tell()
 // address: 0x100019CC
 unsigned char B_IDataFile::Peek()
 {
-    if (_eof(this->fd) == 0x00000000)
+    if (eof(this->fd) == 0)
     {
         this->Read(LOCAL(-4), 1);
         this->Seek(-1, 1);
@@ -432,7 +432,7 @@ B_ODataFile::B_ODataFile(const char *file_name, int flags)
     ACCESS(this, 16392, 4) = 0x00000000;
     ACCESS(this, 16396, 4) = 0x00000000;
     this->file_name = _strdup(file_name);
-    this->fd = reinterpret_cast<int>(_open(file_name, flags | 0x00000301, 0x00000180));
+    this->fd = open(file_name, flags | 0x00000301, 0x00000180);
     if (this->fd != -1)
     {
         goto l10001D68;
@@ -492,7 +492,7 @@ void B_ODataFile::WriteCacheBlock()
     {
         return;
     }
-    _write(this->fd, &this->unknown_fields, ACCESS(this, 16396, 4));
+    write(this->fd, &this->unknown_fields, reinterpret_cast<unsigned int>(ACCESS(this, 16396, 4)));
     ACCESS(this, 16392, 4) = reinterpret_cast<any_int32>(ACCESS(this, 16392, 4)) + reinterpret_cast<any_int32>(ACCESS(this, 16396, 4));
     ACCESS(this, 16396, 4) = 0x00000000;
 }
@@ -512,7 +512,7 @@ long B_ODataFile::Seek(long arg_0)
 l10001E40:
     ACCESS(this, 16392, 4) = arg_0;
     ACCESS(this, 16396, 4) = 0x00000000;
-    _lseek(this->fd, arg_0, 0x00000000);
+    lseek(this->fd, arg_0, 0);
 l10001E6E:
     return reinterpret_cast<long>(ACCESS(this, 16392, 4)) + reinterpret_cast<long>(ACCESS(this, 16396, 4));
 }
@@ -632,7 +632,7 @@ B_ODataFile::~B_ODataFile()
     if (this->OK())
     {
         this->WriteCacheBlock();
-        _close(this->fd);
+        close(this->fd);
     }
 }
 
@@ -948,7 +948,7 @@ l100027A1:
 l100027C2:
     ACCESS(STACKVAR(-12, 4), 1, 1) = 0;
     strcat(reinterpret_cast<char *>(GLOBAL(0x1004A00C)), "Maps");
-    if (_access(GLOBAL(0x1004A00C), 0x00000000) == 0x00000000)
+    if (access(reinterpret_cast<char *>(GLOBAL(0x1004A00C)), 0) == 0)
     {
         goto l1000283F;
     }
@@ -977,7 +977,7 @@ l1000281E:
 l1000283F:
     ACCESS(STACKVAR(-12, 4), 1, 1) = 0;
     strcat(reinterpret_cast<char *>(GLOBAL(0x1004A00C)), "Config");
-    if (_access(GLOBAL(0x1004A00C), 0x00000000) != 0x00000000)
+    if (access(reinterpret_cast<char *>(GLOBAL(0x1004A00C)), 0) != 0)
     {
         _mkdir(reinterpret_cast<char *>(GLOBAL(0x1004A00C)));
     }

@@ -20,6 +20,8 @@ class_regexp = re.compile(
     r'^(class|struct)\s+(LIB_EXP\s+)?(?P<class>\w+)(?P<semicolon>;)?'
     r'(\s*:\s*public\s*(?P<parent>\w+))?')
 template_regexp = re.compile(r'^template<class\s+(?P<class>\w+)>')
+ext_proc_regexp = re.compile(
+    r'^_CRT_NONSTDC_DEPRECATE\((?P<alias>\w+)\)(?P<decl>.+);')
 
 _standard_types = {
     "bool": data_types.ClassType("bool", {}),
@@ -44,11 +46,13 @@ _standard_types = {
 class HeaderState:
     def __init__(
         self, file_name, header_states, declared_types, incomplete_types,
+        external_procedures,
     ):
         self._file_name = file_name
         self._header_states = header_states
         self._declared_types = declared_types
         self._incomplete_types = incomplete_types
+        self._external_procedures = external_procedures
         self._constants = Constants()
         self._visited = False
 
@@ -78,6 +82,7 @@ class HeaderState:
             line, is_comment = _strip_comments(line, is_comment)
             self._try_parse_preprocessor_directive(line)
             line = self._try_parse_template(line)
+            self._try_parse_external_procedures(line)
             match = class_regexp.search(line)
             if match and brackets_depth == 0:
                 class_name = match.group("class")
@@ -194,6 +199,16 @@ class HeaderState:
         self._declared_types[arg_class] = data_types.ClassType(arg_class, {})
         return re.sub(template_regexp, "", line).strip()
 
+    def _try_parse_external_procedures(self, line):
+        match = ext_proc_regexp.search(line)
+        if not match:
+            return
+        alias = match.group("alias")
+        declaration = match.group("decl")
+        proc_decl = parser.parse_cpp_function(
+            None, declaration, self._declared_types)
+        self._external_procedures[alias] = proc_decl
+
 
 def _strip_start(definition, start):
     if definition.startswith(start):
@@ -234,10 +249,10 @@ def _collect_cpp_declarations(
                 file_name = os.path.join(root, file)
                 head, dir_name1 = os.path.split(root)
                 head, dir_name2 = os.path.split(head)
-                declarations = [declared_types, incomplete_types]
+                declarations = [
+                    declared_types, incomplete_types, external_procedures]
                 if file.lower().endswith(".xml"):
                     metadata_state_class = XmlMetadata
-                    declarations.append(external_procedures)
                 else:
                     metadata_state_class = HeaderState
                 header_state = metadata_state_class(
