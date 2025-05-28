@@ -2,7 +2,7 @@ import data_types
 import expressions
 from hex_conversion import from_hex
 import instructions
-from patterns.high_level import make_high_level_code
+from patterns.procedure import Procedure
 
 from .block_builder import BlockBuilder
 from .ensure_tmp_reg_def import ensure_tmp_reg_def
@@ -195,22 +195,10 @@ class ProcedureBuilder:
                     type(first_instruction)))
         return first_instruction
 
-    def make_high_level_code(self, declarations):
-        file_declarations = declarations.symbols.get_file_declarations(
-            self._proc_addr, declarations.files_declarations)
-        self._instructions = make_high_level_code(
+    def build_procedure(self):
+        return Procedure(
             self._expect_first_procedure_info(),
             self._proc_addr,
             self._proc_decl,
-            declarations.characteristics[self._proc_addr],
-            file_declarations,
-            declarations,
             self._instructions,
         )
-
-    def emit_code(self, writer):
-        writer.write_line("{")
-        with writer.indent():
-            for instr in self._instructions:
-                instr.emit_code(writer)
-        writer.write_line("}")

@@ -57,7 +57,7 @@ class ProcedureDeclaration:
 
     @property
     def is_destructor(self):
-        return self._proc_name.startswith("~")
+        return self._proc_name is not None and self._proc_name.startswith("~")
 
     @property
     def is_vararg(self):

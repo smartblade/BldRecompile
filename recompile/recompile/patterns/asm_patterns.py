@@ -7,6 +7,8 @@ from make_tuple import add_attributes
 from patterns.apply_pattern import apply_pattern
 from patterns.collect_string_constants import collect_string_constants
 from patterns.asm_parser import parse_asm_lines
+from patterns.high_level import make_high_level_code
+import patterns.high_level.inline_functions as inline_functions
 from patterns.prefix_status import PrefixStatus
 from patterns.structure import Patterns
 from patterns.builder import ProcedureBuilder
@@ -30,14 +32,15 @@ def process_asm_patterns(lines, declarations):
     string_constants = collect_string_constants(lines)
     declarations = add_attributes(
         declarations, string_constants=string_constants)
+    inline_procedures = inline_functions.Dict()
     for line in lines:
         if line.startswith("l") and line.find("PROC") >= 0:
             proc_addr = from_hex(line[1:9])
             proc_lines.clear()
         elif proc_addr is not None and line.find("ENDP") >= 0:
             exc = _build_proc(
-                writer, declarations, standard_inlines, patterns, proc_addr,
-                proc_lines)
+                writer, declarations, standard_inlines, inline_procedures,
+                patterns, proc_addr, proc_lines)
             if exc is not None:
                 if (
                     smallest_failed_proc_len is None or
@@ -49,6 +52,8 @@ def process_asm_patterns(lines, declarations):
             proc_addr = None
         elif proc_addr is not None:
             proc_lines.append(line.strip())
+    inline_procedures.make_high_level_code(declarations)
+    inline_procedures.write_procedures(writer)
     with open("{}.cpp".format(declarations.symbols.module), "wt") as f:
         f.write(writer.get_string())
     if smallest_failed_proc_exc is not None:
@@ -58,18 +63,12 @@ def process_asm_patterns(lines, declarations):
 
 
 def _build_proc(
-    writer, declarations, standard_inlines, patterns, proc_addr, proc_lines
+    writer, declarations, standard_inlines, inline_procedures, patterns,
+    proc_addr, proc_lines
 ):
     proc_decl = get_procedure_declaration_at(declarations, proc_addr)
-    if proc_decl is not None:
-        decl_string = proc_decl.get_declaration(
-            is_metafile=False, is_definition=True)
-    else:
-        decl_string = "p{}".format(to_hex(proc_addr))
-    writer.write_line("")
-    writer.write_line("// address: 0x{}".format(to_hex(proc_addr)))
-    writer.write_line(decl_string)
     builder = ProcedureBuilder(proc_decl, proc_addr, standard_inlines)
+    writer.write_line()
     try:
         _parse_asm_proc(
             patterns,
@@ -79,12 +78,15 @@ def _build_proc(
             external_procedures=declarations.external_procedures,
         )
     except Exception as exc:
-        builder.emit_code(writer)
+        procedure = builder.build_procedure()
+        procedure.emit_code(writer)
         writer.write_line('Error: "{}"'.format(str(exc)))
         return exc
     else:
-        builder.make_high_level_code(declarations)
-        builder.emit_code(writer)
+        procedure = builder.build_procedure()
+        procedure = make_high_level_code(
+            procedure, declarations, inline_procedures)
+        procedure.emit_code(writer)
 
 
 def _parse_asm_proc(patterns, lines, **kwargs):

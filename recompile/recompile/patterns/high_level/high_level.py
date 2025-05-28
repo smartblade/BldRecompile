@@ -1,6 +1,7 @@
 from expression_transformer import ExpressionTransformer
 import patterns.high_level.goto_eliminator as goto_eliminator
 import patterns.high_level.inline_functions as inline_functions
+from patterns.procedure import Procedure
 from patterns.validate_procedure_declaration import \
     validate_procedure_declaration
 
@@ -17,25 +18,33 @@ from .transform_reinterpret import transform_reinterpret
 from .transform_returns import transform_returns
 
 
-def make_high_level_code(
-    proc_info, cur_proc_addr, proc_decl, characteristics, file_declarations,
-    declarations, instrs
-):
-    instrs = goto_eliminator.transform(instrs)
+def make_high_level_code(procedure, declarations, inline_procedures):
+    proc_info = procedure.proc_info
+    proc_decl = procedure.proc_decl
+    if procedure.address is not None:
+        file_declarations = declarations.symbols.get_file_declarations(
+            procedure.address, declarations.files_declarations)
+        characteristics = declarations.characteristics[procedure.address]
+    else:
+        file_declarations = None
+        characteristics = None
+    instrs = goto_eliminator.transform(procedure.instructions)
     stack_vars = proc_info.stack_variables
     if proc_decl is not None:
         stack_vars.update(proc_decl.stack_variables)
     instrs = _transform_instructions(
-        instrs, cur_proc_addr=cur_proc_addr, stack_vars=stack_vars,
-        file_declarations=file_declarations, declarations=declarations)
+        instrs, cur_proc_addr=procedure.address, stack_vars=stack_vars,
+        file_declarations=file_declarations, declarations=declarations,
+        inline_procedures=inline_procedures)
     _validate_procedure_info(proc_info, proc_decl)
     if proc_decl is not None:
         instrs = _eliminate_procedure_info(proc_info, instrs)
     instrs = transform_returns(proc_info, proc_decl, characteristics, instrs)
     instrs = _transform_instructions(
-        instrs, cur_proc_addr=cur_proc_addr, stack_vars=stack_vars,
-        file_declarations=file_declarations, declarations=declarations)
-    return instrs
+        instrs, cur_proc_addr=procedure.address, stack_vars=stack_vars,
+        file_declarations=file_declarations, declarations=declarations,
+        inline_procedures=inline_procedures)
+    return Procedure(proc_info, procedure.address, proc_decl, instrs)
 
 
 def _transform_instructions(instrs, **kwargs):
@@ -110,3 +119,8 @@ class _ExpressionTransformer(ExpressionTransformer):
     @staticmethod
     def transform_stackvar(*args, **kwargs):
         return transform_stackvar(*args, **kwargs)
+
+    @staticmethod
+    def transform_block_instructions(block_instructions, **kwargs):
+        inline_functions.transform_block_instructions(
+            block_instructions, **kwargs)

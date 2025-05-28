@@ -192,3 +192,7 @@ class ExpressionTransformer:
     @staticmethod
     def transform_u(expression, **kwargs):
         return None
+
+    @staticmethod
+    def transform_block_instructions(block_instructions, **kwargs):
+        pass

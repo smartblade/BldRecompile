@@ -113,25 +113,7 @@ void B_IDataFile::Close()
     }
     if (this->fileInfo != nullptr)
     {
-        STACKVAR(-8, 4) = this->fileInfo;
-        STACKVAR(-4, 4) = STACKVAR(-8, 4);
-        if (STACKVAR(-4, 4) != 0x00000000)
-        {
-            if (ACCESS(STACKVAR(-4, 4), 8, 4) != 0xFFFFFFFF)
-            {
-                close(reinterpret_cast<int>(ACCESS(STACKVAR(-4, 4), 8, 4)));
-                free(reinterpret_cast<void *>(ACCESS(STACKVAR(-4, 4), 4, 4)));
-            }
-            if ((0x00000001 & 0x00000001) != 0x00000000)
-            {
-                ??3@YAXPAX@Z(STACKVAR(-4, 4));
-            }
-            STACKVAR(-16, 4) = STACKVAR(-4, 4);
-        }
-        else
-        {
-            STACKVAR(-16, 4) = 0x00000000;
-        }
+        delete this->fileInfo;
         this->fileInfo = nullptr;
         this->fd = -1;
         return;
@@ -2400,21 +2382,7 @@ l10004B89:
 l10004B92:
     if (reinterpret_cast<unsigned int>(STACKVAR(-16, 4)) < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-32, 4), 8, 4)))
     {
-        STACKVAR(-24, 4) = ACCESS(ARRPTR(ACCESS(STACKVAR(-32, 4), 4, 4), 4, STACKVAR(-16, 4), 0), 0, 4);
-        STACKVAR(-20, 4) = STACKVAR(-24, 4);
-        if (STACKVAR(-20, 4) != 0x00000000)
-        {
-            reinterpret_cast<B_Name *>(STACKVAR(-20, 4))->~B_Name();
-            if ((0x00000001 & 0x00000001) != 0x00000000)
-            {
-                ??3@YAXPAX@Z(STACKVAR(-20, 4));
-            }
-            STACKVAR(-44, 4) = STACKVAR(-20, 4);
-        }
-        else
-        {
-            STACKVAR(-44, 4) = 0x00000000;
-        }
+        delete reinterpret_cast<B_Name *>(ACCESS(ARRPTR(ACCESS(STACKVAR(-32, 4), 4, 4), 4, STACKVAR(-16, 4), 0), 0, 4));
         goto l10004B89;
     }
 l10004BE9:
@@ -4555,21 +4523,7 @@ l100081A5:
 l100081AE:
     if (reinterpret_cast<unsigned int>(STACKVAR(-4, 4)) < reinterpret_cast<unsigned int>(ACCESS(this, 8, 4)))
     {
-        STACKVAR(-12, 4) = ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, STACKVAR(-4, 4), 0), 0, 4);
-        STACKVAR(-8, 4) = STACKVAR(-12, 4);
-        if (STACKVAR(-8, 4) != 0x00000000)
-        {
-            reinterpret_cast<B_Name *>(STACKVAR(-8, 4))->~B_Name();
-            if ((0x00000001 & 0x00000001) != 0x00000000)
-            {
-                ??3@YAXPAX@Z(STACKVAR(-8, 4));
-            }
-            STACKVAR(-28, 4) = STACKVAR(-8, 4);
-        }
-        else
-        {
-            STACKVAR(-28, 4) = 0x00000000;
-        }
+        delete reinterpret_cast<B_Name *>(ACCESS(ARRPTR(ACCESS(this, 4, 4), 4, STACKVAR(-4, 4), 0), 0, 4));
         goto l100081A5;
     }
 l10008205:
@@ -24832,21 +24786,7 @@ B_ChannelOFile::~B_ChannelOFile()
     ACCESS(this, 0, 4) = GLOBAL(0x10042CBC);
     if (ACCESS(this, 16, 4) != 0x00000000)
     {
-        STACKVAR(-8, 4) = ACCESS(this, 16, 4);
-        STACKVAR(-4, 4) = STACKVAR(-8, 4);
-        if (STACKVAR(-4, 4) != 0x00000000)
-        {
-            reinterpret_cast<B_ODataFile *>(STACKVAR(-4, 4))->~B_ODataFile();
-            if ((0x00000001 & 0x00000001) != 0x00000000)
-            {
-                ??3@YAXPAX@Z(STACKVAR(-4, 4));
-            }
-            STACKVAR(-16, 4) = STACKVAR(-4, 4);
-        }
-        else
-        {
-            STACKVAR(-16, 4) = 0x00000000;
-        }
+        delete reinterpret_cast<B_ODataFile *>(ACCESS(this, 16, 4));
         ACCESS(this, 16, 4) = 0x00000000;
         this->unknown0Ch = 1;
     }
@@ -28972,20 +28912,20 @@ B_ObjDscr::~B_ObjDscr()
     STACKVAR(-48, 4) = reinterpret_cast<any_int32>(this) + 0x000000A4;
     if (ACCESS(STACKVAR(-48, 4), 12, 4) != 0x00000000)
     {
-        STACKVAR(-28, 4) = ACCESS(STACKVAR(-48, 4), 12, 4);
-        STACKVAR(-24, 4) = STACKVAR(-28, 4);
-        if (STACKVAR(-24, 4) != 0x00000000)
+        __deleting_obj_copy = reinterpret_cast<void *>(ACCESS(STACKVAR(-48, 4), 12, 4));
+        __deleting_obj = __deleting_obj_copy;
+        if (__deleting_obj != nullptr)
         {
-            STACKVAR(-24, 4)->unknown_method_10039C10();
+            __deleting_obj->unknown_method_10039C10();
             if ((0x00000001 & 0x00000001) != 0x00000000)
             {
-                ??3@YAXPAX@Z(STACKVAR(-24, 4));
+                ??3@YAXPAX@Z(__deleting_obj);
             }
-            STACKVAR(-92, 4) = STACKVAR(-24, 4);
+            __deleting_result = __deleting_obj;
         }
         else
         {
-            STACKVAR(-92, 4) = 0x00000000;
+            __deleting_result = nullptr;
         }
     }
     if (ACCESS(STACKVAR(-48, 4), 16, 4) != 0x00000000)
@@ -29807,38 +29747,38 @@ p10039C10
     ProcedureInfo(this=Id(this), this_offset=-36, local_size=52, stack_delta=0)
     if (ACCESS(this, 12, 4) != 0x00000000)
     {
-        STACKVAR(-8, 4) = ACCESS(this, 12, 4);
-        STACKVAR(-4, 4) = STACKVAR(-8, 4);
-        if (STACKVAR(-4, 4) != 0x00000000)
+        __deleting_obj_copy = reinterpret_cast<void *>(ACCESS(this, 12, 4));
+        __deleting_obj = __deleting_obj_copy;
+        if (__deleting_obj != nullptr)
         {
-            STACKVAR(-4, 4)->unknown_method_10039C10();
+            __deleting_obj->unknown_method_10039C10();
             if ((0x00000001 & 0x00000001) != 0x00000000)
             {
-                ??3@YAXPAX@Z(STACKVAR(-4, 4));
+                ??3@YAXPAX@Z(__deleting_obj);
             }
-            STACKVAR(-40, 4) = STACKVAR(-4, 4);
+            __deleting_result = __deleting_obj;
         }
         else
         {
-            STACKVAR(-40, 4) = 0x00000000;
+            __deleting_result = nullptr;
         }
     }
     if (ACCESS(this, 16, 4) != 0x00000000)
     {
-        STACKVAR(-16, 4) = ACCESS(this, 16, 4);
-        STACKVAR(-12, 4) = STACKVAR(-16, 4);
-        if (STACKVAR(-12, 4) != 0x00000000)
+        __deleting_obj_copy = reinterpret_cast<void *>(ACCESS(this, 16, 4));
+        __deleting_obj = __deleting_obj_copy;
+        if (__deleting_obj != nullptr)
         {
-            STACKVAR(-12, 4)->unknown_method_10039C10();
+            __deleting_obj->unknown_method_10039C10();
             if ((0x00000001 & 0x00000001) != 0x00000000)
             {
-                ??3@YAXPAX@Z(STACKVAR(-12, 4));
+                ??3@YAXPAX@Z(__deleting_obj);
             }
-            STACKVAR(-44, 4) = STACKVAR(-12, 4);
+            __deleting_result = __deleting_obj;
         }
         else
         {
-            STACKVAR(-44, 4) = 0x00000000;
+            __deleting_result = nullptr;
         }
     }
     if (ACCESS(this, 20, 4) != 0x00000000)
@@ -29927,13 +29867,13 @@ p10039D90
     }
     if (ACCESS(this, 20, 4) != 0x00000000)
     {
-        STACKVAR(-24, 4) = ACCESS(this, 20, 4);
-        STACKVAR(-20, 4) = STACKVAR(-24, 4);
-        if (STACKVAR(-20, 4) != 0x00000000)
+        __deleting_obj_copy = reinterpret_cast<void *>(ACCESS(this, 20, 4));
+        __deleting_obj = __deleting_obj_copy;
+        if (__deleting_obj != nullptr)
         {
-            if (ACCESS(STACKVAR(-20, 4), 4, 4) != 0x00000000)
+            if (ACCESS(__deleting_obj, 4, 4) != 0x00000000)
             {
-                STACKVAR(-32, 4) = ACCESS(STACKVAR(-20, 4), 4, 4);
+                STACKVAR(-32, 4) = ACCESS(__deleting_obj, 4, 4);
                 STACKVAR(-28, 4) = STACKVAR(-32, 4);
                 if (STACKVAR(-28, 4) != 0x00000000)
                 {
@@ -29946,13 +29886,13 @@ p10039D90
             }
             if ((0x00000001 & 0x00000001) != 0x00000000)
             {
-                ??3@YAXPAX@Z(STACKVAR(-20, 4));
+                ??3@YAXPAX@Z(__deleting_obj);
             }
-            STACKVAR(-52, 4) = STACKVAR(-20, 4);
+            __deleting_result = __deleting_obj;
         }
         else
         {
-            STACKVAR(-52, 4) = 0x00000000;
+            __deleting_result = nullptr;
         }
     }
     if ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x00000001) != 0x00000000)
@@ -35149,3 +35089,16 @@ p10041808
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=None)
     disable_thread_library_calls_0x10041822();
 }
+
+class B_FileInfo
+{
+    // address: inline
+    ~B_FileInfo()
+    {
+        if (this->fd != -1)
+        {
+            close(this->fd);
+            free(this->unknown04);
+        }
+    }
+};

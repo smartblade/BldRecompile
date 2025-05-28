@@ -6,9 +6,12 @@ class Writer:
         self._indent_length = indent_length
         self._indent = 0
 
-    def write_line(self, line, indent=None):
+    def write_line(self, line="", indent=None):
         indent = indent if indent is not None else self._indent
-        self._lines.append(" " * indent * self._indent_length + line)
+        if line:
+            self._lines.append(" " * indent * self._indent_length + line)
+        else:
+            self._lines.append("")
 
     @contextmanager
     def indent(self):

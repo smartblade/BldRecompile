@@ -2,6 +2,8 @@ import expressions
 import instructions
 from expressions.operator import Operator
 
+from .is_int_constant import is_int_constant
+
 
 def transform_if(if_clause, if_block, else_block):
     if not isinstance(if_clause, expressions.Bin):
@@ -40,7 +42,7 @@ def _transform_two_instructions(obj, first_instr, second_instr):
         return None
     if if_clause.operator != Operator.EQ:
         return None
-    if not _is_int_constant(if_clause.right, 0):
+    if not is_int_constant(if_clause.right, 0):
         return None
     left_obj = _try_extract_obj_from_field_access(if_clause.left, "ob_refcnt")
     if left_obj is None:
@@ -82,7 +84,7 @@ def _is_assignment(instr, obj, int_const, operator):
         return False
     if src.operator != operator:
         return False
-    if not _is_int_constant(src.right, int_const):
+    if not is_int_constant(src.right, int_const):
         return False
     left_obj = _try_extract_obj_from_field_access(src.left, "ob_refcnt")
     if left_obj is None:
@@ -103,13 +105,3 @@ def _try_extract_obj_from_field_access(e, field_name):
     if e.field_name != field_name:
         return None
     return e.expression
-
-
-def _is_int_constant(e, int_value):
-    if not isinstance(e, expressions.Constant):
-        return False
-    if not e.data_type.is_any_int:
-        return False
-    if e.value != int_value:
-        return False
-    return True
