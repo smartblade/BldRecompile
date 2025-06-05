@@ -129,7 +129,7 @@ void B_IDataFile::Close()
 // address: 0x100015E2
 void B_IDataFile::Open(const char *src, int flags)
 {
-    this->file_name = _strdup(src);
+    this->file_name = strdup(src);
     this->fileInfo = nullptr;
     if (this->fileInfo == nullptr)
     {
@@ -413,7 +413,7 @@ B_ODataFile::B_ODataFile(const char *file_name, int flags)
 {
     ACCESS(this, 16392, 4) = 0x00000000;
     ACCESS(this, 16396, 4) = 0x00000000;
-    this->file_name = _strdup(file_name);
+    this->file_name = strdup(file_name);
     this->fd = open(file_name, flags | 0x00000301, 0x00000180);
     if (this->fd != -1)
     {
@@ -658,13 +658,13 @@ p10002100
         return;
     }
     STACKVAR(-8, 4) = (reinterpret_cast<int>(STACKVAR(12, 4)) + reinterpret_cast<int>(STACKVAR(8, 4))) / 2;
-    STACKVAR(-4, 4) = _stricmp(reinterpret_cast<char *>(reinterpret_cast<any_int32>(ACCESS(this, 4, 4)) + 0x00000048 * reinterpret_cast<any_int32>(STACKVAR(-8, 4))), reinterpret_cast<char *>(ACCESS(this, 24, 4)));
-    if (_stricmp(reinterpret_cast<char *>(reinterpret_cast<any_int32>(ACCESS(this, 4, 4)) + 0x00000048 * reinterpret_cast<any_int32>(STACKVAR(12, 4))), reinterpret_cast<char *>(ACCESS(this, 24, 4))) == 0)
+    STACKVAR(-4, 4) = stricmp(reinterpret_cast<char *>(reinterpret_cast<any_int32>(ACCESS(this, 4, 4)) + 0x00000048 * reinterpret_cast<any_int32>(STACKVAR(-8, 4))), reinterpret_cast<char *>(ACCESS(this, 24, 4)));
+    if (stricmp(reinterpret_cast<char *>(reinterpret_cast<any_int32>(ACCESS(this, 4, 4)) + 0x00000048 * reinterpret_cast<any_int32>(STACKVAR(12, 4))), reinterpret_cast<char *>(ACCESS(this, 24, 4))) == 0)
     {
         REGDEF(eax=STACKVAR(12, 4))
         return;
     }
-    if (_stricmp(reinterpret_cast<char *>(reinterpret_cast<any_int32>(ACCESS(this, 4, 4)) + 0x00000048 * reinterpret_cast<any_int32>(STACKVAR(8, 4))), reinterpret_cast<char *>(ACCESS(this, 24, 4))) == 0)
+    if (stricmp(reinterpret_cast<char *>(reinterpret_cast<any_int32>(ACCESS(this, 4, 4)) + 0x00000048 * reinterpret_cast<any_int32>(STACKVAR(8, 4))), reinterpret_cast<char *>(ACCESS(this, 24, 4))) == 0)
     {
         REGDEF(eax=STACKVAR(8, 4))
         return;
@@ -1520,7 +1520,7 @@ unsigned int B_Name::CompareNoCase(const B_Name &arg_0)
 {
     if (this->len == arg_0.len)
     {
-        return static_cast<unsigned int>(_stricmp(this->string, arg_0.string) == 0);
+        return static_cast<unsigned int>(stricmp(this->string, arg_0.string) == 0);
     }
     return 0;
 }
@@ -1528,7 +1528,7 @@ unsigned int B_Name::CompareNoCase(const B_Name &arg_0)
 // address: 0x10003769
 unsigned int B_Name::CompareNoCase(const char *str)
 {
-    return static_cast<unsigned int>(_stricmp(this->string, str) == 0);
+    return static_cast<unsigned int>(stricmp(this->string, str) == 0);
 }
 
 // address: 0x1000378E
@@ -1736,7 +1736,7 @@ B_Name &B_Name::operator +=(const B_Name &other)
 // address: 0x10003E91
 void B_Name::UpCase()
 {
-    _strupr(this->string);
+    strupr(this->string);
 }
 
 // address: 0x10003EB0
