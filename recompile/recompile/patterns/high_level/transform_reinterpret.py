@@ -1,12 +1,12 @@
 import expressions
 import data_types
-from hex_conversion import from_hex
 
 
-def transform_reinterpret(data_type, expression, **kwargs):
+def transform_reinterpret(data_type, expression, analysis, **kwargs):
     result = _transform_string_constant(data_type, expression, **kwargs)
     if result is not None:
         return result
+    analysis.process_reinterpret(data_type, expression)
     return expressions.do_reinterpret(data_type, expression)
 
 

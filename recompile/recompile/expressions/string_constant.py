@@ -9,8 +9,8 @@ class StringConstant:
     def data_type(self):
         return data_types.Pointer32(data_types.Char())
 
-    def transform(self, transform_callback, **kwargs):
-        return transform_callback(self, **kwargs)
+    def transform(self, transformer, **kwargs):
+        return self
 
     def emit_code(self):
         return '"{}"'.format(self._string)

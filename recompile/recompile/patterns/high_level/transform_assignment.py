@@ -5,11 +5,12 @@ import instructions
 from .convert_expression_to_type import convert_expression_to_type
 
 
-def transform_assignment(dst, src, **kwargs):
+def transform_assignment(dst, src, analysis, **kwargs):
     new_src = convert_expression_to_type(src, dst.data_type)
     result = _try_make_increment(dst, new_src)
     if result is not None:
         return result
+    analysis.process_assignment(dst, new_src)
     if new_src == src:
         return None
     return instructions.Assignment(dst, new_src)

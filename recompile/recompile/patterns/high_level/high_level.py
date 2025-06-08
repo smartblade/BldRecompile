@@ -1,4 +1,5 @@
 from expression_transformer import ExpressionTransformer
+import patterns.high_level.analysis as analysis
 import patterns.high_level.goto_eliminator as goto_eliminator
 import patterns.high_level.inline_functions as inline_functions
 from patterns.procedure import Procedure
@@ -12,6 +13,7 @@ from .transform_assignment import transform_assignment
 from .transform_binary import transform_binary
 from .transform_constant import transform_constant
 from .transform_global import transform_global
+from .transform_local import transform_local
 from .transform_stackvar import transform_stackvar
 from .transform_procedure_call import transform_procedure_call
 from .transform_reinterpret import transform_reinterpret
@@ -32,18 +34,23 @@ def make_high_level_code(procedure, declarations, inline_procedures):
     stack_vars = proc_info.stack_variables
     if proc_decl is not None:
         stack_vars.update(proc_decl.stack_variables)
-    instrs = _transform_instructions(
-        instrs, cur_proc_addr=procedure.address, stack_vars=stack_vars,
-        file_declarations=file_declarations, declarations=declarations,
-        inline_procedures=inline_procedures)
+    locals_analysis = analysis.LocalsAnalysis()
+    context = dict(
+        analysis=locals_analysis,
+        cur_proc_addr=procedure.address,
+        stack_vars=stack_vars,
+        file_declarations=file_declarations,
+        declarations=declarations,
+        inline_procedures=inline_procedures,
+    )
+    instrs = _transform_instructions(instrs, **context)
     _validate_procedure_info(proc_info, proc_decl)
     if proc_decl is not None:
         instrs = _eliminate_procedure_info(proc_info, instrs)
     instrs = transform_returns(proc_info, proc_decl, characteristics, instrs)
-    instrs = _transform_instructions(
-        instrs, cur_proc_addr=procedure.address, stack_vars=stack_vars,
-        file_declarations=file_declarations, declarations=declarations,
-        inline_procedures=inline_procedures)
+    instrs = _transform_instructions(instrs, **context)
+    locals_analysis.fill_stack_variables(stack_vars)
+    instrs = _transform_instructions(instrs, **context)
     return Procedure(proc_info, procedure.address, proc_decl, instrs)
 
 
@@ -115,6 +122,10 @@ class _ExpressionTransformer(ExpressionTransformer):
     @staticmethod
     def transform_global(*args, **kwargs):
         return transform_global(*args, **kwargs)
+
+    @staticmethod
+    def transform_local(*args, **kwargs):
+        return transform_local(*args, **kwargs)
 
     @staticmethod
     def transform_stackvar(*args, **kwargs):
