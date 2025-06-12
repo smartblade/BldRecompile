@@ -15,6 +15,10 @@ class ImplicitDereference:
         assert isinstance(data_type, data_types.Reference)
         return data_type.referent
 
+    def visit(self, on_expression_visited, **kwargs):
+        on_expression_visited(self, **kwargs)
+        self._expression.visit(on_expression_visited, **kwargs)
+
     def transform(self, transformer, **kwargs):
         expression = self._expression.transform(transformer, **kwargs)
         e = transformer.transform_implicit_dereference(expression, **kwargs)

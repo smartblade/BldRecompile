@@ -18,6 +18,7 @@ from .transform_stackvar import transform_stackvar
 from .transform_procedure_call import transform_procedure_call
 from .transform_reinterpret import transform_reinterpret
 from .transform_returns import transform_returns
+from .variables_declarations import insert_declarations
 
 
 def make_high_level_code(procedure, declarations, inline_procedures):
@@ -31,9 +32,7 @@ def make_high_level_code(procedure, declarations, inline_procedures):
         file_declarations = None
         characteristics = None
     instrs = goto_eliminator.transform(procedure.instructions)
-    stack_vars = proc_info.stack_variables
-    if proc_decl is not None:
-        stack_vars.update(proc_decl.stack_variables)
+    stack_vars = procedure.implicit_stack_variables
     locals_analysis = analysis.LocalsAnalysis()
     context = dict(
         analysis=locals_analysis,
@@ -51,7 +50,8 @@ def make_high_level_code(procedure, declarations, inline_procedures):
     instrs = _transform_instructions(instrs, **context)
     locals_analysis.fill_stack_variables(stack_vars)
     instrs = _transform_instructions(instrs, **context)
-    return Procedure(proc_info, procedure.address, proc_decl, instrs)
+    procedure = Procedure(proc_info, procedure.address, proc_decl, instrs)
+    return insert_declarations(procedure, stack_vars)
 
 
 def _transform_instructions(instrs, **kwargs):

@@ -9,6 +9,9 @@ class StringConstant:
     def data_type(self):
         return data_types.Pointer32(data_types.Char())
 
+    def visit(self, on_expression_visited, **kwargs):
+        on_expression_visited(self, **kwargs)
+
     def transform(self, transformer, **kwargs):
         return self
 

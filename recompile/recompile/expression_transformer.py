@@ -194,5 +194,9 @@ class ExpressionTransformer:
         return None
 
     @staticmethod
+    def pre_transform_block_instructions(block_instructions, **kwargs):
+        pass
+
+    @staticmethod
     def transform_block_instructions(block_instructions, **kwargs):
         pass

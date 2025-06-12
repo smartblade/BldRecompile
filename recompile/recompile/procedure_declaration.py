@@ -22,6 +22,7 @@ class ProcedureDeclaration:
         self._is_static = is_static
         self._is_vararg = is_vararg
         self._operator = self._get_operator()
+        self._stack_variable = None
 
     @property
     def proc_name(self):
@@ -77,6 +78,23 @@ class ProcedureDeclaration:
 
     @property
     def stack_variables(self):
+        if self._stack_variable is None:
+            self._stack_variable = self._get_stack_variables()
+        return self._stack_variable
+
+    @property
+    def operator(self):
+        return self._operator
+
+    def _get_operator(self):
+        if self._proc_name is None:
+            return None
+        match = operator_regexp.search(self._proc_name)
+        if match:
+            return operators[match.group("op")]
+        return None
+
+    def _get_stack_variables(self):
         param_ids = list(self.get_parameters_ids().values())
         if self.is_instance_method:
             param_ids = param_ids[1:]
@@ -93,20 +111,9 @@ class ProcedureDeclaration:
             offset = ((offset + 3) // 4) * 4
         return stack_dict
 
-    @property
-    def operator(self):
-        return self._operator
-
-    def _get_operator(self):
-        if self._proc_name is None:
-            return None
-        match = operator_regexp.search(self._proc_name)
-        if match:
-            return operators[match.group("op")]
-        return None
-
     def change_return_type(self, return_type):
         self._return_arg = return_type
+        self._stack_variable = None
 
     def get_parameters_ids(self, expected_args_types=False):
         make_id = expressions.Identifier

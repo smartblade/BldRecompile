@@ -143,12 +143,12 @@ void B_IDataFile::Open(const char *src, int flags)
         B_IDataFile::n_open_files++;
         if (B_IDataFile::OnOpenFunc != nullptr)
         {
-            unknown_loc_10 = PyTuple_New(2);
-            unknown_loc_08 = PyInt_FromLong(B_IDataFile::n_opened_files);
-            unknown_loc_0C = PyString_FromString(this->file_name);
+            PyObject *unknown_loc_10 = PyTuple_New(2);
+            PyObject *unknown_loc_08 = PyInt_FromLong(B_IDataFile::n_opened_files);
+            PyObject *unknown_loc_0C = PyString_FromString(this->file_name);
             ACCESS(unknown_loc_10, 12, 4) = unknown_loc_08;
             ACCESS(unknown_loc_10, 16, 4) = unknown_loc_0C;
-            unknown_loc_04 = CallPythonObject(B_IDataFile::OnOpenFunc, unknown_loc_10);
+            PyObject *unknown_loc_04 = CallPythonObject(B_IDataFile::OnOpenFunc, unknown_loc_10);
             unknown_loc_10->ob_refcnt = unknown_loc_10->ob_refcnt - 0x00000001;
             if (unknown_loc_10->ob_refcnt == 0)
             {
@@ -251,7 +251,7 @@ l10001928:
     this->cacheBlockStartPos = reinterpret_cast<unsigned int>(STACKVAR(-4, 4)) - IFILE_CACHE_SIZE;
     if (this->fileInfo != nullptr)
     {
-        unknown_loc_08 = this->fileInfo;
+        B_FileInfo *unknown_loc_08 = this->fileInfo;
         if (unknown_loc_08->unknown0C != -1)
         {
             lseek(unknown_loc_08->fd, unknown_loc_08->dataStartPos + reinterpret_cast<long>(STACKVAR(-4, 4)), 0);
@@ -1049,7 +1049,7 @@ unsigned int B_List::AddAfter(B_ListElement *existing, B_ListElement *newElement
     }
     else
     {
-        unknown_loc_04 = newElement->next;
+        B_ListElement *unknown_loc_04 = newElement->next;
         unknown_loc_04->prev = existing;
         existing->next = unknown_loc_04;
         existing->prev = newElement;
@@ -1072,7 +1072,7 @@ unsigned int B_List::AddBefore(B_ListElement *existing, B_ListElement *newElemen
     }
     else
     {
-        unknown_loc_04 = newElement->prev;
+        B_ListElement *unknown_loc_04 = newElement->prev;
         unknown_loc_04->next = existing;
         existing->prev = unknown_loc_04;
         existing->next = newElement;
@@ -1100,8 +1100,8 @@ unsigned int B_List::Remove(B_ListElement *element, unsigned int index)
         this->RemoveLast(index);
         return 1;
     }
-    unknown_loc_04 = element->prev;
-    unknown_loc_08 = element->next;
+    B_ListElement *unknown_loc_04 = element->prev;
+    B_ListElement *unknown_loc_08 = element->next;
     element->prev = nullptr;
     element->next = nullptr;
     unknown_loc_04->next = unknown_loc_08;
@@ -1109,7 +1109,7 @@ unsigned int B_List::Remove(B_ListElement *element, unsigned int index)
     element->list = nullptr;
     if (index != 0)
     {
-        unknown_loc_10 = element;
+        B_ListElement *unknown_loc_10 = element;
         STACKVAR(-12, 4) = unknown_loc_10;
         if (STACKVAR(-12, 4) != 0x00000000)
         {
@@ -1132,7 +1132,7 @@ B_ListElement *B_List::RemoveFirst(unsigned int arg_0)
         return nullptr;
     }
     this->numElements = this->numElements - 0x00000001;
-    unknown_loc_04 = this->tail;
+    B_ListElement *unknown_loc_04 = this->tail;
     this->tail = this->tail->next;
     if (this->numElements != 0)
     {
@@ -1166,7 +1166,7 @@ B_ListElement *B_List::RemoveLast(unsigned int arg_0)
         return nullptr;
     }
     this->numElements = this->numElements - 0x00000001;
-    unknown_loc_04 = this->head;
+    B_ListElement *unknown_loc_04 = this->head;
     this->head = this->head->prev;
     if (this->numElements != 0)
     {
@@ -1199,7 +1199,7 @@ B_ListElement *B_List::GetAt(unsigned int arg_0)
     {
         return nullptr;
     }
-    unknown_loc_08 = this->tail;
+    B_ListElement *unknown_loc_08 = this->tail;
     STACKVAR(-4, 4) = 0x00000000;
     goto l10002E41;
 l10002E38:
@@ -1216,7 +1216,7 @@ l10002E41:
 // address: 0x10002E5D
 unsigned int B_List::Exists(const B_ListElement *element)
 {
-    unknown_loc_04 = this->tail;
+    B_ListElement *unknown_loc_04 = this->tail;
     while (unknown_loc_04 != nullptr)
     {
         if (unknown_loc_04 == element)
@@ -1797,6 +1797,7 @@ B_Resource *B_Resource::Load(B_IDataFile &arg_0, unsigned short arg_1)
     {
         goto l1000434E;
     }
+    B_ObjDscr *unknown_loc_48;
     switch (STACKVAR(-68, 4))
     {
         case 3:
@@ -2423,6 +2424,7 @@ l10004C92:
         goto l10004C89;
     }
     STACKVAR(-8, 4) = ??2@YAPAXI@Z(0x00000008);
+    B_Name *unknown_loc_24;
     if (STACKVAR(-8, 4) != 0x00000000)
     {
         unknown_loc_24 = reinterpret_cast<B_Name *>(STACKVAR(-8, 4))->B_Name(arg_0);
@@ -2946,7 +2948,7 @@ unsigned int B_ResourceManager::SaveResource(unsigned short arg_0, unsigned int 
     STACKVAR(-16420, 4) = reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x0000FFFF;
     if (STACKVAR(-16420, 4) == 0x00000005)
     {
-        unknown_loc_04 = this->GetResource(arg_0, arg_1);
+        B_Resource *unknown_loc_04 = this->GetResource(arg_0, arg_1);
         if (unknown_loc_04 == nullptr)
         {
             return 0;
@@ -3210,7 +3212,7 @@ p100061F0
 {
     ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=0)
     reinterpret_cast<B_Name *>(LOCAL(-12))->B_Name(reinterpret_cast<char *>(STACKVAR(8, 4)));
-    unknown_loc_04 = B_resource_manager.GetResource(1, *reinterpret_cast<B_Name *>(LOCAL(-12)));
+    B_Resource *unknown_loc_04 = B_resource_manager.GetResource(1, *reinterpret_cast<B_Name *>(LOCAL(-12)));
     reinterpret_cast<B_Name *>(LOCAL(-12))->~B_Name();
     if (unknown_loc_04 != nullptr)
     {
@@ -3320,6 +3322,7 @@ l100064F3:
         if (STACKVAR(-16420, 4) != 0x00000000)
         {
             STACKVAR(-16432, 4) = ??2@YAPAXI@Z(0x00000278);
+            B_ObjDscr *unknown_loc_4044;
             if (STACKVAR(-16432, 4) != 0x00000000)
             {
                 unknown_loc_4044 = reinterpret_cast<B_ObjDscr *>(STACKVAR(-16432, 4))->B_ObjDscr();
@@ -4740,6 +4743,7 @@ B_BitMap::B_BitMap(BitMapType type, unsigned int arg_2, unsigned int arg_3, cons
     if (pal != nullptr)
     {
         STACKVAR(-12, 4) = ??2@YAPAXI@Z(0x00000300);
+        B_Pal *unknown_loc_14;
         if (STACKVAR(-12, 4) != 0x00000000)
         {
             unknown_loc_14 = reinterpret_cast<B_Pal *>(STACKVAR(-12, 4))->B_Pal(*pal);
@@ -4768,6 +4772,8 @@ B_BitMap::B_BitMap(const B_BitMap &src)
     STACKVAR(-36, 4) = reinterpret_cast<any_int32>(STACKVAR(-36, 4)) - 0x00000001;
     if (reinterpret_cast<unsigned int>(STACKVAR(-36, 4)) <= 4)
     {
+        B_Pal *unknown_loc_28;
+        B_Pal *unknown_loc_2C;
         switch (STACKVAR(-36, 4))
         {
             case 0:
@@ -4942,7 +4948,7 @@ B_IDataFile &operator >>(B_IDataFile &file, B_BitMap &bitMap)
     }
     if (bitMap.pal != nullptr)
     {
-        unknown_loc_0C = bitMap.pal;
+        B_Pal *unknown_loc_0C = bitMap.pal;
         ??3@YAXPAX@Z(unknown_loc_0C);
         bitMap.pal = nullptr;
     }
@@ -5045,7 +5051,7 @@ B_BitMap::~B_BitMap()
     }
     if (this->pal != nullptr)
     {
-        unknown_loc_08 = this->pal;
+        B_Pal *unknown_loc_08 = this->pal;
         ??3@YAXPAX@Z(unknown_loc_08);
     }
 }
@@ -23850,7 +23856,7 @@ l1002833A:
 void B_BitMap24::EscribeArchivoRAW(const char *arg_1)
 {
     STACKVAR(-8, 4) = 3 * this->dimension1 * this->dimension2;
-    unknown_loc_04 = fopen(arg_1, "wb");
+    FILE *unknown_loc_04 = fopen(arg_1, "wb");
     if (unknown_loc_04 == nullptr)
     {
         return;
@@ -24672,7 +24678,7 @@ int B_BitMap24::ReadFromJPEG(const char *arg_0)
 {
     STACKVAR(-428, 4) = unknown_function_1001F6E0(LOCAL(-564));
     unknown_function_10013490(LOCAL(-428), 0x0000003E, 0x000001AC);
-    unknown_loc_1B0 = fopen(arg_0, "rb");
+    FILE *unknown_loc_1B0 = fopen(arg_0, "rb");
     if (unknown_loc_1B0 == nullptr)
     {
         mout << vararg("B_BitMap24: can't open %s\n", arg_0);
@@ -24718,7 +24724,7 @@ int B_BitMap24::SaveToJPEG(const char *arg_1, int arg_2)
 {
     STACKVAR(-356, 4) = unknown_function_1001F6E0(LOCAL(-500));
     unknown_function_100096A0(LOCAL(-356), 0x0000003E, 0x00000164);
-    unknown_loc_170 = fopen(arg_1, "wb");
+    FILE *unknown_loc_170 = fopen(arg_1, "wb");
     if (unknown_loc_170 == nullptr)
     {
         mout << vararg("B_BitMap24: can't open %s\n", arg_1);
@@ -24753,6 +24759,7 @@ B_ChannelOFile::B_ChannelOFile(B_Name arg_0, const char *arg_1)
     this->unknown0Ch = 1;
     ACCESS(this, 0, 4) = GLOBAL(0x10042CBC);
     STACKVAR(-4, 4) = ??2@YAPAXI@Z(0x00004010);
+    B_ODataFile *unknown_loc_0C;
     if (STACKVAR(-4, 4) != 0x00000000)
     {
         unknown_loc_0C = reinterpret_cast<B_ODataFile *>(STACKVAR(-4, 4))->B_ODataFile(arg_1, 16384);
@@ -32958,7 +32965,7 @@ B_ElementCSV::~B_ElementCSV()
 unsigned int ReadCSV(const char *file_name, B_NDataBase<B_ElementCSV> *csvs)
 {
     STACKVAR(-264, 4) = 0x00000000;
-    unknown_loc_04 = fopen(file_name, "rt");
+    FILE *unknown_loc_04 = fopen(file_name, "rt");
     if (unknown_loc_04 == nullptr)
     {
         mout << vararg("ReadCSV() -> No se ha podido abrir el archivo %s.\n", file_name);
@@ -33275,7 +33282,7 @@ l1003E2D9:
     }
     return;
 l1003E330:
-    unknown_loc_0C = PyObject_Str(reinterpret_cast<PyObject *>(STACKVAR(8, 4)));
+    PyObject *unknown_loc_0C = PyObject_Str(reinterpret_cast<PyObject *>(STACKVAR(8, 4)));
     mout << PyString_AsString(unknown_loc_0C);
     if (unknown_loc_0C == nullptr)
     {
@@ -33294,7 +33301,7 @@ PyObject *CallPythonObject(PyObject *func, PyObject *args)
 {
     if ((CheckErrors & 0x00000002) != 0)
     {
-        unknown_loc_08 = PyErr_Occurred();
+        PyObject *unknown_loc_08 = PyErr_Occurred();
         if (unknown_loc_08 != nullptr)
         {
             PyErr_Print();
@@ -33302,7 +33309,7 @@ PyObject *CallPythonObject(PyObject *func, PyObject *args)
             {
                 unknown_function_1003E280(args);
             }
-            unknown_loc_0C = PyObject_Str(func);
+            PyObject *unknown_loc_0C = PyObject_Str(func);
             if (unknown_loc_0C != nullptr)
             {
                 mout << vararg("Function (method): %s\n", PyString_AsString(unknown_loc_0C));
@@ -33311,10 +33318,10 @@ PyObject *CallPythonObject(PyObject *func, PyObject *args)
             PyErr_Clear();
         }
     }
-    unknown_loc_04 = PyEval_CallObjectWithKeywords(func, args, nullptr);
+    PyObject *unknown_loc_04 = PyEval_CallObjectWithKeywords(func, args, nullptr);
     if ((CheckErrors & 0x00000001) != 0)
     {
-        unknown_loc_10 = PyErr_Occurred();
+        PyObject *unknown_loc_10 = PyErr_Occurred();
         if (unknown_loc_10 != nullptr)
         {
             PyErr_Print();
@@ -33322,7 +33329,7 @@ PyObject *CallPythonObject(PyObject *func, PyObject *args)
             {
                 unknown_function_1003E280(args);
             }
-            unknown_loc_14 = PyObject_Str(func);
+            PyObject *unknown_loc_14 = PyObject_Str(func);
             if (unknown_loc_14 != nullptr)
             {
                 mout << vararg("Function (method): %s\n", PyString_AsString(unknown_loc_14));
@@ -33341,7 +33348,7 @@ PyObject *CallPythonObject(PyObject *func, PyObject *args)
         {
             unknown_function_1003E280(args);
         }
-        unknown_loc_18 = PyObject_Str(func);
+        PyObject *unknown_loc_18 = PyObject_Str(func);
         if (unknown_loc_18 != nullptr)
         {
             mout << vararg("Function (method): %s\n", PyString_AsString(unknown_loc_18));
@@ -33434,7 +33441,7 @@ p1003E95C
         return;
     }
     STACKVAR(-8, 4) = GetnOpenedInputFiles();
-    unknown_loc_04 = Py_BuildValue("i", STACKVAR(-8, 4));
+    PyObject *unknown_loc_04 = Py_BuildValue("i", STACKVAR(-8, 4));
     REGDEF(eax=unknown_loc_04)
 }
 
@@ -33449,7 +33456,7 @@ p1003E9A6
         return;
     }
     STACKVAR(-8, 4) = GetnOpenInputFiles();
-    unknown_loc_04 = Py_BuildValue("i", STACKVAR(-8, 4));
+    PyObject *unknown_loc_04 = Py_BuildValue("i", STACKVAR(-8, 4));
     REGDEF(eax=unknown_loc_04)
 }
 
@@ -33489,7 +33496,7 @@ p1003EA3C
         STACKVAR(-8, 4) = 0x00000000;
     }
     STACKVAR(-16, 4) = SetOnOpenInputFileFunc(reinterpret_cast<PyObject *>(STACKVAR(-8, 4)));
-    unknown_loc_04 = Py_BuildValue("i", STACKVAR(-16, 4));
+    PyObject *unknown_loc_04 = Py_BuildValue("i", STACKVAR(-16, 4));
     REGDEF(eax=unknown_loc_04)
 }
 
@@ -33520,7 +33527,7 @@ p1003EB04
         return;
     }
     STACKVAR(-12, 4) = unknown_function_100061BA(STACKVAR(-8, 4));
-    unknown_loc_04 = Py_BuildValue("i", STACKVAR(-12, 4));
+    PyObject *unknown_loc_04 = Py_BuildValue("i", STACKVAR(-12, 4));
     REGDEF(eax=unknown_loc_04)
 }
 
@@ -33535,7 +33542,7 @@ p1003EB59
         return;
     }
     STACKVAR(-12, 4) = unknown_function_100061F0(STACKVAR(-8, 4));
-    unknown_loc_04 = Py_BuildValue("i", STACKVAR(-12, 4));
+    PyObject *unknown_loc_04 = Py_BuildValue("i", STACKVAR(-12, 4));
     REGDEF(eax=unknown_loc_04)
 }
 
@@ -33550,7 +33557,7 @@ p1003EBAE
         return;
     }
     STACKVAR(-12, 4) = unknown_function_10006266(STACKVAR(-8, 4));
-    unknown_loc_04 = Py_BuildValue("i", STACKVAR(-12, 4));
+    PyObject *unknown_loc_04 = Py_BuildValue("i", STACKVAR(-12, 4));
     REGDEF(eax=unknown_loc_04)
 }
 
@@ -33565,7 +33572,7 @@ p1003EC03
         return;
     }
     STACKVAR(-12, 4) = unknown_function_10006230(STACKVAR(-8, 4));
-    unknown_loc_04 = Py_BuildValue("i", STACKVAR(-12, 4));
+    PyObject *unknown_loc_04 = Py_BuildValue("i", STACKVAR(-12, 4));
     REGDEF(eax=unknown_loc_04)
 }
 
@@ -33580,7 +33587,7 @@ p1003EC58
         return;
     }
     STACKVAR(-12, 4) = unknown_function_1000660B(STACKVAR(-8, 4));
-    unknown_loc_04 = Py_BuildValue("i", STACKVAR(-12, 4));
+    PyObject *unknown_loc_04 = Py_BuildValue("i", STACKVAR(-12, 4));
     REGDEF(eax=unknown_loc_04)
 }
 
@@ -33595,7 +33602,7 @@ p1003ECAD
         return;
     }
     STACKVAR(-12, 4) = unknown_function_10006620(STACKVAR(-8, 4));
-    unknown_loc_04 = Py_BuildValue("i", STACKVAR(-12, 4));
+    PyObject *unknown_loc_04 = Py_BuildValue("i", STACKVAR(-12, 4));
     REGDEF(eax=unknown_loc_04)
 }
 
@@ -33610,7 +33617,7 @@ p1003ED02
         return;
     }
     STACKVAR(-12, 4) = unknown_function_10006635(STACKVAR(-8, 4));
-    unknown_loc_04 = Py_BuildValue("i", STACKVAR(-12, 4));
+    PyObject *unknown_loc_04 = Py_BuildValue("i", STACKVAR(-12, 4));
     REGDEF(eax=unknown_loc_04)
 }
 
@@ -33625,7 +33632,7 @@ p1003ED57
         return;
     }
     STACKVAR(-12, 4) = unknown_function_1000664A(STACKVAR(-8, 4));
-    unknown_loc_04 = Py_BuildValue("i", STACKVAR(-12, 4));
+    PyObject *unknown_loc_04 = Py_BuildValue("i", STACKVAR(-12, 4));
     REGDEF(eax=unknown_loc_04)
 }
 
@@ -33640,7 +33647,7 @@ p1003EDAC
         return;
     }
     STACKVAR(-16, 4) = unknown_function_1000665F(STACKVAR(-8, 4), STACKVAR(-12, 4));
-    unknown_loc_04 = Py_BuildValue("i", STACKVAR(-16, 4));
+    PyObject *unknown_loc_04 = Py_BuildValue("i", STACKVAR(-16, 4));
     REGDEF(eax=unknown_loc_04)
 }
 
@@ -33655,7 +33662,7 @@ p1003EE09
         return;
     }
     STACKVAR(-8, 4) = GetCurrentLanguage();
-    unknown_loc_04 = Py_BuildValue("s", STACKVAR(-8, 4));
+    PyObject *unknown_loc_04 = Py_BuildValue("s", STACKVAR(-8, 4));
     REGDEF(eax=unknown_loc_04)
 }
 
@@ -33670,7 +33677,7 @@ p1003EE53
         return;
     }
     STACKVAR(-8, 4) = GetConfigDirectory();
-    unknown_loc_04 = Py_BuildValue("s", STACKVAR(-8, 4));
+    PyObject *unknown_loc_04 = Py_BuildValue("s", STACKVAR(-8, 4));
     REGDEF(eax=unknown_loc_04)
 }
 
@@ -33684,9 +33691,9 @@ p1003EE9D
         REGDEF(eax=0x00000000)
         return;
     }
-    unknown_loc_08 = GetResourceManager();
+    B_ResourceManager *unknown_loc_08 = GetResourceManager();
     unknown_function_1003EF05(LOCAL(-136), unknown_loc_08, GLOBAL(0x10048F1C));
-    unknown_loc_04 = Py_BuildValue("s", LOCAL(-136));
+    PyObject *unknown_loc_04 = Py_BuildValue("s", LOCAL(-136));
     REGDEF(eax=unknown_loc_04)
 }
 
@@ -33799,7 +33806,7 @@ l1003F201:
 l1003F20B:
     STACKVAR(-16, 4) = STACKVAR(-184, 4);
     unknown_function_1003EF05(LOCAL(-144), STACKVAR(-16, 4), GLOBAL(0x10048F4C));
-    unknown_loc_04 = Py_BuildValue("s", LOCAL(-144));
+    PyObject *unknown_loc_04 = Py_BuildValue("s", LOCAL(-144));
     REGDEF(eax=unknown_loc_04)
 }
 
@@ -34109,9 +34116,9 @@ p1003FAC8
     ACCESS(STACKVAR(-20, 4), 0, 4) = ACCESS(STACKVAR(-40, 4), 8, 4);
     ACCESS(&_Py_NoneStruct, 0, 4) = reinterpret_cast<any_int32>(ACCESS(&_Py_NoneStruct, 0, 4)) + 0x00000001;
     STACKVAR(-8, 4) = &_Py_NoneStruct;
-    unknown_loc_20 = PyInt_FromLong(reinterpret_cast<int>(ACCESS(STACKVAR(-16, 4), 0, 4)));
+    PyObject *unknown_loc_20 = PyInt_FromLong(reinterpret_cast<int>(ACCESS(STACKVAR(-16, 4), 0, 4)));
     STACKVAR(-8, 4) = unknown_function_1003FBCD(STACKVAR(-8, 4), unknown_loc_20);
-    unknown_loc_24 = PyInt_FromLong(reinterpret_cast<int>(ACCESS(STACKVAR(-20, 4), 0, 4)));
+    PyObject *unknown_loc_24 = PyInt_FromLong(reinterpret_cast<int>(ACCESS(STACKVAR(-20, 4), 0, 4)));
     STACKVAR(-8, 4) = unknown_function_1003FBCD(STACKVAR(-8, 4), unknown_loc_24);
     REGDEF(eax=STACKVAR(-8, 4))
 }
@@ -34141,7 +34148,7 @@ p1003FBCD
             STACKVAR(8, 4) = PyTuple_New(1);
             PyTuple_SetItem(reinterpret_cast<PyObject *>(STACKVAR(8, 4)), 0, reinterpret_cast<PyObject *>(STACKVAR(-4, 4)));
         }
-        unknown_loc_08 = PyTuple_New(1);
+        PyObject *unknown_loc_08 = PyTuple_New(1);
         PyTuple_SetItem(unknown_loc_08, 0, reinterpret_cast<PyObject *>(STACKVAR(12, 4)));
         STACKVAR(-4, 4) = STACKVAR(8, 4);
         STACKVAR(8, 4) = PySequence_Concat(reinterpret_cast<PyObject *>(STACKVAR(-4, 4)), unknown_loc_08);
@@ -34180,7 +34187,7 @@ p1003FCF4
         }
     }
     STACKVAR(-16, 4) = unknown_function_1003FD8A(STACKVAR(-8, 4));
-    unknown_loc_04 = Py_BuildValue("l", STACKVAR(-16, 4));
+    PyObject *unknown_loc_04 = Py_BuildValue("l", STACKVAR(-16, 4));
     REGDEF(eax=unknown_loc_04)
 }
 
@@ -34252,7 +34259,7 @@ p1003FE79
         }
     }
     STACKVAR(-20, 4) = reinterpret_cast<B_BitMap24 *>(STACKVAR(-8, 4))->SaveToBMP(reinterpret_cast<char *>(STACKVAR(-12, 4)));
-    unknown_loc_04 = Py_BuildValue("i", STACKVAR(-20, 4));
+    PyObject *unknown_loc_04 = Py_BuildValue("i", STACKVAR(-20, 4));
     REGDEF(eax=unknown_loc_04)
 }
 
@@ -34277,7 +34284,7 @@ p1003FF12
         }
     }
     STACKVAR(-20, 4) = reinterpret_cast<B_BitMap24 *>(STACKVAR(-8, 4))->ReadFromBMP(reinterpret_cast<char *>(STACKVAR(-12, 4)));
-    unknown_loc_04 = Py_BuildValue("i", STACKVAR(-20, 4));
+    PyObject *unknown_loc_04 = Py_BuildValue("i", STACKVAR(-20, 4));
     REGDEF(eax=unknown_loc_04)
 }
 
@@ -34303,7 +34310,7 @@ p1003FFAB
         }
     }
     STACKVAR(-24, 4) = reinterpret_cast<B_BitMap24 *>(STACKVAR(-8, 4))->SaveToJPEG(reinterpret_cast<char *>(STACKVAR(-12, 4)), reinterpret_cast<int>(STACKVAR(-16, 4)));
-    unknown_loc_04 = Py_BuildValue("i", STACKVAR(-24, 4));
+    PyObject *unknown_loc_04 = Py_BuildValue("i", STACKVAR(-24, 4));
     REGDEF(eax=unknown_loc_04)
 }
 
@@ -34328,7 +34335,7 @@ p10040054
         }
     }
     STACKVAR(-20, 4) = reinterpret_cast<B_BitMap24 *>(STACKVAR(-8, 4))->ReadFromJPEG(reinterpret_cast<char *>(STACKVAR(-12, 4)));
-    unknown_loc_04 = Py_BuildValue("i", STACKVAR(-20, 4));
+    PyObject *unknown_loc_04 = Py_BuildValue("i", STACKVAR(-20, 4));
     REGDEF(eax=unknown_loc_04)
 }
 
@@ -34353,7 +34360,7 @@ p100400ED
         }
     }
     STACKVAR(-20, 4) = reinterpret_cast<B_BitMap24 *>(STACKVAR(-8, 4))->ReadFromFile(reinterpret_cast<char *>(STACKVAR(-12, 4)));
-    unknown_loc_04 = Py_BuildValue("i", STACKVAR(-20, 4));
+    PyObject *unknown_loc_04 = Py_BuildValue("i", STACKVAR(-20, 4));
     REGDEF(eax=unknown_loc_04)
 }
 
@@ -34379,7 +34386,7 @@ p10040186
         }
     }
     STACKVAR(-24, 4) = reinterpret_cast<B_BitMap24 *>(STACKVAR(-8, 4))->SaveToFile(reinterpret_cast<char *>(STACKVAR(-12, 4)), reinterpret_cast<int>(STACKVAR(-16, 4)));
-    unknown_loc_04 = Py_BuildValue("i", STACKVAR(-24, 4));
+    PyObject *unknown_loc_04 = Py_BuildValue("i", STACKVAR(-24, 4));
     REGDEF(eax=unknown_loc_04)
 }
 
@@ -34430,7 +34437,7 @@ p100402C4
         }
     }
     STACKVAR(-20, 4) = reinterpret_cast<B_ResourceManager *>(STACKVAR(-8, 4))->NResources(reinterpret_cast<unsigned short>(STACKVAR(-12, 2)));
-    unknown_loc_04 = Py_BuildValue("i", STACKVAR(-20, 4));
+    PyObject *unknown_loc_04 = Py_BuildValue("i", STACKVAR(-20, 4));
     REGDEF(eax=unknown_loc_04)
 }
 
@@ -34455,7 +34462,7 @@ p1004035E
         }
     }
     STACKVAR(-24, 4) = reinterpret_cast<B_ResourceManager *>(STACKVAR(-8, 4))->GetResourceName(reinterpret_cast<unsigned short>(STACKVAR(-12, 2)), reinterpret_cast<unsigned int>(STACKVAR(-16, 4)));
-    unknown_loc_04 = Py_BuildValue("s", STACKVAR(-24, 4));
+    PyObject *unknown_loc_04 = Py_BuildValue("s", STACKVAR(-24, 4));
     REGDEF(eax=unknown_loc_04)
 }
 
@@ -34480,7 +34487,7 @@ p10040401
         }
     }
     STACKVAR(-24, 4) = reinterpret_cast<B_ResourceManager *>(STACKVAR(-8, 4))->GetResourceFile(reinterpret_cast<unsigned short>(STACKVAR(-12, 2)), reinterpret_cast<unsigned int>(STACKVAR(-16, 4)));
-    unknown_loc_04 = Py_BuildValue("s", STACKVAR(-24, 4));
+    PyObject *unknown_loc_04 = Py_BuildValue("s", STACKVAR(-24, 4));
     REGDEF(eax=unknown_loc_04)
 }
 
@@ -34505,7 +34512,7 @@ p100404A4
         }
     }
     STACKVAR(-24, 4) = reinterpret_cast<B_ResourceManager *>(STACKVAR(-8, 4))->IsResourceLoaded(reinterpret_cast<int>(STACKVAR(-12, 4)), reinterpret_cast<int>(STACKVAR(-16, 4)));
-    unknown_loc_04 = Py_BuildValue("i", STACKVAR(-24, 4));
+    PyObject *unknown_loc_04 = Py_BuildValue("i", STACKVAR(-24, 4));
     REGDEF(eax=unknown_loc_04)
 }
 
@@ -34530,7 +34537,7 @@ p10040546
         }
     }
     STACKVAR(-28, 4) = reinterpret_cast<B_ResourceManager *>(STACKVAR(-8, 4))->SaveResource(reinterpret_cast<unsigned short>(STACKVAR(-12, 2)), reinterpret_cast<unsigned int>(STACKVAR(-16, 4)), reinterpret_cast<char *>(STACKVAR(-24, 4)));
-    unknown_loc_04 = Py_BuildValue("i", STACKVAR(-28, 4));
+    PyObject *unknown_loc_04 = Py_BuildValue("i", STACKVAR(-28, 4));
     REGDEF(eax=unknown_loc_04)
 }
 
@@ -34555,7 +34562,7 @@ p100405F1
         }
     }
     STACKVAR(-24, 4) = reinterpret_cast<B_ResourceManager *>(STACKVAR(-8, 4))->LoadResourceToMemory(reinterpret_cast<unsigned short>(STACKVAR(-12, 2)), reinterpret_cast<char *>(STACKVAR(-16, 4)));
-    unknown_loc_04 = Py_BuildValue("i", STACKVAR(-24, 4));
+    PyObject *unknown_loc_04 = Py_BuildValue("i", STACKVAR(-24, 4));
     REGDEF(eax=unknown_loc_04)
 }
 
@@ -34580,7 +34587,7 @@ p10040694
         }
     }
     STACKVAR(-16, 4) = reinterpret_cast<B_ResourceManager *>(STACKVAR(-8, 4))->GetnFiles();
-    unknown_loc_04 = Py_BuildValue("i", STACKVAR(-16, 4));
+    PyObject *unknown_loc_04 = Py_BuildValue("i", STACKVAR(-16, 4));
     REGDEF(eax=unknown_loc_04)
 }
 
@@ -34605,7 +34612,7 @@ p10040726
         }
     }
     STACKVAR(-20, 4) = reinterpret_cast<B_ResourceManager *>(STACKVAR(-8, 4))->GetFile(reinterpret_cast<unsigned int>(STACKVAR(-12, 4)));
-    unknown_loc_04 = Py_BuildValue("s", STACKVAR(-20, 4));
+    PyObject *unknown_loc_04 = Py_BuildValue("s", STACKVAR(-20, 4));
     REGDEF(eax=unknown_loc_04)
 }
 
@@ -34614,8 +34621,8 @@ p100407BF
 {
     ProcedureInfo(this=None, this_offset=None, local_size=8, stack_delta=0)
     ACCESS(GLOBAL(0x1004AB10), 0, 4) = unknown_function_100409D8();
-    unknown_loc_08 = Py_InitModule4("BBLibc", reinterpret_cast<PyMethodDef *>(GLOBAL(0x10048A78)), nullptr, nullptr, 1007);
-    unknown_loc_04 = PyModule_GetDict(unknown_loc_08);
+    PyObject *unknown_loc_08 = Py_InitModule4("BBLibc", reinterpret_cast<PyMethodDef *>(GLOBAL(0x10048A78)), nullptr, nullptr, 1007);
+    PyObject *unknown_loc_04 = PyModule_GetDict(unknown_loc_08);
     PyDict_SetItemString(unknown_loc_04, "B_CID_OBJDSCR", PyInt_FromLong(1));
     PyDict_SetItemString(unknown_loc_04, "B_CID_BITMAP", PyInt_FromLong(2));
     PyDict_SetItemString(unknown_loc_04, "B_CID_BMP", PyInt_FromLong(3));
@@ -34810,7 +34817,7 @@ B_RDataTriangle::B_RDataTriangle()
 B_ParticleGType::B_ParticleGType(const B_Name &new_type, const B_Name &parent_type, unsigned long operation_type, unsigned int duration)
 {
     this->B_NamedObj(new_type);
-    unknown_loc_08 = &this->a00C;
+    array_t<B_ParticleElement> *unknown_loc_08 = &this->a00C;
     unknown_loc_08->elements = nullptr;
     unknown_loc_08->size = 0;
     unknown_loc_08->increment = 1;
@@ -34822,7 +34829,7 @@ B_ParticleGType::B_ParticleGType(const B_Name &new_type, const B_Name &parent_ty
     ACCESS(this, 12, 4) = GLOBAL(0x10042E60);
     this->bmpHandle = reinterpret_cast<int>(ACCESS(&?B_3D_raster_device@@3PAVB_3DRasterDevice@@A, 0, 4)->(ACCESS(ACCESS(ACCESS(&?B_3D_raster_device@@3PAVB_3DRasterDevice@@A, 0, 4), 0, 4), 64, 4))(parent_type.String()));
     STACKVAR(-40, 4) = duration + 0x00000001;
-    unknown_loc_24 = &this->a00C;
+    array_t<B_ParticleElement> *unknown_loc_24 = &this->a00C;
     STACKVAR(-12, 4) = (reinterpret_cast<unsigned int>(STACKVAR(-40, 4)) + reinterpret_cast<unsigned int>(unknown_loc_24->increment) - 1) / reinterpret_cast<unsigned int>(unknown_loc_24->increment) * unknown_loc_24->increment;
     if (unknown_loc_24->size < reinterpret_cast<unsigned int>(STACKVAR(-40, 4)))
     {
@@ -34895,6 +34902,7 @@ B_ParticleGType::~B_ParticleGType()
 {
     ACCESS(this, 0, 4) = GLOBAL(0x10042E64);
     ACCESS(this, 12, 4) = GLOBAL(0x10042E60);
+    array_t<B_ParticleElement> *unknown_loc_08;
     if (this != nullptr)
     {
         unknown_loc_08 = &this->a00C;
@@ -34928,7 +34936,7 @@ B_IDataFile &operator >>(B_IDataFile &file, B_ParticleGType &particleType)
     particleType.bmpHandle = reinterpret_cast<int>(ACCESS(&?B_3D_raster_device@@3PAVB_3DRasterDevice@@A, 0, 4)->(ACCESS(ACCESS(ACCESS(&?B_3D_raster_device@@3PAVB_3DRasterDevice@@A, 0, 4), 0, 4), 64, 4))(STACKVAR(-8, 4)));
     file >> *reinterpret_cast<unsigned int *>(LOCAL(-12));
     STACKVAR(-48, 4) = STACKVAR(-12, 4);
-    unknown_loc_2C = &particleType.a00C;
+    array_t<B_ParticleElement> *unknown_loc_2C = &particleType.a00C;
     STACKVAR(-20, 4) = (reinterpret_cast<unsigned int>(STACKVAR(-48, 4)) + reinterpret_cast<unsigned int>(unknown_loc_2C->increment) - 1) / reinterpret_cast<unsigned int>(unknown_loc_2C->increment) * unknown_loc_2C->increment;
     if (unknown_loc_2C->size < reinterpret_cast<unsigned int>(STACKVAR(-48, 4)))
     {

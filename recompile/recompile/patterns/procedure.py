@@ -1,3 +1,4 @@
+from custom_block_transformer import transform_block
 from hex_conversion import to_hex
 
 
@@ -23,6 +24,25 @@ class Procedure:
     @property
     def instructions(self):
         return self._instructions
+
+    @property
+    def implicit_stack_variables(self):
+        stack_vars = self._proc_info.stack_variables
+        if self._proc_decl is not None:
+            stack_vars.update(self._proc_decl.stack_variables)
+        return stack_vars
+
+    def exclude_implicit_stack_variables(self, stack_vars):
+        implicit_stack_variables = self.implicit_stack_variables
+        return dict(
+            (o, identifier) for o, identifier in stack_vars.items()
+            if o not in implicit_stack_variables
+        )
+
+    def transform(self, transformer, **kwargs):
+        new_instrs = transform_block(self._instructions, transformer, **kwargs)
+        return Procedure(
+            self._proc_info, self._address, self._proc_decl, new_instrs)
 
     def emit_code(self, writer, is_definition=True):
         if self._proc_decl is not None:

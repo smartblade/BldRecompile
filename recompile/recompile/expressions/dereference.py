@@ -16,6 +16,10 @@ class Dereference:
         assert isinstance(data_type, data_types.Pointer32)
         return data_type.pointee
 
+    def visit(self, on_expression_visited, **kwargs):
+        on_expression_visited(self, **kwargs)
+        self._expression.visit(on_expression_visited, **kwargs)
+
     def transform(self, transformer, **kwargs):
         expression = self._expression.transform(transformer, **kwargs)
         e = transformer.transform_unary(Operator.DEREF, expression, **kwargs)

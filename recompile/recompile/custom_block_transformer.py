@@ -2,8 +2,14 @@ def transform_block(instructions, transformer, **kwargs):
     new_instrs_iter = _InstructionsIter()
     transforming_block = _TransformingBlock(new_instrs_iter)
     for instruction in instructions:
-        new_instrs_iter.add_instruction(
-            instruction.transform(transformer, **kwargs))
+        new_instrs_iter.add_instruction(instruction)
+        transformer.pre_transform_block_instructions(
+            transforming_block, **kwargs)
+        cur_instruction = transforming_block.get_current_instruction()
+        if cur_instruction == instruction:
+            new_instruction = cur_instruction.transform(transformer, **kwargs)
+            interval = transforming_block.interval(0)
+            interval.replace_instructions([new_instruction])
         transformer.transform_block_instructions(transforming_block, **kwargs)
     return new_instrs_iter.instructions
 
@@ -15,7 +21,7 @@ class _InstructionsIter:
 
     def as_instr(self, offset, instr_class):
         instr = self._instructions[self._current_index + offset]
-        if not isinstance(instr, instr_class):
+        if instr_class is not None and not isinstance(instr, instr_class):
             return None
         return instr
 
@@ -43,7 +49,7 @@ class _TransformingBlock:
     def __init__(self, instrs_iter):
         self._instrs_iter = instrs_iter
 
-    def get_current_instruction(self, instr_class):
+    def get_current_instruction(self, instr_class=None):
         return self._instrs_iter.as_instr(0, instr_class)
 
     def interval(self, offset):
@@ -56,7 +62,7 @@ class _TransformingInstructionInterval:
         self._instrs_iter = instrs_iter
         self._start_offset = start_offset
 
-    def as_instr(self, index, instr_class):
+    def as_instr(self, index, instr_class=None):
         assert index >= 0
         return self._instrs_iter.as_instr(
             self._start_offset + index, instr_class)

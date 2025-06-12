@@ -13,6 +13,9 @@ class NamedConstant:
     def data_type(self):
         return self._data_type
 
+    def visit(self, on_expression_visited, **kwargs):
+        on_expression_visited(self, **kwargs)
+
     def transform(self, transformer, **kwargs):
         return self
 

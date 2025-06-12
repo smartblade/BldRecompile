@@ -21,6 +21,7 @@ class Access:
 
     def visit(self, on_expression_visited, **kwargs):
         on_expression_visited(self, **kwargs)
+        self._expression.visit(on_expression_visited, **kwargs)
 
     def transform(self, transformer, **kwargs):
         expression = self._expression.transform(transformer, **kwargs)
