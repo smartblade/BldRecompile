@@ -9,7 +9,8 @@ class ModuleCharacteristics:
         self._characteristics_dict = characteristics_dict
 
     def __getitem__(self, item):
-        procedure_dict = self._characteristics_dict.get(to_hex(item), {})
+        addr_str = to_hex(item) if item is not None else None
+        procedure_dict = self._characteristics_dict.get(addr_str, {})
         return ProcedureCharacteristics(procedure_dict)
 
     @staticmethod
@@ -29,8 +30,22 @@ class ModuleCharacteristics:
 class ProcedureCharacteristics:
     def __init__(self, characteristics_dict):
         self._characteristics_dict = characteristics_dict
+        self._variable_names = VariablesNames(
+            self._characteristics_dict.get("varnames", {}))
 
     @property
     def is_boolean_return(self):
         return_dict = self._characteristics_dict.get("return", {})
         return return_dict.get("boolean") == "yes"
+
+    @property
+    def variables_names(self):
+        return self._variable_names
+
+
+class VariablesNames:
+    def __init__(self, json_dict):
+        self._json_dict = json_dict
+
+    def get(self, offset):
+        return self._json_dict.get(str(offset))

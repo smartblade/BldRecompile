@@ -27,10 +27,9 @@ def make_high_level_code(procedure, declarations, inline_procedures):
     if procedure.address is not None:
         file_declarations = declarations.symbols.get_file_declarations(
             procedure.address, declarations.files_declarations)
-        characteristics = declarations.characteristics[procedure.address]
     else:
         file_declarations = None
-        characteristics = None
+    characteristics = declarations.characteristics[procedure.address]
     instrs = goto_eliminator.transform(procedure.instructions)
     stack_vars = procedure.implicit_stack_variables
     locals_analysis = analysis.LocalsAnalysis()
@@ -48,7 +47,8 @@ def make_high_level_code(procedure, declarations, inline_procedures):
         instrs = _eliminate_procedure_info(proc_info, instrs)
     instrs = transform_returns(proc_info, proc_decl, characteristics, instrs)
     instrs = _transform_instructions(instrs, **context)
-    locals_analysis.fill_stack_variables(stack_vars)
+    locals_analysis.fill_stack_variables(
+        stack_vars, characteristics.variables_names)
     instrs = _transform_instructions(instrs, **context)
     procedure = Procedure(proc_info, procedure.address, proc_decl, instrs)
     return insert_declarations(procedure, stack_vars)

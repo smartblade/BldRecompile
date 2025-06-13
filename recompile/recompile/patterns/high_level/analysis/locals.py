@@ -21,15 +21,17 @@ class LocalsAnalysis:
     def process_local(self, offset):
         self._types_by_offset[offset] = None
 
-    def fill_stack_variables(self, stack_vars):
+    def fill_stack_variables(self, stack_vars, variable_names):
         for offset, data_type in self._types_by_offset.items():
             if data_type is None:
                 continue
             if offset in stack_vars:
                 continue
             assert offset < 0
-            stack_vars[offset] = expressions.Identifier(
-                data_type, "unknown_loc_{:02X}".format(-offset))
+            name = variable_names.get(offset)
+            if name is None:
+                name = "unknown_loc_{:02X}".format(-offset)
+            stack_vars[offset] = expressions.Identifier(data_type, name)
 
     def _update_type(self, offset, data_type):
         if offset >= 0:

@@ -4,6 +4,14 @@
 			"boolean": "yes"
 		}
 	},
+	"100015E2": {
+		"varnames": {
+			"-4": "result",
+			"-8": "nFilesObj",
+			"-12": "fileNameObj",
+			"-16": "args"
+		}
+	},
 	"100021E0": {
 		"return": {
 			"boolean": "yes"

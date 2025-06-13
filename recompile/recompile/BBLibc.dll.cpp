@@ -143,18 +143,18 @@ void B_IDataFile::Open(const char *src, int flags)
         B_IDataFile::n_open_files++;
         if (B_IDataFile::OnOpenFunc != nullptr)
         {
-            PyObject *unknown_loc_10 = PyTuple_New(2);
-            PyObject *unknown_loc_08 = PyInt_FromLong(B_IDataFile::n_opened_files);
-            PyObject *unknown_loc_0C = PyString_FromString(this->file_name);
-            ACCESS(unknown_loc_10, 12, 4) = unknown_loc_08;
-            ACCESS(unknown_loc_10, 16, 4) = unknown_loc_0C;
-            PyObject *unknown_loc_04 = CallPythonObject(B_IDataFile::OnOpenFunc, unknown_loc_10);
-            unknown_loc_10->ob_refcnt = unknown_loc_10->ob_refcnt - 0x00000001;
-            if (unknown_loc_10->ob_refcnt == 0)
+            PyObject *args = PyTuple_New(2);
+            PyObject *nFilesObj = PyInt_FromLong(B_IDataFile::n_opened_files);
+            PyObject *fileNameObj = PyString_FromString(this->file_name);
+            ACCESS(args, 12, 4) = nFilesObj;
+            ACCESS(args, 16, 4) = fileNameObj;
+            PyObject *result = CallPythonObject(B_IDataFile::OnOpenFunc, args);
+            args->ob_refcnt = args->ob_refcnt - 0x00000001;
+            if (args->ob_refcnt == 0)
             {
-                unknown_loc_10->ob_type->tp_dealloc(unknown_loc_10);
+                args->ob_type->tp_dealloc(args);
             }
-            Py_XDECREF(unknown_loc_04);
+            Py_XDECREF(result);
         }
     }
     this->ReadCacheBlock();
