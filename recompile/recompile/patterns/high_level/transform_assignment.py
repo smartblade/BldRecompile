@@ -1,6 +1,7 @@
 import expressions
 from expressions.operator import Operator
 import instructions
+import patterns.high_level.inline_functions as inline_functions
 
 from .convert_expression_to_type import convert_expression_to_type
 
@@ -11,6 +12,9 @@ def transform_assignment(dst, src, analysis, **kwargs):
     if result is not None:
         return result
     analysis.process_assignment(dst, new_src)
+    result = inline_functions.transform_assignment(dst, new_src)
+    if result is not None:
+        return result
     if new_src == src:
         return None
     return instructions.Assignment(dst, new_src)

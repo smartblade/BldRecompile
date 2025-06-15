@@ -146,8 +146,8 @@ void B_IDataFile::Open(const char *src, int flags)
             PyObject *args = PyTuple_New(2);
             PyObject *nFilesObj = PyInt_FromLong(B_IDataFile::n_opened_files);
             PyObject *fileNameObj = PyString_FromString(this->file_name);
-            ACCESS(args, 12, 4) = nFilesObj;
-            ACCESS(args, 16, 4) = fileNameObj;
+            PyTuple_SET_ITEM(args, 0, nFilesObj);
+            PyTuple_SET_ITEM(args, 1, fileNameObj);
             PyObject *result = CallPythonObject(B_IDataFile::OnOpenFunc, args);
             Py_DECREF(args);
             Py_XDECREF(result);

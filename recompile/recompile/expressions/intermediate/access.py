@@ -12,6 +12,10 @@ class Access:
         return data_types.unknown_types[self._size]
 
     @property
+    def expression(self):
+        return self._expression
+
+    @property
     def offset(self):
         return self._offset
 

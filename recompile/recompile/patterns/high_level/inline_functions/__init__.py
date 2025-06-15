@@ -1,4 +1,5 @@
 from .procedures_dict import ProceduresDict as Dict
+from .transform_assignment import transform_assignment
 from .transform_block_instructions import transform_block_instructions
 from .transform_if import transform_if
 from .transform_static_cast import transform_static_cast
