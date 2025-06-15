@@ -145,6 +145,7 @@ def _is_eax_return_type(data_type):
         isinstance(data_type, data_types.Pointer32) or
         isinstance(data_type, data_types.Reference) or
         isinstance(data_type, data_types.Int32) or
+        isinstance(data_type, data_types.Long32) or
         isinstance(data_type, data_types.UInt32)
     )
 

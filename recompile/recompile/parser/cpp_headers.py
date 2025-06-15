@@ -31,7 +31,7 @@ _standard_types = {
     "short": data_types.Short(),
     "unsigned short": data_types.UShort(),
     "int": data_types.Int32(),
-    "long": data_types.make_named_type(data_types.Int32(), "long"),
+    "long": data_types.Long32(),
     "unsigned int": data_types.UInt32(),
     "unsigned long": data_types.make_named_type(
         data_types.UInt32(), "unsigned long"),

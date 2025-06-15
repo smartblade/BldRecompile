@@ -226,7 +226,7 @@ class _CppManglingParser:
         "G": data_types.UShort(),
         "H": data_types.Int32(),
         "I": data_types.UInt32(),
-        "J": data_types.make_named_type(data_types.Int32(), "long"),
+        "J": data_types.Long32(),
         "K": data_types.make_named_type(data_types.UInt32(), "unsigned long"),
         "M": data_types.Float(),
         "P": _pop_pointer_type,
