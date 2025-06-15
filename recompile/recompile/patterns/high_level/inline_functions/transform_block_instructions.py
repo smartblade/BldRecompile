@@ -4,15 +4,26 @@ from expressions.operator import Operator
 import instructions
 
 from .is_int_constant import is_int_constant
+from .is_refcnt_assignment import is_refcnt_assignment
+from .obj_from_field_access import try_extract_obj_from_field_access
 
 
-def transform_block_instructions(
-    block_instructions, inline_procedures, stack_vars, **kwargs
-):
+def transform_block_instructions(block_instructions, **kwargs):
     if_instr = block_instructions.get_current_instruction(
         instructions.IfInstruction)
     if if_instr is None:
         return
+    if not isinstance(if_instr.if_clause, expressions.Bin):
+        return
+    if if_instr.if_clause.operator == Operator.NE:
+        _transform_ne_if_instruction(block_instructions, if_instr, **kwargs)
+    elif if_instr.if_clause.operator == Operator.EQ:
+        _transform_eq_if_instruction(block_instructions, if_instr, **kwargs)
+
+
+def _transform_ne_if_instruction(
+    block_instructions, if_instr, inline_procedures, stack_vars, **kwargs
+):
     if len(if_instr.if_block) < 3:
         return
     deleting_if = if_instr.if_block[-2]
@@ -95,6 +106,45 @@ def transform_block_instructions(
         return
     deleting_chain.replace_instructions(
         [instructions.Delete(deleting_expression)])
+
+
+def _transform_eq_if_instruction(block_instructions, if_instr, **kwargs):
+    if_clause = if_instr.if_clause
+    if not is_int_constant(if_clause.right, 0):
+        return None
+    obj = try_extract_obj_from_field_access(if_clause.left, "ob_refcnt")
+    if obj is None:
+        return None
+    if if_instr.else_block is not None:
+        return None
+    if len(if_instr.if_block) != 1:
+        return None
+    block_instr = if_instr.if_block[0]
+    if not isinstance(block_instr, instructions.CodeInstruction):
+        return None
+    pc = block_instr.expression
+    if not isinstance(pc, expressions.ProcedureCall):
+        return None
+    ob_type = try_extract_obj_from_field_access(
+        pc.callee_expression, "tp_dealloc")
+    if ob_type is None:
+        return None
+    deleting_obj = try_extract_obj_from_field_access(ob_type, "ob_type")
+    if deleting_obj is None:
+        return None
+    if obj.emit_code() != deleting_obj.emit_code():
+        return None
+    if len(pc.arguments) != 1:
+        return None
+    if obj.emit_code() != pc.arguments[0].emit_code():
+        return None
+    decref_chain = block_instructions.interval(-1)
+    if not is_refcnt_assignment(decref_chain.as_instr(0), obj, 1, Operator.SUB):
+        return None
+    assert decref_chain.as_instr(1, instructions.IfInstruction) == if_instr
+    decref = instructions.CodeInstruction(
+        expressions.ProcedureCall(name="Py_DECREF", arguments=[obj]))
+    decref_chain.replace_instructions([decref])
 
 
 def _extract_argument_offset(pc):

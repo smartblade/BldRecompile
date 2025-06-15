@@ -149,11 +149,7 @@ void B_IDataFile::Open(const char *src, int flags)
             ACCESS(args, 12, 4) = nFilesObj;
             ACCESS(args, 16, 4) = fileNameObj;
             PyObject *result = CallPythonObject(B_IDataFile::OnOpenFunc, args);
-            args->ob_refcnt = args->ob_refcnt - 0x00000001;
-            if (args->ob_refcnt == 0)
-            {
-                args->ob_type->tp_dealloc(args);
-            }
+            Py_DECREF(args);
             Py_XDECREF(result);
         }
     }
@@ -34157,11 +34153,7 @@ p1003FBCD
         {
             ACCESS(ACCESS(STACKVAR(-4, 4), 4, 4), 24, 4)(STACKVAR(-4, 4));
         }
-        unknown_loc_08->ob_refcnt = unknown_loc_08->ob_refcnt - 0x00000001;
-        if (unknown_loc_08->ob_refcnt == 0)
-        {
-            unknown_loc_08->ob_type->tp_dealloc(unknown_loc_08);
-        }
+        Py_DECREF(unknown_loc_08);
     }
     REGDEF(eax=STACKVAR(8, 4))
 }
