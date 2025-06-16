@@ -138,7 +138,7 @@ void B_IDataFile::Open(const char *src, int flags)
         {
             return;
         }
-        this->file_size = reinterpret_cast<unsigned int>(filelength(this->fd));
+        this->file_size = static_cast<unsigned int>(filelength(this->fd));
         B_IDataFile::n_opened_files++;
         B_IDataFile::n_open_files++;
         if (B_IDataFile::OnOpenFunc != nullptr)
@@ -203,7 +203,7 @@ long B_IDataFile::Length()
 {
     if (this->OK())
     {
-        return reinterpret_cast<long>(this->file_size);
+        return static_cast<long>(this->file_size);
     }
     return 0;
 }
@@ -259,13 +259,13 @@ l10001928:
     }
     this->ReadCacheBlock();
 l10001997:
-    return reinterpret_cast<long>(this->cacheBlockStartPos + this->cacheBlockPos);
+    return static_cast<long>(this->cacheBlockStartPos + this->cacheBlockPos);
 }
 
 // address: 0x100019AF
 long B_IDataFile::Tell()
 {
-    return reinterpret_cast<long>(this->cacheBlockStartPos + this->cacheBlockPos);
+    return static_cast<long>(this->cacheBlockStartPos + this->cacheBlockPos);
 }
 
 // address: 0x100019CC
@@ -471,11 +471,11 @@ void B_ODataFile::WriteCacheBlock()
 // address: 0x10001E01
 long B_ODataFile::Seek(long arg_0)
 {
-    if (reinterpret_cast<unsigned int>(arg_0) <= reinterpret_cast<unsigned int>(ACCESS(this, 16392, 4)))
+    if (static_cast<unsigned int>(arg_0) <= reinterpret_cast<unsigned int>(ACCESS(this, 16392, 4)))
     {
         goto l10001E40;
     }
-    if (reinterpret_cast<unsigned int>(arg_0) < reinterpret_cast<unsigned int>(ACCESS(this, 16392, 4)) + 0x00004000)
+    if (static_cast<unsigned int>(arg_0) < reinterpret_cast<unsigned int>(ACCESS(this, 16392, 4)) + 0x00004000)
     {
         ACCESS(this, 16396, 4) = arg_0 - reinterpret_cast<any_int32>(ACCESS(this, 16392, 4));
         goto l10001E6E;
