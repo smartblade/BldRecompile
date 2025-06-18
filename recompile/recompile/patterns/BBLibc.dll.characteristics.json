@@ -12,6 +12,11 @@
 			"-16": "args"
 		}
 	},
+	"100017C2": {
+		"return": {
+			"boolean": "yes"
+		}
+	},
 	"100021E0": {
 		"return": {
 			"boolean": "yes"

@@ -192,10 +192,10 @@ unsigned int B_IDataFile::ReadCacheBlock()
             read(this->fd, &this->fileCache, reinterpret_cast<unsigned int>(STACKVAR(-8, 4)));
             this->cacheBlockStartPos = this->cacheBlockStartPos + IFILE_CACHE_SIZE;
             this->posInCacheBlock = 0;
-            return 1;
+            return true;
         }
     }
-    return 0;
+    return false;
 }
 
 // address: 0x10001882
@@ -315,7 +315,7 @@ void B_IDataFile::Read(void *data, unsigned int size)
         this->posInCacheBlock = IFILE_CACHE_SIZE;
         size = reinterpret_cast<unsigned int>(size - reinterpret_cast<any_int32>(STACKVAR(-4, 4)));
     }
-    if (this->ReadCacheBlock() != 0)
+    if (this->ReadCacheBlock())
     {
         this->Read(reinterpret_cast<void *>(reinterpret_cast<any_int32>(data) + reinterpret_cast<any_int32>(STACKVAR(-4, 4))), size);
     }
