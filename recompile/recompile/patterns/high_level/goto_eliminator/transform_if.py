@@ -1,4 +1,5 @@
 import expressions
+from expressions.operator import Operator
 import instructions
 
 from .eliminate_unused_label import eliminate_unused_label
@@ -51,12 +52,26 @@ def _add_block_to_if_instruction(if_instruction, instrs):
     assert if_instruction.else_block is None
     assert isinstance(if_instruction.if_block[-1], instructions.Goto)
     if len(if_instruction.if_block) == 1:
-        return instructions.IfInstruction(
+        return _make_if(
             expressions.do_logical_not(if_instruction.if_clause),
-            instrs
+            instrs,
         )
     return instructions.IfInstruction(
         if_instruction.if_clause,
         if_instruction.if_block[:-1],
         instrs,
     )
+
+
+def _make_if(clause, instrs):
+    while True:
+        if len(instrs) != 1:
+            break
+        if_instr = instrs[0]
+        if not isinstance(if_instr, instructions.IfInstruction):
+            break
+        if if_instr.else_block is not None:
+            break
+        clause = expressions.Bin(Operator.AND, clause, if_instr.if_clause)
+        instrs = if_instr.if_block
+    return instructions.IfInstruction(clause, instrs)

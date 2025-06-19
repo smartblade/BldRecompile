@@ -79,6 +79,7 @@ is_associative = {
     Operator.DIV: False,
     Operator.ADD: True,
     Operator.SUB: False,
+    Operator.AND: True,
 }
 
 operators = dict(
