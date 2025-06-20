@@ -21,7 +21,7 @@ def transform_if_statements(instrs, label_uses, **kwargs):
         if goto_instr is None:
             continue
         if goto_instr.label != labeled_block.label:
-            break
+            continue
         del instrs[-i:]
         new_instructions.pop()
         new_instructions.reverse()

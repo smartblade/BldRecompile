@@ -25,6 +25,7 @@ class Operator(Enum):
     XOR = "^"
     BIT_OR = "|"
     AND = "&&"
+    OR = "||"
     COND = "?"
     COND_SEP = ":"
     ASS = "="
@@ -57,6 +58,7 @@ priorities = {
     Operator.XOR: 11,
     Operator.BIT_OR: 12,
     Operator.AND: 13,
+    Operator.OR: 14,
     Operator.COND: 15,
     Operator.COND_SEP: 15,
     Operator.ASS: 15,
@@ -72,6 +74,7 @@ logical = {
     Operator.EQ,
     Operator.NE,
     Operator.AND,
+    Operator.OR,
 }
 
 is_associative = {
@@ -80,6 +83,7 @@ is_associative = {
     Operator.ADD: True,
     Operator.SUB: False,
     Operator.AND: True,
+    Operator.OR: True,
 }
 
 operators = dict(
