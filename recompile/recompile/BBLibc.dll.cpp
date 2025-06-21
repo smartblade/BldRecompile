@@ -188,7 +188,7 @@ unsigned int B_IDataFile::ReadCacheBlock()
             STACKVAR(-8, 4) = this->file_size - this->cacheBlockStartPos - IFILE_CACHE_SIZE;
         }
         read(this->fd, &this->fileCache, reinterpret_cast<unsigned int>(STACKVAR(-8, 4)));
-        this->cacheBlockStartPos = this->cacheBlockStartPos + IFILE_CACHE_SIZE;
+        this->cacheBlockStartPos += IFILE_CACHE_SIZE;
         this->posInCacheBlock = 0;
         return true;
     }
@@ -296,7 +296,7 @@ void B_IDataFile::Read(void *data, unsigned int size)
     if (size < IFILE_CACHE_SIZE - this->posInCacheBlock)
     {
         memcpy(data, reinterpret_cast<void *>(reinterpret_cast<any_int32>(this) + this->posInCacheBlock + 12), size); // TODO improve emitting of memcpy instructions
-        this->posInCacheBlock = this->posInCacheBlock + size;
+        this->posInCacheBlock += size;
         return;
     }
     STACKVAR(-4, 4) = IFILE_CACHE_SIZE - this->posInCacheBlock;
@@ -1633,7 +1633,7 @@ B_Name operator +(const char *str, const B_Name &bName)
 // address: 0x10003C70
 B_Name &B_Name::operator +=(const char *str)
 {
-    this->len = this->len + strlen(str);
+    this->len += strlen(str);
     STACKVAR(-8, 4) = ??2@YAPAXI@Z(this->len + 0x00000001);
     STACKVAR(-4, 4) = STACKVAR(-8, 4);
     strcpy(reinterpret_cast<char *>(STACKVAR(-4, 4)), this->string);

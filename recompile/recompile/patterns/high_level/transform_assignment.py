@@ -37,14 +37,19 @@ def _try_make_increment(dst, src):
     right = src.right
     if not right.data_type.is_any_int:
         return None
-    if not isinstance(right, expressions.Constant):
-        return None
-    if right.value != 1:
-        return None
     if dst.emit_code() != left.emit_code():
         return None
-    if negative:
-        inc_or_dec = expressions.Decrement
+    return _make_inc_or_dec(dst, right, negative)
+
+
+def _make_inc_or_dec(dst, offset, is_negative):
+    if isinstance(offset, expressions.Constant) and offset.value == 1:
+        if is_negative:
+            inc_or_dec = expressions.Decrement
+        else:
+            inc_or_dec = expressions.Increment
+        expression = inc_or_dec(dst)
     else:
-        inc_or_dec = expressions.Increment
-    return instructions.CodeInstruction(inc_or_dec(dst))
+        assert not is_negative
+        expression = expressions.Bin(Operator.ADD_ASS, dst, offset)
+    return instructions.CodeInstruction(expression)
