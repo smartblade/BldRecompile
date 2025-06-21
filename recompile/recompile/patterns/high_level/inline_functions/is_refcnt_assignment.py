@@ -6,23 +6,24 @@ from .obj_from_field_access import try_extract_obj_from_field_access
 
 
 def is_refcnt_assignment(instr, obj, int_const, operator):
-    if not isinstance(instr, instructions.Assignment):
+    if not isinstance(instr, instructions.CodeInstruction):
         return False
-    src = instr.src
-    if not isinstance(src, expressions.Bin):
+    e = instr.expression
+    if isinstance(e, expressions.Increment):
+        inc_operator = operator.ADD
+    elif isinstance(e, expressions.Decrement):
+        inc_operator = operator.SUB
+    else:
         return False
-    if src.operator != operator:
+    incremented_expression = e.expression
+    if inc_operator != operator:
         return False
-    if not is_int_constant(src.right, int_const):
+    if int_const != 1:
         return False
-    left_obj = try_extract_obj_from_field_access(src.left, "ob_refcnt")
-    if left_obj is None:
+    expression_obj = try_extract_obj_from_field_access(
+        incremented_expression, "ob_refcnt")
+    if expression_obj is None:
         return False
-    dst_obj = try_extract_obj_from_field_access(instr.dst, "ob_refcnt")
-    if dst_obj is None:
-        return False
-    if obj.emit_code() != left_obj.emit_code():
-        return False
-    if obj.emit_code() != dst_obj.emit_code():
+    if obj.emit_code() != expression_obj.emit_code():
         return False
     return True

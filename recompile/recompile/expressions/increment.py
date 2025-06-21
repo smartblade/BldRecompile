@@ -6,6 +6,10 @@ class Increment:
     def data_type(self):
         return self._expression.data_type
 
+    @property
+    def expression(self):
+        return self._expression
+
     def transform_expression(self, **kwargs):
         expression = self._expression.transform_expression(**kwargs)
         return self.__class__(expression)

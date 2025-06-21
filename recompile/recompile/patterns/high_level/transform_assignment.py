@@ -21,7 +21,7 @@ def transform_assignment(dst, src, analysis, **kwargs):
 
 
 def _try_make_increment(dst, src):
-    if not isinstance(dst, expressions.Identifier):
+    if not isinstance(dst, (expressions.Identifier, expressions.FieldAccess)):
         return None
     if not isinstance(src, expressions.Bin):
         return None

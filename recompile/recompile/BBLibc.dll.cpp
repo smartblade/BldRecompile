@@ -977,7 +977,7 @@ unsigned int B_List::Add(B_ListElement *element)
         this->tail = element;
         this->head = element;
     }
-    this->numElements = this->numElements + 0x00000001;
+    this->numElements++;
     element->list = this;
     return 1;
 }
@@ -1004,7 +1004,7 @@ unsigned int B_List::AddAfter(B_ListElement *existing, B_ListElement *newElement
         existing->prev = newElement;
         newElement->next = existing;
     }
-    this->numElements = this->numElements + 0x00000001;
+    this->numElements++;
     existing->list = this;
     return 1;
 }
@@ -1027,7 +1027,7 @@ unsigned int B_List::AddBefore(B_ListElement *existing, B_ListElement *newElemen
         existing->next = newElement;
         newElement->prev = existing;
     }
-    this->numElements = this->numElements + 0x00000001;
+    this->numElements++;
     existing->list = this;
     return 1;
 }
@@ -1069,7 +1069,7 @@ unsigned int B_List::Remove(B_ListElement *element, unsigned int index)
             STACKVAR(-24, 4) = 0x00000000;
         }
     }
-    this->numElements = this->numElements - 0x00000001;
+    this->numElements--;
     return 1;
 }
 
@@ -1080,7 +1080,7 @@ B_ListElement *B_List::RemoveFirst(unsigned int arg_0)
     {
         return nullptr;
     }
-    this->numElements = this->numElements - 0x00000001;
+    this->numElements--;
     B_ListElement *unknown_loc_04 = this->tail;
     this->tail = this->tail->next;
     if (this->numElements != 0)
@@ -1114,7 +1114,7 @@ B_ListElement *B_List::RemoveLast(unsigned int arg_0)
     {
         return nullptr;
     }
-    this->numElements = this->numElements - 0x00000001;
+    this->numElements--;
     B_ListElement *unknown_loc_04 = this->head;
     this->head = this->head->prev;
     if (this->numElements != 0)
@@ -1647,7 +1647,7 @@ B_Name &B_Name::operator +=(const char *str)
 // address: 0x10003D30
 B_Name &B_Name::operator+=(char c)
 {
-    this->len = this->len + 0x00000001;
+    this->len++;
     STACKVAR(-8, 4) = ??2@YAPAXI@Z(this->len + 0x00000001);
     STACKVAR(-4, 4) = STACKVAR(-8, 4);
     strcpy(reinterpret_cast<char *>(STACKVAR(-4, 4)), this->string);
@@ -31505,7 +31505,7 @@ l1003E330:
     {
         return;
     }
-    unknown_loc_0C->ob_refcnt = unknown_loc_0C->ob_refcnt - 0x00000001;
+    unknown_loc_0C->ob_refcnt--;
     if (unknown_loc_0C->ob_refcnt != 0)
     {
         return;
