@@ -7,6 +7,7 @@ import pathlib
 import re
 import time
 
+from copy_src_tree import copy_src_tree
 from make_tuple import make_tuple
 import parser as cpp_parser
 from patterns.asm_patterns import process_asm_patterns
@@ -26,6 +27,9 @@ parser.add_option("--force", dest="force",
 parser.add_option("--asm-patterns", dest="asm_patterns",
                   help="Convert asm patterns to C++ code (yes, no)",
                   default="no")
+parser.add_option("--copy-src-from", dest="copy_src_from",
+                  help="Copy source tree from specified directory",
+                  default=None)
 (options, args) = parser.parse_args()
 options.show_hex_prefix = (options.show_hex_prefix != 'no')
 options.write_proc_dict = (options.write_proc_dict != 'no')
@@ -1471,7 +1475,11 @@ def read_module_name(asm_files):
         return f.readlines()[0].rstrip()
 
 def run():
-    src_dir = os.path.abspath('../../../BldMystery/src')
+    src_dir = os.path.abspath('../../src')
+    if options.copy_src_from is not None:
+        copy_src_from = os.path.abspath(options.copy_src_from)
+        print("Copy sources from {}...".format(copy_src_from))
+        copy_src_tree(copy_src_from, src_dir)
     print("Collect symbols from sources...")
     symbols_dict = collectSymbolsFromSources(src_dir)
     if options.asm_patterns:

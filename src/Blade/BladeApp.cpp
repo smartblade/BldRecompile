@@ -1,0 +1,78 @@
+#include "BladeApp.h"
+#include "bld_misc_funcs.h"
+
+
+/*
+* Module:                 Blade.exe
+* Entry point:            0x005B9B60
+*/
+
+B_App* CreateApplication(HINSTANCE module, int nCmdShow, char *cmdLine)
+{
+}
+
+
+/*
+* Module:                 Blade.exe
+* Entry point:            0x005B9BAD
+*/
+
+B_WinApp *GetWinApplication()
+{
+}
+
+
+/*
+* Module:                 Blade.exe
+* Entry point:            0x005B9BB7
+*/
+
+B_App* GetApplication()
+{
+}
+
+
+/*
+* Module:                 Blade.exe
+* Entry point:            0x005B9BC1
+* VC++ mangling:          ??0B_BladeApp@@QAE@PAUHINSTANCE__@@HPAD@Z
+*/
+
+B_BladeApp::B_BladeApp(HINSTANCE module, int nCmdShow, char *cmdLine)
+:
+B_WinApp(module, nCmdShow, cmdLine, NULL)
+{
+}
+
+
+/*
+* Module:                 Blade.exe
+* Entry point:            0x005B9BF0
+* VC++ mangling:          ?Start@B_BladeApp@@UAE_NXZ
+*/
+
+bool B_BladeApp::Start()
+{
+}
+
+
+/*
+* Module:                 Blade.exe
+* Entry point:            0x005B9C03
+* VC++ mangling:          ?ProcessEvents@B_BladeApp@@UAE_NXZ
+*/
+
+bool B_BladeApp::ProcessEvents()
+{
+}
+
+
+/*
+* Module:                 Blade.exe
+* Entry point:            0x005B9C16
+* VC++ mangling:          ?End@B_BladeApp@@UAEXXZ
+*/
+
+void B_BladeApp::End()
+{
+}

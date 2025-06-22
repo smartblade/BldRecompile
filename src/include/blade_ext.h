@@ -1,0 +1,77 @@
+#include <bld_python.h>
+class B_BitMap;
+class material_t;
+class B_Resource;
+class B_Sound;
+class B_Widget;
+#define CHR_FLT_TURN_SPEED                0
+#define CHR_FLT_DIE_FALL                  1
+#define CHR_FLT_J_DIST                    2
+#define CHR_FLT_J_DIST_2                  3
+#define CHR_FLT_J_COST                    4
+#define CHR_FLT_MAX_FALL                  5
+#define CHR_FLT_MAX_STAIR                 6
+#define CHR_FLT_FOV                       7
+#define CHR_FLT_MAX_GRAB                 10
+#define CHR_FLT_MED_GRAB                 11
+#define CHR_FLT_MIN_TAKE                 13
+#define CHR_FLT_MAX_TAKE_1               14
+#define CHR_FLT_MAX_TAKE_2               15
+#define CHR_FLT_MAX_TAKE_3               16
+#define CHR_FLT_MAX_TAKE_4               17
+#define CHR_FLT_MAX_TAKE_5               18
+#define CHR_FLT_REACH                    19
+#define CHR_FLT_MIN_2_GRAB               20
+#define CHR_FLT_HEAR_MIN_VOLUME          21
+#define CHR_FLT_MOV_FRWD_SPEED_IN_STRAFE 22
+#define CHR_FLT_MOV_BKWD_SPEED_IN_STRAFE 23
+#define CHR_FLT_MAX_COMBAT_DIST          24
+#define CHR_FLT_DIST_STOP                25
+#define CHR_FLT_DIST_STOP_2              26
+#define CHR_FLT_MAX_SEE_DIST             27
+#define CHR_FLT_DIST_STOP_MAX_FACT       28
+#define CHR_STR_INT_NAME                  0
+#define CHR_STR_ADD_ROUTE_ANIM            1
+#define CHR_STR_BIPED                     2
+#define CHR_STR_NO_ARMOUR                 3
+#define CHR_STR_LOW_ARMOUR                4
+#define CHR_STR_MED_ARMOUR                5
+#define CHR_STR_HIGH_ARMOUR               6
+#define CHR_INT_NATURAL_WEAPONS           0
+#define CHR_INT_HEAD_CONTROLLED           1
+#define CHR_FNC_ON_FIRST                  0
+#define INV_INT_N_OBJECTS                 0
+#define INV_INT_N_WEAPONS                 1
+#define INV_INT_N_SHIELDS                 2
+#define INV_INT_HAS_BOW                   3
+#define INV_INT_N_KIND_OBJECTS            4
+#define INV_INT_N_QUIVERS                 5
+#define INV_INT_MAX_OBJECTS               6
+#define INV_INT_MAX_WEAPONS               7
+#define INV_INT_MAX_SHIELDS               8
+#define INV_INT_MAX_QUIVERS               9
+#define INV_INT_N_KEYS                   10
+#define INV_INT_N_SPECIAL_KEYS           11
+#define INV_INT_N_TABLETS                12
+#define INV_INT_HOLDING_BOW              13
+#define INV_INT_HAS_BOW_ON_BACK          15
+#define INV_INT_HOLDING_SHIELD           16
+#define INV_INT_HAS_SHIELD_ON_BACK       17
+#define INV_STR_NAME                      0
+#define INV_STR_OWNER                     1
+#define INV_OBJ_TYPE_OBJECT               0
+#define INV_OBJ_TYPE_SHIELD               1
+#define INV_OBJ_TYPE_WEAPON               2
+#define INV_OBJ_TYPE_QUIVER               3
+#define INV_OBJ_TYPE_KEY                  4
+#define INV_OBJ_TYPE_SPECIAL_KEY          5
+#define INV_OBJ_TYPE_TABLET               6
+#define MAT_FLT_WEIGHT                    0
+#define MAT_STR_NAME                      0
+#define MAT_SND_FRICTION_SOUND            0
+#define MAT_SND_HIT_SOUND                 1
+#define MAT_SND_BREAK_SOUND               2
+#define TRL_FLT_TIME_2_LIVE               0
+#define TRL_FLT_TRANSPARENCY              1
+#define TRL_FLT_SHRINK_FACTOR             2
+#define TRL_VEC_COLOR                     0

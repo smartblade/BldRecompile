@@ -1,0 +1,12 @@
+#include <enemies/Combos_Stuff.h>
+
+
+/*
+* Module:                 Blade.exe
+* Entry point:            0x0058C0D5
+* VC++ mangling:          ?SetNextAttack@B_Combos@@QAEHPAVB_PersonEntity@@PBD@Z
+*/
+
+int B_Combos::SetNextAttack(B_PersonEntity *personEntity, const char *attack)
+{
+}

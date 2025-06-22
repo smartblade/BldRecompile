@@ -1,0 +1,12 @@
+#include <BWorld/OctTree.h>
+
+
+/*
+* Module:                 Blade.exe
+* Entry point:            0x00451A21
+* VC++ mangling:          ?Build@B_OctTree@@QAEXABVB_Map@@N@Z
+*/
+
+void B_OctTree::Build(const B_Map &map, double size)
+{
+}

@@ -1,0 +1,23 @@
+#include <bld_python.h>
+#define SEC_INT_ACTIVE                    0
+#define SEC_INT_N_SURFACES                1
+#define SEC_INT_TOO_STEEP                 2
+#define SEC_INT_NUM_PIECES                4
+#define SEC_INT_ACTION_AREA               5
+#define SEC_FLT_TEXTURE_X                 0
+#define SEC_FLT_TEXTURE_Y                 1
+#define SEC_FLT_TEXTURE_ZOOM_X            2
+#define SEC_FLT_TEXTURE_ZOOM_Y            3
+#define SEC_FLT_SPECULAR_LIGHT            4
+#define SEC_FLT_SPECULAR_SHININESS        5
+#define SEC_FLT_SELF_LIGHT                6
+#define SEC_FLT_TOO_STEEP_ANGLE           7
+#define SEC_STR_TEXTURE                   0
+#define SEC_STR_PIECE_NAME                1
+#define SEC_VEC_ACTIVE_SURFACE            0
+#define SEC_VEC_PIECE                     1
+#define SEC_FNC_ON_ENTER                  0
+#define SEC_FNC_ON_LEAVE                  1
+#define SEC_FNC_ON_HIT                    2
+#define SEC_FNC_ON_WALK_ON                3
+#define SEC_FNC_ON_WALK_OUT               4

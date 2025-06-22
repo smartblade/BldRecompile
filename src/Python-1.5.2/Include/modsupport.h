@@ -1,0 +1,1 @@
+#define PYTHON_API_VERSION 1007

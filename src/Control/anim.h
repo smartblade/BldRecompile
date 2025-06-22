@@ -1,0 +1,12 @@
+#include <BBLibc/Name.h>
+#include <BBLibc/IDataFile.h>
+
+class anim_t : public B_NamedObj
+{
+public:
+    anim_t();
+    void AddEvent(const B_Name &event_name, float event_frame);
+    void DelEvent(const B_Name &event_name);
+    void ClearEvents();
+    float GetEventFrame(const B_Name &event_name);
+};

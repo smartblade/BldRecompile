@@ -1,0 +1,12 @@
+#include <App/App.h>
+
+
+/*
+* Module:                 Blade.exe
+* Entry point:            0x004246C0
+* VC++ mangling:          ?DisplayStats@B_App@@QAEXXZ
+*/
+
+void B_App::DisplayStats()
+{
+}

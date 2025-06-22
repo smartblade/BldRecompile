@@ -1,0 +1,14 @@
+#include <AnalyticGeometry/Plane.h>
+#include <AnalyticGeometry/Vector.h>
+#include <BBLibc/IDataFile.h>
+
+
+/*
+* Module:                 Blade.exe
+* Entry point:            0x00407DF6
+* VC++ mangling:          ??5@YAAAVB_IDataFile@@AAV0@AAVB_Plane@@@Z
+*/
+
+B_IDataFile &operator >>(B_IDataFile &file, B_Plane &plane)
+{
+}

@@ -1,0 +1,76 @@
+#include <AnalyticGeometry/Polygon.h>
+#include <BBLibc/IDataFile.h>
+
+/*
+* Module:                 Blade.exe
+* Data address:           0x005DF8B0
+*/
+static unsigned int gbl_num_polygon_vertices = 0;
+
+
+/*
+* Module:                 Blade.exe
+* Entry point:            0x004085BC
+* VC++ mangling:          ??0B_WorldPoint@@QAE@XZ
+*/
+
+B_WorldPoint::B_WorldPoint()
+ : unknown1C(0)
+{
+}
+
+
+/*
+* Module:                 Blade.exe
+* Entry point:            0x00408631
+* VC++ mangling:          ??5@YAAAVB_IDataFile@@AAV0@AAVB_WorldPoint@@@Z
+*/
+
+B_IDataFile &operator >>(B_IDataFile &file, B_WorldPoint &point)
+{
+}
+
+
+/*
+* Module:                 Blade.exe
+* Entry point:            0x004088F4
+* VC++ mangling:          ??5@YAAAVB_IDataFile@@AAV0@AAVB_WorldPoints@@@Z
+*/
+
+B_IDataFile &operator >>(B_IDataFile &file, B_WorldPoints &wordPoints)
+{
+}
+
+
+/*
+* Module:                 Blade.exe
+* Entry point:            0x00408B67
+* VC++ mangling:          ??0B_Polygon@@QAE@XZ
+*/
+
+B_Polygon::B_Polygon()
+ : numVertices(0), vertices(NULL)
+{
+}
+
+
+/*
+* Module:                 Blade.exe
+* Entry point:            0x00408CD3
+* VC++ mangling:          ??1B_Polygon@@UAE@XZ
+*/
+
+B_Polygon::~B_Polygon()
+{
+}
+
+
+/*
+* Module:                 Blade.exe
+* Entry point:            0x004097FC
+* VC++ mangling:          ??5@YAAAVB_IDataFile@@AAV0@AAVB_Polygon@@@Z
+*/
+
+B_IDataFile &operator >>(B_IDataFile &file, B_Polygon &polygon)
+{
+}

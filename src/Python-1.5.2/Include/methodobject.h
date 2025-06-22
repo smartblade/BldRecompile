@@ -1,0 +1,2 @@
+#define METH_VARARGS  0x0001
+#define METH_KEYWORDS 0x0002
