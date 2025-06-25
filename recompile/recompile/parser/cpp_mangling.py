@@ -56,11 +56,9 @@ class _CppManglingParser:
         parameters = []
         if not self._try_pop_char("X"):
             arg_types = []
-            arg_index = 0
             while not self._try_pop_char("@"):
                 parameter_type = self._pop_data_type(arg_types)
-                parameters.append((parameter_type, "arg_{}".format(arg_index)))
-                arg_index += 1
+                parameters.append((parameter_type, None))
         self._expect("Z")
         return ProcedureDeclaration(
             proc_name, calling_convention, method_class, parameters,
