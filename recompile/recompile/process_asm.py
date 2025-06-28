@@ -30,6 +30,9 @@ parser.add_option("--asm-patterns", dest="asm_patterns",
 parser.add_option("--copy-src-from", dest="copy_src_from",
                   help="Copy source tree from specified directory",
                   default=None)
+parser.add_option("--src", dest="src",
+                  help="Read source files from specified directory",
+                  default=None)
 (options, args) = parser.parse_args()
 options.show_hex_prefix = (options.show_hex_prefix != 'no')
 options.write_proc_dict = (options.write_proc_dict != 'no')
@@ -1476,6 +1479,8 @@ def read_module_name(asm_files):
 
 def run():
     src_dir = os.path.abspath('../../src')
+    if options.src is not None:
+        src_dir = os.path.abspath(options.src)
     if options.copy_src_from is not None:
         copy_src_from = os.path.abspath(options.copy_src_from)
         print("Copy sources from {}...".format(copy_src_from))
