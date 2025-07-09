@@ -15,18 +15,15 @@ name_regexp = re.compile(
 
 
 def _collect_procedures_from_file(file_name):
-    mangled_names = {}
-    native_procedures = set()
-    declarations = {}
     f = open(file_name)
     lines = f.readlines()
     class_name = None
     meta = False
     definition_finished = True
     module = None
-    addr_by_module = {}
-    mangling = None
     definition = ""
+    definitions = []
+    cur_definition = None
     for line in lines:
         match = re.search(class_regexp, line)
         if match:
@@ -36,27 +33,28 @@ def _collect_procedures_from_file(file_name):
         if line.find("/*") >= 0:
             meta = True
             module = None
-            addr_by_module = {}
-            mangling = None
+            cur_definition = _DefinitionState()
         if line.find("*/") >= 0:
             meta = False
             definition = ""
-            definition_finished = False
-            for module, addr in addr_by_module.items():
-                mangled_names[(module, addr)] = mangling
-        if line.find("BLD_NATIVE") >= 0:
-            for module, addr in addr_by_module.items():
-                native_procedures.add((module, addr))
+            if len(cur_definition.addr_by_module) > 0:
+                definition_finished = False
+                definitions.append(cur_definition)
+            else:
+                cur_definition = None
+        if line.find("BLD_NATIVE") >= 0 and cur_definition is not None:
+            cur_definition.is_implemented = False
         if meta:
             match = re.search(module_regexp, line)
             if match:
                 module = match.group('module')
             match = re.search(addr_regexp, line)
             if match:
-                addr_by_module[module] = from_hex(match.group('addr'))
+                address = from_hex(match.group('addr'))
+                cur_definition.addr_by_module[module] = address
             match = re.search(mangling_regexp, line)
             if match:
-                mangling = match.group('mangling')
+                cur_definition.mangling = match.group('mangling')
         else:
             if (
                 not definition_finished and
@@ -67,33 +65,31 @@ def _collect_procedures_from_file(file_name):
             if not definition_finished and line.find("{") >= 0:
                 definition_finished = True
                 definition = definition.strip().strip("{")
-                for module, addr in addr_by_module.items():
-                    declarations[(module, addr)] = definition, class_name
+                cur_definition.declaration = definition
+                cur_definition.class_name = class_name
         if (
             not meta and
-            len(addr_by_module) > 0 and
-            mangled_names[(module, addr_by_module[module])] is None
+            cur_definition is not None and
+            cur_definition.mangling is None
         ):
             if definition_finished:
-                cdecl_mangling = None
                 match = re.search(proc_regexp, definition)
                 if match:
-                    proc_name = match.group('proc')
-                    cdecl_mangling = "_{}".format(proc_name)
-                for module, addr in addr_by_module.items():
-                    fallback = "fn{}".format(to_hex(addr))
-                    mangled_names[(module, addr)] = cdecl_mangling or fallback
+                    cur_definition.proc_name = match.group('proc')
     f.close()
     procedures_dict = {}
-    for key, mangled_name in mangled_names.items():
-        is_implemented = key not in native_procedures
-        if key in declarations:
-            declaration, class_name = declarations[key]
-        else:
-            declaration = None
-            class_name = None
-        procedures_dict[key] = _CppDeclaration(
-            file_name, mangled_name, declaration, class_name, is_implemented)
+    for definition in definitions:
+        is_implemented = definition.is_implemented
+        declaration = definition.declaration
+        class_name = definition.class_name
+        for module, addr in definition.addr_by_module.items():
+            procedures_dict[(module, addr)] = _CppDeclaration(
+                file_name,
+                definition.get_mangled_name(addr),
+                declaration,
+                class_name,
+                is_implemented,
+            )
     return procedures_dict
 
 
@@ -169,6 +165,23 @@ def _collect_symbols_from_sources(src_dir):
         variables,
         procedures,
     )
+
+
+class _DefinitionState:
+    def __init__(self):
+        self.mangling = None
+        self.addr_by_module = {}
+        self.proc_name = None
+        self.declaration = None
+        self.class_name = None
+        self.is_implemented = True
+
+    def get_mangled_name(self, addr):
+        if self.mangling is not None:
+            return self.mangling
+        if self.proc_name is not None:
+            return "_{}".format(self.proc_name)
+        return "fn{}".format(to_hex(addr))
 
 
 class _CppDeclaration:
