@@ -6,6 +6,10 @@ class Writer:
         self._indent_length = indent_length
         self._indent = 0
 
+    @property
+    def indent_length(self):
+        return self._indent_length
+
     def write_line(self, line="", indent=None):
         indent = indent if indent is not None else self._indent
         if line:

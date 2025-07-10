@@ -44,13 +44,15 @@ class Procedure:
         return Procedure(
             self._proc_info, self._address, self._proc_decl, new_instrs)
 
-    def emit_code(self, writer, is_definition=True):
+    def emit_code(self, writer, show_address=True, is_definition=True):
         if self._proc_decl is not None:
             decl_string = self._proc_decl.get_declaration(
                 is_metafile=False, is_definition=is_definition)
         else:
             decl_string = "p{}".format(to_hex(self._address))
-        if self._address is not None:
+        if not show_address:
+            writer.write_line()
+        elif self._address is not None:
             writer.write_line("// address: 0x{}".format(to_hex(self._address)))
         else:
             writer.write_line("// address: inline")

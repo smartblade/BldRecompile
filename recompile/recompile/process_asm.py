@@ -12,6 +12,7 @@ import parser as cpp_parser
 from patterns.asm_patterns import process_asm_patterns
 from patterns.characteristics import ModuleCharacteristics
 from read_exports import read_exports
+from update_src import update_src
 
 parser = OptionParser()
 parser.add_option("--show-hex-prefix", dest="show_hex_prefix",
@@ -31,6 +32,9 @@ parser.add_option("--copy-src-from", dest="copy_src_from",
                   default=None)
 parser.add_option("--src", dest="src",
                   help="Read source files from specified directory",
+                  default=None)
+parser.add_option("--update-src-at", dest="update_src_at",
+                  help="Save updated sources to specified directory",
                   default=None)
 (options, args) = parser.parse_args()
 options.show_hex_prefix = (options.show_hex_prefix != 'no')
@@ -1305,7 +1309,12 @@ def run():
                 external_procedures=external_procedures,
                 characteristics=characteristics,
             )
-            process_asm_dir(asm_files, declarations)
+            procedures = process_asm_dir(asm_files, declarations)
+            if options.update_src_at is not None:
+                update_src_at = os.path.abspath(options.update_src_at)
+                print("Update sources at {}...".format(update_src_at))
+                update_src(update_src_at, module_name, procedures)
+
 
 def process_asm_dir(asm_files, declarations):
     symbols = declarations.symbols
@@ -1319,8 +1328,7 @@ def process_asm_dir(asm_files, declarations):
     print("Reading code...")
     lines = readAsmCode(asm_files.intermediate_asm)
     if options.asm_patterns:
-        process_asm_patterns(lines, declarations)
-        return
+        return process_asm_patterns(lines, declarations)
     print("Writing code...")
     f = open(asm_files.output_asm, "wt")
     isImplementedProc = False

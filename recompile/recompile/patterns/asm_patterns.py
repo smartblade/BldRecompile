@@ -22,8 +22,6 @@ def process_asm_patterns(lines, declarations):
         os.path.dirname(os.path.realpath(__file__)), "patterns.json")
     with open(patterns_path, "rt") as f:
         patterns = Patterns(json.load(f))
-    proc_addr = None
-    proc_lines = []
     writer = Writer()
     smallest_failed_proc_len = None
     smallest_failed_proc_exc = None
@@ -33,25 +31,22 @@ def process_asm_patterns(lines, declarations):
     declarations = add_attributes(
         declarations, string_constants=string_constants)
     inline_procedures = inline_functions.Dict()
-    for line in lines:
-        if line.startswith("l") and line.find("PROC") >= 0:
-            proc_addr = from_hex(line[1:9])
-            proc_lines.clear()
-        elif proc_addr is not None and line.find("ENDP") >= 0:
-            exc = _build_proc(
-                writer, declarations, standard_inlines, inline_procedures,
-                patterns, proc_addr, proc_lines)
-            if exc is not None:
-                if (
-                    smallest_failed_proc_len is None or
-                    len(proc_lines) < smallest_failed_proc_len
-                ):
-                    smallest_failed_proc_len = len(proc_lines)
-                    smallest_failed_proc_addr = proc_addr
-                    smallest_failed_proc_exc = exc
-            proc_addr = None
-        elif proc_addr is not None:
-            proc_lines.append(line.strip())
+    asm_procedures = _extract_procedures_lines_from_asm(lines)
+    procedures = []
+    for proc_addr, proc_lines in asm_procedures:
+        exc, procedure = _build_proc(
+            declarations, standard_inlines, inline_procedures, patterns,
+            proc_addr, proc_lines)
+        procedures.append((exc, procedure))
+        if exc is not None:
+            if (
+                smallest_failed_proc_len is None or
+                len(proc_lines) < smallest_failed_proc_len
+            ):
+                smallest_failed_proc_len = len(proc_lines)
+                smallest_failed_proc_addr = proc_addr
+                smallest_failed_proc_exc = exc
+    _write_procedures(writer, procedures)
     inline_procedures.make_high_level_code(declarations)
     inline_procedures.write_procedures(writer)
     with open("{}.cpp".format(declarations.symbols.module), "wt") as f:
@@ -60,15 +55,16 @@ def process_asm_patterns(lines, declarations):
         raise Exception(
             "Failed to build {}".format(to_hex(smallest_failed_proc_addr))
         ) from smallest_failed_proc_exc
+    return [procedure for exc, procedure in procedures if exc is None]
 
 
 def _build_proc(
-    writer, declarations, standard_inlines, inline_procedures, patterns,
+    declarations, standard_inlines, inline_procedures, patterns,
     proc_addr, proc_lines
 ):
     proc_decl = get_procedure_declaration_at(declarations, proc_addr)
     builder = ProcedureBuilder(proc_decl, proc_addr, standard_inlines)
-    writer.write_line()
+    error = None
     try:
         _parse_asm_proc(
             patterns,
@@ -78,15 +74,36 @@ def _build_proc(
             external_procedures=declarations.external_procedures,
         )
     except Exception as exc:
-        procedure = builder.build_procedure()
-        procedure.emit_code(writer)
-        writer.write_line('Error: "{}"'.format(str(exc)))
-        return exc
-    else:
-        procedure = builder.build_procedure()
+        error = exc
+    procedure = builder.build_procedure()
+    if error is None:
         procedure = make_high_level_code(
             procedure, declarations, inline_procedures)
+    return error, procedure
+
+
+def _extract_procedures_lines_from_asm(lines):
+    proc_addr = None
+    proc_lines = []
+    asm_procedures = []
+    for line in lines:
+        if line.startswith("l") and line.find("PROC") >= 0:
+            proc_addr = from_hex(line[1:9])
+            proc_lines = []
+        elif proc_addr is not None and line.find("ENDP") >= 0:
+            asm_procedures.append((proc_addr, proc_lines))
+            proc_addr = None
+        elif proc_addr is not None:
+            proc_lines.append(line.strip())
+    return asm_procedures
+
+
+def _write_procedures(writer, procedures):
+    for exc, procedure in procedures:
+        writer.write_line()
         procedure.emit_code(writer)
+        if exc is not None:
+            writer.write_line('Error: "{}"'.format(str(exc)))
 
 
 def _parse_asm_proc(patterns, lines, **kwargs):

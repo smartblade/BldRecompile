@@ -14,17 +14,16 @@ name_regexp = re.compile(
     r'(\W+(?P<name>\w+)(\s*\[\s*\d*\s*])*\s*)?(=\s*\d*\s*)?;')
 
 
-def _collect_procedures_from_file(file_name):
-    f = open(file_name)
-    lines = f.readlines()
+def _collect_procedures_from_file(file_name, lines):
     class_name = None
     meta = False
     definition_finished = True
+    brackets_depth = 0
     module = None
     definition = ""
     definitions = []
     cur_definition = None
-    for line in lines:
+    for line_index, line in enumerate(lines):
         match = re.search(class_regexp, line)
         if match:
             class_name = match.group("class")
@@ -39,6 +38,8 @@ def _collect_procedures_from_file(file_name):
             definition = ""
             if len(cur_definition.addr_by_module) > 0:
                 definition_finished = False
+                brackets_depth = 0
+                cur_definition.definition_start_line = line_index + 1
                 definitions.append(cur_definition)
             else:
                 cur_definition = None
@@ -76,29 +77,38 @@ def _collect_procedures_from_file(file_name):
                 match = re.search(proc_regexp, definition)
                 if match:
                     cur_definition.proc_name = match.group('proc')
-    f.close()
+        if (
+            cur_definition is not None and
+            cur_definition.definition_start_line is not None and
+            cur_definition.definition_end_line is None
+        ):
+            for c in line:
+                if c == "{":
+                    brackets_depth += 1
+                elif c == "}":
+                    brackets_depth -= 1
+            if definition_finished and brackets_depth == 0:
+                cur_definition.definition_end_line = line_index
+                cur_definition = None
     procedures_dict = {}
     for definition in definitions:
-        is_implemented = definition.is_implemented
-        declaration = definition.declaration
-        class_name = definition.class_name
         for module, addr in definition.addr_by_module.items():
             procedures_dict[(module, addr)] = _CppDeclaration(
                 file_name,
+                definition.definition_start_line,
+                definition.definition_end_line,
                 definition.get_mangled_name(addr),
-                declaration,
-                class_name,
-                is_implemented,
+                definition.declaration,
+                definition.class_name,
+                definition.is_implemented,
             )
     return procedures_dict
 
 
-def _collect_variables_from_file(file_name):
+def _collect_variables_from_file(file_name, lines):
     var_names = {}
     declarations = {}
     native_variables = set()
-    f = open(file_name)
-    lines = f.readlines()
     meta = False
     module = None
     addr_by_module = {}
@@ -136,18 +146,28 @@ def _collect_variables_from_file(file_name):
                             match.group('name'))
                         native_variables.add((module, addr))
                 addr_by_module = {}
-    f.close()
     variables_dict = {}
     for key, mangled_name in var_names.items():
         is_implemented = key not in native_variables
         variables_dict[key] = _CppDeclaration(
             file_name,
+            None,
+            None,
             mangled_name,
             declarations.get(key),
             None,
             is_implemented,
         )
     return variables_dict
+
+
+def _collect_symbols_from_file(file_name, variables, procedures):
+    with open(file_name) as f:
+        lines = f.readlines()
+    file_procs = _collect_procedures_from_file(file_name, lines)
+    procedures.update(file_procs)
+    file_vars = _collect_variables_from_file(file_name, lines)
+    variables.update(file_vars)
 
 
 def _collect_symbols_from_sources(src_dir):
@@ -157,10 +177,7 @@ def _collect_symbols_from_sources(src_dir):
         for file in files:
             if file.lower().endswith(".cpp") or file.lower().endswith(".h"):
                 file_name = os.path.join(root, file)
-                file_procs = _collect_procedures_from_file(file_name)
-                procedures.update(file_procs)
-                file_vars = _collect_variables_from_file(file_name)
-                variables.update(file_vars)
+                _collect_symbols_from_file(file_name, variables, procedures)
     return SrcSymbols.create_symbols_dict(
         variables,
         procedures,
@@ -175,6 +192,8 @@ class _DefinitionState:
         self.declaration = None
         self.class_name = None
         self.is_implemented = True
+        self.definition_start_line = None
+        self.definition_end_line = None
 
     def get_mangled_name(self, addr):
         if self.mangling is not None:
@@ -186,9 +205,12 @@ class _DefinitionState:
 
 class _CppDeclaration:
     def __init__(
-        self, file_name, mangled_name, declaration, class_name, is_implemented
+        self, file_name, definition_start_line, definition_end_line,
+        mangled_name, declaration, class_name, is_implemented
     ):
         self.file_name = file_name
+        self.definition_start_line = definition_start_line
+        self.definition_end_line = definition_end_line
         self.mangled_name = mangled_name
         self.declaration = declaration
         self.class_name = class_name
@@ -240,3 +262,7 @@ class SrcSymbols:
     @staticmethod
     def collect(src_dir):
         return _collect_symbols_from_sources(src_dir)
+
+    @staticmethod
+    def collect_procedures(lines):
+        return _collect_procedures_from_file(None, lines)
