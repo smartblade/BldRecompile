@@ -216,7 +216,8 @@ class ProcedureDeclaration:
             return "void"
         if is_brief and isinstance(self._return_arg, data_types.Pointer32):
             return "ptr32"
-        return self._return_arg.get_type_name(is_metafile=is_metafile)
+        decl = self._return_arg.make_variable_declaration("", is_metafile)
+        return decl.strip()
 
 
 def _make_parameter_name(parameter_name, parameter_index):

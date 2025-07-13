@@ -664,7 +664,7 @@ unsigned int B_IDataFile::OK()
 }
 
 // address: 0x10002200
-char *B_IDataFile::GetFileName()
+const char *B_IDataFile::GetFileName()
 {
     return this->file_name;
 }
@@ -683,7 +683,7 @@ unsigned int B_ODataFile::OK()
 }
 
 // address: 0x10002270
-char *B_ODataFile::GetFileName()
+const char *B_ODataFile::GetFileName()
 {
     return this->file_name;
 }
@@ -696,7 +696,7 @@ B_ODataFile &B_ODataFile::operator=(const B_ODataFile &arg_1)
 }
 
 // address: 0x100022C0
-B_Name &B_Name::Id()
+const B_Name &B_Name::Id()
 {
     return *this;
 }
@@ -872,7 +872,7 @@ B_MessageManager &B_MessageManager::operator=(const B_MessageManager &that)
 }
 
 // address: 0x10002740
-char *GetConfigDirectory()
+const char *GetConfigDirectory()
 {
     if (static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(GLOBAL(0x1004A110), 0, 1))) == 0x00000000)
     {
@@ -925,7 +925,7 @@ l100028BF:
 }
 
 // address: 0x100028EC
-char *GetCurrentLanguage()
+const char *GetCurrentLanguage()
 {
     strcpy(reinterpret_cast<char *>(LOCAL(-256)), GetConfigDirectory());
     strcat(reinterpret_cast<char *>(LOCAL(-256)), "/Lang.ini");
@@ -1390,7 +1390,7 @@ B_Name::B_Name(unsigned int len)
 }
 
 // address: 0x10003457
-char *B_Name::String()
+const char *B_Name::String()
 {
     return this->string;
 }
@@ -1572,7 +1572,7 @@ B_NamedObj::B_NamedObj(const B_Name &n)
 }
 
 // address: 0x10003A2F
-B_Name &B_NamedObj::Id()
+const B_Name &B_NamedObj::Id()
 {
     return this->name;
 }
@@ -1631,7 +1631,7 @@ B_Name operator +(const char *str, const B_Name &bName)
 }
 
 // address: 0x10003C70
-B_Name &B_Name::operator +=(const char *str)
+const B_Name &B_Name::operator +=(const char *str)
 {
     this->len += strlen(str);
     STACKVAR(-8, 4) = ??2@YAPAXI@Z(this->len + 0x00000001);
@@ -1645,7 +1645,7 @@ B_Name &B_Name::operator +=(const char *str)
 }
 
 // address: 0x10003D30
-B_Name &B_Name::operator+=(char c)
+const B_Name &B_Name::operator+=(char c)
 {
     this->len++;
     STACKVAR(-8, 4) = ??2@YAPAXI@Z(this->len + 0x00000001);
@@ -1660,7 +1660,7 @@ B_Name &B_Name::operator+=(char c)
 }
 
 // address: 0x10003DCE
-B_Name &B_Name::operator +=(const B_Name &other)
+const B_Name &B_Name::operator +=(const B_Name &other)
 {
     STACKVAR(-16, 4) = other.len;
     this->len = reinterpret_cast<unsigned int>(this->len + reinterpret_cast<any_int32>(STACKVAR(-16, 4)));
@@ -2311,7 +2311,7 @@ unsigned int B_ResourceManager::GetnFiles()
 }
 
 // address: 0x10004C37
-char *B_ResourceManager::GetFile(unsigned int arg_1)
+const char *B_ResourceManager::GetFile(unsigned int arg_1)
 {
     if (arg_1 > 0 && arg_1 < reinterpret_cast<unsigned int>(ACCESS(ACCESS(this, 1024, 4), 8, 4)))
     {
@@ -2929,7 +2929,7 @@ l10005E2B:
 }
 
 // address: 0x10005E42
-char *B_ResourceManager::GetResourceName(unsigned short arg_1, unsigned int arg_2)
+const char *B_ResourceManager::GetResourceName(unsigned short arg_1, unsigned int arg_2)
 {
     if (ACCESS(ARRPTR(this, 4, reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x0000FFFF, 0), 0, 4) == 0x00000000)
     {
@@ -2939,7 +2939,7 @@ char *B_ResourceManager::GetResourceName(unsigned short arg_1, unsigned int arg_
 }
 
 // address: 0x10005E8F
-char *B_ResourceManager::GetResourceFile(unsigned short arg_1, unsigned int arg_2)
+const char *B_ResourceManager::GetResourceFile(unsigned short arg_1, unsigned int arg_2)
 {
     if (ACCESS(ARRPTR(this, 4, reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x0000FFFF, 0), 0, 4) == 0x00000000)
     {
@@ -3680,7 +3680,7 @@ void B_BitMap24::GetDimension(int &arg_1, int &arg_2)
 }
 
 // address: 0x100070C0
-unsigned char *B_BitMap24::GetBits()
+const unsigned char *B_BitMap24::GetBits()
 {
     return reinterpret_cast<unsigned char *>(this->data);
 }
@@ -5106,7 +5106,7 @@ l10009549:
 }
 
 // address: 0x10009633
-B_Pal &B_Pal::Id()
+const B_Pal &B_Pal::Id()
 {
     return *this;
 }
@@ -23244,7 +23244,7 @@ l10029BAB:
 }
 
 // address: 0x10029BE0
-char *vararg(const char *format)
+const char *vararg(const char *format)
 {
     STACKVAR(-8, 4) = LOCAL(12);
     STACKVAR(-4, 4) = vsprintf(GLOBAL(0x1004A540), format, STACKVAR(-8, 4));
