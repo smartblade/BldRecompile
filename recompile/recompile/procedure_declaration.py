@@ -12,7 +12,7 @@ operator_regexp = re.compile(r'^operator\s*(?P<op>\S+)$')
 class ProcedureDeclaration:
     def __init__(
         self, proc_name, convention, method_class, parameters, return_arg,
-        is_static=False, is_vararg=False,
+        is_static=False, is_vararg=False, is_const=False,
     ):
         self._proc_name = proc_name
         self._convention = convention
@@ -21,6 +21,7 @@ class ProcedureDeclaration:
         self._parameters = parameters
         self._is_static = is_static
         self._is_vararg = is_vararg
+        self._is_const = is_const
         self._operator = self._get_operator()
         self._stack_variable = None
 
@@ -188,12 +189,16 @@ class ProcedureDeclaration:
             calling_convention = "__thiscall "
         elif self._convention == CallingConvention.STDCALL:
             calling_convention = "__stdcall "
-        return "{}{}{}{}({})".format(
+        const = ""
+        if self._is_const:
+            const = " const"
+        return "{}{}{}{}({}){}".format(
             return_arg,
             sep,
             calling_convention,
             proc_name,
             ", ".join(parameters),
+            const,
         )
 
     def extract_return_arg_from_line(self, line, declarations):

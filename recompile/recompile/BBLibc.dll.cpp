@@ -196,7 +196,7 @@ unsigned int B_IDataFile::ReadCacheBlock()
 }
 
 // address: 0x10001882
-long B_IDataFile::Length()
+long B_IDataFile::Length() const
 {
     if (this->OK())
     {
@@ -658,13 +658,13 @@ p10002100
 }
 
 // address: 0x100021E0
-unsigned int B_IDataFile::OK()
+unsigned int B_IDataFile::OK() const
 {
     return static_cast<unsigned int>(this->fd != -1);
 }
 
 // address: 0x10002200
-const char *B_IDataFile::GetFileName()
+const char *B_IDataFile::GetFileName() const
 {
     return this->file_name;
 }
@@ -677,7 +677,7 @@ B_IDataFile &B_IDataFile::operator =(const B_IDataFile &file)
 }
 
 // address: 0x10002250
-unsigned int B_ODataFile::OK()
+unsigned int B_ODataFile::OK() const
 {
     return static_cast<unsigned int>(this->fd != -1);
 }
@@ -696,19 +696,19 @@ B_ODataFile &B_ODataFile::operator=(const B_ODataFile &arg_1)
 }
 
 // address: 0x100022C0
-const B_Name &B_Name::Id()
+const B_Name &B_Name::Id() const
 {
     return *this;
 }
 
 // address: 0x100022D0
-void B_Name::operator const char*()
+void B_Name::operator const char*() const
 {
     REGDEF(eax=this->string)
 }
 
 // address: 0x100022E0
-unsigned int B_Name::Length()
+unsigned int B_Name::Length() const
 {
     return this->len;
 }
@@ -1390,13 +1390,13 @@ B_Name::B_Name(unsigned int len)
 }
 
 // address: 0x10003457
-const char *B_Name::String()
+const char *B_Name::String() const
 {
     return this->string;
 }
 
 // address: 0x10003467
-unsigned int B_Name::operator >(const B_Name &rhs)
+unsigned int B_Name::operator >(const B_Name &rhs) const
 {
     STACKVAR(-8, 4) = rhs.string;
     STACKVAR(-12, 4) = this->string;
@@ -1405,7 +1405,7 @@ unsigned int B_Name::operator >(const B_Name &rhs)
 }
 
 // address: 0x100034DA
-unsigned int B_Name::operator <(const B_Name &rhs)
+unsigned int B_Name::operator <(const B_Name &rhs) const
 {
     STACKVAR(-8, 4) = rhs.string;
     STACKVAR(-12, 4) = this->string;
@@ -1414,7 +1414,7 @@ unsigned int B_Name::operator <(const B_Name &rhs)
 }
 
 // address: 0x1000354D
-unsigned int B_Name::operator ==(const B_Name &rhs)
+unsigned int B_Name::operator ==(const B_Name &rhs) const
 {
     if (this->len == rhs.len)
     {
@@ -1427,7 +1427,7 @@ unsigned int B_Name::operator ==(const B_Name &rhs)
 }
 
 // address: 0x100035D2
-unsigned int B_Name::operator ==(const char *str)
+unsigned int B_Name::operator ==(const char *str) const
 {
     STACKVAR(-8, 4) = str;
     STACKVAR(-12, 4) = this->string;
@@ -1436,7 +1436,7 @@ unsigned int B_Name::operator ==(const char *str)
 }
 
 // address: 0x10003643
-unsigned int B_Name::operator !=(const B_Name &rhs)
+unsigned int B_Name::operator !=(const B_Name &rhs) const
 {
     if (this->len != rhs.len)
     {
@@ -1449,7 +1449,7 @@ unsigned int B_Name::operator !=(const B_Name &rhs)
 }
 
 // address: 0x100036C5
-unsigned int B_Name::operator !=(const char *str)
+unsigned int B_Name::operator !=(const char *str) const
 {
     STACKVAR(-8, 4) = str;
     STACKVAR(-12, 4) = this->string;
@@ -1468,7 +1468,7 @@ unsigned int B_Name::CompareNoCase(const B_Name &arg_1)
 }
 
 // address: 0x10003769
-unsigned int B_Name::CompareNoCase(const char *str)
+unsigned int B_Name::CompareNoCase(const char *str) const
 {
     return static_cast<unsigned int>(stricmp(this->string, str) == 0);
 }
@@ -1489,7 +1489,7 @@ B_Name &B_Name::operator =(const B_Name &src)
 }
 
 // address: 0x10003821
-B_Name B_Name::Right(unsigned int count)
+B_Name B_Name::Right(unsigned int count) const
 {
     if (count < 0)
     {
@@ -1507,7 +1507,7 @@ B_Name B_Name::Right(unsigned int count)
 }
 
 // address: 0x10003898
-B_Name B_Name::Left(unsigned int count)
+B_Name B_Name::Left(unsigned int count) const
 {
     if (count < 0)
     {
@@ -1572,7 +1572,7 @@ B_NamedObj::B_NamedObj(const B_Name &n)
 }
 
 // address: 0x10003A2F
-const B_Name &B_NamedObj::Id()
+const B_Name &B_NamedObj::Id() const
 {
     return this->name;
 }
@@ -3373,7 +3373,7 @@ B_Color::B_Color(byte r, byte g, byte b)
 }
 
 // address: 0x100068D0
-B_Color B_Color::operator +(const B_Color &color)
+B_Color B_Color::operator +(const B_Color &color) const
 {
     STACKVAR(-12, 1) = this->b + color.b;
     STACKVAR(-8, 1) = this->g + color.g;
@@ -3387,7 +3387,7 @@ B_Color B_Color::operator +(const B_Color &color)
 }
 
 // address: 0x10006950
-B_Color B_Color::operator *(float coef)
+B_Color B_Color::operator *(float coef) const
 {
     STACKVAR(-20, 4) = static_cast<any_int32>(this->b);
     STACKVAR(-12, 1) = static_cast<any_int8>(static_cast<double>(reinterpret_cast<int>(STACKVAR(-20, 4))) * coef);
@@ -3404,7 +3404,7 @@ B_Color B_Color::operator *(float coef)
 }
 
 // address: 0x100069E0
-B_Color B_Color::operator /(float f)
+B_Color B_Color::operator /(float f) const
 {
     STACKVAR(-20, 4) = static_cast<any_int32>(this->b);
     STACKVAR(-12, 1) = static_cast<any_int8>(static_cast<double>(reinterpret_cast<int>(STACKVAR(-20, 4))) / f);
@@ -21912,7 +21912,7 @@ unsigned int B_BitMap24::SetBits(int arg_1, int arg_2, const char *arg_3, const 
 }
 
 // address: 0x10027382
-int B_BitMap24::SaveToBMP(const char *fileName)
+int B_BitMap24::SaveToBMP(const char *fileName) const
 {
     reinterpret_cast<B_ODataFile *>(LOCAL(-16408))->B_ODataFile(fileName, 32768);
     if (static_cast<any_int32>(STACKVAR(-16408, 4) != 0xFFFFFFFF) == 0x00000000)
@@ -21997,7 +21997,7 @@ l10027756:
 }
 
 // address: 0x1002778F
-int B_BitMap24::SaveToBMPSized(const char *fileName, int width, int height)
+int B_BitMap24::SaveToBMPSized(const char *fileName, int width, int height) const
 {
     reinterpret_cast<B_ODataFile *>(LOCAL(-16408))->B_ODataFile(fileName, 32768);
     if (static_cast<any_int32>(STACKVAR(-16408, 4) != 0xFFFFFFFF) == 0x00000000)
@@ -22174,7 +22174,7 @@ int B_BitMap24::ReadFromFile(const char *arg_1)
 }
 
 // address: 0x10027F15
-int B_BitMap24::SaveToFile(const char *arg_1, int arg_2)
+int B_BitMap24::SaveToFile(const char *arg_1, int arg_2) const
 {
     reinterpret_cast<B_Name *>(LOCAL(-8))->B_Name(arg_1);
     *reinterpret_cast<B_Name *>(LOCAL(-16)) = reinterpret_cast<B_Name *>(LOCAL(-8))->Right(4);
@@ -22307,7 +22307,7 @@ l1002833A:
 }
 
 // address: 0x10028353
-void B_BitMap24::EscribeArchivoRAW(const char *arg_1)
+void B_BitMap24::EscribeArchivoRAW(const char *arg_1) const
 {
     STACKVAR(-8, 4) = 3 * this->dimension1 * this->dimension2;
     FILE *unknown_loc_04 = fopen(arg_1, "wb");
@@ -23083,7 +23083,7 @@ int B_BitMap24::ReadFromJPEG(const char *arg_1)
 }
 
 // address: 0x10029700
-int B_BitMap24::SaveToJPEG(const char *arg_1, int arg_2)
+int B_BitMap24::SaveToJPEG(const char *arg_1, int arg_2) const
 {
     STACKVAR(-356, 4) = unknown_function_1001F6E0(LOCAL(-500));
     unknown_function_100096A0(LOCAL(-356), 0x0000003E, 0x00000164);
@@ -24482,7 +24482,7 @@ B_MeshEdge::B_MeshEdge(unsigned int a, unsigned int b, unsigned int c)
 }
 
 // address: 0x1003227E
-unsigned int B_MeshEdge::operator==(const B_MeshEdge &other)
+unsigned int B_MeshEdge::operator==(const B_MeshEdge &other) const
 {
     if (ACCESS(this, 4, 4) == ACCESS(other, 4, 4) && ACCESS(this, 8, 4) == ACCESS(other, 8, 4))
     {
