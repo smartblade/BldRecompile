@@ -1390,7 +1390,7 @@ B_Name::B_Name(unsigned int len)
 }
 
 // address: 0x10003457
-const char *B_Name::String() const
+char * const B_Name::String() const
 {
     return this->string;
 }

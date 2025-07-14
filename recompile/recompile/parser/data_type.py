@@ -29,7 +29,9 @@ def parse_data_type(s, classes):
         return data_type
     if s.endswith("const"):
         data_type = parse_data_type(s[:-5].strip(), classes)
-        data_type.add_qualifier("const")
+        assert isinstance(
+            data_type, (data_types.Pointer32, data_types.Reference))
+        data_type.add_right_qualifier("const")
         return data_type
     class_name = _extract_class_name(s)
     if class_name is not None:
@@ -55,6 +57,8 @@ def _parse_const(cb, s, classes):
         is_const = True
     data_type = cb(parse_data_type(s, classes))
     if is_const:
+        assert isinstance(
+            data_type, (data_types.Pointer32, data_types.Reference))
         data_type.add_qualifier("const")
     return data_type
 
