@@ -4,6 +4,7 @@ import instructions
 
 from .convert_expression_to_type import convert_expression_to_type
 from .convert_return_value_to_bool import convert_return_value_to_bool
+from .convert_to_implicit_cast import convert_to_implicit_cast
 
 
 def transform_returns(proc_info, proc_decl, characteristics, instrs):
@@ -106,6 +107,7 @@ def _rewrite_return(proc_decl, characteristics, regdef, return_instr):
         return
     return_value = convert_expression_to_type(return_value, data_type)
     return_value = convert_return_value_to_bool(characteristics, return_value)
+    return_value = convert_to_implicit_cast(return_value, data_type)
     new_instructions = []
     if not regdef.is_empty():
         new_instructions.append(regdef)

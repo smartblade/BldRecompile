@@ -274,7 +274,7 @@ unsigned char B_IDataFile::Peek()
 // address: 0x10001A0D
 int B_IDataFile::Eof()
 {
-    return static_cast<int>(this->cacheBlockStartPos + this->posInCacheBlock >= this->file_size);
+    return this->cacheBlockStartPos + this->posInCacheBlock >= this->file_size;
 }
 
 // address: 0x10001A33
@@ -660,7 +660,7 @@ p10002100
 // address: 0x100021E0
 unsigned int B_IDataFile::OK() const
 {
-    return static_cast<unsigned int>(this->fd != -1);
+    return this->fd != -1;
 }
 
 // address: 0x10002200
@@ -679,7 +679,7 @@ B_IDataFile &B_IDataFile::operator =(const B_IDataFile &file)
 // address: 0x10002250
 unsigned int B_ODataFile::OK() const
 {
-    return static_cast<unsigned int>(this->fd != -1);
+    return this->fd != -1;
 }
 
 // address: 0x10002270
@@ -1401,7 +1401,7 @@ unsigned int B_Name::operator >(const B_Name &rhs) const
     STACKVAR(-8, 4) = rhs.string;
     STACKVAR(-12, 4) = this->string;
     STACKVAR(-24, 4) = strcmp(reinterpret_cast<char *>(STACKVAR(-12, 4)), reinterpret_cast<char *>(STACKVAR(-8, 4)));
-    return static_cast<unsigned int>(reinterpret_cast<int>(STACKVAR(-24, 4)) > 0);
+    return reinterpret_cast<int>(STACKVAR(-24, 4)) > 0;
 }
 
 // address: 0x100034DA
@@ -1410,7 +1410,7 @@ unsigned int B_Name::operator <(const B_Name &rhs) const
     STACKVAR(-8, 4) = rhs.string;
     STACKVAR(-12, 4) = this->string;
     STACKVAR(-24, 4) = strcmp(reinterpret_cast<char *>(STACKVAR(-12, 4)), reinterpret_cast<char *>(STACKVAR(-8, 4)));
-    return static_cast<unsigned int>(reinterpret_cast<int>(STACKVAR(-24, 4)) < 0);
+    return reinterpret_cast<int>(STACKVAR(-24, 4)) < 0;
 }
 
 // address: 0x1000354D
@@ -1421,7 +1421,7 @@ unsigned int B_Name::operator ==(const B_Name &rhs) const
         STACKVAR(-8, 4) = rhs.string;
         STACKVAR(-12, 4) = this->string;
         STACKVAR(-24, 4) = strcmp(reinterpret_cast<char *>(STACKVAR(-12, 4)), reinterpret_cast<char *>(STACKVAR(-8, 4)));
-        return static_cast<unsigned int>(STACKVAR(-24, 4) == 0x00000000);
+        return STACKVAR(-24, 4) == 0x00000000;
     }
     return 0;
 }
@@ -1432,7 +1432,7 @@ unsigned int B_Name::operator ==(const char *str) const
     STACKVAR(-8, 4) = str;
     STACKVAR(-12, 4) = this->string;
     STACKVAR(-24, 4) = strcmp(reinterpret_cast<char *>(STACKVAR(-12, 4)), reinterpret_cast<char *>(STACKVAR(-8, 4)));
-    return static_cast<unsigned int>(STACKVAR(-24, 4) == 0x00000000);
+    return STACKVAR(-24, 4) == 0x00000000;
 }
 
 // address: 0x10003643
@@ -1462,7 +1462,7 @@ unsigned int B_Name::CompareNoCase(const B_Name &arg_1)
 {
     if (this->len == arg_1.len)
     {
-        return static_cast<unsigned int>(stricmp(this->string, arg_1.string) == 0);
+        return stricmp(this->string, arg_1.string) == 0;
     }
     return 0;
 }
@@ -1470,7 +1470,7 @@ unsigned int B_Name::CompareNoCase(const B_Name &arg_1)
 // address: 0x10003769
 unsigned int B_Name::CompareNoCase(const char *str) const
 {
-    return static_cast<unsigned int>(stricmp(this->string, str) == 0);
+    return stricmp(this->string, str) == 0;
 }
 
 // address: 0x1000378E
@@ -2925,7 +2925,7 @@ l10005DF1:
     STACKVAR(-4, 4) = 0xFFFFFFFF;
 l10005E2B:
     reinterpret_cast<B_Name *>(LOCAL(-12))->~B_Name();
-    return static_cast<int>(STACKVAR(-4, 4) == 0xFFFFFFFF);
+    return STACKVAR(-4, 4) == 0xFFFFFFFF;
 }
 
 // address: 0x10005E42
