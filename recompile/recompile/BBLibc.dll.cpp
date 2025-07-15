@@ -315,70 +315,70 @@ void B_IDataFile::Read(void *data, unsigned int size)
 // address: 0x10001B55
 B_IDataFile &operator >>(B_IDataFile &file, char &c)
 {
-    file.Read(&c, 1);
+    file.Read(&c, sizeof(char));
     return file;
 }
 
 // address: 0x10001B6B
 B_IDataFile &operator >>(B_IDataFile &file, unsigned char &c)
 {
-    file.Read(&c, 1);
+    file.Read(&c, sizeof(unsigned char));
     return file;
 }
 
 // address: 0x10001B81
 B_IDataFile &operator >>(B_IDataFile &file, short &s)
 {
-    file.Read(&s, 2);
+    file.Read(&s, sizeof(short));
     return file;
 }
 
 // address: 0x10001B97
 B_IDataFile &operator >>(B_IDataFile &file, unsigned short &s)
 {
-    file.Read(&s, 2);
+    file.Read(&s, sizeof(unsigned short));
     return file;
 }
 
 // address: 0x10001BAD
 B_IDataFile &operator >>(B_IDataFile &file, int &i)
 {
-    file.Read(&i, 4);
+    file.Read(&i, sizeof(int));
     return file;
 }
 
 // address: 0x10001BC3
 B_IDataFile &operator >>(B_IDataFile &file, long &l)
 {
-    file.Read(&l, 4);
+    file.Read(&l, sizeof(long));
     return file;
 }
 
 // address: 0x10001BD9
 B_IDataFile &operator >>(B_IDataFile &file, unsigned long &l)
 {
-    file.Read(&l, 4);
+    file.Read(&l, sizeof(unsigned long));
     return file;
 }
 
 // address: 0x10001BEF
 B_IDataFile &operator >>(B_IDataFile &file, unsigned int &i)
 {
-    file.Read(&i, 4);
+    file.Read(&i, sizeof(unsigned int));
     return file;
 }
 
 // address: 0x10001C05
 B_IDataFile &operator >>(B_IDataFile &file, float &f)
 {
-    file.Read(&f, 4);
+    file.Read(&f, sizeof(float));
     return file;
 }
 
 // address: 0x10001C1B
 B_IDataFile &operator >>(B_IDataFile &file, double &f)
 {
-    file.Read(&f, 8);
+    file.Read(&f, sizeof(double));
     return file;
 }
 
@@ -501,7 +501,7 @@ void B_ODataFile::Write(const void *data, unsigned int size)
 // address: 0x10001F5E
 B_ODataFile &operator <<(B_ODataFile &file, const char &c)
 {
-    file.Write(&c, 1);
+    file.Write(&c, sizeof(char));
     return file;
 }
 
@@ -515,63 +515,63 @@ B_ODataFile &operator <<(B_ODataFile &file, const char *c)
 // address: 0x10001F9A
 B_ODataFile &operator <<(B_ODataFile &file, const unsigned char &c)
 {
-    file.Write(&c, 1);
+    file.Write(&c, sizeof(unsigned char));
     return file;
 }
 
 // address: 0x10001FB0
 B_ODataFile &operator <<(B_ODataFile &file, const short &s)
 {
-    file.Write(&s, 2);
+    file.Write(&s, sizeof(short));
     return file;
 }
 
 // address: 0x10001FC6
 B_ODataFile &operator <<(B_ODataFile &file, const unsigned short &s)
 {
-    file.Write(&s, 2);
+    file.Write(&s, sizeof(unsigned short));
     return file;
 }
 
 // address: 0x10001FDC
 B_ODataFile &operator <<(B_ODataFile &file, const int &i)
 {
-    file.Write(&i, 4);
+    file.Write(&i, sizeof(int));
     return file;
 }
 
 // address: 0x10001FF2
 B_ODataFile &operator <<(B_ODataFile &file, const long &l)
 {
-    file.Write(&l, 4);
+    file.Write(&l, sizeof(long));
     return file;
 }
 
 // address: 0x10002008
 B_ODataFile &operator <<(B_ODataFile &file, const unsigned long &l)
 {
-    file.Write(&l, 4);
+    file.Write(&l, sizeof(unsigned long));
     return file;
 }
 
 // address: 0x1000201E
 B_ODataFile &operator <<(B_ODataFile &file, const unsigned int &i)
 {
-    file.Write(&i, 4);
+    file.Write(&i, sizeof(unsigned int));
     return file;
 }
 
 // address: 0x10002034
 B_ODataFile &operator <<(B_ODataFile &file, const float &f)
 {
-    file.Write(&f, 4);
+    file.Write(&f, sizeof(float));
     return file;
 }
 
 // address: 0x1000204A
 B_ODataFile &operator <<(B_ODataFile &file, const double &f)
 {
-    file.Write(&f, 8);
+    file.Write(&f, sizeof(double));
     return file;
 }
 

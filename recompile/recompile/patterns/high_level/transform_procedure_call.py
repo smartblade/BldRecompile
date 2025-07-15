@@ -7,6 +7,7 @@ from patterns.validate_procedure_declaration import \
     validate_procedure_declaration
 
 from .convert_expression_to_type import convert_expression_to_type
+from .convert_sizeof_arguments import convert_sizeof_arguments
 from .explicit_arg_cast import explicit_arg_cast
 from .narrow_constant import narrow_constant
 
@@ -27,6 +28,7 @@ def transform_procedure_call(pc, declarations, call_args_matcher, **kwargs):
 
 def _convert_procedure_call_arguments(pc, proc_decl):
     arguments = _convert_arguments_to_parameters_types(pc, proc_decl)
+    arguments = convert_sizeof_arguments(arguments, proc_decl)
     return pc.copy(
         name=proc_decl.proc_name, proc_decl=proc_decl, arguments=arguments)
 
