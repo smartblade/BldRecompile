@@ -1,1 +1,1 @@
-from .locals import LocalsAnalysis
+from .analysis import Analysis

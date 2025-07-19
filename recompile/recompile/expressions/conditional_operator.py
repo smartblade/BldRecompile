@@ -12,9 +12,32 @@ class ConditionalOperator:
             self._if_clause, self._then_expression, self._else_expression)
 
     @property
+    def if_clause(self):
+        return self._if_clause
+
+    @property
+    def then_expression(self):
+        return self._then_expression
+
+    @property
+    def else_expression(self):
+        return self._else_expression
+
+    @property
     def data_type(self):
-        assert data_types.are_same(
-            self._then_expression.data_type, self._else_expression.data_type)
+        if data_types.are_compatible(
+            self._then_expression.data_type, self._else_expression.data_type
+        ):
+            return self._else_expression.data_type
+        elif data_types.are_compatible(
+            self._else_expression.data_type, self._then_expression.data_type
+        ):
+            return self._then_expression.data_type
+        else:
+            assert data_types.are_same(
+                self._then_expression.data_type,
+                self._else_expression.data_type,
+            )
         return self._then_expression.data_type
 
     def visit(self, on_expression_visited, **kwargs):

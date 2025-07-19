@@ -22,6 +22,8 @@ def do_reinterpret(data_type, e):
         return result
     if isinstance(e, expressions.NamedConstant):
         return _reinterpret_named_const(data_type, e)
+    if isinstance(e, expressions.ConditionalOperator):
+        return _reinterpret_cond_operator(data_type, e)
     return expressions.ReinterpretCast(data_type, e)
 
 
@@ -148,3 +150,11 @@ def _reinterpret_static_cast(data_type, cast):
     ):
         return expressions.do_static_cast(data_type, cast.expression)
     return None
+
+
+def _reinterpret_cond_operator(data_type, cond):
+    return expressions.ConditionalOperator(
+        cond.if_clause,
+        do_reinterpret(data_type, cond.then_expression),
+        do_reinterpret(data_type, cond.else_expression),
+    )

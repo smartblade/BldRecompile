@@ -1,5 +1,6 @@
+from custom_block_transformer import transform_block
 from expression_transformer import ExpressionTransformer
-import patterns.high_level.analysis as analysis
+from patterns.high_level.analysis import Analysis
 import patterns.high_level.goto_eliminator as goto_eliminator
 import patterns.high_level.inline_functions as inline_functions
 from patterns.procedure import Procedure
@@ -11,8 +12,10 @@ from .transform_access import transform_access
 from .transform_arrptr import transform_arrptr
 from .transform_assignment import transform_assignment
 from .transform_binary import transform_binary
+from .transform_block_instructions import transform_block_instructions
 from .transform_constant import transform_constant
 from .transform_global import transform_global
+from .transform_if import transform_if
 from .transform_local import transform_local
 from .transform_stackvar import transform_stackvar
 from .transform_procedure_call import transform_procedure_call
@@ -32,9 +35,9 @@ def make_high_level_code(procedure, declarations, inline_procedures):
     characteristics = declarations.characteristics[procedure.address]
     instrs = goto_eliminator.transform(procedure.instructions)
     stack_vars = procedure.implicit_stack_variables
-    locals_analysis = analysis.LocalsAnalysis()
+    analysis = Analysis()
     context = dict(
-        analysis=locals_analysis,
+        analysis=analysis,
         cur_proc_addr=procedure.address,
         stack_vars=stack_vars,
         file_declarations=file_declarations,
@@ -47,24 +50,25 @@ def make_high_level_code(procedure, declarations, inline_procedures):
         instrs = _eliminate_procedure_info(proc_info, instrs)
     instrs = transform_returns(proc_info, proc_decl, characteristics, instrs)
     instrs = _transform_instructions(instrs, **context)
-    locals_analysis.fill_stack_variables(
+    analysis.fill_stack_variables(
         stack_vars, characteristics.variables_names)
+    instrs = _transform_instructions(instrs, **context)
     instrs = _transform_instructions(instrs, **context)
     procedure = Procedure(proc_info, procedure.address, proc_decl, instrs)
     return insert_declarations(procedure, stack_vars)
 
 
-def _transform_instructions(instrs, **kwargs):
-    new_instructions = []
+def _transform_instructions(instrs, analysis, **kwargs):
     call_args_matcher = CallArgumentsMatcher()
-    for instr in instrs:
-        instr = instr.transform(
-            _ExpressionTransformer,
-            call_args_matcher=call_args_matcher,
-            **kwargs,
-        )
-        new_instructions.append(instr)
+    new_instructions = transform_block(
+        instrs,
+        _ExpressionTransformer,
+        call_args_matcher=call_args_matcher,
+        analysis=analysis,
+        **kwargs,
+    )
     call_args_matcher.expect_all_args_are_matched()
+    analysis.on_transformation_finished()
     return new_instructions
 
 
@@ -87,8 +91,8 @@ class _ExpressionTransformer(ExpressionTransformer):
         return transform_assignment(dst, src, **kwargs)
 
     @staticmethod
-    def transform_if(if_clause, if_block, else_block, **kwargs):
-        return inline_functions.transform_if(if_clause, if_block, else_block)
+    def transform_if(*args, **kwargs):
+        return transform_if(*args, **kwargs)
 
     @staticmethod
     def transform_binary(operator, left, right, **kwargs):
@@ -133,5 +137,4 @@ class _ExpressionTransformer(ExpressionTransformer):
 
     @staticmethod
     def transform_block_instructions(block_instructions, **kwargs):
-        inline_functions.transform_block_instructions(
-            block_instructions, **kwargs)
+        return transform_block_instructions(block_instructions, **kwargs)

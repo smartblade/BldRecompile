@@ -1,10 +1,10 @@
 import expressions
 
-from .strip_implicit_cast import strip_implicit_cast
+from .get_writeable_expression import get_writeable_expression
 
 
 def write_unary(operator, expression):
-    expression = strip_implicit_cast(expression)
+    expression = get_writeable_expression(expression)
     return "{}{}".format(operator.value, _emit_brackets(expression).emit_code())
 
 
