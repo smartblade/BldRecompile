@@ -1,4 +1,5 @@
 import data_types
+import expressions.writer
 
 
 class ConditionalOperator:
@@ -8,7 +9,7 @@ class ConditionalOperator:
         self._else_expression = else_expression
 
     def __repr__(self):
-        return "ConditionalOperator({})".format(
+        return "ConditionalOperator({}, {}, {})".format(
             self._if_clause, self._then_expression, self._else_expression)
 
     @property
@@ -63,8 +64,4 @@ class ConditionalOperator:
         return self.__class__(if_clause, then_expression, else_expression)
 
     def emit_code(self):
-        return "{} ? {} : {}".format(
-            self._if_clause.emit_code(),
-            self._then_expression.emit_code(),
-            self._else_expression.emit_code(),
-        )
+        return expressions.writer.write_conditional_operator(self)

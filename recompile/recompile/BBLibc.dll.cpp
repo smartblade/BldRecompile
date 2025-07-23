@@ -179,7 +179,7 @@ unsigned int B_IDataFile::ReadCacheBlock()
 {
     if (this->OK() && this->cacheBlockStartPos + IFILE_CACHE_SIZE < this->file_size)
     {
-        read(this->fd, &this->fileCache, this->file_size - this->cacheBlockStartPos - IFILE_CACHE_SIZE > IFILE_CACHE_SIZE ? IFILE_CACHE_SIZE : this->file_size - this->cacheBlockStartPos - IFILE_CACHE_SIZE);
+        read(this->fd, &this->fileCache, min(IFILE_CACHE_SIZE, this->file_size - this->cacheBlockStartPos - IFILE_CACHE_SIZE));
         this->cacheBlockStartPos += IFILE_CACHE_SIZE;
         this->posInCacheBlock = 0;
         return true;
@@ -272,7 +272,7 @@ int B_IDataFile::Eof()
 // address: 0x10001A33
 void B_IDataFile::Read(void *data, unsigned int size)
 {
-    size = size < this->file_size - this->posInCacheBlock - this->cacheBlockStartPos ? size : this->file_size - this->posInCacheBlock - this->cacheBlockStartPos;
+    size = min(size, this->file_size - this->posInCacheBlock - this->cacheBlockStartPos);
     if (size == 0)
     {
         return;
@@ -4838,7 +4838,7 @@ B_ODataFile &operator <<(B_ODataFile &file, const B_Color &color)
 // address: 0x1000921A
 void B_Color::MakeCons()
 {
-    if ((static_cast<int>(this->r) > 255 ? 255 : static_cast<int>(this->r)) < 0)
+    if (min(255, static_cast<int>(this->r)) < 0)
     {
         STACKVAR(-12, 4) = 0x00000000;
     }
@@ -4847,7 +4847,7 @@ void B_Color::MakeCons()
         STACKVAR(-12, 4) = static_cast<int>(this->r) > 255 ? 0x000000FF : static_cast<any_int32>(this->r);
     }
     this->r = reinterpret_cast<byte>(STACKVAR(-12, 1));
-    if ((static_cast<int>(this->g) > 255 ? 255 : static_cast<int>(this->g)) < 0)
+    if (min(255, static_cast<int>(this->g)) < 0)
     {
         STACKVAR(-24, 4) = 0x00000000;
     }
@@ -4856,7 +4856,7 @@ void B_Color::MakeCons()
         STACKVAR(-24, 4) = static_cast<int>(this->g) > 255 ? 0x000000FF : static_cast<any_int32>(this->g);
     }
     this->g = reinterpret_cast<byte>(STACKVAR(-24, 1));
-    if ((static_cast<int>(this->b) > 255 ? 255 : static_cast<int>(this->b)) < 0)
+    if (min(255, static_cast<int>(this->b)) < 0)
     {
         STACKVAR(-36, 4) = 0x00000000;
     }
@@ -22271,7 +22271,7 @@ l10028AF1:
 l10028B14:
     STACKVAR(-24, 4) = reinterpret_cast<any_int32>(STACKVAR(-24, 4)) + 0x00000001;
 l10028B1D:
-    if (reinterpret_cast<int>(STACKVAR(-24, 4)) < (reinterpret_cast<int>(STACKVAR(-16, 4)) < 8 ? reinterpret_cast<int>(STACKVAR(-16, 4)) : 8))
+    if (reinterpret_cast<int>(STACKVAR(-24, 4)) < min(reinterpret_cast<int>(STACKVAR(-16, 4)), 8))
     {
         STACKVAR(-4, 4) = static_cast<any_int32>((reinterpret_cast<any_int32>(STACKVAR(-20, 4)) & 0x000000FF & reinterpret_cast<any_int32>(0x00000001 << reinterpret_cast<unsigned char>(static_cast<any_int8>(0x00000007 - reinterpret_cast<any_int32>(STACKVAR(-24, 4)))))) != 0x00000000);
         ACCESS(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + reinterpret_cast<any_int32>(STACKVAR(-28, 4)), 0, 1) = ACCESS(ARRPTR(STACKVAR(28, 4), 1, 0x00000003 * reinterpret_cast<any_int32>(STACKVAR(-4, 4)), 2), 0, 1);
@@ -24023,8 +24023,8 @@ B_MeshEdge::B_MeshEdge(unsigned int a, unsigned int b, unsigned int c)
 {
     this->field = c;
     ACCESS(this, 20, 4) = 0x00000001;
-    ACCESS(this, 4, 4) = a < b ? a : b;
-    ACCESS(this, 8, 4) = a > b ? a : b;
+    ACCESS(this, 4, 4) = min(a, b);
+    ACCESS(this, 8, 4) = max(a, b);
 }
 
 // address: 0x1003227E
