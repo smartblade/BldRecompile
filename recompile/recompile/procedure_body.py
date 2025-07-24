@@ -1,5 +1,5 @@
 import block_transformer as transformer
-from writer import Writer
+import writer as w
 
 
 class ProcedureBody:
@@ -23,7 +23,7 @@ class ProcedureBody:
         )
 
     def emit_code(self):
-        writer = Writer()
+        writer = w.Writer()
         writer.write_line('#include "common.h"')
         writer.write_line('#include "{}.h"'.format(self._proc_decl.proc_name))
         writer.write_line("")

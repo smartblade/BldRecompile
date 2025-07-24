@@ -1,8 +1,12 @@
 from contextlib import contextmanager
 
+import parser
+
+
 class Writer:
-    def __init__(self, indent_length=4):
+    def __init__(self, max_line_len=None, indent_length=4):
         self._lines = []
+        self._max_line_len = max_line_len
         self._indent_length = indent_length
         self._indent = 0
 
@@ -13,9 +17,20 @@ class Writer:
     def write_line(self, line="", indent=None):
         indent = indent if indent is not None else self._indent
         if line:
-            self._lines.append(" " * indent * self._indent_length + line)
+            self._add_line(line, indent)
         else:
             self._lines.append("")
+
+    def _add_line(self, line, indent):
+        if (
+            self._max_line_len is None or
+            indent * self._indent_length + len(line) <= self._max_line_len
+        ):
+            self._lines.append(" " * indent * self._indent_length + line)
+            return
+        lines = parser.wrap_line(
+            line, self._max_line_len, self._indent_length, indent)
+        self._lines.extend(lines)
 
     @contextmanager
     def indent(self):

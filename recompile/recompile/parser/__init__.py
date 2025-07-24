@@ -16,3 +16,4 @@ from .procedure_body import parse_procedure_body
 from .procedure_declaration import parse_procedure_declaration
 from .procedure_declaration import split_procedure_parameters
 from .variable_declaration import parse_variable_declaration
+from .wrap.wrap_line import wrap_line

@@ -31,6 +31,7 @@ class Operator(Enum):
     ASS = "="
     ADD_ASS = "+="
     DIV_ASS = "/="
+    COMMA = ","
 
 
 # C++ operand priorities:
@@ -64,6 +65,7 @@ priorities = {
     Operator.ASS: 15,
     Operator.ADD_ASS: 15,
     Operator.DIV_ASS: 15,
+    Operator.COMMA: 16,
 }
 
 logical = {

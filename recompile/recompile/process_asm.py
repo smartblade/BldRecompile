@@ -5,6 +5,7 @@ import os
 import pathlib
 import re
 import time
+import unittest
 
 from copy_src_tree import copy_src_tree
 from make_tuple import make_tuple
@@ -36,6 +37,9 @@ parser.add_option("--src", dest="src",
 parser.add_option("--update-src-at", dest="update_src_at",
                   help="Save updated sources to specified directory",
                   default=None)
+parser.add_option("--run-tests", dest="run_tests", action="store_true",
+                  help="Run unit tests",
+                  default=False)
 (options, args) = parser.parse_args()
 options.show_hex_prefix = (options.show_hex_prefix != 'no')
 options.write_proc_dict = (options.write_proc_dict != 'no')
@@ -1272,6 +1276,9 @@ def read_module_name(asm_files):
         return f.readlines()[0].rstrip()
 
 def run():
+    if options.run_tests:
+        result = unittest.main(module=None, argv=[__file__], exit=False).result
+        assert result.wasSuccessful()
     src_dir = os.path.abspath('../../src')
     if options.src is not None:
         src_dir = os.path.abspath(options.src)

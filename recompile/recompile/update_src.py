@@ -56,7 +56,7 @@ def process_file(src_file_name, module_name, proc_by_addr):
 
 
 def _get_procedure_code(procedure, start_line, lines):
-    writer = Writer()
+    writer = Writer(max_line_len=80)
     num_spaces = _get_num_spaces(lines[start_line + 1])
     num_indent = num_spaces // writer.indent_length
     _write_procedure(writer, procedure, num_indent)
