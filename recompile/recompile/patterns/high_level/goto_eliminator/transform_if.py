@@ -1,8 +1,11 @@
+import data_types
 import expressions
 from expressions.operator import Operator
 import instructions
 
+from .collect_label_uses import collect_label_uses
 from .eliminate_unused_label import eliminate_unused_label
+from .transform_switch import transform_switch_statements
 
 
 def transform_if_statements(instrs, label_uses, **kwargs):
@@ -25,10 +28,17 @@ def transform_if_statements(instrs, label_uses, **kwargs):
         del instrs[-i:]
         new_instructions.pop()
         new_instructions.reverse()
-        instrs.append(_add_block_to_if_instruction(instr, new_instructions))
+        switch = _try_make_switch(instr, new_instructions, label_uses)
+        instrs.append(
+            switch or
+            _add_block_to_if_instruction(instr, new_instructions)
+        )
         instrs.append(labeled_block)
-        label_uses[goto_instr.label].remove(goto_instr)
-        eliminate_unused_label(instrs, label_uses)
+        if switch is not None:
+            instrs = transform_switch_statements(instrs, label_uses)
+        else:
+            label_uses[goto_instr.label].remove(goto_instr)
+            eliminate_unused_label(instrs, label_uses)
         labeled_block = instrs[-1]
         if not isinstance(labeled_block, instructions.LabeledBlock):
             break
@@ -75,3 +85,65 @@ def _make_if(clause, instrs):
         clause = expressions.Bin(Operator.AND, clause, if_instr.if_clause)
         instrs = if_instr.if_block
     return instructions.IfInstruction(clause, instrs)
+
+
+def _try_make_switch(if_instruction, instrs, label_uses):
+    case_item = _extract_switch_case(if_instruction)
+    if case_item is None:
+        return None
+    index, case, goto_instr = case_item
+    case_items = [case_item]
+    if len(instrs) != 2 and len(instrs) != 3:
+        return None
+    last_goto = instrs[-1]
+    if not isinstance(last_goto, instructions.Goto):
+        return None
+    for i in range(len(instrs) - 1):
+        case_item = _extract_switch_case(instrs[i])
+        if case_item is None:
+            return None
+        cur_index, case, goto_instr = case_item
+        if cur_index.offset != index.offset or cur_index.size != index.size:
+            return None
+        case_items.append(case_item)
+    case_set_dict = {}
+    for case_item in case_items:
+        index, case, goto_instr = case_item
+        if goto_instr.label not in case_set_dict:
+            case_set_dict[goto_instr.label] = set()
+        case_set_dict[goto_instr.label].add(case)
+        label_uses[goto_instr.label].remove(goto_instr)
+    label_uses[last_goto.label].remove(last_goto)
+    switch = instructions.Switch(index, case_set_dict, {}, last_goto.label)
+    switch_label_uses = collect_label_uses([switch])
+    for label, uses in switch_label_uses.items():
+        cur_label_uses = label_uses.get(label, set())
+        cur_label_uses |= uses
+        label_uses[label] = cur_label_uses
+    return switch
+
+
+def _extract_switch_case(if_instruction):
+    if not isinstance(if_instruction, instructions.IfInstruction):
+        return None
+    if if_instruction.else_block is not None:
+        return None
+    if len(if_instruction.if_block) != 1:
+        return None
+    goto_instr = if_instruction.if_block[-1]
+    if not isinstance(goto_instr, instructions.Goto):
+        return None
+    clause = if_instruction.if_clause
+    if not isinstance(clause, expressions.Bin):
+        return None
+    if clause.operator != Operator.EQ:
+        return None
+    right = clause.right
+    if not isinstance(right, expressions.Constant):
+        return None
+    if not isinstance(right.data_type, data_types.UnknownTypes):
+        return None
+    left = clause.left
+    if not isinstance(left, expressions.intermediate.Stackvar):
+        return None
+    return left, right.value, goto_instr
