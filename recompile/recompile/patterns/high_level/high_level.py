@@ -33,8 +33,8 @@ def make_high_level_code(procedure, declarations, inline_procedures):
     else:
         file_declarations = None
     characteristics = declarations.characteristics[procedure.address]
-    instrs = goto_eliminator.transform(procedure.instructions)
     stack_vars = procedure.implicit_stack_variables
+    instrs = goto_eliminator.transform(procedure.instructions, stack_vars)
     analysis = Analysis()
     context = dict(
         analysis=analysis,

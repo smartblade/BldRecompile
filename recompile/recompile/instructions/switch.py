@@ -14,6 +14,14 @@ class Switch:
     def __repr__(self):
         return "Switch({})".format(self._index)
 
+    @property
+    def index(self):
+        return self._index
+
+    def copy(self, index):
+        return self.__class__(
+            index, self._case_set_dict, self._blocks_dict, self._default_label)
+
     def _ensure_blocks_dict(self):
         for label in self._case_set_dict.keys():
             if label not in self._blocks_dict:

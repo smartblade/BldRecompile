@@ -200,8 +200,7 @@ long B_IDataFile::Length() const
 // address: 0x100018A6
 long B_IDataFile::Seek(long offset, int whence)
 {
-    STACKVAR(-16, 4) = whence;
-    switch (STACKVAR(-16, 4))
+    switch (whence)
     {
         default:
             goto l100018EF;
@@ -4565,8 +4564,7 @@ B_BitMap::B_BitMap(B_BitMap::BitMapType arg_1, const B_BitMap24 &arg_2)
 {
     ACCESS(this, 0, 4) = GLOBAL(0x100421F8);
     this->pal = nullptr;
-    STACKVAR(-28, 4) = arg_1;
-    switch (STACKVAR(-28, 4))
+    switch (arg_1)
     {
         case 4:
             goto l10008A4A;
@@ -5206,8 +5204,7 @@ p1000A05E
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 324, 4);
     ACCESS(STACKVAR(-4, 4), 8, 4) = 0x00000000;
     unknown_function_1000A14E(STACKVAR(8, 4));
-    STACKVAR(-8, 4) = STACKVAR(12, 4);
-    switch (STACKVAR(-8, 4))
+    switch (STACKVAR(12, 4))
     {
         default:
             goto l1000A130;
@@ -5960,8 +5957,7 @@ p1000B300
     STACKVAR(-4, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x00000030);
     ACCESS(STACKVAR(8, 4), 340, 4) = STACKVAR(-4, 4);
     ACCESS(STACKVAR(-4, 4), 0, 4) = GLOBAL(0x1000B3E7);
-    STACKVAR(-12, 4) = ACCESS(STACKVAR(8, 4), 180, 4);
-    switch (STACKVAR(-12, 4))
+    switch (ACCESS(STACKVAR(8, 4), 180, 4))
     {
         case 0:
             ACCESS(STACKVAR(-4, 4), 4, 4) = GLOBAL(0x1000B67F);
@@ -6017,8 +6013,7 @@ l1000B41D:
         ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 0, 4)(STACKVAR(8, 4));
     }
     STACKVAR(-8, 4) = ACCESS(ARRPTR(STACKVAR(8, 4), 4, STACKVAR(-4, 4), 68), 0, 4);
-    STACKVAR(-44, 4) = ACCESS(STACKVAR(8, 4), 180, 4);
-    switch (STACKVAR(-44, 4))
+    switch (ACCESS(STACKVAR(8, 4), 180, 4))
     {
         case 1:
             goto l1000B51C;
@@ -7266,8 +7261,7 @@ p1000D9A7
     unknown_function_1000D7FA(STACKVAR(8, 4), 0x00000064);
     unknown_function_1000D7FA(STACKVAR(8, 4), 0x00000000);
     unknown_function_1000D7FA(STACKVAR(8, 4), 0x00000000);
-    STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 60, 4);
-    switch (STACKVAR(-4, 4))
+    switch (ACCESS(STACKVAR(8, 4), 60, 4))
     {
         default:
             goto l1000DA71;
@@ -8003,8 +7997,7 @@ p1000EDE2
 {
     ProcedureInfo(this=None, this_offset=None, local_size=8, stack_delta=0)
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 312, 4);
-    STACKVAR(-8, 4) = ACCESS(STACKVAR(-4, 4), 16, 4);
-    switch (STACKVAR(-8, 4))
+    switch (ACCESS(STACKVAR(-4, 4), 16, 4))
     {
         case 0:
             unknown_function_1000F076(STACKVAR(8, 4));
@@ -8213,8 +8206,7 @@ p1000F516
     ProcedureInfo(this=None, this_offset=None, local_size=8, stack_delta=0)
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 312, 4);
     ACCESS(ACCESS(STACKVAR(8, 4), 344, 4), 8, 4)(STACKVAR(8, 4));
-    STACKVAR(-8, 4) = ACCESS(STACKVAR(-4, 4), 16, 4);
-    switch (STACKVAR(-8, 4))
+    switch (ACCESS(STACKVAR(-4, 4), 16, 4))
     {
         default:
             goto l1000F5B6;
@@ -10333,8 +10325,7 @@ p10013624
         ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 0, 4)(STACKVAR(8, 4));
     }
     STACKVAR(-4, 4) = unknown_function_100136D7(STACKVAR(8, 4));
-    STACKVAR(-8, 4) = STACKVAR(-4, 4);
-    switch (STACKVAR(-8, 4))
+    switch (STACKVAR(-4, 4))
     {
         default:
             goto l100136D0;
@@ -10405,8 +10396,7 @@ l100137BD:
 p100137E3
 {
     ProcedureInfo(this=None, this_offset=None, local_size=28, stack_delta=0)
-    STACKVAR(-20, 4) = ACCESS(STACKVAR(8, 4), 36, 4);
-    switch (STACKVAR(-20, 4))
+    switch (ACCESS(STACKVAR(8, 4), 36, 4))
     {
         case 4:
             goto l10013990;
@@ -10426,8 +10416,7 @@ p100137E3
             {
                 goto l100138C4;
             }
-            STACKVAR(-24, 1) = ACCESS(STACKVAR(8, 4), 265, 1);
-            switch (STACKVAR(-24, 1))
+            switch (ACCESS(STACKVAR(8, 4), 265, 1))
             {
                 case 0:
                     ACCESS(STACKVAR(8, 4), 40, 4) = 0x00000002;
@@ -10478,8 +10467,7 @@ l10013990:
     {
         goto l10013A0D;
     }
-    STACKVAR(-28, 1) = ACCESS(STACKVAR(8, 4), 265, 1);
-    switch (STACKVAR(-28, 1))
+    switch (ACCESS(STACKVAR(8, 4), 265, 1))
     {
         case 0:
             ACCESS(STACKVAR(8, 4), 40, 4) = 0x00000004;
@@ -11592,8 +11580,7 @@ p10015B20
         ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 0, 4)(STACKVAR(8, 4));
     }
 l10015C05:
-    STACKVAR(-16, 4) = ACCESS(STACKVAR(8, 4), 44, 4);
-    switch (STACKVAR(-16, 4))
+    switch (ACCESS(STACKVAR(8, 4), 44, 4))
     {
         case 2:
             goto l10015CA7;
@@ -11952,8 +11939,7 @@ l1001646B:
             STACKVAR(-4, 4) = 0x00000000;
             goto l1001656A;
         case 7:
-            STACKVAR(-56, 4) = ACCESS(STACKVAR(8, 4), 68, 4);
-            switch (STACKVAR(-56, 4))
+            switch (ACCESS(STACKVAR(8, 4), 68, 4))
             {
                 case 0:
                     STACKVAR(-28, 4) = GLOBAL(0x10021410);
@@ -11990,8 +11976,7 @@ l1001656A:
         goto l10016459;
     }
     ACCESS(ARRPTR(STACKVAR(-24, 4), 4, STACKVAR(-20, 4), 44), 0, 4) = STACKVAR(-4, 4);
-    STACKVAR(-60, 4) = STACKVAR(-4, 4);
-    switch (STACKVAR(-60, 4))
+    switch (STACKVAR(-4, 4))
     {
         case 1:
             goto l10016616;
@@ -12841,8 +12826,7 @@ p10017CAB
         return;
     }
     STACKVAR(-4, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 404, 4), 4, 4)(STACKVAR(8, 4));
-    STACKVAR(-12, 4) = STACKVAR(-4, 4);
-    switch (STACKVAR(-12, 4))
+    switch (STACKVAR(-4, 4))
     {
         default:
             goto l10017DB6;
@@ -13039,8 +13023,7 @@ p10018398
 {
     ProcedureInfo(this=None, this_offset=None, local_size=8, stack_delta=0)
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 388, 4);
-    STACKVAR(-8, 4) = STACKVAR(12, 4);
-    switch (STACKVAR(-8, 4))
+    switch (STACKVAR(12, 4))
     {
         default:
             goto l1001842F;
@@ -13329,8 +13312,7 @@ l10018AEC:
     ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 24, 4) = STACKVAR(-8, 4);
     ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 28, 4) = STACKVAR(-4, 4);
     ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 4, 4)(STACKVAR(8, 4), 0x00000004);
-    STACKVAR(-12, 4) = STACKVAR(-4, 4);
-    switch (STACKVAR(-12, 4))
+    switch (STACKVAR(-4, 4))
     {
         default:
             goto l10018C0D;
@@ -13557,8 +13539,7 @@ l10019005:
     goto l10018FF4;
 l1001905F:
     STACKVAR(-20, 4) = reinterpret_cast<any_int32>(STACKVAR(-20, 4)) - reinterpret_cast<any_int32>(STACKVAR(-36, 4));
-    STACKVAR(-44, 4) = ACCESS(STACKVAR(8, 4), 380, 4);
-    switch (STACKVAR(-44, 4))
+    switch (ACCESS(STACKVAR(8, 4), 380, 4))
     {
         case 224:
             unknown_function_10019118(STACKVAR(8, 4), LOCAL(-16), STACKVAR(-36, 4), STACKVAR(-20, 4));
@@ -13676,8 +13657,7 @@ l10019378:
     {
         goto l100194B0;
     }
-    STACKVAR(-12, 1) = ACCESS(STACKVAR(12, 4), 5, 1);
-    switch (STACKVAR(-12, 1))
+    switch (ACCESS(STACKVAR(12, 4), 5, 1))
     {
         case 16:
             ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x0000006C;
@@ -15418,8 +15398,7 @@ l1001BB03:
         STACKVAR(-12, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-36, 4), 8, 4)) - reinterpret_cast<any_int32>(STACKVAR(-4, 4));
     }
     ACCESS(STACKVAR(-20, 4), 160, 4) = 0x00000000;
-    STACKVAR(-48, 4) = ACCESS(STACKVAR(8, 4), 380, 4);
-    switch (STACKVAR(-48, 4))
+    switch (ACCESS(STACKVAR(8, 4), 380, 4))
     {
         case 224:
             unknown_function_10019118(STACKVAR(8, 4), STACKVAR(-8, 4), STACKVAR(-4, 4), STACKVAR(-12, 4));
@@ -16779,8 +16758,7 @@ p1001E668
 {
     ProcedureInfo(this=None, this_offset=None, local_size=8, stack_delta=0)
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 396, 4);
-    STACKVAR(-8, 4) = STACKVAR(12, 4);
-    switch (STACKVAR(-8, 4))
+    switch (STACKVAR(12, 4))
     {
         case 0:
             if (static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(8, 4), 74, 1))) != 0x00000000)
@@ -19361,8 +19339,7 @@ p10024094
     STACKVAR(-12, 4) = ACCESS(STACKVAR(8, 4), 424, 4);
     ACCESS(STACKVAR(8, 4), 116, 4) = ACCESS(STACKVAR(-12, 4), 16, 4);
     ACCESS(STACKVAR(8, 4), 112, 4) = ACCESS(STACKVAR(-12, 4), 20, 4);
-    STACKVAR(-16, 4) = ACCESS(STACKVAR(8, 4), 76, 4);
-    switch (STACKVAR(-16, 4))
+    switch (ACCESS(STACKVAR(8, 4), 76, 4))
     {
         default:
             goto l100241CC;
@@ -20807,8 +20784,7 @@ l10026432:
             {
                 STACKVAR(-24, 4) = 0x00000002;
             }
-            STACKVAR(-36, 4) = STACKVAR(-24, 4);
-            switch (STACKVAR(-36, 4))
+            switch (STACKVAR(-24, 4))
             {
                 case 0:
                     STACKVAR(-20, 4) = (reinterpret_cast<int>(ACCESS(STACKVAR(-28, 4), 4, 4)) + reinterpret_cast<int>(ACCESS(STACKVAR(-28, 4), 0, 4))) / 2;
@@ -21239,8 +21215,7 @@ l10026E78:
         this->data = nullptr;
         goto l100271B3;
     }
-    STACKVAR(-72, 4) = arg_1.type;
-    switch (STACKVAR(-72, 4))
+    switch (arg_1.type)
     {
         case 2:
             goto l100270A2;

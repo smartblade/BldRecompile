@@ -8,30 +8,32 @@ from .transform_switch import transform_switch_statements
 from .transform_while import transform_while
 
 
-def transform(instrs):
+def transform(instrs, stack_vars):
     return_label = find_return_label(instrs)
     label_uses = collect_label_uses(instrs)
     new_instructions = []
     for instr in instrs:
         instr = _transform_instruction(
-            instr, return_label=return_label, label_uses=label_uses)
+            instr, return_label=return_label, label_uses=label_uses,
+            stack_vars=stack_vars)
         new_instructions.append(instr)
     eliminate_unused_label(new_instructions, label_uses=label_uses)
     new_instructions = transform_switch_statements(
         new_instructions, label_uses=label_uses)
     new_instructions = transform_if_statements(
-        new_instructions, label_uses=label_uses)
+        new_instructions, label_uses=label_uses, stack_vars=stack_vars)
     return new_instructions
 
 
-def _transform_instruction(instr, return_label, label_uses):
+def _transform_instruction(instr, return_label, label_uses, stack_vars):
     if isinstance(instr, instructions.Goto):
         if instr.label == return_label:
             label_uses[return_label].remove(instr)
             return instructions.ReturnInstruction(None)
     if isinstance(instr, instructions.LabeledBlock):
         return _transform_labeled_block(
-            instr, return_label=return_label, label_uses=label_uses)
+            instr, return_label=return_label, label_uses=label_uses,
+            stack_vars=stack_vars)
     return instr
 
 
