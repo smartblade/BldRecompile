@@ -35,8 +35,8 @@ def transform_if_statements(instrs, label_uses, stack_vars, **kwargs):
         )
         instrs.append(labeled_block)
         if switch is not None:
-            instrs = transform_switch_statements(instrs, label_uses)
             instrs = _eliminate_switch_index_assignment(instrs, stack_vars)
+            instrs = transform_switch_statements(instrs, label_uses)
         else:
             label_uses[goto_instr.label].remove(goto_instr)
             eliminate_unused_label(instrs, label_uses)

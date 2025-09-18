@@ -202,18 +202,16 @@ long B_IDataFile::Seek(long offset, int whence)
 {
     switch (whence)
     {
-        default:
-            goto l100018EF;
         case 0:
             STACKVAR(-4, 4) = offset;
-            goto l100018EF;
+            break;
         case 1:
             STACKVAR(-4, 4) = offset + this->Tell();
-            goto l100018EF;
+            break;
         case 2:
             STACKVAR(-4, 4) = offset + this->file_size;
+            break;
     }
-l100018EF:
     if (reinterpret_cast<unsigned int>(STACKVAR(-4, 4)) > this->cacheBlockStartPos && reinterpret_cast<unsigned int>(STACKVAR(-4, 4)) < this->cacheBlockStartPos + IFILE_CACHE_SIZE)
     {
         this->posInCacheBlock = reinterpret_cast<unsigned int>(reinterpret_cast<any_int32>(STACKVAR(-4, 4)) - this->cacheBlockStartPos);
@@ -385,19 +383,19 @@ B_ODataFile::B_ODataFile(const char *file_name, int flags)
         {
             case 11:
                 mout << reinterpret_cast<char *>(GLOBAL(0x10047080));
-                goto l10001D68;
+                break;
             case 15:
                 mout << "_O_CREAT and _O_EXCL flags specified, but filename already exists\n";
-                goto l10001D68;
+                break;
             case 20:
                 mout << "Invalid oflag or pmode argument\n";
-                goto l10001D68;
+                break;
             case 22:
                 mout << "No more file handles available (too many open files)\n";
-                goto l10001D68;
+                break;
             case 0:
                 mout << "File or path not found\n";
-                goto l10001D68;
+                break;
             case 1:
             case 2:
             case 3:
@@ -418,9 +416,9 @@ B_ODataFile::B_ODataFile(const char *file_name, int flags)
             case 21:
 l10001D56:
                 mout << "Unknown error!!!!!!!!1\n";
+                break;
         }
     }
-l10001D68:
 }
 
 // address: 0x10001DA0
@@ -4370,18 +4368,18 @@ p10008383
             case 0:
             case 1:
                 STACKVAR(-4, 4) = 0x00000001;
-                goto l100083EC;
+                break;
             case 2:
                 STACKVAR(-4, 4) = 0x00000002;
-                goto l100083EC;
+                break;
             case 3:
                 STACKVAR(-4, 4) = 0x00000003;
-                goto l100083EC;
+                break;
             case 4:
                 STACKVAR(-4, 4) = 0x00000004;
+                break;
         }
     }
-l100083EC:
     STACKVAR(-8, 4) = 0x00000000;
     goto l100083FE;
 l100083F5:
@@ -4532,31 +4530,31 @@ B_BitMap::B_BitMap(const B_BitMap &src)
                 STACKVAR(-8, 4) = ??2@YAPAXI@Z(this->dimension1 * this->dimension2);
                 this->data = reinterpret_cast<void *>(STACKVAR(-8, 4));
                 memcpy(this->data, src.data, this->dimension1 * this->dimension2); // TODO improve emitting of memcpy instructions
-                goto l10008955;
+                break;
             case 1:
                 STACKVAR(-12, 4) = ??2@YAPAXI@Z(this->dimension1 * this->dimension2);
                 this->data = reinterpret_cast<void *>(STACKVAR(-12, 4));
                 memcpy(this->data, src.data, this->dimension1 * this->dimension2); // TODO improve emitting of memcpy instructions
-                goto l10008955;
+                break;
             case 2:
                 STACKVAR(-16, 4) = ??2@YAPAXI@Z(0x00000300);
                 this->pal = STACKVAR(-16, 4) != 0x00000000 ? reinterpret_cast<B_Pal *>(STACKVAR(-16, 4))->B_Pal(*src.pal) : nullptr;
                 STACKVAR(-20, 4) = ??2@YAPAXI@Z(2 * this->dimension1 * this->dimension2);
                 this->data = reinterpret_cast<void *>(STACKVAR(-20, 4));
                 memcpy(this->data, src.data, 2 * this->dimension1 * this->dimension2); // TODO improve emitting of memcpy instructions
-                goto l10008955;
+                break;
             case 3:
                 STACKVAR(-24, 4) = ??2@YAPAXI@Z(3 * this->dimension1 * this->dimension2);
                 this->data = reinterpret_cast<void *>(STACKVAR(-24, 4));
                 memcpy(this->data, src.data, 3 * this->dimension1 * this->dimension2); // TODO improve emitting of memcpy instructions
-                goto l10008955;
+                break;
             case 4:
                 STACKVAR(-28, 4) = ??2@YAPAXI@Z(4 * this->dimension1 * this->dimension2);
                 this->data = reinterpret_cast<void *>(STACKVAR(-28, 4));
                 memcpy(this->data, src.data, 4 * this->dimension1 * this->dimension2); // TODO improve emitting of memcpy instructions
+                break;
         }
     }
-l10008955:
 }
 
 // address: 0x10008974
@@ -4649,22 +4647,22 @@ B_ODataFile &operator <<(B_ODataFile &file, const B_BitMap &bitMap)
             case 0:
                 file.Write(bitMap.data, bitMap.dimension1 * bitMap.dimension2);
                 unknown_function_1000967A(file, bitMap.pal);
-                goto l10008C80;
+                break;
             case 1:
                 file.Write(bitMap.data, bitMap.dimension1 * bitMap.dimension2);
-                goto l10008C80;
+                break;
             case 2:
                 file.Write(bitMap.data, 2 * bitMap.dimension1 * bitMap.dimension2);
                 unknown_function_1000967A(file, bitMap.pal);
-                goto l10008C80;
+                break;
             case 3:
                 file.Write(bitMap.data, 3 * bitMap.dimension1 * bitMap.dimension2);
-                goto l10008C80;
+                break;
             case 4:
                 file.Write(bitMap.data, 4 * bitMap.dimension1 * bitMap.dimension2);
+                break;
         }
     }
-l10008C80:
     return file;
 }
 
@@ -4726,12 +4724,12 @@ l10008D86:
                 STACKVAR(-20, 4) = ??2@YAPAXI@Z(0x00000300);
                 bitMap.pal = STACKVAR(-20, 4) != 0x00000000 ? reinterpret_cast<B_Pal *>(STACKVAR(-20, 4)) : nullptr;
                 unknown_function_10009661(file, bitMap.pal);
-                goto l10008FAB;
+                break;
             case 1:
                 STACKVAR(-24, 4) = ??2@YAPAXI@Z(bitMap.dimension1 * bitMap.dimension2);
                 bitMap.data = reinterpret_cast<void *>(STACKVAR(-24, 4));
                 file.Read(bitMap.data, bitMap.dimension1 * bitMap.dimension2);
-                goto l10008FAB;
+                break;
             case 2:
                 STACKVAR(-28, 4) = ??2@YAPAXI@Z(2 * bitMap.dimension1 * bitMap.dimension2);
                 bitMap.data = reinterpret_cast<void *>(STACKVAR(-28, 4));
@@ -4739,19 +4737,19 @@ l10008D86:
                 STACKVAR(-32, 4) = ??2@YAPAXI@Z(0x00000300);
                 bitMap.pal = STACKVAR(-32, 4) != 0x00000000 ? reinterpret_cast<B_Pal *>(STACKVAR(-32, 4)) : nullptr;
                 unknown_function_10009661(file, bitMap.pal);
-                goto l10008FAB;
+                break;
             case 3:
                 STACKVAR(-36, 4) = ??2@YAPAXI@Z(3 * bitMap.dimension1 * bitMap.dimension2);
                 bitMap.data = reinterpret_cast<void *>(STACKVAR(-36, 4));
                 file.Read(bitMap.data, 3 * bitMap.dimension1 * bitMap.dimension2);
-                goto l10008FAB;
+                break;
             case 4:
                 STACKVAR(-40, 4) = ??2@YAPAXI@Z(4 * bitMap.dimension1 * bitMap.dimension2);
                 bitMap.data = reinterpret_cast<void *>(STACKVAR(-40, 4));
                 file.Read(bitMap.data, 4 * bitMap.dimension1 * bitMap.dimension2);
+                break;
         }
     }
-l10008FAB:
     return file;
 }
 
@@ -5962,20 +5960,20 @@ p1000B300
         case 0:
             ACCESS(STACKVAR(-4, 4), 4, 4) = GLOBAL(0x1000B67F);
             ACCESS(STACKVAR(-4, 4), 8, 4) = GLOBAL(0x100200A0);
-            goto l1000B3AD;
+            break;
         case 1:
             ACCESS(STACKVAR(-4, 4), 4, 4) = GLOBAL(0x1000B67F);
             ACCESS(STACKVAR(-4, 4), 8, 4) = GLOBAL(0x1001FD10);
-            goto l1000B3AD;
+            break;
         case 2:
             ACCESS(STACKVAR(-4, 4), 4, 4) = GLOBAL(0x1000BA22);
             ACCESS(STACKVAR(-4, 4), 28, 4) = GLOBAL(0x1001F9A0);
-            goto l1000B3AD;
+            break;
         default:
             ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x00000030;
             ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 0, 4)(STACKVAR(8, 4));
+            break;
     }
-l1000B3AD:
     STACKVAR(-8, 4) = 0x00000000;
     goto l1000B3BF;
 l1000B3B6:
@@ -8020,7 +8018,7 @@ p1000EDE2
             {
                 ACCESS(STACKVAR(-4, 4), 12, 1) = 0x01;
             }
-            goto l1000F031;
+            break;
         case 1:
             unknown_function_1000F076(STACKVAR(8, 4));
             unknown_function_1000F1FC(STACKVAR(8, 4));
@@ -8029,7 +8027,7 @@ p1000EDE2
                 ACCESS(ACCESS(STACKVAR(8, 4), 344, 4), 0, 4)(STACKVAR(8, 4), 0x00000001);
                 ACCESS(ACCESS(STACKVAR(8, 4), 324, 4), 0, 4)(STACKVAR(8, 4), 0x00000002);
                 ACCESS(STACKVAR(-4, 4), 12, 1) = 0;
-                goto l1000F031;
+                break;
             }
             ACCESS(STACKVAR(-4, 4), 16, 4) = 0x00000002;
             ACCESS(STACKVAR(-4, 4), 20, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-4, 4), 20, 4)) + 0x00000001;
@@ -8047,12 +8045,12 @@ p1000EDE2
             }
             ACCESS(ACCESS(STACKVAR(8, 4), 328, 4), 8, 4)(STACKVAR(8, 4));
             ACCESS(STACKVAR(-4, 4), 12, 1) = 0;
-            goto l1000F031;
+            break;
         default:
             ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x00000030;
             ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 0, 4)(STACKVAR(8, 4));
+            break;
     }
-l1000F031:
     ACCESS(STACKVAR(-4, 4), 13, 1) = static_cast<any_int8>(reinterpret_cast<any_int32>(ACCESS(STACKVAR(-4, 4), 20, 4)) == reinterpret_cast<any_int32>(ACCESS(STACKVAR(-4, 4), 24, 4)) - 0x00000001);
     if (ACCESS(STACKVAR(8, 4), 8, 4) != 0x00000000)
     {
@@ -8208,26 +8206,24 @@ p1000F516
     ACCESS(ACCESS(STACKVAR(8, 4), 344, 4), 8, 4)(STACKVAR(8, 4));
     switch (ACCESS(STACKVAR(-4, 4), 16, 4))
     {
-        default:
-            goto l1000F5B6;
         case 0:
             ACCESS(STACKVAR(-4, 4), 16, 4) = 0x00000002;
             if (static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(8, 4), 174, 1))) == 0x00000000)
             {
                 ACCESS(STACKVAR(-4, 4), 28, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-4, 4), 28, 4)) + 0x00000001;
             }
-            goto l1000F5B6;
+            break;
         case 1:
             ACCESS(STACKVAR(-4, 4), 16, 4) = 0x00000002;
-            goto l1000F5B6;
+            break;
         case 2:
             if (static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(8, 4), 174, 1))) != 0x00000000)
             {
                 ACCESS(STACKVAR(-4, 4), 16, 4) = 0x00000001;
             }
             ACCESS(STACKVAR(-4, 4), 28, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-4, 4), 28, 4)) + 0x00000001;
+            break;
     }
-l1000F5B6:
     ACCESS(STACKVAR(-4, 4), 20, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-4, 4), 20, 4)) + 0x00000001;
 }
 
@@ -10327,11 +10323,9 @@ p10013624
     STACKVAR(-4, 4) = unknown_function_100136D7(STACKVAR(8, 4));
     switch (STACKVAR(-4, 4))
     {
-        default:
-            goto l100136D0;
         case 1:
             STACKVAR(-4, 4) = 0x00000001;
-            goto l100136D0;
+            break;
         case 2:
             if ((reinterpret_cast<any_int32>(STACKVAR(12, 4)) & 0x000000FF) != 0x00000000)
             {
@@ -10340,8 +10334,8 @@ p10013624
             }
             unknown_function_1000F5D0(STACKVAR(8, 4));
             STACKVAR(-4, 4) = 0x00000002;
+            break;
     }
-l100136D0:
     REGDEF(eax=STACKVAR(-4, 4))
 }
 
@@ -10369,10 +10363,10 @@ p100136D7
                 unknown_function_100137E3(STACKVAR(8, 4));
                 ACCESS(STACKVAR(8, 4), 20, 4) = 0x000000CA;
             }
-            goto l100137BD;
+            break;
         case 2:
             STACKVAR(-4, 4) = 0x00000001;
-            goto l100137BD;
+            break;
         case 3:
         case 4:
         case 5:
@@ -10381,14 +10375,14 @@ p100136D7
         case 8:
         case 10:
             STACKVAR(-4, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 400, 4), 0, 4)(STACKVAR(8, 4));
-            goto l100137BD;
+            break;
         case 9:
 l10013795:
             ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x00000014;
             ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 24, 4) = ACCESS(STACKVAR(8, 4), 20, 4);
             ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 0, 4)(STACKVAR(8, 4));
+            break;
     }
-l100137BD:
     REGDEF(eax=STACKVAR(-4, 4))
 }
 
@@ -10412,40 +10406,38 @@ p100137E3
                 ACCESS(STACKVAR(8, 4), 40, 4) = 0x00000003;
                 goto l10013981;
             }
-            if (static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(8, 4), 264, 1))) == 0x00000000)
+            if (static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(8, 4), 264, 1))) != 0x00000000)
             {
-                goto l100138C4;
+                switch (ACCESS(STACKVAR(8, 4), 265, 1))
+                {
+                    case 0:
+                        ACCESS(STACKVAR(8, 4), 40, 4) = 0x00000002;
+                        break;
+                    case 1:
+                        ACCESS(STACKVAR(8, 4), 40, 4) = 0x00000003;
+                        break;
+                    default:
+                        ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x00000072;
+                        ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 24, 4) = static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(8, 4), 265, 1)));
+                        ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 4, 4)(STACKVAR(8, 4), 0xFFFFFFFF);
+                        ACCESS(STACKVAR(8, 4), 40, 4) = 0x00000003;
+                        break;
+                }
+                goto l10013981;
             }
-            switch (ACCESS(STACKVAR(8, 4), 265, 1))
+            STACKVAR(-4, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 196, 4), 0, 4);
+            STACKVAR(-8, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 196, 4), 84, 4);
+            STACKVAR(-12, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 196, 4), 168, 4);
+            if (STACKVAR(-4, 4) == 0x00000001 && STACKVAR(-8, 4) == 0x00000002 && STACKVAR(-12, 4) == 0x00000003)
             {
-                case 0:
-                    ACCESS(STACKVAR(8, 4), 40, 4) = 0x00000002;
-                    goto l100138BF;
-                case 1:
-                    ACCESS(STACKVAR(8, 4), 40, 4) = 0x00000003;
-                    goto l100138BF;
-                default:
-                    ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x00000072;
-                    ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 24, 4) = static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(8, 4), 265, 1)));
-                    ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 4, 4)(STACKVAR(8, 4), 0xFFFFFFFF);
-                    ACCESS(STACKVAR(8, 4), 40, 4) = 0x00000003;
+                ACCESS(STACKVAR(8, 4), 40, 4) = 0x00000003;
+                goto l10013981;
             }
-    }
-l100138BF:
-    goto l10013981;
-l100138C4:
-    STACKVAR(-4, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 196, 4), 0, 4);
-    STACKVAR(-8, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 196, 4), 84, 4);
-    STACKVAR(-12, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 196, 4), 168, 4);
-    if (STACKVAR(-4, 4) == 0x00000001 && STACKVAR(-8, 4) == 0x00000002 && STACKVAR(-12, 4) == 0x00000003)
-    {
-        ACCESS(STACKVAR(8, 4), 40, 4) = 0x00000003;
-        goto l10013981;
-    }
-    if (STACKVAR(-4, 4) == 0x00000052 && STACKVAR(-8, 4) == 0x00000047 && STACKVAR(-12, 4) == 0x00000042)
-    {
-        ACCESS(STACKVAR(8, 4), 40, 4) = 0x00000002;
-        goto l10013981;
+            if (STACKVAR(-4, 4) == 0x00000052 && STACKVAR(-8, 4) == 0x00000047 && STACKVAR(-12, 4) == 0x00000042)
+            {
+                ACCESS(STACKVAR(8, 4), 40, 4) = 0x00000002;
+                goto l10013981;
+            }
     }
 l1001392F:
     STACKVAR(-16, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 0, 4)) + 0x00000018;
@@ -10463,29 +10455,28 @@ l10013981:
     ACCESS(STACKVAR(8, 4), 44, 4) = 0x00000002;
     goto l10013A37;
 l10013990:
-    if (static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(8, 4), 264, 1))) == 0x00000000)
+    if (static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(8, 4), 264, 1))) != 0x00000000)
     {
-        goto l10013A0D;
+        switch (ACCESS(STACKVAR(8, 4), 265, 1))
+        {
+            case 0:
+                ACCESS(STACKVAR(8, 4), 40, 4) = 0x00000004;
+                break;
+            case 2:
+                ACCESS(STACKVAR(8, 4), 40, 4) = 0x00000005;
+                break;
+            default:
+                ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x00000072;
+                ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 24, 4) = static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(8, 4), 265, 1)));
+                ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 4, 4)(STACKVAR(8, 4), 0xFFFFFFFF);
+                ACCESS(STACKVAR(8, 4), 40, 4) = 0x00000005;
+                break;
+        }
     }
-    switch (ACCESS(STACKVAR(8, 4), 265, 1))
+    else
     {
-        case 0:
-            ACCESS(STACKVAR(8, 4), 40, 4) = 0x00000004;
-            goto l10013A0B;
-        case 2:
-            ACCESS(STACKVAR(8, 4), 40, 4) = 0x00000005;
-            goto l10013A0B;
-        default:
-            ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x00000072;
-            ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 24, 4) = static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(8, 4), 265, 1)));
-            ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 4, 4)(STACKVAR(8, 4), 0xFFFFFFFF);
-            ACCESS(STACKVAR(8, 4), 40, 4) = 0x00000005;
+        ACCESS(STACKVAR(8, 4), 40, 4) = 0x00000004;
     }
-l10013A0B:
-    goto l10013A17;
-l10013A0D:
-    ACCESS(STACKVAR(8, 4), 40, 4) = 0x00000004;
-l10013A17:
     ACCESS(STACKVAR(8, 4), 44, 4) = 0x00000004;
     goto l10013A37;
 l10013A23:
@@ -11921,50 +11912,49 @@ l1001646B:
     }
     switch (STACKVAR(-52, 4))
     {
-        case 2:
-        case 4:
-        case 5:
-        case 6:
-            goto l10016542;
         case 0:
             STACKVAR(-28, 4) = GLOBAL(0x1002257C);
             STACKVAR(-4, 4) = 0x00000000;
-            goto l1001656A;
+            break;
         case 1:
             STACKVAR(-28, 4) = GLOBAL(0x100222BF);
             STACKVAR(-4, 4) = 0x00000000;
-            goto l1001656A;
+            break;
         case 3:
             STACKVAR(-28, 4) = GLOBAL(0x10021D80);
             STACKVAR(-4, 4) = 0x00000000;
-            goto l1001656A;
+            break;
         case 7:
             switch (ACCESS(STACKVAR(8, 4), 68, 4))
             {
                 case 0:
                     STACKVAR(-28, 4) = GLOBAL(0x10021410);
                     STACKVAR(-4, 4) = 0x00000000;
-                    goto l10016540;
+                    break;
                 case 1:
                     STACKVAR(-28, 4) = GLOBAL(0x10020C70);
                     STACKVAR(-4, 4) = 0x00000001;
-                    goto l10016540;
+                    break;
                 case 2:
                     STACKVAR(-28, 4) = GLOBAL(0x10020550);
                     STACKVAR(-4, 4) = 0x00000002;
-                    goto l10016540;
+                    break;
                 default:
                     ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x00000030;
                     ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 0, 4)(STACKVAR(8, 4));
+                    break;
             }
-    }
-l10016540:
-    goto l1001656A;
+            break;
+        case 2:
+        case 4:
+        case 5:
+        case 6:
 l10016542:
-    ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x00000007;
-    ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 24, 4) = ACCESS(STACKVAR(-16, 4), 36, 4);
-    ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 0, 4)(STACKVAR(8, 4));
-l1001656A:
+            ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x00000007;
+            ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 24, 4) = ACCESS(STACKVAR(-16, 4), 36, 4);
+            ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 0, 4)(STACKVAR(8, 4));
+            break;
+    }
     ACCESS(ARRPTR(STACKVAR(-24, 4), 4, STACKVAR(-20, 4), 4), 0, 4) = STACKVAR(-28, 4);
     if (static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-16, 4), 48, 1))) == 0x00000000 || ACCESS(ARRPTR(STACKVAR(-24, 4), 4, STACKVAR(-20, 4), 44), 0, 4) == STACKVAR(-4, 4))
     {
@@ -12828,8 +12818,6 @@ p10017CAB
     STACKVAR(-4, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 404, 4), 4, 4)(STACKVAR(8, 4));
     switch (STACKVAR(-4, 4))
     {
-        default:
-            goto l10017DB6;
         case 1:
             if (static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-8, 4), 20, 1))) != 0x00000000)
             {
@@ -12845,7 +12833,7 @@ p10017CAB
                 }
                 unknown_function_100178C6(STACKVAR(8, 4));
             }
-            goto l10017DB6;
+            break;
         case 2:
             ACCESS(STACKVAR(-8, 4), 17, 1) = 0x01;
             if (static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-8, 4), 20, 1))) != 0x00000000)
@@ -12860,8 +12848,8 @@ p10017CAB
             {
                 ACCESS(STACKVAR(8, 4), 132, 4) = ACCESS(STACKVAR(8, 4), 124, 4);
             }
+            break;
     }
-l10017DB6:
     REGDEF(eax=STACKVAR(-4, 4))
 }
 
@@ -13314,8 +13302,6 @@ l10018AEC:
     ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 4, 4)(STACKVAR(8, 4), 0x00000004);
     switch (STACKVAR(-4, 4))
     {
-        default:
-            goto l10018C0D;
         case 1:
             ACCESS(STACKVAR(8, 4), 380, 4) = 0x00000000;
             REGDEF(al=0x01)
@@ -13327,12 +13313,11 @@ l10018AEC:
                 return;
             }
             STACKVAR(-8, 4) = ACCESS(STACKVAR(8, 4), 380, 4);
-            goto l10018C0D;
+            break;
         case 3:
             REGDEF(al=0x01)
             return;
     }
-l10018C0D:
     goto l10018AEC;
 }
 
@@ -13543,16 +13528,16 @@ l1001905F:
     {
         case 224:
             unknown_function_10019118(STACKVAR(8, 4), LOCAL(-16), STACKVAR(-36, 4), STACKVAR(-20, 4));
-            goto l100190E7;
+            break;
         case 238:
             unknown_function_100194DC(STACKVAR(8, 4), LOCAL(-16), STACKVAR(-36, 4), STACKVAR(-20, 4));
-            goto l100190E7;
+            break;
         default:
             ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x00000044;
             ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 24, 4) = ACCESS(STACKVAR(8, 4), 380, 4);
             ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 0, 4)(STACKVAR(8, 4));
+            break;
     }
-l100190E7:
     ACCESS(STACKVAR(-24, 4), 0, 4) = STACKVAR(-40, 4);
     ACCESS(STACKVAR(-24, 4), 4, 4) = STACKVAR(-32, 4);
     if (reinterpret_cast<int>(STACKVAR(-20, 4)) > 0)
@@ -13633,56 +13618,34 @@ l1001924C:
     }
     return;
 l10019378:
-    if (reinterpret_cast<unsigned int>(STACKVAR(16, 4)) < 6)
+    if (reinterpret_cast<unsigned int>(STACKVAR(16, 4)) >= 6 && static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(12, 4), 0, 1))) == 0x0000004A && static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(12, 4), 1, 1))) == 0x00000046 && static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(12, 4), 2, 1))) == 0x00000058 && static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(12, 4), 3, 1))) == 0x00000058 && static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(12, 4), 4, 1))) == 0x00000000)
     {
-        goto l100194B0;
+        switch (ACCESS(STACKVAR(12, 4), 5, 1))
+        {
+            case 16:
+                ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x0000006C;
+                ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 24, 4) = STACKVAR(-4, 4);
+                ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 4, 4)(STACKVAR(8, 4), 0x00000001);
+                break;
+            case 17:
+                ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x0000006D;
+                ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 24, 4) = STACKVAR(-4, 4);
+                ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 4, 4)(STACKVAR(8, 4), 0x00000001);
+                break;
+            case 19:
+                ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x0000006E;
+                ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 24, 4) = STACKVAR(-4, 4);
+                ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 4, 4)(STACKVAR(8, 4), 0x00000001);
+                break;
+            default:
+                ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x00000059;
+                ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 24, 4) = static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(12, 4), 5, 1)));
+                ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 28, 4) = STACKVAR(-4, 4);
+                ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 4, 4)(STACKVAR(8, 4), 0x00000001);
+                break;
+        }
+        return;
     }
-    if (static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(12, 4), 0, 1))) != 0x0000004A)
-    {
-        goto l100194B0;
-    }
-    if (static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(12, 4), 1, 1))) != 0x00000046)
-    {
-        goto l100194B0;
-    }
-    if (static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(12, 4), 2, 1))) != 0x00000058)
-    {
-        goto l100194B0;
-    }
-    if (static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(12, 4), 3, 1))) != 0x00000058)
-    {
-        goto l100194B0;
-    }
-    if (static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(12, 4), 4, 1))) != 0x00000000)
-    {
-        goto l100194B0;
-    }
-    switch (ACCESS(STACKVAR(12, 4), 5, 1))
-    {
-        case 16:
-            ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x0000006C;
-            ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 24, 4) = STACKVAR(-4, 4);
-            ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 4, 4)(STACKVAR(8, 4), 0x00000001);
-            goto l100194AE;
-        case 17:
-            ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x0000006D;
-            ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 24, 4) = STACKVAR(-4, 4);
-            ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 4, 4)(STACKVAR(8, 4), 0x00000001);
-            goto l100194AE;
-        case 19:
-            ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x0000006E;
-            ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 24, 4) = STACKVAR(-4, 4);
-            ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 4, 4)(STACKVAR(8, 4), 0x00000001);
-            goto l100194AE;
-        default:
-            ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x00000059;
-            ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 24, 4) = static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(12, 4), 5, 1)));
-            ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 28, 4) = STACKVAR(-4, 4);
-            ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 4, 4)(STACKVAR(8, 4), 0x00000001);
-    }
-l100194AE:
-    return;
-l100194B0:
     ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x0000004D;
     ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 24, 4) = STACKVAR(-4, 4);
     ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 4, 4)(STACKVAR(8, 4), 0x00000001);
@@ -13828,7 +13791,7 @@ l10019774:
                 REGDEF(eax=0x00000000)
                 return;
             }
-            goto l10019AA0;
+            break;
         case 192:
         case 191:
             if ((reinterpret_cast<any_int32>(unknown_function_10019D0E(STACKVAR(8, 4), 0x00000000, 0x00000000)) & 0x000000FF) == 0x00000000)
@@ -13836,28 +13799,28 @@ l10019774:
                 REGDEF(eax=0x00000000)
                 return;
             }
-            goto l10019AA0;
+            break;
         case 193:
             if ((reinterpret_cast<any_int32>(unknown_function_10019D0E(STACKVAR(8, 4), 0x00000001, 0x00000000)) & 0x000000FF) == 0x00000000)
             {
                 REGDEF(eax=0x00000000)
                 return;
             }
-            goto l10019AA0;
+            break;
         case 200:
             if ((reinterpret_cast<any_int32>(unknown_function_10019D0E(STACKVAR(8, 4), 0x00000000, 0x00000001)) & 0x000000FF) == 0x00000000)
             {
                 REGDEF(eax=0x00000000)
                 return;
             }
-            goto l10019AA0;
+            break;
         case 201:
             if ((reinterpret_cast<any_int32>(unknown_function_10019D0E(STACKVAR(8, 4), 0x00000001, 0x00000001)) & 0x000000FF) == 0x00000000)
             {
                 REGDEF(eax=0x00000000)
                 return;
             }
-            goto l10019AA0;
+            break;
         case 194:
         case 196:
         case 197:
@@ -13870,7 +13833,7 @@ l10019774:
             ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x0000003C;
             ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 24, 4) = ACCESS(STACKVAR(8, 4), 380, 4);
             ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 0, 4)(STACKVAR(8, 4));
-            goto l10019AA0;
+            break;
         case 217:
             if ((reinterpret_cast<any_int32>(unknown_function_1001A32B(STACKVAR(8, 4))) & 0x000000FF) == 0x00000000)
             {
@@ -13892,28 +13855,28 @@ l10019774:
                 REGDEF(eax=0x00000000)
                 return;
             }
-            goto l10019AA0;
+            break;
         case 195:
             if ((reinterpret_cast<any_int32>(unknown_function_1001A86C(STACKVAR(8, 4))) & 0x000000FF) == 0x00000000)
             {
                 REGDEF(eax=0x00000000)
                 return;
             }
-            goto l10019AA0;
+            break;
         case 218:
             if ((reinterpret_cast<any_int32>(unknown_function_1001AF2C(STACKVAR(8, 4))) & 0x000000FF) == 0x00000000)
             {
                 REGDEF(eax=0x00000000)
                 return;
             }
-            goto l10019AA0;
+            break;
         case 220:
             if ((reinterpret_cast<any_int32>(unknown_function_1001B3A6(STACKVAR(8, 4))) & 0x000000FF) == 0x00000000)
             {
                 REGDEF(eax=0x00000000)
                 return;
             }
-            goto l10019AA0;
+            break;
         case 224:
         case 225:
         case 226:
@@ -13935,14 +13898,14 @@ l10019774:
                 REGDEF(eax=0x00000000)
                 return;
             }
-            goto l10019AA0;
+            break;
         case 253:
             if ((reinterpret_cast<any_int32>(ACCESS(ACCESS(STACKVAR(8, 4), 404, 4), 24, 4)(STACKVAR(8, 4))) & 0x000000FF) == 0x00000000)
             {
                 REGDEF(eax=0x00000000)
                 return;
             }
-            goto l10019AA0;
+            break;
         case 0:
         case 207:
         case 208:
@@ -13955,14 +13918,14 @@ l10019774:
             ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x0000005C;
             ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 24, 4) = ACCESS(STACKVAR(8, 4), 380, 4);
             ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 4, 4)(STACKVAR(8, 4), 0x00000001);
-            goto l10019AA0;
+            break;
         case 219:
             if ((reinterpret_cast<any_int32>(unknown_function_1001962B(STACKVAR(8, 4))) & 0x000000FF) == 0x00000000)
             {
                 REGDEF(eax=0x00000000)
                 return;
             }
-            goto l10019AA0;
+            break;
         case 1:
         case 2:
         case 3:
@@ -14173,8 +14136,8 @@ l10019A75:
             ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x00000044;
             ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 24, 4) = ACCESS(STACKVAR(8, 4), 380, 4);
             ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 0, 4)(STACKVAR(8, 4));
+            break;
     }
-l10019AA0:
     ACCESS(STACKVAR(8, 4), 380, 4) = 0x00000000;
     goto l10019774;
 }
@@ -15402,17 +15365,17 @@ l1001BB03:
     {
         case 224:
             unknown_function_10019118(STACKVAR(8, 4), STACKVAR(-8, 4), STACKVAR(-4, 4), STACKVAR(-12, 4));
-            goto l1001BC9B;
+            break;
         case 238:
             unknown_function_100194DC(STACKVAR(8, 4), STACKVAR(-8, 4), STACKVAR(-4, 4), STACKVAR(-12, 4));
-            goto l1001BC9B;
+            break;
         default:
             ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x0000005B;
             ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 24, 4) = ACCESS(STACKVAR(8, 4), 380, 4);
             ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 28, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + reinterpret_cast<any_int32>(STACKVAR(-12, 4));
             ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 4, 4)(STACKVAR(8, 4), 0x00000001);
+            break;
     }
-l1001BC9B:
     ACCESS(STACKVAR(-16, 4), 0, 4) = STACKVAR(-32, 4);
     ACCESS(STACKVAR(-16, 4), 4, 4) = STACKVAR(-24, 4);
     if (reinterpret_cast<int>(STACKVAR(-12, 4)) > 0)
@@ -16773,7 +16736,7 @@ p1001E668
             {
                 ACCESS(STACKVAR(-4, 4), 4, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 416, 4), 4, 4);
             }
-            goto l1001E770;
+            break;
         case 3:
             if (ACCESS(STACKVAR(-4, 4), 8, 4) == 0x00000000)
             {
@@ -16781,7 +16744,7 @@ p1001E668
                 ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 0, 4)(STACKVAR(8, 4));
             }
             ACCESS(STACKVAR(-4, 4), 4, 4) = GLOBAL(0x1001E829);
-            goto l1001E770;
+            break;
         case 2:
             if (ACCESS(STACKVAR(-4, 4), 8, 4) == 0x00000000)
             {
@@ -16789,12 +16752,12 @@ p1001E668
                 ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 0, 4)(STACKVAR(8, 4));
             }
             ACCESS(STACKVAR(-4, 4), 4, 4) = GLOBAL(0x1001E926);
-            goto l1001E770;
+            break;
         default:
             ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x00000004;
             ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 0, 4)(STACKVAR(8, 4));
+            break;
     }
-l1001E770:
     ACCESS(STACKVAR(-4, 4), 24, 4) = 0x00000000;
     ACCESS(STACKVAR(-4, 4), 20, 4) = 0x00000000;
 }
@@ -20790,23 +20753,22 @@ l10026432:
                     STACKVAR(-20, 4) = (reinterpret_cast<int>(ACCESS(STACKVAR(-28, 4), 4, 4)) + reinterpret_cast<int>(ACCESS(STACKVAR(-28, 4), 0, 4))) / 2;
                     ACCESS(STACKVAR(-28, 4), 4, 4) = STACKVAR(-20, 4);
                     ACCESS(STACKVAR(-4, 4), 0, 4) = reinterpret_cast<any_int32>(STACKVAR(-20, 4)) + 0x00000001;
-                    goto l100265D1;
+                    break;
                 case 1:
                     STACKVAR(-20, 4) = (reinterpret_cast<int>(ACCESS(STACKVAR(-28, 4), 12, 4)) + reinterpret_cast<int>(ACCESS(STACKVAR(-28, 4), 8, 4))) / 2;
                     ACCESS(STACKVAR(-28, 4), 12, 4) = STACKVAR(-20, 4);
                     ACCESS(STACKVAR(-4, 4), 8, 4) = reinterpret_cast<any_int32>(STACKVAR(-20, 4)) + 0x00000001;
-                    goto l100265D1;
+                    break;
                 case 2:
                     STACKVAR(-20, 4) = (reinterpret_cast<int>(ACCESS(STACKVAR(-28, 4), 20, 4)) + reinterpret_cast<int>(ACCESS(STACKVAR(-28, 4), 16, 4))) / 2;
                     ACCESS(STACKVAR(-28, 4), 20, 4) = STACKVAR(-20, 4);
                     ACCESS(STACKVAR(-4, 4), 16, 4) = reinterpret_cast<any_int32>(STACKVAR(-20, 4)) + 0x00000001;
-                default:
-l100265D1:
-                    unknown_function_10025F35(STACKVAR(8, 4), STACKVAR(-28, 4));
-                    unknown_function_10025F35(STACKVAR(8, 4), STACKVAR(-4, 4));
-                    STACKVAR(16, 4) = reinterpret_cast<any_int32>(STACKVAR(16, 4)) + 0x00000001;
-                    goto l10026432;
+                    break;
             }
+            unknown_function_10025F35(STACKVAR(8, 4), STACKVAR(-28, 4));
+            unknown_function_10025F35(STACKVAR(8, 4), STACKVAR(-4, 4));
+            STACKVAR(16, 4) = reinterpret_cast<any_int32>(STACKVAR(16, 4)) + 0x00000001;
+            goto l10026432;
         }
     }
     REGDEF(eax=STACKVAR(16, 4))

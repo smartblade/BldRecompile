@@ -1,4 +1,5 @@
 from .assignment import Assignment
+from .break_instruction import Break
 from .code_instruction import CodeInstruction
 from .delete import Delete
 from .empty import empty

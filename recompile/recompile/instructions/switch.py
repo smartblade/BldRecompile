@@ -18,6 +18,14 @@ class Switch:
     def index(self):
         return self._index
 
+    @property
+    def default_label(self):
+        return self._default_label
+
+    @property
+    def blocks_dict(self):
+        return self._blocks_dict
+
     def copy(self, index):
         return self.__class__(
             index, self._case_set_dict, self._blocks_dict, self._default_label)
@@ -43,6 +51,15 @@ class Switch:
         old_block = self._blocks_dict.pop(label)
         self._blocks_dict[label] = block
         return old_block
+
+    def eliminate_empty_default_block(self):
+        default_block = self._blocks_dict[self._default_label]
+        if len(default_block) != 1:
+            return
+        if not isinstance(default_block[0], instructions.Break):
+            return
+        del self._blocks_dict[self._default_label]
+        self._default_label = None
 
     def visit(self, on_expression_visited, **kwargs):
         self._index.visit(on_expression_visited, **kwargs)
