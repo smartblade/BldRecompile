@@ -2919,10 +2919,10 @@ unsigned int B_ResourceManager::NResources(unsigned short arg_1)
 void B_ResourceManager::AddBodLink(const char *c, int i, const char *pc, int i1)
 {
     STACKVAR(-28, 4) = 0x00000000;
-    if (this->size == 0)
+    if (this->unknown04 == nullptr)
     {
         STACKVAR(-4, 4) = ??2@YAPAXI@Z(0x00000018);
-        this->size = STACKVAR(-4, 4) != 0x00000000 ? reinterpret_cast<int>(STACKVAR(-4, 4)->unknown_method_100046A6()) : 0;
+        this->unknown04 = STACKVAR(-4, 4) != 0x00000000 ? reinterpret_cast<void *>(STACKVAR(-4, 4)->unknown_method_100046A6()) : nullptr;
     }
     if (this->IsResourceLoaded(1, pc) != 0)
     {
@@ -2941,7 +2941,7 @@ void B_ResourceManager::AddBodLink(const char *c, int i, const char *pc, int i1)
     {
         STACKVAR(-56, 4) = 0x00000000;
     }
-    STACKVAR(-52, 4) = this->size;
+    STACKVAR(-52, 4) = this->unknown04;
     if (reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-52, 4), 16, 4)) > reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-52, 4), 8, 4)))
     {
         ACCESS(ARRPTR(ACCESS(STACKVAR(-52, 4), 4, 4), 4, ACCESS(STACKVAR(-52, 4), 8, 4), 0), 0, 4) = STACKVAR(-56, 4);
