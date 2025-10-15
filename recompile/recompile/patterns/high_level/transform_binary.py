@@ -5,7 +5,8 @@ from expressions.operator import Operator
 from .transform_access import transform_access
 
 
-def transform_binary(operator, left, right, **kwargs):
+def transform_binary(operator, left, right, analysis, **kwargs):
+    analysis.process_binary(operator, left, right)
     if _is_integer_operation(left, right):
         if operator == Operator.ADD:
             return _transform_int_sum(left, right)

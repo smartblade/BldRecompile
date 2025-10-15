@@ -50,6 +50,8 @@ def _make_inc_or_dec(dst, offset, is_negative):
             inc_or_dec = expressions.Increment
         expression = inc_or_dec(dst)
     else:
-        assert not is_negative
-        expression = expressions.Bin(Operator.ADD_ASS, dst, offset)
+        if is_negative:
+            expression = expressions.Bin(Operator.SUB_ASS, dst, offset)
+        else:
+            expression = expressions.Bin(Operator.ADD_ASS, dst, offset)
     return instructions.CodeInstruction(expression)

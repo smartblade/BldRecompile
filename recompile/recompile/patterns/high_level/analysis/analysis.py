@@ -13,6 +13,9 @@ class Analysis:
     def process_assignment(self, *args, **kwargs):
         self._locals_analysis.process_assignment(*args, **kwargs)
 
+    def process_binary(self, *args, **kwargs):
+        self._locals_analysis.process_binary(*args, **kwargs)
+
     def process_reinterpret(self, *args, **kwargs):
         self._locals_analysis.process_reinterpret(*args, **kwargs)
 

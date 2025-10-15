@@ -30,6 +30,7 @@ class Operator(Enum):
     COND_SEP = ":"
     ASS = "="
     ADD_ASS = "+="
+    SUB_ASS = "-="
     DIV_ASS = "/="
     COMMA = ","
 
