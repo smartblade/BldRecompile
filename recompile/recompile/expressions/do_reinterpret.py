@@ -126,7 +126,9 @@ def _reinterpret_bin(data_type, b):
             return None
     if (
         isinstance(left, (expressions.Bin, expressions.ReinterpretCast)) and
-        isinstance(right, (expressions.Bin, expressions.ReinterpretCast))
+        isinstance(right, (expressions.Bin, expressions.ReinterpretCast)) or
+        data_types.are_compatible(left.data_type, data_type) or
+        data_types.are_compatible(right.data_type, data_type)
     ):
         left = do_reinterpret(data_type, left)
         right = do_reinterpret(data_type, right)
