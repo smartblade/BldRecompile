@@ -17,6 +17,11 @@
 			"boolean": "yes"
 		}
 	},
+	"100018A6": {
+		"varnames": {
+			"-4": "position"
+		}
+	},
 	"100021E0": {
 		"return": {
 			"boolean": "yes"

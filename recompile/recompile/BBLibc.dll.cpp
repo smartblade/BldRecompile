@@ -200,37 +200,37 @@ long B_IDataFile::Length() const
 // address: 0x100018A6
 long B_IDataFile::Seek(long offset, int whence)
 {
-    unsigned int unknown_loc_04;
+    unsigned int position;
     switch (whence)
     {
         case 0:
-            unknown_loc_04 = static_cast<unsigned int>(offset);
+            position = static_cast<unsigned int>(offset);
             break;
         case 1:
-            unknown_loc_04 = static_cast<unsigned int>(offset + this->Tell());
+            position = static_cast<unsigned int>(offset + this->Tell());
             break;
         case 2:
-            unknown_loc_04 = reinterpret_cast<unsigned int>(offset + this->file_size);
+            position = reinterpret_cast<unsigned int>(offset + this->file_size);
             break;
     }
-    if (unknown_loc_04 > this->cacheBlockStartPos && unknown_loc_04 < this->cacheBlockStartPos + IFILE_CACHE_SIZE)
+    if (position > this->cacheBlockStartPos && position < this->cacheBlockStartPos + IFILE_CACHE_SIZE)
     {
-        this->posInCacheBlock = unknown_loc_04 - this->cacheBlockStartPos;
+        this->posInCacheBlock = position - this->cacheBlockStartPos;
     }
     else
     {
-        this->cacheBlockStartPos = unknown_loc_04 - IFILE_CACHE_SIZE;
+        this->cacheBlockStartPos = position - IFILE_CACHE_SIZE;
         if (this->fileInfo != nullptr)
         {
             B_FileInfo *unknown_loc_08 = this->fileInfo;
             if (unknown_loc_08->unknown0C != -1)
             {
-                lseek(unknown_loc_08->fd, unknown_loc_08->dataStartPos + static_cast<long>(unknown_loc_04), 0);
+                lseek(unknown_loc_08->fd, unknown_loc_08->dataStartPos + static_cast<long>(position), 0);
             }
         }
         else
         {
-            lseek(this->fd, static_cast<long>(unknown_loc_04), 0);
+            lseek(this->fd, static_cast<long>(position), 0);
         }
         this->ReadCacheBlock();
     }
