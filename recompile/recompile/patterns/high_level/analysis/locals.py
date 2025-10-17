@@ -7,6 +7,7 @@ class LocalsAnalysis:
     def __init__(self):
         self._types_by_offset = {}
         self._compared_types_by_offset = {}
+        self._min_local_ptr_offset = 0
 
     def process_assignment(self, dst, src):
         if not isinstance(dst, expressions.intermediate.Stackvar):
@@ -54,12 +55,16 @@ class LocalsAnalysis:
 
     def process_local(self, offset):
         self._types_by_offset[offset] = None
+        if offset < self._min_local_ptr_offset:
+            self._min_local_ptr_offset = offset
 
     def fill_stack_variables(self, stack_vars, variable_names):
         for offset, data_type in self._types_by_offset.items():
             if data_type is None:
                 continue
             if offset in stack_vars:
+                continue
+            if offset >= self._min_local_ptr_offset:
                 continue
             assert offset < 0
             name = variable_names.get(offset)
