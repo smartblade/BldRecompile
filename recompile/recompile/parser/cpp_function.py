@@ -6,7 +6,7 @@ import parser
 from procedure_declaration import ProcedureDeclaration
 
 procedure_regexp = re.compile(
-    r'^((?P<return>.*[^:,])\s+)?((?P<class>\w+)::)?'
+    r'^(?P<return>.*[^:,][*&\s])?((?P<class>\w+)::)?'
     r'(?P<name>~?\w+|operator\s*.*\S)\s*\(')
 const_method_regexp = re.compile(r'\)\s*(?P<const>const)\s*$')
 
