@@ -17,7 +17,7 @@ from writer import Writer
 
 def process_asm_patterns(lines, declarations):
     if declarations.symbols.module != "BBLibc.dll":
-        return
+        return []
     patterns_path = os.path.join(
         os.path.dirname(os.path.realpath(__file__)), "patterns.json")
     with open(patterns_path, "rt") as f:
