@@ -45,7 +45,7 @@ public:
     * VC++ mangling:          ??BB_Name@@QBEPBDXZ
     */
 
-    operator const char* () const
+    operator const char *() const
     {
         return string;
     }

@@ -7,7 +7,7 @@
 * VC++ mangling:          ?GetRed@B_Pal@@QBEEI@Z
 */
 
-unsigned char B_Pal::GetRed(unsigned int val) const { return 0; };
+unsigned char B_Pal::GetRed(unsigned int val) const
 {
 }
 
@@ -18,7 +18,7 @@ unsigned char B_Pal::GetRed(unsigned int val) const { return 0; };
 * VC++ mangling:          ?GetGreen@B_Pal@@QBEEI@Z
 */
 
-unsigned char B_Pal::GetGreen(unsigned int val) const { return 0; };
+unsigned char B_Pal::GetGreen(unsigned int val) const
 {
 }
 
@@ -29,6 +29,6 @@ unsigned char B_Pal::GetGreen(unsigned int val) const { return 0; };
 * VC++ mangling:          ?GetBlue@B_Pal@@QBEEI@Z
 */
 
-unsigned char B_Pal::GetBlue(unsigned int val) const { return 0; };
+unsigned char B_Pal::GetBlue(unsigned int val) const
 {
 }

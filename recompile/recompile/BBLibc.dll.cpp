@@ -678,7 +678,7 @@ const B_Name &B_Name::Id() const
 }
 
 // address: 0x100022D0
-void B_Name::operator const char*() const
+void B_Name::operator const char *() const
 {
     REGDEF(eax=this->string)
 }
@@ -4865,19 +4865,19 @@ B_Pal::B_Pal(const B_Pal &arg_1)
 }
 
 // address: 0x100093C8
-unsigned char B_Pal::GetRed(unsigned int val)
+unsigned char B_Pal::GetRed(unsigned int val) const
 {
     return this->data[3 * val];
 }
 
 // address: 0x100093E1
-unsigned char B_Pal::GetGreen(unsigned int val)
+unsigned char B_Pal::GetGreen(unsigned int val) const
 {
     return this->data[3 * val + 1];
 }
 
 // address: 0x100093FB
-unsigned char B_Pal::GetBlue(unsigned int val)
+unsigned char B_Pal::GetBlue(unsigned int val) const
 {
     return this->data[3 * val + 2];
 }
