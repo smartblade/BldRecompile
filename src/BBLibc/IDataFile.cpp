@@ -1,3 +1,4 @@
+#include <io.h>
 #include <bld_python.h>
 #include "BBLibc.h"
 #include "IDataFile.h"

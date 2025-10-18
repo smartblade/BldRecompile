@@ -31,6 +31,12 @@ class Constants:
             return None
         return names.single_name()
 
+    def find_name(self, value, constant_set):
+        names = self._names.get(value)
+        if names is None:
+            return None
+        return names.find_name(constant_set)
+
 
 class _Names:
     def __init__(self):
@@ -40,6 +46,22 @@ class _Names:
         if len(self._names) != 1:
             return None
         return next(iter(self._names))
+
+    def find_name(self, constant_set):
+        if constant_set is None:
+            return None
+        if not constant_set.endswith("*"):
+            return None
+        return self._find_name_by_prefix(constant_set[:-1])
+
+    def _find_name_by_prefix(self, prefix):
+        result = None
+        num_found = 0
+        for name in self._names:
+            if name.startswith(prefix):
+                result = name
+                num_found += 1
+        return result if num_found == 1 else None
 
     def add(self, name):
         self._names.add(name)

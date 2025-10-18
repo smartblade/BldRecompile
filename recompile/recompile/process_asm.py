@@ -1292,12 +1292,15 @@ def run():
     else:
         symbols_dict = cpp_parser.SrcSymbols.collect(src_dir)
     if options.asm_patterns:
-        files_declarations, declared_types, external_procedures =\
-            cpp_parser.parse_cpp_header(src_dir)
+        (
+            files_declarations, declared_types, external_procedures,
+            external_characteristics
+        ) = cpp_parser.parse_cpp_header(src_dir)
     else:
         files_declarations = {}
         declared_types = {}
         external_procedures = {}
+        external_characteristics = None
     for (root, dirs, files) in os.walk(src_dir):
         if "raw.txt" in files:
             asm_files = AsmFiles(root)
@@ -1314,6 +1317,7 @@ def run():
                 files_declarations=files_declarations,
                 declared_types=declared_types,
                 external_procedures=external_procedures,
+                external_characteristics=external_characteristics,
                 characteristics=characteristics,
             )
             procedures = process_asm_dir(asm_files, declarations)

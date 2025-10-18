@@ -225,12 +225,12 @@ long B_IDataFile::Seek(long offset, int whence)
             B_FileInfo *unknown_loc_08 = this->fileInfo;
             if (unknown_loc_08->unknown0C != -1)
             {
-                lseek(unknown_loc_08->fd, unknown_loc_08->dataStartPos + static_cast<long>(position), 0);
+                lseek(unknown_loc_08->fd, unknown_loc_08->dataStartPos + static_cast<long>(position), SEEK_SET);
             }
         }
         else
         {
-            lseek(this->fd, static_cast<long>(position), 0);
+            lseek(this->fd, static_cast<long>(position), SEEK_SET);
         }
         this->ReadCacheBlock();
     }

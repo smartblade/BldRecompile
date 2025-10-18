@@ -1,3 +1,10 @@
+/* Seek method constants */
+
+#define SEEK_SET        0               /* seek to an absolute position */
+#define SEEK_CUR        1               /* seek relative to current position */
+#define SEEK_END        2               /* seek relative to end of file */
+
+
 _CRT_NONSTDC_DEPRECATE(_access) int access(const char * _Filename, int _AccessMode);
 _CRT_NONSTDC_DEPRECATE(_chmod) int chmod(const char * _Filename, int _AccessMode);
 _CRT_NONSTDC_DEPRECATE(_chsize) int chsize(int _FileHandle, long _Size);

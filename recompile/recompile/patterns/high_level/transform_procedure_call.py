@@ -6,28 +6,38 @@ from calling_convention import CallingConvention
 from patterns.validate_procedure_declaration import \
     validate_procedure_declaration
 
+from .apply_parameter_characteristics import apply_parameter_characteristics
+from .call_characteristics import get_call_characteristics
 from .convert_expression_to_type import convert_expression_to_type
 from .convert_sizeof_arguments import convert_sizeof_arguments
 from .explicit_arg_cast import explicit_arg_cast
 from .narrow_constant import narrow_constant
 
 
-def transform_procedure_call(pc, declarations, call_args_matcher, **kwargs):
+def transform_procedure_call(
+    pc, declarations, file_declarations, call_args_matcher, **kwargs
+):
     proc_decl = _get_callee_declaration(pc, declarations)
     pc = call_args_matcher.match_args(pc, proc_decl)
     if proc_decl is None:
         return pc
     assert pc.proc_decl is not None
-    result = _convert_struct_return_implicit_arg(pc, proc_decl)
+    call_characteristics = get_call_characteristics(declarations, pc)
+    result = _convert_struct_return_implicit_arg(
+        pc, file_declarations, call_characteristics, proc_decl)
     if result is not None:
         return result
     return_type = pc.proc_decl.return_type
-    pc = _convert_procedure_call_arguments(pc, proc_decl)
+    pc = _convert_procedure_call_arguments(
+        pc, file_declarations, call_characteristics, proc_decl)
     return _convert_to_return_type(pc, return_type)
 
 
-def _convert_procedure_call_arguments(pc, proc_decl):
-    arguments = _convert_arguments_to_parameters_types(pc, proc_decl)
+def _convert_procedure_call_arguments(
+    pc, file_declarations, call_characteristics, proc_decl
+):
+    arguments = _convert_arguments_to_parameters_types(
+        pc, file_declarations, call_characteristics, proc_decl)
     arguments = convert_sizeof_arguments(arguments, proc_decl)
     return pc.copy(
         name=proc_decl.proc_name, proc_decl=proc_decl, arguments=arguments)
@@ -50,7 +60,9 @@ def _get_declaration_from_callee_expression(e):
     return function.proc_decl
 
 
-def _convert_arguments_to_parameters_types(pc, proc_decl):
+def _convert_arguments_to_parameters_types(
+    pc, file_declarations, call_characteristics, proc_decl
+):
     if (
         len(pc.arguments) != len(proc_decl.get_parameters_ids()) and
         (
@@ -76,6 +88,11 @@ def _convert_arguments_to_parameters_types(pc, proc_decl):
         parameter = parameters[i] if i < len(parameters) else None
         new_argument = _convert_argument_to_parameters_type(
             argument, parameter, proc_decl)
+        new_argument = apply_parameter_characteristics(
+            new_argument,
+            file_declarations,
+            call_characteristics.parameters[i]
+        ) or new_argument
         new_arguments.append(new_argument)
     return new_arguments
 
@@ -92,7 +109,9 @@ def _convert_argument_to_parameters_type(argument, parameter, proc_decl):
     return new_argument
 
 
-def _convert_struct_return_implicit_arg(pc, proc_decl):
+def _convert_struct_return_implicit_arg(
+    pc, file_declarations, call_characteristics, proc_decl
+):
     if not isinstance(proc_decl.return_type, data_types.ClassType):
         return None
     # Check if it was already transformed
@@ -114,7 +133,8 @@ def _convert_struct_return_implicit_arg(pc, proc_decl):
     if this_arg is not None:
         new_arguments.insert(0, this_arg)
     pc = pc.copy(arguments=new_arguments)
-    pc = _convert_procedure_call_arguments(pc, proc_decl)
+    pc = _convert_procedure_call_arguments(
+        pc, file_declarations, call_characteristics, proc_decl)
     dst = expressions.do_dereference(return_arg)
     if isinstance(dst.data_type, data_types.ClassType):
         dst = expressions.ImplicitCast(data_types.Reference(dst.data_type), dst)

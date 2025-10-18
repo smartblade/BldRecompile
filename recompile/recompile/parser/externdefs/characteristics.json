@@ -1,0 +1,10 @@
+{
+	"lseek": {
+		"parameters": [
+			{
+				"index": "2",
+				"constantset": "SEEK_*"
+			}
+		]
+	}
+}

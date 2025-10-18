@@ -2,6 +2,7 @@ import data_types
 import expressions
 from expressions.operator import Operator
 
+from .call_characteristics import get_call_characteristics
 from .transform_access import transform_access
 
 
@@ -74,15 +75,13 @@ def _try_cast_to_bool(operator, left, right, declarations, **kwargs):
         return None
     if not left.data_type.is_any_int:
         return None
-    if left.callee_address is None:
-        return None
     if not isinstance(right, expressions.Constant):
         return None
     if not right.data_type.is_any_int:
         return None
     if right.value != 0:
         return None
-    characteristics = declarations.characteristics[left.callee_address]
+    characteristics = get_call_characteristics(declarations, left)
     if characteristics.is_boolean_return:
         if operator == Operator.NE:
             return left

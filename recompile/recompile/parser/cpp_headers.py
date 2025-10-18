@@ -4,6 +4,7 @@ import re
 import data_types
 from hex_conversion import from_hex
 import parser
+from patterns.characteristics import ExternalCharacteristics
 from procedure_declaration import ProcedureDeclaration
 
 from .constants import Constants
@@ -14,7 +15,7 @@ preprocessor_regexp = re.compile(
     r'(define\s+(?P<const_name>\S+)\s+(?P<const_value>.+))'
 )
 comment_regexp = re.compile(r'^(?P<line>.*)//')
-comment_start_regexp = re.compile(r'^(?P<line>.*)/\*')
+comment_start_regexp = re.compile(r'^(?P<line>.*)/\*(?P<tail>.*)$')
 comment_end_regexp = re.compile(r'\*/(?P<line>.*)$')
 class_regexp = re.compile(
     r'^(class|struct)\s+(LIB_EXP\s+)?(?P<class>\w+)(?P<semicolon>;)?'
@@ -180,6 +181,7 @@ class HeaderState:
         self._parse_define(const_name, const_value)
 
     def _parse_define(self, const_name, const_value):
+        const_value = const_value.strip()
         if const_value.startswith("0x"):
             self._constants.add(const_name, from_hex(const_value))
         elif const_value.isdigit():
@@ -224,6 +226,8 @@ def _strip_comments(line, is_comment):
     if match:
         line = match.group("line")
         is_comment = True
+        tail, is_comment = _strip_comments(match.group("tail"), is_comment)
+        return line + tail, is_comment
     if is_comment:
         match = comment_end_regexp.search(line)
         if match:
@@ -235,10 +239,9 @@ def _strip_comments(line, is_comment):
 
 
 def _collect_cpp_declarations(
-    src_path, files_declarations, declared_types, incomplete_types,
-    external_procedures
+    src_path, header_states, files_declarations, declared_types,
+    incomplete_types, external_procedures
 ):
-    header_states = {}
     for (root, dirs, files) in os.walk(src_path):
         for file in files:
             if (
@@ -267,6 +270,7 @@ def _collect_cpp_declarations(
 
 
 def parse_cpp_header(src_path):
+    header_states = {}
     files_declarations = {}
     declared_types = _standard_types
     incomplete_types = {}
@@ -274,11 +278,16 @@ def parse_cpp_header(src_path):
     extern_definitions_path = os.path.join(
         os.path.dirname(os.path.realpath(__file__)), "externdefs")
     _collect_cpp_declarations(
-        extern_definitions_path, files_declarations, declared_types,
-        incomplete_types, external_procedures)
+        extern_definitions_path, header_states, files_declarations,
+        declared_types, incomplete_types, external_procedures)
     _collect_cpp_declarations(
-        src_path, files_declarations, declared_types, incomplete_types,
-        external_procedures)
+        src_path, header_states, files_declarations, declared_types,
+        incomplete_types, external_procedures)
     for file_declaration in files_declarations.values():
         file_declaration.parse()
-    return files_declarations, declared_types, external_procedures
+    characteristics_file = os.path.join(
+        extern_definitions_path, "characteristics.json")
+    characteristics = ExternalCharacteristics.read(characteristics_file)
+    return (
+        files_declarations, declared_types, external_procedures, characteristics
+    )
