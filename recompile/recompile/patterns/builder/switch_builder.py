@@ -19,7 +19,7 @@ class SwitchBuilder:
         else:
             address = addr_addresses
         self._case_set_dict_by_table_address[address] = case_set_dict
-        return instructions.Switch(index, case_set_dict, {}, None)
+        return instructions.Switch(index, case_set_dict, {}, None, {})
 
     def start_table(self, address):
         self._current_table_address = address

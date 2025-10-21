@@ -203,13 +203,13 @@ long B_IDataFile::Seek(long offset, int whence)
     unsigned int position;
     switch (whence)
     {
-        case 0:
+        case SEEK_SET:
             position = static_cast<unsigned int>(offset);
             break;
-        case 1:
+        case SEEK_CUR:
             position = static_cast<unsigned int>(offset + this->Tell());
             break;
-        case 2:
+        case SEEK_END:
             position = static_cast<unsigned int>(offset) + this->file_size;
             break;
     }
@@ -249,7 +249,7 @@ unsigned char B_IDataFile::Peek()
     if (eof(this->fd) == 0)
     {
         this->Read(LOCAL(-4), 1);
-        this->Seek(-1, 1);
+        this->Seek(-1, SEEK_CUR);
         return reinterpret_cast<unsigned char>(STACKVAR(-4, 1));
     }
     return 0;

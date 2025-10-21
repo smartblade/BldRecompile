@@ -18,6 +18,12 @@
 		}
 	},
 	"100018A6": {
+		"parameters": [
+			{
+				"index": "2",
+				"constantset": "SEEK_*"
+			}
+		],
 		"varnames": {
 			"-4": "position"
 		}

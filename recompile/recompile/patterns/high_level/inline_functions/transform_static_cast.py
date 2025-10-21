@@ -4,7 +4,7 @@ from expressions.operator import Operator
 from patterns.make_proc_decl_from_args import make_proc_decl_from_args
 
 
-def transform_static_cast(data_type, expression, cur_proc_addr, **kwargs):
+def transform_static_cast(data_type, expression, procedure, **kwargs):
     if not isinstance(data_type, data_types.AnyInt):
         return None
     if data_type.size != 4:
@@ -35,7 +35,7 @@ def transform_static_cast(data_type, expression, cur_proc_addr, **kwargs):
         callee_addr = 0x10002250
     else:
         return None
-    if callee_addr == cur_proc_addr:
+    if callee_addr == procedure.address:
         return None
     proc_decl = make_proc_decl_from_args([obj], is_method=True)
     proc_decl.change_return_type(data_types.AnyInt32())

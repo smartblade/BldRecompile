@@ -4,11 +4,14 @@ from block_visitor import visit_block
 
 
 class Switch:
-    def __init__(self, index, case_set_dict, blocks_dict, default_label):
+    def __init__(
+        self, index, case_set_dict, blocks_dict, default_label, constant_dict
+    ):
         self._index = index
         self._case_set_dict = case_set_dict
         self._default_label = default_label
         self._blocks_dict = blocks_dict
+        self._constant_dict = constant_dict
         self._ensure_blocks_dict()
 
     def __repr__(self):
@@ -28,7 +31,8 @@ class Switch:
 
     def copy(self, index):
         return self.__class__(
-            index, self._case_set_dict, self._blocks_dict, self._default_label)
+            index, self._case_set_dict, self._blocks_dict, self._default_label,
+            self._constant_dict)
 
     def _ensure_blocks_dict(self):
         for label in self._case_set_dict.keys():
@@ -41,6 +45,11 @@ class Switch:
             self._blocks_dict[self._default_label] = [
                 instructions.Goto(self._default_label)
             ]
+
+    def _emit_case_constant(self, case):
+        if case not in self._constant_dict:
+            return case
+        return self._constant_dict[case]
 
     def has_label(self, label):
         if self._default_label is not None and label == self._default_label:
@@ -75,11 +84,13 @@ class Switch:
             blocks_dict[label] = transform_block(
                 block, transformer, **kwargs)
         instr = transformer.transform_switch(
-            index, self._case_set_dict, blocks_dict, **kwargs)
+            index, self._case_set_dict, blocks_dict, self._default_label,
+            self._constant_dict, **kwargs)
         if instr is not None:
             return instr
         return self.__class__(
-            index, self._case_set_dict, blocks_dict, self._default_label)
+            index, self._case_set_dict, blocks_dict, self._default_label,
+            self._constant_dict)
 
     def emit_code(self, writer):
         index = self._index.emit_code()
@@ -93,7 +104,8 @@ class Switch:
                 else:
                     case_set = self._case_set_dict[label]
                     for case in case_set:
-                        writer.write_line("case {}:".format(case))
+                        writer.write_line(
+                            "case {}:".format(self._emit_case_constant(case)))
                 with writer.indent():
                     for instr in block:
                         instr.emit_code(writer)

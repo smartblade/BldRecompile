@@ -115,7 +115,7 @@ def _try_make_switch(if_instruction, instrs, label_uses):
         case_set_dict[goto_instr.label].add(case)
         label_uses[goto_instr.label].remove(goto_instr)
     label_uses[last_goto.label].remove(last_goto)
-    switch = instructions.Switch(index, case_set_dict, {}, last_goto.label)
+    switch = instructions.Switch(index, case_set_dict, {}, last_goto.label, {})
     switch_label_uses = collect_label_uses([switch])
     for label, uses in switch_label_uses.items():
         cur_label_uses = label_uses.get(label, set())

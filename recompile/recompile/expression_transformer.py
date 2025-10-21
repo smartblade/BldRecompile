@@ -12,7 +12,10 @@ class ExpressionTransformer:
         return None
 
     @staticmethod
-    def transform_switch(index, case_set_dict, blocks_dict, **kwargs):
+    def transform_switch(
+        index, case_set_dict, blocks_dict, default_label, constant_dict,
+        **kwargs
+    ):
         return None
 
     @staticmethod

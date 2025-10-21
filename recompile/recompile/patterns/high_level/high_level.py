@@ -18,6 +18,7 @@ from .transform_global import transform_global
 from .transform_if import transform_if
 from .transform_local import transform_local
 from .transform_stackvar import transform_stackvar
+from .transform_switch import transform_switch
 from .transform_procedure_call import transform_procedure_call
 from .transform_reinterpret import transform_reinterpret
 from .transform_returns import transform_returns
@@ -38,10 +39,11 @@ def make_high_level_code(procedure, declarations, inline_procedures):
     analysis = Analysis()
     context = dict(
         analysis=analysis,
-        cur_proc_addr=procedure.address,
+        procedure=procedure,
         stack_vars=stack_vars,
         file_declarations=file_declarations,
         declarations=declarations,
+        characteristics=characteristics,
         inline_procedures=inline_procedures,
     )
     instrs = _transform_instructions(instrs, **context)
@@ -93,6 +95,10 @@ class _ExpressionTransformer(ExpressionTransformer):
     @staticmethod
     def transform_if(*args, **kwargs):
         return transform_if(*args, **kwargs)
+
+    @staticmethod
+    def transform_switch(*args, **kwargs):
+        return transform_switch(*args, **kwargs)
 
     @staticmethod
     def transform_binary(operator, left, right, **kwargs):
