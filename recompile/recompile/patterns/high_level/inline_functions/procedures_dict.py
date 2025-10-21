@@ -1,9 +1,12 @@
+from calling_convention import CallingConvention
+import data_types
 import expressions
 import instructions
-from calling_convention import CallingConvention
-from procedure_declaration import ProcedureDeclaration
 import patterns.high_level as high_level
 from patterns.procedure import Procedure
+from procedure_declaration import ProcedureDeclaration
+
+from .bind_stack_variables import bind_stack_variables
 
 
 class ProceduresDict:
@@ -11,20 +14,29 @@ class ProceduresDict:
         self._classes = {}
 
     def add_destructor(self, destructor_class, this_offset, instrs):
-        proc_info = instructions.ProcedureInfo(destructor_class, None)
-        proc_info.define_this_offset(
-            expressions.intermediate.Stackvar(this_offset, 4))
-        proc_info.set_stack_delta(0)
-        proc_info.pop_reg_value("ecx")
-        proc_dict = self._classes.get(destructor_class.class_name)
+        method_name = "~{}".format(destructor_class.class_name)
+        self.add_method(destructor_class, this_offset, instrs, method_name, [])
+
+    def add_method(
+        self, method_class, this_offset, instrs, method_name, arguments
+    ):
+        proc_dict = self._classes.get(method_class.class_name)
         if proc_dict is None:
             proc_dict = {}
-            self._classes[destructor_class.class_name] = proc_dict
-        proc_name = "~{}".format(destructor_class.class_name)
+            self._classes[method_class.class_name] = proc_dict
+        parameters = []
+        for argument in arguments:
+            data_type = data_types.UInt32()
+            assert argument.size == data_type.size
+            parameters.append((data_type, argument.name))
         proc_decl = ProcedureDeclaration(
-            proc_name, CallingConvention.THISCALL, destructor_class, [], None)
-        assert proc_name not in proc_dict
-        proc_dict[proc_name] = Procedure(proc_info, None, proc_decl, instrs)
+            method_name, CallingConvention.THISCALL, method_class,
+            parameters, None)
+        instrs = bind_stack_variables(instrs, proc_decl, arguments)
+        proc_info = _make_procedure_info(
+            method_class, this_offset, proc_decl.stack_delta)
+        assert method_name not in proc_dict
+        proc_dict[method_name] = Procedure(proc_info, None, proc_decl, instrs)
 
     def make_high_level_code(self, declarations):
         for class_methods in self._classes.values():
@@ -38,6 +50,19 @@ class ProceduresDict:
             writer.write_line("class {}".format(class_name))
             writer.write_line("{")
             with writer.indent():
+                is_first = True
                 for procedure in class_methods.values():
+                    if not is_first:
+                        writer.write_line()
+                    is_first = False
                     procedure.emit_code(writer, is_definition=False)
             writer.write_line("};")
+
+
+def _make_procedure_info(method_class, this_offset, stack_delta):
+    proc_info = instructions.ProcedureInfo(method_class, None)
+    proc_info.define_this_offset(
+        expressions.intermediate.Stackvar(this_offset, 4))
+    proc_info.set_stack_delta(stack_delta)
+    proc_info.pop_reg_value("ecx")
+    return proc_info

@@ -3,16 +3,29 @@ import expressions
 from expressions.operator import Operator
 import instructions
 
+from .apply_characteristics import apply_characteristics_to_assignment
 from .is_int_constant import is_int_constant
 from .is_refcnt_assignment import is_refcnt_assignment
 from .obj_from_field_access import try_extract_obj_from_field_access
 
 
 def transform_block_instructions(block_instructions, **kwargs):
-    if_instr = block_instructions.get_current_instruction(
-        instructions.IfInstruction)
-    if if_instr is None:
+    instr = block_instructions.get_current_instruction()
+    cb = _cb_by_instruction_type.get(type(instr))
+    if cb is None:
         return
+    cb(block_instructions, instr, **kwargs)
+
+
+def _transform_assignment(block_instructions, assignment, **kwargs):
+    dst = assignment.dst
+    if not isinstance(dst, expressions.intermediate.Stackvar):
+        return
+    src = assignment.src
+    apply_characteristics_to_assignment(block_instructions, dst, src, **kwargs)
+
+
+def _transform_if_instruction(block_instructions, if_instr, **kwargs):
     if not isinstance(if_instr.if_clause, expressions.Bin):
         return
     if if_instr.if_clause.operator == Operator.NE:
@@ -235,3 +248,9 @@ def _is_unknown_constant(e, int_value):
     if e.value != int_value:
         return False
     return True
+
+
+_cb_by_instruction_type = {
+    instructions.IfInstruction: _transform_if_instruction,
+    instructions.Assignment: _transform_assignment,
+}

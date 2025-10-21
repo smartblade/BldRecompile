@@ -1,4 +1,7 @@
 from .external_characteristics import ExternalCharacteristics
+from .inline_call import InlineCall
+from .inline_call_argument import InlineCallArgument
+from .inline_calls import InlineCalls
 from .module_characteristics import ModuleCharacteristics
 from .parameter import Parameter
 from .parameters import Parameters

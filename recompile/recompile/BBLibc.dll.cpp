@@ -222,11 +222,7 @@ long B_IDataFile::Seek(long offset, int whence)
         this->cacheBlockStartPos = position - IFILE_CACHE_SIZE;
         if (this->fileInfo != nullptr)
         {
-            B_FileInfo *unknown_loc_08 = this->fileInfo;
-            if (unknown_loc_08->unknown0C != -1)
-            {
-                lseek(unknown_loc_08->fd, unknown_loc_08->dataStartPos + static_cast<long>(position), SEEK_SET);
-            }
+            this->fileInfo->Seek(position);
         }
         else
         {
@@ -32502,6 +32498,15 @@ class B_FileInfo
         {
             close(this->fd);
             free(this->unknown04);
+        }
+    }
+
+    // address: inline
+    void Seek(unsigned int position)
+    {
+        if (this->unknown0C != -1)
+        {
+            lseek(this->fd, this->dataStartPos + static_cast<long>(position), SEEK_SET);
         }
     }
 };

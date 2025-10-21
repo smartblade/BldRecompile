@@ -26,7 +26,20 @@
 		],
 		"varnames": {
 			"-4": "position"
-		}
+		},
+		"inlinecalls": [
+			{
+				"name": "Seek",
+				"this": "-8",
+				"arguments": [
+					{
+						"name": "position",
+						"offset": "-4",
+						"size": "4"
+					}
+				]
+			}
+		]
 	},
 	"100021E0": {
 		"return": {
