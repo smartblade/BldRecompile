@@ -183,6 +183,9 @@ class HeaderState:
     def _parse_define(self, const_name, const_value):
         const_value = const_value.strip()
         if const_value.startswith("0x"):
+            # Ignore 'long' or ''long long' constants
+            if const_value.endswith("L"):
+                return
             self._constants.add(const_name, from_hex(const_value))
         elif const_value.isdigit():
             self._constants.add(const_name, int(const_value))
