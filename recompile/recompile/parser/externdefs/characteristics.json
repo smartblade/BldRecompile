@@ -1,4 +1,9 @@
 {
+	"eof": {
+		"return": {
+			"boolean": "yes"
+		}
+	},
 	"lseek": {
 		"parameters": [
 			{

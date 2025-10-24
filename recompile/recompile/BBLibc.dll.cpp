@@ -242,7 +242,7 @@ long B_IDataFile::Tell()
 // address: 0x100019CC
 unsigned char B_IDataFile::Peek()
 {
-    if (eof(this->fd) == 0)
+    if (!eof(this->fd))
     {
         this->Read(LOCAL(-4), 1);
         this->Seek(-1, SEEK_CUR);
