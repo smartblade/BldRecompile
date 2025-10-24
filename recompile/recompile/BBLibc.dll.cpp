@@ -441,7 +441,7 @@ long B_ODataFile::Seek(long arg_1)
     {
         ACCESS(this, 16392, 4) = arg_1;
         ACCESS(this, 16396, 4) = 0x00000000;
-        lseek(this->fd, arg_1, 0);
+        lseek(this->fd, arg_1, SEEK_SET);
     }
     return reinterpret_cast<long>(ACCESS(this, 16392, 4)) + reinterpret_cast<long>(ACCESS(this, 16396, 4));
 }

@@ -4,6 +4,7 @@
 #include "NamedObj.h"
 #include "BitMap.h"
 #include "BitMap24.h"
+#include <io.h>
 
 
 /*
