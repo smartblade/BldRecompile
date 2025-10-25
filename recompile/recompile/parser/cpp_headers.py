@@ -11,8 +11,12 @@ from .constants import Constants
 from .xml_metadata import XmlMetadata
 
 preprocessor_regexp = re.compile(
-    r'^#(include\s+["<](?P<file>.+)[">])|'
-    r'(define\s+(?P<const_name>\S+)\s+(?P<const_value>.+))'
+    r'^#('
+    r'(include\s+["<](?P<file>.+)[">])|'
+    r'(define\s+(?P<const_name>\S+)\s+(?P<const_value>.+))|'
+    r'(ifndef\s+(?P<ifndef_clause>BLD_NATIVE))|'
+    r'(?P<endif>endif)'
+    r')'
 )
 comment_regexp = re.compile(r'^(?P<line>.*)//')
 comment_start_regexp = re.compile(r'^(?P<line>.*)/\*(?P<tail>.*)$')
@@ -74,6 +78,7 @@ class HeaderState:
         with open(self._file_name) as f:
             lines = f.readlines()
         is_comment = False
+        is_native_placeholders = False
         class_name = None
         parent_size = 0
         fields = None
@@ -81,7 +86,10 @@ class HeaderState:
         brackets_depth = 0
         for line in lines:
             line, is_comment = _strip_comments(line, is_comment)
-            self._try_parse_preprocessor_directive(line)
+            is_native_placeholders = self._try_parse_preprocessor_directive(
+                line) or is_native_placeholders
+            if is_native_placeholders:
+                continue
             line = self._try_parse_template(line)
             self._try_parse_external_procedures(line)
             match = class_regexp.search(line)
@@ -176,6 +184,12 @@ class HeaderState:
         if include_file is not None:
             self._parse_include_file(include_file)
             return
+        if match.group("ifndef_clause"):
+            is_native_placeholders = True
+            return is_native_placeholders
+        if match.group("endif"):
+            is_native_placeholders = False
+            return is_native_placeholders
         const_name = match.group("const_name")
         const_value = match.group("const_value")
         self._parse_define(const_name, const_value)
