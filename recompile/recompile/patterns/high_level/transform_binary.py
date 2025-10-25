@@ -3,7 +3,7 @@ import expressions
 from expressions.operator import Operator
 
 from .call_characteristics import get_call_characteristics
-from .transform_access import transform_access
+from .transform_access import do_pointer_dereference
 
 
 def transform_binary(operator, left, right, analysis, **kwargs):
@@ -37,7 +37,7 @@ def _transform_int_sum(left, right):
         left.expression.data_type, (data_types.Pointer32, data_types.Reference)
     ):
         return None
-    e = transform_access(left.expression, right.value, None)
+    e = do_pointer_dereference(left.expression, right.value, None)
     if e is None:
         return None
     return expressions.AddressOf(e)

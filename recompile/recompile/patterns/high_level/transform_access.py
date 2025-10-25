@@ -2,7 +2,12 @@ import data_types
 import expressions
 
 
-def transform_access(expression, offset, size, **kwargs):
+def transform_access(expression, offset, size, analysis, **kwargs):
+    analysis.process_access(expression, offset, size)
+    return do_pointer_dereference(expression, offset, size)
+
+
+def do_pointer_dereference(expression, offset, size):
     if isinstance(expression.data_type, data_types.Unknown32):
         return None
     if (
@@ -24,11 +29,11 @@ def transform_access(expression, offset, size, **kwargs):
         data_type, field_name = pointee.get_field_by_offset(field_offset)
         field_access = expressions.FieldAccess(expression, field_name)
         if field_offset != offset or size is not None and data_type.size > size:
-            return transform_access(
+            return do_pointer_dereference(
                 expressions.AddressOf(field_access),
                 offset - field_offset,
                 size,
-                **kwargs)
+            )
         if size is not None and data_type.size != size:
             raise Exception(
                 "Data type size expected to be {} but was: {}.".format(

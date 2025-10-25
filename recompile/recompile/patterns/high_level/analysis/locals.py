@@ -15,6 +15,21 @@ class LocalsAnalysis:
         assert dst.size == src.data_type.size
         self._update_type(dst.offset, src.data_type)
 
+    def process_access(self, expression, offset, size):
+        if not isinstance(expression, expressions.intermediate.Stackvar):
+            return
+        if expression.offset not in self._types_by_offset:
+            return
+        existing_type = self._types_by_offset[expression.offset]
+        if existing_type is None:
+            return
+        if (
+            not isinstance(existing_type, data_types.Pointer32) and
+            not isinstance(existing_type, data_types.AnyInt) and
+            not isinstance(existing_type, data_types.UnknownTypes)
+        ):
+            self._types_by_offset[expression.offset] = None
+
     def process_binary(self, operator, left, right):
         if (
             operator != Operator.LT and operator != Operator.LE and
@@ -74,21 +89,25 @@ class LocalsAnalysis:
                 data_type = self._compared_types_by_offset.get(offset)
                 if data_type is None:
                     continue
+            if not _is_acceptable_type(data_type):
+                continue
             stack_vars[offset] = expressions.Identifier(data_type, name)
 
     def _update_type(self, offset, data_type):
         if offset >= 0:
             return
         if offset not in self._types_by_offset:
-            if _is_acceptable_type(data_type):
-                self._types_by_offset[offset] = data_type
-            else:
-                self._types_by_offset[offset] = None
+            self._types_by_offset[offset] = data_type
             return
         existing_type = self._types_by_offset[offset]
         if existing_type is None:
             return
-        if not data_types.are_compatible(existing_type, data_type):
+        if (
+            not data_types.are_same(data_type, existing_type) and
+            data_types.are_compatible(data_type, existing_type)
+        ):
+            self._types_by_offset[offset] = data_type
+        elif not data_types.are_compatible(existing_type, data_type):
             if (
                 existing_type.is_any_int and data_type.is_any_int and
                 existing_type.size == data_type.size

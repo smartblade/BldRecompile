@@ -75,4 +75,9 @@ def _convert_pointees(e, src_type, target_type):
         target_type.is_any_int
     ):
         return expressions.do_reinterpret(data_types.Pointer32(target_type), e)
+    if (
+        isinstance(src_type, data_types.ClassType) and
+        isinstance(target_type, data_types.ClassType)
+    ):
+        return expressions.do_reinterpret(data_types.Pointer32(target_type), e)
     raise Exception("Can't convert {} to {}".format(src_type, target_type))
