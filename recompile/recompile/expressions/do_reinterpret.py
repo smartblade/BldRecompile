@@ -30,7 +30,9 @@ def do_reinterpret(data_type, e):
 def _reinterpret_const(data_type, c):
     if (
         isinstance(data_type, (data_types.Int32, data_types.Long32)) and
-        isinstance(c.data_type, (data_types.AnyInt, data_types.Unknown32)) and
+        isinstance(
+            c.data_type,
+            (data_types.UInt32, data_types.AnyInt, data_types.Unknown32)) and
         data_type.size == c.data_type.size
     ):
         if c.value < 0x80000000:

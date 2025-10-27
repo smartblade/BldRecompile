@@ -11,6 +11,8 @@ def transform_binary(operator, left, right, analysis, **kwargs):
     if _is_integer_operation(left, right):
         if operator == Operator.ADD:
             return _transform_int_sum(left, right)
+        if operator == Operator.SUB:
+            return _transform_int_sub(left, right)
         if operator == Operator.MUL:
             return _transform_int_mul(left, right)
         if operator == Operator.BIT_AND:
@@ -25,6 +27,21 @@ def _is_integer_operation(left, right):
 
 
 def _transform_int_sum(left, right):
+    result = _transform_pointer_offset(left, right)
+    if result is not None:
+        return result
+    return _convert_constants(Operator.ADD, left, right)
+
+
+def _transform_int_sub(left, right):
+    return _convert_constants(Operator.SUB, left, right)
+
+
+def _transform_int_mul(left, right):
+    return _convert_constants(Operator.MUL, left, right)
+
+
+def _transform_pointer_offset(left, right):
     if not isinstance(left.data_type, data_types.AnyInt):
         return None
     if not isinstance(right.data_type, data_types.AnyInt):
@@ -43,15 +60,24 @@ def _transform_int_sum(left, right):
     return expressions.AddressOf(e)
 
 
-def _transform_int_mul(left, right):
-    if not isinstance(left, expressions.Constant):
+def _convert_constants(operator, left, right):
+    left_const = _convert_constant(left, right)
+    if left_const is not None:
+        return expressions.Bin(operator, left_const, right)
+    right_const = _convert_constant(right, left)
+    if right_const is not None:
+        return expressions.Bin(operator, left, right_const)
+    return None
+
+
+def _convert_constant(c, other):
+    if not isinstance(c, (expressions.Constant, expressions.NamedConstant)):
         return None
     if (
-        not data_types.are_same(left.data_type, right.data_type) and
-        left.data_type.size == right.data_type.size
+        not data_types.are_same(c.data_type, other.data_type) and
+        c.data_type.size == other.data_type.size
     ):
-        left = expressions.do_reinterpret(right.data_type, left)
-        return expressions.Bin(Operator.MUL, left, right)
+        return expressions.do_reinterpret(other.data_type, c)
     return None
 
 
