@@ -1729,7 +1729,7 @@ B_Resource *B_Resource::Load(B_IDataFile &arg_1, unsigned short arg_2)
             unknown_function_1003590B(arg_1, STACKVAR(-4, 4));
             goto l10004355;
         case 1:
-            arg_1 >> *reinterpret_cast<unsigned short *>(LOCAL(12));
+            arg_1 >> arg_2;
             arg_1 >> *reinterpret_cast<unsigned long *>(LOCAL(-12));
             arg_1 >> *reinterpret_cast<unsigned int *>(LOCAL(-8));
             STACKVAR(-20, 4) = ??2@YAPAXI@Z(0x00000024);
@@ -22599,7 +22599,7 @@ int B_BitMap24::SaveToJPEG(const char *arg_1, int arg_2) const
 // address: 0x100298B0
 B_ChannelOFile::B_ChannelOFile(B_Name arg_1, const char *arg_2)
 {
-    this->B_NamedObj(*reinterpret_cast<B_Name *>(LOCAL(8)));
+    this->B_NamedObj(arg_1);
     ACCESS(this, 0, 4) = GLOBAL(0x10042180);
     this->unknown0Ch = 1;
     ACCESS(this, 0, 4) = GLOBAL(0x10042CBC);
@@ -22613,7 +22613,7 @@ B_ChannelOFile::B_ChannelOFile(B_Name arg_1, const char *arg_2)
     {
         this->unknown0Ch = 1;
     }
-    reinterpret_cast<B_Name *>(LOCAL(8))->~B_Name();
+    arg_1.~B_Name();
 }
 
 // address: 0x1002994D
