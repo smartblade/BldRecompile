@@ -3300,12 +3300,12 @@ B_Color::B_Color(byte r, byte g, byte b)
 // address: 0x100068D0
 B_Color B_Color::operator +(const B_Color &color) const
 {
-    STACKVAR(-12, 1) = this->b + color.b;
-    STACKVAR(-8, 1) = this->g + color.g;
-    STACKVAR(-4, 1) = this->r + color.r;
-    __result->r = reinterpret_cast<byte>(STACKVAR(-4, 1));
-    __result->g = reinterpret_cast<byte>(STACKVAR(-8, 1));
-    __result->b = reinterpret_cast<byte>(STACKVAR(-12, 1));
+    byte unknown_loc_0C = this->b + color.b;
+    byte unknown_loc_08 = this->g + color.g;
+    byte unknown_loc_04 = this->r + color.r;
+    __result->r = unknown_loc_04;
+    __result->g = unknown_loc_08;
+    __result->b = unknown_loc_0C;
     ACCESS(__result, 0, 4) = GLOBAL(0x100421F0);
     __result->MakeCons();
     REGDEF(eax=__result)
@@ -3315,14 +3315,14 @@ B_Color B_Color::operator +(const B_Color &color) const
 B_Color B_Color::operator *(float coef) const
 {
     int unknown_loc_14 = static_cast<int>(this->b);
-    STACKVAR(-12, 1) = static_cast<any_int8>(static_cast<double>(unknown_loc_14) * coef);
+    byte unknown_loc_0C = reinterpret_cast<byte>(static_cast<any_int8>(static_cast<double>(unknown_loc_14) * coef));
     int unknown_loc_18 = static_cast<int>(this->g);
-    STACKVAR(-8, 1) = static_cast<any_int8>(static_cast<double>(unknown_loc_18) * coef);
+    byte unknown_loc_08 = reinterpret_cast<byte>(static_cast<any_int8>(static_cast<double>(unknown_loc_18) * coef));
     int unknown_loc_1C = static_cast<int>(this->r);
-    STACKVAR(-4, 1) = static_cast<any_int8>(static_cast<double>(unknown_loc_1C) * coef);
-    __result->r = reinterpret_cast<byte>(STACKVAR(-4, 1));
-    __result->g = reinterpret_cast<byte>(STACKVAR(-8, 1));
-    __result->b = reinterpret_cast<byte>(STACKVAR(-12, 1));
+    byte unknown_loc_04 = reinterpret_cast<byte>(static_cast<any_int8>(static_cast<double>(unknown_loc_1C) * coef));
+    __result->r = unknown_loc_04;
+    __result->g = unknown_loc_08;
+    __result->b = unknown_loc_0C;
     ACCESS(__result, 0, 4) = GLOBAL(0x100421F0);
     __result->MakeCons();
     REGDEF(eax=__result)
@@ -3332,14 +3332,14 @@ B_Color B_Color::operator *(float coef) const
 B_Color B_Color::operator /(float f) const
 {
     int unknown_loc_14 = static_cast<int>(this->b);
-    STACKVAR(-12, 1) = static_cast<any_int8>(static_cast<double>(unknown_loc_14) / f);
+    byte unknown_loc_0C = reinterpret_cast<byte>(static_cast<any_int8>(static_cast<double>(unknown_loc_14) / f));
     int unknown_loc_18 = static_cast<int>(this->g);
-    STACKVAR(-8, 1) = static_cast<any_int8>(static_cast<double>(unknown_loc_18) / f);
+    byte unknown_loc_08 = reinterpret_cast<byte>(static_cast<any_int8>(static_cast<double>(unknown_loc_18) / f));
     int unknown_loc_1C = static_cast<int>(this->r);
-    STACKVAR(-4, 1) = static_cast<any_int8>(static_cast<double>(unknown_loc_1C) / f);
-    __result->r = reinterpret_cast<byte>(STACKVAR(-4, 1));
-    __result->g = reinterpret_cast<byte>(STACKVAR(-8, 1));
-    __result->b = reinterpret_cast<byte>(STACKVAR(-12, 1));
+    byte unknown_loc_04 = reinterpret_cast<byte>(static_cast<any_int8>(static_cast<double>(unknown_loc_1C) / f));
+    __result->r = unknown_loc_04;
+    __result->g = unknown_loc_08;
+    __result->b = unknown_loc_0C;
     ACCESS(__result, 0, 4) = GLOBAL(0x100421F0);
     __result->MakeCons();
     REGDEF(eax=__result)

@@ -125,4 +125,6 @@ def _is_acceptable_type(data_type):
             return True
     if data_type.is_any_int and data_type.size == 4:
         return True
+    if isinstance(data_type, data_types.UChar):
+        return True
     return False
