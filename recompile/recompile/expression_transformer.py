@@ -145,7 +145,7 @@ class ExpressionTransformer:
         return None
 
     @staticmethod
-    def transform_local(offset, **kwargs):
+    def transform_local(local, **kwargs):
         return None
 
     @staticmethod

@@ -7,7 +7,7 @@ class LocalsAnalysis:
     def __init__(self):
         self._types_by_offset = {}
         self._compared_types_by_offset = {}
-        self._min_local_ptr_offset = 0
+        self._local_pointees_sizes = {}
 
     def process_assignment(self, dst, src):
         if not isinstance(dst, expressions.intermediate.Stackvar):
@@ -68,18 +68,40 @@ class LocalsAnalysis:
         assert expression.size == data_type.size
         self._update_type(expression.offset, data_type)
 
-    def process_local(self, offset):
-        self._types_by_offset[offset] = None
-        if offset < self._min_local_ptr_offset:
-            self._min_local_ptr_offset = offset
+    def process_local(self, local):
+        if local not in self._local_pointees_sizes:
+            self._local_pointees_sizes[local] = None
+
+    def process_arguments(self, arguments, call_characteristics):
+        for i, argument in enumerate(arguments):
+            if not isinstance(argument, expressions.intermediate.Local):
+                continue
+            param_characteristics = call_characteristics.parameters[i]
+            array_length = _get_array_length(param_characteristics, arguments)
+            pointee_size = _get_pointee_size(argument.data_type, array_length)
+            if pointee_size is None:
+                continue
+            if self._local_pointees_sizes[argument] is None:
+                self._local_pointees_sizes[argument] = pointee_size
+            assert self._local_pointees_sizes[argument] == pointee_size
+
+    def _get_min_local_ptr_offset(self):
+        min_local_ptr_offset = 0
+        for local, size in self._local_pointees_sizes.items():
+            if size == 1:
+                continue
+            if local.offset < min_local_ptr_offset:
+                min_local_ptr_offset = local.offset
+        return min_local_ptr_offset
 
     def fill_stack_variables(self, stack_vars, variable_names):
+        min_local_ptr_offset = self._get_min_local_ptr_offset()
         for offset, data_type in self._types_by_offset.items():
             if data_type is None:
                 continue
             if offset in stack_vars:
                 continue
-            if offset >= self._min_local_ptr_offset:
+            if offset >= min_local_ptr_offset:
                 continue
             assert offset < 0
             name = variable_names.get(offset)
@@ -128,3 +150,30 @@ def _is_acceptable_type(data_type):
     if isinstance(data_type, data_types.UChar):
         return True
     return False
+
+
+def _get_array_length(param_characteristics, arguments):
+    if param_characteristics.array_length is None:
+        return None
+    param_index = param_characteristics.array_length.parameter
+    if param_index is None:
+        return None
+    array_length_const = arguments[param_index]
+    if not isinstance(array_length_const, expressions.Constant):
+        return None
+    if not array_length_const.data_type.is_any_int:
+        return None
+    assert isinstance(array_length_const.value, int)
+    return array_length_const.value
+
+
+def _get_pointee_size(parameter_type, array_length):
+    if array_length is None:
+        return None
+    if not isinstance(parameter_type, data_types.Pointer32):
+        return None
+    if parameter_type.pointee is None:
+        parameter_pointee_size = 1
+    else:
+        parameter_pointee_size = parameter_type.pointee.size
+    return parameter_pointee_size * array_length

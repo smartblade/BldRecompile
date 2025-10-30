@@ -1,3 +1,4 @@
+from .array_length import ArrayLength
 from .external_characteristics import ExternalCharacteristics
 from .inline_call import InlineCall
 from .inline_call_argument import InlineCallArgument

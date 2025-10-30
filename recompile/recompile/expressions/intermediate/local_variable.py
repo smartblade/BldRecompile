@@ -18,7 +18,7 @@ class Local:
         on_expression_visited(self, **kwargs)
 
     def transform(self, transformer, **kwargs):
-        e = transformer.transform_local(self._offset, **kwargs)
+        e = transformer.transform_local(self, **kwargs)
         if e is not None:
             return e
         return self

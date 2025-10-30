@@ -41,6 +41,16 @@
 			}
 		]
 	},
+	"10001A33": {
+		"parameters": [
+			{
+				"index": "1",
+				"arraylength": {
+					"parameter": "2"
+				}
+			}
+		]
+	},
 	"100021E0": {
 		"return": {
 			"boolean": "yes"

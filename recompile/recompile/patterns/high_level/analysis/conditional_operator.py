@@ -25,8 +25,8 @@ class ConditionalOperatorAnalysis:
         if size != 4:
             self._num_uses[offset] = None
 
-    def process_local(self, offset):
-        self._num_uses[offset] = None
+    def process_local(self, local):
+        self._num_uses[local.offset] = None
 
     def transform_block_instructions(
         self, block_instructions, stack_vars, **kwargs
