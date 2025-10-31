@@ -244,10 +244,10 @@ unsigned char B_IDataFile::Peek()
 {
     if (!eof(this->fd))
     {
-        unsigned char unknown_loc_04;
-        this->Read(&unknown_loc_04, sizeof(unsigned char));
+        unsigned char c;
+        this->Read(&c, sizeof(unsigned char));
         this->Seek(-1, SEEK_CUR);
-        return unknown_loc_04;
+        return c;
     }
     return 0;
 }
