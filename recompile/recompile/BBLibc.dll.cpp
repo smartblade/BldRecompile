@@ -246,7 +246,7 @@ unsigned char B_IDataFile::Peek()
     {
         unsigned char c;
         this->Read(&c, sizeof(unsigned char));
-        this->Seek(-1, SEEK_CUR);
+        this->Seek(-sizeof(unsigned char), SEEK_CUR);
         return c;
     }
     return 0;

@@ -79,7 +79,13 @@ def _reinterpret_named_const(data_type, c):
     if (
         isinstance(
             data_type,
-            (data_types.Int32, data_types.UInt32, data_types.UChar)) and
+            (
+                data_types.Int32,
+                data_types.UInt32,
+                data_types.Long32,
+                data_types.UChar,
+            )
+        ) and
         isinstance(c.data_type, data_types.AnyInt) and
         data_type.size == c.data_type.size
     ):

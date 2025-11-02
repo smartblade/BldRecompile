@@ -6,6 +6,8 @@ class Procedure:
         self._characteristics_dict = characteristics_dict
         self._variable_names = characteristics.VariablesNames(
             self._characteristics_dict.get("varnames", {}))
+        self._constants = characteristics.Constants(
+            self._characteristics_dict.get("constants", {}))
         self._parameters = characteristics.Parameters(
             self._characteristics_dict.get("parameters", []))
         self._inline_calls = characteristics.InlineCalls(
@@ -19,6 +21,10 @@ class Procedure:
     @property
     def variables_names(self):
         return self._variable_names
+
+    @property
+    def constants(self):
+        return self._constants
 
     @property
     def parameters(self):
