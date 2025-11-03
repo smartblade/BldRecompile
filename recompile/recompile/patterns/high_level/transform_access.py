@@ -39,6 +39,9 @@ def do_pointer_dereference(expression, offset, size):
                 "Data type size expected to be {} but was: {}.".format(
                     size, data_type.size))
         return field_access
+    if isinstance(pointee, data_types.Array) and size is None and offset == 0:
+        if isinstance(expression, expressions.AddressOf):
+            return expressions.do_dereference(expression)
     if isinstance(
         pointee, (
             data_types.Char, data_types.UChar,

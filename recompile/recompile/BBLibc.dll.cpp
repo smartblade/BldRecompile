@@ -268,14 +268,14 @@ void B_IDataFile::Read(void *data, unsigned int size)
     }
     if (size < IFILE_CACHE_SIZE - this->posInCacheBlock)
     {
-        memcpy(data, reinterpret_cast<void *>(reinterpret_cast<any_int32>(this) + this->posInCacheBlock + 12), size); // TODO improve emitting of memcpy instructions
+        memcpy(data, &this->fileCache[this->posInCacheBlock], size); // TODO improve emitting of memcpy instructions
         this->posInCacheBlock += size;
         return;
     }
     unsigned int unknown_loc_04 = IFILE_CACHE_SIZE - this->posInCacheBlock;
     if (unknown_loc_04 != 0)
     {
-        memcpy(data, reinterpret_cast<void *>(reinterpret_cast<any_int32>(this) + this->posInCacheBlock + 12), unknown_loc_04); // TODO improve emitting of memcpy instructions
+        memcpy(data, &this->fileCache[this->posInCacheBlock], unknown_loc_04); // TODO improve emitting of memcpy instructions
         this->posInCacheBlock = IFILE_CACHE_SIZE;
         size -= unknown_loc_04;
     }
@@ -456,14 +456,14 @@ void B_ODataFile::Write(const void *data, unsigned int size)
     }
     if (size < OFILE_CACHE_SIZE - this->posInCacheBlock)
     {
-        memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(this) + this->posInCacheBlock + 8), data, size); // TODO improve emitting of memcpy instructions
+        memcpy(&this->fileCache[this->posInCacheBlock], data, size); // TODO improve emitting of memcpy instructions
         this->posInCacheBlock += size;
         return;
     }
     unsigned int unknown_loc_04 = OFILE_CACHE_SIZE - this->posInCacheBlock;
     if (unknown_loc_04 != 0)
     {
-        memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(this) + this->posInCacheBlock + 8), data, unknown_loc_04); // TODO improve emitting of memcpy instructions
+        memcpy(&this->fileCache[this->posInCacheBlock], data, unknown_loc_04); // TODO improve emitting of memcpy instructions
         this->posInCacheBlock = OFILE_CACHE_SIZE;
         size -= unknown_loc_04;
     }

@@ -4,6 +4,7 @@ from expressions.operator import Operator
 
 from .call_characteristics import get_call_characteristics
 from .transform_access import do_pointer_dereference
+from .transform_arrptr import transform_arrptr
 
 
 def transform_binary(operator, left, right, analysis, **kwargs):
@@ -44,11 +45,17 @@ def _transform_int_mul(left, right):
 def _transform_pointer_offset(left, right):
     if not isinstance(left.data_type, data_types.AnyInt):
         return None
-    if not isinstance(right.data_type, data_types.AnyInt):
-        return None
-    if not isinstance(left, expressions.ReinterpretCast):
+    if not right.data_type.is_any_int:
         return None
     if not isinstance(right, expressions.Constant):
+        return None
+    if isinstance(left, expressions.Bin) and left.operator == Operator.ADD:
+        return _transform_array_pointer_offset(left.left, left.right, right)
+    return _transform_const_pointer_offset(left, right)
+
+
+def _transform_const_pointer_offset(left, right: expressions.Constant):
+    if not isinstance(left, expressions.ReinterpretCast):
         return None
     if not isinstance(
         left.expression.data_type, (data_types.Pointer32, data_types.Reference)
@@ -58,6 +65,13 @@ def _transform_pointer_offset(left, right):
     if e is None:
         return None
     return expressions.AddressOf(e)
+
+
+def _transform_array_pointer_offset(bin_left, bin_right, right):
+    e = _transform_const_pointer_offset(bin_left, right)
+    if e is None:
+        return None
+    return transform_arrptr(e, 1, bin_right, 0)
 
 
 def _convert_constants(operator, left, right):
