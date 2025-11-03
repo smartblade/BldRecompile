@@ -1,5 +1,9 @@
-class Array:
+from data_types.data_type import DataType
+
+
+class Array(DataType):
     def __init__(self, element_type, size):
+        super().__init__()
         self._element_type = element_type
         self._size = size
 
