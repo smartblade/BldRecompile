@@ -364,8 +364,8 @@ B_IDataFile::~B_IDataFile()
 // address: 0x10001C44
 B_ODataFile::B_ODataFile(const char *file_name, int flags)
 {
-    ACCESS(this, 16392, 4) = 0x00000000;
-    ACCESS(this, 16396, 4) = 0x00000000;
+    this->cacheBlockStartPos = 0;
+    this->posInCacheBlock = 0;
     this->file_name = strdup(file_name);
     this->fd = open(file_name, flags | 0x00000301, 0x00000180);
     if (this->fd == -1)
@@ -422,29 +422,29 @@ l10001D56:
 // address: 0x10001DA0
 void B_ODataFile::WriteCacheBlock()
 {
-    if (ACCESS(this, 16396, 4) == 0x00000000)
+    if (this->posInCacheBlock == 0)
     {
         return;
     }
-    write(this->fd, &this->unknown_fields, reinterpret_cast<unsigned int>(ACCESS(this, 16396, 4)));
-    ACCESS(this, 16392, 4) = reinterpret_cast<any_int32>(ACCESS(this, 16392, 4)) + reinterpret_cast<any_int32>(ACCESS(this, 16396, 4));
-    ACCESS(this, 16396, 4) = 0x00000000;
+    write(this->fd, &this->fileCache, this->posInCacheBlock);
+    this->cacheBlockStartPos += this->posInCacheBlock;
+    this->posInCacheBlock = 0;
 }
 
 // address: 0x10001E01
 long B_ODataFile::Seek(long arg_1)
 {
-    if (static_cast<unsigned int>(arg_1) > reinterpret_cast<unsigned int>(ACCESS(this, 16392, 4)) && static_cast<unsigned int>(arg_1) < reinterpret_cast<unsigned int>(ACCESS(this, 16392, 4)) + 16384)
+    if (static_cast<unsigned int>(arg_1) > this->cacheBlockStartPos && static_cast<unsigned int>(arg_1) < this->cacheBlockStartPos + OFILE_CACHE_SIZE)
     {
-        ACCESS(this, 16396, 4) = arg_1 - reinterpret_cast<any_int32>(ACCESS(this, 16392, 4));
+        this->posInCacheBlock = static_cast<unsigned int>(arg_1) - this->cacheBlockStartPos;
     }
     else
     {
-        ACCESS(this, 16392, 4) = arg_1;
-        ACCESS(this, 16396, 4) = 0x00000000;
+        this->cacheBlockStartPos = static_cast<unsigned int>(arg_1);
+        this->posInCacheBlock = 0;
         lseek(this->fd, arg_1, SEEK_SET);
     }
-    return reinterpret_cast<long>(ACCESS(this, 16392, 4)) + reinterpret_cast<long>(ACCESS(this, 16396, 4));
+    return static_cast<long>(this->cacheBlockStartPos + this->posInCacheBlock);
 }
 
 // address: 0x10001E86
@@ -454,17 +454,17 @@ void B_ODataFile::Write(const void *data, unsigned int size)
     {
         return;
     }
-    if (size < 16384 - reinterpret_cast<unsigned int>(ACCESS(this, 16396, 4)))
+    if (size < OFILE_CACHE_SIZE - this->posInCacheBlock)
     {
-        memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(this) + reinterpret_cast<any_int32>(ACCESS(this, 16396, 4)) + 8), data, size); // TODO improve emitting of memcpy instructions
-        ACCESS(this, 16396, 4) = reinterpret_cast<any_int32>(ACCESS(this, 16396, 4)) + size;
+        memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(this) + this->posInCacheBlock + 8), data, size); // TODO improve emitting of memcpy instructions
+        this->posInCacheBlock += size;
         return;
     }
-    size_t unknown_loc_04 = 16384 - reinterpret_cast<size_t>(ACCESS(this, 16396, 4));
+    unsigned int unknown_loc_04 = OFILE_CACHE_SIZE - this->posInCacheBlock;
     if (unknown_loc_04 != 0)
     {
-        memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(this) + reinterpret_cast<any_int32>(ACCESS(this, 16396, 4)) + 8), data, unknown_loc_04); // TODO improve emitting of memcpy instructions
-        ACCESS(this, 16396, 4) = 0x00004000;
+        memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(this) + this->posInCacheBlock + 8), data, unknown_loc_04); // TODO improve emitting of memcpy instructions
+        this->posInCacheBlock = OFILE_CACHE_SIZE;
         size -= unknown_loc_04;
     }
     this->WriteCacheBlock();
