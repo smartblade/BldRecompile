@@ -48,7 +48,7 @@ def _transform_pointer_offset(left, right):
     if not right.data_type.is_any_int:
         return None
     if not isinstance(right, expressions.Constant):
-        return None
+        return _transform_pointer_index(left, right)
     if isinstance(left, expressions.Bin) and left.operator == Operator.ADD:
         return _transform_array_pointer_offset(left.left, left.right, right)
     return _transform_const_pointer_offset(left, right)
@@ -65,6 +65,17 @@ def _transform_const_pointer_offset(left, right: expressions.Constant):
     if e is None:
         return None
     return expressions.AddressOf(e)
+
+
+def _transform_pointer_index(e, index):
+    if not isinstance(e, expressions.ReinterpretCast):
+        return None
+    e = e.expression
+    if not isinstance(e.data_type, data_types.Pointer32):
+        return None
+    if e.data_type.pointee is None:
+        e = expressions.StaticCast(data_types.Pointer32(data_types.Char()), e)
+    return transform_arrptr(e, 1, index, 0)
 
 
 def _transform_array_pointer_offset(bin_left, bin_right, right):

@@ -281,7 +281,7 @@ void B_IDataFile::Read(void *data, unsigned int size)
     }
     if (this->ReadCacheBlock())
     {
-        this->Read(reinterpret_cast<void *>(reinterpret_cast<any_int32>(data) + unknown_loc_04), size);
+        this->Read(&static_cast<char *>(data)[unknown_loc_04], size);
     }
 }
 
@@ -468,7 +468,7 @@ void B_ODataFile::Write(const void *data, unsigned int size)
         size -= unknown_loc_04;
     }
     this->WriteCacheBlock();
-    this->Write(reinterpret_cast<void *>(reinterpret_cast<any_int32>(data) + unknown_loc_04), size);
+    this->Write(&static_cast<char *>(data)[unknown_loc_04], size);
 }
 
 // address: 0x10001F5E
@@ -1473,7 +1473,7 @@ B_Name B_Name::Right(unsigned int count) const
         count = this->len;
     }
     reinterpret_cast<B_Name *>(LOCAL(-8))->B_Name(count);
-    strncpy(reinterpret_cast<char *>(STACKVAR(-8, 4)), reinterpret_cast<char *>(reinterpret_cast<any_int32>(this->string) + this->len - count), count);
+    strncpy(reinterpret_cast<char *>(STACKVAR(-8, 4)), &this->string[this->len - count], count);
     __result->B_Name(*reinterpret_cast<B_Name *>(LOCAL(-8)));
     reinterpret_cast<B_Name *>(LOCAL(-8))->~B_Name();
     REGDEF(eax=__result)
@@ -22556,7 +22556,7 @@ int B_BitMap24::ReadFromJPEG(const char *arg_1)
     unknown_function_10013C80(LOCAL(-428));
     while (reinterpret_cast<unsigned int>(STACKVAR(-308, 4)) < reinterpret_cast<unsigned int>(STACKVAR(-332, 4)))
     {
-        STACKVAR(-568, 4) = reinterpret_cast<any_int32>(this->data) + 0x00000003 * reinterpret_cast<any_int32>(STACKVAR(-308, 4)) * this->dimension1;
+        STACKVAR(-568, 4) = &static_cast<char *>(this->data)[0x00000003 * reinterpret_cast<any_int32>(STACKVAR(-308, 4)) * this->dimension1];
         unknown_function_10013EFA(LOCAL(-428), LOCAL(-568), 0x00000001);
     }
     unknown_function_10013B69(LOCAL(-428));
@@ -22587,7 +22587,7 @@ int B_BitMap24::SaveToJPEG(const char *arg_1, int arg_2) const
     STACKVAR(-360, 4) = 3 * this->dimension1;
     while (reinterpret_cast<unsigned int>(STACKVAR(-152, 4)) < reinterpret_cast<unsigned int>(STACKVAR(-324, 4)))
     {
-        STACKVAR(-504, 4) = reinterpret_cast<any_int32>(this->data) + 0x00000003 * reinterpret_cast<any_int32>(STACKVAR(-152, 4)) * this->dimension1;
+        STACKVAR(-504, 4) = &static_cast<char *>(this->data)[0x00000003 * reinterpret_cast<any_int32>(STACKVAR(-152, 4)) * this->dimension1];
         STACKVAR(-364, 4) = STACKVAR(-504, 4);
         unknown_function_10009CD5(LOCAL(-356), LOCAL(-364), 0x00000001);
     }
@@ -23461,7 +23461,7 @@ l1002F07E:
 l1002F087:
     if (reinterpret_cast<unsigned int>(STACKVAR(-32, 4)) < 3)
     {
-        ACCESS(ARRPTR(reinterpret_cast<any_int32>(STACKVAR(8, 4)) + 0x00000020 * reinterpret_cast<any_int32>(STACKVAR(-4, 4)), 8, STACKVAR(-32, 4), 0), 0, 8) = ACCESS(ARRPTR(reinterpret_cast<any_int32>(this) + 0x00000020 * reinterpret_cast<any_int32>(STACKVAR(-32, 4)), 8, STACKVAR(-4, 4), 0), 0, 8);
+        ACCESS(ARRPTR(reinterpret_cast<any_int32>(STACKVAR(8, 4)) + 0x00000020 * reinterpret_cast<any_int32>(STACKVAR(-4, 4)), 8, STACKVAR(-32, 4), 0), 0, 8) = ACCESS(ARRPTR(&static_cast<char *>(this)[0x00000020 * reinterpret_cast<any_int32>(STACKVAR(-32, 4))], 8, STACKVAR(-4, 4), 0), 0, 8);
         goto l1002F07E;
     }
     goto l1002F066;

@@ -18,7 +18,8 @@ def transform_arrptr(base, scale, index, offset, **kwargs):
     else:
         e = base
         element_type = e.data_type.pointee
-    assert element_type.size == 1
+    if element_type.size != 1:
+        return None
     if offset > 0:
         index = expressions.Bin(
             Operator.ADD, index, expressions.Constant(index.data_type, offset))
