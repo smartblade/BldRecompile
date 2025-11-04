@@ -40,6 +40,7 @@ _standard_types = {
     "unsigned int": data_types.UInt32(),
     "unsigned long": data_types.make_named_type(
         data_types.UInt32(), "unsigned long"),
+    "size_t": data_types.SizeT(),
     "float": data_types.Float(),
     "double": data_types.Double(),
     "BitMapType": data_types.make_named_type(data_types.Int32(), "BitMapType"),

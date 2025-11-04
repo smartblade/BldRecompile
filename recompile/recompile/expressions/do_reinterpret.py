@@ -40,15 +40,22 @@ def _reinterpret_const(data_type, c):
         else:
             return expressions.Constant(data_type, c.value - 0x100000000)
     if (
-        isinstance(data_type, (data_types.UInt32, data_types.UChar)) and
+        data_type.is_unsigned_int and
         isinstance(
             c.data_type, (data_types.AnyInt, data_types.UnknownTypes)) and
         data_type.size == c.data_type.size
     ):
         return expressions.Constant(data_type, c.value)
     if (
-        isinstance(data_type, data_types.UInt32) and
+        data_type.is_unsigned_int and
+        c.data_type.is_unsigned_int and
+        data_type.size == c.data_type.size
+    ):
+        return expressions.Constant(data_type, c.value)
+    if (
+        data_type.is_unsigned_int and
         isinstance(c.data_type, data_types.Int32) and
+        data_type.size == c.data_type.size and
         c.value >= 0
     ):
         return expressions.Constant(data_type, c.value)

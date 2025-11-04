@@ -12,3 +12,7 @@ class UInt32(DataType):
     @property
     def is_any_int(self):
         return True
+
+    @property
+    def is_unsigned_int(self):
+        return True

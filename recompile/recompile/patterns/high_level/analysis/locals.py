@@ -129,7 +129,10 @@ class LocalsAnalysis:
             data_types.are_compatible(data_type, existing_type)
         ):
             self._types_by_offset[offset] = data_type
-        elif not data_types.are_compatible(existing_type, data_type):
+        elif (
+            not data_types.are_compatible(existing_type, data_type) and
+            not _are_same_sized_unsigned(existing_type, data_type)
+        ):
             if (
                 existing_type.is_any_int and data_type.is_any_int and
                 existing_type.size == data_type.size
@@ -150,6 +153,12 @@ def _is_acceptable_type(data_type):
     if isinstance(data_type, data_types.UChar):
         return True
     return False
+
+
+def _are_same_sized_unsigned(first_type, second_type):
+    if first_type.size != second_type.size:
+        return False
+    return first_type.is_unsigned_int and second_type.is_unsigned_int
 
 
 def _get_array_length(param_characteristics, arguments):

@@ -16,6 +16,7 @@ from .nullptr_t import NullptrType
 from .pointer32 import Pointer32
 from .reference import Reference
 from .short import Short
+from .size_t import SizeT
 from .uchar import UChar
 from .ushort import UShort
 from .uint32 import UInt32

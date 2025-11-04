@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <library xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemata.jklnet.org/Decompiler">
   <Types>
-    <typedef name="size_t">
-      <prim domain="UnsignedInt" size="4" />
-    </typedef>
     <typedef name="intptr_t">
       <type>size_t</type>
     </typedef>

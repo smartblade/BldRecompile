@@ -28,6 +28,7 @@ def are_same(first, second):
         data_types.Int32,
         data_types.Long32,
         data_types.UInt32,
+        data_types.SizeT,
         data_types.Float,
         data_types.Double,
         data_types.Unknown64,

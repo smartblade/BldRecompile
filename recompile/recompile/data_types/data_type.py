@@ -8,6 +8,10 @@ class DataType:
         return False
 
     @property
+    def is_unsigned_int(self):
+        return False
+
+    @property
     def qualifiers(self):
         return self._qualifiers
 

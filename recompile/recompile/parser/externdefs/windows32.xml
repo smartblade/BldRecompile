@@ -9,9 +9,6 @@
         <prim domain="Character" size="1" />
       </ptr>
     </typedef>
-    <typedef name="size_t">
-      <prim domain="UnsignedInt" size="4" />
-    </typedef>
     <typedef name="ptrdiff_t">
       <prim domain="SignedInt" size="4" />
     </typedef>
