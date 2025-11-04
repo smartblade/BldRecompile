@@ -268,14 +268,14 @@ void B_IDataFile::Read(void *data, unsigned int size)
     }
     if (size < IFILE_CACHE_SIZE - this->posInCacheBlock)
     {
-        memcpy(data, &this->fileCache[this->posInCacheBlock], size); // TODO improve emitting of memcpy instructions
+        memcpy(data, &this->fileCache[this->posInCacheBlock], size);
         this->posInCacheBlock += size;
         return;
     }
     unsigned int remainingCache = IFILE_CACHE_SIZE - this->posInCacheBlock;
     if (remainingCache != 0)
     {
-        memcpy(data, &this->fileCache[this->posInCacheBlock], remainingCache); // TODO improve emitting of memcpy instructions
+        memcpy(data, &this->fileCache[this->posInCacheBlock], remainingCache);
         this->posInCacheBlock = IFILE_CACHE_SIZE;
         size -= remainingCache;
     }
@@ -456,14 +456,14 @@ void B_ODataFile::Write(const void *data, unsigned int size)
     }
     if (size < OFILE_CACHE_SIZE - this->posInCacheBlock)
     {
-        memcpy(&this->fileCache[this->posInCacheBlock], data, size); // TODO improve emitting of memcpy instructions
+        memcpy(&this->fileCache[this->posInCacheBlock], data, size);
         this->posInCacheBlock += size;
         return;
     }
     unsigned int unknown_loc_04 = OFILE_CACHE_SIZE - this->posInCacheBlock;
     if (unknown_loc_04 != 0)
     {
-        memcpy(&this->fileCache[this->posInCacheBlock], data, unknown_loc_04); // TODO improve emitting of memcpy instructions
+        memcpy(&this->fileCache[this->posInCacheBlock], data, unknown_loc_04);
         this->posInCacheBlock = OFILE_CACHE_SIZE;
         size -= unknown_loc_04;
     }
@@ -645,7 +645,7 @@ const char *B_IDataFile::GetFileName() const
 // address: 0x10002220
 B_IDataFile &B_IDataFile::operator =(const B_IDataFile &file)
 {
-    memcpy(this, &file, 16408); // TODO improve emitting of memcpy instructions
+    memcpy(this, &file, 16408);
     return *this;
 }
 
@@ -664,7 +664,7 @@ const char *B_ODataFile::GetFileName()
 // address: 0x10002290
 B_ODataFile &B_ODataFile::operator=(const B_ODataFile &arg_1)
 {
-    memcpy(this, &arg_1, 16400); // TODO improve emitting of memcpy instructions
+    memcpy(this, &arg_1, 16400);
     return *this;
 }
 
@@ -3275,7 +3275,7 @@ l100067FB:
 // address: 0x10006830
 B_ResourceManager &B_ResourceManager::operator =(const B_ResourceManager &that)
 {
-    memcpy(this, &that, 1028); // TODO improve emitting of memcpy instructions
+    memcpy(this, &that, 1028);
     return *this;
 }
 
@@ -3392,7 +3392,7 @@ B_Pal::B_Pal()
 // address: 0x10006BF0
 B_Pal &B_Pal::operator=(const B_Pal &arg_1)
 {
-    memcpy(this, &arg_1, 768); // TODO improve emitting of memcpy instructions
+    memcpy(this, &arg_1, 768);
     return *this;
 }
 
@@ -4131,7 +4131,7 @@ l10007ECF:
 // address: 0x10007EF0
 B_RDataLight &B_RDataLight::operator=(const B_RDataLight &other)
 {
-    memcpy(this, &other, 16); // TODO improve emitting of memcpy instructions
+    memcpy(this, &other, 16);
     return *this;
 }
 
@@ -4145,14 +4145,14 @@ B_RItem &B_RItem::operator=(const B_RItem &arg_1)
 // address: 0x10007F40
 B_RDataTriangle &B_RDataTriangle::operator=(const B_RDataTriangle &other)
 {
-    memcpy(this, &other, 28); // TODO improve emitting of memcpy instructions
+    memcpy(this, &other, 28);
     return *this;
 }
 
 // address: 0x10007F70
 B_MeshEdge &B_MeshEdge::operator=(const B_MeshEdge &other)
 {
-    memcpy(this, &other, 24); // TODO improve emitting of memcpy instructions
+    memcpy(this, &other, 24);
     return *this;
 }
 
@@ -4536,29 +4536,29 @@ B_BitMap::B_BitMap(const B_BitMap &src)
                 this->pal = unknown_loc_04 != nullptr ? unknown_loc_04->B_Pal(*src.pal) : nullptr;
                 STACKVAR(-8, 4) = ??2@YAPAXI@Z(this->dimension1 * this->dimension2);
                 this->data = reinterpret_cast<void *>(STACKVAR(-8, 4));
-                memcpy(this->data, src.data, this->dimension1 * this->dimension2); // TODO improve emitting of memcpy instructions
+                memcpy(this->data, src.data, this->dimension1 * this->dimension2);
                 break;
             case 1:
                 STACKVAR(-12, 4) = ??2@YAPAXI@Z(this->dimension1 * this->dimension2);
                 this->data = reinterpret_cast<void *>(STACKVAR(-12, 4));
-                memcpy(this->data, src.data, this->dimension1 * this->dimension2); // TODO improve emitting of memcpy instructions
+                memcpy(this->data, src.data, this->dimension1 * this->dimension2);
                 break;
             case 2:
                 unknown_loc_10 = reinterpret_cast<B_Pal *>(??2@YAPAXI@Z(0x00000300));
                 this->pal = unknown_loc_10 != nullptr ? unknown_loc_10->B_Pal(*src.pal) : nullptr;
                 STACKVAR(-20, 4) = ??2@YAPAXI@Z(2 * this->dimension1 * this->dimension2);
                 this->data = reinterpret_cast<void *>(STACKVAR(-20, 4));
-                memcpy(this->data, src.data, 2 * this->dimension1 * this->dimension2); // TODO improve emitting of memcpy instructions
+                memcpy(this->data, src.data, 2 * this->dimension1 * this->dimension2);
                 break;
             case 3:
                 STACKVAR(-24, 4) = ??2@YAPAXI@Z(3 * this->dimension1 * this->dimension2);
                 this->data = reinterpret_cast<void *>(STACKVAR(-24, 4));
-                memcpy(this->data, src.data, 3 * this->dimension1 * this->dimension2); // TODO improve emitting of memcpy instructions
+                memcpy(this->data, src.data, 3 * this->dimension1 * this->dimension2);
                 break;
             case 4:
                 STACKVAR(-28, 4) = ??2@YAPAXI@Z(4 * this->dimension1 * this->dimension2);
                 this->data = reinterpret_cast<void *>(STACKVAR(-28, 4));
-                memcpy(this->data, src.data, 4 * this->dimension1 * this->dimension2); // TODO improve emitting of memcpy instructions
+                memcpy(this->data, src.data, 4 * this->dimension1 * this->dimension2);
                 break;
         }
     }
@@ -4604,7 +4604,7 @@ l10008A4A:
     this->dimension2 = arg_2.dimension2;
     STACKVAR(-20, 4) = ??2@YAPAXI@Z(3 * this->dimension1 * this->dimension2);
     this->data = reinterpret_cast<void *>(STACKVAR(-20, 4));
-    memcpy(this->data, arg_2.data, 3 * this->dimension1 * this->dimension2); // TODO improve emitting of memcpy instructions
+    memcpy(this->data, arg_2.data, 3 * this->dimension1 * this->dimension2);
     goto l10008AE5;
 l10008ABD:
     this->type = 0;
@@ -4868,7 +4868,7 @@ void B_Color::MakeCons()
 // address: 0x100093A7
 B_Pal::B_Pal(const B_Pal &arg_1)
 {
-    memcpy(this, &arg_1, 768); // TODO improve emitting of memcpy instructions
+    memcpy(this, &arg_1, 768);
 }
 
 // address: 0x100093C8
@@ -6477,7 +6477,7 @@ l1000C3AE:
         unknown_loc_840--;
     }
     ACCESS(ARRPTR(LOCAL(-1076), 1, unknown_loc_840, 0), 0, 1) = reinterpret_cast<any_int8>(ACCESS(ARRPTR(LOCAL(-1076), 1, unknown_loc_840, 0), 0, 1)) - 0x01;
-    memcpy(reinterpret_cast<void *>(STACKVAR(12, 4)), LOCAL(-1076), 17); // TODO improve emitting of memcpy instructions
+    memcpy(reinterpret_cast<void *>(STACKVAR(12, 4)), LOCAL(-1076), 17);
     STACKVAR(-4, 4) = 0x00000000;
     unknown_loc_840 = 1;
     goto l1000C510;
@@ -6600,7 +6600,7 @@ p1000C80D
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 344, 4);
     STACKVAR(-40, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 24, 4), 0, 4);
     STACKVAR(-36, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 24, 4), 4, 4);
-    memcpy(LOCAL(-32), reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x0000000C), 24); // TODO improve emitting of memcpy instructions
+    memcpy(LOCAL(-32), reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x0000000C), 24);
     STACKVAR(-8, 4) = STACKVAR(8, 4);
     if (ACCESS(STACKVAR(8, 4), 184, 4) != 0x00000000 && ACCESS(STACKVAR(-4, 4), 36, 4) == 0x00000000 && (reinterpret_cast<any_int32>(unknown_function_1000CDB5(LOCAL(-40), ACCESS(STACKVAR(-4, 4), 40, 4))) & 0x000000FF) == 0x00000000)
     {
@@ -6626,7 +6626,7 @@ l1000C898:
     }
     ACCESS(ACCESS(STACKVAR(8, 4), 24, 4), 0, 4) = STACKVAR(-40, 4);
     ACCESS(ACCESS(STACKVAR(8, 4), 24, 4), 4, 4) = STACKVAR(-36, 4);
-    memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x0000000C), LOCAL(-32), 24); // TODO improve emitting of memcpy instructions
+    memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x0000000C), LOCAL(-32), 24);
     if (ACCESS(STACKVAR(8, 4), 184, 4) != 0x00000000)
     {
         if (ACCESS(STACKVAR(-4, 4), 36, 4) == 0x00000000)
@@ -6858,7 +6858,7 @@ p1000CEDD
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 344, 4);
     STACKVAR(-40, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 24, 4), 0, 4);
     STACKVAR(-36, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 24, 4), 4, 4);
-    memcpy(LOCAL(-32), reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x0000000C), 24); // TODO improve emitting of memcpy instructions
+    memcpy(LOCAL(-32), reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + 0x0000000C), 24);
     STACKVAR(-8, 4) = STACKVAR(8, 4);
     if ((reinterpret_cast<any_int32>(unknown_function_1000CEA5(LOCAL(-40))) & 0x000000FF) == 0x00000000)
     {
@@ -8451,7 +8451,7 @@ p1000FA9B
     {
         ACCESS(STACKVAR(12, 4), 0, 4) = unknown_function_1000F6A0(STACKVAR(8, 4));
     }
-    memcpy(reinterpret_cast<void *>(ACCESS(STACKVAR(12, 4), 0, 4)), reinterpret_cast<void *>(STACKVAR(16, 4)), 17); // TODO improve emitting of memcpy instructions
+    memcpy(reinterpret_cast<void *>(ACCESS(STACKVAR(12, 4), 0, 4)), reinterpret_cast<void *>(STACKVAR(16, 4)), 17);
     int unknown_loc_04 = 0;
     int unknown_loc_08 = 1;
     goto l1000FAF9;
@@ -8468,7 +8468,7 @@ l1000FAF9:
         ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x00000008;
         ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 0, 4)(STACKVAR(8, 4));
     }
-    memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(ACCESS(STACKVAR(12, 4), 0, 4)) + 0x00000011), reinterpret_cast<void *>(STACKVAR(20, 4)), reinterpret_cast<size_t>(unknown_loc_04)); // TODO improve emitting of memcpy instructions
+    memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(ACCESS(STACKVAR(12, 4), 0, 4)) + 0x00000011), reinterpret_cast<void *>(STACKVAR(20, 4)), reinterpret_cast<size_t>(unknown_loc_04));
     ACCESS(ACCESS(STACKVAR(12, 4), 0, 4), 273, 1) = 0;
 }
 
@@ -9644,7 +9644,7 @@ l10011E47:
         goto l10011F23;
     }
     STACKVAR(-16, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 8, 4)(STACKVAR(8, 4), 0x00000001, 8 * reinterpret_cast<int>(ACCESS(STACKVAR(-20, 4), 28, 4)) * reinterpret_cast<int>(ACCESS(STACKVAR(8, 4), 212, 4)) / reinterpret_cast<int>(ACCESS(STACKVAR(-20, 4), 8, 4)), 3 * unknown_loc_1C);
-    memcpy(ARRPTR(STACKVAR(-8, 4), 4, unknown_loc_1C, 0), reinterpret_cast<void *>(STACKVAR(-16, 4)), 4 * 3 * reinterpret_cast<size_t>(unknown_loc_1C)); // TODO improve emitting of memcpy instructions
+    memcpy(ARRPTR(STACKVAR(-8, 4), 4, unknown_loc_1C, 0), reinterpret_cast<void *>(STACKVAR(-16, 4)), 4 * 3 * reinterpret_cast<size_t>(unknown_loc_1C));
     int unknown_loc_0C = 0;
     goto l10011EC2;
 l10011EB9:
@@ -12429,7 +12429,7 @@ p10017160
     STACKVAR(-44, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 24, 4), 4, 4);
     STACKVAR(-4, 4) = ACCESS(STACKVAR(-8, 4), 12, 4);
     STACKVAR(-28, 4) = ACCESS(STACKVAR(-8, 4), 16, 4);
-    memcpy(LOCAL(-24), reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + 0x00000014), 16); // TODO improve emitting of memcpy instructions
+    memcpy(LOCAL(-24), reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + 0x00000014), 16);
     int unknown_loc_34 = 0;
     goto l10017211;
 l10017208:
@@ -12656,7 +12656,7 @@ l1001773A:
     ACCESS(ACCESS(STACKVAR(8, 4), 24, 4), 4, 4) = STACKVAR(-44, 4);
     ACCESS(STACKVAR(-8, 4), 12, 4) = STACKVAR(-4, 4);
     ACCESS(STACKVAR(-8, 4), 16, 4) = STACKVAR(-28, 4);
-    memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + 0x00000014), LOCAL(-24), 16); // TODO improve emitting of memcpy instructions
+    memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + 0x00000014), LOCAL(-24), 16);
 l10017780:
     ACCESS(STACKVAR(-8, 4), 36, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-8, 4), 36, 4)) - 0x00000001;
     REGDEF(al=0x01)
@@ -12816,7 +12816,7 @@ l10017BDA:
             ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 0, 4)(STACKVAR(8, 4));
         }
         STACKVAR(-8, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 0, 4)(STACKVAR(8, 4), 0x00000001, 0x00000082);
-        memcpy(reinterpret_cast<void *>(STACKVAR(-8, 4)), reinterpret_cast<void *>(ACCESS(ARRPTR(STACKVAR(8, 4), 4, unknown_loc_04, 144), 0, 4)), 130); // TODO improve emitting of memcpy instructions
+        memcpy(reinterpret_cast<void *>(STACKVAR(-8, 4)), reinterpret_cast<void *>(ACCESS(ARRPTR(STACKVAR(8, 4), 4, unknown_loc_04, 144), 0, 4)), 130);
         ACCESS(STACKVAR(-12, 4), 76, 4) = STACKVAR(-8, 4);
         goto l10017BD1;
     }
@@ -14873,8 +14873,8 @@ l1001ADDE:
     {
         ACCESS(STACKVAR(-308, 4), 0, 4) = unknown_function_1000F6A0(STACKVAR(8, 4));
     }
-    memcpy(reinterpret_cast<void *>(ACCESS(STACKVAR(-308, 4), 0, 4)), LOCAL(-280), 17); // TODO improve emitting of memcpy instructions
-    memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(ACCESS(STACKVAR(-308, 4), 0, 4)) + 0x00000011), LOCAL(-256), 256); // TODO improve emitting of memcpy instructions
+    memcpy(reinterpret_cast<void *>(ACCESS(STACKVAR(-308, 4), 0, 4)), LOCAL(-280), 17);
+    memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(ACCESS(STACKVAR(-308, 4), 0, 4)) + 0x00000011), LOCAL(-256), 256);
     goto l1001A9AC;
 l1001AEE4:
     if (unknown_loc_11C != 0)
@@ -16210,7 +16210,7 @@ p1001D69E
     STACKVAR(-72, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 24, 4), 4, 4);
     STACKVAR(-4, 4) = ACCESS(STACKVAR(-24, 4), 12, 4);
     STACKVAR(-56, 4) = ACCESS(STACKVAR(-24, 4), 16, 4);
-    memcpy(LOCAL(-44), reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-24, 4)) + 0x00000014), 20); // TODO improve emitting of memcpy instructions
+    memcpy(LOCAL(-44), reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-24, 4)) + 0x00000014), 20);
     int unknown_loc_50 = 0;
     goto l1001D750;
 l1001D747:
@@ -16283,7 +16283,7 @@ l1001D92A:
     ACCESS(ACCESS(STACKVAR(8, 4), 24, 4), 4, 4) = STACKVAR(-72, 4);
     ACCESS(STACKVAR(-24, 4), 12, 4) = STACKVAR(-4, 4);
     ACCESS(STACKVAR(-24, 4), 16, 4) = STACKVAR(-56, 4);
-    memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-24, 4)) + 0x00000014), LOCAL(-44), 20); // TODO improve emitting of memcpy instructions
+    memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-24, 4)) + 0x00000014), LOCAL(-44), 20);
 l1001D963:
     ACCESS(STACKVAR(-24, 4), 40, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-24, 4), 40, 4)) - 0x00000001;
     REGDEF(al=0x01)
@@ -21005,7 +21005,7 @@ l10026908:
         STACKVAR(8, 4) = reinterpret_cast<any_int32>(STACKVAR(8, 4)) + 0x00000004;
         STACKVAR(-12, 4) = ACCESS(STACKVAR(16, 4), 0, 4);
         STACKVAR(16, 4) = reinterpret_cast<any_int32>(STACKVAR(16, 4)) + 0x00000004;
-        memcpy(reinterpret_cast<void *>(STACKVAR(-12, 4)), reinterpret_cast<void *>(STACKVAR(-16, 4)), unknown_loc_08); // TODO improve emitting of memcpy instructions
+        memcpy(reinterpret_cast<void *>(STACKVAR(-12, 4)), reinterpret_cast<void *>(STACKVAR(-16, 4)), unknown_loc_08);
         goto l100268FF;
     }
 }
@@ -21146,7 +21146,7 @@ l10026BE0:
     {
         STACKVAR(-4, 4) = ??2@YAPAXI@Z(3 * this->dimension1 * this->dimension2);
         this->data = reinterpret_cast<void *>(STACKVAR(-4, 4));
-        memcpy(this->data, that.data, 3 * this->dimension1 * this->dimension2); // TODO improve emitting of memcpy instructions
+        memcpy(this->data, that.data, 3 * this->dimension1 * this->dimension2);
     }
     else
     {
@@ -21313,7 +21313,7 @@ l10027014:
         this->dimension1 = 0;
         goto l100271B3;
     }
-    memcpy(this->data, arg_1.data, 3 * this->dimension1 * this->dimension2); // TODO improve emitting of memcpy instructions
+    memcpy(this->data, arg_1.data, 3 * this->dimension1 * this->dimension2);
     goto l100271B3;
 l100270A2:
     this->dimension1 = arg_1.dimension1;
@@ -21382,7 +21382,7 @@ B_BitMap24 &B_BitMap24::operator=(const B_BitMap24 &that)
         STACKVAR(-8, 4) = ??2@YAPAXI@Z(3 * this->dimension1 * this->dimension2);
         this->data = reinterpret_cast<void *>(STACKVAR(-8, 4));
     }
-    memcpy(this->data, that.data, 3 * this->dimension1 * this->dimension2); // TODO improve emitting of memcpy instructions
+    memcpy(this->data, that.data, 3 * this->dimension1 * this->dimension2);
     return *this;
 }
 
@@ -21404,7 +21404,7 @@ unsigned int B_BitMap24::SetBits(int arg_1, int arg_2, const char *arg_3, const 
                 _assert("Bits", "C:\code\BITMAP24\BITMAP24.CPP", 141);
             }
         }
-        memcpy(this->data, arg_3, 3 * this->dimension1 * this->dimension2); // TODO improve emitting of memcpy instructions
+        memcpy(this->data, arg_3, 3 * this->dimension1 * this->dimension2);
         return 1;
     }
     return 0;
@@ -23305,8 +23305,8 @@ p1002DF30
 p1002E0B0
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=12)
-    memcpy(this, reinterpret_cast<void *>(STACKVAR(8, 4)), 24); // TODO improve emitting of memcpy instructions
-    memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(this) + 0x00000018), reinterpret_cast<void *>(STACKVAR(12, 4)), 24); // TODO improve emitting of memcpy instructions
+    memcpy(this, reinterpret_cast<void *>(STACKVAR(8, 4)), 24);
+    memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(this) + 0x00000018), reinterpret_cast<void *>(STACKVAR(12, 4)), 24);
     return memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(this) + 0x00000030), reinterpret_cast<void *>(STACKVAR(16, 4)), 24);
 }
 
@@ -23473,7 +23473,7 @@ l1002F0BB:
     STACKVAR(-24, 4) = STACKVAR(-60, 4);
     ACCESS(LOCAL(-20), 0, 8) = STACKVAR(-72, 8);
     ACCESS(LOCAL(-12), 0, 8) = STACKVAR(-80, 8);
-    memcpy(LOCAL(-28), reinterpret_cast<void *>(unknown_function_100300A1(LOCAL(-56), LOCAL(-28), STACKVAR(8, 4))), 24); // TODO improve emitting of memcpy instructions
+    memcpy(LOCAL(-28), reinterpret_cast<void *>(unknown_function_100300A1(LOCAL(-56), LOCAL(-28), STACKVAR(8, 4))), 24);
     ACCESS(STACKVAR(8, 4), 96, 8) = -reinterpret_cast<double>(STACKVAR(-28, 8));
     ACCESS(STACKVAR(8, 4), 104, 8) = -reinterpret_cast<double>(STACKVAR(-20, 8));
     ACCESS(STACKVAR(8, 4), 112, 8) = -reinterpret_cast<double>(STACKVAR(-12, 8));
@@ -23501,11 +23501,11 @@ p1002F159
     STACKVAR(-148, 4) = STACKVAR(-188, 4);
     ACCESS(LOCAL(-144), 0, 8) = STACKVAR(-200, 8);
     ACCESS(LOCAL(-136), 0, 8) = STACKVAR(-208, 8);
-    memcpy(LOCAL(-152), reinterpret_cast<void *>(unknown_function_100300A1(LOCAL(-184), LOCAL(-152), LOCAL(-128))), 24); // TODO improve emitting of memcpy instructions
+    memcpy(LOCAL(-152), reinterpret_cast<void *>(unknown_function_100300A1(LOCAL(-184), LOCAL(-152), LOCAL(-128))), 24);
     STACKVAR(-32, 8) = -reinterpret_cast<double>(STACKVAR(-152, 8));
     STACKVAR(-24, 8) = -reinterpret_cast<double>(STACKVAR(-144, 8));
     STACKVAR(-16, 8) = -reinterpret_cast<double>(STACKVAR(-136, 8));
-    memcpy(reinterpret_cast<void *>(STACKVAR(8, 4)), LOCAL(-128), 128); // TODO improve emitting of memcpy instructions
+    memcpy(reinterpret_cast<void *>(STACKVAR(8, 4)), LOCAL(-128), 128);
     REGDEF(eax=STACKVAR(8, 4))
 }
 
@@ -23530,7 +23530,7 @@ p1002F537
     STACKVAR(-24, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 96, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 8, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 104, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 40, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 112, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 72, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 120, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 104, 8));
     STACKVAR(-16, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 96, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 16, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 104, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 48, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 112, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 80, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 120, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 112, 8));
     STACKVAR(-8, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 96, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 24, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 104, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 56, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 112, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 88, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 120, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(16, 4), 120, 8));
-    memcpy(reinterpret_cast<void *>(STACKVAR(8, 4)), LOCAL(-128), 128); // TODO improve emitting of memcpy instructions
+    memcpy(reinterpret_cast<void *>(STACKVAR(8, 4)), LOCAL(-128), 128);
     REGDEF(eax=STACKVAR(8, 4))
 }
 
@@ -23580,8 +23580,8 @@ p10030232
 p10031284
 {
     ProcedureInfo(this=Id(this), this_offset=-52, local_size=52, stack_delta=12)
-    memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(this) + 0x00000004), reinterpret_cast<void *>(STACKVAR(12, 4)->unknown_method_10031882(LOCAL(-24), STACKVAR(16, 4))), 24); // TODO improve emitting of memcpy instructions
-    memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(this) + 0x00000004), reinterpret_cast<void *>((reinterpret_cast<any_int32>(this) + 0x00000004)->unknown_method_100315C2(LOCAL(-48), (reinterpret_cast<any_int32>(this) + 0x00000004)->unknown_method_10031913())), 24); // TODO improve emitting of memcpy instructions
+    memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(this) + 0x00000004), reinterpret_cast<void *>(STACKVAR(12, 4)->unknown_method_10031882(LOCAL(-24), STACKVAR(16, 4))), 24);
+    memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(this) + 0x00000004), reinterpret_cast<void *>((reinterpret_cast<any_int32>(this) + 0x00000004)->unknown_method_100315C2(LOCAL(-48), (reinterpret_cast<any_int32>(this) + 0x00000004)->unknown_method_10031913())), 24);
     ACCESS(this, 28, 8) = -STACKVAR(8, 4)->unknown_method_1003184F(reinterpret_cast<any_int32>(this) + 0x00000004);
 }
 
@@ -24219,7 +24219,7 @@ l10032BDE:
         STACKVAR(-224, 4) = 0x00000000;
         ACCESS(LOCAL(-220), 0, 8) = 0.0;
         ACCESS(LOCAL(-212), 0, 8) = 0.0;
-        memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(ACCESS(this, 40, 4)) + 0x00000030 * reinterpret_cast<any_int32>(STACKVAR(-24, 4)) + 24), LOCAL(-228), 24); // TODO improve emitting of memcpy instructions
+        memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(ACCESS(this, 40, 4)) + 0x00000030 * reinterpret_cast<any_int32>(STACKVAR(-24, 4)) + 24), LOCAL(-228), 24);
         goto l10032BD5;
     }
     STACKVAR(-16, 4) = 0x00000000;
@@ -24245,7 +24245,7 @@ l10032C7D:
     STACKVAR(-532, 4) = reinterpret_cast<any_int32>(STACKVAR(-500, 4)) + 0x00000010;
     if (reinterpret_cast<unsigned int>(STACKVAR(-4, 4)) > reinterpret_cast<unsigned int>(STACKVAR(-12, 4)))
     {
-        memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-12, 4))), reinterpret_cast<void *>(STACKVAR(-532, 4)), 128); // TODO improve emitting of memcpy instructions
+        memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-12, 4))), reinterpret_cast<void *>(STACKVAR(-532, 4)), 128);
         STACKVAR(-12, 4) = reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + 0x00000001;
         goto l10032E7E;
     }
@@ -24273,7 +24273,7 @@ l10032D90:
 l10032D9F:
     if (unknown_loc_200 < reinterpret_cast<unsigned int>(STACKVAR(-12, 4)))
     {
-        memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-504, 4)) + 128 * unknown_loc_200), reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 128 * unknown_loc_200), 128); // TODO improve emitting of memcpy instructions
+        memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-504, 4)) + 128 * unknown_loc_200), reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 128 * unknown_loc_200), 128);
         goto l10032D90;
     }
     STACKVAR(-524, 4) = STACKVAR(-16, 4);
@@ -24294,7 +24294,7 @@ l10032DF5:
     }
     STACKVAR(-16, 4) = STACKVAR(-640, 4);
 l10032E5D:
-    memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-12, 4))), reinterpret_cast<void *>(STACKVAR(-532, 4)), 128); // TODO improve emitting of memcpy instructions
+    memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-12, 4))), reinterpret_cast<void *>(STACKVAR(-532, 4)), 128);
     STACKVAR(-12, 4) = reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + 0x00000001;
 l10032E7E:
     goto l10033084;
@@ -24304,7 +24304,7 @@ l10032E83:
     STACKVAR(-572, 4) = unknown_function_1002F537(LOCAL(-356), reinterpret_cast<any_int32>(STACKVAR(-540, 4)) + 0x00000010, reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000080 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-536, 4), 12, 4)));
     if (reinterpret_cast<unsigned int>(STACKVAR(-4, 4)) > reinterpret_cast<unsigned int>(STACKVAR(-12, 4)))
     {
-        memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-12, 4))), reinterpret_cast<void *>(STACKVAR(-572, 4)), 128); // TODO improve emitting of memcpy instructions
+        memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-12, 4))), reinterpret_cast<void *>(STACKVAR(-572, 4)), 128);
         STACKVAR(-12, 4) = reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + 0x00000001;
         goto l10033084;
     }
@@ -24332,7 +24332,7 @@ l10032F96:
 l10032FA5:
     if (unknown_loc_228 < reinterpret_cast<unsigned int>(STACKVAR(-12, 4)))
     {
-        memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-544, 4)) + 128 * unknown_loc_228), reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 128 * unknown_loc_228), 128); // TODO improve emitting of memcpy instructions
+        memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-544, 4)) + 128 * unknown_loc_228), reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 128 * unknown_loc_228), 128);
         goto l10032F96;
     }
     STACKVAR(-564, 4) = STACKVAR(-16, 4);
@@ -24353,7 +24353,7 @@ l10032FFB:
     }
     STACKVAR(-16, 4) = STACKVAR(-648, 4);
 l10033063:
-    memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-12, 4))), reinterpret_cast<void *>(STACKVAR(-572, 4)), 128); // TODO improve emitting of memcpy instructions
+    memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-12, 4))), reinterpret_cast<void *>(STACKVAR(-572, 4)), 128);
     STACKVAR(-12, 4) = reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + 0x00000001;
 l10033084:
     goto l10032C74;
@@ -24377,7 +24377,7 @@ l100330D1:
     {
         STACKVAR(-576, 4) = ACCESS(ARRPTR(ACCESS(this, 80, 4), 4, STACKVAR(-24, 4), 0), 0, 4);
         STACKVAR(-580, 4) = ACCESS(ARRPTR(ACCESS(this, 80, 4), 4, STACKVAR(-24, 4), 0), 0, 4);
-        memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-32, 4)) + 0x00000018 * (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-580, 4), 168, 4)) + reinterpret_cast<any_int32>(STACKVAR(-40, 4)))), reinterpret_cast<void *>(unknown_function_1002FEB3(LOCAL(-380), reinterpret_cast<any_int32>(ACCESS(this, 40, 4)) + 0x00000030 * (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-576, 4), 168, 4)) + reinterpret_cast<any_int32>(STACKVAR(-40, 4))), reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-24, 4)))), 24); // TODO improve emitting of memcpy instructions
+        memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-32, 4)) + 0x00000018 * (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-580, 4), 168, 4)) + reinterpret_cast<any_int32>(STACKVAR(-40, 4)))), reinterpret_cast<void *>(unknown_function_1002FEB3(LOCAL(-380), reinterpret_cast<any_int32>(ACCESS(this, 40, 4)) + 0x00000030 * (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-576, 4), 168, 4)) + reinterpret_cast<any_int32>(STACKVAR(-40, 4))), reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-24, 4)))), 24);
         goto l100330C8;
     }
     goto l10033092;
@@ -24395,7 +24395,7 @@ l10033182:
         ACCESS(LOCAL(-48), 0, 8) = 0.0;
         STACKVAR(-584, 4) = reinterpret_cast<any_int32>(ACCESS(this, 60, 4)) + 0x00000038 * reinterpret_cast<any_int32>(STACKVAR(-24, 4));
         STACKVAR(-588, 4) = reinterpret_cast<any_int32>(ACCESS(this, 60, 4)) + 0x00000038 * reinterpret_cast<any_int32>(STACKVAR(-24, 4));
-        memcpy(LOCAL(-64), reinterpret_cast<void *>((reinterpret_cast<any_int32>(STACKVAR(-32, 4)) + 0x00000018 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-588, 4), 4, 4)))->unknown_method_10031760(LOCAL(-404), reinterpret_cast<any_int32>(STACKVAR(-32, 4)) + 0x00000018 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-584, 4), 0, 4)), LOCAL(-452), (reinterpret_cast<any_int32>(STACKVAR(-32, 4)) + 0x00000018 * reinterpret_cast<any_int32>(ACCESS(ARRPTR(ACCESS(this, 60, 4), 1, 0x00000038 * reinterpret_cast<any_int32>(STACKVAR(-24, 4)), 8), 0, 4)))->unknown_method_10031760(LOCAL(-428), reinterpret_cast<any_int32>(STACKVAR(-32, 4)) + 0x00000018 * reinterpret_cast<any_int32>(ACCESS(ARRPTR(ACCESS(this, 60, 4), 1, 0x00000038 * reinterpret_cast<any_int32>(STACKVAR(-24, 4)), 0), 0, 4))))->unknown_method_10031882()), 24); // TODO improve emitting of memcpy instructions
+        memcpy(LOCAL(-64), reinterpret_cast<void *>((reinterpret_cast<any_int32>(STACKVAR(-32, 4)) + 0x00000018 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-588, 4), 4, 4)))->unknown_method_10031760(LOCAL(-404), reinterpret_cast<any_int32>(STACKVAR(-32, 4)) + 0x00000018 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-584, 4), 0, 4)), LOCAL(-452), (reinterpret_cast<any_int32>(STACKVAR(-32, 4)) + 0x00000018 * reinterpret_cast<any_int32>(ACCESS(ARRPTR(ACCESS(this, 60, 4), 1, 0x00000038 * reinterpret_cast<any_int32>(STACKVAR(-24, 4)), 8), 0, 4)))->unknown_method_10031760(LOCAL(-428), reinterpret_cast<any_int32>(STACKVAR(-32, 4)) + 0x00000018 * reinterpret_cast<any_int32>(ACCESS(ARRPTR(ACCESS(this, 60, 4), 1, 0x00000038 * reinterpret_cast<any_int32>(STACKVAR(-24, 4)), 0), 0, 4))))->unknown_method_10031882()), 24);
         LOCAL(-64)->unknown_method_1003165E(LOCAL(-64)->unknown_method_10031913());
         (reinterpret_cast<any_int32>(ACCESS(this, 40, 4)) + 0x00000030 * reinterpret_cast<any_int32>(ACCESS(ARRPTR(ACCESS(this, 60, 4), 1, 0x00000038 * reinterpret_cast<any_int32>(STACKVAR(-24, 4)), 0), 0, 4)) + 24)->unknown_method_100317C9(LOCAL(-64));
         (reinterpret_cast<any_int32>(ACCESS(this, 40, 4)) + 0x00000030 * reinterpret_cast<any_int32>(ACCESS(ARRPTR(ACCESS(this, 60, 4), 1, 0x00000038 * reinterpret_cast<any_int32>(STACKVAR(-24, 4)), 4), 0, 4)) + 24)->unknown_method_100317C9(LOCAL(-64));
@@ -24424,7 +24424,7 @@ l1003338C:
         STACKVAR(-592, 4) = ACCESS(ARRPTR(ACCESS(this, 80, 4), 4, STACKVAR(-24, 4), 0), 0, 4);
         STACKVAR(-596, 4) = ACCESS(ARRPTR(ACCESS(this, 80, 4), 4, STACKVAR(-24, 4), 0), 0, 4);
         STACKVAR(-600, 4) = reinterpret_cast<any_int32>(ACCESS(this, 40, 4)) + 0x00000030 * (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-596, 4), 168, 4)) + reinterpret_cast<any_int32>(STACKVAR(-200, 4)));
-        memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-600, 4)) + 0x00000018), reinterpret_cast<void *>(unknown_function_100300A1(LOCAL(-476), reinterpret_cast<any_int32>(ACCESS(this, 40, 4)) + 0x00000030 * (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-592, 4), 168, 4)) + reinterpret_cast<any_int32>(STACKVAR(-200, 4))) + 24, LOCAL(-196))), 24); // TODO improve emitting of memcpy instructions
+        memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-600, 4)) + 0x00000018), reinterpret_cast<void *>(unknown_function_100300A1(LOCAL(-476), reinterpret_cast<any_int32>(ACCESS(this, 40, 4)) + 0x00000030 * (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-592, 4), 168, 4)) + reinterpret_cast<any_int32>(STACKVAR(-200, 4))) + 24, LOCAL(-196))), 24);
         STACKVAR(-604, 4) = ACCESS(ARRPTR(ACCESS(this, 80, 4), 4, STACKVAR(-24, 4), 0), 0, 4);
         if ((reinterpret_cast<any_int32>(ACCESS(this, 40, 4)) + 0x00000030 * (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-604, 4), 168, 4)) + reinterpret_cast<any_int32>(STACKVAR(-200, 4))) + 24)->unknown_method_10031913() > reinterpret_cast<double>(ACCESS(GLOBAL(0x10042CE0), 0, 8)))
         {
@@ -24436,7 +24436,7 @@ l1003338C:
         else
         {
             STACKVAR(-620, 4) = ACCESS(ARRPTR(ACCESS(this, 80, 4), 4, STACKVAR(-24, 4), 0), 0, 4);
-            memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(ACCESS(this, 40, 4)) + 0x00000030 * (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-620, 4), 168, 4)) + reinterpret_cast<any_int32>(STACKVAR(-200, 4))) + 24), GLOBAL(0x1004A948), 24); // TODO improve emitting of memcpy instructions
+            memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(ACCESS(this, 40, 4)) + 0x00000030 * (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-620, 4), 168, 4)) + reinterpret_cast<any_int32>(STACKVAR(-200, 4))) + 24), GLOBAL(0x1004A948), 24);
         }
         goto l1003337D;
     }
@@ -24522,7 +24522,7 @@ l10033727:
     STACKVAR(-572, 4) = reinterpret_cast<any_int32>(STACKVAR(-528, 4)) + 0x00000010;
     if (reinterpret_cast<unsigned int>(STACKVAR(-4, 4)) > reinterpret_cast<unsigned int>(STACKVAR(-12, 4)))
     {
-        memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-12, 4))), reinterpret_cast<void *>(STACKVAR(-572, 4)), 128); // TODO improve emitting of memcpy instructions
+        memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-12, 4))), reinterpret_cast<void *>(STACKVAR(-572, 4)), 128);
         STACKVAR(-12, 4) = reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + 0x00000001;
         goto l10033964;
     }
@@ -24561,7 +24561,7 @@ l10033876:
 l10033885:
     if (unknown_loc_21C < reinterpret_cast<unsigned int>(STACKVAR(-12, 4)))
     {
-        memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-532, 4)) + 128 * unknown_loc_21C), reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 128 * unknown_loc_21C), 128); // TODO improve emitting of memcpy instructions
+        memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-532, 4)) + 128 * unknown_loc_21C), reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 128 * unknown_loc_21C), 128);
         goto l10033876;
     }
     STACKVAR(-552, 4) = STACKVAR(-16, 4);
@@ -24582,7 +24582,7 @@ l100338DB:
     }
     STACKVAR(-16, 4) = STACKVAR(-672, 4);
 l10033943:
-    memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-12, 4))), reinterpret_cast<void *>(STACKVAR(-572, 4)), 128); // TODO improve emitting of memcpy instructions
+    memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-12, 4))), reinterpret_cast<void *>(STACKVAR(-572, 4)), 128);
     STACKVAR(-12, 4) = reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + 0x00000001;
 l10033964:
     goto l10033BE5;
@@ -24592,7 +24592,7 @@ l10033969:
     STACKVAR(-636, 4) = unknown_function_1002F537(LOCAL(-252), reinterpret_cast<any_int32>(STACKVAR(-580, 4)) + 0x00000010, reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000080 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-576, 4), 12, 4)));
     if (reinterpret_cast<unsigned int>(STACKVAR(-4, 4)) > reinterpret_cast<unsigned int>(STACKVAR(-12, 4)))
     {
-        memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-12, 4))), reinterpret_cast<void *>(STACKVAR(-636, 4)), 128); // TODO improve emitting of memcpy instructions
+        memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-12, 4))), reinterpret_cast<void *>(STACKVAR(-636, 4)), 128);
         STACKVAR(-12, 4) = reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + 0x00000001;
         goto l10033BE5;
     }
@@ -24631,7 +24631,7 @@ l10033AB8:
 l10033AC7:
     if (unknown_loc_250 < reinterpret_cast<unsigned int>(STACKVAR(-12, 4)))
     {
-        memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-584, 4)) + 128 * unknown_loc_250), reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 128 * unknown_loc_250), 128); // TODO improve emitting of memcpy instructions
+        memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-584, 4)) + 128 * unknown_loc_250), reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 128 * unknown_loc_250), 128);
         goto l10033AB8;
     }
     STACKVAR(-604, 4) = STACKVAR(-16, 4);
@@ -24663,7 +24663,7 @@ l10033BB1:
 l10033BBB:
     STACKVAR(-16, 4) = STACKVAR(-680, 4);
 l10033BC4:
-    memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-12, 4))), reinterpret_cast<void *>(STACKVAR(-636, 4)), 128); // TODO improve emitting of memcpy instructions
+    memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-12, 4))), reinterpret_cast<void *>(STACKVAR(-636, 4)), 128);
     STACKVAR(-12, 4) = reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + 0x00000001;
 l10033BE5:
     goto l1003371E;
@@ -24687,7 +24687,7 @@ l10033C32:
     {
         STACKVAR(-640, 4) = ACCESS(ARRPTR(ACCESS(this, 80, 4), 4, STACKVAR(-28, 4), 0), 0, 4);
         STACKVAR(-644, 4) = ACCESS(ARRPTR(ACCESS(this, 80, 4), 4, STACKVAR(-28, 4), 0), 0, 4);
-        memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-36, 4)) + 0x00000018 * (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-644, 4), 168, 4)) + reinterpret_cast<any_int32>(STACKVAR(-44, 4)))), reinterpret_cast<void *>(unknown_function_1002FEB3(LOCAL(-276), reinterpret_cast<any_int32>(ACCESS(this, 40, 4)) + 0x00000030 * (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-640, 4), 168, 4)) + reinterpret_cast<any_int32>(STACKVAR(-44, 4))), reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-28, 4)))), 24); // TODO improve emitting of memcpy instructions
+        memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-36, 4)) + 0x00000018 * (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-644, 4), 168, 4)) + reinterpret_cast<any_int32>(STACKVAR(-44, 4)))), reinterpret_cast<void *>(unknown_function_1002FEB3(LOCAL(-276), reinterpret_cast<any_int32>(ACCESS(this, 40, 4)) + 0x00000030 * (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-640, 4), 168, 4)) + reinterpret_cast<any_int32>(STACKVAR(-44, 4))), reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + 0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-28, 4)))), 24);
         goto l10033C29;
     }
     goto l10033BF3;
@@ -24706,7 +24706,7 @@ l10033CFD:
         ACCESS(LOCAL(-52), 0, 8) = 0.0;
         STACKVAR(-648, 4) = reinterpret_cast<any_int32>(ACCESS(this, 60, 4)) + 0x00000038 * reinterpret_cast<any_int32>(STACKVAR(-28, 4));
         STACKVAR(-652, 4) = reinterpret_cast<any_int32>(ACCESS(this, 60, 4)) + 0x00000038 * reinterpret_cast<any_int32>(STACKVAR(-28, 4));
-        memcpy(LOCAL(-68), reinterpret_cast<void *>((0x00000018 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-652, 4), 4, 4)) + reinterpret_cast<any_int32>(STACKVAR(-36, 4)))->unknown_method_10031760(LOCAL(-300), reinterpret_cast<any_int32>(STACKVAR(-36, 4)) + 0x00000018 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-648, 4), 0, 4)), LOCAL(-348), (reinterpret_cast<any_int32>(STACKVAR(-36, 4)) + 0x00000018 * reinterpret_cast<any_int32>(ACCESS(ARRPTR(ACCESS(this, 60, 4), 1, 0x00000038 * reinterpret_cast<any_int32>(STACKVAR(-28, 4)), 8), 0, 4)))->unknown_method_10031760(LOCAL(-324), reinterpret_cast<any_int32>(STACKVAR(-36, 4)) + 0x00000018 * reinterpret_cast<any_int32>(ACCESS(ARRPTR(ACCESS(this, 60, 4), 1, 0x00000038 * reinterpret_cast<any_int32>(STACKVAR(-28, 4)), 0), 0, 4))))->unknown_method_10031882()), 24); // TODO improve emitting of memcpy instructions
+        memcpy(LOCAL(-68), reinterpret_cast<void *>((0x00000018 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-652, 4), 4, 4)) + reinterpret_cast<any_int32>(STACKVAR(-36, 4)))->unknown_method_10031760(LOCAL(-300), reinterpret_cast<any_int32>(STACKVAR(-36, 4)) + 0x00000018 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-648, 4), 0, 4)), LOCAL(-348), (reinterpret_cast<any_int32>(STACKVAR(-36, 4)) + 0x00000018 * reinterpret_cast<any_int32>(ACCESS(ARRPTR(ACCESS(this, 60, 4), 1, 0x00000038 * reinterpret_cast<any_int32>(STACKVAR(-28, 4)), 8), 0, 4)))->unknown_method_10031760(LOCAL(-324), reinterpret_cast<any_int32>(STACKVAR(-36, 4)) + 0x00000018 * reinterpret_cast<any_int32>(ACCESS(ARRPTR(ACCESS(this, 60, 4), 1, 0x00000038 * reinterpret_cast<any_int32>(STACKVAR(-28, 4)), 0), 0, 4))))->unknown_method_10031882()), 24);
         STACKVAR(-76, 8) = LOCAL(-68)->unknown_method_10031913() / reinterpret_cast<double>(ACCESS(GLOBAL(0x10042CD8), 0, 8));
         ACCESS(this, 560, 8) = reinterpret_cast<double>(STACKVAR(-76, 8)) + reinterpret_cast<double>(ACCESS(this, 560, 8));
         ACCESS(ARRPTR(STACKVAR(-24, 4), 8, ACCESS(ARRPTR(ACCESS(this, 60, 4), 1, 0x00000038 * reinterpret_cast<any_int32>(STACKVAR(-28, 4)), 0), 0, 4), 0), 0, 8) = reinterpret_cast<double>(STACKVAR(-76, 8)) / reinterpret_cast<double>(ACCESS(GLOBAL(0x10042D70), 0, 8));
@@ -24738,7 +24738,7 @@ l10033F31:
     if (reinterpret_cast<unsigned int>(STACKVAR(-112, 4)) < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-116, 4), 164, 4)))
     {
         STACKVAR(-108, 8) = ACCESS(ARRPTR(STACKVAR(-24, 4), 8, reinterpret_cast<any_int32>(ACCESS(STACKVAR(-116, 4), 168, 4)) + reinterpret_cast<any_int32>(STACKVAR(-112, 4)), 0), 0, 8);
-        memcpy(LOCAL(-100), reinterpret_cast<void *>(reinterpret_cast<any_int32>(ACCESS(this, 40, 4)) + 0x00000030 * (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-116, 4), 168, 4)) + reinterpret_cast<any_int32>(STACKVAR(-112, 4)))), 24); // TODO improve emitting of memcpy instructions
+        memcpy(LOCAL(-100), reinterpret_cast<void *>(reinterpret_cast<any_int32>(ACCESS(this, 40, 4)) + 0x00000030 * (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-116, 4), 168, 4)) + reinterpret_cast<any_int32>(STACKVAR(-112, 4)))), 24);
         (reinterpret_cast<any_int32>(this) + 0x00000240)->unknown_method_100317C9(LOCAL(-100)->unknown_method_10031561(LOCAL(-372), STACKVAR(-108, 4), STACKVAR(-104, 4)));
         ACCESS(this, 568, 8) = reinterpret_cast<double>(STACKVAR(-108, 8)) + reinterpret_cast<double>(ACCESS(this, 568, 8));
         ACCESS(this, 304, 8) = (reinterpret_cast<double>(STACKVAR(-92, 8)) * reinterpret_cast<double>(STACKVAR(-92, 8)) + reinterpret_cast<double>(STACKVAR(-84, 8)) * reinterpret_cast<double>(STACKVAR(-84, 8))) * reinterpret_cast<double>(STACKVAR(-108, 8)) + reinterpret_cast<double>(ACCESS(this, 304, 8));
@@ -24760,7 +24760,7 @@ l100340AF:
     ACCESS(this, 336, 8) = ACCESS(this, 312, 8);
     ACCESS(this, 368, 8) = ACCESS(this, 368, 8);
     ACCESS(this, 376, 8) = ACCESS(this, 376, 8);
-    memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(this) + 0x000001B0), reinterpret_cast<void *>((reinterpret_cast<any_int32>(this) + 0x00000130)->unknown_method_1002F159(LOCAL(-500))), 128); // TODO improve emitting of memcpy instructions
+    memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(this) + 0x000001B0), reinterpret_cast<void *>((reinterpret_cast<any_int32>(this) + 0x00000130)->unknown_method_1002F159(LOCAL(-500))), 128);
     (reinterpret_cast<any_int32>(this) + 0x00000240)->unknown_method_1003165E(ACCESS(this, 568, 8));
     STACKVAR(-504, 4) = STACKVAR(-36, 4);
     ??3@YAXPAX@Z(STACKVAR(-504, 4));
@@ -24941,7 +24941,7 @@ l10034508:
     STACKVAR(-116, 4) = reinterpret_cast<any_int32>(this) + 0x000000BC;
     if (reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-116, 4), 16, 4)) > reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-116, 4), 8, 4)))
     {
-        memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(ACCESS(STACKVAR(-116, 4), 4, 4)) + 0x00000018 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-116, 4), 8, 4))), LOCAL(-28), 24); // TODO improve emitting of memcpy instructions
+        memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(ACCESS(STACKVAR(-116, 4), 4, 4)) + 0x00000018 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-116, 4), 8, 4))), LOCAL(-28), 24);
         ACCESS(STACKVAR(-116, 4), 8, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-116, 4), 8, 4)) + 0x00000001;
         goto l100347EE;
     }
@@ -24980,7 +24980,7 @@ l100346F7:
 l10034700:
     if (unknown_loc_48 < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-116, 4), 8, 4)))
     {
-        memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-68, 4)) + 24 * unknown_loc_48), reinterpret_cast<void *>(reinterpret_cast<any_int32>(ACCESS(STACKVAR(-116, 4), 4, 4)) + 24 * unknown_loc_48), 24); // TODO improve emitting of memcpy instructions
+        memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-68, 4)) + 24 * unknown_loc_48), reinterpret_cast<void *>(reinterpret_cast<any_int32>(ACCESS(STACKVAR(-116, 4), 4, 4)) + 24 * unknown_loc_48), 24);
         goto l100346F7;
     }
     STACKVAR(-84, 4) = ACCESS(STACKVAR(-116, 4), 4, 4);
@@ -25012,13 +25012,13 @@ l100347AE:
 l100347B8:
     ACCESS(STACKVAR(-116, 4), 4, 4) = STACKVAR(-180, 4);
 l100347C4:
-    memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(ACCESS(STACKVAR(-116, 4), 4, 4)) + 0x00000018 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-116, 4), 8, 4))), LOCAL(-28), 24); // TODO improve emitting of memcpy instructions
+    memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(ACCESS(STACKVAR(-116, 4), 4, 4)) + 0x00000018 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-116, 4), 8, 4))), LOCAL(-28), 24);
     ACCESS(STACKVAR(-116, 4), 8, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-116, 4), 8, 4)) + 0x00000001;
 l100347EE:
     if (reinterpret_cast<unsigned int>(ACCESS(GLOBAL(0x1004A9A0), 0, 4)) > reinterpret_cast<unsigned int>(ACCESS(GLOBAL(0x1004A998), 0, 4)))
     {
         STACKVAR(-152, 4) = reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A994), 0, 4)) + 0x00000024 * reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A998), 0, 4));
-        memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-152, 4)) + 0x00000004), reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(16, 4)) + 0x00000004), 24); // TODO improve emitting of memcpy instructions
+        memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-152, 4)) + 0x00000004), reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(16, 4)) + 0x00000004), 24);
         ACCESS(STACKVAR(-152, 4), 28, 8) = ACCESS(STACKVAR(16, 4), 28, 8);
         ACCESS(GLOBAL(0x1004A998), 0, 4) = reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A998), 0, 4)) + 0x00000001;
         goto l10034A6A;
@@ -25240,7 +25240,7 @@ l10034FEB:
     {
         LOCAL(-392)->unknown_method_1002E190();
         (reinterpret_cast<any_int32>(STACKVAR(-32, 4)) + 0x0000000C)->unknown_method_1002F052(LOCAL(-392));
-        memcpy(LOCAL(-172), reinterpret_cast<void *>(unknown_function_1002F537(LOCAL(-692), LOCAL(-172), LOCAL(-392))), 128); // TODO improve emitting of memcpy instructions
+        memcpy(LOCAL(-172), reinterpret_cast<void *>(unknown_function_1002F537(LOCAL(-692), LOCAL(-172), LOCAL(-392))), 128);
     }
     else
     {
@@ -25249,7 +25249,7 @@ l10034FEB:
         ACCESS(LOCAL(-708), 0, 8) = 0.0;
         ACCESS(LOCAL(-700), 0, 8) = 0.0;
         LOCAL(-520)->unknown_method_1002E600(LOCAL(-716), 0x54442EEA, 0x3FF921FB);
-        memcpy(LOCAL(-172), reinterpret_cast<void *>(unknown_function_1002F537(LOCAL(-844), LOCAL(-172), LOCAL(-520))), 128); // TODO improve emitting of memcpy instructions
+        memcpy(LOCAL(-172), reinterpret_cast<void *>(unknown_function_1002F537(LOCAL(-844), LOCAL(-172), LOCAL(-520))), 128);
     }
     STACKVAR(-196, 4) = 0x00000000;
     STACKVAR(-192, 4) = 0x3FF00000;
@@ -25263,8 +25263,8 @@ l1003512B:
 l10035134:
     if (reinterpret_cast<unsigned int>(STACKVAR(-44, 4)) < reinterpret_cast<unsigned int>(ACCESS(this, 44, 4)))
     {
-        memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A9BC), 0, 4)) + 0x00000018 * reinterpret_cast<any_int32>(STACKVAR(-44, 4))), reinterpret_cast<void *>(unknown_function_100300A1(LOCAL(-868), reinterpret_cast<any_int32>(ACCESS(this, 40, 4)) + 0x00000030 * reinterpret_cast<any_int32>(STACKVAR(-44, 4)), LOCAL(-172))), 24); // TODO improve emitting of memcpy instructions
-        memcpy(LOCAL(-544), reinterpret_cast<void *>(reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A9BC), 0, 4)) + 0x00000018 * reinterpret_cast<any_int32>(STACKVAR(-44, 4))), 24); // TODO improve emitting of memcpy instructions
+        memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A9BC), 0, 4)) + 0x00000018 * reinterpret_cast<any_int32>(STACKVAR(-44, 4))), reinterpret_cast<void *>(unknown_function_100300A1(LOCAL(-868), reinterpret_cast<any_int32>(ACCESS(this, 40, 4)) + 0x00000030 * reinterpret_cast<any_int32>(STACKVAR(-44, 4)), LOCAL(-172))), 24);
+        memcpy(LOCAL(-544), reinterpret_cast<void *>(reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A9BC), 0, 4)) + 0x00000018 * reinterpret_cast<any_int32>(STACKVAR(-44, 4))), 24);
         if (reinterpret_cast<double>(STACKVAR(-260, 8)) > reinterpret_cast<double>(STACKVAR(-544, 8)))
         {
             STACKVAR(-1048, 4) = STACKVAR(-260, 4);
@@ -25370,7 +25370,7 @@ l100354FC:
         STACKVAR(-4, 4) = reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A9BC), 0, 4)) + 0x00000018 * reinterpret_cast<any_int32>(ACCESS(ARRPTR(ACCESS(this, 60, 4), 1, 0x00000038 * reinterpret_cast<any_int32>(STACKVAR(-44, 4)), 0), 0, 4));
         STACKVAR(-8, 4) = reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A9BC), 0, 4)) + 0x00000018 * reinterpret_cast<any_int32>(ACCESS(ARRPTR(ACCESS(this, 60, 4), 1, 0x00000038 * reinterpret_cast<any_int32>(STACKVAR(-44, 4)), 4), 0, 4));
         STACKVAR(-12, 4) = reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A9BC), 0, 4)) + 0x00000018 * reinterpret_cast<any_int32>(ACCESS(ARRPTR(ACCESS(this, 60, 4), 1, 0x00000038 * reinterpret_cast<any_int32>(STACKVAR(-44, 4)), 8), 0, 4));
-        memcpy(LOCAL(-236), reinterpret_cast<void *>(STACKVAR(-8, 4)->unknown_method_10031760(LOCAL(-892), STACKVAR(-4, 4), LOCAL(-940), STACKVAR(-12, 4)->unknown_method_10031760(LOCAL(-916), STACKVAR(-4, 4)))->unknown_method_10031882()), 24); // TODO improve emitting of memcpy instructions
+        memcpy(LOCAL(-236), reinterpret_cast<void *>(STACKVAR(-8, 4)->unknown_method_10031760(LOCAL(-892), STACKVAR(-4, 4), LOCAL(-940), STACKVAR(-12, 4)->unknown_method_10031760(LOCAL(-916), STACKVAR(-4, 4)))->unknown_method_10031882()), 24);
         if (reinterpret_cast<double>(STACKVAR(-220, 8)) < reinterpret_cast<double>(ACCESS(GLOBAL(0x10042CF0), 0, 8)))
         {
             raster->(ACCESS(ACCESS(raster, 0, 4), 172, 4))(ACCESS(ARRPTR(ACCESS(this, 60, 4), 1, 0x00000038 * reinterpret_cast<any_int32>(STACKVAR(-44, 4)), 24), 0, 4));
@@ -25412,7 +25412,7 @@ l10035734:
         STACKVAR(-4, 4) = reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A9BC), 0, 4)) + 0x00000018 * reinterpret_cast<any_int32>(ACCESS(ARRPTR(ACCESS(this, 60, 4), 1, 0x00000038 * reinterpret_cast<any_int32>(STACKVAR(-44, 4)), 0), 0, 4));
         STACKVAR(-8, 4) = reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A9BC), 0, 4)) + 0x00000018 * reinterpret_cast<any_int32>(ACCESS(ARRPTR(ACCESS(this, 60, 4), 1, 0x00000038 * reinterpret_cast<any_int32>(STACKVAR(-44, 4)), 4), 0, 4));
         STACKVAR(-12, 4) = reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A9BC), 0, 4)) + 0x00000018 * reinterpret_cast<any_int32>(ACCESS(ARRPTR(ACCESS(this, 60, 4), 1, 0x00000038 * reinterpret_cast<any_int32>(STACKVAR(-44, 4)), 8), 0, 4));
-        memcpy(LOCAL(-236), reinterpret_cast<void *>(STACKVAR(-8, 4)->unknown_method_10031760(LOCAL(-964), STACKVAR(-4, 4), LOCAL(-1012), STACKVAR(-12, 4)->unknown_method_10031760(LOCAL(-988), STACKVAR(-4, 4)))->unknown_method_10031882()), 24); // TODO improve emitting of memcpy instructions
+        memcpy(LOCAL(-236), reinterpret_cast<void *>(STACKVAR(-8, 4)->unknown_method_10031760(LOCAL(-964), STACKVAR(-4, 4), LOCAL(-1012), STACKVAR(-12, 4)->unknown_method_10031760(LOCAL(-988), STACKVAR(-4, 4)))->unknown_method_10031882()), 24);
         if (reinterpret_cast<double>(STACKVAR(-220, 8)) < reinterpret_cast<double>(ACCESS(GLOBAL(0x10042CF0), 0, 8)))
         {
             ARG(reinterpret_cast<any_int32>(ACCESS(this, 60, 4)) + 0x00000038 * reinterpret_cast<any_int32>(STACKVAR(-44, 4)) + 24);
@@ -25625,8 +25625,8 @@ l10035F1D:
 l10035F4A:
     goto l10035D34;
 l10035F4F:
-    memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000130), reinterpret_cast<void *>(LOCAL(-172)->unknown_method_1002E2AD(0x00000000, 0x00000000)), 128); // TODO improve emitting of memcpy instructions
-    memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x000001B0), reinterpret_cast<void *>(LOCAL(-300)->unknown_method_1002E2AD(0x00000000, 0x00000000)), 128); // TODO improve emitting of memcpy instructions
+    memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000130), reinterpret_cast<void *>(LOCAL(-172)->unknown_method_1002E2AD(0x00000000, 0x00000000)), 128);
+    memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x000001B0), reinterpret_cast<void *>(LOCAL(-300)->unknown_method_1002E2AD(0x00000000, 0x00000000)), 128);
     (reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000240)->unknown_method_10031623(0x00000000, 0x00000000);
     STACKVAR(-612, 4) = unknown_function_1002A7F2(STACKVAR(8, 4), reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000258);
     STACKVAR(-616, 4) = reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x000000E8;
@@ -25735,7 +25735,7 @@ l10036408:
         STACKVAR(-320, 4) = 0x00000000;
         ACCESS(LOCAL(-316), 0, 8) = 0.0;
         ACCESS(LOCAL(-308), 0, 8) = 0.0;
-        memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000258), LOCAL(-324), 24); // TODO improve emitting of memcpy instructions
+        memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000258), LOCAL(-324), 24);
         ACCESS(STACKVAR(12, 4), 624, 8) = 2000.0;
     }
     if (reinterpret_cast<unsigned int>(STACKVAR(-8, 4)) <= 0)
@@ -25819,9 +25819,9 @@ l100366FB:
             reinterpret_cast<B_Name &>(reinterpret_cast<any_int32>(STACKVAR(-32, 4)) + 0x00000004) = *reinterpret_cast<B_Name *>(LOCAL(-364));
             reinterpret_cast<B_Name *>(LOCAL(-364))->~B_Name();
             ACCESS(STACKVAR(-32, 4), 12, 4) = 0x00000000;
-            memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-32, 4)) + 0x00000010), reinterpret_cast<void *>(unknown_function_1002FEB3(LOCAL(-412), unknown_function_10031505(LOCAL(-388), 0x00000000, 0x407F4000, GLOBAL(0x1004A978)), reinterpret_cast<any_int32>(STACKVAR(-28, 4)) + 0x0000000C)), 24); // TODO improve emitting of memcpy instructions
-            memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-32, 4)) + 0x00000028), reinterpret_cast<void *>(unknown_function_100300A1(LOCAL(-460), unknown_function_10031505(LOCAL(-436), 0x00000000, 0x407F4000, GLOBAL(0x1004A978)), reinterpret_cast<any_int32>(STACKVAR(-28, 4)) + 0x0000000C)), 24); // TODO improve emitting of memcpy instructions
-            memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-32, 4)) + 0x00000040), reinterpret_cast<void *>(unknown_function_100300A1(LOCAL(-508), unknown_function_10031505(LOCAL(-484), 0x00000000, 0x40590000, GLOBAL(0x1004A960)), reinterpret_cast<any_int32>(STACKVAR(-28, 4)) + 0x0000000C)), 24); // TODO improve emitting of memcpy instructions
+            memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-32, 4)) + 0x00000010), reinterpret_cast<void *>(unknown_function_1002FEB3(LOCAL(-412), unknown_function_10031505(LOCAL(-388), 0x00000000, 0x407F4000, GLOBAL(0x1004A978)), reinterpret_cast<any_int32>(STACKVAR(-28, 4)) + 0x0000000C)), 24);
+            memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-32, 4)) + 0x00000028), reinterpret_cast<void *>(unknown_function_100300A1(LOCAL(-460), unknown_function_10031505(LOCAL(-436), 0x00000000, 0x407F4000, GLOBAL(0x1004A978)), reinterpret_cast<any_int32>(STACKVAR(-28, 4)) + 0x0000000C)), 24);
+            memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-32, 4)) + 0x00000040), reinterpret_cast<void *>(unknown_function_100300A1(LOCAL(-508), unknown_function_10031505(LOCAL(-484), 0x00000000, 0x40590000, GLOBAL(0x1004A960)), reinterpret_cast<any_int32>(STACKVAR(-28, 4)) + 0x0000000C)), 24);
             (reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000100)->unknown_method_1003A240(STACKVAR(-32, 4));
         }
     }
@@ -27102,9 +27102,9 @@ l10039287:
             reinterpret_cast<B_Name &>(reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + 0x00000004) = *reinterpret_cast<B_Name *>(LOCAL(-36));
             reinterpret_cast<B_Name *>(LOCAL(-36))->~B_Name();
             ACCESS(STACKVAR(-12, 4), 12, 4) = 0x00000000;
-            memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + 0x00000010), reinterpret_cast<void *>(unknown_function_1002FEB3(LOCAL(-84), unknown_function_10031505(LOCAL(-60), 0x00000000, 0x407F4000, GLOBAL(0x1004A978)), reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + 0x0000000C)), 24); // TODO improve emitting of memcpy instructions
-            memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + 0x00000028), reinterpret_cast<void *>(unknown_function_100300A1(LOCAL(-132), unknown_function_10031505(LOCAL(-108), 0x00000000, 0x407F4000, GLOBAL(0x1004A978)), reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + 0x0000000C)), 24); // TODO improve emitting of memcpy instructions
-            memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + 0x00000040), reinterpret_cast<void *>(unknown_function_100300A1(LOCAL(-180), unknown_function_10031505(LOCAL(-156), 0x00000000, 0x40590000, GLOBAL(0x1004A960)), reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + 0x0000000C)), 24); // TODO improve emitting of memcpy instructions
+            memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + 0x00000010), reinterpret_cast<void *>(unknown_function_1002FEB3(LOCAL(-84), unknown_function_10031505(LOCAL(-60), 0x00000000, 0x407F4000, GLOBAL(0x1004A978)), reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + 0x0000000C)), 24);
+            memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + 0x00000028), reinterpret_cast<void *>(unknown_function_100300A1(LOCAL(-132), unknown_function_10031505(LOCAL(-108), 0x00000000, 0x407F4000, GLOBAL(0x1004A978)), reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + 0x0000000C)), 24);
+            memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + 0x00000040), reinterpret_cast<void *>(unknown_function_100300A1(LOCAL(-180), unknown_function_10031505(LOCAL(-156), 0x00000000, 0x40590000, GLOBAL(0x1004A960)), reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + 0x0000000C)), 24);
             (reinterpret_cast<any_int32>(this) + 0x00000100)->unknown_method_1003A240(STACKVAR(-12, 4));
         }
     }
@@ -28810,7 +28810,7 @@ p1003B6F0
 p1003B780
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=4, stack_delta=4)
-    memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(this) + 0x00000004), reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(8, 4)) + 0x00000004), 24); // TODO improve emitting of memcpy instructions
+    memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(this) + 0x00000004), reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(8, 4)) + 0x00000004), 24);
     ACCESS(this, 28, 8) = ACCESS(STACKVAR(8, 4), 28, 8);
     REGDEF(eax=this)
 }

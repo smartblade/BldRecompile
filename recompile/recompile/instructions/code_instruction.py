@@ -1,35 +1,31 @@
 class CodeInstruction:
-    def __init__(self, tokens):
-        self._tokens = tokens
+    def __init__(self, expression):
+        self._expression = expression
 
     @property
     def expression(self):
-        return self._tokens
+        return self._expression
 
     def __repr__(self):
-        return "CodeInstruction({})".format(self._tokens)
+        return "CodeInstruction({})".format(self._expression)
 
     def transform_instruction(
         self, **kwargs
     ):
-        tokens = self._tokens.transform_expression(**kwargs)
+        tokens = self._expression.transform_expression(**kwargs)
         return CodeInstruction(tokens)
 
     def visit(self, on_expression_visited, **kwargs):
-        self._tokens.visit(on_expression_visited, **kwargs)
+        self._expression.visit(on_expression_visited, **kwargs)
 
     def transform(self, transformer, **kwargs):
-        expression = self._tokens.transform(transformer, **kwargs)
+        expression = self._expression.transform(transformer, **kwargs)
         e = transformer.transform_code_instruction(expression, **kwargs)
         if e is not None:
             return e
-        if expression == self._tokens:
+        if expression == self._expression:
             return self
         return self.__class__(expression)
 
     def emit_code(self, writer):
-        instr = self._tokens.emit_code()
-        comment = ""
-        if "memcpy" in instr:
-            comment += " // TODO improve emitting of memcpy instructions"
-        writer.write_line("{};{}".format(instr, comment))
+        writer.write_line("{};".format(self._expression.emit_code()))
