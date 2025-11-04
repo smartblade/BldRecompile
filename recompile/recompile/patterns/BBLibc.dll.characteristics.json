@@ -59,7 +59,10 @@
 					"parameter": "2"
 				}
 			}
-		]
+		],
+		"varnames": {
+			"-4": "remainingCache"
+		}
 	},
 	"100021E0": {
 		"return": {

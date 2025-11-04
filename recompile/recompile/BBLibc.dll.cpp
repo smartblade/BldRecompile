@@ -272,16 +272,16 @@ void B_IDataFile::Read(void *data, unsigned int size)
         this->posInCacheBlock += size;
         return;
     }
-    unsigned int unknown_loc_04 = IFILE_CACHE_SIZE - this->posInCacheBlock;
-    if (unknown_loc_04 != 0)
+    unsigned int remainingCache = IFILE_CACHE_SIZE - this->posInCacheBlock;
+    if (remainingCache != 0)
     {
-        memcpy(data, &this->fileCache[this->posInCacheBlock], unknown_loc_04); // TODO improve emitting of memcpy instructions
+        memcpy(data, &this->fileCache[this->posInCacheBlock], remainingCache); // TODO improve emitting of memcpy instructions
         this->posInCacheBlock = IFILE_CACHE_SIZE;
-        size -= unknown_loc_04;
+        size -= remainingCache;
     }
     if (this->ReadCacheBlock())
     {
-        this->Read(&static_cast<char *>(data)[unknown_loc_04], size);
+        this->Read(&static_cast<char *>(data)[remainingCache], size);
     }
 }
 
