@@ -268,14 +268,14 @@ void B_IDataFile::Read(void *data, unsigned int size)
     }
     if (size < IFILE_CACHE_SIZE - this->posInCacheBlock)
     {
-        memcpy(data, &this->fileCache[this->posInCacheBlock], reinterpret_cast<size_t>(size));
+        memcpy(data, &this->fileCache[this->posInCacheBlock], static_cast<size_t>(size));
         this->posInCacheBlock += size;
         return;
     }
     unsigned int remainingCache = IFILE_CACHE_SIZE - this->posInCacheBlock;
     if (remainingCache != 0)
     {
-        memcpy(data, &this->fileCache[this->posInCacheBlock], reinterpret_cast<size_t>(remainingCache));
+        memcpy(data, &this->fileCache[this->posInCacheBlock], static_cast<size_t>(remainingCache));
         this->posInCacheBlock = IFILE_CACHE_SIZE;
         size -= remainingCache;
     }
@@ -456,14 +456,14 @@ void B_ODataFile::Write(const void *data, unsigned int size)
     }
     if (size < OFILE_CACHE_SIZE - this->posInCacheBlock)
     {
-        memcpy(&this->fileCache[this->posInCacheBlock], data, reinterpret_cast<size_t>(size));
+        memcpy(&this->fileCache[this->posInCacheBlock], data, static_cast<size_t>(size));
         this->posInCacheBlock += size;
         return;
     }
     unsigned int unknown_loc_04 = OFILE_CACHE_SIZE - this->posInCacheBlock;
     if (unknown_loc_04 != 0)
     {
-        memcpy(&this->fileCache[this->posInCacheBlock], data, reinterpret_cast<size_t>(unknown_loc_04));
+        memcpy(&this->fileCache[this->posInCacheBlock], data, static_cast<size_t>(unknown_loc_04));
         this->posInCacheBlock = OFILE_CACHE_SIZE;
         size -= unknown_loc_04;
     }
@@ -481,7 +481,7 @@ B_ODataFile &operator <<(B_ODataFile &file, const char &c)
 // address: 0x10001F74
 B_ODataFile &operator <<(B_ODataFile &file, const char *c)
 {
-    file.Write(c, reinterpret_cast<unsigned int>(strlen(c)));
+    file.Write(c, static_cast<unsigned int>(strlen(c)));
     return file;
 }
 
@@ -1337,7 +1337,7 @@ B_Name::B_Name()
 // address: 0x10003337
 B_Name::B_Name(const char *str)
 {
-    this->len = reinterpret_cast<unsigned int>(strlen(str));
+    this->len = static_cast<unsigned int>(strlen(str));
     STACKVAR(-4, 4) = ??2@YAPAXI@Z(this->len + 1);
     this->string = reinterpret_cast<char *>(STACKVAR(-4, 4));
     strcpy(this->string, str);
@@ -1453,7 +1453,7 @@ B_Name &B_Name::operator =(const B_Name &src)
     {
         STACKVAR(-4, 4) = this->string;
         ??3@YAXPAX@Z(STACKVAR(-4, 4));
-        this->len = reinterpret_cast<unsigned int>(strlen(src.string));
+        this->len = static_cast<unsigned int>(strlen(src.string));
         STACKVAR(-8, 4) = ??2@YAPAXI@Z(this->len + 1);
         this->string = reinterpret_cast<char *>(STACKVAR(-8, 4));
     }
@@ -1473,7 +1473,7 @@ B_Name B_Name::Right(unsigned int count) const
         count = this->len;
     }
     reinterpret_cast<B_Name *>(LOCAL(-8))->B_Name(count);
-    strncpy(reinterpret_cast<char *>(STACKVAR(-8, 4)), &this->string[this->len - count], reinterpret_cast<size_t>(count));
+    strncpy(reinterpret_cast<char *>(STACKVAR(-8, 4)), &this->string[this->len - count], static_cast<size_t>(count));
     __result->B_Name(*reinterpret_cast<B_Name *>(LOCAL(-8)));
     reinterpret_cast<B_Name *>(LOCAL(-8))->~B_Name();
     REGDEF(eax=__result)
@@ -1491,7 +1491,7 @@ B_Name B_Name::Left(unsigned int count) const
         count = this->len;
     }
     reinterpret_cast<B_Name *>(LOCAL(-8))->B_Name(count);
-    strncpy(reinterpret_cast<char *>(STACKVAR(-8, 4)), this->string, reinterpret_cast<size_t>(count));
+    strncpy(reinterpret_cast<char *>(STACKVAR(-8, 4)), this->string, static_cast<size_t>(count));
     __result->B_Name(*reinterpret_cast<B_Name *>(LOCAL(-8)));
     reinterpret_cast<B_Name *>(LOCAL(-8))->~B_Name();
     REGDEF(eax=__result)
@@ -1581,7 +1581,7 @@ B_Name operator +(const B_Name &lother, const B_Name &rother)
 B_Name operator +(const B_Name &other, const char *str)
 {
     unsigned int unknown_loc_0C = other.len;
-    reinterpret_cast<B_Name *>(LOCAL(-8))->B_Name(unknown_loc_0C + reinterpret_cast<unsigned int>(strlen(str)) + 1);
+    reinterpret_cast<B_Name *>(LOCAL(-8))->B_Name(unknown_loc_0C + static_cast<unsigned int>(strlen(str)) + 1);
     STACKVAR(-16, 4) = other.string;
     strcpy(reinterpret_cast<char *>(STACKVAR(-8, 4)), reinterpret_cast<char *>(STACKVAR(-16, 4)));
     strcat(reinterpret_cast<char *>(STACKVAR(-8, 4)), str);
@@ -1594,7 +1594,7 @@ B_Name operator +(const B_Name &other, const char *str)
 B_Name operator +(const char *str, const B_Name &bName)
 {
     unsigned int unknown_loc_0C = bName.len;
-    reinterpret_cast<B_Name *>(LOCAL(-8))->B_Name(reinterpret_cast<unsigned int>(strlen(str)) + unknown_loc_0C + 1);
+    reinterpret_cast<B_Name *>(LOCAL(-8))->B_Name(static_cast<unsigned int>(strlen(str)) + unknown_loc_0C + 1);
     strcpy(reinterpret_cast<char *>(STACKVAR(-8, 4)), str);
     STACKVAR(-16, 4) = bName.string;
     strcat(reinterpret_cast<char *>(STACKVAR(-8, 4)), reinterpret_cast<char *>(STACKVAR(-16, 4)));
@@ -1606,7 +1606,7 @@ B_Name operator +(const char *str, const B_Name &bName)
 // address: 0x10003C70
 const B_Name &B_Name::operator +=(const char *str)
 {
-    this->len += reinterpret_cast<unsigned int>(strlen(str));
+    this->len += static_cast<unsigned int>(strlen(str));
     STACKVAR(-8, 4) = ??2@YAPAXI@Z(this->len + 1);
     STACKVAR(-4, 4) = STACKVAR(-8, 4);
     strcpy(reinterpret_cast<char *>(STACKVAR(-4, 4)), this->string);
@@ -4536,29 +4536,29 @@ B_BitMap::B_BitMap(const B_BitMap &src)
                 this->pal = unknown_loc_04 != nullptr ? unknown_loc_04->B_Pal(*src.pal) : nullptr;
                 STACKVAR(-8, 4) = ??2@YAPAXI@Z(this->dimension1 * this->dimension2);
                 this->data = reinterpret_cast<void *>(STACKVAR(-8, 4));
-                memcpy(this->data, src.data, reinterpret_cast<size_t>(this->dimension1 * this->dimension2));
+                memcpy(this->data, src.data, static_cast<size_t>(this->dimension1 * this->dimension2));
                 break;
             case 1:
                 STACKVAR(-12, 4) = ??2@YAPAXI@Z(this->dimension1 * this->dimension2);
                 this->data = reinterpret_cast<void *>(STACKVAR(-12, 4));
-                memcpy(this->data, src.data, reinterpret_cast<size_t>(this->dimension1 * this->dimension2));
+                memcpy(this->data, src.data, static_cast<size_t>(this->dimension1 * this->dimension2));
                 break;
             case 2:
                 unknown_loc_10 = reinterpret_cast<B_Pal *>(??2@YAPAXI@Z(0x00000300));
                 this->pal = unknown_loc_10 != nullptr ? unknown_loc_10->B_Pal(*src.pal) : nullptr;
                 STACKVAR(-20, 4) = ??2@YAPAXI@Z(2 * this->dimension1 * this->dimension2);
                 this->data = reinterpret_cast<void *>(STACKVAR(-20, 4));
-                memcpy(this->data, src.data, 2 * reinterpret_cast<size_t>(this->dimension1 * this->dimension2));
+                memcpy(this->data, src.data, 2 * static_cast<size_t>(this->dimension1 * this->dimension2));
                 break;
             case 3:
                 STACKVAR(-24, 4) = ??2@YAPAXI@Z(3 * this->dimension1 * this->dimension2);
                 this->data = reinterpret_cast<void *>(STACKVAR(-24, 4));
-                memcpy(this->data, src.data, 3 * reinterpret_cast<size_t>(this->dimension1 * this->dimension2));
+                memcpy(this->data, src.data, 3 * static_cast<size_t>(this->dimension1 * this->dimension2));
                 break;
             case 4:
                 STACKVAR(-28, 4) = ??2@YAPAXI@Z(4 * this->dimension1 * this->dimension2);
                 this->data = reinterpret_cast<void *>(STACKVAR(-28, 4));
-                memcpy(this->data, src.data, 4 * reinterpret_cast<size_t>(this->dimension1 * this->dimension2));
+                memcpy(this->data, src.data, 4 * static_cast<size_t>(this->dimension1 * this->dimension2));
                 break;
         }
     }
@@ -4604,7 +4604,7 @@ l10008A4A:
     this->dimension2 = arg_2.dimension2;
     STACKVAR(-20, 4) = ??2@YAPAXI@Z(3 * this->dimension1 * this->dimension2);
     this->data = reinterpret_cast<void *>(STACKVAR(-20, 4));
-    memcpy(this->data, arg_2.data, 3 * reinterpret_cast<size_t>(this->dimension1 * this->dimension2));
+    memcpy(this->data, arg_2.data, 3 * static_cast<size_t>(this->dimension1 * this->dimension2));
     goto l10008AE5;
 l10008ABD:
     this->type = 0;
@@ -10724,7 +10724,7 @@ p10014343
     ProcedureInfo(this=None, this_offset=None, local_size=8, stack_delta=0)
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 24, 4);
     unsigned int unknown_loc_08 = 4096 - reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-4, 4), 4, 4));
-    if (unknown_loc_08 > 0 && fwrite(reinterpret_cast<void *>(ACCESS(STACKVAR(-4, 4), 24, 4)), 1, reinterpret_cast<size_t>(unknown_loc_08), reinterpret_cast<FILE *>(ACCESS(STACKVAR(-4, 4), 20, 4))) != reinterpret_cast<size_t>(unknown_loc_08))
+    if (unknown_loc_08 > 0 && fwrite(reinterpret_cast<void *>(ACCESS(STACKVAR(-4, 4), 24, 4)), 1, static_cast<size_t>(unknown_loc_08), reinterpret_cast<FILE *>(ACCESS(STACKVAR(-4, 4), 20, 4))) != static_cast<size_t>(unknown_loc_08))
     {
         ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x00000025;
         ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 0, 4)(STACKVAR(8, 4));
@@ -10772,7 +10772,7 @@ p1001449E
     ProcedureInfo(this=None, this_offset=None, local_size=8, stack_delta=0)
     STACKVAR(-8, 4) = ACCESS(STACKVAR(8, 4), 24, 4);
     size_t unknown_loc_04 = fread(reinterpret_cast<void *>(ACCESS(STACKVAR(-8, 4), 32, 4)), 1, 4096, reinterpret_cast<FILE *>(ACCESS(STACKVAR(-8, 4), 28, 4)));
-    if (reinterpret_cast<unsigned int>(unknown_loc_04) <= 0)
+    if (static_cast<unsigned int>(unknown_loc_04) <= 0)
     {
         if (static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-8, 4), 36, 1))) != 0x00000000)
         {
@@ -21146,7 +21146,7 @@ l10026BE0:
     {
         STACKVAR(-4, 4) = ??2@YAPAXI@Z(3 * this->dimension1 * this->dimension2);
         this->data = reinterpret_cast<void *>(STACKVAR(-4, 4));
-        memcpy(this->data, that.data, 3 * reinterpret_cast<size_t>(this->dimension1 * this->dimension2));
+        memcpy(this->data, that.data, 3 * static_cast<size_t>(this->dimension1 * this->dimension2));
     }
     else
     {
@@ -21313,7 +21313,7 @@ l10027014:
         this->dimension1 = 0;
         goto l100271B3;
     }
-    memcpy(this->data, arg_1.data, 3 * reinterpret_cast<size_t>(this->dimension1 * this->dimension2));
+    memcpy(this->data, arg_1.data, 3 * static_cast<size_t>(this->dimension1 * this->dimension2));
     goto l100271B3;
 l100270A2:
     this->dimension1 = arg_1.dimension1;
@@ -21382,7 +21382,7 @@ B_BitMap24 &B_BitMap24::operator=(const B_BitMap24 &that)
         STACKVAR(-8, 4) = ??2@YAPAXI@Z(3 * this->dimension1 * this->dimension2);
         this->data = reinterpret_cast<void *>(STACKVAR(-8, 4));
     }
-    memcpy(this->data, that.data, 3 * reinterpret_cast<size_t>(this->dimension1 * this->dimension2));
+    memcpy(this->data, that.data, 3 * static_cast<size_t>(this->dimension1 * this->dimension2));
     return *this;
 }
 
@@ -21404,7 +21404,7 @@ unsigned int B_BitMap24::SetBits(int arg_1, int arg_2, const char *arg_3, const 
                 _assert("Bits", "C:\code\BITMAP24\BITMAP24.CPP", 141);
             }
         }
-        memcpy(this->data, arg_3, 3 * reinterpret_cast<size_t>(this->dimension1 * this->dimension2));
+        memcpy(this->data, arg_3, 3 * static_cast<size_t>(this->dimension1 * this->dimension2));
         return 1;
     }
     return 0;
@@ -21814,7 +21814,7 @@ void B_BitMap24::EscribeArchivoRAW(const char *arg_1) const
     {
         return;
     }
-    if (reinterpret_cast<size_t>(unknown_loc_08) != fwrite(this->data, 1, reinterpret_cast<size_t>(unknown_loc_08), unknown_loc_04))
+    if (static_cast<size_t>(unknown_loc_08) != fwrite(this->data, 1, static_cast<size_t>(unknown_loc_08), unknown_loc_04))
     {
         fclose(unknown_loc_04);
         return;

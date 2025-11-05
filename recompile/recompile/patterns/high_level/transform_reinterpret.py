@@ -37,4 +37,6 @@ def _transform_to_static_cast(data_type, expression):
 _static_cast_pairs = {
     (data_types.Long32, data_types.UInt32): True,
     (data_types.UInt32, data_types.Long32): True,
+    (data_types.SizeT, data_types.UInt32): True,
+    (data_types.UInt32, data_types.SizeT): True,
 }
