@@ -1,6 +1,6 @@
 import data_types
 import expressions
-from expressions.operator import Operator
+from expressions.operator import Operator, comparison
 
 from .call_characteristics import get_call_characteristics
 from .transform_access import do_pointer_dereference
@@ -18,8 +18,8 @@ def transform_binary(operator, left, right, analysis, **kwargs):
             return _transform_int_mul(left, right)
         if operator == Operator.BIT_AND:
             return _transform_bit_and(left, right)
-    if operator == Operator.EQ or operator == Operator.NE:
-        return _transform_eq_ne(operator, left, right, **kwargs)
+    if operator in comparison:
+        return _transform_comparison(operator, left, right, **kwargs)
     return None
 
 
@@ -106,6 +106,14 @@ def _convert_constant(c, other):
     return None
 
 
+def _transform_comparison(operator, left, right, **kwargs):
+    left = _strip_cast_from_comparison_operand(left)
+    right = _strip_cast_from_comparison_operand(right)
+    if operator == Operator.EQ or operator == Operator.NE:
+        return _transform_eq_ne(operator, left, right, **kwargs)
+    return expressions.Bin(operator, left, right)
+
+
 def _transform_eq_ne(operator, left, right, **kwargs):
     result = _try_cast_to_bool(operator, left, right, **kwargs)
     if result is not None:
@@ -139,6 +147,18 @@ def _try_cast_to_bool(operator, left, right, declarations, **kwargs):
         elif operator == Operator.EQ:
             return expressions.LogicalNot(left)
     return None
+
+
+def _strip_cast_from_comparison_operand(e):
+    if not isinstance(e, expressions.StaticCast):
+        return e
+    target_type = e.data_type
+    src_type = e.expression.data_type
+    if src_type.size != target_type.size:
+        return e
+    if src_type.is_unsigned_int and target_type.is_unsigned_int:
+        return expressions.ImplicitCast(target_type, e.expression)
+    return e
 
 
 def _transform_bit_and(left, right):

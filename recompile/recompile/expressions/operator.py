@@ -80,6 +80,15 @@ logical = {
     Operator.OR,
 }
 
+comparison = {
+    Operator.LT,
+    Operator.GT,
+    Operator.LE,
+    Operator.GE,
+    Operator.EQ,
+    Operator.NE,
+}
+
 is_associative = {
     Operator.MUL: True,
     Operator.DIV: False,

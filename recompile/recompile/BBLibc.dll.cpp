@@ -10724,7 +10724,7 @@ p10014343
     ProcedureInfo(this=None, this_offset=None, local_size=8, stack_delta=0)
     STACKVAR(-4, 4) = ACCESS(STACKVAR(8, 4), 24, 4);
     unsigned int unknown_loc_08 = 4096 - reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-4, 4), 4, 4));
-    if (unknown_loc_08 > 0 && fwrite(reinterpret_cast<void *>(ACCESS(STACKVAR(-4, 4), 24, 4)), 1, static_cast<size_t>(unknown_loc_08), reinterpret_cast<FILE *>(ACCESS(STACKVAR(-4, 4), 20, 4))) != static_cast<size_t>(unknown_loc_08))
+    if (unknown_loc_08 > 0 && fwrite(reinterpret_cast<void *>(ACCESS(STACKVAR(-4, 4), 24, 4)), 1, static_cast<size_t>(unknown_loc_08), reinterpret_cast<FILE *>(ACCESS(STACKVAR(-4, 4), 20, 4))) != unknown_loc_08)
     {
         ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x00000025;
         ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 0, 4)(STACKVAR(8, 4));
@@ -10772,7 +10772,7 @@ p1001449E
     ProcedureInfo(this=None, this_offset=None, local_size=8, stack_delta=0)
     STACKVAR(-8, 4) = ACCESS(STACKVAR(8, 4), 24, 4);
     size_t unknown_loc_04 = fread(reinterpret_cast<void *>(ACCESS(STACKVAR(-8, 4), 32, 4)), 1, 4096, reinterpret_cast<FILE *>(ACCESS(STACKVAR(-8, 4), 28, 4)));
-    if (static_cast<unsigned int>(unknown_loc_04) <= 0)
+    if (unknown_loc_04 <= 0)
     {
         if (static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-8, 4), 36, 1))) != 0x00000000)
         {
@@ -21814,7 +21814,7 @@ void B_BitMap24::EscribeArchivoRAW(const char *arg_1) const
     {
         return;
     }
-    if (static_cast<size_t>(unknown_loc_08) != fwrite(this->data, 1, static_cast<size_t>(unknown_loc_08), unknown_loc_04))
+    if (unknown_loc_08 != fwrite(this->data, 1, static_cast<size_t>(unknown_loc_08), unknown_loc_04))
     {
         fclose(unknown_loc_04);
         return;
