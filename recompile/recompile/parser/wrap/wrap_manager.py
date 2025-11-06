@@ -5,6 +5,7 @@ import parser.wrap.tokens as tokens
 class WrapManager:
     def __init__(self, max_line_len, indent_len, indent):
         self._wrap = max_line_len is not None
+        self._indentation_required = True
         self._max_line_len = max_line_len
         self._indent_len = indent_len
         self._indent = indent
@@ -21,14 +22,24 @@ class WrapManager:
             lines.append("".join(buffer))
         return lines
 
-    def wrap_if_needed(self, token):
+    def wrap_if_needed(self, token, indentation_required=None):
         if not self._wrap or self._can_add_to_current_line(token):
             self._add_to_current_line(token)
             return
-        self._wrap_token(token)
+        self._wrap_token(token, indentation_required)
 
-    def _wrap_token(self, token):
+    def _wrap_token(self, token, indentation_required=None):
+        old_indentation_flag = self._indentation_required
+        if indentation_required is not None:
+            self._indentation_required = indentation_required
         token.wrap(self)
+        indentation_done = (
+            indentation_required if indentation_required is not None
+            else old_indentation_flag
+        ) and not self._indentation_required
+        if indentation_done:
+            self._do_unindent()
+        self._indentation_required = old_indentation_flag
 
     def _can_add_to_current_line(self, token: tokens.Token):
         offset = self._indent * self._indent_len + self._current_pos
@@ -50,7 +61,7 @@ class WrapManager:
             text = " " + text
         self._add_text_to_current_line(text)
         if self._wrap:
-            self._new_line()
+            self._new_line_and_ensure_indent()
         else:
             self._add_text_to_current_line(" ")
 
@@ -68,12 +79,24 @@ class WrapManager:
         self._lines_buffers.append([" " * self._indent * self._indent_len])
         self._current_pos = 0
 
-    def _new_line_and_indent(self):
+    def _do_indent(self):
         self._indent += 1
+
+    def _do_unindent(self):
+        self._indent -= 1
+
+    def _new_line_and_indent(self):
+        self._do_indent()
+        self._new_line()
+
+    def _new_line_and_ensure_indent(self):
+        if self._indentation_required:
+            self._do_indent()
+            self._indentation_required = False
         self._new_line()
 
     def _new_line_and_unindent(self):
-        self._indent -= 1
+        self._do_unindent()
         self._new_line()
 
     def add_tokens_list(self, tokens_list):
@@ -85,12 +108,12 @@ class WrapManager:
 
     def add_brackets(self, brackets):
         self._add_opening_bracket()
-        self._wrap_token(brackets.token)
+        self._wrap_token(brackets.token, indentation_required=False)
         self._add_closing_bracket()
 
     def add_op_separated_list(self, op_list):
         for token, operator in op_list.pairs:
-            self.wrap_if_needed(token)
+            self.wrap_if_needed(token, indentation_required=True)
             if operator is None:
                 continue
             self._add_operator(operator)

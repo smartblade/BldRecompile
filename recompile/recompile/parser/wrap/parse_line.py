@@ -170,11 +170,11 @@ def _make_op_list_token(state, token):
 
 
 def _pop_operator(buffer):
-    if len(buffer) < 3:
+    if len(buffer) < 2:
         return None
     if buffer[-1] != ' ':
         return None
-    if buffer[-3] == ' ':
+    if len(buffer) >= 3 and buffer[-3] == ' ':
         start = -3
     elif len(buffer) >= 4 and buffer[-4] == ' ':
         start = -4
