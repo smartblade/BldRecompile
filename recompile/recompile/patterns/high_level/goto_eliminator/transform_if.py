@@ -35,8 +35,7 @@ def transform_if_statements(instrs, label_uses, stack_vars, **kwargs):
         )
         instrs.append(labeled_block)
         if switch is not None:
-            instrs = _eliminate_switch_index_assignment(instrs, stack_vars)
-            instrs = transform_switch_statements(instrs, label_uses)
+            instrs = transform_switch_statements(instrs, label_uses, stack_vars)
         else:
             label_uses[goto_instr.label].remove(goto_instr)
             eliminate_unused_label(instrs, label_uses)
@@ -148,25 +147,3 @@ def _extract_switch_case(if_instruction):
     if not isinstance(left, expressions.intermediate.Stackvar):
         return None
     return left, right.value, goto_instr
-
-
-def _eliminate_switch_index_assignment(instrs, stack_vars):
-    labeled_block = instrs[-1]
-    switch = instrs[-2]
-    switch_index_ass = instrs[-3]
-    assert isinstance(switch, instructions.Switch)
-    assert isinstance(switch_index_ass, instructions.Assignment)
-    switch_index_ass_dst = switch_index_ass.dst
-    assert isinstance(
-        switch_index_ass_dst, expressions.intermediate.Stackvar)
-    switch_index = switch.index
-    assert isinstance(switch_index, expressions.intermediate.Stackvar)
-    assert switch_index.offset == switch_index_ass_dst.offset
-    assert switch_index.size == switch_index_ass_dst.size
-    assert switch_index.offset not in stack_vars
-    stack_vars[switch_index.offset] = expressions.Identifier(
-        switch_index.data_type, "__switch_index")
-    new_instrs = instrs[:-3]
-    new_instrs.append(switch.copy(switch_index_ass.src))
-    new_instrs.append(labeled_block)
-    return new_instrs

@@ -29,10 +29,29 @@ class Switch:
     def blocks_dict(self):
         return self._blocks_dict
 
-    def copy(self, index):
+    def copy(self, index=None, default_label=None, cases_offset=None):
+        index = index or self._index
+        default_label = default_label or self._default_label
+        if cases_offset is not None:
+            case_set_dict = {}
+            for label, case_set in self._case_set_dict.items():
+                case_set_dict[label] = set(c + cases_offset for c in case_set)
+        else:
+            case_set_dict = self._case_set_dict
         return self.__class__(
-            index, self._case_set_dict, self._blocks_dict, self._default_label,
+            index, case_set_dict, self._blocks_dict, default_label,
             self._constant_dict)
+
+    def validate_cases(self, min_case, range_diff):
+        min_case = min_case or 0
+        max_case = min_case + range_diff
+        all_cases = set()
+        for case_set in self._case_set_dict.values():
+            for case in case_set:
+                assert min_case <= case <= max_case
+                assert case not in all_cases
+                all_cases.add(case)
+        assert len(all_cases) == range_diff + 1
 
     def _ensure_blocks_dict(self):
         for label in self._case_set_dict.keys():

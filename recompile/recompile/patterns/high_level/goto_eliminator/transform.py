@@ -19,7 +19,7 @@ def transform(instrs, stack_vars):
         new_instructions.append(instr)
     eliminate_unused_label(new_instructions, label_uses=label_uses)
     new_instructions = transform_switch_statements(
-        new_instructions, label_uses=label_uses)
+        new_instructions, label_uses=label_uses, stack_vars=stack_vars)
     new_instructions = transform_if_statements(
         new_instructions, label_uses=label_uses, stack_vars=stack_vars)
     return new_instructions

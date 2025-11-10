@@ -1,17 +1,24 @@
+import data_types
+import expressions
+from expressions.operator import Operator
 import instructions
 
 from .eliminate_unused_label import eliminate_unused_label
 
 
-def transform_switch_statements(instrs, label_uses, **kwargs):
+def transform_switch_statements(instrs, label_uses, stack_vars, **kwargs):
     if len(instrs) <= 1:
         return instrs
+    if not isinstance(instrs[-1], instructions.LabeledBlock):
+        return instrs
+    if not isinstance(instrs[-2], instructions.Switch):
+        return instrs
+    instrs = _apply_range_guard(instrs, 2, label_uses) or instrs
+    instrs = _eliminate_switch_index_assignment(instrs, stack_vars)
     labeled_block = instrs[-1]
-    if not isinstance(labeled_block, instructions.LabeledBlock):
-        return instrs
+    assert isinstance(labeled_block, instructions.LabeledBlock)
     switch = instrs[-2]
-    if not isinstance(switch, instructions.Switch):
-        return instrs
+    assert isinstance(switch, instructions.Switch)
     following_label_status = _FollowingLabelStatus()
     while switch.has_label(labeled_block.label):
         labeled_instrs = labeled_block.instructions
@@ -35,6 +42,146 @@ def transform_switch_statements(instrs, label_uses, **kwargs):
     instrs = instrs[:-1]
     instrs.append(labeled_block)
     return _replace_goto_to_break(instrs, following_label_status, label_uses)
+
+
+def _as_if_single_goto_instr(if_instruction):
+    if not isinstance(if_instruction, instructions.IfInstruction):
+        return None
+    if if_instruction.else_block is not None:
+        return None
+    if len(if_instruction.if_block) != 1:
+        return None
+    goto_instr = if_instruction.if_block[-1]
+    if not isinstance(goto_instr, instructions.Goto):
+        return None
+    return goto_instr
+
+
+def _apply_range_guard(instrs, switch_index, label_uses):
+    switch = instrs[-switch_index]
+    assert isinstance(switch, instructions.Switch)
+    if switch.default_label is not None:
+        return None
+    index = switch_index + 1
+    if len(instrs) < index:
+        return None
+    range_guard = instrs[-index]
+    default_goto = _as_if_single_goto_instr(range_guard)
+    if default_goto is None:
+        return None
+    range_diff = _extract_switch_range_diff(
+        range_guard.if_clause, switch.index)
+    if range_diff is None:
+        return None
+    index += 1
+    if len(instrs) < index:
+        return None
+    ass = instrs[-index]
+    if not isinstance(ass, instructions.Assignment):
+        return None
+    cases_offset = _extract_cases_offset(ass, switch.index)
+    if cases_offset is not None:
+        index += 1
+    new_instrs = instrs[:-index + 1]
+    new_switch = switch.copy(
+        default_label=default_goto.label,
+        cases_offset=cases_offset,
+    )
+    new_switch.validate_cases(cases_offset, range_diff)
+    label_uses[default_goto.label].remove(default_goto)
+    if not switch.has_label(default_goto.label):
+        new_default_block = new_switch.blocks_dict[default_goto.label]
+        assert len(new_default_block) == 1
+        new_default_goto = new_default_block[0]
+        assert isinstance(new_default_goto, instructions.Goto)
+        label_uses[new_default_goto.label].add(new_default_goto)
+    new_instrs.append(new_switch)
+    new_instrs.extend(instrs[-switch_index + 1:])
+    return new_instrs
+
+
+def _is_switch_index(e, switch_index):
+    if not isinstance(e, expressions.intermediate.Stackvar):
+        return False
+    if e.offset != switch_index.offset:
+        return False
+    if e.size != switch_index.size:
+        return False
+    return True
+
+
+def _extract_switch_range_diff(if_clause, switch_index):
+    if not isinstance(if_clause, expressions.Bin):
+        return None
+    if if_clause.operator != Operator.GT:
+        return None
+    left = if_clause.left
+    if not isinstance(left, expressions.ReinterpretCast):
+        return None
+    if not isinstance(left.data_type, data_types.UInt32):
+        return None
+    if not _is_switch_index(left.expression, switch_index):
+        return None
+    const = if_clause.right
+    if not isinstance(const, expressions.Constant):
+        return None
+    if not isinstance(const.data_type, data_types.UInt32):
+        return None
+    assert isinstance(const.value, int)
+    return const.value
+
+
+def _extract_cases_offset(ass, switch_index):
+    if not _is_switch_index(ass.dst, switch_index):
+        return None
+    src = ass.src
+    if not isinstance(src, expressions.Bin):
+        return None
+    if src.operator == Operator.SUB:
+        negate = False
+    elif src.operator == Operator.ADD:
+        negate = True
+    else:
+        return None
+    left = src.left
+    if not isinstance(left, expressions.ReinterpretCast):
+        return None
+    if not isinstance(left.data_type, data_types.AnyInt):
+        return None
+    if not _is_switch_index(left.expression, switch_index):
+        return None
+    const = src.right
+    if not isinstance(const, expressions.Constant):
+        return None
+    if not const.data_type.is_any_int:
+        return None
+    assert isinstance(const.value, int)
+    value = const.value
+    if negate:
+        value = -value
+    return value
+
+
+def _eliminate_switch_index_assignment(instrs, stack_vars):
+    labeled_block = instrs[-1]
+    switch = instrs[-2]
+    switch_index_ass = instrs[-3]
+    assert isinstance(switch, instructions.Switch)
+    assert isinstance(switch_index_ass, instructions.Assignment)
+    switch_index_ass_dst = switch_index_ass.dst
+    assert isinstance(
+        switch_index_ass_dst, expressions.intermediate.Stackvar)
+    switch_index = switch.index
+    assert isinstance(switch_index, expressions.intermediate.Stackvar)
+    assert switch_index.offset == switch_index_ass_dst.offset
+    assert switch_index.size == switch_index_ass_dst.size
+    assert switch_index.offset not in stack_vars
+    stack_vars[switch_index.offset] = expressions.Identifier(
+        switch_index.data_type, "__switch_index")
+    new_instrs = instrs[:-3]
+    new_instrs.append(switch.copy(switch_index_ass.src))
+    new_instrs.append(labeled_block)
+    return new_instrs
 
 
 def _replace_goto_to_break(instrs, following_label_status, label_uses):
