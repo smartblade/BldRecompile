@@ -367,7 +367,7 @@ B_ODataFile::B_ODataFile(const char *file_name, int flags)
     this->cacheBlockStartPos = 0;
     this->posInCacheBlock = 0;
     this->file_name = strdup(file_name);
-    this->fd = open(file_name, flags | 0x00000301, 0x00000180);
+    this->fd = open(file_name, flags | O_WRONLY | O_CREAT | O_TRUNC, S_IWRITE | S_IREAD);
     if (this->fd == -1)
     {
         mout << vararg("Could not write to the file %s.\n", file_name);

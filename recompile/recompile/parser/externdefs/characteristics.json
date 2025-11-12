@@ -11,5 +11,17 @@
 				"constantset": "SEEK_*"
 			}
 		]
+	},
+	"open": {
+		"parameters": [
+			{
+				"index": "1",
+				"constantset": "O_*"
+			},
+			{
+				"index": "2",
+				"constantset": "S_I*"
+			}
+		]
 	}
 }

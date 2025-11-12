@@ -32,10 +32,35 @@ class Constants:
         return names.single_name()
 
     def find_name(self, value, constant_set):
+        result = self._find_name_by_value(value, constant_set)
+        if result is not None:
+            return result
+        return self._find_bit_flags(value, constant_set)
+
+    def _find_name_by_value(self, value, constant_set):
         names = self._names.get(value)
         if names is None:
             return None
         return names.find_name(constant_set)
+
+    def _find_bit_flags(self, value, constant_set):
+        assert value >= 0
+        found = False
+        defined_bits = []
+        bit_mask = 1
+        while value != 0:
+            if value & bit_mask:
+                bit_name = self._find_name_by_value(bit_mask, constant_set)
+                if bit_name is not None:
+                    found = True
+                else:
+                    bit_name = "0x{:X}".format(bit_mask)
+                defined_bits.append(bit_name)
+                value -= bit_mask
+            bit_mask *= 2
+        if not found:
+            return None
+        return " | ".join(defined_bits)
 
 
 class _Names:

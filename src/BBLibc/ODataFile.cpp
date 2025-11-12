@@ -4,7 +4,9 @@
 #include "NamedObj.h"
 #include "BitMap.h"
 #include "BitMap24.h"
+#include <fcntl.h>
 #include <io.h>
+#include <sys/stat.h>
 
 
 /*
