@@ -373,19 +373,19 @@ B_ODataFile::B_ODataFile(const char *file_name, int flags)
         mout << vararg("Could not write to the file %s.\n", file_name);
         switch (*_errno())
         {
-            case 13:
+            case EACCES:
                 mout << reinterpret_cast<char *>(GLOBAL(0x10047080));
                 break;
-            case 17:
+            case EEXIST:
                 mout << "_O_CREAT and _O_EXCL flags specified, but filename already exists\n";
                 break;
-            case 22:
+            case EINVAL:
                 mout << "Invalid oflag or pmode argument\n";
                 break;
-            case 24:
+            case EMFILE:
                 mout << "No more file handles available (too many open files)\n";
                 break;
-            case 2:
+            case ENOENT:
                 mout << "File or path not found\n";
                 break;
             default:

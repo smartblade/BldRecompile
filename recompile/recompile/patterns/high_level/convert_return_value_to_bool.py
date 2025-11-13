@@ -3,7 +3,7 @@ import expressions
 
 
 def convert_return_value_to_bool(characteristics, return_value):
-    if not characteristics.is_boolean_return:
+    if not characteristics.ret.is_boolean:
         return return_value
     if not isinstance(return_value, expressions.Constant):
         return return_value

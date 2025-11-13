@@ -3,26 +3,17 @@ import expressions
 import instructions
 
 from .apply_parameter_characteristics import apply_parameter_characteristics
+from .expression_characteristics import get_expression_characteristics
 
 
 def transform_switch(
-    index, case_set_dict, blocks_dict, default_label, constant_dict, procedure,
-    characteristics, file_declarations, **kwargs
+    index, case_set_dict, blocks_dict, default_label, constant_dict,
+    file_declarations, **kwargs
 ):
     if constant_dict:
         return None
-    if not isinstance(index, expressions.Identifier):
-        return None
-    if procedure.proc_decl is None:
-        return None
-    parameters = list(
-        procedure.proc_decl.get_parameters_ids().values())
-    parameter_index = None
-    for i, parameter in enumerate(parameters):
-        if index.name == parameter.name:
-            parameter_index = i
-            break
-    if parameter_index is None:
+    index_characteristics = get_expression_characteristics(index, **kwargs)
+    if index_characteristics is None:
         return None
     constant_dict = {}
     for case_set in case_set_dict.values():
@@ -30,7 +21,7 @@ def transform_switch(
             case_constant = apply_parameter_characteristics(
                 expressions.Constant(data_types.Int32(), case),
                 file_declarations,
-                characteristics.parameters[parameter_index],
+                index_characteristics,
             )
             if case_constant is not None:
                 constant_dict[case] = case_constant.emit_code()

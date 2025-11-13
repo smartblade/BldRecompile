@@ -2,6 +2,7 @@ from .array_length import ArrayLength
 from .constant import Constant
 from .constants import Constants
 from .external_characteristics import ExternalCharacteristics
+from .identifier import Identifier
 from .inline_call import InlineCall
 from .inline_call_argument import InlineCallArgument
 from .inline_calls import InlineCalls
@@ -9,4 +10,5 @@ from .module_characteristics import ModuleCharacteristics
 from .parameter import Parameter
 from .parameters import Parameters
 from .procedure import Procedure
+from .return_characteristics import Return
 from .variables_names import VariablesNames

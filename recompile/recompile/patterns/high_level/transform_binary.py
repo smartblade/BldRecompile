@@ -141,7 +141,7 @@ def _try_cast_to_bool(operator, left, right, declarations, **kwargs):
     if right.value != 0:
         return None
     characteristics = get_call_characteristics(declarations, left)
-    if characteristics.is_boolean_return:
+    if characteristics.ret.is_boolean:
         if operator == Operator.NE:
             return left
         elif operator == Operator.EQ:

@@ -1,4 +1,11 @@
 {
+	"_errno": {
+		"return": {
+			"pointee" : {
+				"constantset": "E*"
+			}
+		}
+	},
 	"eof": {
 		"return": {
 			"boolean": "yes"

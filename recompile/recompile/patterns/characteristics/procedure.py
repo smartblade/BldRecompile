@@ -10,13 +10,10 @@ class Procedure:
             self._characteristics_dict.get("constants", {}))
         self._parameters = characteristics.Parameters(
             self._characteristics_dict.get("parameters", []))
+        self._return = characteristics.Return(
+            self._characteristics_dict.get("return", {}))
         self._inline_calls = characteristics.InlineCalls(
             self._characteristics_dict.get("inlinecalls", []))
-
-    @property
-    def is_boolean_return(self):
-        return_dict = self._characteristics_dict.get("return", {})
-        return return_dict.get("boolean") == "yes"
 
     @property
     def variables_names(self):
@@ -29,6 +26,10 @@ class Procedure:
     @property
     def parameters(self):
         return self._parameters
+
+    @property
+    def ret(self):
+        return self._return
 
     @property
     def inline_calls(self):
