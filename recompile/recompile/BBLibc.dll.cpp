@@ -371,7 +371,7 @@ B_ODataFile::B_ODataFile(const char *file_name, int flags)
     if (this->fd == -1)
     {
         mout << vararg("Could not write to the file %s.\n", file_name);
-        switch (*_errno())
+        switch (errno)
         {
             case EACCES:
                 mout << reinterpret_cast<char *>(GLOBAL(0x10047080));
