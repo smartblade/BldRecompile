@@ -374,7 +374,7 @@ B_ODataFile::B_ODataFile(const char *file_name, int flags)
         switch (errno)
         {
             case EACCES:
-                mout << reinterpret_cast<char *>(GLOBAL(0x10047080));
+                mout << "read-only, or file\x92s sharing mode does not allow specified operations, or given path is directory\n";
                 break;
             case EEXIST:
                 mout << "_O_CREAT and _O_EXCL flags specified, but filename already exists\n";

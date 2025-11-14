@@ -113,10 +113,15 @@ def _is_ascii(byte):
         return True
     if byte == 10:
         return True
+    # '’' symbol
+    if byte == 0x92:
+        return True
     return False
 
 
 def _byte_to_char(byte):
     if byte == 10:
         return "\\n"
+    if byte > 126:
+        return "\\x{:X}".format(byte)
     return chr(byte)
