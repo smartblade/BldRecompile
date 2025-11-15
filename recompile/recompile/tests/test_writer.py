@@ -1,14 +1,14 @@
 import unittest
 
 from tests.builder import add, and_op, ass, call, call_instr, gt, if_instr
-from tests.builder import i32_id, lt, mul
+from tests.builder import i32_id, lt, mul, string
 from writer import Writer
 
 
 class TestWriter(unittest.TestCase):
     @staticmethod
-    def _write_instruction(instr):
-        writer = Writer(max_line_len=80)
+    def _write_instruction(instr, max_line_len=80):
+        writer = Writer(max_line_len=max_line_len)
         instr.emit_code(writer)
         return "\n" + writer.get_string()
 
@@ -116,6 +116,25 @@ proc_a(
         very_long_identifier_b +
         very_long_identifier_c * very_long_identifier_d
     )
+);
+"""
+        self.assertEqual(expected, code)
+
+    def test_write_wrapped_string(self):
+        instr = call_instr(
+            name="proc",
+            arguments=[
+                string("This is some string to be splitted to several lines"),
+            ],
+        )
+
+        code = self._write_instruction(instr, max_line_len=30)
+
+        expected = """
+proc(
+    "This is some string to "
+        "be splitted to "
+        "several lines"
 );
 """
         self.assertEqual(expected, code)

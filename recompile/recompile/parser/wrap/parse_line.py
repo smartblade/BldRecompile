@@ -9,6 +9,7 @@ class _StateKind(Enum):
     LIST = auto()
     OP_LIST = auto()
     BRACKETS = auto()
+    STRING = auto()
 
 
 class _State:
@@ -113,11 +114,16 @@ class _States:
 def parse_line(line):
     states = _States()
     for c in line:
+        if states.cur_state.kind == _StateKind.STRING:
+            _add_string_char(states, c)
+            continue
         if c == "(":
             states.new_state(_StateKind.BRACKETS)
         elif c == ")":
             states.flush_buffer()
             _close_brackets(states)
+        elif c == '"':
+            states.new_state(_StateKind.STRING)
         else:
             states.add_char(c)
         operator = states.pop_operator()
@@ -136,6 +142,17 @@ def _close_brackets(states):
     states.close_state(allow_brackets=True)
 
 
+def _add_string_char(states, c):
+    if c == '"':
+        assert states.cur_state.kind == _StateKind.STRING
+        states.flush_buffer()
+        while states.cur_state.kind != _StateKind.STRING:
+            states.close_state()
+        states.close_state()
+        return
+    states.add_char(c)
+
+
 def _make_token(state, token):
     if state.kind == _StateKind.LIST:
         return _make_list_token(state, token)
@@ -144,6 +161,8 @@ def _make_token(state, token):
         return _make_op_list_token(state, token)
     if state.kind == _StateKind.BRACKETS:
         return _make_brackets_token(state, token)
+    if state.kind == _StateKind.STRING:
+        return _make_string_token(state, token)
     raise Exception("Unexpected state {}.".format(state.kind))
 
 
@@ -167,6 +186,14 @@ def _make_op_list_token(state, token):
     state.validate_op_list()
     op_list = [*state.op_list, (token, None)]
     return tokens.OperatorSeparatedList(op_list)
+
+
+def _make_string_token(state, token):
+    assert isinstance(token, tokens.TokensList)
+    assert len(token.tokens) == 1
+    token = token.tokens[0]
+    assert isinstance(token, tokens.AnyCodeToken)
+    return tokens.StringToken(token.text)
 
 
 def _pop_operator(buffer):

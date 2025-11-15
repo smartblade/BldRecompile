@@ -41,9 +41,10 @@ class WrapManager:
             self._do_unindent()
         self._indentation_required = old_indentation_flag
 
-    def _can_add_to_current_line(self, token: tokens.Token):
+    def _can_add_to_current_line(self, token: tokens.Token = None, length=None):
+        length = length or token.length
         offset = self._indent * self._indent_len + self._current_pos
-        return offset + token.length <= self._max_line_len
+        return offset + length <= self._max_line_len
 
     def _add_to_current_line(self, token: tokens.Token):
         old_wrap_flag = self._wrap
@@ -99,6 +100,18 @@ class WrapManager:
         self._do_unindent()
         self._new_line()
 
+    def _flush_str_buffer(self, buffer, new_line=False):
+        if len(buffer) == 0:
+            return
+        if new_line or self._can_add_to_current_line(length=len(buffer) + 1):
+            self._add_text_to_current_line("".join(buffer))
+            buffer.clear()
+            return
+        self._add_text_to_current_line('"')
+        self._new_line_and_ensure_indent()
+        self._add_text_to_current_line('"')
+        self._flush_str_buffer(buffer, new_line=True)
+
     def add_tokens_list(self, tokens_list):
         for token in tokens_list.tokens:
             self._wrap_token(token)
@@ -117,3 +130,19 @@ class WrapManager:
             if operator is None:
                 continue
             self._add_operator(operator)
+
+    def add_string(self, s):
+        self._add_text_to_current_line('"')
+        if self._wrap:
+            self._indentation_required = True
+            buffer = []
+            for c in s.string:
+                buffer.append(c)
+                if c == " ":
+                    self._flush_str_buffer(buffer)
+            self._flush_str_buffer(buffer)
+            if not self._indentation_required:
+                self._do_unindent()
+        else:
+            self._add_text_to_current_line(s.string)
+        self._add_text_to_current_line('"')
