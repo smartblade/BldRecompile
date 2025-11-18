@@ -2,6 +2,7 @@ class DataType:
     def __init__(self):
         self._qualifiers = []
         self._right_qualifiers = []
+        self._namespace_type = None
 
     @property
     def is_any_int(self):
@@ -15,7 +16,9 @@ class DataType:
     def qualifiers(self):
         return self._qualifiers
 
-    def make_variable_declaration(self, var_name, is_metafile):
+    def make_variable_declaration(
+        self, var_name, is_metafile, current_namespace_type=None
+    ):
         qualifiers = ""
         for qualifier in self._qualifiers:
             qualifiers += qualifier + " "
@@ -27,6 +30,12 @@ class DataType:
             sep = ""
         else:
             sep = " "
+        if (
+            self._namespace_type is not None and
+            self._namespace_type != current_namespace_type
+        ):
+            namespace_name = self._namespace_type.get_type_name(is_metafile)
+            type_name = "{}::{}".format(namespace_name, type_name)
         return "{}{}{}{}{}".format(
             qualifiers, type_name, right_qualifiers, sep, var_name
         )
@@ -39,3 +48,7 @@ class DataType:
 
     def set_qualifiers(self, qualifiers):
         self._qualifiers = qualifiers
+
+    def set_namespace(self, namespace_type):
+        assert self._namespace_type is None
+        self._namespace_type = namespace_type

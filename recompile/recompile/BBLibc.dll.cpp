@@ -4527,7 +4527,7 @@ B_BitMap::B_BitMap(const B_BitMap &src)
 }
 
 // address: 0x10008974
-B_BitMap::B_BitMap(B_BitMap::BitMapType arg_1, const B_BitMap24 &arg_2)
+B_BitMap::B_BitMap(BitMapType arg_1, const B_BitMap24 &arg_2)
 {
     ACCESS(this, 0, 4) = GLOBAL(0x100421F8);
     this->pal = nullptr;

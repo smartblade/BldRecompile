@@ -33,6 +33,7 @@ def _collect_procedures_from_file(file_name, lines):
             meta = True
             module = None
             cur_definition = _DefinitionState()
+            cur_definition.metadata_start_line = line_index
         if line.find("*/") >= 0:
             meta = False
             definition = ""
@@ -95,6 +96,7 @@ def _collect_procedures_from_file(file_name, lines):
         for module, addr in definition.addr_by_module.items():
             procedures_dict[(module, addr)] = _CppDeclaration(
                 file_name,
+                definition.metadata_start_line,
                 definition.definition_start_line,
                 definition.definition_end_line,
                 definition.get_mangled_name(addr),
@@ -153,6 +155,7 @@ def _collect_variables_from_file(file_name, lines):
             file_name,
             None,
             None,
+            None,
             mangled_name,
             declarations.get(key),
             None,
@@ -192,6 +195,7 @@ class _DefinitionState:
         self.declaration = None
         self.class_name = None
         self.is_implemented = True
+        self.metadata_start_line = None
         self.definition_start_line = None
         self.definition_end_line = None
 
@@ -205,10 +209,12 @@ class _DefinitionState:
 
 class _CppDeclaration:
     def __init__(
-        self, file_name, definition_start_line, definition_end_line,
-        mangled_name, declaration, class_name, is_implemented
+        self, file_name, metadata_start_line, definition_start_line,
+        definition_end_line, mangled_name, declaration, class_name,
+        is_implemented
     ):
         self.file_name = file_name
+        self.metadata_start_line = metadata_start_line
         self.definition_start_line = definition_start_line
         self.definition_end_line = definition_end_line
         self.mangled_name = mangled_name

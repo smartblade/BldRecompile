@@ -46,6 +46,12 @@ def parse_data_type(s, classes):
         return _parse_const(data_types.Reference, s[:-1], classes)
     if s.endswith(">"):
         return _parse_template(s, classes)
+    sep_pos = s.find("::")
+    if sep_pos >= 0:
+        namespace_type = parse_data_type(s[:sep_pos], classes)
+        data_type = parse_data_type(s[sep_pos + 2:], classes)
+        data_type.set_namespace(namespace_type)
+        return data_type
     raise UnknownTypeException("Not implemented type: {}.".format(s))
 
 

@@ -180,8 +180,11 @@ class _CppManglingParser:
     def _pop_enum_type(self, arg_types):
         self._expect("4")
         enum_names = self._pop_qualified_identifier()
-        enum_name = "::".join(reversed(enum_names))
-        enum_type = data_types.make_named_type(data_types.Int32(), enum_name)
+        assert len(enum_names) == 2
+        enum_name, namespace_name = enum_names
+        namespace_type = self._ensure_class(namespace_name)
+        enum_type = self._declared_types[enum_name]
+        enum_type.set_namespace(namespace_type)
         if arg_types is not None:
             arg_types.append(enum_type)
         return enum_type

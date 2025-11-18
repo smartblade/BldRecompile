@@ -212,7 +212,9 @@ class ProcedureDeclaration:
     ):
         if is_brief and isinstance(data_type, data_types.Pointer32):
             return "ptr32 {}".format(var_name)
-        return data_type.make_variable_declaration(var_name, is_metafile)
+        return data_type.make_variable_declaration(
+            var_name, is_metafile, self._method_class
+        )
 
     def _get_return_type_name(self, is_metafile, is_brief):
         if not is_metafile and (self.is_constructor or self.is_destructor):

@@ -1324,7 +1324,8 @@ def run():
             if options.update_src_at is not None:
                 update_src_at = os.path.abspath(options.update_src_at)
                 print("Update sources at {}...".format(update_src_at))
-                update_src(update_src_at, module_name, procedures)
+                update_src(
+                    update_src_at, module_name, procedures, exported_procedures)
 
 
 def process_asm_dir(asm_files, declarations):
