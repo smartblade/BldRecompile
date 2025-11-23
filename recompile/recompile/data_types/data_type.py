@@ -50,5 +50,8 @@ class DataType:
         self._qualifiers = qualifiers
 
     def set_namespace(self, namespace_type):
-        assert self._namespace_type is None
+        assert (
+            self._namespace_type is None or
+            self._namespace_type == namespace_type
+        )
         self._namespace_type = namespace_type

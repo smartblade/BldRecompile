@@ -31,6 +31,7 @@ class Operator(Enum):
     ASS = "="
     ADD_ASS = "+="
     SUB_ASS = "-="
+    MUL_ASS = "*="
     DIV_ASS = "/="
     COMMA = ","
 
@@ -65,7 +66,9 @@ priorities = {
     Operator.COND_SEP: 15,
     Operator.ASS: 15,
     Operator.ADD_ASS: 15,
+    Operator.SUB_ASS: 15,
     Operator.DIV_ASS: 15,
+    Operator.MUL_ASS: 15,
     Operator.COMMA: 16,
 }
 

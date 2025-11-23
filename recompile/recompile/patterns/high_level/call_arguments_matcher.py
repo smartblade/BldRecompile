@@ -47,8 +47,11 @@ class CallArgumentsMatcher:
             new_pc_proc_decl = ProcedureDeclaration(
                 new_pc_proc_decl.proc_name, new_pc_proc_decl.convention,
                 new_pc_proc_decl.method_class, parameters,
-                new_pc_proc_decl.return_type, new_pc_proc_decl.is_static,
-                new_pc_proc_decl.is_vararg)
+                new_pc_proc_decl.return_type,
+                is_static=new_pc_proc_decl.is_static,
+                is_virtual=new_pc_proc_decl.is_virtual,
+                is_vararg=new_pc_proc_decl.is_vararg,
+            )
         if new_pc_proc_decl.stack_delta != proc_decl.stack_delta:
             return pc
         unmatched_args = tuple(unmatched_args)

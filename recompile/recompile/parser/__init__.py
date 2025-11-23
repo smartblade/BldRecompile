@@ -1,3 +1,4 @@
+from .collect_declarations_from_headers import collect_declarations_from_headers
 from .collect_symbols_from_sources import SrcSymbols
 from .cpp_expression import parse_cpp_expression
 from .cpp_function import parse_cpp_function

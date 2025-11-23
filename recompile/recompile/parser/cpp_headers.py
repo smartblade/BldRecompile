@@ -45,6 +45,8 @@ _standard_types = {
     "double": data_types.Double(),
     "BitMapType": data_types.make_named_type(data_types.Int32(), "BitMapType"),
     "B_CharData": data_types.ClassType("B_CharData", {}),
+    "B_CharSize": data_types.ClassType("B_CharSize", {}),
+    "bld_server_info": data_types.ClassType("bld_server_info", {}),
     "EventFn": data_types.Pointer32(),
 }
 
@@ -138,16 +140,16 @@ class HeaderState:
         for field_definition in re.split(r'[{};]', definition):
             decl = self._parse_definition(class_name, field_definition)
             if decl is None:
+                continue
+            if isinstance(decl, ProcedureDeclaration):
                 # Add space for vtable if necessary
                 if (
                     offset == 0 and
                     not has_virtual_methods
-                    and field_definition.find("virtual") >= 0
+                    and decl.is_virtual
                 ):
                     offset += 4
                     has_virtual_methods = True
-                continue
-            if isinstance(decl, ProcedureDeclaration):
                 self._declared_types[class_name].add_method(decl)
                 continue
             field_type, field_name = decl
@@ -162,8 +164,9 @@ class HeaderState:
         if not definition:
             return
         is_static = definition.startswith("static")
+        is_virtual = definition.startswith("virtual")
         if definition.find("(") >= 0:
-            if is_static:
+            if is_static or is_virtual:
                 return parser.parse_cpp_function(
                     class_name, definition, self._declared_types)
             return

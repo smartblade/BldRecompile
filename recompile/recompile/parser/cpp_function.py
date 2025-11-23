@@ -45,8 +45,10 @@ def parse_cpp_function(class_name, func, declared_types):
         method_class = None
     proc_name = match.group("name")
     is_static, return_type = _extract_static(match.group("return"))
+    is_virtual, return_type = _extract_virtual(return_type)
     if is_definition:
-        is_static = _get_static_from_declaration(method_class, proc_name)
+        is_static, is_virtual = _get_modifiers_from_declaration(
+            method_class, proc_name)
     convention = _get_calling_convention(is_static, method_class)
     _validate_calling_convention(is_vararg, convention)
     is_const = const_method_regexp.search(func) is not None
@@ -57,6 +59,7 @@ def parse_cpp_function(class_name, func, declared_types):
         parameters=parameters,
         return_arg=_extract_return_type(return_type, declared_types),
         is_static=is_static,
+        is_virtual=is_virtual,
         is_vararg=is_vararg,
         is_const=is_const,
     )
@@ -77,11 +80,11 @@ def _get_calling_convention(is_static, method_class):
     return CallingConvention.CDECL
 
 
-def _get_static_from_declaration(method_class, proc_name):
+def _get_modifiers_from_declaration(method_class, proc_name):
     declared_procedure = method_class.find_method(proc_name)
     if declared_procedure is not None:
-        return declared_procedure.is_static
-    return False
+        return declared_procedure.is_static, declared_procedure.is_virtual
+    return False, False
 
 
 def _strip_start(definition, start):
@@ -97,10 +100,13 @@ def _extract_static(s):
     return _strip_start(s, "static")
 
 
-def _extract_return_type(s, declared_types):
+def _extract_virtual(s):
     if s is None:
-        return None
-    s = s.replace("virtual", "")
+        return False, None
+    return _strip_start(s, "virtual")
+
+
+def _extract_return_type(s, declared_types):
     if not s:
         return None
     return parser.parse_data_type(s, declared_types)

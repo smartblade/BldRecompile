@@ -7,6 +7,18 @@ from writer import Writer
 from .make_metadata_header import make_metadata_header
 
 
+def get_code(
+    procedure_data, module_name, exported_procedures, start_line, lines
+):
+    if procedure_data.is_declaration:
+        return _get_procedure_declaration(
+            procedure_data.procedure.proc_decl, procedure_data.is_exported)
+    if procedure_data.src_definition is not None:
+        return get_procedure_code(procedure_data.procedure, start_line, lines)
+    return get_metadata_and_and_procedure_stub(
+        procedure_data.procedure, module_name, exported_procedures)
+
+
 def get_metadata_and_and_procedure_stub(
     procedure, module_name, exported_procedures
 ):
@@ -55,7 +67,7 @@ def _get_procedure_stub_code(procedure):
         instrs.append(return_stub)
     procedure_stub = Procedure(
         procedure.proc_info, procedure.address, procedure.proc_decl, instrs)
-    _write_procedure(writer, procedure_stub, 0)
+    _write(writer, 0, _write_procedure, procedure_stub)
     return writer.get_string()
 
 
@@ -63,7 +75,9 @@ def get_procedure_code(procedure, start_line, lines):
     writer = _make_writer()
     num_spaces = _get_num_spaces(lines[start_line + 1])
     num_indent = num_spaces // writer.indent_length
-    _write_procedure(writer, procedure, num_indent)
+    _write(
+        writer, num_indent, _write_procedure, procedure,
+        is_definition=num_indent == 0)
     return writer.get_string()
 
 
@@ -74,10 +88,33 @@ def _get_num_spaces(line):
     return num_spaces
 
 
-def _write_procedure(writer, procedure, num_indent, is_definition=True):
+def _write_procedure(writer, procedure, is_definition=True):
+    procedure.emit_code(writer, is_definition=is_definition, show_address=False)
+
+
+def _get_procedure_declaration(proc_decl, is_exported):
+    writer = _make_writer()
+    num_indent = 0
+    if proc_decl.method_class is not None:
+        num_indent += 1
+    _write(
+        writer, num_indent, _write_procedure_declaration, proc_decl,
+        is_exported)
+    return writer.get_string()
+
+
+def _write_procedure_declaration(writer, proc_decl, is_exported):
+    export = ""
+    if is_exported and proc_decl.method_class is None:
+        export = "LIB_EXP "
+    decl_string = proc_decl.get_declaration(
+        is_metafile=False, is_definition=False)
+    writer.write_line("{}{};".format(export, decl_string))
+
+
+def _write(writer, num_indent, writer_cb, *args, **kwargs):
     if num_indent == 0:
-        procedure.emit_code(
-            writer, is_definition=is_definition, show_address=False)
+        writer_cb(writer, *args, **kwargs)
         return
     with writer.indent():
-        _write_procedure(writer, procedure, num_indent - 1, is_definition=False)
+        _write(writer, num_indent - 1, writer_cb, *args, **kwargs)

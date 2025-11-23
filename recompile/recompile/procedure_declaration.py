@@ -12,7 +12,7 @@ operator_regexp = re.compile(r'^operator\s*(?P<op>\S+)$')
 class ProcedureDeclaration:
     def __init__(
         self, proc_name, convention, method_class, parameters, return_arg,
-        is_static=False, is_vararg=False, is_const=False,
+        is_static=False, is_virtual=False, is_vararg=False, is_const=False,
     ):
         self._proc_name = proc_name
         self._convention = convention
@@ -20,6 +20,7 @@ class ProcedureDeclaration:
         self._return_arg = return_arg
         self._parameters = parameters
         self._is_static = is_static
+        self._is_virtual = is_virtual
         self._is_vararg = is_vararg
         self._is_const = is_const
         self._operator = self._get_operator()
@@ -46,6 +47,10 @@ class ProcedureDeclaration:
     @property
     def is_static(self):
         return self._is_static
+
+    @property
+    def is_virtual(self):
+        return self._is_virtual
 
     @property
     def is_instance_method(self):
@@ -175,6 +180,12 @@ class ProcedureDeclaration:
                 parameter_type, parameter_name, is_metafile, is_brief
             )
             parameters.append(parameter)
+        static_modifier = ""
+        if self._is_static and not is_definition:
+            static_modifier = "static "
+        virtual_modifier = ""
+        if self._is_virtual and not is_definition:
+            virtual_modifier = "virtual "
         proc_name = self._proc_name
         if self._operator is not None:
             proc_name = "operator {}".format(self._operator.value)
@@ -194,7 +205,9 @@ class ProcedureDeclaration:
         const = ""
         if self._is_const:
             const = " const"
-        return "{}{}{}{}({}){}".format(
+        return "{}{}{}{}{}{}({}){}".format(
+            static_modifier,
+            virtual_modifier,
             return_arg,
             sep,
             calling_convention,

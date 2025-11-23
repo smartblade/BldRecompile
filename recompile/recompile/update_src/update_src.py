@@ -3,7 +3,9 @@ import os
 from hex_conversion import to_hex
 import parser
 
-from .writer import get_metadata_and_and_procedure_stub, get_procedure_code
+from .procedure_data import ProcedureData
+from .update_headers import bind_headers
+from .writer import get_code
 
 
 def update_src(src_path, module_name, procedures, exported_procedures):
@@ -15,6 +17,8 @@ def update_src(src_path, module_name, procedures, exported_procedures):
         src_files, module_name, exported_procedures, proc_by_addr)
     _define_files_from_adjacent_procedures(procedures_data)
     updating_procedures = _get_updating_procedures(procedures_data)
+    _define_nearest_src_definitions_for_files(src_files)
+    bind_headers(src_files, procedures_data)
     for src_file in src_files:
         _process_file(
             src_file, module_name, updating_procedures, exported_procedures)
@@ -44,14 +48,14 @@ def _get_procedures_data(
             if addr not in proc_by_addr:
                 continue
             is_exported = addr in exported_procedures
-            procedures_data[addr] = _ProcedureData(
-                src_file, is_exported, definition, proc_by_addr[addr])
+            procedures_data[addr] = ProcedureData(
+                src_file, is_exported, definition, proc_by_addr[addr], False)
     for addr in proc_by_addr.keys():
         if addr in procedures_data:
             continue
         is_exported = addr in exported_procedures
-        procedures_data[addr] = _ProcedureData(
-            None, is_exported, None, proc_by_addr[addr])
+        procedures_data[addr] = ProcedureData(
+            None, is_exported, None, proc_by_addr[addr], False)
     sorted_addresses = sorted(procedures_data.keys())
     return dict(
         (addr, procedures_data[addr]) for addr in sorted_addresses
@@ -92,8 +96,19 @@ def _get_updating_procedures(procedures_data):
         else:
             if not procedure_data.is_exported:
                 continue
+            if procedure_data.file is None:
+                continue
         updating_procedures[addr] = procedure_data
     return updating_procedures
+
+
+def _define_nearest_src_definitions_for_files(src_files):
+    for src_file in src_files:
+        procedures = sorted(
+            src_file.procedures,
+            key=lambda p: p.procedure.address,
+        )
+        _define_nearest_src_definitions(procedures)
 
 
 def _define_nearest_src_definitions(procedures_data):
@@ -126,54 +141,39 @@ def _define_nearest_src_definitions(procedures_data):
 def _process_file(
     src_file, module_name, updating_procedures, exported_procedures
 ):
-    lines = src_file.lines
-    procedures = sorted(
-        src_file.procedures,
-        key=lambda p: p.procedure.address,
-    )
-    _define_nearest_src_definitions(procedures)
     procedures = [
-        proc_data for proc_data in procedures
+        proc_data for proc_data in src_file.procedures
         if proc_data.procedure.address in updating_procedures
     ]
     if len(procedures) == 0:
         return
+    procedures = sorted(
+        procedures,
+        key=lambda p: p.end_line,
+    )
     cur_proc_data = procedures.pop()
+    lines = list(src_file.lines)
+    while len(lines) <= cur_proc_data.start_line:
+        lines.append("")
     new_lines = []
     for line_index, line in reversed(list(enumerate(lines))):
-        while (
-            cur_proc_data is not None and cur_proc_data.src_definition is None
-        ):
-            prev_src_def = cur_proc_data.prev_src_definition
-            next_src_definition = cur_proc_data.next_src_definition
-            if prev_src_def is not None:
-                if line_index > prev_src_def.definition_end_line + 1:
-                    break
-            else:
-                assert next_src_definition is not None
-                if line_index >= next_src_definition.metadata_start_line - 1:
-                    break
-            procedure_code = get_metadata_and_and_procedure_stub(
-                cur_proc_data.procedure, module_name, exported_procedures)
-            new_lines.append(procedure_code)
-            if len(procedures) > 0:
-                cur_proc_data = procedures.pop()
-            else:
-                cur_proc_data = None
         if (
             cur_proc_data is None or
-            cur_proc_data.src_definition is None or
-            line_index > cur_proc_data.src_definition.definition_end_line
+            line_index > cur_proc_data.end_line
         ):
             new_lines.append(line)
-        elif line_index == cur_proc_data.src_definition.definition_start_line:
-            procedure_code = get_procedure_code(
-                cur_proc_data.procedure, line_index, lines)
+        while (
+            cur_proc_data is not None and line_index == cur_proc_data.start_line
+        ):
+            procedure_code = get_code(
+                cur_proc_data, module_name, exported_procedures, line_index,
+                lines)
             new_lines.append(procedure_code)
             if len(procedures) > 0:
                 cur_proc_data = procedures.pop()
             else:
                 cur_proc_data = None
+    assert cur_proc_data is None
     new_lines = list(reversed(new_lines))
     _strip_last_empty_lines(new_lines)
     with open(src_file.file_name, "wt") as f:
@@ -184,29 +184,6 @@ def _process_file(
 def _strip_last_empty_lines(lines):
     while len(lines[-1].strip()) == 0:
         lines.pop()
-
-
-class _ProcedureData:
-    def __init__(self, file, is_exported, src_definition, procedure):
-        self._file = None
-        self.file = file
-        self.is_exported = is_exported
-        self.src_definition = src_definition
-        self.procedure = procedure
-        self.prev_src_definition = None
-        self.next_src_definition = None
-
-    @property
-    def file(self):
-        return self._file
-
-    @file.setter
-    def file(self, file):
-        assert self._file is None
-        if file is None:
-            return
-        self._file = file
-        file.add_procedure(self)
 
 
 class _FileData:
