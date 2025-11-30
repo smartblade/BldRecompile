@@ -176,9 +176,11 @@ class ProcedureDeclaration:
             )
             parameters.append(parameter)
         proc_name = self._proc_name
+        if self._operator is not None:
+            proc_name = "operator {}".format(self._operator.value)
         if is_definition and self._method_class is not None:
             proc_name = "{}::{}".format(
-                self._method_class.class_name, self._proc_name
+                self._method_class.class_name, proc_name
             )
         return_arg = self._get_return_type_name(
             is_metafile=is_metafile, is_brief=full_typed_args is not None

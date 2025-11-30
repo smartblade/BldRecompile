@@ -638,7 +638,7 @@ const char *B_ODataFile::GetFileName()
 }
 
 // address: 0x10002290
-B_ODataFile &B_ODataFile::operator=(const B_ODataFile &arg_1)
+B_ODataFile &B_ODataFile::operator =(const B_ODataFile &arg_1)
 {
     memcpy(this, &arg_1, 16400);
     return *this;
@@ -677,7 +677,7 @@ B_NamedObj::B_NamedObj(const B_NamedObj &that)
 }
 
 // address: 0x10002350
-B_NamedObj &B_NamedObj::operator=(const B_NamedObj &that)
+B_NamedObj &B_NamedObj::operator =(const B_NamedObj &that)
 {
     this->name = that.name;
     return *this;
@@ -739,7 +739,7 @@ B_MessageChannel::B_MessageChannel()
 }
 
 // address: 0x10002540
-int B_MessageChannel::operator==(const B_MessageChannel &arg_1)
+int B_MessageChannel::operator ==(const B_MessageChannel &arg_1)
 {
     return 0;
 }
@@ -762,7 +762,7 @@ B_MessageChannel::B_MessageChannel(const B_MessageChannel &that)
 }
 
 // address: 0x100025C0
-B_MessageChannel &B_MessageChannel::operator=(const B_MessageChannel &that)
+B_MessageChannel &B_MessageChannel::operator =(const B_MessageChannel &that)
 {
     this->name = that.name;
     this->unknown0Ch = that.unknown0Ch;
@@ -814,7 +814,7 @@ B_MessageManager::~B_MessageManager()
 }
 
 // address: 0x10002720
-B_MessageManager &B_MessageManager::operator=(const B_MessageManager &that)
+B_MessageManager &B_MessageManager::operator =(const B_MessageManager &that)
 {
     this->unknown00 = that.unknown00;
     return *this;
@@ -1249,7 +1249,7 @@ B_List::B_List(const B_List &arg_1)
 }
 
 // address: 0x100031A0
-B_List &B_List::operator=(const B_List &that)
+B_List &B_List::operator =(const B_List &that)
 {
     this->numElements = that.numElements;
     this->tail = that.tail;
@@ -1594,7 +1594,7 @@ const B_Name &B_Name::operator +=(const char *str)
 }
 
 // address: 0x10003D30
-const B_Name &B_Name::operator+=(char c)
+const B_Name &B_Name::operator +=(char c)
 {
     this->len++;
     STACKVAR(-8, 4) = ??2@YAPAXI@Z(this->len + 1);
@@ -3203,7 +3203,7 @@ B_Resource::B_Resource(const B_Resource &that)
 }
 
 // address: 0x10006720
-B_Resource &B_Resource::operator=(const B_Resource &that)
+B_Resource &B_Resource::operator =(const B_Resource &that)
 {
     this->name = that.name;
     return *this;
@@ -3319,13 +3319,13 @@ B_Color B_Color::operator /(float f) const
 }
 
 // address: 0x10006A70
-unsigned int B_Color::operator==(const B_Color &arg_1)
+unsigned int B_Color::operator ==(const B_Color &arg_1)
 {
     return static_cast<any_int32>(this->r) == static_cast<any_int32>(arg_1.r) && static_cast<any_int32>(this->g) == static_cast<any_int32>(arg_1.g) && static_cast<any_int32>(this->b) == static_cast<any_int32>(arg_1.b) ? 1 : 0;
 }
 
 // address: 0x10006AD0
-unsigned int B_Color::operator!=(const B_Color &arg_1)
+unsigned int B_Color::operator !=(const B_Color &arg_1)
 {
     return static_cast<any_int32>(this->r) == static_cast<any_int32>(arg_1.r) && static_cast<any_int32>(this->g) == static_cast<any_int32>(arg_1.g) && static_cast<any_int32>(this->b) == static_cast<any_int32>(arg_1.b) ? 0 : 1;
 }
@@ -3362,14 +3362,14 @@ B_Pal::B_Pal()
 }
 
 // address: 0x10006BF0
-B_Pal &B_Pal::operator=(const B_Pal &arg_1)
+B_Pal &B_Pal::operator =(const B_Pal &arg_1)
 {
     memcpy(this, &arg_1, 768);
     return *this;
 }
 
 // address: 0x10006C20
-B_BitMap &B_BitMap::operator=(const B_BitMap &that)
+B_BitMap &B_BitMap::operator =(const B_BitMap &that)
 {
     this->type = that.type;
     this->dimension1 = that.dimension1;
@@ -4101,28 +4101,28 @@ l10007ECF:
 }
 
 // address: 0x10007EF0
-B_RDataLight &B_RDataLight::operator=(const B_RDataLight &other)
+B_RDataLight &B_RDataLight::operator =(const B_RDataLight &other)
 {
     memcpy(this, &other, 16);
     return *this;
 }
 
 // address: 0x10007F20
-B_RItem &B_RItem::operator=(const B_RItem &arg_1)
+B_RItem &B_RItem::operator =(const B_RItem &arg_1)
 {
     ACCESS(this, 0, 4) = ACCESS(arg_1, 0, 4);
     return *this;
 }
 
 // address: 0x10007F40
-B_RDataTriangle &B_RDataTriangle::operator=(const B_RDataTriangle &other)
+B_RDataTriangle &B_RDataTriangle::operator =(const B_RDataTriangle &other)
 {
     memcpy(this, &other, 28);
     return *this;
 }
 
 // address: 0x10007F70
-B_MeshEdge &B_MeshEdge::operator=(const B_MeshEdge &other)
+B_MeshEdge &B_MeshEdge::operator =(const B_MeshEdge &other)
 {
     memcpy(this, &other, 24);
     return *this;
@@ -21063,7 +21063,7 @@ l100271B3:
 }
 
 // address: 0x100271BE
-B_BitMap24 &B_BitMap24::operator=(const B_BitMap24 &that)
+B_BitMap24 &B_BitMap24::operator =(const B_BitMap24 &that)
 {
     if (this->dimension1 != that.dimension1 || this->dimension2 != that.dimension2)
     {
@@ -22349,7 +22349,7 @@ B_ChannelOFile::B_ChannelOFile(const B_ChannelOFile &arg_1)
 }
 
 // address: 0x10029AC0
-B_ChannelOFile &B_ChannelOFile::operator=(const B_ChannelOFile &arg_1)
+B_ChannelOFile &B_ChannelOFile::operator =(const B_ChannelOFile &arg_1)
 {
     this->name = arg_1.name;
     this->unknown0Ch = arg_1.unknown0Ch;
@@ -22743,14 +22743,14 @@ unsigned int B_MessageManager::Message(char arg_1, const B_Name &arg_2)
 }
 
 // address: 0x1002A2C3
-B_MessageManager &operator<<(B_MessageManager &mout, const char *str)
+B_MessageManager &operator <<(B_MessageManager &mout, const char *str)
 {
     mout.Message(str);
     return mout;
 }
 
 // address: 0x1002A2D7
-B_MessageManager &operator<<(B_MessageManager &arg_1, char arg_2)
+B_MessageManager &operator <<(B_MessageManager &arg_1, char arg_2)
 {
     arg_1.Message(arg_2);
     return arg_1;
@@ -23599,7 +23599,7 @@ B_MeshEdge::B_MeshEdge(unsigned int a, unsigned int b, unsigned int c)
 }
 
 // address: 0x1003227E
-unsigned int B_MeshEdge::operator==(const B_MeshEdge &other) const
+unsigned int B_MeshEdge::operator ==(const B_MeshEdge &other) const
 {
     return ACCESS(this, 4, 4) == ACCESS(other, 4, 4) && ACCESS(this, 8, 4) == ACCESS(other, 8, 4) ? 1 : 0;
 }
