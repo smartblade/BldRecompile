@@ -65,7 +65,7 @@ int B_IDataFile::GetnOpenFiles()
 * VC++ mangling:          ?SetOnOpenFunc@B_IDataFile@@SAHPAUPyObject@@@Z
 */
 
-int B_IDataFile::SetOnOpenFunc(PyObject* obj)
+int B_IDataFile::SetOnOpenFunc(PyObject* func)
 {
 }
 
