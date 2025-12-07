@@ -42,8 +42,9 @@ class _CppManglingParser:
             return None
         method_class, proc_name, operator = self._pop_procedure_qualified_name()
         is_method, is_static, is_virtual, modifier = self._pop_modifier()
+        is_const = False
         if is_method and not is_static:
-            self._pop_const_modifier()
+            is_const = self._pop_const_modifier() == "const"
         calling_convention = self._pop_calling_convention()
         if (
             operator is not None and
@@ -62,7 +63,8 @@ class _CppManglingParser:
         self._expect("Z")
         return ProcedureDeclaration(
             proc_name, calling_convention, method_class, parameters,
-            return_type, is_static=is_static, is_virtual=is_virtual)
+            return_type, is_static=is_static, is_virtual=is_virtual,
+            is_const=is_const)
 
     def _pop_procedure_qualified_name(self):
         if self._try_pop_char("?"):

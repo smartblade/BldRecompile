@@ -632,7 +632,7 @@ unsigned int B_ODataFile::OK() const
 }
 
 // address: 0x10002270
-const char *B_ODataFile::GetFileName()
+const char *B_ODataFile::GetFileName() const
 {
     return this->file_name;
 }
@@ -739,7 +739,7 @@ B_MessageChannel::B_MessageChannel()
 }
 
 // address: 0x10002540
-int B_MessageChannel::operator ==(const B_MessageChannel &arg_1)
+int B_MessageChannel::operator ==(const B_MessageChannel &arg_1) const
 {
     return 0;
 }
@@ -1407,7 +1407,7 @@ unsigned int B_Name::operator !=(const char *str) const
 }
 
 // address: 0x10003730
-unsigned int B_Name::CompareNoCase(const B_Name &arg_1)
+unsigned int B_Name::CompareNoCase(const B_Name &arg_1) const
 {
     if (this->len == arg_1.len)
     {
@@ -3556,14 +3556,14 @@ l1000705F:
 }
 
 // address: 0x10007090
-void B_BitMap24::GetDimension(int &arg_1, int &arg_2)
+void B_BitMap24::GetDimension(int &arg_1, int &arg_2) const
 {
     arg_1 = reinterpret_cast<int>(this->dimension1);
     arg_2 = reinterpret_cast<int>(this->dimension2);
 }
 
 // address: 0x100070C0
-const unsigned char *B_BitMap24::GetBits()
+const unsigned char *B_BitMap24::GetBits() const
 {
     return reinterpret_cast<unsigned char *>(this->data);
 }
@@ -4577,7 +4577,7 @@ l10008AE5:
 }
 
 // address: 0x10008AF0
-int B_BitMap::BytesPerTexel()
+int B_BitMap::BytesPerTexel() const
 {
     switch (this->type)
     {
@@ -4854,7 +4854,7 @@ void B_Pal::SetBlue(unsigned int arg_1, unsigned char arg_2)
 }
 
 // address: 0x1000946B
-unsigned int B_Pal::GetIndex(unsigned char arg_1, unsigned char arg_2, unsigned char arg_3, unsigned int arg_4)
+unsigned int B_Pal::GetIndex(unsigned char arg_1, unsigned char arg_2, unsigned char arg_3, unsigned int arg_4) const
 {
     unsigned int unknown_loc_10 = arg_4;
     int unknown_loc_04 = reinterpret_cast<int>(((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x000000FF) - static_cast<any_int32>(this->GetRed(arg_4))) * ((reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x000000FF) - static_cast<any_int32>(this->GetRed(arg_4))) + ((reinterpret_cast<any_int32>(STACKVAR(12, 4)) & 0x000000FF) - static_cast<any_int32>(this->GetGreen(arg_4))) * ((reinterpret_cast<any_int32>(STACKVAR(12, 4)) & 0x000000FF) - static_cast<any_int32>(this->GetGreen(arg_4))) + ((reinterpret_cast<any_int32>(STACKVAR(16, 4)) & 0x000000FF) - static_cast<any_int32>(this->GetBlue(arg_4))) * ((reinterpret_cast<any_int32>(STACKVAR(16, 4)) & 0x000000FF) - static_cast<any_int32>(this->GetBlue(arg_4))));
@@ -21542,7 +21542,7 @@ l1002840A:
 }
 
 // address: 0x10028434
-unsigned int B_BitMap24::GetPixelAt(int arg_1, int arg_2, B_Color &arg_3)
+unsigned int B_BitMap24::GetPixelAt(int arg_1, int arg_2, B_Color &arg_3) const
 {
     if (arg_1 >= 0 && arg_1 < reinterpret_cast<int>(this->dimension1) && arg_2 >= 0 && arg_2 < reinterpret_cast<int>(this->dimension2))
     {
@@ -23838,19 +23838,19 @@ p10032A75
 }
 
 // address: 0x10032ABD
-unsigned short B_ObjDscr::ClassId()
+unsigned short B_ObjDscr::ClassId() const
 {
     REGDEF(ax=0x0001)
 }
 
 // address: 0x10032ACC
-unsigned long B_ObjDscr::CheckSum()
+unsigned long B_ObjDscr::CheckSum() const
 {
     return 0;
 }
 
 // address: 0x10032AD9
-unsigned int B_ObjDscr::SerialSize()
+unsigned int B_ObjDscr::SerialSize() const
 {
     return 0;
 }
