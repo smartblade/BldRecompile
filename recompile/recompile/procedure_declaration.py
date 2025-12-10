@@ -26,6 +26,22 @@ class ProcedureDeclaration:
         self._operator = self._get_operator()
         self._stack_variable = None
 
+    def copy(self, parameters=None):
+        if parameters is None:
+            parameters = self._parameters
+        return ProcedureDeclaration(
+            self._proc_name,
+            self._convention,
+            self._method_class,
+            parameters,
+            self._return_arg,
+            is_static=self._is_static,
+            is_virtual=self._is_virtual,
+            is_vararg=self._is_vararg,
+            is_const=self._is_const,
+        )
+
+
     @property
     def proc_name(self):
         return self._proc_name

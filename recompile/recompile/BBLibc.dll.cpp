@@ -408,17 +408,17 @@ void B_ODataFile::WriteCacheBlock()
 }
 
 // address: 0x10001E01
-long B_ODataFile::Seek(long arg_1)
+long B_ODataFile::Seek(long position)
 {
-    if (static_cast<unsigned int>(arg_1) > this->cacheBlockStartPos && static_cast<unsigned int>(arg_1) < this->cacheBlockStartPos + OFILE_CACHE_SIZE)
+    if (static_cast<unsigned int>(position) > this->cacheBlockStartPos && static_cast<unsigned int>(position) < this->cacheBlockStartPos + OFILE_CACHE_SIZE)
     {
-        this->posInCacheBlock = static_cast<unsigned int>(arg_1) - this->cacheBlockStartPos;
+        this->posInCacheBlock = static_cast<unsigned int>(position) - this->cacheBlockStartPos;
     }
     else
     {
-        this->cacheBlockStartPos = static_cast<unsigned int>(arg_1);
+        this->cacheBlockStartPos = static_cast<unsigned int>(position);
         this->posInCacheBlock = 0;
-        lseek(this->fd, arg_1, SEEK_SET);
+        lseek(this->fd, position, SEEK_SET);
     }
     return static_cast<long>(this->cacheBlockStartPos + this->posInCacheBlock);
 }

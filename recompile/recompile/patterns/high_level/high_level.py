@@ -7,6 +7,7 @@ from patterns.procedure import Procedure
 from patterns.validate_procedure_declaration import \
     validate_procedure_declaration
 
+from .apply_parameters_names import apply_parameters_names
 from .call_arguments_matcher import CallArgumentsMatcher
 from .transform_access import transform_access
 from .transform_arrptr import transform_arrptr
@@ -26,14 +27,15 @@ from .variables_declarations import insert_declarations
 
 
 def make_high_level_code(procedure, declarations, inline_procedures):
-    proc_info = procedure.proc_info
-    proc_decl = procedure.proc_decl
     if procedure.address is not None:
         file_declarations = declarations.symbols.get_file_declarations(
             procedure.address, declarations.files_declarations)
     else:
         file_declarations = None
     characteristics = declarations.characteristics[procedure.address]
+    procedure = apply_parameters_names(procedure, characteristics)
+    proc_info = procedure.proc_info
+    proc_decl = procedure.proc_decl
     stack_vars = procedure.implicit_stack_variables
     instrs = goto_eliminator.transform(procedure.instructions, stack_vars)
     analysis = Analysis()
