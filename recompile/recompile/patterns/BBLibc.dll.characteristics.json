@@ -78,5 +78,10 @@
 		"return": {
 			"boolean": "yes"
 		}
+	},
+	"10007F20": {
+		"varnames": {
+			"8": "that"
+		}
 	}
 }

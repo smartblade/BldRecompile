@@ -4108,9 +4108,9 @@ B_RDataLight &B_RDataLight::operator =(const B_RDataLight &other)
 }
 
 // address: 0x10007F20
-B_RItem &B_RItem::operator =(const B_RItem &arg_1)
+B_RItem &B_RItem::operator =(const B_RItem &that)
 {
-    ACCESS(this, 0, 4) = ACCESS(arg_1, 0, 4);
+    ACCESS(this, 0, 4) = ACCESS(that, 0, 4);
     return *this;
 }
 
