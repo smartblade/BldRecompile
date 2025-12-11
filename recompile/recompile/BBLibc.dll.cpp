@@ -436,15 +436,15 @@ void B_ODataFile::Write(const void *data, unsigned int size)
         this->posInCacheBlock += size;
         return;
     }
-    unsigned int unknown_loc_04 = OFILE_CACHE_SIZE - this->posInCacheBlock;
-    if (unknown_loc_04 != 0)
+    unsigned int remainingCache = OFILE_CACHE_SIZE - this->posInCacheBlock;
+    if (remainingCache != 0)
     {
-        memcpy(&this->fileCache[this->posInCacheBlock], data, static_cast<size_t>(unknown_loc_04));
+        memcpy(&this->fileCache[this->posInCacheBlock], data, static_cast<size_t>(remainingCache));
         this->posInCacheBlock = OFILE_CACHE_SIZE;
-        size -= unknown_loc_04;
+        size -= remainingCache;
     }
     this->WriteCacheBlock();
-    this->Write(&static_cast<char *>(data)[unknown_loc_04], size);
+    this->Write(&static_cast<char *>(data)[remainingCache], size);
 }
 
 // address: 0x10001F5E
