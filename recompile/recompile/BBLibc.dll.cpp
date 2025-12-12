@@ -444,7 +444,7 @@ void B_ODataFile::Write(const void *data, unsigned int size)
         size -= remainingCache;
     }
     this->WriteCacheBlock();
-    this->Write(&static_cast<char *>(data)[remainingCache], size);
+    this->Write(&static_cast<const char *>(data)[remainingCache], size);
 }
 
 // address: 0x10001F5E

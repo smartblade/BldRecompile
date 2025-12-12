@@ -26,10 +26,15 @@ class DataType:
         for qualifier in self._right_qualifiers:
             right_qualifiers += " " + qualifier
         type_name = self.get_type_name(is_metafile)
-        if type_name[-1] in {"*", "&"} and not right_qualifiers:
+        if (
+            type_name[-1] in {"*", "&"} and not right_qualifiers or
+            var_name is None
+        ):
             sep = ""
         else:
             sep = " "
+        if var_name is None:
+            var_name = ""
         if (
             self._namespace_type is not None and
             self._namespace_type != current_namespace_type

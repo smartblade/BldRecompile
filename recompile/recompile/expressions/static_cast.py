@@ -31,5 +31,6 @@ class StaticCast:
 
     def emit_code(self):
         expression_code = self._expression.emit_code()
-        type_name = self._data_type.get_type_name(is_metafile=False)
+        type_name = self._data_type.make_variable_declaration(
+            None, is_metafile=False)
         return "static_cast<{}>({})".format(type_name, expression_code)

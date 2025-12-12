@@ -74,7 +74,9 @@ def _transform_pointer_index(e, index):
     if not isinstance(e.data_type, data_types.Pointer32):
         return None
     if e.data_type.pointee is None:
-        e = expressions.StaticCast(data_types.Pointer32(data_types.Char()), e)
+        ptr_to_char = data_types.Pointer32(data_types.Char())
+        ptr_to_char.set_qualifiers(e.data_type.qualifiers)
+        e = expressions.StaticCast(ptr_to_char, e)
     return transform_arrptr(e, 1, index, 0)
 
 
