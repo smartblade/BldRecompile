@@ -545,13 +545,13 @@ B_ODataFile::~B_ODataFile()
 // address: 0x100020C3
 int GetnOpenedInputFiles()
 {
-    B_IDataFile::GetnOpenedFiles();
+    return B_IDataFile::GetnOpenedFiles();
 }
 
 // address: 0x100020CD
 int GetnOpenInputFiles()
 {
-    B_IDataFile::GetnOpenFiles();
+    return B_IDataFile::GetnOpenFiles();
 }
 
 // address: 0x100020D7
@@ -563,7 +563,7 @@ void ResetnOpenedInputFiles()
 // address: 0x100020E1
 int SetOnOpenInputFileFunc(PyObject *arg_1)
 {
-    B_IDataFile::SetOnOpenFunc(arg_1);
+    return B_IDataFile::SetOnOpenFunc(arg_1);
 }
 
 // address: 0x100020F2
@@ -1529,13 +1529,13 @@ const B_Name &B_NamedObj::Id() const
 // address: 0x10003A40
 B_IDataFile &operator >>(B_IDataFile &file, B_NamedObj &named_obj)
 {
-    file >> named_obj.name;
+    return file >> named_obj.name;
 }
 
 // address: 0x10003A58
 B_ODataFile &operator <<(B_ODataFile &file, const B_NamedObj &namedObj)
 {
-    file << namedObj.name;
+    return file << namedObj.name;
 }
 
 // address: 0x10003A70
@@ -2254,8 +2254,7 @@ const char *B_ResourceManager::GetFile(unsigned int arg_1)
 {
     if (arg_1 > 0 && arg_1 < reinterpret_cast<unsigned int>(ACCESS(ACCESS(this, 1024, 4), 8, 4)))
     {
-        reinterpret_cast<B_Name *>(ACCESS(ARRPTR(ACCESS(ACCESS(this, 1024, 4), 4, 4), 4, arg_1, 0), 0, 4))->String();
-        return;
+        return reinterpret_cast<B_Name *>(ACCESS(ARRPTR(ACCESS(ACCESS(this, 1024, 4), 4, 4), 4, arg_1, 0), 0, 4))->String();
     }
     return nullptr;
 }
@@ -2730,7 +2729,7 @@ B_Resource *B_ResourceManager::GetResource(unsigned short arg_1, unsigned int ar
     {
         return nullptr;
     }
-    reinterpret_cast<B_ResourceLocation *>(ACCESS(ARRPTR(ACCESS(ACCESS(ARRPTR(this, 4, reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x0000FFFF, 0), 0, 4), 4, 4), 4, arg_2, 0), 0, 4))->GetResource(arg_1);
+    return reinterpret_cast<B_ResourceLocation *>(ACCESS(ARRPTR(ACCESS(ACCESS(ARRPTR(this, 4, reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x0000FFFF, 0), 0, 4), 4, 4), 4, arg_2, 0), 0, 4))->GetResource(arg_1);
 }
 
 // address: 0x10005BB2
@@ -2811,7 +2810,7 @@ l10005D86:
     {
         return 0;
     }
-    this->IsResourceLoaded(arg_1, reinterpret_cast<int>(STACKVAR(-4, 4)));
+    return this->IsResourceLoaded(arg_1, reinterpret_cast<int>(STACKVAR(-4, 4)));
 }
 
 // address: 0x10005DAE
@@ -2850,7 +2849,7 @@ const char *B_ResourceManager::GetResourceName(unsigned short arg_1, unsigned in
     {
         return nullptr;
     }
-    reinterpret_cast<B_ResourceLocation *>(ACCESS(ARRPTR(ACCESS(ACCESS(ARRPTR(this, 4, reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x0000FFFF, 0), 0, 4), 4, 4), 4, arg_2, 0), 0, 4))->GetResource(arg_1)->name.String();
+    return reinterpret_cast<B_ResourceLocation *>(ACCESS(ARRPTR(ACCESS(ACCESS(ARRPTR(this, 4, reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x0000FFFF, 0), 0, 4), 4, 4), 4, arg_2, 0), 0, 4))->GetResource(arg_1)->name.String();
 }
 
 // address: 0x10005E8F
@@ -2860,7 +2859,7 @@ const char *B_ResourceManager::GetResourceFile(unsigned short arg_1, unsigned in
     {
         return nullptr;
     }
-    reinterpret_cast<B_Name *>(reinterpret_cast<any_int32>(ACCESS(ARRPTR(ACCESS(ACCESS(ARRPTR(this, 4, reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x0000FFFF, 0), 0, 4), 4, 4), 4, arg_2, 0), 0, 4)) + 0x0000000C)->String();
+    return reinterpret_cast<B_Name *>(reinterpret_cast<any_int32>(ACCESS(ARRPTR(ACCESS(ACCESS(ARRPTR(this, 4, reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x0000FFFF, 0), 0, 4), 4, 4), 4, arg_2, 0), 0, 4)) + 0x0000000C)->String();
 }
 
 // address: 0x10005ED1
@@ -22712,7 +22711,7 @@ unsigned int B_MessageManager::Message(char arg_1)
     STACKVAR(-8, 4) = 0x00000000;
     STACKVAR(-4, 1) = arg_1;
     STACKVAR(-3, 1) = 0;
-    this->Message(reinterpret_cast<char *>(LOCAL(-4)));
+    return this->Message(reinterpret_cast<char *>(LOCAL(-4)));
 }
 
 // address: 0x1002A26A
@@ -22739,7 +22738,7 @@ unsigned int B_MessageManager::Message(char arg_1, const B_Name &arg_2)
     STACKVAR(-8, 4) = 0x00000000;
     STACKVAR(-4, 1) = arg_1;
     STACKVAR(-3, 1) = 0;
-    this->Message(reinterpret_cast<char *>(LOCAL(-4)), arg_2);
+    return this->Message(reinterpret_cast<char *>(LOCAL(-4)), arg_2);
 }
 
 // address: 0x1002A2C3

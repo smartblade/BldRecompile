@@ -127,14 +127,18 @@ def _rewrite_return_from_last_call(
         return
     if return_instr.expression is not None:
         return
-    if proc_decl is not None:
-        return
     if pc.proc_decl is None:
         return
-    if pc.proc_decl.return_type is None:
+    last_call_data_type = pc.proc_decl.return_type
+    if last_call_data_type is None:
         return
-    data_type = pc.proc_decl.return_type
-    if not _is_eax_return_type(data_type):
+    if proc_decl is None:
+        data_type = last_call_data_type
+        is_eax_return = True
+    else:
+        data_type = proc_decl.return_type
+        is_eax_return = _is_eax_return_type(data_type)
+    if not _is_eax_return_type(last_call_data_type) or not is_eax_return:
         return
     return_value = convert_expression_to_type(pc, data_type)
     return_value = convert_return_value_to_bool(characteristics, return_value)
