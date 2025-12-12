@@ -74,6 +74,11 @@
 			"-4": "remainingCache"
 		}
 	},
+	"100020E1": {
+		"varnames": {
+			"8": "func"
+		}
+	},
 	"100021E0": {
 		"return": {
 			"boolean": "yes"

@@ -561,9 +561,9 @@ void ResetnOpenedInputFiles()
 }
 
 // address: 0x100020E1
-int SetOnOpenInputFileFunc(PyObject *arg_1)
+int SetOnOpenInputFileFunc(PyObject *func)
 {
-    return B_IDataFile::SetOnOpenFunc(arg_1);
+    return B_IDataFile::SetOnOpenFunc(func);
 }
 
 // address: 0x100020F2
