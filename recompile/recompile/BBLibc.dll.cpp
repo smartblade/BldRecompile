@@ -619,9 +619,9 @@ const char *B_IDataFile::GetFileName() const
 }
 
 // address: 0x10002220
-B_IDataFile &B_IDataFile::operator =(const B_IDataFile &file)
+B_IDataFile &B_IDataFile::operator =(const B_IDataFile &arg_1)
 {
-    memcpy(this, &file, 16408);
+    memcpy(this, &arg_1, 16408);
     return *this;
 }
 

@@ -321,14 +321,3 @@ B_IDataFile& operator >>(B_IDataFile& file, double& f)
 B_IDataFile::~B_IDataFile()
 {
 }
-
-
-/*
-* Module:                 BBLibc.dll
-* Entry point:            0x10002220
-* VC++ mangling:          ??4B_IDataFile@@QAEAAV0@ABV0@@Z
-*/
-
-B_IDataFile& B_IDataFile::operator =(B_IDataFile const& file)
-{
-}
