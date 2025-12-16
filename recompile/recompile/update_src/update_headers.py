@@ -35,7 +35,9 @@ def _bind_definitions_with_declarations(procedures_data, header_decls_data):
             procedure_data.src_definition.class_name is not None
         ):
             continue
-        class_name = _get_class_name(procedure_data)
+        if procedure_data.file is None:
+            continue
+        class_name = procedure_data.get_class_name()
         if class_name not in class_states:
             class_states[class_name] = _ClassDeclarationState()
         class_state = class_states[class_name]
@@ -64,15 +66,6 @@ def _bind_definitions_with_declarations(procedures_data, header_decls_data):
             procedure_decl_data = ProcedureData(
                 header_decl_data.file, procedure_data.is_exported,
                 header_decl_data.header_decl, procedure_data.procedure, True)
-
-
-def _get_class_name(procedure_data):
-    proc_decl = procedure_data.procedure.proc_decl
-    if proc_decl is None:
-        return None
-    if proc_decl.method_class is None:
-        return None
-    return proc_decl.method_class.class_name
 
 
 def _get_header_decl_for_proc(procedure_data, header_decls_data):

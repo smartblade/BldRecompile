@@ -5,6 +5,7 @@ import parser
 
 from .procedure_data import ProcedureData
 from .update_headers import bind_headers
+from .update_inlines import define_nearest_inline_definitions
 from .writer import get_code
 
 
@@ -16,9 +17,10 @@ def update_src(src_path, module_name, procedures, exported_procedures):
     procedures_data = _get_procedures_data(
         src_files, module_name, exported_procedures, proc_by_addr)
     _define_files_from_adjacent_procedures(procedures_data)
-    updating_procedures = _get_updating_procedures(procedures_data)
     _define_nearest_src_definitions_for_files(src_files)
     bind_headers(src_files, procedures_data)
+    define_nearest_inline_definitions(src_files, procedures_data)
+    updating_procedures = _get_updating_procedures(procedures_data)
     for src_file in src_files:
         _process_file(
             src_file, module_name, updating_procedures, exported_procedures)

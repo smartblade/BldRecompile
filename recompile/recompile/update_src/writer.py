@@ -15,17 +15,28 @@ def get_code(
             procedure_data.procedure.proc_decl, procedure_data.is_exported)
     if procedure_data.src_definition is not None:
         return get_procedure_code(procedure_data.procedure, start_line, lines)
-    return get_metadata_and_and_procedure_stub(
-        procedure_data.procedure, module_name, exported_procedures)
+    return _get_metadata_and_and_procedure_stub(
+        procedure_data.procedure, procedure_data.is_inline, module_name,
+        exported_procedures)
 
 
-def get_metadata_and_and_procedure_stub(
-    procedure, module_name, exported_procedures
+def _get_metadata_and_and_procedure_stub(
+    procedure, is_inline, module_name, exported_procedures
 ):
     metadata = make_metadata_header(
-        procedure, module_name, exported_procedures)
-    procedure_code = _get_procedure_stub_code(procedure).lstrip()
-    return "\n{}#ifndef BLD_NATIVE\n{}#endif\n".format(metadata, procedure_code)
+        procedure, is_inline, module_name, exported_procedures)
+    procedure_code = _get_procedure_stub_code(procedure, is_inline).lstrip("\n")
+    if is_inline:
+        if procedure.proc_decl.is_default_constructor_closure:
+            procedure_code = ""
+            else_code = ""
+        else:
+            decl_code = _get_procedure_declaration(procedure.proc_decl, False)
+            else_code = "#else\n{}".format(decl_code)
+    else:
+        else_code = ""
+    return "\n{}#ifndef BLD_NATIVE\n{}{}#endif\n".format(
+        metadata, procedure_code, else_code)
 
 
 def _make_return_stub(proc_decl):
@@ -59,7 +70,7 @@ def _make_writer():
     return Writer(max_line_len=80)
 
 
-def _get_procedure_stub_code(procedure):
+def _get_procedure_stub_code(procedure, is_inline):
     writer = _make_writer()
     instrs = []
     return_stub = _make_return_stub(procedure.proc_decl)
@@ -67,7 +78,10 @@ def _get_procedure_stub_code(procedure):
         instrs.append(return_stub)
     procedure_stub = Procedure(
         procedure.proc_info, procedure.address, procedure.proc_decl, instrs)
-    _write(writer, 0, _write_procedure, procedure_stub)
+    num_indent = 1 if is_inline else 0
+    _write(
+        writer, num_indent, _write_procedure, procedure_stub,
+        is_definition=not is_inline)
     return writer.get_string()
 
 

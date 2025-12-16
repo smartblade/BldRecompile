@@ -24,6 +24,9 @@ class ProcedureDeclaration:
         self._is_vararg = is_vararg
         self._is_const = is_const
         self._operator = self._get_operator()
+        self._is_default_constructor_closure = (
+            proc_name == "default constructor closure"
+        )
         self._stack_variable = None
 
     def copy(self, parameters=None):
@@ -85,6 +88,10 @@ class ProcedureDeclaration:
     @property
     def is_vararg(self):
         return self._is_vararg
+
+    @property
+    def is_default_constructor_closure(self):
+        return self._is_default_constructor_closure
 
     @property
     def stack_delta(self):

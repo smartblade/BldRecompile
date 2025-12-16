@@ -89,8 +89,10 @@ class HeaderState:
         brackets_depth = 0
         for line in lines:
             line, is_comment = _strip_comments(line, is_comment)
-            is_native_placeholders = self._try_parse_preprocessor_directive(
-                line) or is_native_placeholders
+            new_native_status = self._try_parse_preprocessor_directive(line)
+            if new_native_status is not None:
+                is_native_placeholders = new_native_status
+                continue
             if is_native_placeholders:
                 continue
             line = self._try_parse_template(line)
