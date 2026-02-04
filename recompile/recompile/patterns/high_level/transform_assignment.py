@@ -3,11 +3,9 @@ from expressions.operator import Operator
 import instructions
 import patterns.high_level.inline_functions as inline_functions
 
-from .convert_expression_to_type import convert_expression_to_type
-
 
 def transform_assignment(dst, src, analysis, **kwargs):
-    new_src = convert_expression_to_type(src, dst.data_type)
+    new_src = expressions.do_reinterpret(dst.data_type, src)
     result = _try_make_increment(dst, new_src)
     if result is not None:
         return result

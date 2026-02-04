@@ -60,7 +60,7 @@ class ProcedureDeclaration:
     @property
     def return_type(self):
         if self._return_arg is None and self.is_constructor:
-            return data_types.Pointer32(self.method_class)
+            return data_types.Reference(self.method_class)
         return self._return_arg
 
     @property

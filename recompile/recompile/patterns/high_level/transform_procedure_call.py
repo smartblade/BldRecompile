@@ -8,7 +8,6 @@ from patterns.validate_procedure_declaration import \
 
 from .apply_parameter_characteristics import apply_parameter_characteristics
 from .call_characteristics import get_call_characteristics
-from .convert_expression_to_type import convert_expression_to_type
 from .convert_sizeof_arguments import convert_sizeof_arguments
 from .explicit_arg_cast import explicit_arg_cast
 from .narrow_constant import narrow_constant
@@ -104,7 +103,7 @@ def _convert_argument_to_parameters_type(argument, parameter, proc_decl):
     c = narrow_constant(argument, parameter.data_type)
     if c is not None:
         return c
-    new_argument = convert_expression_to_type(argument, parameter.data_type)
+    new_argument = expressions.do_reinterpret(parameter.data_type, argument)
     new_argument = explicit_arg_cast(
         proc_decl, new_argument, parameter.data_type) or new_argument
     return new_argument
@@ -128,8 +127,8 @@ def _convert_struct_return_implicit_arg(
         this_arg = new_arguments[0]
         new_arguments = new_arguments[1:]
     return_arg = new_arguments[0]
-    return_arg = convert_expression_to_type(
-        return_arg, data_types.Pointer32(proc_decl.return_type))
+    return_arg = expressions.do_reinterpret(
+        data_types.Pointer32(proc_decl.return_type), return_arg)
     new_arguments = new_arguments[1:]
     if this_arg is not None:
         new_arguments.insert(0, this_arg)

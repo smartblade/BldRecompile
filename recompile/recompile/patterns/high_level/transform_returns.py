@@ -2,7 +2,6 @@ import data_types
 import expressions
 import instructions
 
-from .convert_expression_to_type import convert_expression_to_type
 from .convert_return_value_to_bool import convert_return_value_to_bool
 from .convert_to_implicit_cast import convert_to_implicit_cast
 
@@ -13,6 +12,15 @@ def transform_returns(proc_info, proc_decl, characteristics, instrs):
     return instrs
 
 
+def _is_this_dereference(proc_info, e):
+    if not isinstance(e, expressions.ImplicitCast):
+        return False
+    deref = e.expression
+    if not isinstance(deref, expressions.Dereference):
+        return False
+    return proc_info.is_this_expression(deref.expression)
+
+
 def _eliminate_unnecessary_returns(proc_info, proc_decl, instrs):
     ri = instrs[-1]
     if isinstance(ri, instructions.ReturnInstruction):
@@ -20,7 +28,7 @@ def _eliminate_unnecessary_returns(proc_info, proc_decl, instrs):
             ri.expression is None or
             proc_decl is not None and
             proc_decl.is_constructor and
-            proc_info.is_this_expression(ri.expression)
+            _is_this_dereference(proc_info, ri.expression)
         ):
             instrs.pop()
     elif isinstance(instrs[-1], instructions.LabeledBlock):
@@ -105,7 +113,7 @@ def _rewrite_return(proc_decl, characteristics, regdef, return_instr):
         return_value = regdef.pop_reg_value("al")
     else:
         return
-    return_value = convert_expression_to_type(return_value, data_type)
+    return_value = expressions.do_reinterpret(data_type, return_value)
     return_value = convert_return_value_to_bool(characteristics, return_value)
     return_value = convert_to_implicit_cast(return_value, data_type)
     new_instructions = []
@@ -140,7 +148,7 @@ def _rewrite_return_from_last_call(
         is_eax_return = _is_eax_return_type(data_type)
     if not _is_eax_return_type(last_call_data_type) or not is_eax_return:
         return
-    return_value = convert_expression_to_type(pc, data_type)
+    return_value = expressions.do_reinterpret(data_type, pc)
     return_value = convert_return_value_to_bool(characteristics, return_value)
     new_instructions = [instructions.ReturnInstruction(return_value)]
     return new_instructions

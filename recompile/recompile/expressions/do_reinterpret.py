@@ -10,6 +10,9 @@ def do_reinterpret(data_type, e):
                 e.data_type, e.data_type.size, data_type, data_type.size))
     if data_types.are_compatible(e.data_type, data_type):
         return e
+    result = _try_convert_pointers_or_references(e, e.data_type, data_type)
+    if result is not None:
+        return result
     if isinstance(e, expressions.Constant):
         return _reinterpret_const(data_type, e)
     if isinstance(e, expressions.ReinterpretCast):
@@ -175,3 +178,50 @@ def _reinterpret_cond_operator(data_type, cond):
         do_reinterpret(data_type, cond.then_expression),
         do_reinterpret(data_type, cond.else_expression),
     )
+
+
+def _try_convert_pointers_or_references(e, src_type, target_type):
+    ptr_or_ref = (data_types.Pointer32, data_types.Reference)
+    if not isinstance(src_type, ptr_or_ref):
+        return None
+    if not isinstance(target_type, ptr_or_ref):
+        return None
+    if isinstance(src_type, data_types.Pointer32):
+        src_type_pointee = src_type.pointee
+    else:
+        src_type_pointee = src_type.referent
+        e = expressions.AddressOf(e)
+    if isinstance(target_type, data_types.Pointer32):
+        target_type_pointee = target_type.pointee
+    else:
+        target_type_pointee = target_type.referent
+    converted = _convert_pointees(e, src_type_pointee, target_type_pointee)
+    if isinstance(target_type, data_types.Reference):
+        converted = expressions.do_dereference(converted)
+        if not isinstance(converted.data_type, data_types.Reference):
+            converted = expressions.ImplicitCast(
+                data_types.Reference(converted.data_type), converted)
+    return converted
+
+
+def _convert_pointees(e, src_type, target_type):
+    if (
+        data_types.are_compatible(
+            data_types.Pointer32(src_type),
+            data_types.Pointer32(target_type),
+        )
+    ):
+        return e
+    if src_type is None:
+        return expressions.ReinterpretCast(data_types.Pointer32(target_type), e)
+    if (
+        src_type.is_any_int and
+        target_type.is_any_int
+    ):
+        return expressions.ReinterpretCast(data_types.Pointer32(target_type), e)
+    if (
+        isinstance(src_type, data_types.ClassType) and
+        isinstance(target_type, data_types.ClassType)
+    ):
+        return expressions.ReinterpretCast(data_types.Pointer32(target_type), e)
+    raise Exception("Can't convert {} to {}".format(src_type, target_type))
