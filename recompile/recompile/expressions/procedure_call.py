@@ -193,11 +193,25 @@ class ProcedureCall:
             call, ", ".join(map(lambda a: a.emit_code(), arguments))
         )
 
+    def _is_obj_initialization(self, obj):
+        if self.proc_decl is None:
+            return False
+        if not self.proc_decl.is_constructor:
+            return False
+        if not isinstance(obj, expressions.AddressOf):
+            return False
+        identifier = obj.expression
+        if not isinstance(identifier, expressions.Identifier):
+            return False
+        return identifier.is_implicit
+
     def _method_access_code(self, obj):
         if self._callee is not None:
             method_code = "({})".format(self.callee_code)
         else:
             method_code = self.name
+        if self._is_obj_initialization(obj):
+            return method_code
         return expressions.FieldAccess(obj, method_code).emit_code()
 
 

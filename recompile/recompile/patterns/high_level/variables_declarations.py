@@ -49,7 +49,7 @@ class _IdentifiersCollector(ExpressionTransformer):
         if (
             isinstance(e, expressions.Identifier) and
             e in self._local_variables_set and
-            not e.name.startswith("__")
+            not e.is_implicit
         ):
             self._update_id_path(e, self._cur_path, self._cur_instr)
 

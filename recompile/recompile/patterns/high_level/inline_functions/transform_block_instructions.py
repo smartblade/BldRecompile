@@ -7,6 +7,7 @@ from .apply_characteristics import apply_characteristics_to_assignment
 from .is_int_constant import is_int_constant
 from .is_refcnt_assignment import is_refcnt_assignment
 from .obj_from_field_access import try_extract_obj_from_field_access
+from .tmp_stack_obj import transform_tmp_stack_obj
 
 
 def transform_block_instructions(block_instructions, **kwargs):
@@ -32,6 +33,13 @@ def _transform_if_instruction(block_instructions, if_instr, **kwargs):
         _transform_ne_if_instruction(block_instructions, if_instr, **kwargs)
     elif if_instr.if_clause.operator == Operator.EQ:
         _transform_eq_if_instruction(block_instructions, if_instr, **kwargs)
+
+
+def _transform_code_instruction(block_instructions, code_instr, **kwargs):
+    pc = code_instr.expression
+    if not isinstance(pc, expressions.ProcedureCall):
+        return
+    transform_tmp_stack_obj(block_instructions, code_instr, **kwargs)
 
 
 def _transform_ne_if_instruction(
@@ -253,4 +261,5 @@ def _is_unknown_constant(e, int_value):
 _cb_by_instruction_type = {
     instructions.IfInstruction: _transform_if_instruction,
     instructions.Assignment: _transform_assignment,
+    instructions.CodeInstruction: _transform_code_instruction,
 }

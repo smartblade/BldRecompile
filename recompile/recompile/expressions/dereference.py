@@ -26,7 +26,7 @@ class Dereference:
 
     def transform(self, transformer, **kwargs):
         expression = self._expression.transform(transformer, **kwargs)
-        e = transformer.transform_unary(Operator.DEREF, expression, **kwargs)
+        e = transformer.transform_dereference(expression, **kwargs)
         if e is not None:
             return e
         if expression == self._expression:

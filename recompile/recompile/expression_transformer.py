@@ -53,6 +53,10 @@ class ExpressionTransformer:
         return None
 
     @staticmethod
+    def transform_dereference(expression, **kwargs):
+        return None
+
+    @staticmethod
     def transform_identifier(identifier, **kwargs):
         return None
 

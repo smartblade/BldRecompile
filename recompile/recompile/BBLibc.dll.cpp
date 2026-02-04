@@ -731,9 +731,7 @@ B_MessageChannel::B_MessageChannel(B_Name &name)
 // address: 0x100024F0
 B_MessageChannel::B_MessageChannel()
 {
-    reinterpret_cast<B_Name *>(LOCAL(-8))->B_Name("");
-    this->B_NamedObj(*reinterpret_cast<B_Name *>(LOCAL(-8)));
-    reinterpret_cast<B_Name *>(LOCAL(-8))->~B_Name();
+    this->B_NamedObj(B_Name(""));
     ACCESS(this, 0, 4) = GLOBAL(0x10042180);
     this->unknown0Ch = 1;
 }
@@ -2738,9 +2736,7 @@ unsigned int B_ResourceManager::LoadResourceToMemory(unsigned short arg_1, const
     {
         return 0;
     }
-    reinterpret_cast<B_Name *>(LOCAL(-12))->B_Name(arg_2);
-    STACKVAR(-4, 4) = static_cast<any_int32>(ACCESS(ARRPTR(this, 4, reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x0000FFFF, 0), 0, 4)->unknown_method_10004874(LOCAL(-12), arg_1) != 0x00000000);
-    reinterpret_cast<B_Name *>(LOCAL(-12))->~B_Name();
+    STACKVAR(-4, 4) = static_cast<any_int32>(ACCESS(ARRPTR(this, 4, reinterpret_cast<any_int32>(STACKVAR(8, 4)) & 0x0000FFFF, 0), 0, 4)->unknown_method_10004874(B_Name(arg_2), arg_1) != 0x00000000);
     return reinterpret_cast<unsigned int>(STACKVAR(-4, 4));
 }
 
@@ -2995,9 +2991,7 @@ p100061AB
 p100061BA
 {
     ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=0)
-    reinterpret_cast<B_Name *>(LOCAL(-12))->B_Name(reinterpret_cast<char *>(STACKVAR(8, 4)));
-    STACKVAR(-4, 4) = B_resource_manager.LocateResourceIn(*reinterpret_cast<B_Name *>(LOCAL(-12)), nullptr, 1);
-    reinterpret_cast<B_Name *>(LOCAL(-12))->~B_Name();
+    STACKVAR(-4, 4) = B_resource_manager.LocateResourceIn(B_Name(reinterpret_cast<char *>(STACKVAR(8, 4))), nullptr, 1);
     REGDEF(eax=STACKVAR(-4, 4))
 }
 
@@ -3005,9 +2999,7 @@ p100061BA
 p100061F0
 {
     ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=0)
-    reinterpret_cast<B_Name *>(LOCAL(-12))->B_Name(reinterpret_cast<char *>(STACKVAR(8, 4)));
-    STACKVAR(-4, 4) = B_resource_manager.GetResource(1, *reinterpret_cast<B_Name *>(LOCAL(-12)));
-    reinterpret_cast<B_Name *>(LOCAL(-12))->~B_Name();
+    STACKVAR(-4, 4) = B_resource_manager.GetResource(1, B_Name(reinterpret_cast<char *>(STACKVAR(8, 4))));
     if (STACKVAR(-4, 4) != 0x00000000)
     {
         REGDEF(eax=0x00000001)
@@ -3020,9 +3012,7 @@ p100061F0
 p10006230
 {
     ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=0)
-    reinterpret_cast<B_Name *>(LOCAL(-12))->B_Name(reinterpret_cast<char *>(STACKVAR(8, 4)));
-    STACKVAR(-4, 4) = B_resource_manager.LocateResourceIn(*reinterpret_cast<B_Name *>(LOCAL(-12)), nullptr, 2);
-    reinterpret_cast<B_Name *>(LOCAL(-12))->~B_Name();
+    STACKVAR(-4, 4) = B_resource_manager.LocateResourceIn(B_Name(reinterpret_cast<char *>(STACKVAR(8, 4))), nullptr, 2);
     REGDEF(eax=STACKVAR(-4, 4))
 }
 
@@ -3030,9 +3020,7 @@ p10006230
 p10006266
 {
     ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=0)
-    reinterpret_cast<B_Name *>(LOCAL(-12))->B_Name(reinterpret_cast<char *>(STACKVAR(8, 4)));
-    STACKVAR(-4, 4) = B_resource_manager.LocateResourceIn(*reinterpret_cast<B_Name *>(LOCAL(-12)), nullptr, 5);
-    reinterpret_cast<B_Name *>(LOCAL(-12))->~B_Name();
+    STACKVAR(-4, 4) = B_resource_manager.LocateResourceIn(B_Name(reinterpret_cast<char *>(STACKVAR(8, 4))), nullptr, 5);
     REGDEF(eax=STACKVAR(-4, 4))
 }
 
@@ -25473,24 +25461,18 @@ l100366A9:
 l100366B2:
     if (reinterpret_cast<unsigned int>(STACKVAR(-24, 4)) < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 264, 4)))
     {
-        reinterpret_cast<B_Name *>(LOCAL(-344))->B_Name("C");
-        reinterpret_cast<B_Name &>(reinterpret_cast<any_int32>(ACCESS(ARRPTR(ACCESS(STACKVAR(12, 4), 260, 4), 4, STACKVAR(-24, 4), 0), 0, 4)) + 0x00000004) = *reinterpret_cast<B_Name *>(LOCAL(-344));
-        reinterpret_cast<B_Name *>(LOCAL(-344))->~B_Name();
+        reinterpret_cast<B_Name &>(reinterpret_cast<any_int32>(ACCESS(ARRPTR(ACCESS(STACKVAR(12, 4), 260, 4), 4, STACKVAR(-24, 4), 0), 0, 4)) + 0x00000004) = B_Name("C");
         goto l100366A9;
     }
 l100366FB:
     if (ACCESS(STACKVAR(12, 4), 264, 4) == 0x00000000 && ACCESS(STACKVAR(12, 4), 148, 4) == 0x00000000 && ACCESS(STACKVAR(12, 4), 84, 4) == 0x00000001)
     {
-        reinterpret_cast<B_Name *>(LOCAL(-352))->B_Name("1H_R");
-        STACKVAR(-28, 4) = (reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x000000D0)->unknown_method_1003A1E0(LOCAL(-352));
-        reinterpret_cast<B_Name *>(LOCAL(-352))->~B_Name();
+        STACKVAR(-28, 4) = (reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x000000D0)->unknown_method_1003A1E0(B_Name("1H_R"));
         if (STACKVAR(-28, 4) != 0x00000000)
         {
             STACKVAR(-356, 4) = ??2@YAPAXI@Z(0x00000058);
             STACKVAR(-32, 4) = STACKVAR(-356, 4) != 0x00000000 ? STACKVAR(-356, 4)->unknown_method_10039670() : 0x00000000;
-            reinterpret_cast<B_Name *>(LOCAL(-364))->B_Name("C0");
-            reinterpret_cast<B_Name &>(reinterpret_cast<any_int32>(STACKVAR(-32, 4)) + 0x00000004) = *reinterpret_cast<B_Name *>(LOCAL(-364));
-            reinterpret_cast<B_Name *>(LOCAL(-364))->~B_Name();
+            reinterpret_cast<B_Name &>(reinterpret_cast<any_int32>(STACKVAR(-32, 4)) + 0x00000004) = B_Name("C0");
             ACCESS(STACKVAR(-32, 4), 12, 4) = 0x00000000;
             memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-32, 4)) + 0x00000010), reinterpret_cast<void *>(unknown_function_1002FEB3(LOCAL(-412), unknown_function_10031505(LOCAL(-388), 0x00000000, 0x407F4000, GLOBAL(0x1004A978)), reinterpret_cast<any_int32>(STACKVAR(-28, 4)) + 0x0000000C)), 24);
             memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-32, 4)) + 0x00000028), reinterpret_cast<void *>(unknown_function_100300A1(LOCAL(-460), unknown_function_10031505(LOCAL(-436), 0x00000000, 0x407F4000, GLOBAL(0x1004A978)), reinterpret_cast<any_int32>(STACKVAR(-28, 4)) + 0x0000000C)), 24);
@@ -26760,16 +26742,12 @@ l10039287:
     ACCESS(GLOBAL(0x100488B4), 0, 4) = 0x00000001;
     if (ACCESS(this, 264, 4) == 0x00000000 && ACCESS(this, 148, 4) == 0x00000000 && ACCESS(this, 84, 4) == 0x00000001)
     {
-        reinterpret_cast<B_Name *>(LOCAL(-24))->B_Name("1H_R");
-        STACKVAR(-8, 4) = (reinterpret_cast<any_int32>(this) + 0x000000D0)->unknown_method_1003A1E0(LOCAL(-24));
-        reinterpret_cast<B_Name *>(LOCAL(-24))->~B_Name();
+        STACKVAR(-8, 4) = (reinterpret_cast<any_int32>(this) + 0x000000D0)->unknown_method_1003A1E0(B_Name("1H_R"));
         if (STACKVAR(-8, 4) != 0x00000000)
         {
             STACKVAR(-28, 4) = ??2@YAPAXI@Z(0x00000058);
             STACKVAR(-12, 4) = STACKVAR(-28, 4) != 0x00000000 ? STACKVAR(-28, 4)->unknown_method_10039670() : 0x00000000;
-            reinterpret_cast<B_Name *>(LOCAL(-36))->B_Name("C0");
-            reinterpret_cast<B_Name &>(reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + 0x00000004) = *reinterpret_cast<B_Name *>(LOCAL(-36));
-            reinterpret_cast<B_Name *>(LOCAL(-36))->~B_Name();
+            reinterpret_cast<B_Name &>(reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + 0x00000004) = B_Name("C0");
             ACCESS(STACKVAR(-12, 4), 12, 4) = 0x00000000;
             memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + 0x00000010), reinterpret_cast<void *>(unknown_function_1002FEB3(LOCAL(-84), unknown_function_10031505(LOCAL(-60), 0x00000000, 0x407F4000, GLOBAL(0x1004A978)), reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + 0x0000000C)), 24);
             memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + 0x00000028), reinterpret_cast<void *>(unknown_function_100300A1(LOCAL(-132), unknown_function_10031505(LOCAL(-108), 0x00000000, 0x407F4000, GLOBAL(0x1004A978)), reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + 0x0000000C)), 24);
@@ -26777,9 +26755,7 @@ l10039287:
             (reinterpret_cast<any_int32>(this) + 0x00000100)->unknown_method_1003A240(STACKVAR(-12, 4));
         }
     }
-    reinterpret_cast<B_Name *>(LOCAL(-192))->B_Name("Crush");
-    STACKVAR(-184, 4) = (reinterpret_cast<any_int32>(this) + 0x000000D0)->unknown_method_1003A1E0(LOCAL(-192));
-    reinterpret_cast<B_Name *>(LOCAL(-192))->~B_Name();
+    STACKVAR(-184, 4) = (reinterpret_cast<any_int32>(this) + 0x000000D0)->unknown_method_1003A1E0(B_Name("Crush"));
     if (STACKVAR(-184, 4) == 0x00000000)
     {
         goto l100395D1;
@@ -26791,9 +26767,7 @@ l10039579:
 l10039582:
     if (reinterpret_cast<unsigned int>(STACKVAR(-16, 4)) < reinterpret_cast<unsigned int>(ACCESS(this, 264, 4)))
     {
-        reinterpret_cast<B_Name *>(LOCAL(-200))->B_Name("C");
-        reinterpret_cast<B_Name &>(reinterpret_cast<any_int32>(ACCESS(ARRPTR(ACCESS(this, 260, 4), 4, STACKVAR(-16, 4), 0), 0, 4)) + 0x00000004) = *reinterpret_cast<B_Name *>(LOCAL(-200));
-        reinterpret_cast<B_Name *>(LOCAL(-200))->~B_Name();
+        reinterpret_cast<B_Name &>(reinterpret_cast<any_int32>(ACCESS(ARRPTR(ACCESS(this, 260, 4), 4, STACKVAR(-16, 4), 0), 0, 4)) + 0x00000004) = B_Name("C");
         goto l10039579;
     }
 l100395D1:
@@ -30255,13 +30229,9 @@ l1003DC48:
         STACKVAR(-836, 4) = 0x00000000;
     }
     STACKVAR(-792, 4) = STACKVAR(-836, 4);
-    reinterpret_cast<B_Name *>(LOCAL(-804))->B_Name(reinterpret_cast<char *>(LOCAL(-260)));
-    reinterpret_cast<B_Name &>(reinterpret_cast<any_int32>(STACKVAR(-792, 4)) + 0x00000004) = *reinterpret_cast<B_Name *>(LOCAL(-804));
-    reinterpret_cast<B_Name *>(LOCAL(-804))->~B_Name();
+    reinterpret_cast<B_Name &>(reinterpret_cast<any_int32>(STACKVAR(-792, 4)) + 0x00000004) = B_Name(reinterpret_cast<char *>(LOCAL(-260)));
     ACCESS(STACKVAR(-792, 4), 12, 4) = STACKVAR(-788, 4);
-    reinterpret_cast<B_Name *>(LOCAL(-812))->B_Name(reinterpret_cast<char *>(LOCAL(-528)));
-    reinterpret_cast<B_Name &>(reinterpret_cast<any_int32>(STACKVAR(-792, 4)) + 0x00000010) = *reinterpret_cast<B_Name *>(LOCAL(-812));
-    reinterpret_cast<B_Name *>(LOCAL(-812))->~B_Name();
+    reinterpret_cast<B_Name &>(reinterpret_cast<any_int32>(STACKVAR(-792, 4)) + 0x00000010) = B_Name(reinterpret_cast<char *>(LOCAL(-528)));
     if (reinterpret_cast<unsigned int>(ACCESS(csvs, 16, 4)) > reinterpret_cast<unsigned int>(ACCESS(csvs, 8, 4)))
     {
         ACCESS(ARRPTR(ACCESS(csvs, 4, 4), 4, ACCESS(csvs, 8, 4), 0), 0, 4) = STACKVAR(-792, 4);

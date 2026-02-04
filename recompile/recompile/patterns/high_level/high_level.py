@@ -15,6 +15,7 @@ from .transform_assignment import transform_assignment
 from .transform_binary import transform_binary
 from .transform_block_instructions import transform_block_instructions
 from .transform_constant import transform_constant
+from .transform_dereference import transform_dereference
 from .transform_global import transform_global
 from .transform_if import transform_if
 from .transform_local import transform_local
@@ -109,6 +110,10 @@ class _ExpressionTransformer(ExpressionTransformer):
     @staticmethod
     def transform_constant(c, **kwargs):
         return transform_constant(c, **kwargs)
+
+    @staticmethod
+    def transform_dereference(expression, **kwargs):
+        return transform_dereference(expression, **kwargs)
 
     @staticmethod
     def transform_procedure_call(copy_pc, proc_name, arguments, **kwargs):

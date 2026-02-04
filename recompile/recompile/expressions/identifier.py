@@ -19,6 +19,10 @@ class Identifier:
     def address(self):
         return self._address
 
+    @property
+    def is_implicit(self):
+        return self._name.startswith("__")
+
     def change_data_type(self, data_type):
         self._data_type = data_type
 
