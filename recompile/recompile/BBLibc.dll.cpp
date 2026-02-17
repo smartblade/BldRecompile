@@ -722,17 +722,17 @@ l10002447:
 
 // address: 0x100024C0
 B_MessageChannel::B_MessageChannel(B_Name &name)
+:
+    B_NamedObj(name)
 {
-    this->B_NamedObj(name);
-    ACCESS(this, 0, 4) = GLOBAL(0x10042180);
     this->unknown0Ch = 1;
 }
 
 // address: 0x100024F0
 B_MessageChannel::B_MessageChannel()
+:
+    B_NamedObj(B_Name(""))
 {
-    this->B_NamedObj(B_Name(""));
-    ACCESS(this, 0, 4) = GLOBAL(0x10042180);
     this->unknown0Ch = 1;
 }
 
@@ -1637,15 +1637,13 @@ B_ResourceManager *GetResourceManager()
 // address: 0x10003EBA
 B_Resource::B_Resource()
 {
-    this->B_NamedObj();
-    ACCESS(this, 0, 4) = GLOBAL(0x10042198);
 }
 
 // address: 0x10003ED9
 B_Resource::B_Resource(const B_Name &arg_1)
+:
+    B_NamedObj(arg_1)
 {
-    this->B_NamedObj(arg_1);
-    ACCESS(this, 0, 4) = GLOBAL(0x10042198);
 }
 
 // address: 0x10003EFE
@@ -26161,7 +26159,6 @@ l10037EA8:
 // address: 0x10037EF5
 B_ObjDscr::B_ObjDscr()
 {
-    this->B_Resource();
     STACKVAR(-4, 4) = &this->data;
     ACCESS(STACKVAR(-4, 4), 4, 4) = 0x00000000;
     ACCESS(STACKVAR(-4, 4), 8, 4) = 0x00000000;
@@ -31948,8 +31945,9 @@ B_RItem::B_RItem(unsigned long arg_1)
 
 // address: 0x10040F51
 B_RDataTriangle::B_RDataTriangle()
+:
+    B_RItem(1)
 {
-    this->B_RItem(1);
 }
 
 // address: 0x10040F69

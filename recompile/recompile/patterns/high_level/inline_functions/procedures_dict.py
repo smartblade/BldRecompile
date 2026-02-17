@@ -36,7 +36,8 @@ class ProceduresDict:
         proc_info = _make_procedure_info(
             method_class, this_offset, proc_decl.stack_delta)
         assert method_name not in proc_dict
-        proc_dict[method_name] = Procedure(proc_info, None, proc_decl, instrs)
+        proc_dict[method_name] = Procedure(
+            proc_info, None, proc_decl, instrs, None)
 
     def make_high_level_code(self, declarations):
         for class_methods in self._classes.values():

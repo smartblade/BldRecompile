@@ -201,4 +201,5 @@ class ProcedureBuilder:
             self._proc_addr,
             self._proc_decl,
             self._instructions,
+            None,
         )

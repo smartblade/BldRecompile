@@ -23,9 +23,4 @@ def apply_parameters_names(procedure, characteristics):
         name = changed_names.get(param_id.name, param_id.name)
         parameters.append((param_id.data_type, name))
     proc_decl = proc_decl.copy(parameters=parameters)
-    return Procedure(
-        procedure.proc_info,
-        procedure.address,
-        proc_decl,
-        procedure.instructions,
-    )
+    return procedure.copy(proc_decl=proc_decl)

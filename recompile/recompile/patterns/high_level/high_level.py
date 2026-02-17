@@ -9,6 +9,7 @@ from patterns.validate_procedure_declaration import \
 
 from .apply_parameters_names import apply_parameters_names
 from .call_arguments_matcher import CallArgumentsMatcher
+from .fields_initialization import discover_fields_initialization
 from .transform_access import transform_access
 from .transform_arrptr import transform_arrptr
 from .transform_assignment import transform_assignment
@@ -59,7 +60,8 @@ def make_high_level_code(procedure, declarations, inline_procedures):
         stack_vars, characteristics.variables_names)
     instrs = _transform_instructions(instrs, **context)
     instrs = _transform_instructions(instrs, **context)
-    procedure = Procedure(proc_info, procedure.address, proc_decl, instrs)
+    procedure = procedure.copy(instrs=instrs)
+    procedure = discover_fields_initialization(procedure)
     return insert_declarations(procedure, stack_vars)
 
 
