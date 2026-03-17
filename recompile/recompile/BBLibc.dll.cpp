@@ -671,9 +671,9 @@ B_NamedObj::~B_NamedObj()
 
 // address: 0x10002320
 B_NamedObj::B_NamedObj(const B_NamedObj &that)
+:
+    name(that.name)
 {
-    this->name.B_Name(that.name);
-    ACCESS(this, 0, 4) = GLOBAL(0x1004217C);
 }
 
 // address: 0x10002350
@@ -1507,15 +1507,13 @@ B_Name::~B_Name()
 // address: 0x100039E5
 B_NamedObj::B_NamedObj()
 {
-    this->name.B_Name();
-    ACCESS(this, 0, 4) = GLOBAL(0x1004217C);
 }
 
 // address: 0x10003A07
 B_NamedObj::B_NamedObj(const B_Name &n)
+:
+    name(n)
 {
-    this->name.B_Name(n);
-    ACCESS(this, 0, 4) = GLOBAL(0x1004217C);
 }
 
 // address: 0x10003A2F

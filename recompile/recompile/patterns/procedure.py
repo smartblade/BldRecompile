@@ -1,4 +1,5 @@
 from custom_block_transformer import transform_block
+import data_types
 import expressions
 import instructions
 from instructions.extract_vtbl_addr_from_assign import\
@@ -77,7 +78,7 @@ class Procedure:
             writer.write_line("// address: inline")
         writer.write_line(decl_string)
         init_instrs, body_instrs = self._extract_initialization_section()
-        _write_initialization(writer, init_instrs)
+        _write_initialization(writer, self._proc_info, init_instrs)
         writer.write_line("{")
         with writer.indent():
             for instr in body_instrs:
@@ -122,7 +123,7 @@ def _is_default_constructor_call(instr):
     return True
 
 
-def _write_initialization(writer, init_instrs):
+def _write_initialization(writer, proc_info, init_instrs):
     if len(init_instrs) == 0:
         return
     writer.write_line(":")
@@ -133,9 +134,23 @@ def _write_initialization(writer, init_instrs):
             assert isinstance(instr, instructions.CodeInstruction)
             pc = instr.expression
             assert isinstance(pc, expressions.ProcedureCall)
-            call_code = pc.emit_code()
-            assert call_code.startswith("this->")
-            call_code = call_code[6:]
+            pc = _make_init_call(pc, proc_info)
             if instr == last_instr:
                 sep = ""
-            writer.write_line("{}{}".format(call_code, sep))
+            writer.write_line("{}{}".format(pc.emit_code(), sep))
+
+
+def _make_init_call(pc, proc_info):
+    assert pc.is_method
+    obj = pc.arguments[0]
+    if proc_info.is_this_expression(obj):
+        name = pc.name
+    else:
+        assert isinstance(obj, expressions.AddressOf)
+        field_access = obj.expression
+        assert isinstance(field_access, expressions.FieldAccess)
+        assert isinstance(field_access.data_type, data_types.ClassType)
+        assert field_access.data_type.class_name == pc.name
+        assert proc_info.is_this_expression(field_access.expression)
+        name = field_access.field_name
+    return pc.copy(name=name, is_method=False, arguments=pc.arguments[1:])
