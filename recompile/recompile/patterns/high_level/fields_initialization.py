@@ -4,6 +4,8 @@ import instructions
 from instructions.extract_vtbl_addr_from_assign import\
     extract_vtbl_addr_from_assign
 
+from .get_fields import get_fields
+
 
 def discover_fields_initialization(procedure):
     if procedure.proc_decl is None:
@@ -12,7 +14,7 @@ def discover_fields_initialization(procedure):
         return procedure
     proc_info = procedure.proc_info
     class_type = procedure.proc_decl.method_class
-    fields = _get_fields(class_type)
+    fields = get_fields(class_type)
     init_required = False
     for field in fields:
         field_type, field_name = field
@@ -81,36 +83,6 @@ def _extract_initialized_field(proc_info, instr):
     if not proc_info.is_this_expression(obj.expression):
         return None
     return obj.data_type, obj.field_name
-
-
-def _get_fields(class_type):
-    fields = []
-    cur_field_and_offset = _get_type_at(class_type, 0)
-    if cur_field_and_offset is None:
-        return fields
-    while cur_field_and_offset is not None:
-        cur_field_offset, cur_field = cur_field_and_offset
-        fields.append(cur_field)
-        cur_field_type, cur_field_name = cur_field
-        if cur_field_type.size == 0:
-            cur_field_offset += 1
-        else:
-            cur_field_offset += cur_field_type.size
-        cur_field_and_offset = _get_type_at(class_type, cur_field_offset)
-    return fields
-
-
-def _get_type_at(class_type, offset):
-    if offset == 0 and class_type.parent is not None:
-        return 0, (class_type.parent, None)
-    field_offset = class_type.find_nearest_field_offset(offset)
-    # Skip virtual methods table
-    if field_offset is None and offset == 0:
-        offset += 4
-        field_offset = class_type.find_nearest_field_offset(offset)
-    if field_offset is None:
-        return None
-    return field_offset, class_type.get_field_by_offset(field_offset)
 
 
 def _go_to_field(field_index, fields, initialized_field):

@@ -3,12 +3,12 @@ from expression_transformer import ExpressionTransformer
 from patterns.high_level.analysis import Analysis
 import patterns.high_level.goto_eliminator as goto_eliminator
 import patterns.high_level.inline_functions as inline_functions
-from patterns.procedure import Procedure
 from patterns.validate_procedure_declaration import \
     validate_procedure_declaration
 
 from .apply_parameters_names import apply_parameters_names
 from .call_arguments_matcher import CallArgumentsMatcher
+from .fields_destroying import discover_fields_destroying
 from .fields_initialization import discover_fields_initialization
 from .transform_access import transform_access
 from .transform_arrptr import transform_arrptr
@@ -62,6 +62,7 @@ def make_high_level_code(procedure, declarations, inline_procedures):
     instrs = _transform_instructions(instrs, **context)
     procedure = procedure.copy(instrs=instrs)
     procedure = discover_fields_initialization(procedure)
+    procedure = discover_fields_destroying(procedure)
     return insert_declarations(procedure, stack_vars)
 
 

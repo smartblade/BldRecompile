@@ -63,6 +63,15 @@ class ClassType(DataType):
                 "More than 1 methods found: {}.".format(method_name))
         return found_method
 
+    @property
+    def has_virtual_methods(self):
+        for method in self._methods:
+            if method.is_virtual:
+                return True
+        if self._parent is not None:
+            return self._parent.has_virtual_methods
+        return False
+
     def get_field_by_offset(self, offset):
         if offset not in self._fields and self._parent is not None:
             return self._parent.get_field_by_offset(offset)

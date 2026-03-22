@@ -665,8 +665,6 @@ unsigned int B_Name::Length() const
 // address: 0x10002300
 B_NamedObj::~B_NamedObj()
 {
-    ACCESS(this, 0, 4) = GLOBAL(0x1004217C);
-    this->name.~B_Name();
 }
 
 // address: 0x10002320
@@ -745,7 +743,6 @@ int B_MessageChannel::operator ==(const B_MessageChannel &arg_1) const
 // address: 0x10002550
 B_MessageChannel::~B_MessageChannel()
 {
-    ACCESS(this, 0, 4) = GLOBAL(0x10042180);
     ACCESS(this, 0, 4) = GLOBAL(0x1004217C);
     this->name.~B_Name();
 }
@@ -883,7 +880,6 @@ const char *GetCurrentLanguage()
 // address: 0x10002980
 B_ListElement::~B_ListElement()
 {
-    ACCESS(this, 0, 4) = GLOBAL(0x10042190);
     if (this->list != nullptr)
     {
         this->list->Remove(this, 0);
@@ -1216,7 +1212,6 @@ B_List::B_List(B_ListElement *element)
 // address: 0x100030E0
 B_List::~B_List()
 {
-    ACCESS(this, 0, 4) = GLOBAL(0x10042194);
 }
 
 // address: 0x10003100
@@ -1647,7 +1642,6 @@ B_Resource::B_Resource(const B_Name &arg_1)
 // address: 0x10003EFE
 B_Resource::~B_Resource()
 {
-    ACCESS(this, 0, 4) = GLOBAL(0x10042198);
     ACCESS(this, 0, 4) = GLOBAL(0x1004217C);
     this->name.~B_Name();
 }
@@ -3441,7 +3435,6 @@ void B_BitMap24::Clear()
 // address: 0x10006E70
 B_BitMap24::~B_BitMap24()
 {
-    ACCESS(this, 0, 4) = GLOBAL(0x100421C8);
     unsigned int unknown_loc_08 = 0;
     goto l10006E95;
 l10006E8C:
@@ -4692,7 +4685,6 @@ B_IDataFile &operator >>(B_IDataFile &file, B_BitMap &bitMap)
 // address: 0x10008FDA
 B_BitMap::~B_BitMap()
 {
-    ACCESS(this, 0, 4) = GLOBAL(0x100421F8);
     if (this->data != nullptr)
     {
         STACKVAR(-4, 4) = this->data;
@@ -22277,7 +22269,6 @@ B_ChannelOFile::B_ChannelOFile(B_Name arg_1, const char *arg_2)
 // address: 0x1002994D
 B_ChannelOFile::~B_ChannelOFile()
 {
-    ACCESS(this, 0, 4) = GLOBAL(0x10042CBC);
     if (ACCESS(this, 16, 4) != 0x00000000)
     {
         delete reinterpret_cast<B_ODataFile *>(ACCESS(this, 16, 4));
@@ -26224,7 +26215,6 @@ B_ObjDscr::B_ObjDscr()
 // address: 0x1003819B
 B_ObjDscr::~B_ObjDscr()
 {
-    ACCESS(this, 0, 4) = GLOBAL(0x10042DA0);
     STACKVAR(-4, 4) = reinterpret_cast<any_int32>(this) + 0x00000118;
     ACCESS(STACKVAR(-4, 4), 0, 4) = GLOBAL(0x10042E0C);
     if (ACCESS(STACKVAR(-4, 4), 16, 4) != 0x00000000)
@@ -26350,7 +26340,6 @@ B_ObjDscr::~B_ObjDscr()
     {
         STACKVAR(-84, 4)->unknown_method_1003B840(ACCESS(STACKVAR(-84, 4), 20, 4));
     }
-    this->~B_Resource();
 }
 
 // address: 0x100384CA
@@ -30189,7 +30178,6 @@ l1003DBBC:
 // address: 0x1003DBC0
 B_ElementCSV::~B_ElementCSV()
 {
-    ACCESS(this, 0, 4) = GLOBAL(0x10042E5C);
     this->material.~B_Name();
     ACCESS(this, 0, 4) = GLOBAL(0x1004217C);
     this->name.~B_Name();
@@ -32027,7 +32015,6 @@ l10041130:
 // address: 0x1004118F
 B_ParticleGType::~B_ParticleGType()
 {
-    ACCESS(this, 0, 4) = GLOBAL(0x10042E64);
     ACCESS(this, 12, 4) = GLOBAL(0x10042E60);
     array_t<B_ParticleElement> *unknown_loc_08;
     if (this != nullptr)
