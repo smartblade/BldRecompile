@@ -131,16 +131,24 @@ def _write_initialization(writer, proc_info, init_instrs):
         last_instr = init_instrs[-1]
         sep = ","
         for instr in init_instrs:
-            assert isinstance(instr, instructions.CodeInstruction)
-            pc = instr.expression
-            assert isinstance(pc, expressions.ProcedureCall)
-            pc = _make_init_call(pc, proc_info)
+            pc = _make_init_call(instr, proc_info)
             if instr == last_instr:
                 sep = ""
             writer.write_line("{}{}".format(pc.emit_code(), sep))
 
 
-def _make_init_call(pc, proc_info):
+def _make_init_call(instr, proc_info):
+    if isinstance(instr, instructions.Assignment):
+        field_access = instr.dst
+        assert isinstance(field_access, expressions.FieldAccess)
+        assert not isinstance(field_access.data_type, data_types.ClassType)
+        assert proc_info.is_this_expression(field_access.expression)
+        name = field_access.field_name
+        return expressions.ProcedureCall(
+            name=name, is_method=False, arguments=[instr.src])
+    assert isinstance(instr, instructions.CodeInstruction)
+    pc = instr.expression
+    assert isinstance(pc, expressions.ProcedureCall)
     assert pc.is_method
     obj = pc.arguments[0]
     if proc_info.is_this_expression(obj):

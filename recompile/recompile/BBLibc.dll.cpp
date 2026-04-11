@@ -1122,11 +1122,11 @@ unsigned int B_List::Exists(const B_ListElement *element)
 
 // address: 0x10002EA0
 B_ListElement::B_ListElement()
+:
+    list(nullptr),
+    next(nullptr),
+    prev(nullptr)
 {
-    this->list = nullptr;
-    this->next = nullptr;
-    this->prev = nullptr;
-    ACCESS(this, 0, 4) = GLOBAL(0x10042190);
 }
 
 // address: 0x10002EE0
@@ -1149,11 +1149,11 @@ B_ListElement *B_ListElement::GetPrev()
 
 // address: 0x10002F40
 B_ListElement::B_ListElement(const B_ListElement &other)
+:
+    list(other.list),
+    next(other.next),
+    prev(other.prev)
 {
-    this->list = other.list;
-    this->next = other.next;
-    this->prev = other.prev;
-    ACCESS(this, 0, 4) = GLOBAL(0x10042190);
 }
 
 // address: 0x10002F80
@@ -1202,11 +1202,11 @@ l1000306B:
 
 // address: 0x100030A0
 B_List::B_List(B_ListElement *element)
+:
+    numElements(0),
+    tail(nullptr),
+    head(nullptr)
 {
-    this->numElements = 0;
-    this->tail = nullptr;
-    this->head = nullptr;
-    ACCESS(this, 0, 4) = GLOBAL(0x10042194);
 }
 
 // address: 0x100030E0
@@ -1234,11 +1234,11 @@ B_ListElement *B_List::GetLast()
 
 // address: 0x10003160
 B_List::B_List(const B_List &arg_1)
+:
+    numElements(arg_1.numElements),
+    tail(arg_1.tail),
+    head(arg_1.head)
 {
-    this->numElements = arg_1.numElements;
-    this->tail = arg_1.tail;
-    this->head = arg_1.head;
-    ACCESS(this, 0, 4) = GLOBAL(0x10042194);
 }
 
 // address: 0x100031A0
@@ -3229,20 +3229,20 @@ B_ResourceManager &B_ResourceManager::operator =(const B_ResourceManager &that)
 
 // address: 0x10006860
 B_Color::B_Color()
+:
+    r(0),
+    g(0),
+    b(0)
 {
-    this->r = 0;
-    this->g = 0;
-    this->b = 0;
-    ACCESS(this, 0, 4) = GLOBAL(0x100421F0);
 }
 
 // address: 0x10006890
 B_Color::B_Color(byte r, byte g, byte b)
+:
+    r(r),
+    g(g),
+    b(b)
 {
-    this->r = r;
-    this->g = g;
-    this->b = b;
-    ACCESS(this, 0, 4) = GLOBAL(0x100421F0);
     this->MakeCons();
 }
 
@@ -3316,11 +3316,11 @@ void B_Color::SetColor(unsigned char arg_1, unsigned char arg_2, unsigned char a
 
 // address: 0x10006B60
 B_Color::B_Color(const B_Color &that)
+:
+    r(that.r),
+    g(that.g),
+    b(that.b)
 {
-    this->r = that.r;
-    this->g = that.g;
-    this->b = that.b;
-    ACCESS(this, 0, 4) = GLOBAL(0x100421F0);
 }
 
 // address: 0x10006BA0
@@ -3371,7 +3371,6 @@ p10006C70
 // address: 0x10006CB0
 B_BitMap24::B_BitMap24(int width, int height)
 {
-    ACCESS(this, 0, 4) = GLOBAL(0x100421C8);
     if (reinterpret_cast<unsigned int>(ACCESS(GLOBAL(0x1004A530), 0, 4)) > reinterpret_cast<unsigned int>(ACCESS(GLOBAL(0x1004A528), 0, 4)))
     {
         ACCESS(ARRPTR(ACCESS(GLOBAL(0x1004A524), 0, 4), 4, ACCESS(GLOBAL(0x1004A528), 0, 4), 0), 0, 4) = this;
@@ -4427,22 +4426,22 @@ p100085D4
 
 // address: 0x100085F0
 B_BitMap::B_BitMap()
+:
+    type(0),
+    dimension1(0),
+    dimension2(0),
+    data(nullptr),
+    pal(nullptr)
 {
-    this->type = 0;
-    this->dimension1 = 0;
-    this->dimension2 = 0;
-    this->data = nullptr;
-    this->pal = nullptr;
-    ACCESS(this, 0, 4) = GLOBAL(0x100421F8);
 }
 
 // address: 0x10008639
 B_BitMap::B_BitMap(BitMapType type, unsigned int arg_2, unsigned int arg_3, const B_Pal *pal)
+:
+    type(type),
+    dimension1(arg_2),
+    dimension2(arg_3)
 {
-    this->type = type;
-    this->dimension1 = arg_2;
-    this->dimension2 = arg_3;
-    ACCESS(this, 0, 4) = GLOBAL(0x100421F8);
     int unknown_loc_04 = this->BytesPerTexel();
     STACKVAR(-8, 4) = ??2@YAPAXI@Z(arg_2 * arg_3 * unknown_loc_04);
     this->data = reinterpret_cast<void *>(STACKVAR(-8, 4));
@@ -4459,11 +4458,11 @@ B_BitMap::B_BitMap(BitMapType type, unsigned int arg_2, unsigned int arg_3, cons
 
 // address: 0x100086E3
 B_BitMap::B_BitMap(const B_BitMap &src)
+:
+    type(src.type),
+    dimension1(src.dimension1),
+    dimension2(src.dimension2)
 {
-    this->type = src.type;
-    this->dimension1 = src.dimension1;
-    this->dimension2 = src.dimension2;
-    ACCESS(this, 0, 4) = GLOBAL(0x100421F8);
     this->pal = nullptr;
     B_Pal *unknown_loc_04;
     B_Pal *unknown_loc_10;
@@ -4504,7 +4503,6 @@ B_BitMap::B_BitMap(const B_BitMap &src)
 // address: 0x10008974
 B_BitMap::B_BitMap(BitMapType arg_1, const B_BitMap24 &arg_2)
 {
-    ACCESS(this, 0, 4) = GLOBAL(0x100421F8);
     this->pal = nullptr;
     unsigned int unknown_loc_08;
     switch (arg_1)
@@ -20778,7 +20776,6 @@ l10026AD1:
 // address: 0x10026AD5
 B_BitMap24::B_BitMap24(const B_BitMap24 &that)
 {
-    ACCESS(this, 0, 4) = GLOBAL(0x100421C8);
     if (reinterpret_cast<unsigned int>(ACCESS(GLOBAL(0x1004A530), 0, 4)) > reinterpret_cast<unsigned int>(ACCESS(GLOBAL(0x1004A528), 0, 4)))
     {
         ACCESS(ARRPTR(ACCESS(GLOBAL(0x1004A524), 0, 4), 4, ACCESS(GLOBAL(0x1004A528), 0, 4), 0), 0, 4) = this;
@@ -20882,7 +20879,6 @@ l10026D37:
 // address: 0x10026D6D
 B_BitMap24::B_BitMap24(const B_BitMap &arg_1)
 {
-    ACCESS(this, 0, 4) = GLOBAL(0x100421C8);
     if (reinterpret_cast<unsigned int>(ACCESS(GLOBAL(0x1004A530), 0, 4)) > reinterpret_cast<unsigned int>(ACCESS(GLOBAL(0x1004A528), 0, 4)))
     {
         ACCESS(ARRPTR(ACCESS(GLOBAL(0x1004A524), 0, 4), 4, ACCESS(GLOBAL(0x1004A528), 0, 4), 0), 0, 4) = this;

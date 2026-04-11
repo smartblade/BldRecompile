@@ -15,12 +15,7 @@ def discover_fields_initialization(procedure):
     proc_info = procedure.proc_info
     class_type = procedure.proc_decl.method_class
     fields = get_fields(class_type)
-    init_required = False
-    for field in fields:
-        field_type, field_name = field
-        if isinstance(field_type, data_types.ClassType):
-            init_required = True
-    if not init_required:
+    if not _is_init_required(class_type, fields):
         return procedure
     vtbl_addr = _find_vtb_addr(procedure)
     last_init_instr = None
@@ -47,6 +42,16 @@ def discover_fields_initialization(procedure):
     return procedure.copy(last_init_instr=last_init_instr)
 
 
+def _is_init_required(class_type, fields):
+    if class_type.has_virtual_methods:
+        return True
+    for field in fields:
+        field_type, field_name = field
+        if isinstance(field_type, data_types.ClassType):
+            return True
+    return False
+
+
 def _find_vtb_addr(procedure):
     for instr in reversed(procedure.instructions):
         vtbl_addr = extract_vtbl_addr_from_assign(procedure.proc_info, instr)
@@ -56,6 +61,9 @@ def _find_vtb_addr(procedure):
 
 
 def _extract_initialized_field(proc_info, instr):
+    result = _extract_initialized_field_from_assignment(proc_info, instr)
+    if result is not None:
+        return result
     if not isinstance(instr, instructions.CodeInstruction):
         return None
     pc = instr.expression
@@ -78,6 +86,17 @@ def _extract_initialized_field(proc_info, instr):
     if not isinstance(obj_ptr, expressions.AddressOf):
         return None
     obj = obj_ptr.expression
+    if not isinstance(obj, expressions.FieldAccess):
+        return None
+    if not proc_info.is_this_expression(obj.expression):
+        return None
+    return obj.data_type, obj.field_name
+
+
+def _extract_initialized_field_from_assignment(proc_info, assignment):
+    if not isinstance(assignment, instructions.Assignment):
+        return None
+    obj = assignment.dst
     if not isinstance(obj, expressions.FieldAccess):
         return None
     if not proc_info.is_this_expression(obj.expression):
