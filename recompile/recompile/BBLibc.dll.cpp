@@ -1505,9 +1505,9 @@ B_NamedObj::B_NamedObj()
 }
 
 // address: 0x10003A07
-B_NamedObj::B_NamedObj(const B_Name &n)
+B_NamedObj::B_NamedObj(const B_Name &name)
 :
-    name(n)
+    name(name)
 {
 }
 
