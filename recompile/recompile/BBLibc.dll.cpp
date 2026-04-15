@@ -735,7 +735,7 @@ B_MessageChannel::B_MessageChannel()
 }
 
 // address: 0x10002540
-int B_MessageChannel::operator ==(const B_MessageChannel &arg_1) const
+int B_MessageChannel::operator ==(const B_MessageChannel &that) const
 {
     return false;
 }
