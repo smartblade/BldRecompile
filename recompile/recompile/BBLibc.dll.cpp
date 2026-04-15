@@ -737,7 +737,7 @@ B_MessageChannel::B_MessageChannel()
 // address: 0x10002540
 int B_MessageChannel::operator ==(const B_MessageChannel &arg_1) const
 {
-    return 0;
+    return false;
 }
 
 // address: 0x10002550
@@ -1365,7 +1365,7 @@ unsigned int B_Name::operator ==(const B_Name &rhs) const
         int unknown_loc_18 = strcmp(reinterpret_cast<char *>(STACKVAR(-12, 4)), reinterpret_cast<char *>(STACKVAR(-8, 4)));
         return unknown_loc_18 == 0;
     }
-    return 0;
+    return false;
 }
 
 // address: 0x100035D2
@@ -1382,7 +1382,7 @@ unsigned int B_Name::operator !=(const B_Name &rhs) const
 {
     if (this->len != rhs.len)
     {
-        return 1;
+        return true;
     }
     STACKVAR(-8, 4) = rhs.string;
     STACKVAR(-12, 4) = this->string;

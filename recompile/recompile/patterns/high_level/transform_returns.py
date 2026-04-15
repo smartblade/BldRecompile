@@ -114,7 +114,8 @@ def _rewrite_return(proc_decl, characteristics, regdef, return_instr):
     else:
         return
     return_value = expressions.do_reinterpret(data_type, return_value)
-    return_value = convert_return_value_to_bool(characteristics, return_value)
+    return_value = convert_return_value_to_bool(
+        proc_decl, characteristics, return_value)
     return_value = convert_to_implicit_cast(return_value, data_type)
     new_instructions = []
     if not regdef.is_empty():
@@ -149,7 +150,8 @@ def _rewrite_return_from_last_call(
     if not _is_eax_return_type(last_call_data_type) or not is_eax_return:
         return
     return_value = expressions.do_reinterpret(data_type, pc)
-    return_value = convert_return_value_to_bool(characteristics, return_value)
+    return_value = convert_return_value_to_bool(
+        proc_decl, characteristics, return_value)
     new_instructions = [instructions.ReturnInstruction(return_value)]
     return new_instructions
 
