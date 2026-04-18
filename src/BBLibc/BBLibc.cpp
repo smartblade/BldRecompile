@@ -9,6 +9,18 @@
 */
 int CheckErrors = 3;
 
+/*
+* Module:                 BBLibc.dll
+* Data address:           0x1004A00C
+*/
+char configDirectory[260];
+
+/*
+* Module:                 BBLibc.dll
+* Data address:           0x1004A110
+*/
+byte isConfigDirectorySet;
+
 
 /*
 * Module:                 BBLibc.dll

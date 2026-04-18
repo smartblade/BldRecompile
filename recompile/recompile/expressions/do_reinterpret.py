@@ -1,6 +1,8 @@
 import data_types
 import expressions
+from expressions.do_pointer_dereference import do_pointer_dereference
 from expressions.operator import Operator
+from expressions.writer.byte_to_char import byte_to_char
 
 
 def do_reinterpret(data_type, e):
@@ -76,10 +78,12 @@ def _reinterpret_const(data_type, c):
         return expressions.Null
     if (
         isinstance(data_type, data_types.Char) and
-        isinstance(c.data_type, data_types.UnknownByte) and
-        c.value == 0
+        isinstance(c.data_type, data_types.UnknownByte)
     ):
-        return expressions.Constant(data_type, "'\\0'")
+        assert isinstance(c.value, int)
+        assert 0 <= c.value <= 255
+        char = byte_to_char(c.value)
+        return expressions.Constant(data_type, "'{}'".format(char))
     raise Exception(
         "Unimplemented reinterpret cast from {} to {}".format(
             c.data_type, data_type))
@@ -224,4 +228,10 @@ def _convert_pointees(e, src_type, target_type):
         isinstance(target_type, data_types.ClassType)
     ):
         return expressions.ReinterpretCast(data_types.Pointer32(target_type), e)
+    if src_type.size > target_type.size:
+        dereference = do_pointer_dereference(e, 0, target_type.size)
+        if dereference is not None:
+            return do_reinterpret(
+                data_types.Pointer32(target_type),
+                expressions.AddressOf(dereference))
     raise Exception("Can't convert {} to {}".format(src_type, target_type))

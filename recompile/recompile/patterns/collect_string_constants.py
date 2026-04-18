@@ -1,5 +1,6 @@
 import re
 
+from expressions.writer.byte_to_char import byte_to_char
 from hex_conversion import from_hex
 
 labeled_instr_regexp = re.compile(r'^g(?P<addr>[\dABCDEF]+)\s+(?P<instr>.+)')
@@ -104,7 +105,7 @@ def _bytes_to_string(bytes_list):
     for byte in bytes_list:
         if not _is_ascii(byte):
             return None
-        chars.append(_byte_to_char(byte))
+        chars.append(byte_to_char(byte))
     return "".join(chars)
 
 
@@ -117,11 +118,3 @@ def _is_ascii(byte):
     if byte == 0x92:
         return True
     return False
-
-
-def _byte_to_char(byte):
-    if byte == 10:
-        return "\\n"
-    if byte > 126:
-        return "\\x{:X}".format(byte)
-    return chr(byte)

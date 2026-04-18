@@ -818,10 +818,10 @@ B_MessageManager &B_MessageManager::operator =(const B_MessageManager &that)
 // address: 0x10002740
 const char *GetConfigDirectory()
 {
-    if (static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(GLOBAL(0x1004A110), 0, 1))) == 0x00000000)
+    if (static_cast<any_int32>(isConfigDirectorySet) == 0x00000000)
     {
-        _getcwd(reinterpret_cast<char *>(GLOBAL(0x1004A00C)), 260);
-        STACKVAR(-12, 4) = ARRPTR(GLOBAL(0x1004A00C), 1, strlen(reinterpret_cast<char *>(GLOBAL(0x1004A00C))) - 1, 0);
+        _getcwd(&configDirectory[0], 260);
+        STACKVAR(-12, 4) = &configDirectory[strlen(&configDirectory[0]) - 1];
         while (static_cast<any_int32>(reinterpret_cast<char>(ACCESS(STACKVAR(-12, 4), 0, 1))) == 0x0000005C || static_cast<any_int32>(reinterpret_cast<char>(ACCESS(STACKVAR(-12, 4), 0, 1))) == 0x0000002F)
         {
             STACKVAR(-12, 4) = reinterpret_cast<any_int32>(STACKVAR(-12, 4)) - 0x00000001;
@@ -831,8 +831,8 @@ const char *GetConfigDirectory()
             STACKVAR(-12, 4) = reinterpret_cast<any_int32>(STACKVAR(-12, 4)) - 0x00000001;
         }
         ACCESS(STACKVAR(-12, 4), 1, 1) = 0;
-        strcat(reinterpret_cast<char *>(GLOBAL(0x1004A00C)), "Maps");
-        if (access(reinterpret_cast<char *>(GLOBAL(0x1004A00C)), 0) != 0)
+        strcat(&configDirectory[0], "Maps");
+        if (access(&configDirectory[0], 0) != 0)
         {
             while (static_cast<any_int32>(reinterpret_cast<char>(ACCESS(STACKVAR(-12, 4), 0, 1))) == 0x0000005C || static_cast<any_int32>(reinterpret_cast<char>(ACCESS(STACKVAR(-12, 4), 0, 1))) == 0x0000002F)
             {
@@ -844,14 +844,14 @@ const char *GetConfigDirectory()
             }
         }
         ACCESS(STACKVAR(-12, 4), 1, 1) = 0;
-        strcat(reinterpret_cast<char *>(GLOBAL(0x1004A00C)), "Config");
-        if (access(reinterpret_cast<char *>(GLOBAL(0x1004A00C)), 0) != 0)
+        strcat(&configDirectory[0], "Config");
+        if (access(&configDirectory[0], 0) != 0)
         {
-            _mkdir(reinterpret_cast<char *>(GLOBAL(0x1004A00C)));
+            _mkdir(&configDirectory[0]);
         }
-        ACCESS(GLOBAL(0x1004A110), 0, 1) = 0x01;
+        isConfigDirectorySet = 1;
     }
-    int unknown_loc_04 = reinterpret_cast<int>(strlen(reinterpret_cast<char *>(GLOBAL(0x1004A00C))));
+    int unknown_loc_04 = reinterpret_cast<int>(strlen(&configDirectory[0]));
     int unknown_loc_08 = 0;
     goto l100028BF;
 l100028B6:
@@ -859,13 +859,13 @@ l100028B6:
 l100028BF:
     if (unknown_loc_08 < unknown_loc_04)
     {
-        if (static_cast<any_int32>(reinterpret_cast<char>(ACCESS(ARRPTR(GLOBAL(0x1004A00C), 1, unknown_loc_08, 0), 0, 1))) == 0x0000005C)
+        if (static_cast<any_int32>(configDirectory[unknown_loc_08]) == 0x0000005C)
         {
-            ACCESS(ARRPTR(GLOBAL(0x1004A00C), 1, unknown_loc_08, 0), 0, 1) = 0x2F;
+            configDirectory[unknown_loc_08] = '/';
         }
         goto l100028B6;
     }
-    return reinterpret_cast<char *>(GLOBAL(0x1004A00C));
+    return &configDirectory[0];
 }
 
 // address: 0x100028EC
