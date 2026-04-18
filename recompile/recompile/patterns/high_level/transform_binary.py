@@ -1,9 +1,9 @@
 import data_types
 import expressions
+from expressions.do_pointer_dereference import do_pointer_dereference
 from expressions.operator import Operator, comparison
 
 from .call_characteristics import get_call_characteristics
-from .transform_access import do_pointer_dereference
 from .transform_arrptr import transform_arrptr
 
 
