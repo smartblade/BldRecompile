@@ -137,7 +137,7 @@ def _convert_struct_return_implicit_arg(
         pc, analysis, file_declarations, call_characteristics, proc_decl)
     dst = expressions.do_dereference(return_arg)
     if isinstance(dst.data_type, data_types.ClassType):
-        dst = expressions.ImplicitCast(data_types.Reference(dst.data_type), dst)
+        dst = expressions.MakeReference(dst)
     return expressions.Bin(Operator.ASS, dst, pc)
 
 

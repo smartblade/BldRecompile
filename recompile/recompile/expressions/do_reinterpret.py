@@ -203,8 +203,7 @@ def _try_convert_pointers_or_references(e, src_type, target_type):
     if isinstance(target_type, data_types.Reference):
         converted = expressions.do_dereference(converted)
         if not isinstance(converted.data_type, data_types.Reference):
-            converted = expressions.ImplicitCast(
-                data_types.Reference(converted.data_type), converted)
+            converted = expressions.MakeReference(converted)
     return converted
 
 

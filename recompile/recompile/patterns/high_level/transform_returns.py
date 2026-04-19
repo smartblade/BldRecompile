@@ -13,7 +13,7 @@ def transform_returns(proc_info, proc_decl, characteristics, instrs):
 
 
 def _is_this_dereference(proc_info, e):
-    if not isinstance(e, expressions.ImplicitCast):
+    if not isinstance(e, expressions.MakeReference):
         return False
     deref = e.expression
     if not isinstance(deref, expressions.Dereference):

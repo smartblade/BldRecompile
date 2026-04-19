@@ -77,6 +77,10 @@ class ExpressionTransformer:
         return None
 
     @staticmethod
+    def transform_make_reference(expression, **kwargs):
+        return None
+
+    @staticmethod
     def transform_pre_increment(expression, **kwargs):
         return None
 
