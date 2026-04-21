@@ -1,5 +1,6 @@
 import data_types
 import expressions
+import expressions.writer
 from hex_conversion import to_hex
 
 
@@ -173,46 +174,13 @@ class ProcedureCall:
         return copy_pc()
 
     def emit_code(self):
-        if self._operator is not None and len(self._arguments) == 2:
-            return "{} {} {}".format(
-                self._arguments[0].emit_code(),
-                self._operator.value,
-                self._arguments[1].emit_code(),
-            )
-        if self._is_method:
-            call = self._method_access_code(self._arguments[0])
-            arguments = self._arguments[1:]
-        else:
-            if self._proc_decl is not None and self._proc_decl.is_static:
-                call = "{}::{}".format(
-                    self._proc_decl.method_class.class_name, self.name)
-            else:
-                call = self.callee_code
-            arguments = self._arguments
-        return "{}({})".format(
-            call, ", ".join(map(lambda a: a.emit_code(), arguments))
+        return expressions.writer.write_procedure_call(
+            self._proc_decl,
+            self._is_method,
+            self.name,
+            self._callee,
+            self._arguments,
         )
-
-    def _is_obj_initialization(self, obj):
-        if self.proc_decl is None:
-            return False
-        if not self.proc_decl.is_constructor:
-            return False
-        if not isinstance(obj, expressions.AddressOf):
-            return False
-        identifier = obj.expression
-        if not isinstance(identifier, expressions.Identifier):
-            return False
-        return identifier.is_implicit
-
-    def _method_access_code(self, obj):
-        if self._callee is not None:
-            method_code = "({})".format(self.callee_code)
-        else:
-            method_code = self.name
-        if self._is_obj_initialization(obj):
-            return method_code
-        return expressions.FieldAccess(obj, method_code).emit_code()
 
 
 def _make_compatible_arguments(proc_decl, arguments):
