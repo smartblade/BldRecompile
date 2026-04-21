@@ -10,6 +10,7 @@ from .decrement import Decrement
 from .dereference import Dereference
 from .do_dereference import do_dereference
 from .do_logical_not import do_logical_not
+from .do_reference import do_reference
 from .do_reinterpret import do_reinterpret
 from .do_static_cast import do_static_cast
 from .field_access import FieldAccess

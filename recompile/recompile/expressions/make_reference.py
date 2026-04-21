@@ -1,10 +1,18 @@
 import data_types
-from expressions.operator import Operator
+import expressions
 import expressions.writer
 
 
 class MakeReference:
     def __init__(self, expression):
+        assert isinstance(
+            expression, (
+                expressions.Identifier,
+                expressions.FieldAccess,
+                expressions.Dereference,
+            )
+        )
+        assert not isinstance(expression.data_type, data_types.Reference)
         self._expression = expression
 
     def __repr__(self):

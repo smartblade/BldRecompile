@@ -20,6 +20,7 @@ from .transform_dereference import transform_dereference
 from .transform_global import transform_global
 from .transform_if import transform_if
 from .transform_local import transform_local
+from .transform_make_reference import transform_make_reference
 from .transform_stackvar import transform_stackvar
 from .transform_switch import transform_switch
 from .transform_procedure_call import transform_procedure_call
@@ -117,6 +118,10 @@ class _ExpressionTransformer(ExpressionTransformer):
     @staticmethod
     def transform_dereference(expression, **kwargs):
         return transform_dereference(expression, **kwargs)
+
+    @staticmethod
+    def transform_make_reference(expression, **kwargs):
+        return transform_make_reference(expression, **kwargs)
 
     @staticmethod
     def transform_procedure_call(copy_pc, proc_name, arguments, **kwargs):
