@@ -5,6 +5,14 @@ import expressions.writer
 
 class AddressOf:
     def __init__(self, expression):
+        assert isinstance(
+            expression, (
+                expressions.Identifier,
+                expressions.FieldAccess,
+                expressions.ArrayAccess,
+                expressions.ProcedureCall,
+            )
+        )
         self._expression = expression
 
     def __repr__(self):
