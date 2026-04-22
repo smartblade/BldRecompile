@@ -820,8 +820,8 @@ const char *GetConfigDirectory()
 {
     if (static_cast<any_int32>(isConfigDirectorySet) == 0x00000000)
     {
-        _getcwd(&configDirectory[0], 260);
-        STACKVAR(-12, 4) = &configDirectory[strlen(&configDirectory[0]) - 1];
+        _getcwd(configDirectory, 260);
+        STACKVAR(-12, 4) = &configDirectory[strlen(configDirectory) - 1];
         while (static_cast<any_int32>(reinterpret_cast<char>(ACCESS(STACKVAR(-12, 4), 0, 1))) == 0x0000005C || static_cast<any_int32>(reinterpret_cast<char>(ACCESS(STACKVAR(-12, 4), 0, 1))) == 0x0000002F)
         {
             STACKVAR(-12, 4) = reinterpret_cast<any_int32>(STACKVAR(-12, 4)) - 0x00000001;
@@ -831,8 +831,8 @@ const char *GetConfigDirectory()
             STACKVAR(-12, 4) = reinterpret_cast<any_int32>(STACKVAR(-12, 4)) - 0x00000001;
         }
         ACCESS(STACKVAR(-12, 4), 1, 1) = 0;
-        strcat(&configDirectory[0], "Maps");
-        if (access(&configDirectory[0], 0) != 0)
+        strcat(configDirectory, "Maps");
+        if (access(configDirectory, 0) != 0)
         {
             while (static_cast<any_int32>(reinterpret_cast<char>(ACCESS(STACKVAR(-12, 4), 0, 1))) == 0x0000005C || static_cast<any_int32>(reinterpret_cast<char>(ACCESS(STACKVAR(-12, 4), 0, 1))) == 0x0000002F)
             {
@@ -844,14 +844,14 @@ const char *GetConfigDirectory()
             }
         }
         ACCESS(STACKVAR(-12, 4), 1, 1) = 0;
-        strcat(&configDirectory[0], "Config");
-        if (access(&configDirectory[0], 0) != 0)
+        strcat(configDirectory, "Config");
+        if (access(configDirectory, 0) != 0)
         {
-            _mkdir(&configDirectory[0]);
+            _mkdir(configDirectory);
         }
         isConfigDirectorySet = 1;
     }
-    int unknown_loc_04 = reinterpret_cast<int>(strlen(&configDirectory[0]));
+    int unknown_loc_04 = reinterpret_cast<int>(strlen(configDirectory));
     int unknown_loc_08 = 0;
     goto l100028BF;
 l100028B6:

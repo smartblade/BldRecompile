@@ -7,6 +7,14 @@ class ArrayAccess:
         self._index = index
 
     @property
+    def array(self):
+        return self._array
+
+    @property
+    def index(self):
+        return self._index
+
+    @property
     def data_type(self):
         if isinstance(self._array.data_type, data_types.Pointer32):
             return self._array.data_type.pointee
