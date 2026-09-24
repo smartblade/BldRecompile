@@ -865,7 +865,7 @@ l100028BF:
         }
         goto l100028B6;
     }
-    return &configDirectory[0];
+    return configDirectory;
 }
 
 // address: 0x100028EC

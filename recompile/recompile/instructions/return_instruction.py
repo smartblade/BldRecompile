@@ -1,6 +1,7 @@
 import data_types
 from exceptions import NextRunException
 import expressions
+import expressions.writer
 from merge_types import merge_types
 
 
@@ -57,4 +58,8 @@ class ReturnInstruction:
         if self._expression is None:
             writer.write_line("return;")
             return
-        writer.write_line("return {};".format(self._expression.emit_code()))
+        writer.write_line(
+            "return {};".format(
+                expressions.writer.write_return_expression(self._expression)
+            )
+        )
