@@ -17,6 +17,6 @@ class Reference(DataType):
     def referent(self):
         return self._referent
 
-    def get_type_name(self, is_metafile):
-        referent_type = self._referent.get_type_name(is_metafile)
+    def get_type_name(self):
+        referent_type = self._referent.get_type_name()
         return "{} &".format(referent_type)

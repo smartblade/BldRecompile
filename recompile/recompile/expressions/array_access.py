@@ -20,11 +20,6 @@ class ArrayAccess:
             return self._array.data_type.pointee
         return self._array.data_type.element_type
 
-    def transform_expression(self, **kwargs):
-        array = self._array.transform_expression(**kwargs)
-        index = self._index.transform_expression(**kwargs)
-        return ArrayAccess(array, index)
-
     def visit(self, on_expression_visited, **kwargs):
         on_expression_visited(self, **kwargs)
         self._array.visit(on_expression_visited, **kwargs)

@@ -121,8 +121,7 @@ def _write_procedure_declaration(writer, proc_decl, is_exported):
     export = ""
     if is_exported and proc_decl.method_class is None:
         export = "LIB_EXP "
-    decl_string = proc_decl.get_declaration(
-        is_metafile=False, is_definition=False)
+    decl_string = proc_decl.get_declaration(is_definition=False)
     writer.write_line("{}{};".format(export, decl_string))
 
 

@@ -9,12 +9,6 @@ class CodeInstruction:
     def __repr__(self):
         return "CodeInstruction({})".format(self._expression)
 
-    def transform_instruction(
-        self, **kwargs
-    ):
-        tokens = self._expression.transform_expression(**kwargs)
-        return CodeInstruction(tokens)
-
     def visit(self, on_expression_visited, **kwargs):
         self._expression.visit(on_expression_visited, **kwargs)
 

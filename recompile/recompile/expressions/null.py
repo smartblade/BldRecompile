@@ -2,9 +2,6 @@ import data_types
 
 
 class _Null:
-    def transform_expression(self, **kwargs):
-        return self
-
     @property
     def data_type(self):
         return data_types.NullptrType

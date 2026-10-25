@@ -12,10 +12,10 @@ const_method_regexp = re.compile(r'\)\s*(?P<const>const)\s*$')
 
 
 def parse_cpp_function(class_name, func, declared_types):
-    declaration = parser.split_procedure_parameters(func)
+    split_parameters = parser.split_procedure_parameters(func)
     is_vararg = False
     parameters = []
-    for (var_type, var_name) in declaration.parameters:
+    for (var_type, var_name) in split_parameters:
         if var_name == "...":
             is_vararg = True
             continue

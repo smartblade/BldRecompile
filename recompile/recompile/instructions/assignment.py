@@ -1,8 +1,3 @@
-import data_types
-import expressions
-from merge_types import merge_types
-
-
 class Assignment:
     def __init__(self, dst, src):
         self._dst = dst
@@ -18,37 +13,6 @@ class Assignment:
     @property
     def src(self):
         return self._src
-
-    def transform_instruction(
-        self, **kwargs
-    ):
-        src = self._src.transform_expression(**kwargs)
-        dst = self._dst.transform_expression(**kwargs)
-        src = _strip_brackets(src)
-        if (
-            isinstance(src, expressions.Constant) and
-            isinstance(src.data_type, data_types.UnknownByte) and
-            src.value > 0
-        ):
-            # Small value can not be pointer, and it's unlikely float, so make
-            # it integer
-            if isinstance(dst, expressions.Identifier):
-                identifier = dst
-                new_data_type = merge_types(
-                    identifier.data_type, data_types.Int32()
-                )
-                identifier.change_data_type(new_data_type)
-                if identifier.address is None:
-                    new_var_name = identifier.name.replace(
-                        "unknown_loc_", "unknown_int_loc_"
-                    )
-                else:
-                    new_var_name = identifier.name.replace(
-                        "unknown_gbl_", "unknown_int_gbl_"
-                    )
-                identifier.rename(new_var_name)
-                src = expressions.Constant(identifier.data_type, src.value)
-        return Assignment(dst, src)
 
     def visit(self, on_expression_visited, **kwargs):
         on_expression_visited(self, **kwargs)
@@ -75,9 +39,3 @@ class Assignment:
         ):
             comment += " // TODO inconsitent coalescing"
         writer.write_line("{} = {};{}".format(dst, src, comment))
-
-
-def _strip_brackets(e):
-    if isinstance(e, expressions.BracketsExpression):
-        return e.expression
-    return e

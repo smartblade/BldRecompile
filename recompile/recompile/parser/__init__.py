@@ -6,15 +6,6 @@ from .cpp_headers import parse_cpp_header
 from .cpp_mangling import parse_cpp_mangling
 from .cpp_variable_declaration import parse_cpp_variable_declaration
 from .data_type import parse_data_type
-from .define_name import define_field_name
-from .define_name import define_global_name
-from .define_name import define_parameter_name
-from .globals_declarations import parse_globals_declarations
-from .header_declarations import parse_header_declarations
-from .instructions import parse_instructions
-from .output_code import parse_output_code
-from .procedure_body import parse_procedure_body
-from .procedure_declaration import parse_procedure_declaration
 from .procedure_declaration import split_procedure_parameters
 from .variable_declaration import parse_variable_declaration
 from .wrap.wrap_line import wrap_line

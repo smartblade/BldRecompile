@@ -27,5 +27,5 @@ class TrashExtend:
 
     def emit_code(self):
         expression_code = self._expression.emit_code()
-        type_name = self._data_type.get_type_name(is_metafile=False)
+        type_name = self._data_type.get_type_name()
         return "TRASHEXTEND<{}>({})".format(type_name, expression_code)

@@ -188,18 +188,7 @@ def _new_brackets_expression(state, prefix, brackets_tokens):
                 cur_arg.append(token)
         if len(cur_arg) > 0:
             append_arg(cur_arg)
-        if (
-            prefix.startswith("unknown_procedure_") or
-            prefix.startswith("unknown_method_")
-        ):
-            callee_addr = prefix[-8:]
-            is_method = True
-        else:
-            callee_addr = None
-            is_method = False
-        return expressions.ProcedureCall(
-            prefix, operator, arguments, callee_addr, is_method
-        )
+        return expressions.ProcedureCall(prefix, operator, arguments)
     return expressions.BracketsExpression(
         _make_expression_from_tokens(brackets_tokens)
     )

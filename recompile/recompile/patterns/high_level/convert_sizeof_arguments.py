@@ -28,8 +28,7 @@ def convert_sizeof_arguments(arguments, proc_decl):
         return arguments
     if const_arg.value != pointee.size:
         return arguments
-    sizeof_expression = "sizeof({})".format(
-        pointee.get_type_name(is_metafile=False))
+    sizeof_expression = "sizeof({})".format(pointee.get_type_name())
     new_const_arg = expressions.NamedConstant(
         const_arg.data_type.size, sizeof_expression)
     new_arguments = list(arguments)

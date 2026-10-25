@@ -1,4 +1,3 @@
-from block_transformer import transform_block as transform_block_instructions
 from custom_block_transformer import transform_block
 
 
@@ -17,11 +16,6 @@ class WhileInstruction:
     @property
     def block(self):
         return self._block
-
-    def transform_instruction(self, **kwargs):
-        block = transform_block_instructions(self._block, **kwargs)
-        clause = self._clause.transform_expression(**kwargs)
-        return self.__class__(clause, block)
 
     def transform(self, transformer, **kwargs):
         clause = self._clause.transform(transformer, **kwargs)

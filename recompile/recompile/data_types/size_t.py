@@ -3,7 +3,7 @@ from data_types.data_type import DataType
 
 class SizeT(DataType):
     @staticmethod
-    def get_type_name(is_metafile):
+    def get_type_name():
         return "size_t"
 
     @property

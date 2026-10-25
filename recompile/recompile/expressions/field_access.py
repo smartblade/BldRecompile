@@ -21,10 +21,6 @@ class FieldAccess:
     def field_name(self):
         return self._field_name
 
-    def transform_expression(self, **kwargs):
-        expression = self._expression.transform_expression(**kwargs)
-        return FieldAccess(expression, self._field_name)
-
     def visit(self, on_expression_visited, **kwargs):
         on_expression_visited(self, **kwargs)
         self._expression.visit(on_expression_visited, **kwargs)

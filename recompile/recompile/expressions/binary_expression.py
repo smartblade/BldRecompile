@@ -62,11 +62,6 @@ class BinaryExpression:
     def right(self):
         return self._right
 
-    def transform_expression(self, **kwargs):
-        left = self._left.transform_expression(**kwargs)
-        right = self._right.transform_expression(**kwargs)
-        return BinaryExpression(self._operator, left, right)
-
     def visit(self, on_expression_visited, **kwargs):
         on_expression_visited(self, **kwargs)
         self._left.visit(on_expression_visited, **kwargs)

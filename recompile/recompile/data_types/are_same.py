@@ -6,10 +6,7 @@ def are_same(first, second):
         isinstance(first, data_types.NamedType) and
         isinstance(second, data_types.NamedType)
     ):
-        return (
-            first.get_type_name(is_metafile=False) ==
-            second.get_type_name(is_metafile=False)
-        )
+        return first.get_type_name() == second.get_type_name()
     if isinstance(first, data_types.NamedType):
         return are_same(first.referenced_type, second)
     if isinstance(second, data_types.NamedType):

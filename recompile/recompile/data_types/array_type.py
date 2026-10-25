@@ -18,8 +18,6 @@ class Array(DataType):
     def size(self):
         return self._size * self._element_type.size
 
-    def make_variable_declaration(self, var_name, is_metafile):
-        element_decl = self._element_type.make_variable_declaration(
-            var_name, is_metafile
-        )
+    def make_variable_declaration(self, var_name):
+        element_decl = self._element_type.make_variable_declaration(var_name)
         return "{}[{}]".format(element_decl, self._size)

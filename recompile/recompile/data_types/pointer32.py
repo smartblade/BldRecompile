@@ -17,12 +17,10 @@ class Pointer32(DataType):
     def pointee(self):
         return self._pointee
 
-    def get_type_name(self, is_metafile):
+    def get_type_name(self):
         if self._pointee is None:
-            if is_metafile:
-                return "ptr32"
             return _make_ptr_type("void")
-        pointee_type = self._pointee.get_type_name(is_metafile)
+        pointee_type = self._pointee.get_type_name()
         return _make_ptr_type(pointee_type)
 
 

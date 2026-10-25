@@ -17,7 +17,7 @@ class DataType:
         return self._qualifiers
 
     def make_variable_declaration(
-        self, var_name, is_metafile, current_namespace_type=None
+        self, var_name, current_namespace_type=None
     ):
         qualifiers = ""
         for qualifier in self._qualifiers:
@@ -25,7 +25,7 @@ class DataType:
         right_qualifiers = ""
         for qualifier in self._right_qualifiers:
             right_qualifiers += " " + qualifier
-        type_name = self.get_type_name(is_metafile)
+        type_name = self.get_type_name()
         if (
             type_name[-1] in {"*", "&"} and not right_qualifiers or
             var_name is None
@@ -39,7 +39,7 @@ class DataType:
             self._namespace_type is not None and
             self._namespace_type != current_namespace_type
         ):
-            namespace_name = self._namespace_type.get_type_name(is_metafile)
+            namespace_name = self._namespace_type.get_type_name()
             type_name = "{}::{}".format(namespace_name, type_name)
         return "{}{}{}{}{}".format(
             qualifiers, type_name, right_qualifiers, sep, var_name

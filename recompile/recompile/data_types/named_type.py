@@ -21,5 +21,5 @@ class NamedType:
     def referenced_type(self):
         return self.__referenced_type
 
-    def get_type_name(self, is_metafile):
+    def get_type_name(self):
         return self.__name

@@ -3,26 +3,12 @@ from exceptions import UnknownTypeException
 
 
 def parse_data_type(s, classes):
-    if s == "byte" and s not in classes:
-        return data_types.UnknownByte()
-    if s == "word32":
-        return data_types.Unknown32()
-    if s == "ptr32":
-        return data_types.Pointer32()
-    if s == "int32":
-        return data_types.Int32()
     if s == "real64":
         return data_types.Double()
     if s == "real32":
         return data_types.Float()
     if s == "void":
         return None
-    if s == "<unknown>":
-        return None
-    if s == "uint32":
-        return data_types.UInt32()
-    if s == "<unknown>*":
-        return data_types.Pointer32()
     if s.startswith("const"):
         data_type = parse_data_type(s[5:].strip(), classes)
         data_type.add_qualifier("const")
@@ -92,7 +78,7 @@ def _parse_template(s, classes):
     template_type = parse_data_type(s[:start_pos], classes)
     template_arg = parse_data_type(s[start_pos + 1:-1], classes)
     if template_arg is not None:
-        template_arg_name = template_arg.get_type_name(is_metafile=False)
+        template_arg_name = template_arg.get_type_name()
     else:
         template_arg_name = "void"
     return template_type.rename(

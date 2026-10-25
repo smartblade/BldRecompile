@@ -23,14 +23,8 @@ class Identifier:
     def is_implicit(self):
         return self._name.startswith("__")
 
-    def change_data_type(self, data_type):
-        self._data_type = data_type
-
     def rename(self, name):
         self._name = name
-
-    def transform_expression(self, **kwargs):
-        return self
 
     def visit(self, on_expression_visited, **kwargs):
         on_expression_visited(self, **kwargs)

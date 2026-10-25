@@ -39,8 +39,7 @@ def _make_named_const_from_characteristics(
     if const_characteristics.sizeof_variable_offset not in stack_vars:
         return None
     var = stack_vars[const_characteristics.sizeof_variable_offset]
-    sizeof_expression = "sizeof({})".format(
-        var.data_type.get_type_name(is_metafile=False))
+    sizeof_expression = "sizeof({})".format(var.data_type.get_type_name())
     result = expressions.NamedConstant(c.data_type.size, sizeof_expression)
     if c.value == -var.data_type.size:
         result = expressions.Negate(expressions.StaticCast(c.data_type, result))

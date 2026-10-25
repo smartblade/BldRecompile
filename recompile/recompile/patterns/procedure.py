@@ -67,7 +67,8 @@ class Procedure:
     def emit_code(self, writer, show_address=True, is_definition=True):
         if self._proc_decl is not None:
             decl_string = self._proc_decl.get_declaration(
-                is_metafile=False, is_definition=is_definition)
+                is_definition=is_definition
+            )
         else:
             decl_string = "p{}".format(to_hex(self._address))
         if not show_address:

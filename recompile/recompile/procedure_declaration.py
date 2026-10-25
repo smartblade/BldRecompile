@@ -4,7 +4,6 @@ from calling_convention import CallingConvention
 import data_types
 import expressions
 from expressions.operator import operators
-import parser
 
 operator_regexp = re.compile(r'^operator\s*(?P<op>\S+)$')
 
@@ -164,43 +163,14 @@ class ProcedureDeclaration:
             return data_types.Reference
         return data_types.Pointer32
 
-    def get_used_types(self):
-        types = {}
-        for parameter_type, parameter_name in self._parameters:
-            if (
-                isinstance(parameter_type, data_types.Pointer32) and
-                isinstance(parameter_type.pointee, data_types.ClassType)
-            ):
-                class_type = parameter_type.pointee
-                types[class_type.class_name] = class_type
-        if self._method_class is not None:
-            types[self._method_class.class_name] = self._method_class
-        return types
-
-    def get_declaration(
-        self, is_metafile, is_definition=False, full_typed_args=None
-    ):
+    def get_declaration(self, is_definition=False):
         parameters = []
-        if is_metafile and self._method_class is not None:
-            is_brief = (
-                full_typed_args is not None and
-                "this" not in full_typed_args
-            )
-            if is_brief:
-                this_arg = "ptr32 this"
-            else:
-                this_arg = "{} *this".format(self._method_class.class_name)
-            parameters.append(this_arg)
         param_index = 0
         for parameter_type, parameter_name in self._parameters:
             param_index += 1
             parameter_name = _make_parameter_name(parameter_name, param_index)
-            is_brief = (
-                full_typed_args is not None and
-                parameter_name not in full_typed_args
-            )
-            parameter = self._make_variable_declaration(
-                parameter_type, parameter_name, is_metafile, is_brief
+            parameter = parameter_type.make_variable_declaration(
+                parameter_name, self._method_class
             )
             parameters.append(parameter)
         static_modifier = ""
@@ -216,14 +186,10 @@ class ProcedureDeclaration:
             proc_name = "{}::{}".format(
                 self._method_class.class_name, proc_name
             )
-        return_arg = self._get_return_type_name(
-            is_metafile=is_metafile, is_brief=full_typed_args is not None
-        )
+        return_arg = self._get_return_type_name()
         sep = "" if not return_arg or return_arg[-1] in {"*", "&"} else " "
         calling_convention = ""
-        if is_metafile and self._convention == CallingConvention.THISCALL:
-            calling_convention = "__thiscall "
-        elif self._convention == CallingConvention.STDCALL:
+        if self._convention == CallingConvention.STDCALL:
             calling_convention = "__stdcall "
         const = ""
         if self._is_const:
@@ -239,29 +205,12 @@ class ProcedureDeclaration:
             const,
         )
 
-    def extract_return_arg_from_line(self, line, declarations):
-        name_pos = line.find(self._proc_name)
-        self._return_arg = parser.parse_data_type(
-            line[:name_pos].strip(), declarations.get_types_declarations()
-        )
-
-    def _make_variable_declaration(
-        self, data_type, var_name, is_metafile, is_brief
-    ):
-        if is_brief and isinstance(data_type, data_types.Pointer32):
-            return "ptr32 {}".format(var_name)
-        return data_type.make_variable_declaration(
-            var_name, is_metafile, self._method_class
-        )
-
-    def _get_return_type_name(self, is_metafile, is_brief):
-        if not is_metafile and (self.is_constructor or self.is_destructor):
+    def _get_return_type_name(self):
+        if self.is_constructor or self.is_destructor:
             return ""
         if self._return_arg is None:
             return "void"
-        if is_brief and isinstance(self._return_arg, data_types.Pointer32):
-            return "ptr32"
-        decl = self._return_arg.make_variable_declaration("", is_metafile)
+        decl = self._return_arg.make_variable_declaration("")
         return decl.strip()
 
 

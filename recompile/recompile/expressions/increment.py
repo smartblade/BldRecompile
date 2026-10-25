@@ -10,10 +10,6 @@ class Increment:
     def expression(self):
         return self._expression
 
-    def transform_expression(self, **kwargs):
-        expression = self._expression.transform_expression(**kwargs)
-        return self.__class__(expression)
-
     def visit(self, on_expression_visited, **kwargs):
         on_expression_visited(self, **kwargs)
         self._expression.visit(on_expression_visited, **kwargs)

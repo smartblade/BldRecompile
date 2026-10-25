@@ -3,7 +3,6 @@ from .break_instruction import Break
 from .code_instruction import CodeInstruction
 from .delete import Delete
 from .empty import empty
-from .for_instruction import ForInstruction
 from .goto import Goto
 from .if_instruction import IfInstruction
 from .labeled_block import LabeledBlock

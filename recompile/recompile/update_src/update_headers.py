@@ -87,7 +87,7 @@ def _get_procedure_id(declaration, class_name):
     proc_decl = parser.parse_cpp_function(
         class_name, declaration, _dummy_declared_types)
     proc_decl = _make_reduced_proc_decl(proc_decl)
-    return proc_decl.get_declaration(is_metafile=False, is_definition=True)
+    return proc_decl.get_declaration(is_definition=True)
 
 
 def _make_reduced_proc_decl(proc_decl):

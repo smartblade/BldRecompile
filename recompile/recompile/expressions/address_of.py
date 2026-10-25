@@ -29,10 +29,6 @@ class AddressOf:
             data_type = data_type.referent
         return data_types.Pointer32(data_type)
 
-    def transform_expression(self, **kwargs):
-        expression = self._expression.transform_expression(**kwargs)
-        return AddressOf(expression)
-
     def visit(self, on_expression_visited, **kwargs):
         on_expression_visited(self, **kwargs)
         self._expression.visit(on_expression_visited, **kwargs)

@@ -1,4 +1,3 @@
-from block_transformer import transform_block as transform_block_instructions
 from custom_block_transformer import transform_block
 from block_visitor import visit_block
 
@@ -31,15 +30,6 @@ class IfInstruction:
         else:
             assert len(self._else_block) == 1
             self._else_block[-1].add_else_block(else_block)
-
-    def transform_instruction(self, **kwargs):
-        if_block = transform_block_instructions(self._if_block, **kwargs)
-        else_block = None
-        if self._else_block is not None:
-            else_block = transform_block_instructions(
-                self._else_block, **kwargs)
-        if_clause = self._if_clause.transform_expression(**kwargs)
-        return self.__class__(if_clause, if_block, else_block)
 
     def visit(self, on_expression_visited, **kwargs):
         self._if_clause.visit(on_expression_visited, **kwargs)

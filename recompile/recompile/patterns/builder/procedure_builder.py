@@ -184,9 +184,6 @@ class ProcedureBuilder:
     def _add_instruction(self, instruction):
         self._current_block.add_instruction(instruction)
 
-    def _pop_instruction(self):
-        return self._current_block.pop_instruction()
-
     def _expect_first_procedure_info(self):
         first_instruction = self._instructions[0]
         if not isinstance(first_instruction, instructions.ProcedureInfo):
