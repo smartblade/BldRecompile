@@ -77,7 +77,8 @@ def _get_procedure_stub_code(procedure, is_inline):
     if return_stub is not None:
         instrs.append(return_stub)
     procedure_stub = Procedure(
-        procedure.proc_info, procedure.address, procedure.proc_decl, instrs)
+        procedure.proc_info, procedure.address, procedure.proc_decl, instrs,
+        None)
     num_indent = 1 if is_inline else 0
     _write(
         writer, num_indent, _write_procedure, procedure_stub,
