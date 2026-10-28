@@ -132,8 +132,8 @@ def _define_nearest_src_definitions(procedures_data):
                 proc_data.src_definition.definition_start_line <=
                 prev_src_definition.definition_start_line
             ):
-                raise Exception(
-                    "Procedure 0x{} should be before 0x{}".format(
+                print(
+                    "Warning: procedure 0x{} should be before 0x{}".format(
                         to_hex(prev_addr), to_hex(proc_data.procedure.address))
                 )
         prev_src_definition = proc_data.src_definition
