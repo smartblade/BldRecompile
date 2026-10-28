@@ -55,22 +55,22 @@ void B_BitMap24::ClearBitMap24Data()
 
 /*
 * Module:                 BBLibc.dll
-* Entry point:            0x100272A5
-* VC++ mangling:          ?SetBits@B_BitMap24@@QAEIHHPBD0@Z
+* Entry point:            0x100271BE
+* VC++ mangling:          ??4B_BitMap24@@QAEAAV0@ABV0@@Z
 */
 
-unsigned int B_BitMap24::SetBits(int, int, char const*, char const*)
+B_BitMap24& B_BitMap24::operator=(const B_BitMap24& that)
 {
 }
 
 
 /*
 * Module:                 BBLibc.dll
-* Entry point:            0x100271BE
-* VC++ mangling:          ??4B_BitMap24@@QAEAAV0@ABV0@@Z
+* Entry point:            0x100272A5
+* VC++ mangling:          ?SetBits@B_BitMap24@@QAEIHHPBD0@Z
 */
 
-B_BitMap24& B_BitMap24::operator=(const B_BitMap24& that)
+unsigned int B_BitMap24::SetBits(int, int, char const*, char const*)
 {
 }
 

@@ -3,6 +3,17 @@
 
 /*
 * Module:                 BBLibc.dll
+* Entry point:            0x10007F70
+* VC++ mangling:          ??4B_MeshEdge@@QAEAAV0@ABV0@@Z
+*/
+
+B_MeshEdge& B_MeshEdge::operator=(const B_MeshEdge& other)
+{
+}
+
+
+/*
+* Module:                 BBLibc.dll
 * Entry point:            0x100321F0
 * VC++ mangling:          ??0B_MeshEdge@@QAE@XZ
 */
@@ -19,17 +30,6 @@ B_MeshEdge::B_MeshEdge()
 */
 
 B_MeshEdge::B_MeshEdge(unsigned int a, unsigned int b, unsigned int c)
-{
-}
-
-
-/*
-* Module:                 BBLibc.dll
-* Entry point:            0x10007F70
-* VC++ mangling:          ??4B_MeshEdge@@QAEAAV0@ABV0@@Z
-*/
-
-B_MeshEdge& B_MeshEdge::operator=(const B_MeshEdge& other)
 {
 }
 

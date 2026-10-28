@@ -24,22 +24,11 @@ static byte isConfigDirectorySet;
 
 /*
 * Module:                 BBLibc.dll
-* Entry point:            0x1002A590
-* VC++ mangling:          ?OutputWin32Error@@YAXPBD@Z
+* Entry point:            0x100020F2
+* VC++ mangling:          ?RemoveOnOpenInputFileFunc@@YAXXZ
 */
 
-void OutputWin32Error(char const* message)
-{
-}
-
-
-/*
-* Module:                 BBLibc.dll
-* Entry point:            0x10029BE0
-* VC++ mangling:          ?vararg@@YAPBDPBDZZ
-*/
-
-const char* vararg(const char* format, ...)
+void RemoveOnOpenInputFileFunc()
 {
 }
 
@@ -68,11 +57,22 @@ char const* GetCurrentLanguage()
 
 /*
 * Module:                 BBLibc.dll
-* Entry point:            0x100020F2
-* VC++ mangling:          ?RemoveOnOpenInputFileFunc@@YAXXZ
+* Entry point:            0x10029BE0
+* VC++ mangling:          ?vararg@@YAPBDPBDZZ
 */
 
-void RemoveOnOpenInputFileFunc()
+const char* vararg(const char* format, ...)
+{
+}
+
+
+/*
+* Module:                 BBLibc.dll
+* Entry point:            0x1002A590
+* VC++ mangling:          ?OutputWin32Error@@YAXPBD@Z
+*/
+
+void OutputWin32Error(char const* message)
 {
 }
 
