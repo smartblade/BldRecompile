@@ -31,7 +31,7 @@ class Constant:
 
     def emit_code(self):
         if isinstance(self._data_type, data_types.Float):
-            return "{}F".format(self._value)
+            return "{}".format(self._value)
         if isinstance(self._data_type, data_types.UnknownByte):
             if self._value == 0:
                 return "0"
