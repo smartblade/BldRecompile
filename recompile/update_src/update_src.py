@@ -151,7 +151,7 @@ def _process_file(
         return
     procedures = sorted(
         procedures,
-        key=lambda p: p.end_line,
+        key=lambda p: (p.end_line, p.start_line),
     )
     cur_proc_data = procedures.pop()
     lines = list(src_file.lines)
