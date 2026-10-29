@@ -1279,7 +1279,7 @@ def run():
     if options.run_tests:
         result = unittest.main(module=None, argv=[__file__], exit=False).result
         assert result.wasSuccessful()
-    src_dir = os.path.abspath('../../src')
+    src_dir = os.path.abspath('../src')
     if options.src is not None:
         src_dir = os.path.abspath(options.src)
     if options.copy_src_from is not None:
