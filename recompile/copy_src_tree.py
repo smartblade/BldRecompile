@@ -26,11 +26,24 @@ def copy_src_tree(src_path, dst_path):
                 headers[file] = _Header(src_file_name, dst_file_name)
             elif file.lower().endswith(".cpp"):
                 cpp_files.append(src_file_name)
-    parser = _Parser(headers)
+    parser = _Parser(headers, _get_external_headers())
     for src_file_name in cpp_files:
         relative_path = os.path.relpath(src_file_name, src_path)
         dst_file_name = os.path.join(dst_path, relative_path)
         parser.process_cpp(src_file_name, dst_file_name)
+
+
+def _get_external_headers():
+    externdefs_path = os.path.join(
+        os.path.dirname(os.path.realpath(__file__)), "parser", "externdefs")
+    external_headers = set()
+    for root, dirs, files in os.walk(externdefs_path):
+        for file in files:
+            if file.lower().endswith(".h"):
+                relative_path = os.path.relpath(
+                    os.path.join(root, file), externdefs_path)
+                external_headers.add(relative_path.replace(os.sep, "/"))
+    return external_headers
 
 
 class _Header:
@@ -53,8 +66,9 @@ class _Header:
 
 
 class _Parser:
-    def __init__(self, headers):
+    def __init__(self, headers, external_headers):
         self._headers = headers
+        self._external_headers = external_headers
 
     def process_cpp(self, src_file_name, dst_file_name):
         with open(src_file_name) as f:
@@ -119,6 +133,9 @@ class _Parser:
         match = preprocessor_regexp.search(line)
         if match:
             include_file = match.group("file")
+            if include_file in self._external_headers:
+                output_lines.append(line)
+                return True
             if include_file is not None:
                 include_base_file = os.path.basename(include_file)
                 header = self._headers.get(include_base_file)
