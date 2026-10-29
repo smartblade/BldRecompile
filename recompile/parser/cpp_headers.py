@@ -54,13 +54,13 @@ _standard_types = {
 class HeaderState:
     def __init__(
         self, file_name, header_states, declared_types, incomplete_types,
-        external_procedures,
+        external_aliases,
     ):
         self._file_name = file_name
         self._header_states = header_states
         self._declared_types = declared_types
         self._incomplete_types = incomplete_types
-        self._external_procedures = external_procedures
+        self._external_aliases = external_aliases
         self._constants = Constants()
         self._visited = False
 
@@ -232,7 +232,7 @@ class HeaderState:
         declaration = match.group("decl")
         proc_decl = parser.parse_cpp_function(
             None, declaration, self._declared_types)
-        self._external_procedures[alias] = proc_decl
+        self._external_aliases[alias] = proc_decl
 
 
 def _strip_start(definition, start):
@@ -263,7 +263,7 @@ def _strip_comments(line, is_comment):
 
 def _collect_cpp_declarations(
     src_path, header_states, files_declarations, declared_types,
-    incomplete_types, external_procedures
+    incomplete_types, external_procedures, external_aliases
 ):
     for (root, dirs, files) in os.walk(src_path):
         for file in files:
@@ -275,14 +275,15 @@ def _collect_cpp_declarations(
                 file_name = os.path.join(root, file)
                 head, dir_name1 = os.path.split(root)
                 head, dir_name2 = os.path.split(head)
-                declarations = [
-                    declared_types, incomplete_types, external_procedures]
+                declarations = [declared_types, incomplete_types]
                 if file.lower().endswith(".xml"):
-                    metadata_state_class = XmlMetadata
+                    header_state = XmlMetadata(
+                        file_name, header_states, *declarations,
+                        external_procedures)
                 else:
-                    metadata_state_class = HeaderState
-                header_state = metadata_state_class(
-                    file_name, header_states, *declarations)
+                    header_state = HeaderState(
+                        file_name, header_states, *declarations,
+                        external_aliases)
                 header_states[file] = header_state
                 header_states["{}/{}".format(dir_name1, file)] = header_state
                 header_states[
@@ -298,16 +299,21 @@ def parse_cpp_header(src_path):
     declared_types = _standard_types
     incomplete_types = {}
     external_procedures = {}
+    external_aliases = {}
     extern_definitions_path = os.path.join(
         os.path.dirname(os.path.realpath(__file__)), "externdefs")
     _collect_cpp_declarations(
         extern_definitions_path, header_states, files_declarations,
-        declared_types, incomplete_types, external_procedures)
+        declared_types, incomplete_types, external_procedures,
+        external_aliases)
     _collect_cpp_declarations(
         src_path, header_states, files_declarations, declared_types,
-        incomplete_types, external_procedures)
+        incomplete_types, external_procedures, external_aliases)
     for file_declaration in files_declarations.values():
         file_declaration.parse()
+    # Aliases like strdup for _strdup take precedence over XML metadata
+    # regardless of the order in which files are parsed
+    external_procedures.update(external_aliases)
     characteristics_file = os.path.join(
         extern_definitions_path, "characteristics.json")
     characteristics = ExternalCharacteristics.read(characteristics_file)
