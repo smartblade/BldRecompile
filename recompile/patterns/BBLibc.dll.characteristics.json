@@ -2,6 +2,9 @@
 	"10001023": {
 		"return": {
 			"boolean": "yes"
+		},
+		"varnames": {
+			"8": "func"
 		}
 	},
 	"100015E2": {
@@ -9,7 +12,9 @@
 			"-4": "result",
 			"-8": "nFilesObj",
 			"-12": "fileNameObj",
-			"-16": "args"
+			"-16": "args",
+			"8": "src",
+			"12": "flags"
 		}
 	},
 	"100017C2": {
@@ -64,6 +69,66 @@
 			"-4": "remainingCache"
 		}
 	},
+	"10001B55": {
+		"varnames": {
+			"8": "file",
+			"12": "c"
+		}
+	},
+	"10001B6B": {
+		"varnames": {
+			"8": "file",
+			"12": "c"
+		}
+	},
+	"10001B81": {
+		"varnames": {
+			"8": "file",
+			"12": "s"
+		}
+	},
+	"10001B97": {
+		"varnames": {
+			"8": "file",
+			"12": "s"
+		}
+	},
+	"10001BAD": {
+		"varnames": {
+			"8": "file",
+			"12": "i"
+		}
+	},
+	"10001BC3": {
+		"varnames": {
+			"8": "file",
+			"12": "l"
+		}
+	},
+	"10001BD9": {
+		"varnames": {
+			"8": "file",
+			"12": "l"
+		}
+	},
+	"10001BEF": {
+		"varnames": {
+			"8": "file",
+			"12": "i"
+		}
+	},
+	"10001C05": {
+		"varnames": {
+			"8": "file",
+			"12": "f"
+		}
+	},
+	"10001C1B": {
+		"varnames": {
+			"8": "file",
+			"12": "f"
+		}
+	},
 	"10001E01": {
 		"varnames": {
 			"8": "position"
@@ -71,7 +136,75 @@
 	},
 	"10001E86": {
 		"varnames": {
-			"-4": "remainingCache"
+			"-4": "remainingCache",
+			"8": "data",
+			"12": "size"
+		}
+	},
+	"10001F5E": {
+		"varnames": {
+			"8": "file",
+			"12": "c"
+		}
+	},
+	"10001F74": {
+		"varnames": {
+			"8": "file",
+			"12": "c"
+		}
+	},
+	"10001F9A": {
+		"varnames": {
+			"8": "file",
+			"12": "c"
+		}
+	},
+	"10001FB0": {
+		"varnames": {
+			"8": "file",
+			"12": "s"
+		}
+	},
+	"10001FC6": {
+		"varnames": {
+			"8": "file",
+			"12": "s"
+		}
+	},
+	"10001FDC": {
+		"varnames": {
+			"8": "file",
+			"12": "i"
+		}
+	},
+	"10001FF2": {
+		"varnames": {
+			"8": "file",
+			"12": "l"
+		}
+	},
+	"10002008": {
+		"varnames": {
+			"8": "file",
+			"12": "l"
+		}
+	},
+	"1000201E": {
+		"varnames": {
+			"8": "file",
+			"12": "i"
+		}
+	},
+	"10002034": {
+		"varnames": {
+			"8": "file",
+			"12": "f"
+		}
+	},
+	"1000204A": {
+		"varnames": {
+			"8": "file",
+			"12": "f"
 		}
 	},
 	"100020E1": {
@@ -94,9 +227,381 @@
 			"8": "that"
 		}
 	},
+	"10002A14": {
+		"varnames": {
+			"8": "element"
+		}
+	},
+	"10002A86": {
+		"varnames": {
+			"8": "existing",
+			"12": "newElement"
+		}
+	},
+	"10002B34": {
+		"varnames": {
+			"8": "existing",
+			"12": "newElement"
+		}
+	},
+	"10002BC5": {
+		"varnames": {
+			"8": "element",
+			"12": "index"
+		}
+	},
+	"10002E5D": {
+		"varnames": {
+			"8": "element"
+		}
+	},
+	"10002F80": {
+		"varnames": {
+			"8": "other"
+		}
+	},
+	"100030A0": {
+		"varnames": {
+			"8": "element"
+		}
+	},
+	"10003337": {
+		"varnames": {
+			"8": "str"
+		}
+	},
+	"100033A4": {
+		"varnames": {
+			"8": "src"
+		}
+	},
+	"10003410": {
+		"varnames": {
+			"8": "len"
+		}
+	},
+	"10003467": {
+		"varnames": {
+			"8": "rhs"
+		}
+	},
+	"100034DA": {
+		"varnames": {
+			"8": "rhs"
+		}
+	},
+	"1000354D": {
+		"varnames": {
+			"8": "rhs"
+		}
+	},
+	"100035D2": {
+		"varnames": {
+			"8": "str"
+		}
+	},
+	"10003643": {
+		"varnames": {
+			"8": "rhs"
+		}
+	},
+	"100036C5": {
+		"varnames": {
+			"8": "str"
+		}
+	},
+	"10003769": {
+		"varnames": {
+			"8": "str"
+		}
+	},
+	"1000378E": {
+		"varnames": {
+			"8": "src"
+		}
+	},
+	"10003904": {
+		"varnames": {
+			"8": "file",
+			"12": "name"
+		}
+	},
+	"1000398A": {
+		"varnames": {
+			"8": "file",
+			"12": "name"
+		}
+	},
+	"10003A07": {
+		"varnames": {
+			"8": "name"
+		}
+	},
+	"10003A40": {
+		"varnames": {
+			"8": "file",
+			"12": "named_obj"
+		}
+	},
+	"10003A58": {
+		"varnames": {
+			"8": "file",
+			"12": "namedObj"
+		}
+	},
+	"10003C70": {
+		"varnames": {
+			"8": "str"
+		}
+	},
+	"10003D30": {
+		"varnames": {
+			"8": "c"
+		}
+	},
+	"10003DCE": {
+		"varnames": {
+			"8": "other"
+		}
+	},
+	"10004E0B": {
+		"varnames": {
+			"8": "id"
+		}
+	},
+	"10005AF0": {
+		"varnames": {
+			"8": "resourceId",
+			"12": "name"
+		}
+	},
+	"10005ED1": {
+		"varnames": {
+			"8": "resource"
+		}
+	},
+	"10005F66": {
+		"varnames": {
+			"8": "c",
+			"12": "i",
+			"16": "pc",
+			"20": "i1"
+		}
+	},
+	"10006830": {
+		"varnames": {
+			"8": "that"
+		}
+	},
+	"10006CB0": {
+		"varnames": {
+			"8": "width",
+			"12": "height"
+		}
+	},
+	"10007EF0": {
+		"varnames": {
+			"8": "other"
+		}
+	},
 	"10007F20": {
 		"varnames": {
 			"8": "that"
+		}
+	},
+	"10007F40": {
+		"varnames": {
+			"8": "other"
+		}
+	},
+	"10007F70": {
+		"varnames": {
+			"8": "other"
+		}
+	},
+	"10008639": {
+		"varnames": {
+			"8": "type",
+			"20": "pal"
+		}
+	},
+	"100086E3": {
+		"varnames": {
+			"8": "src"
+		}
+	},
+	"10008B51": {
+		"varnames": {
+			"8": "file",
+			"12": "bitMap"
+		}
+	},
+	"10008C9B": {
+		"varnames": {
+			"8": "file",
+			"12": "bitMap"
+		}
+	},
+	"100091A4": {
+		"varnames": {
+			"8": "file",
+			"12": "color"
+		}
+	},
+	"100091DF": {
+		"varnames": {
+			"8": "file",
+			"12": "color"
+		}
+	},
+	"100093C8": {
+		"varnames": {
+			"8": "val"
+		}
+	},
+	"100093E1": {
+		"varnames": {
+			"8": "val"
+		}
+	},
+	"100093FB": {
+		"varnames": {
+			"8": "val"
+		}
+	},
+	"10026AD5": {
+		"varnames": {
+			"8": "that"
+		}
+	},
+	"100271BE": {
+		"varnames": {
+			"8": "that"
+		}
+	},
+	"10027382": {
+		"varnames": {
+			"8": "fileName"
+		}
+	},
+	"1002778F": {
+		"varnames": {
+			"8": "fileName",
+			"12": "width",
+			"16": "height"
+		}
+	},
+	"10028021": {
+		"varnames": {
+			"8": "file",
+			"12": "bitMap"
+		}
+	},
+	"100280CC": {
+		"varnames": {
+			"8": "file",
+			"12": "bitMap"
+		}
+	},
+	"10029CFC": {
+		"varnames": {
+			"8": "channel"
+		}
+	},
+	"10029E17": {
+		"varnames": {
+			"8": "channel_name"
+		}
+	},
+	"10029E98": {
+		"varnames": {
+			"8": "channel_name"
+		}
+	},
+	"10029F19": {
+		"varnames": {
+			"8": "channel_name"
+		}
+	},
+	"1002A284": {
+		"varnames": {
+			"8": "message"
+		}
+	},
+	"1002A2C3": {
+		"varnames": {
+			"8": "mout",
+			"12": "str"
+		}
+	},
+	"1002A590": {
+		"varnames": {
+			"8": "message"
+		}
+	},
+	"1003221C": {
+		"varnames": {
+			"8": "a",
+			"12": "b",
+			"16": "c"
+		}
+	},
+	"1003227E": {
+		"varnames": {
+			"8": "other"
+		}
+	},
+	"10034D5A": {
+		"varnames": {
+			"8": "raster",
+			"12": "x1",
+			"16": "y1",
+			"20": "x2",
+			"24": "y2",
+			"28": "scale",
+			"32": "i_unknown"
+		}
+	},
+	"1003E436": {
+		"varnames": {
+			"8": "func",
+			"12": "args"
+		}
+	},
+	"10040CBE": {
+		"varnames": {
+			"8": "a",
+			"12": "b",
+			"16": "c",
+			"20": "d"
+		}
+	},
+	"10040CE6": {
+		"varnames": {
+			"8": "t",
+			"16": "start",
+			"20": "u",
+			"28": "end"
+		}
+	},
+	"10040F69": {
+		"varnames": {
+			"8": "new_type",
+			"12": "parent_type",
+			"16": "operation_type",
+			"20": "duration"
+		}
+	},
+	"1004122B": {
+		"varnames": {
+			"8": "file",
+			"12": "particleType"
+		}
+	},
+	"100413EE": {
+		"varnames": {
+			"8": "file",
+			"12": "particleType"
 		}
 	}
 }

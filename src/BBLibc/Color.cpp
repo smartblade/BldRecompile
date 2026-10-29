@@ -33,36 +33,3 @@ B_Color B_Color::operator *(float coef) const
 B_Color B_Color::operator /(float f)const
 {
 }
-
-
-/*
-* Module:                 BBLibc.dll
-* Entry point:            0x100091A4
-* VC++ mangling:          ??5@YAAAVB_IDataFile@@AAV0@AAVB_Color@@@Z
-*/
-
-B_IDataFile& operator >>(B_IDataFile& file, B_Color& color)
-{
-}
-
-
-/*
-* Module:                 BBLibc.dll
-* Entry point:            0x100091DF
-* VC++ mangling:          ??6@YAAAVB_ODataFile@@AAV0@ABVB_Color@@@Z
-*/
-
-B_ODataFile& operator <<(B_ODataFile& file, B_Color const& color)
-{
-}
-
-
-/*
-* Module:                 BBLibc.dll
-* Entry point:            0x1000921A
-* VC++ mangling:          ?MakeCons@B_Color@@UAEXXZ
-*/
-
-void B_Color::MakeCons()
-{
-}

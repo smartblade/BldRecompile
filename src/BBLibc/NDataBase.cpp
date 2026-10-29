@@ -17,14 +17,3 @@ B_NDataBase<B_ElementCSV> B_csvs;
 unsigned int ReadCSV(const char* file_name, B_NDataBase<B_ElementCSV>* csvs)
 {
 }
-
-
-/*
-* Module:                 BBLibc.dll
-* Entry point:            0x1003DBC0
-* VC++ mangling:          ??1B_ElementCSV@@UAE@XZ
-*/
-
-B_ElementCSV::~B_ElementCSV()
-{
-}
