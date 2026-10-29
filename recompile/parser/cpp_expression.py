@@ -76,17 +76,10 @@ def _append_token(state, token):
         isinstance(tokens[-1], expressions.BracketsExpression)
     ):
         e = tokens[-1].expression
-        if (
-            isinstance(e, expressions.UnparsedToken) or
-            isinstance(e, expressions.UnparsedTokens) and e.is_ptr_type()
-        ):
-            brackets_expression = e.emit_code()
-        else:
-            brackets_expression = None
-        if brackets_expression is not None:
+        if isinstance(e, expressions.UnparsedToken):
             try:
                 data_type = parser.parse_data_type(
-                    brackets_expression, state.defined_types
+                    e.emit_code(), state.defined_types
                 )
             except UnknownTypeException:
                 data_type = None
@@ -295,6 +288,6 @@ def _make_expression_from_tokens(tokens):
 
 def _make_operand(tokens):
     assert len(tokens) > 0
-    if len(tokens) == 1:
-        return tokens[0]
-    return expressions.UnparsedTokens(tokens)
+    if len(tokens) > 1:
+        raise Exception("Failed to parse operand: {}".format(tokens))
+    return tokens[0]
