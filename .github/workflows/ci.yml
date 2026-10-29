@@ -1,0 +1,28 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  windows:
+    name: Windows
+    runs-on: windows-latest
+    defaults:
+      run:
+        working-directory: recompile
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Run unit tests
+        run: python -m unittest discover -s . -p "test*.py" -v
+
+      - name: Generate BBLibc.dll.cpp
+        run: python process_asm.py --asm-patterns=yes
+
+      - name: Check that BBLibc.dll.cpp is up to date
+        run: git diff --exit-code -- BBLibc.dll.cpp
