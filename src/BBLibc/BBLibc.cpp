@@ -1,6 +1,7 @@
 #include "MessageManager.h"
 #include "BBLibc.h"
 #include "ObjDscr.h"
+#include <windows.h>
 
 /*
 * Module:                 BBLibc.dll
