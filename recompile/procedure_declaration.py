@@ -85,6 +85,14 @@ class ProcedureDeclaration:
         return self._proc_name is not None and self._proc_name.startswith("~")
 
     @property
+    def is_conversion_operator(self):
+        return (
+            self._proc_name is not None and
+            self._proc_name.startswith("operator ") and
+            self._operator is None
+        )
+
+    @property
     def is_vararg(self):
         return self._is_vararg
 
@@ -206,7 +214,10 @@ class ProcedureDeclaration:
         )
 
     def _get_return_type_name(self):
-        if self.is_constructor or self.is_destructor:
+        if (
+            self.is_constructor or self.is_destructor or
+            self.is_conversion_operator
+        ):
             return ""
         if self._return_arg is None:
             return "void"

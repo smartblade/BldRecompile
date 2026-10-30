@@ -9,10 +9,14 @@ def demangle_cpp(s, declared_types):
 
 
 class _Operator:
-    def __init__(self, name=None, is_constructor=False, is_destructor=False):
+    def __init__(
+        self, name=None, is_constructor=False, is_destructor=False,
+        is_conversion=False
+    ):
         self._name = name
         self._is_constructor = is_constructor
         self._is_destructor = is_destructor
+        self._is_conversion = is_conversion
 
     def make_name(self, class_name):
         if self.is_constructor:
@@ -28,6 +32,10 @@ class _Operator:
     @property
     def is_destructor(self):
         return self._is_destructor
+
+    @property
+    def is_conversion(self):
+        return self._is_conversion
 
 
 class _CppDemangler:
@@ -54,6 +62,9 @@ class _CppDemangler:
             self._expect("@")
         else:
             return_type = self._pop_data_type()
+        if operator is not None and operator.is_conversion:
+            proc_name = "operator {}".format(
+                return_type.make_variable_declaration(None))
         parameters = []
         if not self._try_pop_char("X"):
             arg_types = []
@@ -224,6 +235,7 @@ class _CppDemangler:
         "6": _Operator("operator<<"),
         "8": _Operator("operator=="),
         "9": _Operator("operator!="),
+        "B": _Operator(is_conversion=True),
         "D": _Operator("operator*"),
         "H": _Operator("operator+"),
         "K": _Operator("operator/"),

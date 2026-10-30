@@ -34,6 +34,11 @@ class TestCppDemangling(unittest.TestCase):
             "const B_Color &operator /(float arg_1) const",
             self._declaration("??KB_Color@@QBEABV0@M@Z"))
 
+    def test_operator_conversion(self):
+        self.assertEqual(
+            "operator const char *() const",
+            self._declaration("??BB_Name@@QBEPBDXZ"))
+
     def test_operator_ass(self):
         self.assertEqual(
             "const B_Name &operator =(const B_Name &arg_1)",

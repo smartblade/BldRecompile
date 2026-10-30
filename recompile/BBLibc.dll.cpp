@@ -651,7 +651,7 @@ const B_Name &B_Name::Id() const
 }
 
 // address: 0x100022D0
-void B_Name::operator const char *() const
+B_Name::operator const char *() const
 {
     REGDEF(eax=this->string)
 }
