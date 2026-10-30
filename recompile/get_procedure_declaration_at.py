@@ -14,6 +14,6 @@ def get_procedure_declaration_at(declarations, addr):
         )
     exported_proc = declarations.exported_procedures.get(addr)
     if exported_proc is not None:
-        return parser.parse_cpp_mangling(
+        return parser.demangle_cpp(
             exported_proc, declarations.declared_types)
     return None

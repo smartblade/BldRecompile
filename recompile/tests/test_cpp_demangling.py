@@ -3,10 +3,10 @@ import unittest
 import parser
 
 
-class TestCppMangling(unittest.TestCase):
+class TestCppDemangling(unittest.TestCase):
     @staticmethod
     def _declaration(mangled_name):
-        return parser.parse_cpp_mangling(mangled_name, {}).get_declaration()
+        return parser.demangle_cpp(mangled_name, {}).get_declaration()
 
     def test_operator_shr(self):
         self.assertEqual(

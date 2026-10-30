@@ -3,9 +3,9 @@ import data_types
 from procedure_declaration import ProcedureDeclaration
 
 
-def parse_cpp_mangling(s, declared_types):
-    parser = _CppManglingParser(s, declared_types)
-    return parser.parse()
+def demangle_cpp(s, declared_types):
+    demangler = _CppDemangler(s, declared_types)
+    return demangler.parse()
 
 
 class _Operator:
@@ -30,7 +30,7 @@ class _Operator:
         return self._is_destructor
 
 
-class _CppManglingParser:
+class _CppDemangler:
     def __init__(self, s, declared_types):
         self._pos = 0
         self._decl_str = s
