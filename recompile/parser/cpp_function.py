@@ -6,9 +6,10 @@ import parser
 from procedure_declaration import ProcedureDeclaration
 
 procedure_regexp = re.compile(
-    r'^(?P<return>.*[^:,][*&\s])?((?P<class>\w+)::)?'
+    r'^(?P<return>.*[^:,][*&\s](?<!\boperator\s))?((?P<class>\w+)::)?'
     r'(?P<name>~?\w+|operator\s*.*\S)\s*\(')
 const_method_regexp = re.compile(r'\)\s*(?P<const>const)\s*$')
+conversion_operator_regexp = re.compile(r'^operator\s+(?P<type>[A-Za-z_].*)$')
 
 
 def parse_cpp_function(class_name, func, declared_types):
@@ -52,6 +53,9 @@ def parse_cpp_function(class_name, func, declared_types):
     convention = _get_calling_convention(is_static, method_class)
     _validate_calling_convention(is_vararg, convention)
     is_const = const_method_regexp.search(func) is not None
+    conversion_match = conversion_operator_regexp.search(proc_name)
+    if conversion_match:
+        return_type = conversion_match.group("type")
     return ProcedureDeclaration(
         proc_name=proc_name,
         convention=convention,
