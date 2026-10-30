@@ -39,6 +39,11 @@ class TestCppDemangling(unittest.TestCase):
             "operator const char *() const",
             self._declaration("??BB_Name@@QBEPBDXZ"))
 
+    def test_return_class_by_value(self):
+        self.assertEqual(
+            "B_Name Right(unsigned int arg_1) const",
+            self._declaration("?Right@B_Name@@QBE?AV1@I@Z"))
+
     def test_operator_ass(self):
         self.assertEqual(
             "const B_Name &operator =(const B_Name &arg_1)",

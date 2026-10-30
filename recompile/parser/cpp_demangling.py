@@ -183,6 +183,11 @@ class _CppDemangler:
             arg_types.append(data_type)
         return data_type
 
+    def _pop_value_type(self, arg_types):
+        # Class returned or passed by value, e.g. ?AVB_Name@@
+        self._expect("A")
+        return self._pop_data_type(arg_types)
+
     def _pop_struct_type(self, arg_types):
         return self._pop_class_type(arg_types)
 
@@ -249,6 +254,7 @@ class _CppDemangler:
 
     _data_types = {
         "0": lambda parser, arg_types: arg_types[0],
+        "?": _pop_value_type,
         "A": _pop_reference_type,
         "D": data_types.Char(),
         "E": data_types.UChar(),
