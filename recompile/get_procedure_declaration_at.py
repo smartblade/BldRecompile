@@ -1,12 +1,17 @@
 import parser
 
 
-def get_procedure_declaration_at(declarations, addr):
+def has_src_declaration(declarations, addr):
     cpp_declaration = declarations.symbols.procedures.get(addr)
-    if (
+    return (
         cpp_declaration is not None and
         cpp_declaration.declaration is not None
-    ):
+    )
+
+
+def get_procedure_declaration_at(declarations, addr):
+    if has_src_declaration(declarations, addr):
+        cpp_declaration = declarations.symbols.procedures[addr]
         return parser.parse_cpp_function(
             cpp_declaration.class_name,
             cpp_declaration.declaration,

@@ -2,6 +2,7 @@ import json
 import os
 
 from get_procedure_declaration_at import get_procedure_declaration_at
+from get_procedure_declaration_at import has_src_declaration
 from hex_conversion import from_hex, to_hex
 from make_tuple import add_attributes
 from patterns.apply_pattern import apply_pattern
@@ -32,11 +33,21 @@ def process_asm_patterns(lines, declarations):
         declarations, string_constants=string_constants)
     inline_procedures = inline_functions.Dict()
     asm_procedures = _extract_procedures_lines_from_asm(lines)
+    # Get all declarations before building procedures: demangling adds
+    # undeclared types to declared types, so demangle exported names
+    # before parsing declarations from sources
+    proc_decls = {}
+    for proc_addr in sorted(
+        (proc_addr for proc_addr, _ in asm_procedures),
+        key=lambda addr: has_src_declaration(declarations, addr)
+    ):
+        proc_decls[proc_addr] = get_procedure_declaration_at(
+            declarations, proc_addr)
     procedures = []
     for proc_addr, proc_lines in asm_procedures:
         exc, procedure = _build_proc(
             declarations, standard_inlines, inline_procedures, patterns,
-            proc_addr, proc_lines)
+            proc_addr, proc_decls[proc_addr], proc_lines)
         procedures.append((exc, procedure))
         if exc is not None:
             if (
@@ -60,9 +71,8 @@ def process_asm_patterns(lines, declarations):
 
 def _build_proc(
     declarations, standard_inlines, inline_procedures, patterns,
-    proc_addr, proc_lines
+    proc_addr, proc_decl, proc_lines
 ):
-    proc_decl = get_procedure_declaration_at(declarations, proc_addr)
     builder = ProcedureBuilder(proc_decl, proc_addr, standard_inlines)
     error = None
     try:
