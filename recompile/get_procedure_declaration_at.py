@@ -22,3 +22,15 @@ def get_procedure_declaration_at(declarations, addr):
         return parser.demangle_cpp(
             exported_proc, declarations.declared_types)
     return None
+
+
+def get_procedures_declarations(declarations, addresses):
+    # Demangle exported names before parsing declarations from sources:
+    # demangling adds undeclared types to declared types
+    procedures_declarations = {}
+    for addr in sorted(
+        addresses, key=lambda addr: has_src_declaration(declarations, addr)
+    ):
+        procedures_declarations[addr] = get_procedure_declaration_at(
+            declarations, addr)
+    return procedures_declarations
