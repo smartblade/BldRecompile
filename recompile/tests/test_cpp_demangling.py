@@ -44,6 +44,26 @@ class TestCppDemangling(unittest.TestCase):
             "B_Name Right(unsigned int arg_1) const",
             self._declaration("?Right@B_Name@@QBE?AV1@I@Z"))
 
+    def test_const_pointer(self):
+        self.assertEqual(
+            "char * const String() const",
+            self._declaration("?String@B_Name@@QBEQADXZ"))
+
+    def test_vararg(self):
+        proc_decl = parser.demangle_cpp("?vararg@@YAPBDPBDZZ", {})
+
+        self.assertTrue(proc_decl.is_vararg)
+        self.assertEqual(
+            "const char *vararg(const char *arg_1)",
+            proc_decl.get_declaration())
+
+    def test_template_class(self):
+        self.assertEqual(
+            "unsigned int ReadCSV("
+            "const char *arg_1, B_NDataBase<B_ElementCSV> *arg_2)",
+            self._declaration(
+                "?ReadCSV@@YAIPBDPAV?$B_NDataBase@UB_ElementCSV@@@@@Z"))
+
     def test_operator_ass(self):
         self.assertEqual(
             "const B_Name &operator =(const B_Name &arg_1)",

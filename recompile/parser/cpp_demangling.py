@@ -66,16 +66,20 @@ class _CppDemangler:
             proc_name = "operator {}".format(
                 return_type.make_variable_declaration(None))
         parameters = []
+        is_vararg = False
         if not self._try_pop_char("X"):
             arg_types = []
             while not self._try_pop_char("@"):
+                if self._try_pop_char("Z"):
+                    is_vararg = True
+                    break
                 parameter_type = self._pop_data_type(arg_types)
                 parameters.append((parameter_type, None))
         self._expect("Z")
         return ProcedureDeclaration(
             proc_name, calling_convention, method_class, parameters,
             return_type, is_static=is_static, is_virtual=is_virtual,
-            is_const=is_const)
+            is_vararg=is_vararg, is_const=is_const)
 
     def _pop_procedure_qualified_name(self):
         if self._try_pop_char("?"):
@@ -100,6 +104,10 @@ class _CppDemangler:
         return method_class, proc_name, operator
 
     def _ensure_class(self, class_name):
+        template_pos = class_name.find("<")
+        if template_pos >= 0:
+            template_class = self._ensure_class(class_name[:template_pos])
+            return template_class.rename(class_name)
         declared_type = self._declared_types.get(class_name)
         if declared_type is not None:
             return declared_type
@@ -138,12 +146,31 @@ class _CppDemangler:
     def _pop_identifier(self):
         if self._current_char.isdigit():
             return self._names[int(self._pop_char())]
+        if self._decl_str.startswith("?$", self._pos):
+            identifier = self._pop_template_identifier()
+        else:
+            identifier = self._pop_simple_identifier()
+        self._names.append(identifier)
+        return identifier
+
+    def _pop_simple_identifier(self):
         id_chars = []
         while not self._try_pop_char("@"):
             id_chars.append(self._pop_char())
-        identifier = "".join(id_chars)
-        self._names.append(identifier)
-        return identifier
+        return "".join(id_chars)
+
+    def _pop_template_identifier(self):
+        self._expect("?")
+        self._expect("$")
+        template_name = self._pop_simple_identifier()
+        # Template arguments have their own list of names
+        names = self._names
+        self._names = []
+        template_args = []
+        while not self._try_pop_char("@"):
+            template_args.append(self._pop_data_type().get_type_name())
+        self._names = names
+        return "{}<{}>".format(template_name, ", ".join(template_args))
 
     def _pop_calling_convention(self):
         return self._calling_conventions[self._pop_char()]
@@ -173,6 +200,12 @@ class _CppDemangler:
     def _pop_pointer_type(self, arg_types):
         return self._pop_pointer_or_reference_type(
             arg_types, data_types.Pointer32)
+
+    def _pop_const_pointer_type(self, arg_types):
+        pointer_type = self._pop_pointer_or_reference_type(
+            arg_types, data_types.Pointer32)
+        pointer_type.add_right_qualifier("const")
+        return pointer_type
 
     def _pop_pointer_or_reference_type(self, arg_types, data_type):
         const_modifier = self._pop_const_modifier()
@@ -267,6 +300,7 @@ class _CppDemangler:
         "M": data_types.Float(),
         "N": data_types.Double(),
         "P": _pop_pointer_type,
+        "Q": _pop_const_pointer_type,
         "U": _pop_struct_type,
         "V": _pop_class_type,
         "W": _pop_enum_type,
