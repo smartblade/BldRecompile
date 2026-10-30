@@ -53,3 +53,63 @@ class TestCppDemangling(unittest.TestCase):
         self.assertEqual(
             "unsigned int operator >(const B_Name &arg_1) const",
             self._declaration("??OB_Name@@QBEIABV0@@Z"))
+
+    def test_operator_eq(self):
+        self.assertEqual(
+            "int operator ==(const B_MessageChannel &arg_1) const",
+            self._declaration("??8B_MessageChannel@@QBEHABV0@@Z"))
+
+    def test_operator_ne(self):
+        self.assertEqual(
+            "unsigned int operator !=(const char *arg_1) const",
+            self._declaration("??9B_Name@@QBEIPBD@Z"))
+
+    def test_constructor(self):
+        self.assertEqual(
+            "B_Color(unsigned char arg_1, unsigned char arg_2, "
+            "unsigned char arg_3)",
+            self._declaration("??0B_Color@@QAE@EEE@Z"))
+
+    def test_constructor_with_class_parameter(self):
+        self.assertEqual(
+            "B_ChannelOFile(B_Name arg_1, const char *arg_2)",
+            self._declaration("??0B_ChannelOFile@@QAE@VB_Name@@PBD@Z"))
+
+    def test_virtual_destructor(self):
+        self.assertEqual(
+            "virtual ~B_List()",
+            self._declaration("??1B_List@@UAE@XZ"))
+
+    def test_default_constructor_closure(self):
+        self.assertEqual(
+            "void default constructor closure()",
+            self._declaration("??_FB_List@@QAEXXZ"))
+
+    def test_method(self):
+        self.assertEqual(
+            "long Seek(long arg_1, int arg_2)",
+            self._declaration("?Seek@B_IDataFile@@QAEJJH@Z"))
+
+    def test_private_method(self):
+        self.assertEqual(
+            "void WriteCacheBlock()",
+            self._declaration("?WriteCacheBlock@B_ODataFile@@AAEXXZ"))
+
+    def test_static_method(self):
+        self.assertEqual(
+            "static B_Resource *Load(B_IDataFile &arg_1, "
+            "unsigned short arg_2)",
+            self._declaration("?Load@B_Resource@@SAPAV1@AAVB_IDataFile@@G@Z"))
+
+    def test_virtual_const_method(self):
+        self.assertEqual(
+            "virtual unsigned long CheckSum() const",
+            self._declaration("?CheckSum@B_ObjDscr@@UBEKXZ"))
+
+    def test_back_references(self):
+        self.assertEqual(
+            "PyObject *CallPythonObject(PyObject *arg_1, PyObject *arg_2)",
+            self._declaration("?CallPythonObject@@YAPAUPyObject@@PAU1@0@Z"))
+
+    def test_not_mangled_name(self):
+        self.assertIsNone(parser.demangle_cpp("initBBLibc", {}))
