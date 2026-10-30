@@ -92,7 +92,10 @@ class _CppDemangler:
         declared_type = self._declared_types.get(class_name)
         if declared_type is not None:
             return declared_type
-        return data_types.ClassType(class_name, {})
+        # A class from a mangled name exists even if it is not declared
+        class_type = data_types.ClassType(class_name, {})
+        self._declared_types[class_name] = class_type
+        return class_type
 
     @property
     def _current_char(self):
@@ -185,7 +188,11 @@ class _CppDemangler:
         assert len(enum_names) == 2
         enum_name, namespace_name = enum_names
         namespace_type = self._ensure_class(namespace_name)
-        enum_type = self._declared_types[enum_name]
+        enum_type = self._declared_types.get(enum_name)
+        if enum_type is None:
+            enum_type = data_types.make_named_type(
+                data_types.Int32(), enum_name)
+            self._declared_types[enum_name] = enum_type
         enum_type.set_namespace(namespace_type)
         if arg_types is not None:
             arg_types.append(enum_type)

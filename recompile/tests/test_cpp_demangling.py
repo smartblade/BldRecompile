@@ -75,6 +75,26 @@ class TestCppDemangling(unittest.TestCase):
             "B_ChannelOFile(B_Name arg_1, const char *arg_2)",
             self._declaration("??0B_ChannelOFile@@QAE@VB_Name@@PBD@Z"))
 
+    def test_constructor_with_undeclared_enum_parameter(self):
+        self.assertEqual(
+            "B_BitMap(BitMapType arg_1, unsigned int arg_2, "
+            "unsigned int arg_3, const B_Pal *arg_4)",
+            self._declaration(
+                "??0B_BitMap@@QAE@W4BitMapType@0@IIPBVB_Pal@@@Z"))
+
+    def test_undeclared_types_become_declared(self):
+        declared_types = {}
+
+        parser.demangle_cpp(
+            "??0B_BitMap@@QAE@W4BitMapType@0@IIPBVB_Pal@@@Z", declared_types)
+
+        self.assertEqual(
+            {"B_BitMap", "B_BitMap::BitMapType", "B_Pal"},
+            set(
+                data_type.make_variable_declaration(None)
+                for data_type in declared_types.values()
+            ))
+
     def test_virtual_destructor(self):
         self.assertEqual(
             "virtual ~B_List()",
