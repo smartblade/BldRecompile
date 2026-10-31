@@ -11,7 +11,13 @@ class AddressOf:
                 expressions.FieldAccess,
                 expressions.ArrayAccess,
                 expressions.ProcedureCall,
+                expressions.Bin,
             )
+        )
+        # Assignment returns lvalue
+        assert (
+            not isinstance(expression, expressions.Bin) or
+            expression.operator == Operator.ASS
         )
         self._expression = expression
 

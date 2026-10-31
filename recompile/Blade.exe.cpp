@@ -353,6 +353,136 @@ l0045224E:
     }
 }
 
+// address: 0x00452845
+void B_OctantNode::CollectSectorsInBox(const B_BoundingBox &bb, B_OctTreeSectorsList *outList, double halfSize)
+{
+    STACKVAR(-56, 8) = halfSize / reinterpret_cast<double>(ACCESS(GLOBAL(0x005BD710), 0, 8));
+    STACKVAR(-64, 8) = halfSize / reinterpret_cast<double>(ACCESS(GLOBAL(0x005BDB68), 0, 8));
+    memcpy(LOCAL(-48), &bb, 48);
+    if (bb.minCoords.x < reinterpret_cast<double>(ACCESS(GLOBAL(0x005BDB88), 0, 8)))
+    {
+        if (bb.minCoords.y < reinterpret_cast<double>(ACCESS(GLOBAL(0x005BDB88), 0, 8)))
+        {
+            if (bb.minCoords.z < reinterpret_cast<double>(ACCESS(GLOBAL(0x005BDB88), 0, 8)) && this->children[0] != nullptr)
+            {
+                STACKVAR(-88, 8) = -reinterpret_cast<double>(STACKVAR(-64, 8));
+                ACCESS(LOCAL(-80), 0, 8) = -reinterpret_cast<double>(STACKVAR(-64, 8));
+                ACCESS(LOCAL(-72), 0, 8) = -reinterpret_cast<double>(STACKVAR(-64, 8));
+                memcpy(LOCAL(-48), &(*reinterpret_cast<B_Vector *>(LOCAL(-112)) = *reinterpret_cast<B_Vector *>(&bb) - *reinterpret_cast<B_Vector *>(LOCAL(-88))), 24);
+                STACKVAR(-136, 8) = -reinterpret_cast<double>(STACKVAR(-64, 8));
+                ACCESS(LOCAL(-128), 0, 8) = -reinterpret_cast<double>(STACKVAR(-64, 8));
+                ACCESS(LOCAL(-120), 0, 8) = -reinterpret_cast<double>(STACKVAR(-64, 8));
+                memcpy(LOCAL(-24), &(*reinterpret_cast<B_Vector *>(LOCAL(-160)) = bb.maxCoords - *reinterpret_cast<B_Vector *>(LOCAL(-136))), 24);
+                this->children[0]->(ACCESS(ACCESS(this->children[0], 0, 4), 8, 4))(LOCAL(-48), outList, STACKVAR(-56, 4), STACKVAR(-52, 4));
+            }
+            if (bb.maxCoords.z > reinterpret_cast<double>(ACCESS(GLOBAL(0x005BDD48), 0, 8)) && ACCESS(this, 8, 4) != 0x00000000)
+            {
+                STACKVAR(-184, 8) = -reinterpret_cast<double>(STACKVAR(-64, 8));
+                ACCESS(LOCAL(-176), 0, 8) = -reinterpret_cast<double>(STACKVAR(-64, 8));
+                ACCESS(LOCAL(-168), 0, 8) = STACKVAR(-64, 8);
+                memcpy(LOCAL(-48), &(*reinterpret_cast<B_Vector *>(LOCAL(-208)) = *reinterpret_cast<B_Vector *>(&bb) - *reinterpret_cast<B_Vector *>(LOCAL(-184))), 24);
+                STACKVAR(-232, 8) = -reinterpret_cast<double>(STACKVAR(-64, 8));
+                ACCESS(LOCAL(-224), 0, 8) = -reinterpret_cast<double>(STACKVAR(-64, 8));
+                ACCESS(LOCAL(-216), 0, 8) = STACKVAR(-64, 8);
+                memcpy(LOCAL(-24), &(*reinterpret_cast<B_Vector *>(LOCAL(-256)) = bb.maxCoords - *reinterpret_cast<B_Vector *>(LOCAL(-232))), 24);
+                ACCESS(this, 8, 4)->(ACCESS(ACCESS(ACCESS(this, 8, 4), 0, 4), 8, 4))(LOCAL(-48), outList, STACKVAR(-56, 4), STACKVAR(-52, 4));
+            }
+        }
+        if (bb.maxCoords.y > reinterpret_cast<double>(ACCESS(GLOBAL(0x005BDD48), 0, 8)))
+        {
+            if (bb.minCoords.z < reinterpret_cast<double>(ACCESS(GLOBAL(0x005BDB88), 0, 8)) && ACCESS(this, 12, 4) != 0x00000000)
+            {
+                STACKVAR(-280, 8) = -reinterpret_cast<double>(STACKVAR(-64, 8));
+                ACCESS(LOCAL(-272), 0, 8) = STACKVAR(-64, 8);
+                ACCESS(LOCAL(-264), 0, 8) = -reinterpret_cast<double>(STACKVAR(-64, 8));
+                memcpy(LOCAL(-48), &(*reinterpret_cast<B_Vector *>(LOCAL(-304)) = *reinterpret_cast<B_Vector *>(&bb) - *reinterpret_cast<B_Vector *>(LOCAL(-280))), 24);
+                STACKVAR(-328, 8) = -reinterpret_cast<double>(STACKVAR(-64, 8));
+                ACCESS(LOCAL(-320), 0, 8) = STACKVAR(-64, 8);
+                ACCESS(LOCAL(-312), 0, 8) = -reinterpret_cast<double>(STACKVAR(-64, 8));
+                memcpy(LOCAL(-24), &(*reinterpret_cast<B_Vector *>(LOCAL(-352)) = bb.maxCoords - *reinterpret_cast<B_Vector *>(LOCAL(-328))), 24);
+                ACCESS(this, 12, 4)->(ACCESS(ACCESS(ACCESS(this, 12, 4), 0, 4), 8, 4))(LOCAL(-48), outList, STACKVAR(-56, 4), STACKVAR(-52, 4));
+            }
+            if (bb.maxCoords.z > reinterpret_cast<double>(ACCESS(GLOBAL(0x005BDD48), 0, 8)) && ACCESS(this, 16, 4) != 0x00000000)
+            {
+                STACKVAR(-376, 8) = -reinterpret_cast<double>(STACKVAR(-64, 8));
+                ACCESS(LOCAL(-368), 0, 8) = STACKVAR(-64, 8);
+                ACCESS(LOCAL(-360), 0, 8) = STACKVAR(-64, 8);
+                memcpy(LOCAL(-48), &(*reinterpret_cast<B_Vector *>(LOCAL(-400)) = *reinterpret_cast<B_Vector *>(&bb) - *reinterpret_cast<B_Vector *>(LOCAL(-376))), 24);
+                STACKVAR(-424, 8) = -reinterpret_cast<double>(STACKVAR(-64, 8));
+                ACCESS(LOCAL(-416), 0, 8) = STACKVAR(-64, 8);
+                ACCESS(LOCAL(-408), 0, 8) = STACKVAR(-64, 8);
+                memcpy(LOCAL(-24), &(*reinterpret_cast<B_Vector *>(LOCAL(-448)) = bb.maxCoords - *reinterpret_cast<B_Vector *>(LOCAL(-424))), 24);
+                ACCESS(this, 16, 4)->(ACCESS(ACCESS(ACCESS(this, 16, 4), 0, 4), 8, 4))(LOCAL(-48), outList, STACKVAR(-56, 4), STACKVAR(-52, 4));
+            }
+        }
+    }
+    if (bb.maxCoords.x > reinterpret_cast<double>(ACCESS(GLOBAL(0x005BDD48), 0, 8)))
+    {
+        if (bb.minCoords.y < reinterpret_cast<double>(ACCESS(GLOBAL(0x005BDB88), 0, 8)))
+        {
+            if (bb.minCoords.z < reinterpret_cast<double>(ACCESS(GLOBAL(0x005BDB88), 0, 8)) && ACCESS(this, 20, 4) != 0x00000000)
+            {
+                STACKVAR(-472, 4) = STACKVAR(-64, 4);
+                STACKVAR(-468, 4) = STACKVAR(-60, 4);
+                ACCESS(LOCAL(-464), 0, 8) = -reinterpret_cast<double>(STACKVAR(-64, 8));
+                ACCESS(LOCAL(-456), 0, 8) = -reinterpret_cast<double>(STACKVAR(-64, 8));
+                memcpy(LOCAL(-48), &(*reinterpret_cast<B_Vector *>(LOCAL(-496)) = *reinterpret_cast<B_Vector *>(&bb) - *reinterpret_cast<B_Vector *>(LOCAL(-472))), 24);
+                STACKVAR(-520, 4) = STACKVAR(-64, 4);
+                STACKVAR(-516, 4) = STACKVAR(-60, 4);
+                ACCESS(LOCAL(-512), 0, 8) = -reinterpret_cast<double>(STACKVAR(-64, 8));
+                ACCESS(LOCAL(-504), 0, 8) = -reinterpret_cast<double>(STACKVAR(-64, 8));
+                memcpy(LOCAL(-24), &(*reinterpret_cast<B_Vector *>(LOCAL(-544)) = bb.maxCoords - *reinterpret_cast<B_Vector *>(LOCAL(-520))), 24);
+                ACCESS(this, 20, 4)->(ACCESS(ACCESS(ACCESS(this, 20, 4), 0, 4), 8, 4))(LOCAL(-48), outList, STACKVAR(-56, 4), STACKVAR(-52, 4));
+            }
+            if (bb.maxCoords.z > reinterpret_cast<double>(ACCESS(GLOBAL(0x005BDD48), 0, 8)) && ACCESS(this, 24, 4) != 0x00000000)
+            {
+                STACKVAR(-568, 4) = STACKVAR(-64, 4);
+                STACKVAR(-564, 4) = STACKVAR(-60, 4);
+                ACCESS(LOCAL(-560), 0, 8) = -reinterpret_cast<double>(STACKVAR(-64, 8));
+                ACCESS(LOCAL(-552), 0, 8) = STACKVAR(-64, 8);
+                memcpy(LOCAL(-48), &(*reinterpret_cast<B_Vector *>(LOCAL(-592)) = *reinterpret_cast<B_Vector *>(&bb) - *reinterpret_cast<B_Vector *>(LOCAL(-568))), 24);
+                STACKVAR(-616, 4) = STACKVAR(-64, 4);
+                STACKVAR(-612, 4) = STACKVAR(-60, 4);
+                ACCESS(LOCAL(-608), 0, 8) = -reinterpret_cast<double>(STACKVAR(-64, 8));
+                ACCESS(LOCAL(-600), 0, 8) = STACKVAR(-64, 8);
+                memcpy(LOCAL(-24), &(*reinterpret_cast<B_Vector *>(LOCAL(-640)) = bb.maxCoords - *reinterpret_cast<B_Vector *>(LOCAL(-616))), 24);
+                ACCESS(this, 24, 4)->(ACCESS(ACCESS(ACCESS(this, 24, 4), 0, 4), 8, 4))(LOCAL(-48), outList, STACKVAR(-56, 4), STACKVAR(-52, 4));
+            }
+        }
+        if (bb.maxCoords.y > reinterpret_cast<double>(ACCESS(GLOBAL(0x005BDD48), 0, 8)))
+        {
+            if (bb.minCoords.z < reinterpret_cast<double>(ACCESS(GLOBAL(0x005BDB88), 0, 8)) && ACCESS(this, 28, 4) != 0x00000000)
+            {
+                STACKVAR(-664, 4) = STACKVAR(-64, 4);
+                STACKVAR(-660, 4) = STACKVAR(-60, 4);
+                ACCESS(LOCAL(-656), 0, 8) = STACKVAR(-64, 8);
+                ACCESS(LOCAL(-648), 0, 8) = -reinterpret_cast<double>(STACKVAR(-64, 8));
+                memcpy(LOCAL(-48), &(*reinterpret_cast<B_Vector *>(LOCAL(-688)) = *reinterpret_cast<B_Vector *>(&bb) - *reinterpret_cast<B_Vector *>(LOCAL(-664))), 24);
+                STACKVAR(-712, 4) = STACKVAR(-64, 4);
+                STACKVAR(-708, 4) = STACKVAR(-60, 4);
+                ACCESS(LOCAL(-704), 0, 8) = STACKVAR(-64, 8);
+                ACCESS(LOCAL(-696), 0, 8) = -reinterpret_cast<double>(STACKVAR(-64, 8));
+                memcpy(LOCAL(-24), &(*reinterpret_cast<B_Vector *>(LOCAL(-736)) = bb.maxCoords - *reinterpret_cast<B_Vector *>(LOCAL(-712))), 24);
+                ACCESS(this, 28, 4)->(ACCESS(ACCESS(ACCESS(this, 28, 4), 0, 4), 8, 4))(LOCAL(-48), outList, STACKVAR(-56, 4), STACKVAR(-52, 4));
+            }
+            if (bb.maxCoords.z > reinterpret_cast<double>(ACCESS(GLOBAL(0x005BDD48), 0, 8)) && ACCESS(this, 32, 4) != 0x00000000)
+            {
+                STACKVAR(-760, 4) = STACKVAR(-64, 4);
+                STACKVAR(-756, 4) = STACKVAR(-60, 4);
+                ACCESS(LOCAL(-752), 0, 8) = STACKVAR(-64, 8);
+                ACCESS(LOCAL(-744), 0, 8) = STACKVAR(-64, 8);
+                memcpy(LOCAL(-48), &(*reinterpret_cast<B_Vector *>(LOCAL(-784)) = *reinterpret_cast<B_Vector *>(&bb) - *reinterpret_cast<B_Vector *>(LOCAL(-760))), 24);
+                STACKVAR(-808, 4) = STACKVAR(-64, 4);
+                STACKVAR(-804, 4) = STACKVAR(-60, 4);
+                ACCESS(LOCAL(-800), 0, 8) = STACKVAR(-64, 8);
+                ACCESS(LOCAL(-792), 0, 8) = STACKVAR(-64, 8);
+                memcpy(LOCAL(-24), &(*reinterpret_cast<B_Vector *>(LOCAL(-832)) = bb.maxCoords - *reinterpret_cast<B_Vector *>(LOCAL(-808))), 24);
+                ACCESS(this, 32, 4)->(ACCESS(ACCESS(ACCESS(this, 32, 4), 0, 4), 8, 4))(LOCAL(-48), outList, STACKVAR(-56, 4), STACKVAR(-52, 4));
+            }
+        }
+    }
+}
+
 // address: 0x00453067
 void B_OctTree::FindSectorsAtPoint(const B_Vector &worldPos, B_OctTreeSectorsList *outList) const
 {
