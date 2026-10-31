@@ -5,7 +5,9 @@ Pull request: [smartblade/BldMystery#7](https://github.com/smartblade/BldMystery
 
 The procedures implemented in the pull request were converted by
 BldRecompile (see `recompile/Blade.exe.cpp`). The issues below were found
-while doing it. Each one comes with a suggested patch against `ee43e85`.
+while doing it. Each one comes with a suggested patch against `ee43e85` or
+with suggested code. Sections 1-5 are bugs, sections 6-9 are differences of
+the generated code from the original binary.
 
 ## 1. `~B_OctantNodeBase` is attributed to the scalar deleting destructor
 
@@ -215,3 +217,303 @@ Suggested fix: correct the comment and regenerate `procedures.inc`.
  #ifndef BLD_NATIVE
  B_Sector::~B_Sector()
 ```
+
+## 5. `B_OctTreeSectorsList::BuildSurfaceCache` does not match the binary
+
+The `// TODO double check` above `BuildSurfaceCache` (`0x0045327B`) is
+justified. The converted code is:
+
+```cpp
+int B_OctTreeSectorsList::BuildSurfaceCache(B_GlobalSurfaceCache *cache, const B_Sphere *sphere)
+{
+    cache->count = 0;
+    unsigned int unknown_loc_0C = 0;
+    unknown_loc_0C = 0;
+    goto l004532A6;
+l0045329D:
+    unknown_loc_0C++;
+l004532A6:
+    if (unknown_loc_0C >= this->size)
+    {
+        goto l0045345A;
+    }
+    STACKVAR(-16, 4) = ACCESS(ARRPTR(this, 4, unknown_loc_0C, 4), 0, 4);
+    ACCESS(ARRPTR(cache, 1, 272 * cache->count, 8), 0, 4) = STACKVAR(-16, 4);
+    ACCESS(ARRPTR(cache, 1, 272 * cache->count, 12), 0, 4) = 0x00000000;
+    unsigned int unknown_loc_14 = 0;
+    goto l004532FE;
+l004532F5:
+    unknown_loc_14++;
+l004532FE:
+    if (unknown_loc_14 < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-16, 4), 8, 4)))
+    {
+        STACKVAR(-24, 4) = ACCESS(ARRPTR(ACCESS(STACKVAR(-16, 4), 4, 4), 4, unknown_loc_14, 0), 0, 4);
+        STACKVAR(-8, 8) = sphere->center.z * reinterpret_cast<double>(ACCESS(STACKVAR(-24, 4), 20, 8)) + sphere->center.y * reinterpret_cast<double>(ACCESS(STACKVAR(-24, 4), 12, 8)) + sphere->center.x * reinterpret_cast<double>(ACCESS(STACKVAR(-24, 4), 4, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(-24, 4), 28, 8));
+        if (-sphere->radius > reinterpret_cast<double>(STACKVAR(-8, 8)))
+        {
+            unknown_loc_14 = reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-16, 4), 8, 4)) + 1;
+        }
+        else if (reinterpret_cast<double>(STACKVAR(-8, 8)) < sphere->radius)
+        {
+            STACKVAR(-28, 4) = ACCESS(ARRPTR(ACCESS(STACKVAR(-16, 4), 4, 4), 4, unknown_loc_14, 0), 0, 4);
+            ACCESS(ARRPTR(reinterpret_cast<any_int32>(cache) + 272 * cache->count + 4, 4, ACCESS(ARRPTR(cache, 1, 272 * cache->count, 12), 0, 4), 12), 0, 4) = STACKVAR(-28, 4);
+            ACCESS(ARRPTR(cache, 1, 272 * cache->count, 12), 0, 4) = reinterpret_cast<any_int32>(ACCESS(ARRPTR(cache, 1, 272 * cache->count, 12), 0, 4)) + 0x00000001;
+        }
+        goto l004532F5;
+    }
+    if (unknown_loc_14 == reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-16, 4), 8, 4)))
+    {
+        if (ACCESS(ARRPTR(cache, 1, 272 * cache->count, 12), 0, 4) == 0x00000000)
+        {
+            ACCESS(ARRPTR(cache, 1, 272 * cache->count, 272), 0, 4) = 0x00000001;
+            cache->count++;
+            return 1;
+        }
+        ACCESS(ARRPTR(cache, 1, 272 * cache->count, 272), 0, 4) = 0x00000000;
+        cache->count++;
+    }
+    goto l0045329D;
+l0045345A:
+    if (cache->count != 0)
+    {
+        return 0;
+    }
+    return -1;
+}
+```
+
+Differences from the pull request:
+
+1. If `-sphere->radius > distance` (the sphere is outside one of the
+   planes), the inner loop is aborted with `j = current_sector->size + 1`
+   and the sector is **not** added to the cache: `cache->count` is not
+   incremented. The pull request always adds the sector.
+2. A surface is added if `distance < sphere->radius` (strict), the pull
+   request uses `distance <= sphere->radius`.
+3. If the inner loop finished (`j == current_sector->size`) and no surfaces
+   were added, the function sets `hasNoIntersections = 1`, increments
+   `cache->count` and **returns 1 immediately**. The pull request has no
+   early return.
+4. There is no `cacheEntry` local variable, the code accesses
+   `cache->elements[cache->count]` every time. Loop counters are
+   `unsigned int`.
+
+Suggested code:
+
+```cpp
+int B_OctTreeSectorsList::BuildSurfaceCache(B_GlobalSurfaceCache* cache, const B_Sphere* sphere)
+{
+    cache->count = 0;
+    for (unsigned int i = 0; i < this->size; i++)
+    {
+        B_Sector* current_sector = this->sectors[i];
+        cache->elements[cache->count].sector = current_sector;
+        cache->elements[cache->count].numSurfaces = 0;
+        unsigned int j;
+        for (j = 0; j < current_sector->size; j++)
+        {
+            B_Surface* current_surface = current_sector->elements[j];
+            double distance = (sphere->center.z * current_surface->normal.z) +
+                (sphere->center.y * current_surface->normal.y) +
+                (sphere->center.x * current_surface->normal.x) +
+                current_surface->p;
+            if (-sphere->radius > distance)
+            {
+                j = current_sector->size + 1;
+            }
+            else if (distance < sphere->radius)
+            {
+                B_SectorSurfaceCache& cacheEntry = cache->elements[cache->count];
+                cacheEntry.surfaces[cacheEntry.numSurfaces] = current_surface;
+                cacheEntry.numSurfaces++;
+            }
+        }
+        if (j == current_sector->size)
+        {
+            if (cache->elements[cache->count].numSurfaces == 0)
+            {
+                cache->elements[cache->count].hasNoIntersections = 1;
+                cache->count++;
+                return 1;
+            }
+            cache->elements[cache->count].hasNoIntersections = 0;
+            cache->count++;
+        }
+    }
+    if (cache->count != 0)
+    {
+        return 0;
+    }
+    return -1;
+}
+```
+
+## 6. `B_OctTree::~B_OctTree` calls a separate procedure
+
+The destructor (`0x004507B9`) sets the vtable `g005BDD40` and calls a
+separate, not inlined procedure `0x004507D5`, which deletes the root
+(the pull request even has a `// 4507D5` comment):
+
+```asm
+l004507B9 PROC
+           push ebp
+           mov ebp, esp
+           push ecx
+           mov dword ptr [ebp-004h], ecx
+           mov eax, dword ptr [ebp-004h]
+           mov dword ptr [eax], offset g005BDD40
+           mov ecx, dword ptr [ebp-004h]
+           call l004507D5
+           mov esp, ebp
+           pop ebp
+           ret
+l004507B9 ENDP
+l004507D5 PROC
+           push ebp
+           mov ebp, esp
+           sub esp, 000000010h
+           mov dword ptr [ebp-00Ch], ecx
+           mov eax, dword ptr [ebp-00Ch]
+           cmp dword ptr [eax+024h], 000000000h
+           je l0045081F
+           ...
+           push 000000001h
+           mov ecx, dword ptr [ebp-004h]
+           mov edx, dword ptr [ecx]
+           mov ecx, dword ptr [ebp-004h]
+           call [edx+004h]
+           ...
+l00450815: mov eax, dword ptr [ebp-00Ch]
+           mov dword ptr [eax+024h], 000000000h
+l0045081F: mov esp, ebp
+           pop ebp
+           ret
+l004507D5 ENDP
+```
+
+The pull request inlines the body of `0x004507D5` into the destructor.
+Suggested fix: move it into a separate method (for example `Clear()`) with
+the address `0x004507D5` and call it from the destructor:
+
+```cpp
+B_OctTree::~B_OctTree()
+{
+    Clear();
+}
+
+void B_OctTree::Clear()
+{
+    if (this->m_root != nullptr) {
+        delete this->m_root;
+        this->m_root = nullptr;
+    }
+}
+```
+
+## 7. Members initialized in constructor bodies instead of initializer lists
+
+In these constructors the binary writes the member before setting the
+vtable (or, for `B_GlobalSurfaceCache`, before constructing `elements`),
+so the member is initialized in the initializer list:
+
+| Address | Constructor | Suggested |
+|---|---|---|
+| `0x00450417` | `LeafNode::LeafNode()` | `: sectors(nullptr)` |
+| `0x0045346F` | `B_SectorSurfaceCache::B_SectorSurfaceCache()` | `: numSurfaces(0)` |
+| `0x004539A9` | `B_GlobalSurfaceCache::B_GlobalSurfaceCache()` | `: count(0)` |
+
+```asm
+l00450417 PROC                              ; LeafNode::LeafNode()
+           ...
+           mov dword ptr [eax], offset g005BDD0C  ; B_OctantNodeBase vtable
+           mov ecx, dword ptr [g005E338C]
+           add ecx, 000000001h
+           mov dword ptr [g005E338C], ecx         ; gbl_node_count++
+           mov edx, dword ptr [ebp-004h]
+           mov dword ptr [edx+004h], 000000000h   ; sectors = nullptr
+           mov eax, dword ptr [ebp-004h]
+           mov dword ptr [eax], offset g005BDD1C  ; LeafNode vtable
+           ...
+l0045346F PROC                              ; B_SectorSurfaceCache::B_SectorSurfaceCache()
+           ...
+           mov dword ptr [eax+008h], 000000000h   ; numSurfaces = 0
+           mov ecx, dword ptr [ebp-004h]
+           mov dword ptr [ecx], offset g005BDD50  ; B_SectorSurfaceCache vtable
+           ...
+```
+
+`B_GlobalSurfaceCache::B_GlobalSurfaceCache()` sets `count` to 0 before
+constructing 128 `elements`:
+
+```cpp
+B_GlobalSurfaceCache::B_GlobalSurfaceCache()
+{
+    this->count = 0;
+    int unknown_loc_0C = 128;
+    STACKVAR(-8, 4) = 0x00000110;
+    STACKVAR(-4, 4) = &this->elements;
+l004539D2:
+    unknown_loc_0C--;
+    if (unknown_loc_0C >= 0)
+    {
+        reinterpret_cast<B_SectorSurfaceCache *>(STACKVAR(-4, 4))->B_SectorSurfaceCache();
+        ...
+    }
+}
+```
+
+## 8. `B_SectorListNode::CollectSectorsInBox` differs from `LeafNode::CollectSectorsInBox`
+
+`B_SectorListNode::CollectSectorsInBox` (`0x00452232`) gives the same
+result as in the pull request, but it is compiled the same way as
+`LeafNode::CollectSectorsInBox` (`0x00452082`): there is no `queryBB`
+local variable (`gbl_current_query_box` is read every time), the
+intersection flag is computed with strict `>`/`<` comparisons and then
+tested:
+
+```cpp
+STACKVAR(-8, 4) = reinterpret_cast<any_int32>(ACCESS(ARRPTR(ACCESS(this, 8, 4), 4, unknown_loc_04, 0), 0, 4)) + 0x0000005C;
+if ((gbl_current_query_box->minCoords.x > reinterpret_cast<double>(ACCESS(STACKVAR(-8, 4), 24, 8)) || gbl_current_query_box->minCoords.y > reinterpret_cast<double>(ACCESS(STACKVAR(-8, 4), 32, 8)) || gbl_current_query_box->minCoords.z > reinterpret_cast<double>(ACCESS(STACKVAR(-8, 4), 40, 8)) || gbl_current_query_box->maxCoords.x < reinterpret_cast<double>(ACCESS(STACKVAR(-8, 4), 0, 8)) || gbl_current_query_box->maxCoords.y < reinterpret_cast<double>(ACCESS(STACKVAR(-8, 4), 8, 8)) || gbl_current_query_box->maxCoords.z < reinterpret_cast<double>(ACCESS(STACKVAR(-8, 4), 16, 8)) ? 0x00000000 : 0x00000001) != 0x00000000 && outList->size < 512)
+```
+
+Suggested fix: write it like `LeafNode::CollectSectorsInBox`, with a
+`B_BoundingBox* sectorBB = &(*this)[i]->boundingBox;` local and an
+`intersects` flag.
+
+## 9. Minor differences
+
+- `B_Sector::lastQueryId` is declared as `int`, but `gbl_oct_tree_query_id`
+  is `unsigned int`, so `LeafNode::CollectSectorsAtPoint` and
+  `LeafNode::CollectSectorsInBox` compare signed and unsigned values. In
+  `B_SectorListNode` the same field is compared as `unsigned int`. It is
+  probably `unsigned int`.
+- In `B_BoundingBox::CollectIntersectingSectors` the element passed to the
+  inlined `Append` is read from `sectors.elements[i]` again instead of
+  using the `sector` local variable:
+
+  ```cpp
+  B_Sector *unknown_loc_08 = reinterpret_cast<B_Sector *>(ACCESS(ARRPTR(sectors.elements, 4, unknown_loc_04, 0), 0, 4));
+  if (this->Intersects(unknown_loc_08) == 0)
+  {
+      goto l0045031B;
+  }
+  STACKVAR(-12, 4) = ACCESS(ARRPTR(sectors.elements, 4, unknown_loc_04, 0), 0, 4);
+  ```
+
+  The original code was probably `outBuffer.Append(sectors.elements[i])`
+  (or `sectors[i]`), but this is a guess.
+
+## Procedures that match the binary
+
+`B_Sphere::B_Sphere`, `B_BoundingBox::B_BoundingBox(min, max)`,
+`B_Vector::operator -`, `B_BoundingBox::CollectIntersectingSectors` (apart
+from section 9), `B_OctantNode::B_OctantNode`, `B_OctantNode::~B_OctantNode`,
+all `GetTypeID` methods, `LeafNode::~LeafNode`,
+`B_SectorListNode::B_SectorListNode`, `B_SectorListNode::~B_SectorListNode`,
+`LeafNode::CollectSectorsAtPoint`, `LeafNode::CollectSectorsInBox`,
+`B_SectorListNode::CollectSectorsAtPoint`,
+`B_OctantNode::CollectSectorsAtPoint`, `B_OctantNode::CollectSectorsInBox`
+(conditions, offset signs, children indices, vtable slots and constants
+2.0, 4.0, 10.0 and -10.0 of all 8 children), `B_OctTree::FindSectorsAtPoint`,
+`B_OctTreeSectorsList::B_OctTreeSectorsList` and
+`B_SectorSurfaceCache::~B_SectorSurfaceCache`.
