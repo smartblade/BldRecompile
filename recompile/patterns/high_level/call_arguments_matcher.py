@@ -37,8 +37,8 @@ class CallArgumentsMatcher:
             unmatched_args.append(new_arguments[-1])
             new_arguments = new_arguments[:-1]
             parameters = [
-                (param_name, param_type)
-                for param_name, param_type
+                (param_id.data_type, param_name)
+                for param_name, param_id
                 in new_pc_proc_decl.get_parameters_ids().items()
             ]
             parameters.pop()
