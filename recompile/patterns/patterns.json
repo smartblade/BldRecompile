@@ -1164,6 +1164,13 @@
 	},
 	{
 		"instructions": [
+			{"test": ["ah", "001h"]},
+			{"jne": ["%label%"]}
+		],
+		"action": {"jump": {"condition": "REGVALUE(cmpfl) < REGVALUE(cmpfr)", "address": "%label%"}}
+	},
+	{
+		"instructions": [
 			{"test": ["ah", "040h"]},
 			{"je": ["%label%"]}
 		],
