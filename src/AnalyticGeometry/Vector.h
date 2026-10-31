@@ -20,6 +20,7 @@ public:
     B_Vector &operator *=(double c);
     B_Vector operator +(const B_Vector &that) const;
     const B_Vector &operator -=(const B_Vector &that);
+    B_Vector operator -(const B_Vector& that) const;
     void SetAngle(double angle);
 
     double x;

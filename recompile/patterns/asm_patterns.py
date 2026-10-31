@@ -15,9 +15,16 @@ from patterns.structure import Patterns
 from patterns.builder import ProcedureBuilder
 from writer import Writer
 
+# Procedures to convert for each module, None means all procedures
+_converted_procedures = {
+    "BBLibc.dll": None,
+    "Blade.exe": {0x0040A5D0},
+}
+
 
 def process_asm_patterns(lines, declarations):
-    if declarations.symbols.module != "BBLibc.dll":
+    module = declarations.symbols.module
+    if module not in _converted_procedures:
         return []
     patterns_path = os.path.join(
         os.path.dirname(os.path.realpath(__file__)), "patterns.json")
@@ -32,7 +39,8 @@ def process_asm_patterns(lines, declarations):
     declarations = add_attributes(
         declarations, string_constants=string_constants)
     inline_procedures = inline_functions.Dict()
-    asm_procedures = _extract_procedures_lines_from_asm(lines)
+    asm_procedures = _extract_procedures_lines_from_asm(
+        lines, _converted_procedures[module])
     # Get all declarations before building procedures: demangling adds
     # undeclared types to declared types, so demangle exported names
     # before parsing declarations from sources
@@ -60,7 +68,7 @@ def process_asm_patterns(lines, declarations):
     _write_procedures(writer, procedures)
     inline_procedures.make_high_level_code(declarations)
     inline_procedures.write_procedures(writer)
-    with open("{}.cpp".format(declarations.symbols.module), "wt") as f:
+    with open("{}.cpp".format(module), "wt") as f:
         f.write(writer.get_string())
     if smallest_failed_proc_exc is not None:
         raise Exception(
@@ -92,7 +100,7 @@ def _build_proc(
     return error, procedure
 
 
-def _extract_procedures_lines_from_asm(lines):
+def _extract_procedures_lines_from_asm(lines, converted_procedures):
     proc_addr = None
     proc_lines = []
     asm_procedures = []
@@ -101,7 +109,11 @@ def _extract_procedures_lines_from_asm(lines):
             proc_addr = from_hex(line[1:9])
             proc_lines = []
         elif proc_addr is not None and line.find("ENDP") >= 0:
-            asm_procedures.append((proc_addr, proc_lines))
+            if (
+                converted_procedures is None or
+                proc_addr in converted_procedures
+            ):
+                asm_procedures.append((proc_addr, proc_lines))
             proc_addr = None
         elif proc_addr is not None:
             proc_lines.append(line.strip())
