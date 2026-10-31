@@ -58,15 +58,9 @@ l004501DD:
     }
     STACKVAR(-24, 4) = unknown_function_005BBD38(4 * outBuffer.num_alloc);
     STACKVAR(-16, 4) = STACKVAR(-24, 4);
-    unsigned int unknown_loc_14 = 0;
-    goto l0045029A;
-l00450291:
-    unknown_loc_14++;
-l0045029A:
-    if (unknown_loc_14 < outBuffer.size)
+    for (unsigned int unknown_loc_14 = 0; unknown_loc_14 < outBuffer.size; unknown_loc_14++)
     {
         ACCESS(ARRPTR(STACKVAR(-16, 4), 4, unknown_loc_14, 0), 0, 4) = ACCESS(ARRPTR(outBuffer.elements, 4, unknown_loc_14, 0), 0, 4);
-        goto l00450291;
     }
     STACKVAR(-28, 4) = outBuffer.elements;
     unknown_function_005BBD3D(STACKVAR(-28, 4));
@@ -89,27 +83,16 @@ B_OctantNode::B_OctantNode()
     ACCESS(this, 0, 4) = GLOBAL(0x005BDD0C);
     gbl_node_count++;
     ACCESS(this, 0, 4) = GLOBAL(0x005BDCFC);
-    unsigned int unknown_loc_04 = 0;
-    goto l00450363;
-l0045035A:
-    unknown_loc_04++;
-l00450363:
-    if (unknown_loc_04 < 8)
+    for (unsigned int unknown_loc_04 = 0; unknown_loc_04 < 8; unknown_loc_04++)
     {
         ACCESS(ARRPTR(this, 4, unknown_loc_04, 4), 0, 4) = 0x00000000;
-        goto l0045035A;
     }
 }
 
 // address: 0x00450380
 B_OctantNode::~B_OctantNode()
 {
-    unsigned int unknown_loc_04 = 0;
-    goto l004503A4;
-l0045039B:
-    unknown_loc_04++;
-l004503A4:
-    if (unknown_loc_04 < 8)
+    for (unsigned int unknown_loc_04 = 0; unknown_loc_04 < 8; unknown_loc_04++)
     {
         if (ACCESS(ARRPTR(this, 4, unknown_loc_04, 4), 0, 4) != 0x00000000)
         {
@@ -124,7 +107,6 @@ l004503A4:
                 STACKVAR(-20, 4) = 0x00000000;
             }
         }
-        goto l0045039B;
     }
     ACCESS(this, 0, 4) = GLOBAL(0x005BDD0C);
     gbl_node_count--;
@@ -187,12 +169,7 @@ B_SectorListNode::~B_SectorListNode()
     {
         goto l00450596;
     }
-    unsigned int unknown_loc_04 = 0;
-    goto l00450556;
-l0045054D:
-    unknown_loc_04++;
-l00450556:
-    if (unknown_loc_04 < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-20, 4), 8, 4)))
+    for (unsigned int unknown_loc_04 = 0; unknown_loc_04 < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-20, 4), 8, 4)); unknown_loc_04++)
     {
         STACKVAR(-12, 4) = ACCESS(ARRPTR(ACCESS(STACKVAR(-20, 4), 4, 4), 4, unknown_loc_04, 0), 0, 4);
         STACKVAR(-8, 4) = STACKVAR(-12, 4);
@@ -204,7 +181,6 @@ l00450556:
         {
             STACKVAR(-52, 4) = 0x00000000;
         }
-        goto l0045054D;
     }
 l00450596:
     STACKVAR(-16, 4) = ACCESS(STACKVAR(-20, 4), 4, 4);
@@ -235,12 +211,7 @@ l004505C9:
     {
         goto l00450666;
     }
-    unsigned int unknown_loc_18 = 0;
-    goto l00450626;
-l0045061D:
-    unknown_loc_18++;
-l00450626:
-    if (unknown_loc_18 < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-44, 4), 8, 4)))
+    for (unsigned int unknown_loc_18 = 0; unknown_loc_18 < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-44, 4), 8, 4)); unknown_loc_18++)
     {
         STACKVAR(-32, 4) = ACCESS(ARRPTR(ACCESS(STACKVAR(-44, 4), 4, 4), 4, unknown_loc_18, 0), 0, 4);
         STACKVAR(-28, 4) = STACKVAR(-32, 4);
@@ -252,7 +223,6 @@ l00450626:
         {
             STACKVAR(-56, 4) = 0x00000000;
         }
-        goto l0045061D;
     }
 l00450666:
     STACKVAR(-36, 4) = ACCESS(STACKVAR(-44, 4), 4, 4);
@@ -309,12 +279,7 @@ void LeafNode::CollectSectorsInBox(const B_BoundingBox &arg_1, B_OctTreeSectorsL
 // address: 0x00452191
 void B_SectorListNode::CollectSectorsAtPoint(const B_Vector &localPos, B_OctTreeSectorsList *outList, double halfSize)
 {
-    unsigned int unknown_loc_04 = 0;
-    goto l004521AD;
-l004521A4:
-    unknown_loc_04++;
-l004521AD:
-    if (unknown_loc_04 < reinterpret_cast<unsigned int>(ACCESS(this, 12, 4)))
+    for (unsigned int unknown_loc_04 = 0; unknown_loc_04 < reinterpret_cast<unsigned int>(ACCESS(this, 12, 4)); unknown_loc_04++)
     {
         if (reinterpret_cast<unsigned int>(ACCESS(ACCESS(ARRPTR(ACCESS(this, 8, 4), 4, unknown_loc_04, 0), 0, 4), 84, 4)) != gbl_oct_tree_query_id && ACCESS(ACCESS(ARRPTR(ACCESS(this, 8, 4), 4, unknown_loc_04, 0), 0, 4), 88, 4) != 0x00000000)
         {
@@ -325,19 +290,13 @@ l004521AD:
                 outList->size++;
             }
         }
-        goto l004521A4;
     }
 }
 
 // address: 0x00452232
 void B_SectorListNode::CollectSectorsInBox(const B_BoundingBox &arg_1, B_OctTreeSectorsList *outList, double arg_3)
 {
-    unsigned int unknown_loc_04 = 0;
-    goto l0045224E;
-l00452245:
-    unknown_loc_04++;
-l0045224E:
-    if (unknown_loc_04 < reinterpret_cast<unsigned int>(ACCESS(this, 12, 4)))
+    for (unsigned int unknown_loc_04 = 0; unknown_loc_04 < reinterpret_cast<unsigned int>(ACCESS(this, 12, 4)); unknown_loc_04++)
     {
         if (reinterpret_cast<unsigned int>(ACCESS(ACCESS(ARRPTR(ACCESS(this, 8, 4), 4, unknown_loc_04, 0), 0, 4), 84, 4)) != gbl_oct_tree_query_id && ACCESS(ACCESS(ARRPTR(ACCESS(this, 8, 4), 4, unknown_loc_04, 0), 0, 4), 88, 4) != 0x00000000)
         {
@@ -349,7 +308,6 @@ l0045224E:
                 outList->size++;
             }
         }
-        goto l00452245;
     }
 }
 
@@ -603,12 +561,8 @@ l004532A6:
     STACKVAR(-16, 4) = ACCESS(ARRPTR(this, 4, unknown_loc_0C, 4), 0, 4);
     ACCESS(ARRPTR(cache, 1, 272 * cache->count, 8), 0, 4) = STACKVAR(-16, 4);
     ACCESS(ARRPTR(cache, 1, 272 * cache->count, 12), 0, 4) = 0x00000000;
-    unsigned int unknown_loc_14 = 0;
-    goto l004532FE;
-l004532F5:
-    unknown_loc_14++;
-l004532FE:
-    if (unknown_loc_14 < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-16, 4), 8, 4)))
+    unsigned int unknown_loc_14;
+    for (unknown_loc_14 = 0; unknown_loc_14 < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-16, 4), 8, 4)); unknown_loc_14++)
     {
         STACKVAR(-24, 4) = ACCESS(ARRPTR(ACCESS(STACKVAR(-16, 4), 4, 4), 4, unknown_loc_14, 0), 0, 4);
         STACKVAR(-8, 8) = sphere->center.z * reinterpret_cast<double>(ACCESS(STACKVAR(-24, 4), 20, 8)) + sphere->center.y * reinterpret_cast<double>(ACCESS(STACKVAR(-24, 4), 12, 8)) + sphere->center.x * reinterpret_cast<double>(ACCESS(STACKVAR(-24, 4), 4, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(-24, 4), 28, 8));
@@ -622,7 +576,6 @@ l004532FE:
             ACCESS(ARRPTR(reinterpret_cast<any_int32>(cache) + 272 * cache->count + 4, 4, ACCESS(ARRPTR(cache, 1, 272 * cache->count, 12), 0, 4), 12), 0, 4) = STACKVAR(-28, 4);
             ACCESS(ARRPTR(cache, 1, 272 * cache->count, 12), 0, 4) = reinterpret_cast<any_int32>(ACCESS(ARRPTR(cache, 1, 272 * cache->count, 12), 0, 4)) + 0x00000001;
         }
-        goto l004532F5;
     }
     if (unknown_loc_14 == reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-16, 4), 8, 4)))
     {
