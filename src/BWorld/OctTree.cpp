@@ -285,12 +285,6 @@ B_SectorSurfaceCache::~B_SectorSurfaceCache()
 }
 
 
-/*
-* Module:                 Blade.exe
-* Entry point:            0x00453AC0
-* VC++ mangling:          ??1B_OctantNodeBase@@UAE@XZ
-*/
-
 B_OctantNodeBase::~B_OctantNodeBase()
 {
 }

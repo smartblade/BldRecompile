@@ -39,6 +39,7 @@ _converted_procedures = {
         0x0045346F,
         0x00453490,
         0x004539A9,
+        0x00453AC0,
     },
 }
 
