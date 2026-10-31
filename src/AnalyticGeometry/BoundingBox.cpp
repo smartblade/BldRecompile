@@ -38,10 +38,10 @@ B_BoundingBox::B_BoundingBox(const B_Vector& minCoords, const B_Vector& maxCoord
 /*
 * Module:                 Blade.exe
 * Entry point:            0x0044F052
-* VC++ mangling:          ?Intersects@B_BoundingBox@@QBE_NPBVB_Sector@@@Z
+* VC++ mangling:          ?Intersects@B_BoundingBox@@QBEIPBVB_Sector@@@Z
 */
 
-bool B_BoundingBox::Intersects(const B_Sector* sector) const
+unsigned int B_BoundingBox::Intersects(const B_Sector* sector) const
 {
 }
 

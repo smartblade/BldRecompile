@@ -27,6 +27,62 @@ B_Vector B_Vector::operator -(const B_Vector &that) const
     REGDEF(eax=__result)
 }
 
+// address: 0x004501C1
+void B_BoundingBox::CollectIntersectingSectors(const B_PtrArray<B_Sector> &sectors, B_PtrArray<B_Sector> &outBuffer)
+{
+    unsigned int unknown_loc_04 = 0;
+    goto l004501DD;
+l004501D4:
+    unknown_loc_04++;
+l004501DD:
+    if (unknown_loc_04 >= sectors.size)
+    {
+        goto l00450320;
+    }
+    B_Sector *unknown_loc_08 = reinterpret_cast<B_Sector *>(ACCESS(ARRPTR(sectors.elements, 4, unknown_loc_04, 0), 0, 4));
+    if (this->Intersects(unknown_loc_08) == 0)
+    {
+        goto l0045031B;
+    }
+    STACKVAR(-12, 4) = ACCESS(ARRPTR(sectors.elements, 4, unknown_loc_04, 0), 0, 4);
+    if (outBuffer.num_alloc > outBuffer.size)
+    {
+        ACCESS(ARRPTR(outBuffer.elements, 4, outBuffer.size, 0), 0, 4) = STACKVAR(-12, 4);
+        outBuffer.size++;
+        goto l0045031B;
+    }
+    outBuffer.num_alloc += reinterpret_cast<unsigned int>(outBuffer.increment);
+    if (outBuffer.size == 0)
+    {
+        goto l004502DC;
+    }
+    STACKVAR(-24, 4) = unknown_function_005BBD38(4 * outBuffer.num_alloc);
+    STACKVAR(-16, 4) = STACKVAR(-24, 4);
+    unsigned int unknown_loc_14 = 0;
+    goto l0045029A;
+l00450291:
+    unknown_loc_14++;
+l0045029A:
+    if (unknown_loc_14 < outBuffer.size)
+    {
+        ACCESS(ARRPTR(STACKVAR(-16, 4), 4, unknown_loc_14, 0), 0, 4) = ACCESS(ARRPTR(outBuffer.elements, 4, unknown_loc_14, 0), 0, 4);
+        goto l00450291;
+    }
+    STACKVAR(-28, 4) = outBuffer.elements;
+    unknown_function_005BBD3D(STACKVAR(-28, 4));
+    outBuffer.elements = reinterpret_cast<TYPE **>(STACKVAR(-16, 4));
+    goto l004502FA;
+l004502DC:
+    STACKVAR(-32, 4) = unknown_function_005BBD38(4 * outBuffer.num_alloc);
+    outBuffer.elements = reinterpret_cast<TYPE **>(STACKVAR(-32, 4));
+l004502FA:
+    ACCESS(ARRPTR(outBuffer.elements, 4, outBuffer.size, 0), 0, 4) = STACKVAR(-12, 4);
+    outBuffer.size++;
+l0045031B:
+    goto l004501D4;
+l00450320:
+}
+
 // address: 0x00450327
 B_OctantNode::B_OctantNode()
 {
