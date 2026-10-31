@@ -28,6 +28,17 @@ B_Sector::B_Sector()
 
 /*
 * Module:                 Blade.exe
+* Entry point:            0x0042E26F
+* VC++ man gling:          ??1B_Sector@@UAE@XZ
+*/
+
+B_Sector::~B_Sector()
+{
+}
+
+
+/*
+* Module:                 Blade.exe
 * Entry point:            0x0042E464
 * VC++ mangling:          ?CalculateBoundingBox@B_Sector@@QAEXXZ
 */

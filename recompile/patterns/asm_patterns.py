@@ -18,7 +18,19 @@ from writer import Writer
 # Procedures to convert for each module, None means all procedures
 _converted_procedures = {
     "BBLibc.dll": None,
-    "Blade.exe": {0x0040A5D0},
+    "Blade.exe": {
+        0x00401000,
+        0x004015C5,
+        0x0040A5D0,
+        0x00450407,
+        0x0045047C,
+        0x004506B5,
+        0x004507B9,
+        0x00453264,
+        0x0045346F,
+        0x00453490,
+        0x004539A9,
+    },
 }
 
 
