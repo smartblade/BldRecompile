@@ -298,6 +298,80 @@ Differences from the pull request:
    `cache->elements[cache->count]` every time. Loop counters are
    `unsigned int`.
 
+The assembler code of `0x0045327B` confirms it.
+
+Abort of the inner loop (difference 1):
+
+```asm
+           mov eax, dword ptr [ebp+00Ch]      ; sphere
+           fld qword ptr [eax+018h]           ; ST0 = sphere->radius
+           fchs                               ; ST0 = -radius
+           fcomp qword ptr [ebp-008h]         ; compare with distance
+           fnstsw ax
+           test ah, 041h                      ; C0|C3: -radius <= distance
+           jne l0045336C                      ; yes -> check the surface
+           mov ecx, dword ptr [ebp-010h]      ; no (distance < -radius):
+           mov edx, dword ptr [ecx+008h]      ;   current_sector->size
+           add edx, 000000001h
+           mov dword ptr [ebp-014h], edx      ;   j = current_sector->size + 1
+           jmp l004533DD                      ;   j++ and exit the loop
+```
+
+Strict comparison with the radius (difference 2):
+
+```asm
+l0045336C: mov eax, dword ptr [ebp+00Ch]
+           fld qword ptr [ebp-008h]           ; ST0 = distance
+           fcomp qword ptr [eax+018h]         ; compare with radius
+           fnstsw ax
+           test ah, 001h                      ; C0: distance < radius
+           je l004533DD                       ; no -> skip the surface
+```
+
+The sector is added only if the inner loop finished, and the function
+returns 1 if no surfaces were added (difference 3):
+
+```asm
+l004533E2: mov eax, dword ptr [ebp-010h]
+           mov ecx, dword ptr [ebp-014h]
+           cmp ecx, dword ptr [eax+008h]      ; j == current_sector->size ?
+           jne l00453455                      ; no (aborted) -> next sector, count is not incremented
+           mov edx, dword ptr [ebp+008h]
+           mov eax, dword ptr [edx]
+           imul eax, eax, 000000110h
+           mov ecx, dword ptr [ebp+008h]
+           cmp dword ptr [ecx+eax+00Ch], 000000000h  ; numSurfaces == 0 ?
+           jne l0045342F
+           mov edx, dword ptr [ebp+008h]
+           mov eax, dword ptr [edx]
+           imul eax, eax, 000000110h
+           mov ecx, dword ptr [ebp+008h]
+           mov dword ptr [ecx+eax+000000110h], 000000001h  ; hasNoIntersections = 1
+           mov edx, dword ptr [ebp+008h]
+           mov eax, dword ptr [edx]
+           add eax, 000000001h
+           mov ecx, dword ptr [ebp+008h]
+           mov dword ptr [ecx], eax           ; cache->count++
+           mov eax, 000000001h
+           jmp l00453469                      ; return 1
+l0045342F: mov edx, dword ptr [ebp+008h]
+           mov eax, dword ptr [edx]
+           imul eax, eax, 000000110h
+           mov ecx, dword ptr [ebp+008h]
+           mov dword ptr [ecx+eax+000000110h], 000000000h  ; hasNoIntersections = 0
+           mov edx, dword ptr [ebp+008h]
+           mov eax, dword ptr [edx]
+           add eax, 000000001h
+           mov ecx, dword ptr [ebp+008h]
+           mov dword ptr [ecx], eax           ; cache->count++
+l00453455: jmp near ptr l0045329D             ; next sector
+```
+
+The rest matches the pull request: `cache->count = 0` at the start,
+`distance` computed as z, y, x terms plus `p`, offsets in a cache element
+of `0x110` (272) bytes (`sector` +4, `numSurfaces` +8, `surfaces` +12,
+`hasNoIntersections` +268) and `return 0` / `return -1` at the end.
+
 Suggested code:
 
 ```cpp
