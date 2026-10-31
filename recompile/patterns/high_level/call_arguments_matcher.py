@@ -1,4 +1,5 @@
 import expressions
+from expressions.operator import Operator
 from calling_convention import CallingConvention
 from patterns.make_proc_decl_from_args import make_proc_decl_from_args
 from procedure_declaration import ProcedureDeclaration
@@ -75,6 +76,8 @@ class CallArgumentsMatcher:
 
     def _find_call(self, e):
         if isinstance(e, expressions.Bin):
+            if e.operator == Operator.ASS:
+                return self._find_call(e.right)
             return self._find_call(e.left)
         if not isinstance(e, _CallWithUnmatchedArgs):
             return None
