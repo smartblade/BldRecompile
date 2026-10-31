@@ -16,6 +16,7 @@ class _IdentifiersCollector(ExpressionTransformer):
         self._cur_path = []
         self._cur_instr = None
         self._ids = {}
+        self._uses = {}
         self._to_be_declared_before = {}
 
     def collect_identifiers(self, instrs):
@@ -39,6 +40,12 @@ class _IdentifiersCollector(ExpressionTransformer):
             elif isinstance(instr, instructions.WhileInstruction):
                 instr.clause.visit(self._on_visit)
                 self._collect(instr, instr.block)
+            elif isinstance(instr, instructions.ForInstruction):
+                if instr.init is not None:
+                    instr.init.visit(self._on_visit)
+                instr.clause.visit(self._on_visit)
+                instr.increment.visit(self._on_visit)
+                self._collect(instr, instr.block)
             elif isinstance(instr, instructions.LabeledBlock):
                 self._collect(instr, instr.instructions)
             else:
@@ -52,6 +59,8 @@ class _IdentifiersCollector(ExpressionTransformer):
             not e.is_implicit
         ):
             self._update_id_path(e, self._cur_path, self._cur_instr)
+            self._uses.setdefault(e, []).append(
+                (tuple(self._cur_path), self._cur_instr))
 
     def _update_id_path(self, identifier, new_path, new_instr):
         if identifier not in self._ids:
@@ -74,16 +83,37 @@ class _IdentifiersCollector(ExpressionTransformer):
         ass = None
         if isinstance(instr, instructions.Assignment):
             ass = instr
+        for_init = None
+        if (
+            isinstance(instr, instructions.ForInstruction) and
+            isinstance(instr.init, instructions.Assignment) and
+            self._is_used_only_in(instr.init.dst, instr)
+        ):
+            for_init = instr.init
         new_instructions = []
         for identifier in ids:
             if ass is not None and identifier == ass.dst:
                 instr = instructions.VariableDeclaration(ass.dst, ass.src)
                 ass = None
+            elif for_init is not None and identifier == for_init.dst:
+                # Declare variable in 'for' statement
+                instr = instr.copy(init=instructions.VariableDeclaration(
+                    for_init.dst, for_init.src))
+                instr = instr.transform(self, **kwargs)
+                for_init = None
             else:
                 new_instructions.append(
                     instructions.VariableDeclaration(identifier, None))
         new_instructions.append(instr)
         chain.replace_instructions(new_instructions)
+
+    def _is_used_only_in(self, identifier, instr):
+        for path, use_instr in self._uses.get(identifier, []):
+            if use_instr is instr:
+                continue
+            if not any(parent is instr for parent, _ in path):
+                return False
+        return True
 
 
 def _find_common_path(first_path, second_path):

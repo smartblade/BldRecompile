@@ -27,6 +27,10 @@ class ExpressionTransformer:
         return None
 
     @staticmethod
+    def transform_for(init, clause, increment, block, **kwargs):
+        return None
+
+    @staticmethod
     def transform_array_access(array, index, **kwargs):
         return None
 
