@@ -315,6 +315,64 @@ B_OctTreeSectorsList::B_OctTreeSectorsList()
     this->size = 0;
 }
 
+// address: 0x0045327B
+int B_OctTreeSectorsList::BuildSurfaceCache(B_GlobalSurfaceCache *cache, const B_Sphere *sphere)
+{
+    cache->count = 0;
+    unsigned int unknown_loc_0C = 0;
+    unknown_loc_0C = 0;
+    goto l004532A6;
+l0045329D:
+    unknown_loc_0C++;
+l004532A6:
+    if (unknown_loc_0C >= this->size)
+    {
+        goto l0045345A;
+    }
+    STACKVAR(-16, 4) = ACCESS(ARRPTR(this, 4, unknown_loc_0C, 4), 0, 4);
+    ACCESS(ARRPTR(cache, 1, 272 * cache->count, 8), 0, 4) = STACKVAR(-16, 4);
+    ACCESS(ARRPTR(cache, 1, 272 * cache->count, 12), 0, 4) = 0x00000000;
+    unsigned int unknown_loc_14 = 0;
+    goto l004532FE;
+l004532F5:
+    unknown_loc_14++;
+l004532FE:
+    if (unknown_loc_14 < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-16, 4), 8, 4)))
+    {
+        STACKVAR(-24, 4) = ACCESS(ARRPTR(ACCESS(STACKVAR(-16, 4), 4, 4), 4, unknown_loc_14, 0), 0, 4);
+        STACKVAR(-8, 8) = sphere->center.z * reinterpret_cast<double>(ACCESS(STACKVAR(-24, 4), 20, 8)) + sphere->center.y * reinterpret_cast<double>(ACCESS(STACKVAR(-24, 4), 12, 8)) + sphere->center.x * reinterpret_cast<double>(ACCESS(STACKVAR(-24, 4), 4, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(-24, 4), 28, 8));
+        if (-sphere->radius > reinterpret_cast<double>(STACKVAR(-8, 8)))
+        {
+            unknown_loc_14 = reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-16, 4), 8, 4)) + 1;
+        }
+        else if (reinterpret_cast<double>(STACKVAR(-8, 8)) < sphere->radius)
+        {
+            STACKVAR(-28, 4) = ACCESS(ARRPTR(ACCESS(STACKVAR(-16, 4), 4, 4), 4, unknown_loc_14, 0), 0, 4);
+            ACCESS(ARRPTR(reinterpret_cast<any_int32>(cache) + 272 * cache->count + 4, 4, ACCESS(ARRPTR(cache, 1, 272 * cache->count, 12), 0, 4), 12), 0, 4) = STACKVAR(-28, 4);
+            ACCESS(ARRPTR(cache, 1, 272 * cache->count, 12), 0, 4) = reinterpret_cast<any_int32>(ACCESS(ARRPTR(cache, 1, 272 * cache->count, 12), 0, 4)) + 0x00000001;
+        }
+        goto l004532F5;
+    }
+    if (unknown_loc_14 == reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-16, 4), 8, 4)))
+    {
+        if (ACCESS(ARRPTR(cache, 1, 272 * cache->count, 12), 0, 4) == 0x00000000)
+        {
+            ACCESS(ARRPTR(cache, 1, 272 * cache->count, 272), 0, 4) = 0x00000001;
+            cache->count++;
+            return 1;
+        }
+        ACCESS(ARRPTR(cache, 1, 272 * cache->count, 272), 0, 4) = 0x00000000;
+        cache->count++;
+    }
+    goto l0045329D;
+l0045345A:
+    if (cache->count != 0)
+    {
+        return 0;
+    }
+    return -1;
+}
+
 // address: 0x0045346F
 B_SectorSurfaceCache::B_SectorSurfaceCache()
 :

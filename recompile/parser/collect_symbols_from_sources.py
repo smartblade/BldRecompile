@@ -61,7 +61,8 @@ def _collect_procedures_from_file(file_name, lines):
             if (
                 not definition_finished and
                 line.find("*/") < 0 and
-                not line.startswith("#")
+                not line.startswith("#") and
+                not line.lstrip().startswith("//")
             ):
                 definition += line
             if not definition_finished and line.find("{") >= 0:
