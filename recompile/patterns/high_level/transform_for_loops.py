@@ -89,6 +89,7 @@ def _transform_for(instrs, label_uses):
     if loop is None:
         return None
     clause, block, rest = loop
+    label_uses[cond_block.label].discard(goto_cond)
     prefix = instrs[:-2]
     init = None
     if prefix and _is_init(prefix[-1], increment):
@@ -111,6 +112,7 @@ def _match_loop_with_jump_back(cond_block, inc_label, label_uses):
         return None
     if label_uses.get(inc_label) != {goto_inc}:
         return None
+    label_uses[inc_label].discard(goto_inc)
     return (
         if_instr.if_clause,
         if_instr.if_block[:-1],
@@ -134,13 +136,15 @@ def _match_loop_with_exit(cond_block, inc_label, label_uses):
     block, goto_inc, end_block = tail
     if label_uses.get(inc_label) != {goto_inc}:
         return None
+    label_uses[inc_label].discard(goto_inc)
+    label_uses[goto_end.label].discard(goto_end)
     block = _replace_continue_label(block, label_uses)
-    block, remaining = _replace_gotos(
-        block, end_block.label, instructions.Break)
-    if remaining == 0:
-        rest = end_block.instructions
-    else:
+    block = _replace_gotos(
+        block, end_block.label, instructions.Break, label_uses)
+    if label_uses[end_block.label]:
         rest = [end_block]
+    else:
+        rest = end_block.instructions
     return expressions.do_logical_not(exit_if.if_clause), block, rest
 
 
@@ -170,51 +174,66 @@ def _cut_tail(block, inc_label, end_label):
 
 
 def _replace_continue_label(block, label_uses):
-    """Replace jumps to the empty labeled block at the end with 'continue'."""
-    if not block or not isinstance(block[-1], instructions.LabeledBlock):
+    """Replace jumps to the end of the block with 'continue'.
+
+    The end of the block is the empty labeled block at the end of nested
+    labeled blocks at the end of the block.
+    """
+    label = _find_end_label(block)
+    if label is None:
         return block
-    labeled_block = block[-1]
-    inner_block = labeled_block.instructions
-    if inner_block:
-        inner_block = _replace_continue_label(inner_block, label_uses)
-        return block[:-1] + [
-            instructions.LabeledBlock(labeled_block.label, inner_block)]
-    block, remaining = _replace_gotos(
-        block[:-1], labeled_block.label, instructions.Continue)
-    if remaining:
-        return block + [
-            instructions.LabeledBlock(labeled_block.label, [instructions.empty])]
+    block = _remove_end_label(block)
+    block = _replace_gotos(block, label, instructions.Continue, label_uses)
+    if label_uses.get(label):
+        block = block + [
+            instructions.LabeledBlock(label, [instructions.empty])]
     return block
 
 
-def _replace_gotos(block, label, make_instr):
+def _find_end_label(block):
+    if not block or not isinstance(block[-1], instructions.LabeledBlock):
+        return None
+    inner_block = block[-1].instructions
+    if not inner_block:
+        return block[-1].label
+    return _find_end_label(inner_block)
+
+
+def _remove_end_label(block):
+    labeled_block = block[-1]
+    inner_block = labeled_block.instructions
+    if not inner_block:
+        return block[:-1]
+    return block[:-1] + [instructions.LabeledBlock(
+        labeled_block.label, _remove_end_label(inner_block))]
+
+
+def _replace_gotos(block, label, make_instr, label_uses):
     """Replace jumps to the label out of nested loops and switches."""
     new_block = []
-    remaining = 0
     for instr in block:
         if isinstance(instr, instructions.Goto) and instr.label == label:
+            label_uses[label].discard(instr)
             new_block.append(make_instr())
         elif isinstance(instr, instructions.IfInstruction):
-            if_block, if_remaining = _replace_gotos(
-                instr.if_block, label, make_instr)
             else_block = instr.else_block
-            else_remaining = 0
             if else_block is not None:
-                else_block, else_remaining = _replace_gotos(
-                    else_block, label, make_instr)
+                else_block = _replace_gotos(
+                    else_block, label, make_instr, label_uses)
             new_block.append(instructions.IfInstruction(
-                instr.if_clause, if_block, else_block))
-            remaining += if_remaining + else_remaining
+                instr.if_clause,
+                _replace_gotos(instr.if_block, label, make_instr, label_uses),
+                else_block,
+            ))
         elif isinstance(instr, instructions.LabeledBlock):
-            labeled_instrs, labeled_remaining = _replace_gotos(
-                instr.instructions, label, make_instr)
-            new_block.append(
-                instructions.LabeledBlock(instr.label, labeled_instrs))
-            remaining += labeled_remaining
+            new_block.append(instructions.LabeledBlock(
+                instr.label,
+                _replace_gotos(
+                    instr.instructions, label, make_instr, label_uses),
+            ))
         else:
-            remaining += len(collect_label_uses([instr]).get(label, ()))
             new_block.append(instr)
-    return new_block, remaining
+    return new_block
 
 
 def _transform_decrement_while(instrs, label_uses):
@@ -247,6 +266,7 @@ def _transform_decrement_while(instrs, label_uses):
         return None
     if clause.left.emit_code() != variable.emit_code():
         return None
+    label_uses[labeled_block.label].discard(goto_label)
     clause = expressions.Bin(
         clause.operator, expressions.PreDecrement(clause.left), clause.right)
     while_instr = instructions.WhileInstruction(

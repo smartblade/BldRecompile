@@ -160,3 +160,36 @@ class TestTransformDecrementWhile(unittest.TestCase):
             "}\n"
             "g();\n",
             _emit(transform_for_loops(instrs)))
+
+    def test_continue_out_of_nested_labeled_blocks(self):
+        instrs = _loop_with_exit(
+            [
+                if_instr(i32_id("a"), [instructions.Goto("l_continue")]),
+                instructions.Goto("l_other"),
+                instructions.LabeledBlock("l_other", [call_instr(name="f")]),
+            ],
+            [],
+        )
+        # Move 'l_continue' inside 'l_other'
+        cond_block = instrs[2].instructions[1]
+        body = cond_block.instructions
+        continue_block = body.pop()
+        other = body.pop()
+        body.append(instructions.LabeledBlock(
+            other.label, other.instructions + [continue_block]))
+        instrs[2] = instructions.LabeledBlock("l_inc", [
+            instrs[2].instructions[0],
+            instructions.LabeledBlock("l_cond", body),
+        ])
+        self.assertEqual(
+            "for (i = 0; i < n; i++)\n"
+            "{\n"
+            "    if (a)\n"
+            "    {\n"
+            "        continue;\n"
+            "    }\n"
+            "    goto l_other;\n"
+            "l_other:\n"
+            "    f();\n"
+            "}\n",
+            _emit(transform_for_loops(instrs)))
