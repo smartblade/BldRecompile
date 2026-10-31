@@ -30,51 +30,42 @@ B_Vector B_Vector::operator -(const B_Vector &that) const
 // address: 0x004501C1
 void B_BoundingBox::CollectIntersectingSectors(const B_PtrArray<B_Sector> &sectors, B_PtrArray<B_Sector> &outBuffer)
 {
-    unsigned int unknown_loc_04 = 0;
-    goto l004501DD;
-l004501D4:
-    unknown_loc_04++;
-l004501DD:
-    if (unknown_loc_04 >= sectors.size)
+    for (unsigned int unknown_loc_04 = 0; unknown_loc_04 < sectors.size; unknown_loc_04++)
     {
-        goto l00450320;
-    }
-    B_Sector *unknown_loc_08 = reinterpret_cast<B_Sector *>(ACCESS(ARRPTR(sectors.elements, 4, unknown_loc_04, 0), 0, 4));
-    if (this->Intersects(unknown_loc_08) == 0)
-    {
-        goto l0045031B;
-    }
-    STACKVAR(-12, 4) = ACCESS(ARRPTR(sectors.elements, 4, unknown_loc_04, 0), 0, 4);
-    if (outBuffer.num_alloc > outBuffer.size)
-    {
+        B_Sector *unknown_loc_08 = reinterpret_cast<B_Sector *>(ACCESS(ARRPTR(sectors.elements, 4, unknown_loc_04, 0), 0, 4));
+        if (this->Intersects(unknown_loc_08) == 0)
+        {
+            continue;
+        }
+        STACKVAR(-12, 4) = ACCESS(ARRPTR(sectors.elements, 4, unknown_loc_04, 0), 0, 4);
+        if (outBuffer.num_alloc > outBuffer.size)
+        {
+            ACCESS(ARRPTR(outBuffer.elements, 4, outBuffer.size, 0), 0, 4) = STACKVAR(-12, 4);
+            outBuffer.size++;
+            continue;
+        }
+        outBuffer.num_alloc += reinterpret_cast<unsigned int>(outBuffer.increment);
+        if (outBuffer.size == 0)
+        {
+            goto l004502DC;
+        }
+        STACKVAR(-24, 4) = unknown_function_005BBD38(4 * outBuffer.num_alloc);
+        STACKVAR(-16, 4) = STACKVAR(-24, 4);
+        for (unsigned int unknown_loc_14 = 0; unknown_loc_14 < outBuffer.size; unknown_loc_14++)
+        {
+            ACCESS(ARRPTR(STACKVAR(-16, 4), 4, unknown_loc_14, 0), 0, 4) = ACCESS(ARRPTR(outBuffer.elements, 4, unknown_loc_14, 0), 0, 4);
+        }
+        STACKVAR(-28, 4) = outBuffer.elements;
+        unknown_function_005BBD3D(STACKVAR(-28, 4));
+        outBuffer.elements = reinterpret_cast<TYPE **>(STACKVAR(-16, 4));
+        goto l004502FA;
+l004502DC:
+        STACKVAR(-32, 4) = unknown_function_005BBD38(4 * outBuffer.num_alloc);
+        outBuffer.elements = reinterpret_cast<TYPE **>(STACKVAR(-32, 4));
+l004502FA:
         ACCESS(ARRPTR(outBuffer.elements, 4, outBuffer.size, 0), 0, 4) = STACKVAR(-12, 4);
         outBuffer.size++;
-        goto l0045031B;
     }
-    outBuffer.num_alloc += reinterpret_cast<unsigned int>(outBuffer.increment);
-    if (outBuffer.size == 0)
-    {
-        goto l004502DC;
-    }
-    STACKVAR(-24, 4) = unknown_function_005BBD38(4 * outBuffer.num_alloc);
-    STACKVAR(-16, 4) = STACKVAR(-24, 4);
-    for (unsigned int unknown_loc_14 = 0; unknown_loc_14 < outBuffer.size; unknown_loc_14++)
-    {
-        ACCESS(ARRPTR(STACKVAR(-16, 4), 4, unknown_loc_14, 0), 0, 4) = ACCESS(ARRPTR(outBuffer.elements, 4, unknown_loc_14, 0), 0, 4);
-    }
-    STACKVAR(-28, 4) = outBuffer.elements;
-    unknown_function_005BBD3D(STACKVAR(-28, 4));
-    outBuffer.elements = reinterpret_cast<TYPE **>(STACKVAR(-16, 4));
-    goto l004502FA;
-l004502DC:
-    STACKVAR(-32, 4) = unknown_function_005BBD38(4 * outBuffer.num_alloc);
-    outBuffer.elements = reinterpret_cast<TYPE **>(STACKVAR(-32, 4));
-l004502FA:
-    ACCESS(ARRPTR(outBuffer.elements, 4, outBuffer.size, 0), 0, 4) = STACKVAR(-12, 4);
-    outBuffer.size++;
-l0045031B:
-    goto l004501D4;
-l00450320:
 }
 
 // address: 0x00450327
@@ -549,47 +540,39 @@ int B_OctTreeSectorsList::BuildSurfaceCache(B_GlobalSurfaceCache *cache, const B
 {
     cache->count = 0;
     unsigned int unknown_loc_0C = 0;
-    unknown_loc_0C = 0;
-    goto l004532A6;
-l0045329D:
-    unknown_loc_0C++;
-l004532A6:
-    if (unknown_loc_0C >= this->size)
+    for (unknown_loc_0C = 0; unknown_loc_0C < this->size; unknown_loc_0C++)
     {
-        goto l0045345A;
-    }
-    STACKVAR(-16, 4) = ACCESS(ARRPTR(this, 4, unknown_loc_0C, 4), 0, 4);
-    ACCESS(ARRPTR(cache, 1, 272 * cache->count, 8), 0, 4) = STACKVAR(-16, 4);
-    ACCESS(ARRPTR(cache, 1, 272 * cache->count, 12), 0, 4) = 0x00000000;
-    unsigned int unknown_loc_14;
-    for (unknown_loc_14 = 0; unknown_loc_14 < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-16, 4), 8, 4)); unknown_loc_14++)
-    {
-        STACKVAR(-24, 4) = ACCESS(ARRPTR(ACCESS(STACKVAR(-16, 4), 4, 4), 4, unknown_loc_14, 0), 0, 4);
-        STACKVAR(-8, 8) = sphere->center.z * reinterpret_cast<double>(ACCESS(STACKVAR(-24, 4), 20, 8)) + sphere->center.y * reinterpret_cast<double>(ACCESS(STACKVAR(-24, 4), 12, 8)) + sphere->center.x * reinterpret_cast<double>(ACCESS(STACKVAR(-24, 4), 4, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(-24, 4), 28, 8));
-        if (-sphere->radius > reinterpret_cast<double>(STACKVAR(-8, 8)))
+        STACKVAR(-16, 4) = ACCESS(ARRPTR(this, 4, unknown_loc_0C, 4), 0, 4);
+        ACCESS(ARRPTR(cache, 1, 272 * cache->count, 8), 0, 4) = STACKVAR(-16, 4);
+        ACCESS(ARRPTR(cache, 1, 272 * cache->count, 12), 0, 4) = 0x00000000;
+        unsigned int unknown_loc_14;
+        for (unknown_loc_14 = 0; unknown_loc_14 < reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-16, 4), 8, 4)); unknown_loc_14++)
         {
-            unknown_loc_14 = reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-16, 4), 8, 4)) + 1;
+            STACKVAR(-24, 4) = ACCESS(ARRPTR(ACCESS(STACKVAR(-16, 4), 4, 4), 4, unknown_loc_14, 0), 0, 4);
+            STACKVAR(-8, 8) = sphere->center.z * reinterpret_cast<double>(ACCESS(STACKVAR(-24, 4), 20, 8)) + sphere->center.y * reinterpret_cast<double>(ACCESS(STACKVAR(-24, 4), 12, 8)) + sphere->center.x * reinterpret_cast<double>(ACCESS(STACKVAR(-24, 4), 4, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(-24, 4), 28, 8));
+            if (-sphere->radius > reinterpret_cast<double>(STACKVAR(-8, 8)))
+            {
+                unknown_loc_14 = reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-16, 4), 8, 4)) + 1;
+            }
+            else if (reinterpret_cast<double>(STACKVAR(-8, 8)) < sphere->radius)
+            {
+                STACKVAR(-28, 4) = ACCESS(ARRPTR(ACCESS(STACKVAR(-16, 4), 4, 4), 4, unknown_loc_14, 0), 0, 4);
+                ACCESS(ARRPTR(reinterpret_cast<any_int32>(cache) + 272 * cache->count + 4, 4, ACCESS(ARRPTR(cache, 1, 272 * cache->count, 12), 0, 4), 12), 0, 4) = STACKVAR(-28, 4);
+                ACCESS(ARRPTR(cache, 1, 272 * cache->count, 12), 0, 4) = reinterpret_cast<any_int32>(ACCESS(ARRPTR(cache, 1, 272 * cache->count, 12), 0, 4)) + 0x00000001;
+            }
         }
-        else if (reinterpret_cast<double>(STACKVAR(-8, 8)) < sphere->radius)
+        if (unknown_loc_14 == reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-16, 4), 8, 4)))
         {
-            STACKVAR(-28, 4) = ACCESS(ARRPTR(ACCESS(STACKVAR(-16, 4), 4, 4), 4, unknown_loc_14, 0), 0, 4);
-            ACCESS(ARRPTR(reinterpret_cast<any_int32>(cache) + 272 * cache->count + 4, 4, ACCESS(ARRPTR(cache, 1, 272 * cache->count, 12), 0, 4), 12), 0, 4) = STACKVAR(-28, 4);
-            ACCESS(ARRPTR(cache, 1, 272 * cache->count, 12), 0, 4) = reinterpret_cast<any_int32>(ACCESS(ARRPTR(cache, 1, 272 * cache->count, 12), 0, 4)) + 0x00000001;
-        }
-    }
-    if (unknown_loc_14 == reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-16, 4), 8, 4)))
-    {
-        if (ACCESS(ARRPTR(cache, 1, 272 * cache->count, 12), 0, 4) == 0x00000000)
-        {
-            ACCESS(ARRPTR(cache, 1, 272 * cache->count, 272), 0, 4) = 0x00000001;
+            if (ACCESS(ARRPTR(cache, 1, 272 * cache->count, 12), 0, 4) == 0x00000000)
+            {
+                ACCESS(ARRPTR(cache, 1, 272 * cache->count, 272), 0, 4) = 0x00000001;
+                cache->count++;
+                return 1;
+            }
+            ACCESS(ARRPTR(cache, 1, 272 * cache->count, 272), 0, 4) = 0x00000000;
             cache->count++;
-            return 1;
         }
-        ACCESS(ARRPTR(cache, 1, 272 * cache->count, 272), 0, 4) = 0x00000000;
-        cache->count++;
     }
-    goto l0045329D;
-l0045345A:
     if (cache->count != 0)
     {
         return 0;
@@ -616,13 +599,10 @@ B_GlobalSurfaceCache::B_GlobalSurfaceCache()
     int unknown_loc_0C = 128;
     STACKVAR(-8, 4) = 0x00000110;
     STACKVAR(-4, 4) = &this->elements;
-l004539D2:
-    unknown_loc_0C--;
-    if (unknown_loc_0C >= 0)
+    while (--unknown_loc_0C >= 0)
     {
         reinterpret_cast<B_SectorSurfaceCache *>(STACKVAR(-4, 4))->B_SectorSurfaceCache();
         STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + reinterpret_cast<any_int32>(STACKVAR(-8, 4));
-        goto l004539D2;
     }
 }
 
