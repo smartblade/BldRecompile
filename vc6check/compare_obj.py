@@ -5,18 +5,38 @@ procedure address in raw.txt (the disassembly of the original binary).
 Bytes changed by the linker (relocations) are not compared.
 """
 import argparse
+import os
 import re
 import struct
 import sys
 
-# (mangled name, address in the original binary)
-PROCEDURES = [
-    ("?GetnOpenedFiles@B_IDataFile@@SAHXZ", 0x1000100F),
-    ("?Seek@B_IDataFile@@QAEJJH@Z", 0x100018A6),
-    ("?Read@B_IDataFile@@QAEXPAXI@Z", 0x10001A33),
-    ("??0B_Name@@QAE@PBD@Z", 0x10003337),
-    ("?OutputWin32Error@@YAXPBD@Z", 0x1002A590),
-]
+# Module name: [(mangled name, address in the original binary)]
+PROCEDURES = {
+    "BBLibc.dll": [
+        ("?GetnOpenedFiles@B_IDataFile@@SAHXZ", 0x1000100F),
+        ("?Seek@B_IDataFile@@QAEJJH@Z", 0x100018A6),
+        ("?Read@B_IDataFile@@QAEXPAXI@Z", 0x10001A33),
+        ("??0B_Name@@QAE@PBD@Z", 0x10003337),
+        ("?OutputWin32Error@@YAXPBD@Z", 0x1002A590),
+    ],
+    "Blade.exe": [
+        (
+            "?CollectSectorsAtPoint@B_OctantNode@@"
+            "UAEXABVB_Vector@@PAVB_OctTreeSectorsList@@N@Z",
+            0x00452388,
+        ),
+        (
+            "?CollectSectorsInBox@B_OctantNode@@"
+            "UAEXABVB_BoundingBox@@PAVB_OctTreeSectorsList@@N@Z",
+            0x00452845,
+        ),
+        (
+            "?FindSectorsAtPoint@B_OctTree@@"
+            "UBEXABVB_Vector@@PAVB_OctTreeSectorsList@@@Z",
+            0x00453067,
+        ),
+    ],
+}
 
 IMAGE_SYM_DTYPE_FUNCTION = 0x20
 IMAGE_SCN_LNK_COMDAT = 0x00001000
@@ -44,9 +64,9 @@ class Section:
         self.relocations = []
         for i in range(n_relocs):
             offset = relocs_ptr + i * 10
-            addr, _, reloc_type = struct.unpack(
+            addr, symbol_index, reloc_type = struct.unpack(
                 "<IIH", data[offset:offset + 10])
-            self.relocations.append((addr, reloc_type))
+            self.relocations.append((addr, symbol_index, reloc_type))
 
 
 class Symbol:
@@ -73,6 +93,8 @@ class ObjFile:
             header = data[offset + i * 40:offset + (i + 1) * 40]
             self.sections.append(Section(data, header))
         self.symbols = []
+        # Symbol by index in symbol table (with auxiliary records)
+        self.symbols_by_index = {}
         strings_ptr = symbols_ptr + n_symbols * 18
         i = 0
         while i < n_symbols:
@@ -84,8 +106,10 @@ class ObjFile:
                 name = data[name_ptr:data.index(b"\0", name_ptr)]
             else:
                 name = name.rstrip(b"\0")
-            self.symbols.append(
-                Symbol(name.decode("latin-1"), value, section_number, sym_type))
+            symbol = Symbol(
+                name.decode("latin-1"), value, section_number, sym_type)
+            self.symbols.append(symbol)
+            self.symbols_by_index[i] = symbol
             i += 1 + n_aux
 
     def functions(self):
@@ -108,12 +132,29 @@ class ObjFile:
                     end = other.value
         code = section.data[symbol.value:end]
         mask = [False] * len(code)
-        for addr, reloc_type in section.relocations:
+        relocations = []
+        for addr, symbol_index, reloc_type in section.relocations:
+            if not symbol.value <= addr < end:
+                continue
             size = RELOCATION_SIZES.get(reloc_type, 4)
             for i in range(addr, addr + size):
-                if symbol.value <= i < end:
+                if i < end:
                     mask[i - symbol.value] = True
-        return code, mask
+            relocations.append(
+                (addr - symbol.value, self._describe_symbol(symbol_index)))
+        return code, mask, relocations
+
+    def _describe_symbol(self, symbol_index):
+        target = self.symbols_by_index.get(symbol_index)
+        if target is None:
+            return "symbol {}".format(symbol_index)
+        if target.section_number > 0:
+            section = self.sections[target.section_number - 1].name
+        elif target.section_number == 0:
+            section = "external"
+        else:
+            section = "absolute"
+        return "{} ({})".format(target.name, section)
 
 
 def read_raw(file_name):
@@ -145,7 +186,7 @@ def format_bytes(code, mask, start, end):
         for i in range(start, end))
 
 
-def compare(name, addr, code, mask, memory):
+def compare(name, addr, code, mask, relocations, memory, show_relocations):
     original = bytes(memory.get(addr + i, 0x100) & 0xFF for i in range(len(code)))
     missing = [i for i in range(len(code)) if addr + i not in memory]
     differences = [
@@ -167,7 +208,17 @@ def compare(name, addr, code, mask, memory):
                 start, format_bytes(code, mask, start, end)))
             print("    +{:04X} original: {}".format(
                 start, format_bytes(original, no_mask, start, end)))
+    if show_relocations:
+        for offset, target in relocations:
+            print("    +{:04X} -> {}".format(offset, target))
     return not differences
+
+
+def read_module_name(raw_file_name):
+    module_file_name = os.path.join(
+        os.path.dirname(os.path.abspath(raw_file_name)), "module.txt")
+    with open(module_file_name) as f:
+        return f.readline().strip()
 
 
 def main():
@@ -177,10 +228,15 @@ def main():
     arg_parser.add_argument(
         "--all", action="store_true",
         help="compare all exported procedures found in object files")
+    arg_parser.add_argument(
+        "--relocs", action="store_true",
+        help="print targets of relocations: called procedures, variables "
+        "and constants (float literals are __real@... symbols)")
     arg_parser.add_argument("obj_files", nargs="+")
     args = arg_parser.parse_args()
     memory, exports = read_raw(args.raw)
-    procedures = dict(PROCEDURES)
+    module_procedures = PROCEDURES.get(read_module_name(args.raw), [])
+    procedures = dict(module_procedures)
     if args.all:
         procedures.update(exports)
     found = set()
@@ -192,9 +248,11 @@ def main():
             if addr is None or symbol.name in found:
                 continue
             found.add(symbol.name)
-            code, mask = obj_file.get_function_code(symbol)
-            all_match &= compare(symbol.name, addr, code, mask, memory)
-    for name, addr in PROCEDURES:
+            code, mask, relocations = obj_file.get_function_code(symbol)
+            all_match &= compare(
+                symbol.name, addr, code, mask, relocations, memory,
+                args.relocs)
+    for name, addr in module_procedures:
         if name not in found:
             print("NOT FOUND {} (0x{:08X}) in object files".format(name, addr))
             all_match = False
