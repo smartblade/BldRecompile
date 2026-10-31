@@ -5,7 +5,8 @@ from hex_conversion import from_hex
 import parser
 
 variable_decl_regexp = re.compile(
-    r'^(static)?(?P<type>[^=]*[*&\s])(?P<name>[^\W\d]\S*)(\s*=\s*\w*\s*)?$')
+    r'^((static|extern)\s+)?(?P<type>[^=]*[*&\s])(?P<name>[^\W\d]\S*)'
+    r'(\s*=\s*\w*\s*)?$')
 array_size_regexp = re.compile(r'(?P<name>.+)\[(?P<size>(0x[\dABCDEF]+)|\w+)]$')
 
 
