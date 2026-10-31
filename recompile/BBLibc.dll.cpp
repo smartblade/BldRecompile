@@ -6000,7 +6000,7 @@ l1000B60C:
     if (unknown_loc_20 < 8)
     {
         int unknown_loc_30 = static_cast<int>(reinterpret_cast<unsigned short>(ACCESS(ARRPTR(STACKVAR(-8, 4), 2, unknown_loc_10, 0), 0, 2)));
-        ACCESS(ARRPTR(STACKVAR(-40, 4), 4, unknown_loc_10, 0), 0, 4) = static_cast<float>(reinterpret_cast<double>(ACCESS(GLOBAL(0x100422C0), 0, 8)) / (static_cast<double>(unknown_loc_30) * reinterpret_cast<double>(ACCESS(ARRPTR(GLOBAL(0x10042280), 8, unknown_loc_24, 0), 0, 8)) * reinterpret_cast<double>(ACCESS(ARRPTR(GLOBAL(0x10042280), 8, unknown_loc_20, 0), 0, 8)) * reinterpret_cast<double>(ACCESS(GLOBAL(0x100422C8), 0, 8))));
+        ACCESS(ARRPTR(STACKVAR(-40, 4), 4, unknown_loc_10, 0), 0, 4) = static_cast<float>(1.0 / (static_cast<double>(unknown_loc_30) * reinterpret_cast<double>(ACCESS(ARRPTR(GLOBAL(0x10042280), 8, unknown_loc_24, 0), 0, 8)) * reinterpret_cast<double>(ACCESS(ARRPTR(GLOBAL(0x10042280), 8, unknown_loc_20, 0), 0, 8)) * 8.0));
         unknown_loc_10++;
         goto l1000B603;
     }
@@ -6183,7 +6183,7 @@ l1000BD21:
     if (unknown_loc_128 < 64)
     {
         STACKVAR(-292, 4) = reinterpret_cast<float>(ACCESS(ARRPTR(LOCAL(-268), 4, unknown_loc_128, 0), 0, 4)) * reinterpret_cast<float>(ACCESS(ARRPTR(STACKVAR(-4, 4), 4, unknown_loc_128, 0), 0, 4));
-        ACCESS(ARRPTR(STACKVAR(-288, 4), 2, unknown_loc_128, 0), 0, 2) = static_cast<any_int16>(static_cast<int>(reinterpret_cast<float>(STACKVAR(-292, 4)) + reinterpret_cast<float>(ACCESS(GLOBAL(0x100422D0), 0, 4))) - 16384);
+        ACCESS(ARRPTR(STACKVAR(-288, 4), 2, unknown_loc_128, 0), 0, 2) = static_cast<any_int16>(static_cast<int>(reinterpret_cast<float>(STACKVAR(-292, 4)) + 16384.5F) - 16384);
         goto l1000BD12;
     }
     goto l1000BA6E;
@@ -17088,16 +17088,16 @@ l1001F9BE:
         STACKVAR(-40, 4) = reinterpret_cast<float>(STACKVAR(-64, 4)) - reinterpret_cast<float>(STACKVAR(-68, 4));
         ACCESS(STACKVAR(-76, 4), 0, 4) = reinterpret_cast<float>(STACKVAR(-16, 4)) + reinterpret_cast<float>(STACKVAR(-28, 4));
         ACCESS(STACKVAR(-76, 4), 16, 4) = reinterpret_cast<float>(STACKVAR(-16, 4)) - reinterpret_cast<float>(STACKVAR(-28, 4));
-        STACKVAR(-4, 4) = (reinterpret_cast<float>(STACKVAR(-40, 4)) + reinterpret_cast<float>(STACKVAR(-48, 4))) * reinterpret_cast<float>(ACCESS(GLOBAL(0x10042A48), 0, 4));
+        STACKVAR(-4, 4) = (reinterpret_cast<float>(STACKVAR(-40, 4)) + reinterpret_cast<float>(STACKVAR(-48, 4))) * 0.70710677F;
         ACCESS(STACKVAR(-76, 4), 8, 4) = reinterpret_cast<float>(STACKVAR(-48, 4)) + reinterpret_cast<float>(STACKVAR(-4, 4));
         ACCESS(STACKVAR(-76, 4), 24, 4) = reinterpret_cast<float>(STACKVAR(-48, 4)) - reinterpret_cast<float>(STACKVAR(-4, 4));
         STACKVAR(-16, 4) = reinterpret_cast<float>(STACKVAR(-80, 4)) + reinterpret_cast<float>(STACKVAR(-84, 4));
         STACKVAR(-28, 4) = reinterpret_cast<float>(STACKVAR(-84, 4)) + reinterpret_cast<float>(STACKVAR(-8, 4));
         STACKVAR(-40, 4) = reinterpret_cast<float>(STACKVAR(-8, 4)) + reinterpret_cast<float>(STACKVAR(-20, 4));
-        STACKVAR(-44, 4) = (reinterpret_cast<float>(STACKVAR(-16, 4)) - reinterpret_cast<float>(STACKVAR(-40, 4))) * reinterpret_cast<float>(ACCESS(GLOBAL(0x10042A44), 0, 4));
-        STACKVAR(-12, 4) = reinterpret_cast<float>(ACCESS(GLOBAL(0x10042A40), 0, 4)) * reinterpret_cast<float>(STACKVAR(-16, 4)) + reinterpret_cast<float>(STACKVAR(-44, 4));
-        STACKVAR(-36, 4) = reinterpret_cast<float>(ACCESS(GLOBAL(0x10042A3C), 0, 4)) * reinterpret_cast<float>(STACKVAR(-40, 4)) + reinterpret_cast<float>(STACKVAR(-44, 4));
-        STACKVAR(-24, 4) = reinterpret_cast<float>(STACKVAR(-28, 4)) * reinterpret_cast<float>(ACCESS(GLOBAL(0x10042A48), 0, 4));
+        STACKVAR(-44, 4) = (reinterpret_cast<float>(STACKVAR(-16, 4)) - reinterpret_cast<float>(STACKVAR(-40, 4))) * 0.38268343F;
+        STACKVAR(-12, 4) = 0.5411961F * reinterpret_cast<float>(STACKVAR(-16, 4)) + reinterpret_cast<float>(STACKVAR(-44, 4));
+        STACKVAR(-36, 4) = 1.306563F * reinterpret_cast<float>(STACKVAR(-40, 4)) + reinterpret_cast<float>(STACKVAR(-44, 4));
+        STACKVAR(-24, 4) = reinterpret_cast<float>(STACKVAR(-28, 4)) * 0.70710677F;
         STACKVAR(-32, 4) = reinterpret_cast<float>(STACKVAR(-20, 4)) + reinterpret_cast<float>(STACKVAR(-24, 4));
         STACKVAR(-52, 4) = reinterpret_cast<float>(STACKVAR(-20, 4)) - reinterpret_cast<float>(STACKVAR(-24, 4));
         ACCESS(STACKVAR(-76, 4), 20, 4) = reinterpret_cast<float>(STACKVAR(-52, 4)) + reinterpret_cast<float>(STACKVAR(-12, 4));
@@ -17129,16 +17129,16 @@ l1001FB59:
         STACKVAR(-40, 4) = reinterpret_cast<float>(STACKVAR(-64, 4)) - reinterpret_cast<float>(STACKVAR(-68, 4));
         ACCESS(STACKVAR(-76, 4), 0, 4) = reinterpret_cast<float>(STACKVAR(-16, 4)) + reinterpret_cast<float>(STACKVAR(-28, 4));
         ACCESS(STACKVAR(-76, 4), 128, 4) = reinterpret_cast<float>(STACKVAR(-16, 4)) - reinterpret_cast<float>(STACKVAR(-28, 4));
-        STACKVAR(-4, 4) = (reinterpret_cast<float>(STACKVAR(-40, 4)) + reinterpret_cast<float>(STACKVAR(-48, 4))) * reinterpret_cast<float>(ACCESS(GLOBAL(0x10042A48), 0, 4));
+        STACKVAR(-4, 4) = (reinterpret_cast<float>(STACKVAR(-40, 4)) + reinterpret_cast<float>(STACKVAR(-48, 4))) * 0.70710677F;
         ACCESS(STACKVAR(-76, 4), 64, 4) = reinterpret_cast<float>(STACKVAR(-48, 4)) + reinterpret_cast<float>(STACKVAR(-4, 4));
         ACCESS(STACKVAR(-76, 4), 192, 4) = reinterpret_cast<float>(STACKVAR(-48, 4)) - reinterpret_cast<float>(STACKVAR(-4, 4));
         STACKVAR(-16, 4) = reinterpret_cast<float>(STACKVAR(-80, 4)) + reinterpret_cast<float>(STACKVAR(-84, 4));
         STACKVAR(-28, 4) = reinterpret_cast<float>(STACKVAR(-84, 4)) + reinterpret_cast<float>(STACKVAR(-8, 4));
         STACKVAR(-40, 4) = reinterpret_cast<float>(STACKVAR(-8, 4)) + reinterpret_cast<float>(STACKVAR(-20, 4));
-        STACKVAR(-44, 4) = (reinterpret_cast<float>(STACKVAR(-16, 4)) - reinterpret_cast<float>(STACKVAR(-40, 4))) * reinterpret_cast<float>(ACCESS(GLOBAL(0x10042A44), 0, 4));
-        STACKVAR(-12, 4) = reinterpret_cast<float>(ACCESS(GLOBAL(0x10042A40), 0, 4)) * reinterpret_cast<float>(STACKVAR(-16, 4)) + reinterpret_cast<float>(STACKVAR(-44, 4));
-        STACKVAR(-36, 4) = reinterpret_cast<float>(ACCESS(GLOBAL(0x10042A3C), 0, 4)) * reinterpret_cast<float>(STACKVAR(-40, 4)) + reinterpret_cast<float>(STACKVAR(-44, 4));
-        STACKVAR(-24, 4) = reinterpret_cast<float>(STACKVAR(-28, 4)) * reinterpret_cast<float>(ACCESS(GLOBAL(0x10042A48), 0, 4));
+        STACKVAR(-44, 4) = (reinterpret_cast<float>(STACKVAR(-16, 4)) - reinterpret_cast<float>(STACKVAR(-40, 4))) * 0.38268343F;
+        STACKVAR(-12, 4) = 0.5411961F * reinterpret_cast<float>(STACKVAR(-16, 4)) + reinterpret_cast<float>(STACKVAR(-44, 4));
+        STACKVAR(-36, 4) = 1.306563F * reinterpret_cast<float>(STACKVAR(-40, 4)) + reinterpret_cast<float>(STACKVAR(-44, 4));
+        STACKVAR(-24, 4) = reinterpret_cast<float>(STACKVAR(-28, 4)) * 0.70710677F;
         STACKVAR(-32, 4) = reinterpret_cast<float>(STACKVAR(-20, 4)) + reinterpret_cast<float>(STACKVAR(-24, 4));
         STACKVAR(-52, 4) = reinterpret_cast<float>(STACKVAR(-20, 4)) - reinterpret_cast<float>(STACKVAR(-24, 4));
         ACCESS(STACKVAR(-76, 4), 160, 4) = reinterpret_cast<float>(STACKVAR(-52, 4)) + reinterpret_cast<float>(STACKVAR(-12, 4));
@@ -17400,7 +17400,7 @@ l100205A1:
         STACKVAR(-8, 4) = reinterpret_cast<float>(STACKVAR(-328, 4)) + reinterpret_cast<float>(STACKVAR(-336, 4));
         STACKVAR(-20, 4) = reinterpret_cast<float>(STACKVAR(-328, 4)) - reinterpret_cast<float>(STACKVAR(-336, 4));
         STACKVAR(-44, 4) = reinterpret_cast<float>(STACKVAR(-332, 4)) + reinterpret_cast<float>(STACKVAR(-340, 4));
-        STACKVAR(-32, 4) = (reinterpret_cast<float>(STACKVAR(-332, 4)) - reinterpret_cast<float>(STACKVAR(-340, 4))) * reinterpret_cast<float>(ACCESS(GLOBAL(0x10042A58), 0, 4)) - reinterpret_cast<float>(STACKVAR(-44, 4));
+        STACKVAR(-32, 4) = (reinterpret_cast<float>(STACKVAR(-332, 4)) - reinterpret_cast<float>(STACKVAR(-340, 4))) * 1.4142135F - reinterpret_cast<float>(STACKVAR(-44, 4));
         STACKVAR(-328, 4) = reinterpret_cast<float>(STACKVAR(-8, 4)) + reinterpret_cast<float>(STACKVAR(-44, 4));
         STACKVAR(-340, 4) = reinterpret_cast<float>(STACKVAR(-8, 4)) - reinterpret_cast<float>(STACKVAR(-44, 4));
         STACKVAR(-332, 4) = reinterpret_cast<float>(STACKVAR(-20, 4)) + reinterpret_cast<float>(STACKVAR(-32, 4));
@@ -17418,10 +17418,10 @@ l100205A1:
         STACKVAR(-28, 4) = reinterpret_cast<float>(STACKVAR(-344, 4)) + reinterpret_cast<float>(STACKVAR(-12, 4));
         STACKVAR(-36, 4) = reinterpret_cast<float>(STACKVAR(-344, 4)) - reinterpret_cast<float>(STACKVAR(-12, 4));
         STACKVAR(-12, 4) = reinterpret_cast<float>(STACKVAR(-28, 4)) + reinterpret_cast<float>(STACKVAR(-52, 4));
-        STACKVAR(-20, 4) = (reinterpret_cast<float>(STACKVAR(-28, 4)) - reinterpret_cast<float>(STACKVAR(-52, 4))) * reinterpret_cast<float>(ACCESS(GLOBAL(0x10042A58), 0, 4));
-        STACKVAR(-40, 4) = (reinterpret_cast<float>(STACKVAR(-16, 4)) + reinterpret_cast<float>(STACKVAR(-36, 4))) * reinterpret_cast<float>(ACCESS(GLOBAL(0x10042A54), 0, 4));
-        STACKVAR(-8, 4) = reinterpret_cast<float>(ACCESS(GLOBAL(0x10042A50), 0, 4)) * reinterpret_cast<float>(STACKVAR(-36, 4)) - reinterpret_cast<float>(STACKVAR(-40, 4));
-        STACKVAR(-32, 4) = reinterpret_cast<float>(ACCESS(GLOBAL(0x10042A4C), 0, 4)) * reinterpret_cast<float>(STACKVAR(-16, 4)) + reinterpret_cast<float>(STACKVAR(-40, 4));
+        STACKVAR(-20, 4) = (reinterpret_cast<float>(STACKVAR(-28, 4)) - reinterpret_cast<float>(STACKVAR(-52, 4))) * 1.4142135F;
+        STACKVAR(-40, 4) = (reinterpret_cast<float>(STACKVAR(-16, 4)) + reinterpret_cast<float>(STACKVAR(-36, 4))) * 1.847759F;
+        STACKVAR(-8, 4) = 1.0823922F * reinterpret_cast<float>(STACKVAR(-36, 4)) - reinterpret_cast<float>(STACKVAR(-40, 4));
+        STACKVAR(-32, 4) = -2.613126F * reinterpret_cast<float>(STACKVAR(-16, 4)) + reinterpret_cast<float>(STACKVAR(-40, 4));
         STACKVAR(-4, 4) = reinterpret_cast<float>(STACKVAR(-32, 4)) - reinterpret_cast<float>(STACKVAR(-12, 4));
         STACKVAR(-348, 4) = reinterpret_cast<float>(STACKVAR(-20, 4)) - reinterpret_cast<float>(STACKVAR(-4, 4));
         STACKVAR(-344, 4) = reinterpret_cast<float>(STACKVAR(-8, 4)) + reinterpret_cast<float>(STACKVAR(-348, 4));
@@ -17450,7 +17450,7 @@ l100209D5:
         STACKVAR(-8, 4) = reinterpret_cast<float>(ACCESS(STACKVAR(-56, 4), 0, 4)) + reinterpret_cast<float>(ACCESS(STACKVAR(-56, 4), 16, 4));
         STACKVAR(-20, 4) = reinterpret_cast<float>(ACCESS(STACKVAR(-56, 4), 0, 4)) - reinterpret_cast<float>(ACCESS(STACKVAR(-56, 4), 16, 4));
         STACKVAR(-44, 4) = reinterpret_cast<float>(ACCESS(STACKVAR(-56, 4), 8, 4)) + reinterpret_cast<float>(ACCESS(STACKVAR(-56, 4), 24, 4));
-        STACKVAR(-32, 4) = (reinterpret_cast<float>(ACCESS(STACKVAR(-56, 4), 8, 4)) - reinterpret_cast<float>(ACCESS(STACKVAR(-56, 4), 24, 4))) * reinterpret_cast<float>(ACCESS(GLOBAL(0x10042A58), 0, 4)) - reinterpret_cast<float>(STACKVAR(-44, 4));
+        STACKVAR(-32, 4) = (reinterpret_cast<float>(ACCESS(STACKVAR(-56, 4), 8, 4)) - reinterpret_cast<float>(ACCESS(STACKVAR(-56, 4), 24, 4))) * 1.4142135F - reinterpret_cast<float>(STACKVAR(-44, 4));
         STACKVAR(-328, 4) = reinterpret_cast<float>(STACKVAR(-8, 4)) + reinterpret_cast<float>(STACKVAR(-44, 4));
         STACKVAR(-340, 4) = reinterpret_cast<float>(STACKVAR(-8, 4)) - reinterpret_cast<float>(STACKVAR(-44, 4));
         STACKVAR(-332, 4) = reinterpret_cast<float>(STACKVAR(-20, 4)) + reinterpret_cast<float>(STACKVAR(-32, 4));
@@ -17460,10 +17460,10 @@ l100209D5:
         STACKVAR(-28, 4) = reinterpret_cast<float>(ACCESS(STACKVAR(-56, 4), 4, 4)) + reinterpret_cast<float>(ACCESS(STACKVAR(-56, 4), 28, 4));
         STACKVAR(-36, 4) = reinterpret_cast<float>(ACCESS(STACKVAR(-56, 4), 4, 4)) - reinterpret_cast<float>(ACCESS(STACKVAR(-56, 4), 28, 4));
         STACKVAR(-12, 4) = reinterpret_cast<float>(STACKVAR(-28, 4)) + reinterpret_cast<float>(STACKVAR(-52, 4));
-        STACKVAR(-20, 4) = (reinterpret_cast<float>(STACKVAR(-28, 4)) - reinterpret_cast<float>(STACKVAR(-52, 4))) * reinterpret_cast<float>(ACCESS(GLOBAL(0x10042A58), 0, 4));
-        STACKVAR(-40, 4) = (reinterpret_cast<float>(STACKVAR(-16, 4)) + reinterpret_cast<float>(STACKVAR(-36, 4))) * reinterpret_cast<float>(ACCESS(GLOBAL(0x10042A54), 0, 4));
-        STACKVAR(-8, 4) = reinterpret_cast<float>(ACCESS(GLOBAL(0x10042A50), 0, 4)) * reinterpret_cast<float>(STACKVAR(-36, 4)) - reinterpret_cast<float>(STACKVAR(-40, 4));
-        STACKVAR(-32, 4) = reinterpret_cast<float>(ACCESS(GLOBAL(0x10042A4C), 0, 4)) * reinterpret_cast<float>(STACKVAR(-16, 4)) + reinterpret_cast<float>(STACKVAR(-40, 4));
+        STACKVAR(-20, 4) = (reinterpret_cast<float>(STACKVAR(-28, 4)) - reinterpret_cast<float>(STACKVAR(-52, 4))) * 1.4142135F;
+        STACKVAR(-40, 4) = (reinterpret_cast<float>(STACKVAR(-16, 4)) + reinterpret_cast<float>(STACKVAR(-36, 4))) * 1.847759F;
+        STACKVAR(-8, 4) = 1.0823922F * reinterpret_cast<float>(STACKVAR(-36, 4)) - reinterpret_cast<float>(STACKVAR(-40, 4));
+        STACKVAR(-32, 4) = -2.613126F * reinterpret_cast<float>(STACKVAR(-16, 4)) + reinterpret_cast<float>(STACKVAR(-40, 4));
         STACKVAR(-4, 4) = reinterpret_cast<float>(STACKVAR(-32, 4)) - reinterpret_cast<float>(STACKVAR(-12, 4));
         STACKVAR(-348, 4) = reinterpret_cast<float>(STACKVAR(-20, 4)) - reinterpret_cast<float>(STACKVAR(-4, 4));
         STACKVAR(-344, 4) = reinterpret_cast<float>(STACKVAR(-8, 4)) + reinterpret_cast<float>(STACKVAR(-348, 4));
@@ -22930,7 +22930,7 @@ p1002DF30
 {
     ProcedureInfo(this=Id(this), this_offset=-44, local_size=44, stack_delta=12)
     STACKVAR(-16, 8) = reinterpret_cast<double>(ACCESS(this, 4, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 0, 8)) + reinterpret_cast<double>(ACCESS(this, 12, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 8, 8)) + reinterpret_cast<double>(ACCESS(this, 20, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 16, 8));
-    if (reinterpret_cast<double>(STACKVAR(-16, 8)) == reinterpret_cast<double>(ACCESS(GLOBAL(0x10042CF0), 0, 8)))
+    if (reinterpret_cast<double>(STACKVAR(-16, 8)) == 0.0)
     {
         REGDEF(eax=0x00000000)
         return;
@@ -22938,7 +22938,7 @@ p1002DF30
     STACKVAR(-24, 8) = (reinterpret_cast<double>(ACCESS(STACKVAR(8, 4), 0, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 8, 8)) - reinterpret_cast<double>(ACCESS(STACKVAR(8, 4), 8, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 0, 8))) * reinterpret_cast<double>(ACCESS(this, 12, 8)) + (reinterpret_cast<double>(ACCESS(STACKVAR(8, 4), 0, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 16, 8)) - reinterpret_cast<double>(ACCESS(STACKVAR(8, 4), 16, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 0, 8))) * reinterpret_cast<double>(ACCESS(this, 20, 8)) - reinterpret_cast<double>(ACCESS(this, 28, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 0, 8));
     STACKVAR(-32, 8) = (reinterpret_cast<double>(ACCESS(STACKVAR(8, 4), 8, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 16, 8)) - reinterpret_cast<double>(ACCESS(STACKVAR(8, 4), 16, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 8, 8))) * reinterpret_cast<double>(ACCESS(this, 20, 8)) + (reinterpret_cast<double>(ACCESS(STACKVAR(8, 4), 8, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 0, 8)) - reinterpret_cast<double>(ACCESS(STACKVAR(8, 4), 0, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 8, 8))) * reinterpret_cast<double>(ACCESS(this, 4, 8)) - reinterpret_cast<double>(ACCESS(this, 28, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 8, 8));
     STACKVAR(-40, 8) = (reinterpret_cast<double>(ACCESS(STACKVAR(8, 4), 16, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 0, 8)) - reinterpret_cast<double>(ACCESS(STACKVAR(8, 4), 0, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 16, 8))) * reinterpret_cast<double>(ACCESS(this, 4, 8)) + (reinterpret_cast<double>(ACCESS(STACKVAR(8, 4), 16, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 8, 8)) - reinterpret_cast<double>(ACCESS(STACKVAR(8, 4), 8, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 16, 8))) * reinterpret_cast<double>(ACCESS(this, 12, 8)) - reinterpret_cast<double>(ACCESS(this, 28, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 16, 8));
-    STACKVAR(-8, 8) = reinterpret_cast<double>(ACCESS(GLOBAL(0x100422C0), 0, 8)) / reinterpret_cast<double>(STACKVAR(-16, 8));
+    STACKVAR(-8, 8) = 1.0 / reinterpret_cast<double>(STACKVAR(-16, 8));
     ACCESS(STACKVAR(16, 4), 0, 8) = reinterpret_cast<double>(STACKVAR(-24, 8)) * reinterpret_cast<double>(STACKVAR(-8, 8));
     ACCESS(STACKVAR(16, 4), 8, 8) = reinterpret_cast<double>(STACKVAR(-32, 8)) * reinterpret_cast<double>(STACKVAR(-8, 8));
     ACCESS(STACKVAR(16, 4), 16, 8) = reinterpret_cast<double>(STACKVAR(-40, 8)) * reinterpret_cast<double>(STACKVAR(-8, 8));
@@ -23027,17 +23027,17 @@ p1002E600
     STACKVAR(-24, 8) = ACCESS(STACKVAR(8, 4), 0, 8);
     STACKVAR(-32, 8) = ACCESS(STACKVAR(8, 4), 8, 8);
     STACKVAR(-40, 8) = ACCESS(STACKVAR(8, 4), 16, 8);
-    ACCESS(this, 0, 8) = reinterpret_cast<double>(STACKVAR(-24, 8)) * reinterpret_cast<double>(STACKVAR(-24, 8)) * (reinterpret_cast<double>(ACCESS(GLOBAL(0x100422C0), 0, 8)) - reinterpret_cast<double>(STACKVAR(-16, 8))) + reinterpret_cast<double>(STACKVAR(-16, 8));
-    ACCESS(this, 8, 8) = reinterpret_cast<double>(STACKVAR(-24, 8)) * reinterpret_cast<double>(STACKVAR(-32, 8)) * (reinterpret_cast<double>(ACCESS(GLOBAL(0x100422C0), 0, 8)) - reinterpret_cast<double>(STACKVAR(-16, 8))) + reinterpret_cast<double>(STACKVAR(-40, 8)) * reinterpret_cast<double>(STACKVAR(-8, 8));
-    ACCESS(this, 16, 8) = reinterpret_cast<double>(STACKVAR(-24, 8)) * reinterpret_cast<double>(STACKVAR(-40, 8)) * (reinterpret_cast<double>(ACCESS(GLOBAL(0x100422C0), 0, 8)) - reinterpret_cast<double>(STACKVAR(-16, 8))) - reinterpret_cast<double>(STACKVAR(-32, 8)) * reinterpret_cast<double>(STACKVAR(-8, 8));
+    ACCESS(this, 0, 8) = reinterpret_cast<double>(STACKVAR(-24, 8)) * reinterpret_cast<double>(STACKVAR(-24, 8)) * (1.0 - reinterpret_cast<double>(STACKVAR(-16, 8))) + reinterpret_cast<double>(STACKVAR(-16, 8));
+    ACCESS(this, 8, 8) = reinterpret_cast<double>(STACKVAR(-24, 8)) * reinterpret_cast<double>(STACKVAR(-32, 8)) * (1.0 - reinterpret_cast<double>(STACKVAR(-16, 8))) + reinterpret_cast<double>(STACKVAR(-40, 8)) * reinterpret_cast<double>(STACKVAR(-8, 8));
+    ACCESS(this, 16, 8) = reinterpret_cast<double>(STACKVAR(-24, 8)) * reinterpret_cast<double>(STACKVAR(-40, 8)) * (1.0 - reinterpret_cast<double>(STACKVAR(-16, 8))) - reinterpret_cast<double>(STACKVAR(-32, 8)) * reinterpret_cast<double>(STACKVAR(-8, 8));
     ACCESS(this, 24, 8) = 0.0;
-    ACCESS(this, 32, 8) = reinterpret_cast<double>(STACKVAR(-24, 8)) * reinterpret_cast<double>(STACKVAR(-32, 8)) * (reinterpret_cast<double>(ACCESS(GLOBAL(0x100422C0), 0, 8)) - reinterpret_cast<double>(STACKVAR(-16, 8))) - reinterpret_cast<double>(STACKVAR(-40, 8)) * reinterpret_cast<double>(STACKVAR(-8, 8));
+    ACCESS(this, 32, 8) = reinterpret_cast<double>(STACKVAR(-24, 8)) * reinterpret_cast<double>(STACKVAR(-32, 8)) * (1.0 - reinterpret_cast<double>(STACKVAR(-16, 8))) - reinterpret_cast<double>(STACKVAR(-40, 8)) * reinterpret_cast<double>(STACKVAR(-8, 8));
     ACCESS(this, 40, 8) = reinterpret_cast<double>(STACKVAR(-32, 8)) * reinterpret_cast<double>(STACKVAR(-32, 8)) + (reinterpret_cast<double>(STACKVAR(-24, 8)) * reinterpret_cast<double>(STACKVAR(-24, 8)) + reinterpret_cast<double>(STACKVAR(-40, 8)) * reinterpret_cast<double>(STACKVAR(-40, 8))) * reinterpret_cast<double>(STACKVAR(-16, 8));
-    ACCESS(this, 48, 8) = reinterpret_cast<double>(STACKVAR(-32, 8)) * reinterpret_cast<double>(STACKVAR(-40, 8)) * (reinterpret_cast<double>(ACCESS(GLOBAL(0x100422C0), 0, 8)) - reinterpret_cast<double>(STACKVAR(-16, 8))) + reinterpret_cast<double>(STACKVAR(-24, 8)) * reinterpret_cast<double>(STACKVAR(-8, 8));
+    ACCESS(this, 48, 8) = reinterpret_cast<double>(STACKVAR(-32, 8)) * reinterpret_cast<double>(STACKVAR(-40, 8)) * (1.0 - reinterpret_cast<double>(STACKVAR(-16, 8))) + reinterpret_cast<double>(STACKVAR(-24, 8)) * reinterpret_cast<double>(STACKVAR(-8, 8));
     ACCESS(this, 56, 8) = 0.0;
-    ACCESS(this, 64, 8) = reinterpret_cast<double>(STACKVAR(-24, 8)) * reinterpret_cast<double>(STACKVAR(-40, 8)) * (reinterpret_cast<double>(ACCESS(GLOBAL(0x100422C0), 0, 8)) - reinterpret_cast<double>(STACKVAR(-16, 8))) + reinterpret_cast<double>(STACKVAR(-32, 8)) * reinterpret_cast<double>(STACKVAR(-8, 8));
-    ACCESS(this, 72, 8) = reinterpret_cast<double>(STACKVAR(-32, 8)) * reinterpret_cast<double>(STACKVAR(-40, 8)) * (reinterpret_cast<double>(ACCESS(GLOBAL(0x100422C0), 0, 8)) - reinterpret_cast<double>(STACKVAR(-16, 8))) - reinterpret_cast<double>(STACKVAR(-24, 8)) * reinterpret_cast<double>(STACKVAR(-8, 8));
-    ACCESS(this, 80, 8) = reinterpret_cast<double>(STACKVAR(-40, 8)) * reinterpret_cast<double>(STACKVAR(-40, 8)) * (reinterpret_cast<double>(ACCESS(GLOBAL(0x100422C0), 0, 8)) - reinterpret_cast<double>(STACKVAR(-16, 8))) + reinterpret_cast<double>(STACKVAR(-16, 8));
+    ACCESS(this, 64, 8) = reinterpret_cast<double>(STACKVAR(-24, 8)) * reinterpret_cast<double>(STACKVAR(-40, 8)) * (1.0 - reinterpret_cast<double>(STACKVAR(-16, 8))) + reinterpret_cast<double>(STACKVAR(-32, 8)) * reinterpret_cast<double>(STACKVAR(-8, 8));
+    ACCESS(this, 72, 8) = reinterpret_cast<double>(STACKVAR(-32, 8)) * reinterpret_cast<double>(STACKVAR(-40, 8)) * (1.0 - reinterpret_cast<double>(STACKVAR(-16, 8))) - reinterpret_cast<double>(STACKVAR(-24, 8)) * reinterpret_cast<double>(STACKVAR(-8, 8));
+    ACCESS(this, 80, 8) = reinterpret_cast<double>(STACKVAR(-40, 8)) * reinterpret_cast<double>(STACKVAR(-40, 8)) * (1.0 - reinterpret_cast<double>(STACKVAR(-16, 8))) + reinterpret_cast<double>(STACKVAR(-16, 8));
     ACCESS(this, 88, 8) = 0.0;
     ACCESS(this, 96, 8) = 0.0;
     ACCESS(this, 104, 8) = 0.0;
@@ -23233,7 +23233,7 @@ p10031284
 p100312FC
 {
     ProcedureInfo(this=Id(this), this_offset=-4, local_size=8, stack_delta=4)
-    REGDEF(eax=(reinterpret_cast<any_int32>(STACKVAR(8, 4)) + 0x00000004)->unknown_method_1003184F(reinterpret_cast<any_int32>(this) + 0x00000004) > reinterpret_cast<double>(ACCESS(GLOBAL(0x10042D10), 0, 8)) && fabs(reinterpret_cast<double>(ACCESS(STACKVAR(8, 4), 28, 8)) - reinterpret_cast<double>(ACCESS(this, 28, 8))) < reinterpret_cast<double>(ACCESS(GLOBAL(0x10042CE8), 0, 8)) ? 0x00000001 : 0x00000000)
+    REGDEF(eax=(reinterpret_cast<any_int32>(STACKVAR(8, 4)) + 0x00000004)->unknown_method_1003184F(reinterpret_cast<any_int32>(this) + 0x00000004) > 0.999999 && fabs(reinterpret_cast<double>(ACCESS(STACKVAR(8, 4), 28, 8)) - reinterpret_cast<double>(ACCESS(this, 28, 8))) < 0.5 ? 0x00000001 : 0x00000000)
 }
 
 // address: 0x10031430
@@ -23450,7 +23450,7 @@ p10031F48
 {
     ProcedureInfo(this=None, this_offset=None, local_size=0, stack_delta=0)
     reinterpret_cast<B_IDataFile &>(unknown_function_10031E6D(STACKVAR(8, 4), reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000004)) >> reinterpret_cast<int &>(STACKVAR(12, 4));
-    ACCESS(STACKVAR(12, 4), 20, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 20, 8)) + reinterpret_cast<double>(ACCESS(GLOBAL(0x10042D60), 0, 8));
+    ACCESS(STACKVAR(12, 4), 20, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 20, 8)) + 52.0;
     REGDEF(eax=STACKVAR(8, 4))
 }
 
@@ -23639,7 +23639,7 @@ p100324EC
 p10032524
 {
     ProcedureInfo(this=None, this_offset=None, local_size=48, stack_delta=0)
-    if (reinterpret_cast<float>(ACCESS(GLOBAL(0x100488B8), 0, 4)) == reinterpret_cast<double>(ACCESS(GLOBAL(0x10042CD8), 0, 8)))
+    if (reinterpret_cast<float>(ACCESS(GLOBAL(0x100488B8), 0, 4)) == 2.0)
     {
         reinterpret_cast<B_IDataFile &>(STACKVAR(8, 4)) >> reinterpret_cast<B_NamedObj &>(STACKVAR(12, 4));
     }
@@ -23706,7 +23706,7 @@ l100326FB:
 p1003270D
 {
     ProcedureInfo(this=None, this_offset=None, local_size=12, stack_delta=0)
-    if (reinterpret_cast<float>(ACCESS(GLOBAL(0x100488B8), 0, 4)) == reinterpret_cast<double>(ACCESS(GLOBAL(0x10042CD8), 0, 8)))
+    if (reinterpret_cast<float>(ACCESS(GLOBAL(0x100488B8), 0, 4)) == 2.0)
     {
         reinterpret_cast<B_ODataFile &>(STACKVAR(8, 4)) << reinterpret_cast<B_NamedObj &>(STACKVAR(12, 4));
     }
@@ -24070,7 +24070,7 @@ l1003338C:
         STACKVAR(-600, 4) = reinterpret_cast<any_int32>(ACCESS(this, 40, 4)) + 0x00000030 * (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-596, 4), 168, 4)) + reinterpret_cast<any_int32>(STACKVAR(-200, 4)));
         memcpy(reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-600, 4)) + 0x00000018), reinterpret_cast<void *>(unknown_function_100300A1(LOCAL(-476), reinterpret_cast<any_int32>(ACCESS(this, 40, 4)) + 0x00000030 * (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-592, 4), 168, 4)) + reinterpret_cast<any_int32>(STACKVAR(-200, 4))) + 24, LOCAL(-196))), 24);
         STACKVAR(-604, 4) = ACCESS(ARRPTR(ACCESS(this, 80, 4), 4, STACKVAR(-24, 4), 0), 0, 4);
-        if ((reinterpret_cast<any_int32>(ACCESS(this, 40, 4)) + 0x00000030 * (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-604, 4), 168, 4)) + reinterpret_cast<any_int32>(STACKVAR(-200, 4))) + 24)->unknown_method_10031913() > reinterpret_cast<double>(ACCESS(GLOBAL(0x10042CE0), 0, 8)))
+        if ((reinterpret_cast<any_int32>(ACCESS(this, 40, 4)) + 0x00000030 * (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-604, 4), 168, 4)) + reinterpret_cast<any_int32>(STACKVAR(-200, 4))) + 24)->unknown_method_10031913() > 1e-06)
         {
             STACKVAR(-608, 4) = ACCESS(ARRPTR(ACCESS(this, 80, 4), 4, STACKVAR(-24, 4), 0), 0, 4);
             STACKVAR(-612, 4) = ACCESS(ARRPTR(ACCESS(this, 80, 4), 4, STACKVAR(-24, 4), 0), 0, 4);
@@ -24351,11 +24351,11 @@ l10033CFD:
         STACKVAR(-648, 4) = reinterpret_cast<any_int32>(ACCESS(this, 60, 4)) + 0x00000038 * reinterpret_cast<any_int32>(STACKVAR(-28, 4));
         STACKVAR(-652, 4) = reinterpret_cast<any_int32>(ACCESS(this, 60, 4)) + 0x00000038 * reinterpret_cast<any_int32>(STACKVAR(-28, 4));
         memcpy(LOCAL(-68), reinterpret_cast<void *>((0x00000018 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-652, 4), 4, 4)) + reinterpret_cast<any_int32>(STACKVAR(-36, 4)))->unknown_method_10031760(LOCAL(-300), reinterpret_cast<any_int32>(STACKVAR(-36, 4)) + 0x00000018 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-648, 4), 0, 4)), LOCAL(-348), (reinterpret_cast<any_int32>(STACKVAR(-36, 4)) + 0x00000018 * reinterpret_cast<any_int32>(ACCESS(ARRPTR(ACCESS(this, 60, 4), 1, 0x00000038 * reinterpret_cast<any_int32>(STACKVAR(-28, 4)), 8), 0, 4)))->unknown_method_10031760(LOCAL(-324), reinterpret_cast<any_int32>(STACKVAR(-36, 4)) + 0x00000018 * reinterpret_cast<any_int32>(ACCESS(ARRPTR(ACCESS(this, 60, 4), 1, 0x00000038 * reinterpret_cast<any_int32>(STACKVAR(-28, 4)), 0), 0, 4))))->unknown_method_10031882()), 24);
-        STACKVAR(-76, 8) = LOCAL(-68)->unknown_method_10031913() / reinterpret_cast<double>(ACCESS(GLOBAL(0x10042CD8), 0, 8));
+        STACKVAR(-76, 8) = LOCAL(-68)->unknown_method_10031913() / 2.0;
         ACCESS(this, 560, 8) = reinterpret_cast<double>(STACKVAR(-76, 8)) + reinterpret_cast<double>(ACCESS(this, 560, 8));
-        ACCESS(ARRPTR(STACKVAR(-24, 4), 8, ACCESS(ARRPTR(ACCESS(this, 60, 4), 1, 0x00000038 * reinterpret_cast<any_int32>(STACKVAR(-28, 4)), 0), 0, 4), 0), 0, 8) = reinterpret_cast<double>(STACKVAR(-76, 8)) / reinterpret_cast<double>(ACCESS(GLOBAL(0x10042D70), 0, 8));
-        ACCESS(ARRPTR(STACKVAR(-24, 4), 8, ACCESS(ARRPTR(ACCESS(this, 60, 4), 1, 0x00000038 * reinterpret_cast<any_int32>(STACKVAR(-28, 4)), 4), 0, 4), 0), 0, 8) = reinterpret_cast<double>(STACKVAR(-76, 8)) / reinterpret_cast<double>(ACCESS(GLOBAL(0x10042D70), 0, 8));
-        ACCESS(ARRPTR(STACKVAR(-24, 4), 8, ACCESS(ARRPTR(ACCESS(this, 60, 4), 1, 0x00000038 * reinterpret_cast<any_int32>(STACKVAR(-28, 4)), 8), 0, 4), 0), 0, 8) = reinterpret_cast<double>(STACKVAR(-76, 8)) / reinterpret_cast<double>(ACCESS(GLOBAL(0x10042D70), 0, 8));
+        ACCESS(ARRPTR(STACKVAR(-24, 4), 8, ACCESS(ARRPTR(ACCESS(this, 60, 4), 1, 0x00000038 * reinterpret_cast<any_int32>(STACKVAR(-28, 4)), 0), 0, 4), 0), 0, 8) = reinterpret_cast<double>(STACKVAR(-76, 8)) / 3.0;
+        ACCESS(ARRPTR(STACKVAR(-24, 4), 8, ACCESS(ARRPTR(ACCESS(this, 60, 4), 1, 0x00000038 * reinterpret_cast<any_int32>(STACKVAR(-28, 4)), 4), 0, 4), 0), 0, 8) = reinterpret_cast<double>(STACKVAR(-76, 8)) / 3.0;
+        ACCESS(ARRPTR(STACKVAR(-24, 4), 8, ACCESS(ARRPTR(ACCESS(this, 60, 4), 1, 0x00000038 * reinterpret_cast<any_int32>(STACKVAR(-28, 4)), 8), 0, 4), 0), 0, 8) = reinterpret_cast<double>(STACKVAR(-76, 8)) / 3.0;
         goto l10033CF4;
     }
     ACCESS(this, 568, 8) = 0.0;
@@ -24581,7 +24581,7 @@ l10034508:
         }
         goto l100344FF;
     }
-    STACKVAR(-16, 8) = reinterpret_cast<double>(ACCESS(GLOBAL(0x100422C0), 0, 8)) / (0x00000030 * reinterpret_cast<any_int32>(STACKVAR(12, 4)) + reinterpret_cast<any_int32>(ACCESS(this, 40, 4)))->unknown_method_10031760(LOCAL(-56), reinterpret_cast<any_int32>(ACCESS(this, 40, 4)) + 0x00000030 * reinterpret_cast<any_int32>(STACKVAR(8, 4)))->unknown_method_10031913();
+    STACKVAR(-16, 8) = 1.0 / (0x00000030 * reinterpret_cast<any_int32>(STACKVAR(12, 4)) + reinterpret_cast<any_int32>(ACCESS(this, 40, 4)))->unknown_method_10031760(LOCAL(-56), reinterpret_cast<any_int32>(ACCESS(this, 40, 4)) + 0x00000030 * reinterpret_cast<any_int32>(STACKVAR(8, 4)))->unknown_method_10031913();
     STACKVAR(-116, 4) = reinterpret_cast<any_int32>(this) + 0x000000BC;
     if (reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-116, 4), 16, 4)) > reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-116, 4), 8, 4)))
     {
@@ -24971,7 +24971,7 @@ l10035134:
         STACKVAR(-200, 4) = STACKVAR(-1076, 4);
         goto l1003512B;
     }
-    if (scale == reinterpret_cast<double>(ACCESS(GLOBAL(0x10042CF0), 0, 8)))
+    if (scale == 0.0)
     {
         if ((y2 - y1) / (reinterpret_cast<double>(STACKVAR(-212, 8)) - reinterpret_cast<double>(STACKVAR(-252, 8))) > (x2 - x1) / (reinterpret_cast<double>(STACKVAR(-260, 8)) - reinterpret_cast<double>(STACKVAR(-244, 8))))
         {
@@ -24988,13 +24988,13 @@ l10035134:
     {
         STACKVAR(-40, 8) = static_cast<double>(scale);
     }
-    STACKVAR(-20, 8) = (x1 + x2 - (reinterpret_cast<double>(STACKVAR(-244, 8)) + reinterpret_cast<double>(STACKVAR(-260, 8))) * reinterpret_cast<double>(STACKVAR(-40, 8))) * reinterpret_cast<double>(ACCESS(GLOBAL(0x10042CE8), 0, 8));
-    STACKVAR(-28, 8) = (y1 + y2 - (reinterpret_cast<double>(STACKVAR(-252, 8)) + reinterpret_cast<double>(STACKVAR(-212, 8))) * reinterpret_cast<double>(STACKVAR(-40, 8))) * reinterpret_cast<double>(ACCESS(GLOBAL(0x10042CE8), 0, 8));
+    STACKVAR(-20, 8) = (x1 + x2 - (reinterpret_cast<double>(STACKVAR(-244, 8)) + reinterpret_cast<double>(STACKVAR(-260, 8))) * reinterpret_cast<double>(STACKVAR(-40, 8))) * 0.5;
+    STACKVAR(-28, 8) = (y1 + y2 - (reinterpret_cast<double>(STACKVAR(-252, 8)) + reinterpret_cast<double>(STACKVAR(-212, 8))) * reinterpret_cast<double>(STACKVAR(-40, 8))) * 0.5;
     STACKVAR(-236, 4) = 0x00000000;
     STACKVAR(-232, 4) = 0x00000000;
     ACCESS(LOCAL(-228), 0, 8) = 0.0;
     ACCESS(LOCAL(-220), 0, 8) = 0.0;
-    STACKVAR(-204, 8) = reinterpret_cast<double>(STACKVAR(-204, 8)) - reinterpret_cast<double>(ACCESS(GLOBAL(0x10042D88), 0, 8));
+    STACKVAR(-204, 8) = reinterpret_cast<double>(STACKVAR(-204, 8)) - 100.0;
     raster->(ACCESS(ACCESS(raster, 0, 4), 108, 4))();
     if (i_unknown == 0)
     {
@@ -25002,7 +25002,7 @@ l10035134:
     }
     raster->(ACCESS(ACCESS(raster, 0, 4), 276, 4))(0x00000002);
     STACKVAR(-548, 4) = static_cast<float>(raster->(ACCESS(ACCESS(raster, 0, 4), 384, 4))());
-    STACKVAR(-1092, 4) = static_cast<float>(reinterpret_cast<float>(STACKVAR(-548, 4)) * reinterpret_cast<double>(ACCESS(GLOBAL(0x10042D80), 0, 8)));
+    STACKVAR(-1092, 4) = static_cast<float>(reinterpret_cast<float>(STACKVAR(-548, 4)) * 0.4);
     raster->(ACCESS(ACCESS(raster, 0, 4), 368, 4))(reinterpret_cast<float>(STACKVAR(-1092, 4)));
     STACKVAR(-44, 4) = 0x00000000;
     goto l100354FC;
@@ -25015,7 +25015,7 @@ l100354FC:
         STACKVAR(-8, 4) = reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A9BC), 0, 4)) + 0x00000018 * reinterpret_cast<any_int32>(ACCESS(ARRPTR(ACCESS(this, 60, 4), 1, 0x00000038 * reinterpret_cast<any_int32>(STACKVAR(-44, 4)), 4), 0, 4));
         STACKVAR(-12, 4) = reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A9BC), 0, 4)) + 0x00000018 * reinterpret_cast<any_int32>(ACCESS(ARRPTR(ACCESS(this, 60, 4), 1, 0x00000038 * reinterpret_cast<any_int32>(STACKVAR(-44, 4)), 8), 0, 4));
         memcpy(LOCAL(-236), reinterpret_cast<void *>(STACKVAR(-8, 4)->unknown_method_10031760(LOCAL(-892), STACKVAR(-4, 4), LOCAL(-940), STACKVAR(-12, 4)->unknown_method_10031760(LOCAL(-916), STACKVAR(-4, 4)))->unknown_method_10031882()), 24);
-        if (reinterpret_cast<double>(STACKVAR(-220, 8)) < reinterpret_cast<double>(ACCESS(GLOBAL(0x10042CF0), 0, 8)))
+        if (reinterpret_cast<double>(STACKVAR(-220, 8)) < 0.0)
         {
             raster->(ACCESS(ACCESS(raster, 0, 4), 172, 4))(ACCESS(ARRPTR(ACCESS(this, 60, 4), 1, 0x00000038 * reinterpret_cast<any_int32>(STACKVAR(-44, 4)), 24), 0, 4));
             ARG(reinterpret_cast<any_int32>(ACCESS(this, 60, 4)) + 0x00000038 * reinterpret_cast<any_int32>(STACKVAR(-44, 4)) + 24);
@@ -25024,21 +25024,21 @@ l100354FC:
             ARG(0x00000000);
             STACKVAR(-1096, 4) = static_cast<float>(reinterpret_cast<double>(ACCESS(STACKVAR(-12, 4), 16, 8)) - reinterpret_cast<double>(STACKVAR(-204, 8)));
             ARG(reinterpret_cast<float>(STACKVAR(-1096, 4)));
-            STACKVAR(-1100, 4) = static_cast<float>(reinterpret_cast<double>(STACKVAR(-40, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(-12, 4), 8, 8)) + reinterpret_cast<double>(STACKVAR(-28, 8)) + reinterpret_cast<double>(ACCESS(GLOBAL(0x10042CD8), 0, 8)));
+            STACKVAR(-1100, 4) = static_cast<float>(reinterpret_cast<double>(STACKVAR(-40, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(-12, 4), 8, 8)) + reinterpret_cast<double>(STACKVAR(-28, 8)) + 2.0);
             ARG(reinterpret_cast<float>(STACKVAR(-1100, 4)));
-            STACKVAR(-1104, 4) = static_cast<float>(reinterpret_cast<double>(STACKVAR(-40, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(-12, 4), 0, 8)) + reinterpret_cast<double>(STACKVAR(-20, 8)) + reinterpret_cast<double>(ACCESS(GLOBAL(0x10042CD8), 0, 8)));
+            STACKVAR(-1104, 4) = static_cast<float>(reinterpret_cast<double>(STACKVAR(-40, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(-12, 4), 0, 8)) + reinterpret_cast<double>(STACKVAR(-20, 8)) + 2.0);
             ARG(reinterpret_cast<float>(STACKVAR(-1104, 4)));
             STACKVAR(-1108, 4) = static_cast<float>(reinterpret_cast<double>(ACCESS(STACKVAR(-8, 4), 16, 8)) - reinterpret_cast<double>(STACKVAR(-204, 8)));
             ARG(reinterpret_cast<float>(STACKVAR(-1108, 4)));
-            STACKVAR(-1112, 4) = static_cast<float>(reinterpret_cast<double>(STACKVAR(-40, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(-8, 4), 8, 8)) + reinterpret_cast<double>(STACKVAR(-28, 8)) + reinterpret_cast<double>(ACCESS(GLOBAL(0x10042CD8), 0, 8)));
+            STACKVAR(-1112, 4) = static_cast<float>(reinterpret_cast<double>(STACKVAR(-40, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(-8, 4), 8, 8)) + reinterpret_cast<double>(STACKVAR(-28, 8)) + 2.0);
             ARG(reinterpret_cast<float>(STACKVAR(-1112, 4)));
-            STACKVAR(-1116, 4) = static_cast<float>(reinterpret_cast<double>(STACKVAR(-40, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(-8, 4), 0, 8)) + reinterpret_cast<double>(STACKVAR(-20, 8)) + reinterpret_cast<double>(ACCESS(GLOBAL(0x10042CD8), 0, 8)));
+            STACKVAR(-1116, 4) = static_cast<float>(reinterpret_cast<double>(STACKVAR(-40, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(-8, 4), 0, 8)) + reinterpret_cast<double>(STACKVAR(-20, 8)) + 2.0);
             ARG(reinterpret_cast<float>(STACKVAR(-1116, 4)));
             STACKVAR(-1120, 4) = static_cast<float>(reinterpret_cast<double>(ACCESS(STACKVAR(-4, 4), 16, 8)) - reinterpret_cast<double>(STACKVAR(-204, 8)));
             ARG(reinterpret_cast<float>(STACKVAR(-1120, 4)));
-            STACKVAR(-1124, 4) = static_cast<float>(reinterpret_cast<double>(STACKVAR(-40, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(-4, 4), 8, 8)) + reinterpret_cast<double>(STACKVAR(-28, 8)) + reinterpret_cast<double>(ACCESS(GLOBAL(0x10042CD8), 0, 8)));
+            STACKVAR(-1124, 4) = static_cast<float>(reinterpret_cast<double>(STACKVAR(-40, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(-4, 4), 8, 8)) + reinterpret_cast<double>(STACKVAR(-28, 8)) + 2.0);
             ARG(reinterpret_cast<float>(STACKVAR(-1124, 4)));
-            STACKVAR(-1128, 4) = static_cast<float>(reinterpret_cast<double>(STACKVAR(-40, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(-4, 4), 0, 8)) + reinterpret_cast<double>(STACKVAR(-20, 8)) + reinterpret_cast<double>(ACCESS(GLOBAL(0x10042CD8), 0, 8)));
+            STACKVAR(-1128, 4) = static_cast<float>(reinterpret_cast<double>(STACKVAR(-40, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(-4, 4), 0, 8)) + reinterpret_cast<double>(STACKVAR(-20, 8)) + 2.0);
             raster->(ACCESS(ACCESS(raster, 0, 4), 124, 4))(reinterpret_cast<float>(STACKVAR(-1128, 4)));
         }
         goto l100354F3;
@@ -25057,7 +25057,7 @@ l10035734:
         STACKVAR(-8, 4) = reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A9BC), 0, 4)) + 0x00000018 * reinterpret_cast<any_int32>(ACCESS(ARRPTR(ACCESS(this, 60, 4), 1, 0x00000038 * reinterpret_cast<any_int32>(STACKVAR(-44, 4)), 4), 0, 4));
         STACKVAR(-12, 4) = reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A9BC), 0, 4)) + 0x00000018 * reinterpret_cast<any_int32>(ACCESS(ARRPTR(ACCESS(this, 60, 4), 1, 0x00000038 * reinterpret_cast<any_int32>(STACKVAR(-44, 4)), 8), 0, 4));
         memcpy(LOCAL(-236), reinterpret_cast<void *>(STACKVAR(-8, 4)->unknown_method_10031760(LOCAL(-964), STACKVAR(-4, 4), LOCAL(-1012), STACKVAR(-12, 4)->unknown_method_10031760(LOCAL(-988), STACKVAR(-4, 4)))->unknown_method_10031882()), 24);
-        if (reinterpret_cast<double>(STACKVAR(-220, 8)) < reinterpret_cast<double>(ACCESS(GLOBAL(0x10042CF0), 0, 8)))
+        if (reinterpret_cast<double>(STACKVAR(-220, 8)) < 0.0)
         {
             ARG(reinterpret_cast<any_int32>(ACCESS(this, 60, 4)) + 0x00000038 * reinterpret_cast<any_int32>(STACKVAR(-44, 4)) + 24);
             ARG(0x3F000000);
@@ -25800,17 +25800,17 @@ p100371B3
     STACKVAR(-16, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(-32, 4), 16, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 20, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(-32, 4), 8, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 12, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(-32, 4), 0, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 4, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 28, 8));
     STACKVAR(-36, 4) = reinterpret_cast<any_int32>(ACCESS(this, 40, 4)) + 0x00000030 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 8, 4));
     STACKVAR(-24, 8) = reinterpret_cast<double>(ACCESS(STACKVAR(-36, 4), 16, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 20, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(-36, 4), 8, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 12, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(-36, 4), 0, 8)) * reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 4, 8)) + reinterpret_cast<double>(ACCESS(STACKVAR(12, 4), 28, 8));
-    if (fabs(reinterpret_cast<double>(STACKVAR(-8, 8))) < reinterpret_cast<double>(ACCESS(GLOBAL(0x10042CE8), 0, 8)) && fabs(reinterpret_cast<double>(STACKVAR(-16, 8))) < reinterpret_cast<double>(ACCESS(GLOBAL(0x10042CE8), 0, 8)) && fabs(reinterpret_cast<double>(STACKVAR(-24, 8))) < reinterpret_cast<double>(ACCESS(GLOBAL(0x10042CE8), 0, 8)))
+    if (fabs(reinterpret_cast<double>(STACKVAR(-8, 8))) < 0.5 && fabs(reinterpret_cast<double>(STACKVAR(-16, 8))) < 0.5 && fabs(reinterpret_cast<double>(STACKVAR(-24, 8))) < 0.5)
     {
         REGDEF(eax=0x00000002)
         return;
     }
-    if (reinterpret_cast<double>(STACKVAR(-8, 8)) > reinterpret_cast<double>(ACCESS(GLOBAL(0x10042D58), 0, 8)) && reinterpret_cast<double>(STACKVAR(-16, 8)) > reinterpret_cast<double>(ACCESS(GLOBAL(0x10042D58), 0, 8)) && reinterpret_cast<double>(STACKVAR(-24, 8)) > reinterpret_cast<double>(ACCESS(GLOBAL(0x10042D58), 0, 8)))
+    if (reinterpret_cast<double>(STACKVAR(-8, 8)) > -1e-06 && reinterpret_cast<double>(STACKVAR(-16, 8)) > -1e-06 && reinterpret_cast<double>(STACKVAR(-24, 8)) > -1e-06)
     {
         REGDEF(eax=0x00000001)
         return;
     }
-    if (reinterpret_cast<double>(STACKVAR(-8, 8)) < reinterpret_cast<double>(ACCESS(GLOBAL(0x10042CE0), 0, 8)) && reinterpret_cast<double>(STACKVAR(-16, 8)) < reinterpret_cast<double>(ACCESS(GLOBAL(0x10042CE0), 0, 8)) && reinterpret_cast<double>(STACKVAR(-24, 8)) < reinterpret_cast<double>(ACCESS(GLOBAL(0x10042CE0), 0, 8)))
+    if (reinterpret_cast<double>(STACKVAR(-8, 8)) < 1e-06 && reinterpret_cast<double>(STACKVAR(-16, 8)) < 1e-06 && reinterpret_cast<double>(STACKVAR(-24, 8)) < 1e-06)
     {
         REGDEF(eax=0xFFFFFFFF)
         return;
@@ -25846,7 +25846,7 @@ p1003737B
     STACKVAR(-284, 4) = reinterpret_cast<any_int32>(ACCESS(this, 40, 4)) + 0x00000030 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-280, 4), 0, 4));
     STACKVAR(-288, 4) = reinterpret_cast<any_int32>(ACCESS(this, 60, 4)) + 0x00000038 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(16, 4), 0, 4));
     STACKVAR(-292, 4) = reinterpret_cast<any_int32>(ACCESS(this, 40, 4)) + 0x00000030 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-288, 4), 4, 4));
-    ACCESS(STACKVAR(16, 4), 4, 8) = reinterpret_cast<double>(ACCESS(GLOBAL(0x100422C0), 0, 8)) / STACKVAR(-292, 4)->unknown_method_10031760(LOCAL(-72), STACKVAR(-284, 4), LOCAL(-120), (reinterpret_cast<any_int32>(ACCESS(this, 40, 4)) + 0x00000030 * reinterpret_cast<any_int32>(ACCESS(ARRPTR(ACCESS(this, 60, 4), 1, 0x00000038 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(16, 4), 0, 4)), 8), 0, 4)))->unknown_method_10031760(LOCAL(-96), reinterpret_cast<any_int32>(ACCESS(this, 40, 4)) + 0x00000030 * reinterpret_cast<any_int32>(ACCESS(ARRPTR(ACCESS(this, 60, 4), 1, 0x00000038 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(16, 4), 0, 4)), 0), 0, 4))))->unknown_method_10031882()->unknown_method_10031913();
+    ACCESS(STACKVAR(16, 4), 4, 8) = 1.0 / STACKVAR(-292, 4)->unknown_method_10031760(LOCAL(-72), STACKVAR(-284, 4), LOCAL(-120), (reinterpret_cast<any_int32>(ACCESS(this, 40, 4)) + 0x00000030 * reinterpret_cast<any_int32>(ACCESS(ARRPTR(ACCESS(this, 60, 4), 1, 0x00000038 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(16, 4), 0, 4)), 8), 0, 4)))->unknown_method_10031760(LOCAL(-96), reinterpret_cast<any_int32>(ACCESS(this, 40, 4)) + 0x00000030 * reinterpret_cast<any_int32>(ACCESS(ARRPTR(ACCESS(this, 60, 4), 1, 0x00000038 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(16, 4), 0, 4)), 0), 0, 4))))->unknown_method_10031882()->unknown_method_10031913();
     STACKVAR(-24, 4) = 0x00000000;
     goto l100374F4;
 l100374EB:
@@ -31891,9 +31891,9 @@ p10040D58
     reinterpret_cast<B_IDataFile &>(STACKVAR(8, 4)) >> reinterpret_cast<float &>(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000004) >> reinterpret_cast<float &>(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000008) >> reinterpret_cast<float &>(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x0000000C) >> reinterpret_cast<float &>(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000010) >> reinterpret_cast<float &>(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000014) >> reinterpret_cast<float &>(reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000018);
     if (ACCESS(GLOBAL(0x1004BF6C), 0, 4) == 0x00000000)
     {
-        ACCESS(STACKVAR(12, 4), 16, 4) = static_cast<float>(reinterpret_cast<float>(ACCESS(STACKVAR(12, 4), 16, 4)) * reinterpret_cast<double>(ACCESS(GLOBAL(0x10042D20), 0, 8)));
-        ACCESS(STACKVAR(12, 4), 20, 4) = static_cast<float>(reinterpret_cast<float>(ACCESS(STACKVAR(12, 4), 20, 4)) * reinterpret_cast<double>(ACCESS(GLOBAL(0x10042D20), 0, 8)));
-        ACCESS(STACKVAR(12, 4), 24, 4) = static_cast<float>(reinterpret_cast<float>(ACCESS(STACKVAR(12, 4), 24, 4)) * reinterpret_cast<double>(ACCESS(GLOBAL(0x10042D20), 0, 8)));
+        ACCESS(STACKVAR(12, 4), 16, 4) = static_cast<float>(reinterpret_cast<float>(ACCESS(STACKVAR(12, 4), 16, 4)) * -1.0);
+        ACCESS(STACKVAR(12, 4), 20, 4) = static_cast<float>(reinterpret_cast<float>(ACCESS(STACKVAR(12, 4), 20, 4)) * -1.0);
+        ACCESS(STACKVAR(12, 4), 24, 4) = static_cast<float>(reinterpret_cast<float>(ACCESS(STACKVAR(12, 4), 24, 4)) * -1.0);
     }
     STACKVAR(-12, 4) = STACKVAR(8, 4);
     reinterpret_cast<B_Name *>(LOCAL(-8))->~B_Name();
