@@ -6,6 +6,7 @@ from get_procedure_declaration_at import has_src_declaration
 from hex_conversion import from_hex, to_hex
 from make_tuple import add_attributes
 from patterns.apply_pattern import apply_pattern
+from patterns.collect_read_only_data import collect_read_only_data
 from patterns.collect_string_constants import collect_string_constants
 from patterns.asm_parser import parse_asm_lines
 from patterns.high_level import make_high_level_code
@@ -65,7 +66,10 @@ def process_asm_patterns(lines, declarations):
     standard_inlines = {}
     string_constants = collect_string_constants(lines)
     declarations = add_attributes(
-        declarations, string_constants=string_constants)
+        declarations,
+        string_constants=string_constants,
+        read_only_data=collect_read_only_data(lines),
+    )
     inline_procedures = inline_functions.Dict()
     asm_procedures = _extract_procedures_lines_from_asm(
         lines, _converted_procedures[module])

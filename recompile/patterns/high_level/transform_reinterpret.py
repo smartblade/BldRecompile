@@ -1,9 +1,14 @@
+import struct
+
 import expressions
 import data_types
 
 
 def transform_reinterpret(data_type, expression, analysis, **kwargs):
     result = _transform_string_constant(data_type, expression, **kwargs)
+    if result is not None:
+        return result
+    result = _transform_float_constant(data_type, expression, **kwargs)
     if result is not None:
         return result
     result = _transform_to_static_cast(data_type, expression)
@@ -25,6 +30,52 @@ def _transform_string_constant(data_type, expression, declarations, **kwargs):
     if string_const is None:
         return None
     return expressions.StringConstant(string_const)
+
+
+def _transform_float_constant(data_type, expression, declarations, **kwargs):
+    value = get_float_constant(data_type, expression, declarations)
+    if value is None:
+        return None
+    return expressions.Constant(data_type, value)
+
+
+def get_float_constant(data_type, expression, declarations):
+    """Return value of read only float or double constant or None."""
+    unpack_format = _float_formats.get(type(data_type))
+    if unpack_format is None:
+        return None
+    if not isinstance(expression, expressions.intermediate.Access):
+        return None
+    global_variable = expression.expression
+    if not isinstance(global_variable, expressions.intermediate.Global):
+        return None
+    if expression.size != data_type.size:
+        return None
+    data = declarations.read_only_data.get_bytes(
+        global_variable.address + expression.offset, data_type.size)
+    if data is None:
+        return None
+    (value, ) = struct.unpack(unpack_format, data)
+    if value != value or value in (float("inf"), float("-inf")):
+        return None
+    if isinstance(data_type, data_types.Float):
+        value = _shortest_float(value)
+    return value
+
+
+def _shortest_float(value):
+    # Shortest decimal representation of 32-bit float
+    for precision in range(1, 10):
+        shortest = float("{:.{}g}".format(value, precision))
+        if struct.unpack("<f", struct.pack("<f", shortest))[0] == value:
+            return shortest
+    return value
+
+
+_float_formats = {
+    data_types.Float: "<f",
+    data_types.Double: "<d",
+}
 
 
 def _transform_to_static_cast(data_type, expression):
