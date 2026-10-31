@@ -689,7 +689,8 @@ p100023C0
     {
         goto l10002447;
     }
-    int unknown_loc_0C = reinterpret_cast<int>(ACCESS(this, -4, 4));
+    int unknown_loc_0C;
+    unknown_loc_0C = reinterpret_cast<int>(ACCESS(this, -4, 4));
     STACKVAR(-8, 4) = 0x0000000C;
     STACKVAR(-4, 4) = this;
     STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + reinterpret_cast<any_int32>(STACKVAR(-8, 4)) * unknown_loc_0C;
@@ -772,7 +773,8 @@ p10002640
     {
         goto l100026D0;
     }
-    int unknown_loc_0C = reinterpret_cast<int>(ACCESS(this, -4, 4));
+    int unknown_loc_0C;
+    unknown_loc_0C = reinterpret_cast<int>(ACCESS(this, -4, 4));
     STACKVAR(-8, 4) = 0x00000010;
     STACKVAR(-4, 4) = this;
     STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + reinterpret_cast<any_int32>(STACKVAR(-8, 4)) * unknown_loc_0C;
@@ -1173,7 +1175,8 @@ p10002FF0
     {
         goto l1000306B;
     }
-    int unknown_loc_0C = reinterpret_cast<int>(ACCESS(this, -4, 4));
+    int unknown_loc_0C;
+    unknown_loc_0C = reinterpret_cast<int>(ACCESS(this, -4, 4));
     STACKVAR(-8, 4) = 0x00000010;
     STACKVAR(-4, 4) = this;
     STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + reinterpret_cast<any_int32>(STACKVAR(-8, 4)) * unknown_loc_0C;
@@ -1267,7 +1270,8 @@ p10003250
     {
         goto l100032CC;
     }
-    int unknown_loc_0C = reinterpret_cast<int>(ACCESS(this, -4, 4));
+    int unknown_loc_0C;
+    unknown_loc_0C = reinterpret_cast<int>(ACCESS(this, -4, 4));
     STACKVAR(-8, 4) = 0x00000010;
     STACKVAR(-4, 4) = this;
     STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + reinterpret_cast<any_int32>(STACKVAR(-8, 4)) * unknown_loc_0C;
@@ -1971,7 +1975,8 @@ p1000470A
     {
         goto l10004785;
     }
-    unsigned int unknown_loc_04 = 0;
+    unsigned int unknown_loc_04;
+    unknown_loc_04 = 0;
     goto l10004745;
 l1000473C:
     unknown_loc_04++;
@@ -2011,7 +2016,8 @@ l100047B8:
     {
         goto l1000483D;
     }
-    unsigned int unknown_loc_14 = 0;
+    unsigned int unknown_loc_14;
+    unknown_loc_14 = 0;
     goto l100047FD;
 l100047F4:
     unknown_loc_14++;
@@ -2213,7 +2219,8 @@ l10004AFB:
     {
         goto l10004BE9;
     }
-    unsigned int unknown_loc_10 = 0;
+    unsigned int unknown_loc_10;
+    unknown_loc_10 = 0;
     goto l10004B92;
 l10004B89:
     unknown_loc_10++;
@@ -2286,7 +2293,8 @@ l10004C92:
     }
     STACKVAR(-20, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-32, 4), 16, 4)));
     STACKVAR(-12, 4) = STACKVAR(-20, 4);
-    unsigned int unknown_loc_10 = 0;
+    unsigned int unknown_loc_10;
+    unknown_loc_10 = 0;
     goto l10004D7E;
 l10004D75:
     unknown_loc_10++;
@@ -2339,7 +2347,8 @@ unsigned int B_ResourceManager::LocateResourceIn(const B_Name &id, const B_Name 
         goto l10005236;
     }
     *reinterpret_cast<B_IDataFile *>(LOCAL(-16408)) >> *reinterpret_cast<B_Name *>(LOCAL(-16416));
-    unsigned int unknown_loc_4028 = 0;
+    unsigned int unknown_loc_4028;
+    unknown_loc_4028 = 0;
     goto l10004F90;
 l10004F81:
     unknown_loc_4028++;
@@ -2384,7 +2393,8 @@ l10004F90:
     }
     STACKVAR(-16488, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-16500, 4), 16, 4)));
     STACKVAR(-16480, 4) = STACKVAR(-16488, 4);
-    unsigned int unknown_loc_4064 = 0;
+    unsigned int unknown_loc_4064;
+    unknown_loc_4064 = 0;
     goto l10005174;
 l10005165:
     unknown_loc_4064++;
@@ -2414,7 +2424,8 @@ l10005236:
         reinterpret_cast<B_Name *>(LOCAL(-16416))->~B_Name();
         return unknown_loc_4048;
     }
-    unsigned int unknown_loc_4030 = 0;
+    unsigned int unknown_loc_4030;
+    unknown_loc_4030 = 0;
     goto l1000529E;
 l1000528F:
     unknown_loc_4030++;
@@ -2455,7 +2466,8 @@ l1000529E:
     }
     STACKVAR(-16520, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-16532, 4), 16, 4)));
     STACKVAR(-16512, 4) = STACKVAR(-16520, 4);
-    unsigned int unknown_loc_4084 = 0;
+    unsigned int unknown_loc_4084;
+    unknown_loc_4084 = 0;
     goto l10005449;
 l1000543A:
     unknown_loc_4084++;
@@ -2511,7 +2523,8 @@ l10005582:
         ACCESS(ARRPTR(this, 4, reinterpret_cast<any_int32>(STACKVAR(-36, 4)) & 0x0000FFFF, 0), 0, 4) = STACKVAR(-40, 4) != 0x00000000 ? STACKVAR(-40, 4)->unknown_method_100046A6() : 0x00000000;
     }
     STACKVAR(-60, 4) = ACCESS(ARRPTR(this, 4, reinterpret_cast<any_int32>(STACKVAR(-36, 4)) & 0x0000FFFF, 0), 0, 4);
-    unsigned int unknown_loc_38 = 0;
+    unsigned int unknown_loc_38;
+    unknown_loc_38 = 0;
     goto l10005647;
 l1000563E:
     unknown_loc_38++;
@@ -2554,7 +2567,8 @@ l1000568A:
     }
     STACKVAR(-76, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-88, 4), 16, 4)));
     STACKVAR(-68, 4) = STACKVAR(-76, 4);
-    unsigned int unknown_loc_48 = 0;
+    unsigned int unknown_loc_48;
+    unknown_loc_48 = 0;
     goto l10005756;
 l1000574D:
     unknown_loc_48++;
@@ -2665,7 +2679,8 @@ l100058D3:
     }
     STACKVAR(-48, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-60, 4), 16, 4)));
     STACKVAR(-40, 4) = STACKVAR(-48, 4);
-    unsigned int unknown_loc_2C = 0;
+    unsigned int unknown_loc_2C;
+    unknown_loc_2C = 0;
     goto l10005A63;
 l10005A5A:
     unknown_loc_2C++;
@@ -2912,7 +2927,8 @@ void B_ResourceManager::AddBodLink(const char *c, int i, const char *pc, int i1)
     }
     STACKVAR(-40, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-52, 4), 16, 4)));
     STACKVAR(-32, 4) = STACKVAR(-40, 4);
-    unsigned int unknown_loc_24 = 0;
+    unsigned int unknown_loc_24;
+    unknown_loc_24 = 0;
     goto l100060A2;
 l10006099:
     unknown_loc_24++;
@@ -3193,7 +3209,8 @@ p10006780
     {
         goto l100067FB;
     }
-    int unknown_loc_0C = reinterpret_cast<int>(ACCESS(this, -4, 4));
+    int unknown_loc_0C;
+    unknown_loc_0C = reinterpret_cast<int>(ACCESS(this, -4, 4));
     STACKVAR(-8, 4) = 0x0000000C;
     STACKVAR(-4, 4) = this;
     STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + reinterpret_cast<any_int32>(STACKVAR(-8, 4)) * unknown_loc_0C;
@@ -3384,7 +3401,8 @@ B_BitMap24::B_BitMap24(int width, int height)
     }
     STACKVAR(-16, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A530), 0, 4)));
     STACKVAR(-8, 4) = STACKVAR(-16, 4);
-    unsigned int unknown_loc_0C = 0;
+    unsigned int unknown_loc_0C;
+    unknown_loc_0C = 0;
     goto l10006D3C;
 l10006D33:
     unknown_loc_0C++;
@@ -3484,7 +3502,8 @@ l10006EC1:
     ACCESS(GLOBAL(0x1004A530), 0, 4) = reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A530), 0, 4)) - reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A52C), 0, 4));
     STACKVAR(-40, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A530), 0, 4)));
     STACKVAR(-16, 4) = STACKVAR(-40, 4);
-    unsigned int unknown_loc_14 = 0;
+    unsigned int unknown_loc_14;
+    unknown_loc_14 = 0;
     goto l10006FA2;
 l10006F99:
     unknown_loc_14++;
@@ -3509,7 +3528,8 @@ l10006FD5:
     ACCESS(GLOBAL(0x1004A524), 0, 4) = STACKVAR(-16, 4);
     goto l10007050;
 l10007017:
-    unsigned int unknown_loc_18 = unknown_loc_0C + 1;
+    unsigned int unknown_loc_18;
+    unknown_loc_18 = unknown_loc_0C + 1;
     goto l1000702B;
 l10007022:
     unknown_loc_18++;
@@ -3559,7 +3579,8 @@ void B_BitMap24::default constructor closure()
     }
     STACKVAR(-16, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A530), 0, 4)));
     STACKVAR(-8, 4) = STACKVAR(-16, 4);
-    unsigned int unknown_loc_0C = 0;
+    unsigned int unknown_loc_0C;
+    unknown_loc_0C = 0;
     goto l1000716C;
 l10007163:
     unknown_loc_0C++;
@@ -3599,7 +3620,8 @@ p10007470
     {
         goto l10007568;
     }
-    int unknown_loc_18 = reinterpret_cast<int>(ACCESS(this, -4, 4));
+    int unknown_loc_18;
+    unknown_loc_18 = reinterpret_cast<int>(ACCESS(this, -4, 4));
     STACKVAR(-20, 4) = 0x00000010;
     STACKVAR(-16, 4) = this;
     STACKVAR(-16, 4) = reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + reinterpret_cast<any_int32>(STACKVAR(-20, 4)) * unknown_loc_18;
@@ -3611,7 +3633,8 @@ l100074AD:
     }
     STACKVAR(-16, 4) = reinterpret_cast<any_int32>(STACKVAR(-16, 4)) - reinterpret_cast<any_int32>(STACKVAR(-20, 4));
     ACCESS(STACKVAR(-16, 4), 0, 4) = GLOBAL(0x100421C8);
-    unsigned int unknown_loc_08 = 0;
+    unsigned int unknown_loc_08;
+    unknown_loc_08 = 0;
     goto l100074E4;
 l100074DB:
     unknown_loc_08++;
@@ -3693,7 +3716,8 @@ l100075B0:
     ACCESS(GLOBAL(0x1004A530), 0, 4) = reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A530), 0, 4)) - reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A52C), 0, 4));
     STACKVAR(-64, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A530), 0, 4)));
     STACKVAR(-40, 4) = STACKVAR(-64, 4);
-    unsigned int unknown_loc_2C = 0;
+    unsigned int unknown_loc_2C;
+    unknown_loc_2C = 0;
     goto l10007692;
 l10007689:
     unknown_loc_2C++;
@@ -3718,7 +3742,8 @@ l100076C5:
     ACCESS(GLOBAL(0x1004A524), 0, 4) = STACKVAR(-40, 4);
     goto l10007740;
 l10007706:
-    unsigned int unknown_loc_30 = unknown_loc_24 + 1;
+    unsigned int unknown_loc_30;
+    unknown_loc_30 = unknown_loc_24 + 1;
     goto l1000771A;
 l10007711:
     unknown_loc_30++;
@@ -3799,7 +3824,8 @@ l100077EB:
     ACCESS(GLOBAL(0x1004A530), 0, 4) = reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A530), 0, 4)) - reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A52C), 0, 4));
     STACKVAR(-40, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A530), 0, 4)));
     STACKVAR(-16, 4) = STACKVAR(-40, 4);
-    unsigned int unknown_loc_14 = 0;
+    unsigned int unknown_loc_14;
+    unknown_loc_14 = 0;
     goto l100078CD;
 l100078C4:
     unknown_loc_14++;
@@ -3824,7 +3850,8 @@ l10007900:
     ACCESS(GLOBAL(0x1004A524), 0, 4) = STACKVAR(-16, 4);
     goto l1000797B;
 l10007941:
-    unsigned int unknown_loc_18 = unknown_loc_0C + 1;
+    unsigned int unknown_loc_18;
+    unknown_loc_18 = unknown_loc_0C + 1;
     goto l10007955;
 l1000794C:
     unknown_loc_18++;
@@ -3906,7 +3933,8 @@ l10007A2B:
     ACCESS(GLOBAL(0x1004A530), 0, 4) = reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A530), 0, 4)) - reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A52C), 0, 4));
     STACKVAR(-40, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A530), 0, 4)));
     STACKVAR(-16, 4) = STACKVAR(-40, 4);
-    unsigned int unknown_loc_14 = 0;
+    unsigned int unknown_loc_14;
+    unknown_loc_14 = 0;
     goto l10007B0D;
 l10007B04:
     unknown_loc_14++;
@@ -3931,7 +3959,8 @@ l10007B40:
     ACCESS(GLOBAL(0x1004A524), 0, 4) = STACKVAR(-16, 4);
     goto l10007BBB;
 l10007B81:
-    unsigned int unknown_loc_18 = unknown_loc_0C + 1;
+    unsigned int unknown_loc_18;
+    unknown_loc_18 = unknown_loc_0C + 1;
     goto l10007B95;
 l10007B8C:
     unknown_loc_18++;
@@ -3974,7 +4003,8 @@ p10007C10
     }
     STACKVAR(-12, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(this, 16, 4)));
     STACKVAR(-4, 4) = STACKVAR(-12, 4);
-    unsigned int unknown_loc_08 = 0;
+    unsigned int unknown_loc_08;
+    unknown_loc_08 = 0;
     goto l10007C96;
 l10007C8D:
     unknown_loc_08++;
@@ -4035,7 +4065,8 @@ p10007D30
     ACCESS(this, 16, 4) = reinterpret_cast<any_int32>(ACCESS(this, 16, 4)) - reinterpret_cast<any_int32>(ACCESS(this, 12, 4));
     STACKVAR(-28, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(this, 16, 4)));
     STACKVAR(-4, 4) = STACKVAR(-28, 4);
-    unsigned int unknown_loc_08 = 0;
+    unsigned int unknown_loc_08;
+    unknown_loc_08 = 0;
     goto l10007E1F;
 l10007E16:
     unknown_loc_08++;
@@ -4060,7 +4091,8 @@ l10007E52:
     ACCESS(this, 4, 4) = STACKVAR(-4, 4);
     goto l10007ECF;
 l10007E95:
-    unsigned int unknown_loc_0C = reinterpret_cast<unsigned int>(STACKVAR(8, 4)) + 1;
+    unsigned int unknown_loc_0C;
+    unknown_loc_0C = reinterpret_cast<unsigned int>(STACKVAR(8, 4)) + 1;
     goto l10007EA9;
 l10007EA0:
     unknown_loc_0C++;
@@ -4120,7 +4152,8 @@ p10007FA0
     {
         goto l1000802E;
     }
-    unsigned int unknown_loc_04 = 0;
+    unsigned int unknown_loc_04;
+    unknown_loc_04 = 0;
     goto l10007FEE;
 l10007FE5:
     unknown_loc_04++;
@@ -4171,7 +4204,8 @@ p10008080
     {
         goto l1000810E;
     }
-    unsigned int unknown_loc_04 = 0;
+    unsigned int unknown_loc_04;
+    unknown_loc_04 = 0;
     goto l100080CE;
 l100080C5:
     unknown_loc_04++;
@@ -4222,7 +4256,8 @@ p10008160
     {
         goto l10008205;
     }
-    unsigned int unknown_loc_04 = 0;
+    unsigned int unknown_loc_04;
+    unknown_loc_04 = 0;
     goto l100081AE;
 l100081A5:
     unknown_loc_04++;
@@ -4264,7 +4299,8 @@ p10008260
     {
         goto l100082EE;
     }
-    unsigned int unknown_loc_04 = 0;
+    unsigned int unknown_loc_04;
+    unknown_loc_04 = 0;
     goto l100082AE;
 l100082A5:
     unknown_loc_04++;
@@ -4703,7 +4739,8 @@ p10009060
     {
         goto l100090DB;
     }
-    int unknown_loc_0C = reinterpret_cast<int>(ACCESS(this, -4, 4));
+    int unknown_loc_0C;
+    unknown_loc_0C = reinterpret_cast<int>(ACCESS(this, -4, 4));
     STACKVAR(-8, 4) = 0x00000018;
     STACKVAR(-4, 4) = this;
     STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + reinterpret_cast<any_int32>(STACKVAR(-8, 4)) * unknown_loc_0C;
@@ -4996,7 +5033,8 @@ l10009950:
         goto l10009A23;
     }
     ACCESS(ACCESS(STACKVAR(8, 4), 312, 4), 0, 4)(STACKVAR(8, 4));
-    unsigned int unknown_loc_04 = 0;
+    unsigned int unknown_loc_04;
+    unknown_loc_04 = 0;
     goto l1000998A;
 l10009981:
     unknown_loc_04++;
@@ -5093,7 +5131,8 @@ p10009F40
     {
         goto l1000A007;
     }
-    int unknown_loc_0C = 0;
+    int unknown_loc_0C;
+    unknown_loc_0C = 0;
     STACKVAR(-8, 4) = ACCESS(STACKVAR(8, 4), 64, 4);
     goto l10009FA5;
 l10009F93:
@@ -5199,7 +5238,8 @@ l1000A20C:
     {
         goto l1000A45A;
     }
-    unsigned int unknown_loc_18 = reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-12, 4), 12, 4));
+    unsigned int unknown_loc_18;
+    unknown_loc_18 = reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-12, 4), 12, 4));
     goto l1000A22F;
 l1000A226:
     unknown_loc_18++;
@@ -5209,7 +5249,8 @@ l1000A22F:
         goto l1000A44B;
     }
     STACKVAR(-48, 4) = 0x00000000;
-    int unknown_loc_28 = 0;
+    int unknown_loc_28;
+    unknown_loc_28 = 0;
     goto l1000A254;
 l1000A24B:
     unknown_loc_28++;
@@ -5219,10 +5260,12 @@ l1000A254:
         goto l1000A40D;
     }
     STACKVAR(-36, 4) = ACCESS(ARRPTR(STACKVAR(8, 4), 4, unknown_loc_28, 228), 0, 4);
-    int unknown_loc_20 = unknown_loc_18 < unknown_loc_14 ? reinterpret_cast<int>(ACCESS(STACKVAR(-36, 4), 52, 4)) : reinterpret_cast<int>(ACCESS(STACKVAR(-36, 4), 68, 4));
+    int unknown_loc_20;
+    unknown_loc_20 = unknown_loc_18 < unknown_loc_14 ? reinterpret_cast<int>(ACCESS(STACKVAR(-36, 4), 52, 4)) : reinterpret_cast<int>(ACCESS(STACKVAR(-36, 4), 68, 4));
     STACKVAR(-8, 4) = unknown_loc_18 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-36, 4), 64, 4));
     STACKVAR(-16, 4) = 8 * unknown_loc_34;
-    int unknown_loc_2C = 0;
+    int unknown_loc_2C;
+    unknown_loc_2C = 0;
     goto l1000A2C0;
 l1000A2B7:
     unknown_loc_2C++;
@@ -5241,7 +5284,8 @@ l1000A2C0:
         goto l1000A393;
     }
     unknown_function_10026972(ACCESS(ARRPTR(STACKVAR(-12, 4), 4, reinterpret_cast<any_int32>(STACKVAR(-48, 4)) + unknown_loc_20, 24), 0, 4), 0x00000080 * (reinterpret_cast<any_int32>(ACCESS(STACKVAR(-36, 4), 52, 4)) - unknown_loc_20));
-    int unknown_loc_1C = unknown_loc_20;
+    int unknown_loc_1C;
+    unknown_loc_1C = unknown_loc_20;
     goto l1000A366;
 l1000A35D:
     unknown_loc_1C++;
@@ -5320,14 +5364,18 @@ l1000A4C1:
             unknown_loc_2C = reinterpret_cast<int>(ACCESS(STACKVAR(-40, 4), 12, 4));
         }
     }
-    unsigned int unknown_loc_20 = reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-40, 4), 28, 4));
-    int unknown_loc_14 = reinterpret_cast<int>(ACCESS(STACKVAR(-40, 4), 8, 4));
-    int unknown_loc_08 = reinterpret_cast<int>(unknown_loc_20 % reinterpret_cast<unsigned int>(unknown_loc_14));
+    unsigned int unknown_loc_20;
+    unknown_loc_20 = reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-40, 4), 28, 4));
+    int unknown_loc_14;
+    unknown_loc_14 = reinterpret_cast<int>(ACCESS(STACKVAR(-40, 4), 8, 4));
+    int unknown_loc_08;
+    unknown_loc_08 = reinterpret_cast<int>(unknown_loc_20 % reinterpret_cast<unsigned int>(unknown_loc_14));
     if (unknown_loc_08 > 0)
     {
         unknown_loc_08 = unknown_loc_14 - unknown_loc_08;
     }
-    int unknown_loc_3C = 0;
+    int unknown_loc_3C;
+    unknown_loc_3C = 0;
     goto l1000A579;
 l1000A570:
     unknown_loc_3C++;
@@ -5345,7 +5393,8 @@ l1000A579:
     STACKVAR(-64, 4) = reinterpret_cast<any_int32>(STACKVAR(-64, 4)) + 128 * unknown_loc_20;
     unknown_function_10026972(STACKVAR(-64, 4), 128 * unknown_loc_08);
     STACKVAR(-56, 2) = ACCESS(STACKVAR(-64, 4), -128, 2);
-    int unknown_loc_18 = 0;
+    int unknown_loc_18;
+    unknown_loc_18 = 0;
     goto l1000A607;
 l1000A5FE:
     unknown_loc_18++;
@@ -5363,7 +5412,8 @@ l1000A627:
         goto l1000A714;
     }
     unknown_loc_20 += reinterpret_cast<unsigned int>(unknown_loc_08);
-    unsigned int unknown_loc_34 = unknown_loc_20 / reinterpret_cast<unsigned int>(unknown_loc_14);
+    unsigned int unknown_loc_34;
+    unknown_loc_34 = unknown_loc_20 / reinterpret_cast<unsigned int>(unknown_loc_14);
     unknown_loc_3C = unknown_loc_2C;
     goto l1000A65B;
 l1000A652:
@@ -5376,7 +5426,8 @@ l1000A65B:
     STACKVAR(-64, 4) = ACCESS(ARRPTR(STACKVAR(-36, 4), 4, unknown_loc_3C, 0), 0, 4);
     STACKVAR(-16, 4) = ACCESS(ARRPTR(STACKVAR(-36, 4), 4, unknown_loc_3C, -4), 0, 4);
     unknown_function_10026972(STACKVAR(-64, 4), 128 * unknown_loc_20);
-    unsigned int unknown_loc_1C = 0;
+    unsigned int unknown_loc_1C;
+    unknown_loc_1C = 0;
     goto l1000A6A8;
 l1000A69F:
     unknown_loc_1C++;
@@ -5453,7 +5504,8 @@ l1000A810:
     }
     STACKVAR(-16, 4) = ACCESS(ARRPTR(STACKVAR(8, 4), 4, unknown_loc_24, 228), 0, 4);
     STACKVAR(-40, 4) = reinterpret_cast<any_int32>(STACKVAR(-8, 4)) * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-16, 4), 52, 4));
-    int unknown_loc_2C = 0;
+    int unknown_loc_2C;
+    unknown_loc_2C = 0;
     goto l1000A851;
 l1000A848:
     unknown_loc_2C++;
@@ -5463,7 +5515,8 @@ l1000A851:
         goto l1000A8BA;
     }
     STACKVAR(-12, 4) = reinterpret_cast<any_int32>(ACCESS(ARRPTR(ACCESS(ARRPTR(LOCAL(-32), 4, unknown_loc_24, 0), 0, 4), 4, unknown_loc_2C + unknown_loc_34, 0), 0, 4)) + 0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-40, 4));
-    int unknown_loc_38 = 0;
+    int unknown_loc_38;
+    unknown_loc_38 = 0;
     goto l1000A889;
 l1000A880:
     unknown_loc_38++;
@@ -5694,7 +5747,8 @@ l1000AE04:
     STACKVAR(-40, 4) = ACCESS(ARRPTR(ACCESS(STACKVAR(16, 4), 4, 4), 4, STACKVAR(20, 4), 0), 0, 4);
     STACKVAR(-24, 4) = ACCESS(ARRPTR(ACCESS(STACKVAR(16, 4), 8, 4), 4, STACKVAR(20, 4), 0), 0, 4);
     STACKVAR(20, 4) = reinterpret_cast<any_int32>(STACKVAR(20, 4)) + 0x00000001;
-    unsigned int unknown_loc_04 = 0;
+    unsigned int unknown_loc_04;
+    unknown_loc_04 = 0;
     goto l1000AE6F;
 l1000AE66:
     unknown_loc_04++;
@@ -5731,7 +5785,8 @@ l1000AF68:
     STACKVAR(12, 4) = reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000004;
     STACKVAR(-24, 4) = ACCESS(ARRPTR(ACCESS(STACKVAR(16, 4), 0, 4), 4, STACKVAR(20, 4), 0), 0, 4);
     STACKVAR(20, 4) = reinterpret_cast<any_int32>(STACKVAR(20, 4)) + 0x00000001;
-    unsigned int unknown_loc_04 = 0;
+    unsigned int unknown_loc_04;
+    unknown_loc_04 = 0;
     goto l1000AFB5;
 l1000AFAC:
     unknown_loc_04++;
@@ -5769,7 +5824,8 @@ l1000B043:
     STACKVAR(-24, 4) = ACCESS(ARRPTR(ACCESS(STACKVAR(16, 4), 8, 4), 4, STACKVAR(20, 4), 0), 0, 4);
     STACKVAR(-28, 4) = ACCESS(ARRPTR(ACCESS(STACKVAR(16, 4), 12, 4), 4, STACKVAR(20, 4), 0), 0, 4);
     STACKVAR(20, 4) = reinterpret_cast<any_int32>(STACKVAR(20, 4)) + 0x00000001;
-    unsigned int unknown_loc_04 = 0;
+    unsigned int unknown_loc_04;
+    unknown_loc_04 = 0;
     goto l1000B0BD;
 l1000B0B4:
     unknown_loc_04++;
@@ -5806,7 +5862,8 @@ l1000B1CD:
     STACKVAR(12, 4) = reinterpret_cast<any_int32>(STACKVAR(12, 4)) + 0x00000004;
     STACKVAR(-16, 4) = ACCESS(ARRPTR(ACCESS(STACKVAR(16, 4), 0, 4), 4, STACKVAR(20, 4), 0), 0, 4);
     STACKVAR(20, 4) = reinterpret_cast<any_int32>(STACKVAR(20, 4)) + 0x00000001;
-    unsigned int unknown_loc_04 = 0;
+    unsigned int unknown_loc_04;
+    unknown_loc_04 = 0;
     goto l1000B216;
 l1000B20D:
     unknown_loc_04++;
@@ -5833,7 +5890,8 @@ l1000B254:
     {
         goto l1000B2E9;
     }
-    int unknown_loc_18 = 0;
+    int unknown_loc_18;
+    unknown_loc_18 = 0;
     goto l1000B279;
 l1000B270:
     unknown_loc_18++;
@@ -5844,7 +5902,8 @@ l1000B279:
     }
     STACKVAR(-20, 4) = ACCESS(STACKVAR(12, 4), 0, 4);
     STACKVAR(-16, 4) = ACCESS(ARRPTR(ACCESS(ARRPTR(STACKVAR(16, 4), 4, unknown_loc_18, 0), 0, 4), 4, STACKVAR(20, 4), 0), 0, 4);
-    unsigned int unknown_loc_04 = 0;
+    unsigned int unknown_loc_04;
+    unknown_loc_04 = 0;
     goto l1000B2AD;
 l1000B2A4:
     unknown_loc_04++;
@@ -5924,7 +5983,8 @@ l1000B41D:
     {
         goto l1000B67B;
     }
-    int unknown_loc_04 = reinterpret_cast<int>(ACCESS(STACKVAR(-20, 4), 16, 4));
+    int unknown_loc_04;
+    unknown_loc_04 = reinterpret_cast<int>(ACCESS(STACKVAR(-20, 4), 16, 4));
     if (unknown_loc_04 < 0 || unknown_loc_04 >= 4 || ACCESS(ARRPTR(STACKVAR(8, 4), 4, unknown_loc_04, 68), 0, 4) == 0x00000000)
     {
         ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x00000034;
@@ -5983,7 +6043,8 @@ l1000B5A1:
     }
     STACKVAR(-40, 4) = ACCESS(ARRPTR(STACKVAR(-12, 4), 4, unknown_loc_04, 32), 0, 4);
     unknown_loc_10 = 0;
-    int unknown_loc_24 = 0;
+    int unknown_loc_24;
+    unknown_loc_24 = 0;
     goto l1000B5F4;
 l1000B5EB:
     unknown_loc_24++;
@@ -5992,7 +6053,8 @@ l1000B5F4:
     {
         goto l1000B65A;
     }
-    int unknown_loc_20 = 0;
+    int unknown_loc_20;
+    unknown_loc_20 = 0;
     goto l1000B60C;
 l1000B603:
     unknown_loc_20++;
@@ -6034,7 +6096,8 @@ l1000B6DD:
         goto l1000BA1E;
     }
     STACKVAR(-280, 4) = LOCAL(-268);
-    int unknown_loc_114 = 0;
+    int unknown_loc_114;
+    unknown_loc_114 = 0;
     goto l1000B710;
 l1000B701:
     unknown_loc_114++;
@@ -6070,7 +6133,8 @@ l1000B710:
     }
     STACKVAR(-8, 4)(LOCAL(-268));
     STACKVAR(-288, 4) = reinterpret_cast<any_int32>(STACKVAR(20, 4)) + 0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-12, 4));
-    int unknown_loc_12C = 0;
+    int unknown_loc_12C;
+    unknown_loc_12C = 0;
     goto l1000B91E;
 l1000B90F:
     unknown_loc_12C++;
@@ -6131,7 +6195,8 @@ l1000BA80:
         goto l1000BD70;
     }
     STACKVAR(-280, 4) = LOCAL(-268);
-    int unknown_loc_114 = 0;
+    int unknown_loc_114;
+    unknown_loc_114 = 0;
     goto l1000BAB3;
 l1000BAA4:
     unknown_loc_114++;
@@ -6175,7 +6240,8 @@ l1000BAB3:
     }
     STACKVAR(-8, 4)(LOCAL(-268));
     STACKVAR(-288, 4) = reinterpret_cast<any_int32>(STACKVAR(20, 4)) + 0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-12, 4));
-    int unknown_loc_128 = 0;
+    int unknown_loc_128;
+    unknown_loc_128 = 0;
     goto l1000BD21;
 l1000BD12:
     unknown_loc_128++;
@@ -6795,7 +6861,8 @@ p1000CF7A
     {
         goto l1000CFE0;
     }
-    int unknown_loc_0C = 0;
+    int unknown_loc_0C;
+    unknown_loc_0C = 0;
     goto l1000CFB3;
 l1000CFAA:
     unknown_loc_0C++;
@@ -7354,7 +7421,8 @@ p1000DE6D
         unknown_function_1000E0E2(STACKVAR(8, 4));
         goto l1000DF57;
     }
-    int unknown_loc_08 = 0;
+    int unknown_loc_08;
+    unknown_loc_08 = 0;
     goto l1000DEB1;
 l1000DEA8:
     unknown_loc_08++;
@@ -7416,8 +7484,10 @@ p1000DF93
         goto l1000E0DE;
     }
     unknown_function_1000D764(STACKVAR(8, 4), 0x000000C4);
-    int unknown_loc_04 = 0;
-    int unknown_loc_0C = 1;
+    int unknown_loc_04;
+    unknown_loc_04 = 0;
+    int unknown_loc_0C;
+    unknown_loc_0C = 1;
     goto l1000E032;
 l1000E029:
     unknown_loc_0C++;
@@ -7701,7 +7771,8 @@ p1000E7C0
     }
     ACCESS(STACKVAR(8, 4), 208, 1) = 0x01;
     STACKVAR(-2604, 4) = LOCAL(-2600);
-    int unknown_loc_A30 = 0;
+    int unknown_loc_A30;
+    unknown_loc_A30 = 0;
     goto l1000E853;
 l1000E844:
     unknown_loc_A30++;
@@ -7993,7 +8064,8 @@ p1000F076
     STACKVAR(-8, 4) = ACCESS(STACKVAR(8, 4), 312, 4);
     STACKVAR(-12, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 168, 4)) + 0x00000024 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-8, 4), 28, 4));
     ACCESS(STACKVAR(8, 4), 224, 4) = ACCESS(STACKVAR(-12, 4), 0, 4);
-    int unknown_loc_04 = 0;
+    int unknown_loc_04;
+    unknown_loc_04 = 0;
     goto l1000F0CF;
 l1000F0C6:
     unknown_loc_04++;
@@ -8068,7 +8140,8 @@ p1000F1FC
     ACCESS(STACKVAR(8, 4), 244, 4) = unknown_function_100268A0(ACCESS(STACKVAR(8, 4), 28, 4), 0x00000008 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 212, 4)));
     ACCESS(STACKVAR(8, 4), 248, 4) = unknown_function_100268A0(ACCESS(STACKVAR(8, 4), 32, 4), 0x00000008 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(8, 4), 216, 4)));
     ACCESS(STACKVAR(8, 4), 252, 4) = 0x00000000;
-    int unknown_loc_10 = 0;
+    int unknown_loc_10;
+    unknown_loc_10 = 0;
     goto l1000F36F;
 l1000F366:
     unknown_loc_10++;
@@ -8637,7 +8710,8 @@ p1001057F
         goto l100105EB;
     }
     ACCESS(STACKVAR(8, 4), 0, 4) = STACKVAR(12, 4);
-    int unknown_loc_04 = 0;
+    int unknown_loc_04;
+    unknown_loc_04 = 0;
     goto l100105A3;
 l1001059A:
     unknown_loc_04++;
@@ -8934,7 +9008,8 @@ p10010CD3
     {
         goto l10010DC3;
     }
-    int unknown_loc_04 = 0;
+    int unknown_loc_04;
+    unknown_loc_04 = 0;
     goto l10010DA0;
 l10010D97:
     unknown_loc_04++;
@@ -8967,8 +9042,10 @@ p10010E04
     {
         goto l10010ECE;
     }
-    int unknown_loc_08 = reinterpret_cast<int>(ACCESS(STACKVAR(8, 4), 56, 4));
-    int unknown_loc_04 = 0;
+    int unknown_loc_08;
+    unknown_loc_08 = reinterpret_cast<int>(ACCESS(STACKVAR(8, 4), 56, 4));
+    int unknown_loc_04;
+    unknown_loc_04 = 0;
 l10010E27:
     unknown_loc_08 = unknown_loc_08 >> 1;
     if (unknown_loc_08 != 0)
@@ -9032,7 +9109,8 @@ l10010FA9:
     {
         goto l100110DA;
     }
-    int unknown_loc_1C = static_cast<int>(reinterpret_cast<short>(ACCESS(ARRPTR(STACKVAR(-36, 4), 2, ACCESS(ARRPTR(GLOBAL(0x10042B78), 4, unknown_loc_20, 0), 0, 4), 0), 0, 2)));
+    int unknown_loc_1C;
+    unknown_loc_1C = static_cast<int>(reinterpret_cast<short>(ACCESS(ARRPTR(STACKVAR(-36, 4), 2, ACCESS(ARRPTR(GLOBAL(0x10042B78), 4, unknown_loc_20, 0), 0, 4), 0), 0, 2)));
     if (unknown_loc_1C == 0)
     {
         unknown_loc_04++;
@@ -9063,7 +9141,8 @@ l10010FA9:
         unknown_function_10010C69(STACKVAR(-16, 4), ACCESS(STACKVAR(-16, 4), 52, 4), 0x000000F0);
         unknown_loc_04 -= 16;
     }
-    int unknown_loc_18 = 1;
+    int unknown_loc_18;
+    unknown_loc_18 = 1;
 l10011064:
     unknown_loc_1C = unknown_loc_1C >> 1;
     if (unknown_loc_1C != 0)
@@ -9369,8 +9448,10 @@ l10011938:
     {
         goto l10011B31;
     }
-    unsigned int unknown_loc_14 = reinterpret_cast<unsigned int>(STACKVAR(20, 4)) - reinterpret_cast<unsigned int>(ACCESS(STACKVAR(16, 4), 0, 4));
-    unsigned int unknown_loc_04 = reinterpret_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 216, 4)) - reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-8, 4), 52, 4));
+    unsigned int unknown_loc_14;
+    unknown_loc_14 = reinterpret_cast<unsigned int>(STACKVAR(20, 4)) - reinterpret_cast<unsigned int>(ACCESS(STACKVAR(16, 4), 0, 4));
+    unsigned int unknown_loc_04;
+    unknown_loc_04 = reinterpret_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 216, 4)) - reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-8, 4), 52, 4));
     unknown_loc_04 = min(unknown_loc_04, unknown_loc_14);
     ACCESS(ACCESS(STACKVAR(8, 4), 332, 4), 4, 4)(STACKVAR(8, 4), ARRPTR(STACKVAR(12, 4), 4, ACCESS(STACKVAR(16, 4), 0, 4), 0), reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + 0x00000008, ACCESS(STACKVAR(-8, 4), 52, 4), unknown_loc_04);
     ACCESS(STACKVAR(16, 4), 0, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(16, 4), 0, 4)) + unknown_loc_04;
@@ -9384,7 +9465,8 @@ l10011938:
     {
         goto l10011A5C;
     }
-    int unknown_loc_10 = 0;
+    int unknown_loc_10;
+    unknown_loc_10 = 0;
     goto l10011A15;
 l10011A0C:
     unknown_loc_10++;
@@ -9460,15 +9542,18 @@ l10011B9A:
     {
         goto l10011CC8;
     }
-    unsigned int unknown_loc_14 = reinterpret_cast<unsigned int>(STACKVAR(20, 4)) - reinterpret_cast<unsigned int>(ACCESS(STACKVAR(16, 4), 0, 4));
-    unsigned int unknown_loc_04 = reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-12, 4), 60, 4)) - reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-12, 4), 52, 4));
+    unsigned int unknown_loc_14;
+    unknown_loc_14 = reinterpret_cast<unsigned int>(STACKVAR(20, 4)) - reinterpret_cast<unsigned int>(ACCESS(STACKVAR(16, 4), 0, 4));
+    unsigned int unknown_loc_04;
+    unknown_loc_04 = reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-12, 4), 60, 4)) - reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-12, 4), 52, 4));
     unknown_loc_04 = min(unknown_loc_04, unknown_loc_14);
     ACCESS(ACCESS(STACKVAR(8, 4), 332, 4), 4, 4)(STACKVAR(8, 4), ARRPTR(STACKVAR(12, 4), 4, ACCESS(STACKVAR(16, 4), 0, 4), 0), reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + 0x00000008, ACCESS(STACKVAR(-12, 4), 52, 4), unknown_loc_04);
     if (ACCESS(STACKVAR(-12, 4), 48, 4) != ACCESS(STACKVAR(8, 4), 32, 4))
     {
         goto l10011C9B;
     }
-    int unknown_loc_10 = 0;
+    int unknown_loc_10;
+    unknown_loc_10 = 0;
     goto l10011C3D;
 l10011C34:
     unknown_loc_10++;
@@ -9477,7 +9562,8 @@ l10011C3D:
     {
         goto l10011C9B;
     }
-    int unknown_loc_18 = 1;
+    int unknown_loc_18;
+    unknown_loc_18 = 1;
     goto l10011C5A;
 l10011C51:
     unknown_loc_18++;
@@ -9553,7 +9639,8 @@ l10011E47:
     }
     STACKVAR(-16, 4) = ACCESS(ACCESS(STACKVAR(8, 4), 4, 4), 8, 4)(STACKVAR(8, 4), 0x00000001, 8 * reinterpret_cast<int>(ACCESS(STACKVAR(-20, 4), 28, 4)) * reinterpret_cast<int>(ACCESS(STACKVAR(8, 4), 212, 4)) / reinterpret_cast<int>(ACCESS(STACKVAR(-20, 4), 8, 4)), 3 * unknown_loc_1C);
     memcpy(ARRPTR(STACKVAR(-8, 4), 4, unknown_loc_1C, 0), reinterpret_cast<void *>(STACKVAR(-16, 4)), 4 * 3 * reinterpret_cast<size_t>(unknown_loc_1C));
-    int unknown_loc_0C = 0;
+    int unknown_loc_0C;
+    unknown_loc_0C = 0;
     goto l10011EC2;
 l10011EB9:
     unknown_loc_0C++;
@@ -9690,7 +9777,8 @@ l10012272:
         goto l1001234F;
     }
     STACKVAR(-36, 4) = ACCESS(ARRPTR(STACKVAR(20, 4), 4, unknown_loc_20, 0), 0, 4);
-    unsigned int unknown_loc_10 = 0;
+    unsigned int unknown_loc_10;
+    unknown_loc_10 = 0;
     STACKVAR(-52, 4) = 0x00000000;
     goto l100122AF;
 l1001229D:
@@ -9701,8 +9789,10 @@ l100122AF:
     {
         goto l10012341;
     }
-    int unknown_loc_0C = 0;
-    int unknown_loc_18 = 0;
+    int unknown_loc_0C;
+    unknown_loc_0C = 0;
+    int unknown_loc_18;
+    unknown_loc_18 = 0;
     goto l100122D4;
 l100122CB:
     unknown_loc_18++;
@@ -9712,7 +9802,8 @@ l100122D4:
         goto l10012324;
     }
     STACKVAR(-40, 4) = reinterpret_cast<any_int32>(ACCESS(ARRPTR(STACKVAR(16, 4), 4, reinterpret_cast<any_int32>(STACKVAR(-48, 4)) + unknown_loc_18, 0), 0, 4)) + reinterpret_cast<any_int32>(STACKVAR(-52, 4));
-    int unknown_loc_1C = 0;
+    int unknown_loc_1C;
+    unknown_loc_1C = 0;
     goto l10012300;
 l100122F7:
     unknown_loc_1C++;
@@ -9743,7 +9834,8 @@ p10012353
     {
         goto l100123C6;
     }
-    int unknown_loc_08 = 0;
+    int unknown_loc_08;
+    unknown_loc_08 = 0;
     goto l1001237A;
 l10012371:
     unknown_loc_08++;
@@ -9754,7 +9846,8 @@ l1001237A:
     }
     STACKVAR(-4, 4) = reinterpret_cast<any_int32>(ACCESS(ARRPTR(STACKVAR(8, 4), 4, unknown_loc_08, 0), 0, 4)) + reinterpret_cast<any_int32>(STACKVAR(16, 4));
     STACKVAR(-12, 1) = ACCESS(STACKVAR(-4, 4), -1, 1);
-    int unknown_loc_14 = unknown_loc_10;
+    int unknown_loc_14;
+    unknown_loc_14 = unknown_loc_10;
     goto l100123AB;
 l100123A2:
     unknown_loc_14--;
@@ -9795,7 +9888,8 @@ l10012462:
     STACKVAR(-20, 4) = ACCESS(ARRPTR(STACKVAR(20, 4), 4, unknown_loc_10, 0), 0, 4);
     STACKVAR(-24, 4) = ACCESS(ARRPTR(STACKVAR(16, 4), 4, unknown_loc_10, 0), 0, 4);
     STACKVAR(-12, 4) = 0x00000000;
-    unsigned int unknown_loc_08 = 0;
+    unsigned int unknown_loc_08;
+    unknown_loc_08 = 0;
     goto l1001249E;
 l10012495:
     unknown_loc_08++;
@@ -9832,7 +9926,8 @@ l10012538:
     STACKVAR(-16, 4) = ACCESS(ARRPTR(STACKVAR(16, 4), 4, STACKVAR(-32, 4), 0), 0, 4);
     STACKVAR(-8, 4) = ACCESS(ARRPTR(STACKVAR(16, 4), 4, STACKVAR(-32, 4), 4), 0, 4);
     STACKVAR(-20, 4) = 0x00000001;
-    unsigned int unknown_loc_0C = 0;
+    unsigned int unknown_loc_0C;
+    unknown_loc_0C = 0;
     goto l10012585;
 l1001257C:
     unknown_loc_0C++;
@@ -9874,7 +9969,8 @@ l1001266E:
     STACKVAR(-20, 4) = ACCESS(ARRPTR(STACKVAR(16, 4), 4, STACKVAR(-48, 4), 4), 0, 4);
     STACKVAR(-28, 4) = ACCESS(ARRPTR(STACKVAR(16, 4), 4, STACKVAR(-48, 4), -4), 0, 4);
     STACKVAR(-24, 4) = ACCESS(ARRPTR(STACKVAR(16, 4), 4, STACKVAR(-48, 4), 8), 0, 4);
-    int unknown_loc_28 = reinterpret_cast<int>(static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-32, 4), 0, 1))) + static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-32, 4), 1, 1))) + static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-20, 4), 0, 1))) + static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-20, 4), 1, 1))));
+    int unknown_loc_28;
+    unknown_loc_28 = reinterpret_cast<int>(static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-32, 4), 0, 1))) + static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-32, 4), 1, 1))) + static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-20, 4), 0, 1))) + static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-20, 4), 1, 1))));
     STACKVAR(-12, 4) = static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-28, 4), 0, 1))) + static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-28, 4), 1, 1))) + static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-24, 4), 0, 1))) + static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-24, 4), 1, 1))) + static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-32, 4), 0, 1))) + static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-32, 4), 2, 1))) + static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-20, 4), 0, 1))) + static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-20, 4), 2, 1)));
     STACKVAR(-12, 4) = reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + reinterpret_cast<any_int32>(STACKVAR(-12, 4));
     STACKVAR(-12, 4) = static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-24, 4), 2, 1))) + reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-28, 4), 0, 1))) + static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-28, 4), 2, 1))) + static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-24, 4), 0, 1)));
@@ -9885,7 +9981,8 @@ l1001266E:
     STACKVAR(-20, 4) = reinterpret_cast<any_int32>(STACKVAR(-20, 4)) + 0x00000002;
     STACKVAR(-28, 4) = reinterpret_cast<any_int32>(STACKVAR(-28, 4)) + 0x00000002;
     STACKVAR(-24, 4) = reinterpret_cast<any_int32>(STACKVAR(-24, 4)) + 0x00000002;
-    unsigned int unknown_loc_34 = reinterpret_cast<unsigned int>(STACKVAR(-8, 4)) - 2;
+    unsigned int unknown_loc_34;
+    unknown_loc_34 = reinterpret_cast<unsigned int>(STACKVAR(-8, 4)) - 2;
     goto l100127C8;
 l100127BF:
     unknown_loc_34--;
@@ -9940,7 +10037,8 @@ l10012A24:
     STACKVAR(-16, 4) = static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-28, 4), 0, 1))) + static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-24, 4), 0, 1))) + static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-48, 4), 0, 1)));
     STACKVAR(-24, 4) = reinterpret_cast<any_int32>(STACKVAR(-24, 4)) + 0x00000001;
     STACKVAR(-28, 4) = reinterpret_cast<any_int32>(STACKVAR(-28, 4)) + 0x00000001;
-    int unknown_loc_28 = static_cast<int>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-48, 4), 0, 1)));
+    int unknown_loc_28;
+    unknown_loc_28 = static_cast<int>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-48, 4), 0, 1)));
     STACKVAR(-48, 4) = reinterpret_cast<any_int32>(STACKVAR(-48, 4)) + 0x00000001;
     STACKVAR(-32, 4) = static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-28, 4), 0, 1))) + static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-24, 4), 0, 1))) + static_cast<any_int32>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-48, 4), 0, 1)));
     STACKVAR(-12, 4) = reinterpret_cast<any_int32>(STACKVAR(-16, 4)) + reinterpret_cast<any_int32>(STACKVAR(-16, 4)) - unknown_loc_28 + reinterpret_cast<any_int32>(STACKVAR(-32, 4));
@@ -9949,7 +10047,8 @@ l10012A24:
     STACKVAR(-44, 4) = reinterpret_cast<any_int32>(STACKVAR(-44, 4)) + 0x00000001;
     STACKVAR(-56, 4) = STACKVAR(-16, 4);
     STACKVAR(-16, 4) = STACKVAR(-32, 4);
-    unsigned int unknown_loc_34 = reinterpret_cast<unsigned int>(STACKVAR(-8, 4)) - 2;
+    unsigned int unknown_loc_34;
+    unknown_loc_34 = reinterpret_cast<unsigned int>(STACKVAR(-8, 4)) - 2;
     goto l10012B1F;
 l10012B16:
     unknown_loc_34--;
@@ -10109,7 +10208,8 @@ l100132E3:
     STACKVAR(-28, 4) = ACCESS(ARRPTR(STACKVAR(8, 4), 4, STACKVAR(-48, 4), 228), 0, 4);
     STACKVAR(-92, 4) = reinterpret_cast<any_int32>(STACKVAR(-16, 4)) * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-28, 4), 52, 4));
     STACKVAR(-24, 4) = reinterpret_cast<unsigned int>(STACKVAR(-16, 4)) < reinterpret_cast<unsigned int>(STACKVAR(-12, 4)) ? ACCESS(STACKVAR(-28, 4), 52, 4) : ACCESS(STACKVAR(-28, 4), 68, 4);
-    int unknown_loc_60 = 0;
+    int unknown_loc_60;
+    unknown_loc_60 = 0;
     goto l10013346;
 l1001333D:
     unknown_loc_60++;
@@ -10123,7 +10223,8 @@ l10013346:
         goto l100133C6;
     }
     STACKVAR(-20, 4) = reinterpret_cast<any_int32>(ACCESS(ARRPTR(ACCESS(ARRPTR(LOCAL(-44), 4, STACKVAR(-48, 4), 0), 0, 4), 4, unknown_loc_60 + unknown_loc_68, 0), 0, 4)) + 0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-92, 4));
-    int unknown_loc_6C = 0;
+    int unknown_loc_6C;
+    unknown_loc_6C = 0;
     goto l1001339B;
 l10013392:
     unknown_loc_6C++;
@@ -10728,7 +10829,8 @@ p100145B0
     {
         goto l100146D0;
     }
-    int unknown_loc_10 = 0;
+    int unknown_loc_10;
+    unknown_loc_10 = 0;
     STACKVAR(-12, 4) = ACCESS(STACKVAR(8, 4), 196, 4);
     goto l1001462D;
 l1001461B:
@@ -10830,7 +10932,8 @@ l1001487B:
     {
         goto l10014A80;
     }
-    unsigned int unknown_loc_18 = reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-12, 4), 20, 4));
+    unsigned int unknown_loc_18;
+    unknown_loc_18 = reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-12, 4), 20, 4));
     goto l1001489E;
 l10014895:
     unknown_loc_18++;
@@ -10848,7 +10951,8 @@ l1001489E:
         return;
     }
     STACKVAR(-52, 4) = 0x00000000;
-    int unknown_loc_28 = 0;
+    int unknown_loc_28;
+    unknown_loc_28 = 0;
     goto l1001491B;
 l10014912:
     unknown_loc_28++;
@@ -10864,10 +10968,12 @@ l1001491B:
         goto l10014912;
     }
     STACKVAR(-8, 4) = ACCESS(ARRPTR(ACCESS(STACKVAR(8, 4), 412, 4), 4, ACCESS(STACKVAR(-36, 4), 4, 4), 4), 0, 4);
-    int unknown_loc_20 = unknown_loc_18 < unknown_loc_14 ? reinterpret_cast<int>(ACCESS(STACKVAR(-36, 4), 52, 4)) : reinterpret_cast<int>(ACCESS(STACKVAR(-36, 4), 68, 4));
+    int unknown_loc_20;
+    unknown_loc_20 = unknown_loc_18 < unknown_loc_14 ? reinterpret_cast<int>(ACCESS(STACKVAR(-36, 4), 52, 4)) : reinterpret_cast<int>(ACCESS(STACKVAR(-36, 4), 68, 4));
     STACKVAR(-28, 4) = ARRPTR(ACCESS(ARRPTR(STACKVAR(12, 4), 4, ACCESS(STACKVAR(-36, 4), 4, 4), 0), 0, 4), 4, unknown_loc_38 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-36, 4), 36, 4)), 0);
     STACKVAR(-44, 4) = unknown_loc_18 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-36, 4), 64, 4));
-    int unknown_loc_30 = 0;
+    int unknown_loc_30;
+    unknown_loc_30 = 0;
     goto l100149CA;
 l100149C1:
     unknown_loc_30++;
@@ -10881,7 +10987,8 @@ l100149CA:
         goto l10014A47;
     }
     STACKVAR(-16, 4) = STACKVAR(-44, 4);
-    int unknown_loc_3C = 0;
+    int unknown_loc_3C;
+    unknown_loc_3C = 0;
     goto l10014A0D;
 l10014A04:
     unknown_loc_3C++;
@@ -10969,7 +11076,8 @@ l10014BD9:
     }
     STACKVAR(-16, 4) = ACCESS(ARRPTR(STACKVAR(8, 4), 4, unknown_loc_24, 296), 0, 4);
     STACKVAR(-40, 4) = reinterpret_cast<any_int32>(STACKVAR(-8, 4)) * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-16, 4), 52, 4));
-    int unknown_loc_2C = 0;
+    int unknown_loc_2C;
+    unknown_loc_2C = 0;
     goto l10014C1A;
 l10014C11:
     unknown_loc_2C++;
@@ -10979,7 +11087,8 @@ l10014C1A:
         goto l10014C83;
     }
     STACKVAR(-12, 4) = reinterpret_cast<any_int32>(ACCESS(ARRPTR(ACCESS(ARRPTR(LOCAL(-32), 4, unknown_loc_24, 0), 0, 4), 4, unknown_loc_2C + unknown_loc_34, 0), 0, 4)) + 0x00000080 * reinterpret_cast<any_int32>(STACKVAR(-40, 4));
-    int unknown_loc_38 = 0;
+    int unknown_loc_38;
+    unknown_loc_38 = 0;
     goto l10014C52;
 l10014C49:
     unknown_loc_38++;
@@ -11074,7 +11183,8 @@ l10014DCA:
     }
     STACKVAR(-8, 4) = ACCESS(ARRPTR(ACCESS(STACKVAR(8, 4), 412, 4), 4, unknown_loc_2C, 4), 0, 4);
     STACKVAR(-24, 4) = ACCESS(ARRPTR(STACKVAR(12, 4), 4, unknown_loc_2C, 0), 0, 4);
-    int unknown_loc_30 = 0;
+    int unknown_loc_30;
+    unknown_loc_30 = 0;
     goto l10014E89;
 l10014E80:
     unknown_loc_30++;
@@ -11085,7 +11195,8 @@ l10014E89:
     }
     STACKVAR(-28, 4) = ACCESS(ARRPTR(STACKVAR(-36, 4), 4, unknown_loc_30, 0), 0, 4);
     STACKVAR(-20, 4) = 0x00000000;
-    unsigned int unknown_loc_10 = 0;
+    unsigned int unknown_loc_10;
+    unknown_loc_10 = 0;
     goto l10014EB6;
 l10014EAD:
     unknown_loc_10++;
@@ -11155,7 +11266,8 @@ l10014FD9:
         REGDEF(al=0)
         return;
     }
-    int unknown_loc_08 = 1;
+    int unknown_loc_08;
+    unknown_loc_08 = 1;
     goto l10015081;
 l10015078:
     unknown_loc_08++;
@@ -11245,14 +11357,18 @@ l100151A6:
     STACKVAR(-268, 4) = ARRPTR(ACCESS(STACKVAR(-24, 4), 112, 4), 4, 6 * unknown_loc_F8, 0);
     STACKVAR(-56, 4) = ACCESS(STACKVAR(-236, 4), 76, 4);
     STACKVAR(-228, 4) = static_cast<any_int32>(reinterpret_cast<unsigned short>(ACCESS(STACKVAR(-56, 4), 0, 2)));
-    int unknown_loc_100 = static_cast<int>(reinterpret_cast<unsigned short>(ACCESS(STACKVAR(-56, 4), 2, 2)));
-    int unknown_loc_118 = static_cast<int>(reinterpret_cast<unsigned short>(ACCESS(STACKVAR(-56, 4), 16, 2)));
+    int unknown_loc_100;
+    unknown_loc_100 = static_cast<int>(reinterpret_cast<unsigned short>(ACCESS(STACKVAR(-56, 4), 2, 2)));
+    int unknown_loc_118;
+    unknown_loc_118 = static_cast<int>(reinterpret_cast<unsigned short>(ACCESS(STACKVAR(-56, 4), 16, 2)));
     STACKVAR(-32, 4) = static_cast<any_int32>(reinterpret_cast<unsigned short>(ACCESS(STACKVAR(-56, 4), 32, 2)));
     STACKVAR(-4, 4) = static_cast<any_int32>(reinterpret_cast<unsigned short>(ACCESS(STACKVAR(-56, 4), 18, 2)));
-    int unknown_loc_108 = static_cast<int>(reinterpret_cast<unsigned short>(ACCESS(STACKVAR(-56, 4), 4, 2)));
+    int unknown_loc_108;
+    unknown_loc_108 = static_cast<int>(reinterpret_cast<unsigned short>(ACCESS(STACKVAR(-56, 4), 4, 2)));
     STACKVAR(-16, 4) = ACCESS(ARRPTR(ACCESS(STACKVAR(8, 4), 412, 4), 4, unknown_loc_F8, 4), 0, 4);
     STACKVAR(-64, 4) = ACCESS(ARRPTR(STACKVAR(12, 4), 4, unknown_loc_F8, 0), 0, 4);
-    int unknown_loc_114 = 0;
+    int unknown_loc_114;
+    unknown_loc_114 = 0;
     goto l100153A3;
 l10015394:
     unknown_loc_114++;
@@ -11288,7 +11404,8 @@ l100153A3:
     STACKVAR(-208, 4) = STACKVAR(-224, 4);
     STACKVAR(-204, 4) = STACKVAR(-208, 4);
     STACKVAR(-48, 4) = 0x00000000;
-    unsigned int unknown_loc_C8 = reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-236, 4), 28, 4)) - 1;
+    unsigned int unknown_loc_C8;
+    unknown_loc_C8 = reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-236, 4), 28, 4)) - 1;
     STACKVAR(-36, 4) = 0x00000000;
     goto l100154CE;
 l100154C5:
@@ -11627,7 +11744,8 @@ l10015F68:
     STACKVAR(16, 4) = reinterpret_cast<any_int32>(STACKVAR(16, 4)) + 0x00000001;
     STACKVAR(-52, 4) = ACCESS(STACKVAR(20, 4), 0, 4);
     STACKVAR(20, 4) = reinterpret_cast<any_int32>(STACKVAR(20, 4)) + 0x00000004;
-    unsigned int unknown_loc_08 = 0;
+    unsigned int unknown_loc_08;
+    unknown_loc_08 = 0;
     goto l10015FD3;
 l10015FCA:
     unknown_loc_08++;
@@ -11659,7 +11777,8 @@ l1001608A:
     {
         goto l10016122;
     }
-    int unknown_loc_18 = 0;
+    int unknown_loc_18;
+    unknown_loc_18 = 0;
     goto l100160AF;
 l100160A6:
     unknown_loc_18++;
@@ -11670,7 +11789,8 @@ l100160AF:
     }
     STACKVAR(-20, 4) = ACCESS(ARRPTR(ACCESS(ARRPTR(STACKVAR(12, 4), 4, unknown_loc_18, 0), 0, 4), 4, STACKVAR(16, 4), 0), 0, 4);
     STACKVAR(-16, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(20, 4), 0, 4)) + unknown_loc_18;
-    unsigned int unknown_loc_04 = reinterpret_cast<unsigned int>(STACKVAR(-8, 4));
+    unsigned int unknown_loc_04;
+    unknown_loc_04 = reinterpret_cast<unsigned int>(STACKVAR(-8, 4));
     goto l100160E5;
 l100160DC:
     unknown_loc_04--;
@@ -11712,7 +11832,8 @@ l1001615D:
     STACKVAR(16, 4) = reinterpret_cast<any_int32>(STACKVAR(16, 4)) + 0x00000001;
     STACKVAR(-12, 4) = ACCESS(STACKVAR(20, 4), 0, 4);
     STACKVAR(20, 4) = reinterpret_cast<any_int32>(STACKVAR(20, 4)) + 0x00000004;
-    unsigned int unknown_loc_04 = 0;
+    unsigned int unknown_loc_04;
+    unknown_loc_04 = 0;
     goto l100161A6;
 l1001619D:
     unknown_loc_04++;
@@ -11753,7 +11874,8 @@ l10016232:
     STACKVAR(16, 4) = reinterpret_cast<any_int32>(STACKVAR(16, 4)) + 0x00000001;
     STACKVAR(-56, 4) = ACCESS(STACKVAR(20, 4), 0, 4);
     STACKVAR(20, 4) = reinterpret_cast<any_int32>(STACKVAR(20, 4)) + 0x00000004;
-    unsigned int unknown_loc_08 = 0;
+    unsigned int unknown_loc_08;
+    unknown_loc_08 = 0;
     goto l100162AC;
 l100162A3:
     unknown_loc_08++;
@@ -11912,7 +12034,8 @@ l10016631:
 l1001666A:
     STACKVAR(-48, 4) = ACCESS(STACKVAR(-16, 4), 80, 4);
     unknown_loc_0C = 0;
-    int unknown_loc_2C = 0;
+    int unknown_loc_2C;
+    unknown_loc_2C = 0;
     goto l1001668C;
 l10016683:
     unknown_loc_2C++;
@@ -11921,7 +12044,8 @@ l1001668C:
     {
         goto l100166E6;
     }
-    int unknown_loc_28 = 0;
+    int unknown_loc_28;
+    unknown_loc_28 = 0;
     goto l100166A4;
 l1001669B:
     unknown_loc_28++;
@@ -12052,7 +12176,8 @@ l10016ABA:
         goto l10016B72;
     }
     STACKVAR(-1044, 4) = ACCESS(ARRPTR(LOCAL(-1032), 4, STACKVAR(-4, 4), 0), 0, 4) << reinterpret_cast<unsigned char>(static_cast<any_int8>(8 - unknown_loc_528));
-    int unknown_loc_520 = reinterpret_cast<int>(0x00000001 << reinterpret_cast<unsigned char>(static_cast<any_int8>(8 - unknown_loc_528)));
+    int unknown_loc_520;
+    unknown_loc_520 = reinterpret_cast<int>(0x00000001 << reinterpret_cast<unsigned char>(static_cast<any_int8>(8 - unknown_loc_528)));
     goto l10016B1C;
 l10016B0D:
     unknown_loc_520--;
@@ -12317,7 +12442,8 @@ p10017160
     STACKVAR(-4, 4) = ACCESS(STACKVAR(-8, 4), 12, 4);
     STACKVAR(-28, 4) = ACCESS(STACKVAR(-8, 4), 16, 4);
     memcpy(LOCAL(-24), reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + 0x00000014), 16);
-    int unknown_loc_34 = 0;
+    int unknown_loc_34;
+    unknown_loc_34 = 0;
     goto l10017211;
 l10017208:
     unknown_loc_34++;
@@ -12344,7 +12470,8 @@ l10017211:
             goto l100172DD;
         }
     }
-    int unknown_loc_54 = reinterpret_cast<int>(STACKVAR(-4, 4)) >> reinterpret_cast<unsigned char>(static_cast<any_int8>(reinterpret_cast<any_int32>(STACKVAR(-28, 4)) - 0x00000008)) & 0x000000FF;
+    int unknown_loc_54;
+    unknown_loc_54 = reinterpret_cast<int>(STACKVAR(-4, 4)) >> reinterpret_cast<unsigned char>(static_cast<any_int8>(reinterpret_cast<any_int32>(STACKVAR(-28, 4)) - 0x00000008)) & 0x000000FF;
     STACKVAR(-80, 4) = ACCESS(ARRPTR(STACKVAR(-72, 4), 4, unknown_loc_54, 144), 0, 4);
     int unknown_loc_3C;
     if (STACKVAR(-80, 4) != 0x00000000)
@@ -12392,7 +12519,8 @@ l10017315:
     {
         goto l100175CF;
     }
-    int unknown_loc_44 = 1;
+    int unknown_loc_44;
+    unknown_loc_44 = 1;
     goto l10017416;
 l1001740D:
     unknown_loc_44++;
@@ -12416,7 +12544,8 @@ l10017416:
             goto l100174B4;
         }
     }
-    int unknown_loc_60 = reinterpret_cast<int>(STACKVAR(-4, 4)) >> reinterpret_cast<unsigned char>(static_cast<any_int8>(reinterpret_cast<any_int32>(STACKVAR(-28, 4)) - 0x00000008)) & 0x000000FF;
+    int unknown_loc_60;
+    unknown_loc_60 = reinterpret_cast<int>(STACKVAR(-4, 4)) >> reinterpret_cast<unsigned char>(static_cast<any_int8>(reinterpret_cast<any_int32>(STACKVAR(-28, 4)) - 0x00000008)) & 0x000000FF;
     STACKVAR(-92, 4) = ACCESS(ARRPTR(STACKVAR(-64, 4), 4, unknown_loc_60, 144), 0, 4);
     if (STACKVAR(-92, 4) != 0x00000000)
     {
@@ -12491,7 +12620,8 @@ l100175E1:
             goto l1001767F;
         }
     }
-    int unknown_loc_68 = reinterpret_cast<int>(STACKVAR(-4, 4)) >> reinterpret_cast<unsigned char>(static_cast<any_int8>(reinterpret_cast<any_int32>(STACKVAR(-28, 4)) - 0x00000008)) & 0x000000FF;
+    int unknown_loc_68;
+    unknown_loc_68 = reinterpret_cast<int>(STACKVAR(-4, 4)) >> reinterpret_cast<unsigned char>(static_cast<any_int8>(reinterpret_cast<any_int32>(STACKVAR(-28, 4)) - 0x00000008)) & 0x000000FF;
     STACKVAR(-100, 4) = ACCESS(ARRPTR(STACKVAR(-64, 4), 4, unknown_loc_68, 144), 0, 4);
     if (STACKVAR(-100, 4) != 0x00000000)
     {
@@ -12968,11 +13098,13 @@ l10018493:
     {
         goto l100185CA;
     }
-    int unknown_loc_24 = reinterpret_cast<int>(ACCESS(STACKVAR(-24, 4), 12, 4)) * reinterpret_cast<int>(ACCESS(STACKVAR(-24, 4), 36, 4)) / reinterpret_cast<int>(ACCESS(STACKVAR(8, 4), 280, 4));
+    int unknown_loc_24;
+    unknown_loc_24 = reinterpret_cast<int>(ACCESS(STACKVAR(-24, 4), 12, 4)) * reinterpret_cast<int>(ACCESS(STACKVAR(-24, 4), 36, 4)) / reinterpret_cast<int>(ACCESS(STACKVAR(8, 4), 280, 4));
     STACKVAR(-8, 4) = ACCESS(ARRPTR(ACCESS(STACKVAR(-16, 4), 56, 4), 4, unknown_loc_1C, 0), 0, 4);
     STACKVAR(-12, 4) = ACCESS(ARRPTR(ACCESS(STACKVAR(-16, 4), 60, 4), 4, unknown_loc_1C, 0), 0, 4);
     STACKVAR(-4, 4) = ACCESS(ARRPTR(STACKVAR(-16, 4), 4, unknown_loc_1C, 8), 0, 4);
-    int unknown_loc_14 = 0;
+    int unknown_loc_14;
+    unknown_loc_14 = 0;
     goto l100184F9;
 l100184F0:
     unknown_loc_14++;
@@ -13107,10 +13239,12 @@ l1001888B:
     {
         goto l10018978;
     }
-    int unknown_loc_20 = reinterpret_cast<int>(ACCESS(STACKVAR(-20, 4), 12, 4)) * reinterpret_cast<int>(ACCESS(STACKVAR(-20, 4), 36, 4)) / reinterpret_cast<int>(ACCESS(STACKVAR(8, 4), 280, 4));
+    int unknown_loc_20;
+    unknown_loc_20 = reinterpret_cast<int>(ACCESS(STACKVAR(-20, 4), 12, 4)) * reinterpret_cast<int>(ACCESS(STACKVAR(-20, 4), 36, 4)) / reinterpret_cast<int>(ACCESS(STACKVAR(8, 4), 280, 4));
     STACKVAR(-4, 4) = ACCESS(ARRPTR(ACCESS(STACKVAR(-12, 4), 56, 4), 4, unknown_loc_18, 0), 0, 4);
     STACKVAR(-8, 4) = ACCESS(ARRPTR(ACCESS(STACKVAR(-12, 4), 60, 4), 4, unknown_loc_18, 0), 0, 4);
-    int unknown_loc_10 = 0;
+    int unknown_loc_10;
+    unknown_loc_10 = 0;
     goto l100188E4;
 l100188DB:
     unknown_loc_10++;
@@ -13144,7 +13278,8 @@ l100189B7:
         goto l10018A68;
     }
     STACKVAR(-16, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-24, 4), 12, 4)) * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-24, 4), 36, 4));
-    int unknown_loc_20 = reinterpret_cast<int>(STACKVAR(-16, 4)) / reinterpret_cast<int>(ACCESS(STACKVAR(8, 4), 280, 4));
+    int unknown_loc_20;
+    unknown_loc_20 = reinterpret_cast<int>(STACKVAR(-16, 4)) / reinterpret_cast<int>(ACCESS(STACKVAR(8, 4), 280, 4));
     STACKVAR(-4, 4) = reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-24, 4), 44, 4)) % reinterpret_cast<unsigned int>(STACKVAR(-16, 4));
     if (STACKVAR(-4, 4) == 0x00000000)
     {
@@ -13155,7 +13290,8 @@ l100189B7:
         ACCESS(STACKVAR(-12, 4), 72, 4) = (reinterpret_cast<int>(STACKVAR(-4, 4)) - 1) / unknown_loc_20 + 1;
     }
     STACKVAR(-8, 4) = ACCESS(ARRPTR(ACCESS(ARRPTR(STACKVAR(-12, 4), 4, ACCESS(STACKVAR(-12, 4), 64, 4), 56), 0, 4), 4, unknown_loc_1C, 0), 0, 4);
-    int unknown_loc_14 = 0;
+    int unknown_loc_14;
+    unknown_loc_14 = 0;
     goto l10018A41;
 l10018A38:
     unknown_loc_14++;
@@ -14092,7 +14228,8 @@ l1001A1DC:
         STACKVAR(-16, 4) = ACCESS(STACKVAR(-12, 4), 4, 4);
     }
     STACKVAR(-16, 4) = reinterpret_cast<any_int32>(STACKVAR(-16, 4)) - 0x00000001;
-    int unknown_loc_04 = static_cast<int>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-28, 4), 0, 1)));
+    int unknown_loc_04;
+    unknown_loc_04 = static_cast<int>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-28, 4), 0, 1)));
     STACKVAR(-28, 4) = reinterpret_cast<any_int32>(STACKVAR(-28, 4)) + 0x00000001;
     if (0x00000000 != 0x00000000)
     {
@@ -14247,13 +14384,15 @@ l1001A559:
         STACKVAR(-24, 4) = ACCESS(STACKVAR(-16, 4), 4, 4);
     }
     STACKVAR(-24, 4) = reinterpret_cast<any_int32>(STACKVAR(-24, 4)) - 0x00000001;
-    int unknown_loc_04 = static_cast<int>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-36, 4), 0, 1)));
+    int unknown_loc_04;
+    unknown_loc_04 = static_cast<int>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-36, 4), 0, 1)));
     STACKVAR(-36, 4) = reinterpret_cast<any_int32>(STACKVAR(-36, 4)) + 0x00000001;
     if (0x00000000 != 0x00000000)
     {
         goto l1001A559;
     }
-    int unknown_loc_20 = 0;
+    int unknown_loc_20;
+    unknown_loc_20 = 0;
     STACKVAR(-28, 4) = ACCESS(STACKVAR(8, 4), 196, 4);
     goto l1001A5D6;
 l1001A5C4:
@@ -14420,7 +14559,8 @@ l1001A9B9:
         STACKVAR(-296, 4) = ACCESS(STACKVAR(-288, 4), 4, 4);
     }
     STACKVAR(-296, 4) = reinterpret_cast<any_int32>(STACKVAR(-296, 4)) - 0x00000001;
-    int unknown_loc_12C = static_cast<int>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-304, 4), 0, 1)));
+    int unknown_loc_12C;
+    unknown_loc_12C = static_cast<int>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-304, 4), 0, 1)));
     STACKVAR(-304, 4) = reinterpret_cast<any_int32>(STACKVAR(-304, 4)) + 0x00000001;
     if (0x00000000 != 0x00000000)
     {
@@ -14431,7 +14571,8 @@ l1001A9B9:
     ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 4, 4)(STACKVAR(8, 4), 0x00000001);
     STACKVAR(-280, 1) = 0;
     STACKVAR(-260, 4) = 0x00000000;
-    int unknown_loc_124 = 1;
+    int unknown_loc_124;
+    unknown_loc_124 = 1;
     goto l1001AA8A;
 l1001AA7B:
     unknown_loc_124++;
@@ -14618,13 +14759,15 @@ l1001B011:
         STACKVAR(-28, 4) = ACCESS(STACKVAR(-12, 4), 4, 4);
     }
     STACKVAR(-28, 4) = reinterpret_cast<any_int32>(STACKVAR(-28, 4)) - 0x00000001;
-    int unknown_loc_24 = static_cast<int>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-32, 4), 0, 1)));
+    int unknown_loc_24;
+    unknown_loc_24 = static_cast<int>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-32, 4), 0, 1)));
     STACKVAR(-32, 4) = reinterpret_cast<any_int32>(STACKVAR(-32, 4)) + 0x00000001;
     if (0x00000000 != 0x00000000)
     {
         goto l1001B011;
     }
-    int unknown_loc_14 = unknown_loc_24 >> 4;
+    int unknown_loc_14;
+    unknown_loc_14 = unknown_loc_24 >> 4;
     unknown_loc_24 = unknown_loc_24 & 0x0000000F;
     ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 20, 4) = 0x00000051;
     ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 24, 4) = unknown_loc_24;
@@ -14641,7 +14784,8 @@ l1001B011:
         ACCESS(ARRPTR(STACKVAR(8, 4), 4, unknown_loc_24, 144), 0, 4) = unknown_function_1000F672(STACKVAR(8, 4));
     }
     STACKVAR(-16, 4) = ACCESS(ARRPTR(STACKVAR(8, 4), 4, unknown_loc_24, 144), 0, 4);
-    int unknown_loc_18 = 0;
+    int unknown_loc_18;
+    unknown_loc_18 = 0;
     goto l1001B122;
 l1001B119:
     unknown_loc_18++;
@@ -15790,7 +15934,8 @@ l1001D42A:
         ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 28, 4) = 0x00000000;
         ACCESS(ACCESS(STACKVAR(8, 4), 0, 4), 4, 4)(STACKVAR(8, 4), 0xFFFFFFFF);
     }
-    int unknown_loc_04 = reinterpret_cast<int>(ACCESS(STACKVAR(8, 4), 364, 4));
+    int unknown_loc_04;
+    unknown_loc_04 = reinterpret_cast<int>(ACCESS(STACKVAR(8, 4), 364, 4));
     goto l1001D4C2;
 l1001D4B9:
     unknown_loc_04++;
@@ -15882,7 +16027,8 @@ p1001D69E
     STACKVAR(-4, 4) = ACCESS(STACKVAR(-24, 4), 12, 4);
     STACKVAR(-56, 4) = ACCESS(STACKVAR(-24, 4), 16, 4);
     memcpy(LOCAL(-44), reinterpret_cast<void *>(reinterpret_cast<any_int32>(STACKVAR(-24, 4)) + 0x00000014), 20);
-    int unknown_loc_50 = 0;
+    int unknown_loc_50;
+    unknown_loc_50 = 0;
     goto l1001D750;
 l1001D747:
     unknown_loc_50++;
@@ -15910,7 +16056,8 @@ l1001D750:
             goto l1001D832;
         }
     }
-    int unknown_loc_5C = reinterpret_cast<int>(STACKVAR(-4, 4)) >> reinterpret_cast<unsigned char>(static_cast<any_int8>(reinterpret_cast<any_int32>(STACKVAR(-56, 4)) - 0x00000008)) & 0x000000FF;
+    int unknown_loc_5C;
+    unknown_loc_5C = reinterpret_cast<int>(STACKVAR(-4, 4)) >> reinterpret_cast<unsigned char>(static_cast<any_int8>(reinterpret_cast<any_int32>(STACKVAR(-56, 4)) - 0x00000008)) & 0x000000FF;
     STACKVAR(-88, 4) = ACCESS(ARRPTR(STACKVAR(-12, 4), 4, unknown_loc_5C, 144), 0, 4);
     if (STACKVAR(-88, 4) != 0x00000000)
     {
@@ -16044,7 +16191,8 @@ l1001DB20:
             goto l1001DBC0;
         }
     }
-    int unknown_loc_48 = reinterpret_cast<int>(STACKVAR(-4, 4)) >> reinterpret_cast<unsigned char>(static_cast<any_int8>(reinterpret_cast<any_int32>(STACKVAR(-40, 4)) - 0x00000008)) & 0x000000FF;
+    int unknown_loc_48;
+    unknown_loc_48 = reinterpret_cast<int>(STACKVAR(-4, 4)) >> reinterpret_cast<unsigned char>(static_cast<any_int8>(reinterpret_cast<any_int32>(STACKVAR(-40, 4)) - 0x00000008)) & 0x000000FF;
     STACKVAR(-68, 4) = ACCESS(ARRPTR(STACKVAR(-16, 4), 4, unknown_loc_48, 144), 0, 4);
     if (STACKVAR(-68, 4) != 0x00000000)
     {
@@ -16224,7 +16372,8 @@ l1001E013:
             goto l1001E0EA;
         }
     }
-    int unknown_loc_154 = reinterpret_cast<int>(STACKVAR(-4, 4)) >> reinterpret_cast<unsigned char>(static_cast<any_int8>(reinterpret_cast<any_int32>(STACKVAR(-304, 4)) - 0x00000008)) & 0x000000FF;
+    int unknown_loc_154;
+    unknown_loc_154 = reinterpret_cast<int>(STACKVAR(-4, 4)) >> reinterpret_cast<unsigned char>(static_cast<any_int8>(reinterpret_cast<any_int32>(STACKVAR(-304, 4)) - 0x00000008)) & 0x000000FF;
     STACKVAR(-336, 4) = ACCESS(ARRPTR(STACKVAR(-20, 4), 4, unknown_loc_154, 144), 0, 4);
     if (STACKVAR(-336, 4) != 0x00000000)
     {
@@ -16641,7 +16790,8 @@ p1001ED33
     {
         goto l1001EDD1;
     }
-    int unknown_loc_10 = 0;
+    int unknown_loc_10;
+    unknown_loc_10 = 0;
     STACKVAR(-12, 4) = ACCESS(STACKVAR(8, 4), 196, 4);
     goto l1001ED7D;
 l1001ED6B:
@@ -16706,7 +16856,8 @@ l1001EEFA:
     }
     STACKVAR(-36, 4) = ACCESS(ARRPTR(STACKVAR(16, 4), 4, STACKVAR(-44, 4), 0), 0, 4);
     STACKVAR(-32, 4) = ACCESS(ARRPTR(STACKVAR(-40, 4), 4, unknown_loc_0C, 0), 0, 4);
-    unsigned int unknown_loc_14 = reinterpret_cast<unsigned int>(STACKVAR(-32, 4)) + reinterpret_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 92, 4));
+    unsigned int unknown_loc_14;
+    unknown_loc_14 = reinterpret_cast<unsigned int>(STACKVAR(-32, 4)) + reinterpret_cast<unsigned int>(ACCESS(STACKVAR(8, 4), 92, 4));
 l1001EF30:
     if (reinterpret_cast<unsigned int>(STACKVAR(-32, 4)) >= unknown_loc_14)
     {
@@ -16714,7 +16865,8 @@ l1001EF30:
     }
     STACKVAR(-4, 1) = ACCESS(STACKVAR(-36, 4), 0, 1);
     STACKVAR(-36, 4) = reinterpret_cast<any_int32>(STACKVAR(-36, 4)) + 0x00000001;
-    int unknown_loc_10 = reinterpret_cast<int>(STACKVAR(-8, 4));
+    int unknown_loc_10;
+    unknown_loc_10 = reinterpret_cast<int>(STACKVAR(-8, 4));
     goto l1001EF5A;
 l1001EF51:
     unknown_loc_10--;
@@ -16808,13 +16960,15 @@ l1001F141:
     }
     STACKVAR(-12, 4) = ACCESS(ARRPTR(STACKVAR(16, 4), 4, unknown_loc_14, 0), 0, 4);
     STACKVAR(-8, 4) = ACCESS(ARRPTR(STACKVAR(-16, 4), 4, unknown_loc_14, 0), 0, 4);
-    int unknown_loc_04 = static_cast<int>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-12, 4), 0, 1)));
+    int unknown_loc_04;
+    unknown_loc_04 = static_cast<int>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-12, 4), 0, 1)));
     STACKVAR(-12, 4) = reinterpret_cast<any_int32>(STACKVAR(-12, 4)) + 0x00000001;
     ACCESS(STACKVAR(-8, 4), 0, 1) = STACKVAR(-4, 1);
     STACKVAR(-8, 4) = reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + 0x00000001;
     ACCESS(STACKVAR(-8, 4), 0, 1) = static_cast<any_int8>(3 * unknown_loc_04 + static_cast<int>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-12, 4), 0, 1))) + 2 >> 2);
     STACKVAR(-8, 4) = reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + 0x00000001;
-    unsigned int unknown_loc_18 = reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 40, 4)) - 2;
+    unsigned int unknown_loc_18;
+    unknown_loc_18 = reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 40, 4)) - 2;
     goto l1001F1C8;
 l1001F1BF:
     unknown_loc_18--;
@@ -16850,7 +17004,8 @@ l1001F287:
     {
         goto l1001F46B;
     }
-    int unknown_loc_0C = 0;
+    int unknown_loc_0C;
+    unknown_loc_0C = 0;
     goto l1001F2AB;
 l1001F2A2:
     unknown_loc_0C++;
@@ -16870,19 +17025,23 @@ l1001F2AB:
     }
     STACKVAR(-28, 4) = ACCESS(ARRPTR(STACKVAR(-32, 4), 4, unknown_loc_18, 0), 0, 4);
     unknown_loc_18++;
-    int unknown_loc_04 = 3 * static_cast<int>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-20, 4), 0, 1))) + static_cast<int>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-8, 4), 0, 1)));
+    int unknown_loc_04;
+    unknown_loc_04 = 3 * static_cast<int>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-20, 4), 0, 1))) + static_cast<int>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-8, 4), 0, 1)));
     STACKVAR(-8, 4) = reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + 0x00000001;
     STACKVAR(-20, 4) = reinterpret_cast<any_int32>(STACKVAR(-20, 4)) + 0x00000001;
-    int unknown_loc_10 = 3 * static_cast<int>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-20, 4), 0, 1))) + static_cast<int>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-8, 4), 0, 1)));
+    int unknown_loc_10;
+    unknown_loc_10 = 3 * static_cast<int>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-20, 4), 0, 1))) + static_cast<int>(reinterpret_cast<unsigned char>(ACCESS(STACKVAR(-8, 4), 0, 1)));
     STACKVAR(-8, 4) = reinterpret_cast<any_int32>(STACKVAR(-8, 4)) + 0x00000001;
     STACKVAR(-20, 4) = reinterpret_cast<any_int32>(STACKVAR(-20, 4)) + 0x00000001;
     ACCESS(STACKVAR(-28, 4), 0, 1) = static_cast<any_int8>(0x04 * unknown_loc_04 + 8 >> 4);
     STACKVAR(-28, 4) = reinterpret_cast<any_int32>(STACKVAR(-28, 4)) + 0x00000001;
     ACCESS(STACKVAR(-28, 4), 0, 1) = static_cast<any_int8>(3 * unknown_loc_04 + unknown_loc_10 + 7 >> 4);
     STACKVAR(-28, 4) = reinterpret_cast<any_int32>(STACKVAR(-28, 4)) + 0x00000001;
-    int unknown_loc_2C = unknown_loc_04;
+    int unknown_loc_2C;
+    unknown_loc_2C = unknown_loc_04;
     unknown_loc_04 = unknown_loc_10;
-    unsigned int unknown_loc_28 = reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 40, 4)) - 2;
+    unsigned int unknown_loc_28;
+    unknown_loc_28 = reinterpret_cast<unsigned int>(ACCESS(STACKVAR(12, 4), 40, 4)) - 2;
     goto l1001F3A4;
 l1001F39B:
     unknown_loc_28--;
@@ -18038,7 +18197,8 @@ p100227DF
     {
         goto l1002296B;
     }
-    unsigned int unknown_loc_10 = reinterpret_cast<unsigned int>(STACKVAR(16, 4)) + 12;
+    unsigned int unknown_loc_10;
+    unknown_loc_10 = reinterpret_cast<unsigned int>(STACKVAR(16, 4)) + 12;
     unsigned int unknown_loc_04;
     if (STACKVAR(-24, 4) == 0x00000000)
     {
@@ -18155,7 +18315,8 @@ l10022B3D:
     }
     unknown_loc_18 = min(unknown_loc_18, reinterpret_cast<unsigned int>(STACKVAR(20, 4)) - unknown_loc_08);
     STACKVAR(-16, 4) = unknown_function_100229CF(STACKVAR(8, 4), STACKVAR(12, 4), unknown_loc_18 * reinterpret_cast<any_int32>(STACKVAR(16, 4)));
-    unsigned int unknown_loc_14 = unknown_loc_18;
+    unsigned int unknown_loc_14;
+    unknown_loc_14 = unknown_loc_18;
     goto l10022B93;
 l10022B8A:
     unknown_loc_14--;
@@ -18202,7 +18363,8 @@ l10022C43:
     }
     unknown_loc_18 = min(unknown_loc_18, reinterpret_cast<unsigned int>(STACKVAR(20, 4)) - unknown_loc_08);
     STACKVAR(-16, 4) = unknown_function_100229CF(STACKVAR(8, 4), STACKVAR(12, 4), 0x00000080 * unknown_loc_18 * reinterpret_cast<any_int32>(STACKVAR(16, 4)));
-    unsigned int unknown_loc_14 = unknown_loc_18;
+    unsigned int unknown_loc_14;
+    unknown_loc_14 = unknown_loc_18;
     goto l10022CA0;
 l10022C97:
     unknown_loc_14--;
@@ -18822,9 +18984,12 @@ l10023C06:
     {
         goto l10023CC4;
     }
-    int unknown_loc_28 = reinterpret_cast<int>(ACCESS(ARRPTR(STACKVAR(-28, 4), 4, unknown_loc_10, 32), 0, 4));
-    int unknown_loc_0C = unknown_loc_20 / unknown_loc_28;
-    int unknown_loc_14 = 0;
+    int unknown_loc_28;
+    unknown_loc_28 = reinterpret_cast<int>(ACCESS(ARRPTR(STACKVAR(-28, 4), 4, unknown_loc_10, 32), 0, 4));
+    int unknown_loc_0C;
+    unknown_loc_0C = unknown_loc_20 / unknown_loc_28;
+    int unknown_loc_14;
+    unknown_loc_14 = 0;
     goto l10023C3E;
 l10023C35:
     unknown_loc_14++;
@@ -18834,7 +18999,8 @@ l10023C3E:
         goto l10023CB9;
     }
     STACKVAR(-4, 4) = unknown_function_10023E52(STACKVAR(8, 4), unknown_loc_10, unknown_loc_14, unknown_loc_28 - 1);
-    int unknown_loc_08 = unknown_loc_14 * unknown_loc_0C;
+    int unknown_loc_08;
+    unknown_loc_08 = unknown_loc_14 * unknown_loc_0C;
     goto l10023C79;
 l10023C70:
     unknown_loc_08 += unknown_loc_20;
@@ -18843,7 +19009,8 @@ l10023C79:
     {
         goto l10023CB4;
     }
-    int unknown_loc_18 = 0;
+    int unknown_loc_18;
+    unknown_loc_18 = 0;
     goto l10023C93;
 l10023C8A:
     unknown_loc_18++;
@@ -18967,7 +19134,8 @@ l10023EEB:
     {
         goto l10024011;
     }
-    int unknown_loc_24 = reinterpret_cast<int>(ACCESS(ARRPTR(STACKVAR(-28, 4), 4, unknown_loc_10, 32), 0, 4));
+    int unknown_loc_24;
+    unknown_loc_24 = reinterpret_cast<int>(ACCESS(ARRPTR(STACKVAR(-28, 4), 4, unknown_loc_10, 32), 0, 4));
     unknown_loc_08 = unknown_loc_08 / unknown_loc_24;
     if (STACKVAR(-12, 4) != 0x00000000)
     {
@@ -18975,8 +19143,10 @@ l10023EEB:
     }
     STACKVAR(-32, 4) = ACCESS(ARRPTR(ACCESS(STACKVAR(-28, 4), 24, 4), 4, unknown_loc_10, 0), 0, 4);
     STACKVAR(-4, 4) = 0x00000000;
-    int unknown_loc_18 = reinterpret_cast<int>(unknown_function_10024015(STACKVAR(8, 4), unknown_loc_10, 0x00000000, unknown_loc_24 - 1));
-    int unknown_loc_14 = 0;
+    int unknown_loc_18;
+    unknown_loc_18 = reinterpret_cast<int>(unknown_function_10024015(STACKVAR(8, 4), unknown_loc_10, 0x00000000, unknown_loc_24 - 1));
+    int unknown_loc_14;
+    unknown_loc_14 = 0;
     goto l10023F79;
 l10023F70:
     unknown_loc_14++;
@@ -19117,7 +19287,8 @@ l1002420E:
     }
     STACKVAR(-20, 4) = ACCESS(ARRPTR(STACKVAR(-12, 4), 4, unknown_loc_04, 32), 0, 4);
     STACKVAR(-16, 4) = 0x00000000;
-    int unknown_loc_08 = 0;
+    int unknown_loc_08;
+    unknown_loc_08 = 0;
     goto l1002423F;
 l10024236:
     unknown_loc_08++;
@@ -19157,7 +19328,8 @@ l100242D3:
     {
         goto l10024350;
     }
-    int unknown_loc_0C = 0;
+    int unknown_loc_0C;
+    unknown_loc_0C = 0;
     goto l100242EB;
 l100242E2:
     unknown_loc_0C++;
@@ -19192,7 +19364,8 @@ l10024396:
     }
     STACKVAR(-20, 4) = ACCESS(ARRPTR(STACKVAR(12, 4), 4, unknown_loc_10, 0), 0, 4);
     STACKVAR(-32, 4) = ACCESS(ARRPTR(STACKVAR(16, 4), 4, unknown_loc_10, 0), 0, 4);
-    unsigned int unknown_loc_04 = reinterpret_cast<unsigned int>(STACKVAR(-12, 4));
+    unsigned int unknown_loc_04;
+    unknown_loc_04 = reinterpret_cast<unsigned int>(STACKVAR(-12, 4));
     goto l100243CB;
 l100243C2:
     unknown_loc_04--;
@@ -19202,7 +19375,8 @@ l100243CB:
         goto l1002442D;
     }
     STACKVAR(-24, 4) = 0x00000000;
-    int unknown_loc_24 = 0;
+    int unknown_loc_24;
+    unknown_loc_24 = 0;
     goto l100243EA;
 l100243E1:
     unknown_loc_24++;
@@ -19241,7 +19415,8 @@ l10024486:
     }
     STACKVAR(-16, 4) = ACCESS(ARRPTR(STACKVAR(12, 4), 4, unknown_loc_0C, 0), 0, 4);
     STACKVAR(-36, 4) = ACCESS(ARRPTR(STACKVAR(16, 4), 4, unknown_loc_0C, 0), 0, 4);
-    unsigned int unknown_loc_04 = reinterpret_cast<unsigned int>(STACKVAR(-8, 4));
+    unsigned int unknown_loc_04;
+    unknown_loc_04 = reinterpret_cast<unsigned int>(STACKVAR(-8, 4));
     goto l100244BB;
 l100244B2:
     unknown_loc_04--;
@@ -19280,7 +19455,8 @@ l1002456E:
     }
     unknown_function_10026972(ACCESS(ARRPTR(STACKVAR(16, 4), 4, unknown_loc_18, 0), 0, 4), STACKVAR(-20, 4));
     STACKVAR(-36, 4) = ACCESS(STACKVAR(-48, 4), 48, 4);
-    int unknown_loc_2C = 0;
+    int unknown_loc_2C;
+    unknown_loc_2C = 0;
     goto l100245AB;
 l100245A2:
     unknown_loc_2C++;
@@ -19294,7 +19470,8 @@ l100245AB:
     STACKVAR(-32, 4) = ACCESS(ARRPTR(ACCESS(STACKVAR(-48, 4), 24, 4), 4, unknown_loc_2C, 0), 0, 4);
     STACKVAR(-8, 4) = reinterpret_cast<any_int32>(ACCESS(ARRPTR(STACKVAR(-48, 4), 4, unknown_loc_2C, 52), 0, 4)) + 0x00000040 * reinterpret_cast<any_int32>(STACKVAR(-36, 4));
     STACKVAR(-28, 4) = 0x00000000;
-    unsigned int unknown_loc_04 = reinterpret_cast<unsigned int>(STACKVAR(-20, 4));
+    unsigned int unknown_loc_04;
+    unknown_loc_04 = reinterpret_cast<unsigned int>(STACKVAR(-20, 4));
     goto l1002460E;
 l10024605:
     unknown_loc_04--;
@@ -19340,7 +19517,8 @@ l100246C7:
     STACKVAR(-36, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-60, 4), 56, 4)) + 0x00000040 * reinterpret_cast<any_int32>(STACKVAR(-28, 4));
     STACKVAR(-52, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-60, 4), 60, 4)) + 0x00000040 * reinterpret_cast<any_int32>(STACKVAR(-28, 4));
     STACKVAR(-24, 4) = 0x00000000;
-    unsigned int unknown_loc_04 = reinterpret_cast<unsigned int>(STACKVAR(-12, 4));
+    unsigned int unknown_loc_04;
+    unknown_loc_04 = reinterpret_cast<unsigned int>(STACKVAR(-12, 4));
     goto l1002473F;
 l10024736:
     unknown_loc_04--;
@@ -19382,7 +19560,8 @@ l10024841:
         goto l10024A40;
     }
     unknown_function_10026972(ACCESS(ARRPTR(STACKVAR(16, 4), 4, unknown_loc_18, 0), 0, 4), STACKVAR(-20, 4));
-    int unknown_loc_38 = 0;
+    int unknown_loc_38;
+    unknown_loc_38 = 0;
     goto l10024875;
 l1002486C:
     unknown_loc_38++;
@@ -19410,10 +19589,12 @@ l10024875:
     }
     STACKVAR(-32, 4) = ACCESS(ARRPTR(ACCESS(STACKVAR(-60, 4), 24, 4), 4, unknown_loc_38, 0), 0, 4);
     STACKVAR(-72, 4) = ACCESS(ARRPTR(ACCESS(STACKVAR(-60, 4), 16, 4), 4, unknown_loc_38, 0), 0, 4);
-    int unknown_loc_4C = 0;
+    int unknown_loc_4C;
+    unknown_loc_4C = 0;
     STACKVAR(-36, 4) = 0x00000000;
     STACKVAR(-48, 4) = STACKVAR(-36, 4);
-    unsigned int unknown_loc_04 = reinterpret_cast<unsigned int>(STACKVAR(-20, 4));
+    unsigned int unknown_loc_04;
+    unknown_loc_04 = reinterpret_cast<unsigned int>(STACKVAR(-20, 4));
     goto l10024949;
 l10024940:
     unknown_loc_04--;
@@ -19656,7 +19837,8 @@ l10024F09:
         goto l10024FA5;
     }
     STACKVAR(-8, 4) = ACCESS(ARRPTR(STACKVAR(12, 4), 4, unknown_loc_10, 0), 0, 4);
-    unsigned int unknown_loc_04 = reinterpret_cast<unsigned int>(STACKVAR(-12, 4));
+    unsigned int unknown_loc_04;
+    unknown_loc_04 = reinterpret_cast<unsigned int>(STACKVAR(-12, 4));
     goto l10024F32;
 l10024F29:
     unknown_loc_04--;
@@ -19694,7 +19876,8 @@ l10024FDF:
     }
     STACKVAR(-32, 4) = ACCESS(ARRPTR(STACKVAR(12, 4), 4, unknown_loc_0C, 0), 0, 4);
     STACKVAR(-28, 4) = ACCESS(ARRPTR(STACKVAR(16, 4), 4, unknown_loc_0C, 0), 0, 4);
-    unsigned int unknown_loc_04 = reinterpret_cast<unsigned int>(STACKVAR(-8, 4));
+    unsigned int unknown_loc_04;
+    unknown_loc_04 = reinterpret_cast<unsigned int>(STACKVAR(-8, 4));
     goto l10025014;
 l1002500B:
     unknown_loc_04--;
@@ -20028,16 +20211,20 @@ l10025A9D:
         STACKVAR(-8, 4) = ACCESS(STACKVAR(-76, 4), 32, 4);
         ACCESS(STACKVAR(-76, 4), 36, 1) = 0x01;
     }
-    int unknown_loc_24 = 0;
-    int unknown_loc_20 = unknown_loc_24;
-    int unknown_loc_18 = unknown_loc_20;
+    int unknown_loc_24;
+    unknown_loc_24 = 0;
+    int unknown_loc_20;
+    unknown_loc_20 = unknown_loc_24;
+    int unknown_loc_18;
+    unknown_loc_18 = unknown_loc_20;
     STACKVAR(-72, 4) = 0x00000000;
     STACKVAR(-28, 4) = STACKVAR(-72, 4);
     STACKVAR(-20, 4) = STACKVAR(-28, 4);
     STACKVAR(-88, 4) = 0x00000000;
     STACKVAR(-68, 4) = STACKVAR(-88, 4);
     STACKVAR(-60, 4) = STACKVAR(-68, 4);
-    unsigned int unknown_loc_04 = reinterpret_cast<unsigned int>(STACKVAR(-12, 4));
+    unsigned int unknown_loc_04;
+    unknown_loc_04 = reinterpret_cast<unsigned int>(STACKVAR(-12, 4));
     goto l10025B7F;
 l10025B76:
     unknown_loc_04--;
@@ -20158,7 +20345,8 @@ p10025F35
     {
         goto l10026024;
     }
-    int unknown_loc_0C = unknown_loc_30;
+    int unknown_loc_0C;
+    unknown_loc_0C = unknown_loc_30;
     goto l10025FA2;
 l10025F99:
     unknown_loc_0C++;
@@ -20167,7 +20355,8 @@ l10025FA2:
     {
         goto l10026024;
     }
-    int unknown_loc_18 = unknown_loc_34;
+    int unknown_loc_18;
+    unknown_loc_18 = unknown_loc_34;
     goto l10025FBB;
 l10025FB2:
     unknown_loc_18++;
@@ -20177,7 +20366,8 @@ l10025FBB:
         goto l1002601F;
     }
     STACKVAR(-28, 4) = ARRPTR(reinterpret_cast<any_int32>(ACCESS(ARRPTR(STACKVAR(-60, 4), 4, unknown_loc_0C, 0), 0, 4)) + 64 * unknown_loc_18, 2, unknown_loc_38, 0);
-    int unknown_loc_28 = unknown_loc_38;
+    int unknown_loc_28;
+    unknown_loc_28 = unknown_loc_38;
     goto l10025FEE;
 l10025FE5:
     unknown_loc_28++;
@@ -20594,7 +20784,8 @@ l1002674C:
     {
         goto l1002681A;
     }
-    int unknown_loc_1C = reinterpret_cast<int>(STACKVAR(-52, 4));
+    int unknown_loc_1C;
+    unknown_loc_1C = reinterpret_cast<int>(STACKVAR(-52, 4));
     goto l10026769;
 l10026760:
     unknown_loc_1C++;
@@ -20604,7 +20795,8 @@ l10026769:
         goto l10026815;
     }
     STACKVAR(-32, 4) = ARRPTR(reinterpret_cast<any_int32>(ACCESS(ARRPTR(STACKVAR(-60, 4), 4, unknown_loc_14, 0), 0, 4)) + 64 * unknown_loc_1C, 2, STACKVAR(-56, 4), 0);
-    int unknown_loc_24 = reinterpret_cast<int>(STACKVAR(-56, 4));
+    int unknown_loc_24;
+    unknown_loc_24 = reinterpret_cast<int>(STACKVAR(-56, 4));
     goto l100267A0;
 l10026797:
     unknown_loc_24++;
@@ -20745,7 +20937,8 @@ p100269F2
     {
         goto l10026A9F;
     }
-    unsigned int unknown_loc_04 = 0;
+    unsigned int unknown_loc_04;
+    unknown_loc_04 = 0;
     goto l10026A5F;
 l10026A56:
     unknown_loc_04++;
@@ -20789,7 +20982,8 @@ B_BitMap24::B_BitMap24(const B_BitMap24 &that)
     }
     STACKVAR(-16, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A530), 0, 4)));
     STACKVAR(-8, 4) = STACKVAR(-16, 4);
-    unsigned int unknown_loc_0C = 0;
+    unsigned int unknown_loc_0C;
+    unknown_loc_0C = 0;
     goto l10026B62;
 l10026B59:
     unknown_loc_0C++;
@@ -20849,7 +21043,8 @@ l10026C88:
     {
         goto l10026D37;
     }
-    unsigned int unknown_loc_14 = 0;
+    unsigned int unknown_loc_14;
+    unknown_loc_14 = 0;
     goto l10026CF8;
 l10026CEF:
     unknown_loc_14++;
@@ -20892,7 +21087,8 @@ B_BitMap24::B_BitMap24(const B_BitMap &arg_1)
     }
     STACKVAR(-56, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A530), 0, 4)));
     STACKVAR(-48, 4) = STACKVAR(-56, 4);
-    unsigned int unknown_loc_34 = 0;
+    unsigned int unknown_loc_34;
+    unknown_loc_34 = 0;
     goto l10026DFA;
 l10026DF1:
     unknown_loc_34++;
@@ -20952,7 +21148,8 @@ l10026F58:
     {
         goto l1002700F;
     }
-    int unknown_loc_10 = 0;
+    int unknown_loc_10;
+    unknown_loc_10 = 0;
     goto l10026F82;
 l10026F70:
     unknown_loc_10++;
@@ -20997,7 +21194,8 @@ l100270A2:
     }
     STACKVAR(-20, 4) = this->data;
     STACKVAR(-28, 4) = arg_1.data;
-    int unknown_loc_18 = 0;
+    int unknown_loc_18;
+    unknown_loc_18 = 0;
     goto l10027125;
 l1002711C:
     unknown_loc_18++;
@@ -21006,7 +21204,8 @@ l10027125:
     {
         goto l10027193;
     }
-    int unknown_loc_20 = 0;
+    int unknown_loc_20;
+    unknown_loc_20 = 0;
     goto l1002714B;
 l10027139:
     unknown_loc_20++;
@@ -21543,7 +21742,8 @@ p100284C0
     {
         goto l1002854E;
     }
-    unsigned int unknown_loc_04 = 0;
+    unsigned int unknown_loc_04;
+    unknown_loc_04 = 0;
     goto l1002850E;
 l10028505:
     unknown_loc_04++;
@@ -22048,7 +22248,8 @@ l10029192:
     {
         goto l10029212;
     }
-    int unknown_loc_0C = 0;
+    int unknown_loc_0C;
+    unknown_loc_0C = 0;
     goto l100291B1;
 l100291A8:
     unknown_loc_0C++;
@@ -22124,7 +22325,8 @@ l1002939B:
     }
     goto l10029400;
 l100293BF:
-    int unknown_loc_7C = 0;
+    int unknown_loc_7C;
+    unknown_loc_7C = 0;
     goto l100293D1;
 l100293C8:
     unknown_loc_7C++;
@@ -22334,7 +22536,8 @@ p10029B30
     {
         goto l10029BAB;
     }
-    int unknown_loc_0C = reinterpret_cast<int>(ACCESS(this, -4, 4));
+    int unknown_loc_0C;
+    unknown_loc_0C = reinterpret_cast<int>(ACCESS(this, -4, 4));
     STACKVAR(-8, 4) = 0x00000014;
     STACKVAR(-4, 4) = this;
     STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + reinterpret_cast<any_int32>(STACKVAR(-8, 4)) * unknown_loc_0C;
@@ -22445,7 +22648,8 @@ unsigned int B_MessageManager::Add(B_MessageChannel *channel)
     }
     STACKVAR(-12, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-24, 4), 16, 4)));
     STACKVAR(-4, 4) = STACKVAR(-12, 4);
-    unsigned int unknown_loc_08 = 0;
+    unsigned int unknown_loc_08;
+    unknown_loc_08 = 0;
     goto l10029D8A;
 l10029D81:
     unknown_loc_08++;
@@ -22541,7 +22745,8 @@ l10029F35:
     {
         goto l1002A12E;
     }
-    B_MessageChannel *unknown_loc_08 = reinterpret_cast<B_MessageChannel *>(ACCESS(ARRPTR(ACCESS(ACCESS(GLOBAL(0x1004A944), 0, 4), 4, 4), 4, unknown_loc_04, 0), 0, 4));
+    B_MessageChannel *unknown_loc_08;
+    unknown_loc_08 = reinterpret_cast<B_MessageChannel *>(ACCESS(ARRPTR(ACCESS(ACCESS(GLOBAL(0x1004A944), 0, 4), 4, 4), 4, unknown_loc_04, 0), 0, 4));
     STACKVAR(-44, 4) = ACCESS(GLOBAL(0x1004A944), 0, 4);
     if (unknown_loc_04 >= reinterpret_cast<unsigned int>(ACCESS(STACKVAR(-44, 4), 8, 4)))
     {
@@ -22576,7 +22781,8 @@ l10029F35:
     ACCESS(STACKVAR(-44, 4), 16, 4) = reinterpret_cast<any_int32>(ACCESS(STACKVAR(-44, 4), 16, 4)) - reinterpret_cast<any_int32>(ACCESS(STACKVAR(-44, 4), 12, 4));
     STACKVAR(-36, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-44, 4), 16, 4)));
     STACKVAR(-12, 4) = STACKVAR(-36, 4);
-    unsigned int unknown_loc_10 = 0;
+    unsigned int unknown_loc_10;
+    unknown_loc_10 = 0;
     goto l1002A06A;
 l1002A061:
     unknown_loc_10++;
@@ -22601,7 +22807,8 @@ l1002A09D:
     ACCESS(STACKVAR(-44, 4), 4, 4) = STACKVAR(-12, 4);
     goto l1002A11A;
 l1002A0E0:
-    unsigned int unknown_loc_14 = unknown_loc_04 + 1;
+    unsigned int unknown_loc_14;
+    unknown_loc_14 = unknown_loc_04 + 1;
     goto l1002A0F4;
 l1002A0EB:
     unknown_loc_14++;
@@ -22629,7 +22836,8 @@ unsigned int B_MessageManager::Message(const char *arg_1)
     {
         goto l1002A1B0;
     }
-    unsigned int unknown_loc_08 = 0;
+    unsigned int unknown_loc_08;
+    unknown_loc_08 = 0;
     goto l1002A169;
 l1002A160:
     unknown_loc_08++;
@@ -22743,7 +22951,8 @@ p1002A2F0
     {
         goto l1002A37E;
     }
-    unsigned int unknown_loc_04 = 0;
+    unsigned int unknown_loc_04;
+    unknown_loc_04 = 0;
     goto l1002A33E;
 l1002A335:
     unknown_loc_04++;
@@ -22794,7 +23003,8 @@ p1002A3D0
     {
         goto l1002A45E;
     }
-    unsigned int unknown_loc_04 = 0;
+    unsigned int unknown_loc_04;
+    unknown_loc_04 = 0;
     goto l1002A41E;
 l1002A415:
     unknown_loc_04++;
@@ -22845,7 +23055,8 @@ p1002A4B0
     {
         goto l1002A53E;
     }
-    unsigned int unknown_loc_04 = 0;
+    unsigned int unknown_loc_04;
+    unknown_loc_04 = 0;
     goto l1002A4FE;
 l1002A4F5:
     unknown_loc_04++;
@@ -23491,7 +23702,8 @@ p10032003
     {
         goto l1003206D;
     }
-    unsigned int unknown_loc_10 = 0;
+    unsigned int unknown_loc_10;
+    unknown_loc_10 = 0;
     goto l10032045;
 l1003203C:
     unknown_loc_10++;
@@ -23517,7 +23729,8 @@ l100320A0:
     }
     STACKVAR(-8, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-28, 4), 16, 4)));
     ACCESS(STACKVAR(-28, 4), 4, 4) = STACKVAR(-8, 4);
-    unsigned int unknown_loc_04 = 0;
+    unsigned int unknown_loc_04;
+    unknown_loc_04 = 0;
     goto l10032115;
 l1003210C:
     unknown_loc_04++;
@@ -23670,7 +23883,8 @@ p10032524
     {
         goto l100326B1;
     }
-    int unknown_loc_24 = reinterpret_cast<int>(STACKVAR(-12, 4));
+    int unknown_loc_24;
+    unknown_loc_24 = reinterpret_cast<int>(STACKVAR(-12, 4));
     STACKVAR(-32, 4) = 0x00000028;
     STACKVAR(-28, 4) = STACKVAR(-20, 4);
 l10032687:
@@ -23687,7 +23901,8 @@ l100326B1:
     STACKVAR(-48, 4) = 0x00000000;
 l100326B8:
     ACCESS(STACKVAR(-44, 4), 4, 4) = STACKVAR(-48, 4);
-    unsigned int unknown_loc_10 = 0;
+    unsigned int unknown_loc_10;
+    unknown_loc_10 = 0;
     goto l100326D3;
 l100326CA:
     unknown_loc_10++;
@@ -23833,7 +24048,8 @@ void B_ObjDscr::SetUpNormals()
     {
         goto l10032BB9;
     }
-    int unknown_loc_1EC = reinterpret_cast<int>(STACKVAR(-28, 4));
+    int unknown_loc_1EC;
+    unknown_loc_1EC = reinterpret_cast<int>(STACKVAR(-28, 4));
     STACKVAR(-488, 4) = 0x00000018;
     STACKVAR(-484, 4) = STACKVAR(-204, 4);
 l10032B44:
@@ -23910,7 +24126,8 @@ l10032C7D:
         STACKVAR(-636, 4) = 0x00000000;
     }
     STACKVAR(-504, 4) = STACKVAR(-636, 4);
-    unsigned int unknown_loc_200 = 0;
+    unsigned int unknown_loc_200;
+    unknown_loc_200 = 0;
     goto l10032D9F;
 l10032D90:
     unknown_loc_200++;
@@ -23969,7 +24186,8 @@ l10032E83:
         STACKVAR(-644, 4) = 0x00000000;
     }
     STACKVAR(-544, 4) = STACKVAR(-644, 4);
-    unsigned int unknown_loc_228 = 0;
+    unsigned int unknown_loc_228;
+    unknown_loc_228 = 0;
     goto l10032FA5;
 l10032F96:
     unknown_loc_228++;
@@ -24114,7 +24332,8 @@ void B_ObjDscr::SetUpInertialT()
     {
         goto l100336A8;
     }
-    int unknown_loc_208 = reinterpret_cast<int>(STACKVAR(-32, 4));
+    int unknown_loc_208;
+    unknown_loc_208 = reinterpret_cast<int>(STACKVAR(-32, 4));
     STACKVAR(-516, 4) = 0x00000018;
     STACKVAR(-512, 4) = STACKVAR(-124, 4);
 l10033636:
@@ -24181,7 +24400,8 @@ l10033727:
     {
         goto l10033854;
     }
-    int unknown_loc_238 = reinterpret_cast<int>(STACKVAR(-536, 4));
+    int unknown_loc_238;
+    unknown_loc_238 = reinterpret_cast<int>(STACKVAR(-536, 4));
     STACKVAR(-564, 4) = 0x00000080;
     STACKVAR(-560, 4) = STACKVAR(-548, 4);
 l1003380F:
@@ -24198,7 +24418,8 @@ l10033854:
     STACKVAR(-668, 4) = 0x00000000;
 l1003385E:
     STACKVAR(-532, 4) = STACKVAR(-668, 4);
-    unsigned int unknown_loc_21C = 0;
+    unsigned int unknown_loc_21C;
+    unknown_loc_21C = 0;
     goto l10033885;
 l10033876:
     unknown_loc_21C++;
@@ -24251,7 +24472,8 @@ l10033969:
     {
         goto l10033A96;
     }
-    int unknown_loc_26C = reinterpret_cast<int>(STACKVAR(-588, 4));
+    int unknown_loc_26C;
+    unknown_loc_26C = reinterpret_cast<int>(STACKVAR(-588, 4));
     STACKVAR(-616, 4) = 0x00000080;
     STACKVAR(-612, 4) = STACKVAR(-600, 4);
 l10033A51:
@@ -24268,7 +24490,8 @@ l10033A96:
     STACKVAR(-676, 4) = 0x00000000;
 l10033AA0:
     STACKVAR(-584, 4) = STACKVAR(-676, 4);
-    unsigned int unknown_loc_250 = 0;
+    unsigned int unknown_loc_250;
+    unknown_loc_250 = 0;
     goto l10033AC7;
 l10033AB8:
     unknown_loc_250++;
@@ -24289,7 +24512,8 @@ l10033B20:
     {
         goto l10033BB1;
     }
-    int unknown_loc_278 = reinterpret_cast<int>(STACKVAR(-596, 4));
+    int unknown_loc_278;
+    unknown_loc_278 = reinterpret_cast<int>(STACKVAR(-596, 4));
     STACKVAR(-628, 4) = 0x00000080;
     STACKVAR(-624, 4) = STACKVAR(-608, 4);
 l10033B6C:
@@ -24600,7 +24824,8 @@ l10034508:
     {
         goto l100346DB;
     }
-    int unknown_loc_64 = reinterpret_cast<int>(STACKVAR(-64, 4));
+    int unknown_loc_64;
+    unknown_loc_64 = reinterpret_cast<int>(STACKVAR(-64, 4));
     STACKVAR(-96, 4) = 0x00000018;
     STACKVAR(-92, 4) = STACKVAR(-80, 4);
 l100346AE:
@@ -24617,7 +24842,8 @@ l100346DB:
     STACKVAR(-176, 4) = 0x00000000;
 l100346E5:
     STACKVAR(-68, 4) = STACKVAR(-176, 4);
-    unsigned int unknown_loc_48 = 0;
+    unsigned int unknown_loc_48;
+    unknown_loc_48 = 0;
     goto l10034700;
 l100346F7:
     unknown_loc_48++;
@@ -24638,7 +24864,8 @@ l1003474D:
     {
         goto l100347AE;
     }
-    int unknown_loc_70 = reinterpret_cast<int>(STACKVAR(-76, 4));
+    int unknown_loc_70;
+    unknown_loc_70 = reinterpret_cast<int>(STACKVAR(-76, 4));
     STACKVAR(-108, 4) = 0x00000018;
     STACKVAR(-104, 4) = STACKVAR(-88, 4);
 l10034781:
@@ -24679,7 +24906,8 @@ l100347EE:
         goto l10034920;
     }
     ACCESS(STACKVAR(-136, 4), 0, 4) = STACKVAR(-120, 4);
-    int unknown_loc_A4 = reinterpret_cast<int>(STACKVAR(-120, 4));
+    int unknown_loc_A4;
+    unknown_loc_A4 = reinterpret_cast<int>(STACKVAR(-120, 4));
     STACKVAR(-160, 4) = 0x00000024;
     STACKVAR(-156, 4) = reinterpret_cast<any_int32>(STACKVAR(-136, 4)) + 0x00000004;
 l100348C9:
@@ -24697,7 +24925,8 @@ l10034920:
     STACKVAR(-184, 4) = 0x00000000;
 l1003492A:
     STACKVAR(-124, 4) = STACKVAR(-184, 4);
-    unsigned int unknown_loc_80 = 0;
+    unsigned int unknown_loc_80;
+    unknown_loc_80 = 0;
     goto l10034945;
 l1003493C:
     unknown_loc_80++;
@@ -24820,7 +25049,8 @@ void B_ObjDscr::Draw(B_3DRasterDevice *raster, float x1, float y1, float x2, flo
     {
         goto l10034E98;
     }
-    int unknown_loc_400 = reinterpret_cast<int>(STACKVAR(-264, 4));
+    int unknown_loc_400;
+    unknown_loc_400 = reinterpret_cast<int>(STACKVAR(-264, 4));
     STACKVAR(-1020, 4) = 0x00000018;
     STACKVAR(-1016, 4) = STACKVAR(-556, 4);
 l10034E23:
@@ -25119,7 +25349,8 @@ p1003590B
         STACKVAR(-680, 4) = 0x00000000;
     }
     ACCESS(STACKVAR(-532, 4), 4, 4) = STACKVAR(-680, 4);
-    unsigned int unknown_loc_204 = 0;
+    unsigned int unknown_loc_204;
+    unknown_loc_204 = 0;
     goto l10035A80;
 l10035A71:
     unknown_loc_204++;
@@ -25147,7 +25378,8 @@ l10035AB7:
     }
     STACKVAR(-540, 4) = ??2@YAPAXI@Z(0x00000038 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-548, 4), 16, 4)));
     ACCESS(STACKVAR(-548, 4), 4, 4) = STACKVAR(-540, 4);
-    unsigned int unknown_loc_218 = 0;
+    unsigned int unknown_loc_218;
+    unknown_loc_218 = 0;
     goto l10035BC0;
 l10035BB1:
     unknown_loc_218++;
@@ -25180,7 +25412,8 @@ l10035BF7:
     {
         goto l10035CE6;
     }
-    unsigned int unknown_loc_228 = 0;
+    unsigned int unknown_loc_228;
+    unknown_loc_228 = 0;
     goto l10035C82;
 l10035C73:
     unknown_loc_228++;
@@ -25246,7 +25479,8 @@ l10035D3D:
     }
     STACKVAR(-584, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-596, 4), 16, 4)));
     STACKVAR(-576, 4) = STACKVAR(-584, 4);
-    unsigned int unknown_loc_244 = 0;
+    unsigned int unknown_loc_244;
+    unknown_loc_244 = 0;
     goto l10035E90;
 l10035E81:
     unknown_loc_244++;
@@ -25286,7 +25520,8 @@ l10035F4F:
     }
     STACKVAR(-604, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-616, 4), 16, 4)));
     ACCESS(STACKVAR(-616, 4), 4, 4) = STACKVAR(-604, 4);
-    unsigned int unknown_loc_258 = 0;
+    unsigned int unknown_loc_258;
+    unknown_loc_258 = 0;
     goto l10036089;
 l1003607A:
     unknown_loc_258++;
@@ -25321,7 +25556,8 @@ l10036120:
     }
     STACKVAR(-624, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-636, 4), 16, 4)));
     ACCESS(STACKVAR(-636, 4), 4, 4) = STACKVAR(-624, 4);
-    unsigned int unknown_loc_26C = 0;
+    unsigned int unknown_loc_26C;
+    unknown_loc_26C = 0;
     goto l100361E7;
 l100361D8:
     unknown_loc_26C++;
@@ -25359,7 +25595,8 @@ l100362B6:
     }
     STACKVAR(-644, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-652, 4), 16, 4)));
     ACCESS(STACKVAR(-652, 4), 4, 4) = STACKVAR(-644, 4);
-    unsigned int unknown_loc_280 = 0;
+    unsigned int unknown_loc_280;
+    unknown_loc_280 = 0;
     goto l1003637F;
 l10036370:
     unknown_loc_280++;
@@ -25399,7 +25636,8 @@ l10036408:
     }
     STACKVAR(-660, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-668, 4), 16, 4)));
     ACCESS(STACKVAR(-668, 4), 4, 4) = STACKVAR(-660, 4);
-    unsigned int unknown_loc_290 = 0;
+    unsigned int unknown_loc_290;
+    unknown_loc_290 = 0;
     goto l1003655C;
 l1003654D:
     unknown_loc_290++;
@@ -25683,7 +25921,8 @@ void B_ObjDscr::SetUpBSP()
         goto l10036ED2;
     }
     ACCESS(STACKVAR(-36, 4), 0, 4) = STACKVAR(-24, 4);
-    int unknown_loc_6C = reinterpret_cast<int>(STACKVAR(-24, 4));
+    int unknown_loc_6C;
+    unknown_loc_6C = reinterpret_cast<int>(STACKVAR(-24, 4));
     STACKVAR(-104, 4) = 0x00000024;
     STACKVAR(-100, 4) = reinterpret_cast<any_int32>(STACKVAR(-36, 4)) + 0x00000004;
 l10036E66:
@@ -25738,7 +25977,8 @@ l10036F1A:
     }
     STACKVAR(-144, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(STACKVAR(-4, 4)));
     STACKVAR(-136, 4) = STACKVAR(-144, 4);
-    unsigned int unknown_loc_8C = 0;
+    unsigned int unknown_loc_8C;
+    unknown_loc_8C = 0;
     goto l10037093;
 l10037084:
     unknown_loc_8C++;
@@ -25957,7 +26197,8 @@ l1003797E:
     }
     STACKVAR(-392, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(STACKVAR(-4, 4)));
     STACKVAR(-384, 4) = STACKVAR(-392, 4);
-    unsigned int unknown_loc_184 = 0;
+    unsigned int unknown_loc_184;
+    unknown_loc_184 = 0;
     goto l10037A06;
 l100379F7:
     unknown_loc_184++;
@@ -25992,7 +26233,8 @@ l10037A89:
     }
     STACKVAR(-416, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(STACKVAR(-28, 4)));
     STACKVAR(-408, 4) = STACKVAR(-416, 4);
-    unsigned int unknown_loc_19C = 0;
+    unsigned int unknown_loc_19C;
+    unknown_loc_19C = 0;
     goto l10037B11;
 l10037B02:
     unknown_loc_19C++;
@@ -26029,7 +26271,8 @@ l10037B99:
     }
     STACKVAR(-440, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(STACKVAR(-28, 4)));
     STACKVAR(-432, 4) = STACKVAR(-440, 4);
-    unsigned int unknown_loc_1B4 = 0;
+    unsigned int unknown_loc_1B4;
+    unknown_loc_1B4 = 0;
     goto l10037C21;
 l10037C12:
     unknown_loc_1B4++;
@@ -26513,7 +26756,8 @@ unsigned int B_ObjDscr::LoadPacked(B_IDataFile &arg_1)
     }
     STACKVAR(-208, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-220, 4), 16, 4)));
     ACCESS(STACKVAR(-220, 4), 4, 4) = STACKVAR(-208, 4);
-    unsigned int unknown_loc_CC = 0;
+    unsigned int unknown_loc_CC;
+    unknown_loc_CC = 0;
     goto l10038A78;
 l10038A69:
     unknown_loc_CC++;
@@ -26565,7 +26809,8 @@ l10038B44:
         STACKVAR(-320, 4) = 0x00000000;
     }
     ACCESS(STACKVAR(-240, 4), 4, 4) = STACKVAR(-320, 4);
-    unsigned int unknown_loc_E4 = 0;
+    unsigned int unknown_loc_E4;
+    unknown_loc_E4 = 0;
     goto l10038C98;
 l10038C89:
     unknown_loc_E4++;
@@ -26589,7 +26834,8 @@ l10038CCC:
     }
     STACKVAR(-248, 4) = ??2@YAPAXI@Z(0x00000038 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-252, 4), 16, 4)));
     ACCESS(STACKVAR(-252, 4), 4, 4) = STACKVAR(-248, 4);
-    unsigned int unknown_loc_F4 = 0;
+    unsigned int unknown_loc_F4;
+    unknown_loc_F4 = 0;
     goto l10038D8D;
 l10038D7E:
     unknown_loc_F4++;
@@ -26613,7 +26859,8 @@ l10038DC1:
     }
     STACKVAR(-260, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-268, 4), 16, 4)));
     ACCESS(STACKVAR(-268, 4), 4, 4) = STACKVAR(-260, 4);
-    unsigned int unknown_loc_100 = 0;
+    unsigned int unknown_loc_100;
+    unknown_loc_100 = 0;
     goto l10038E88;
 l10038E79:
     unknown_loc_100++;
@@ -26639,7 +26886,8 @@ l10038F0E:
     }
     STACKVAR(-276, 4) = ??2@YAPAXI@Z(ACCESS(STACKVAR(-280, 4), 16, 4));
     ACCESS(STACKVAR(-280, 4), 4, 4) = STACKVAR(-276, 4);
-    unsigned int unknown_loc_110 = 0;
+    unsigned int unknown_loc_110;
+    unknown_loc_110 = 0;
     goto l10038FCC;
 l10038FBD:
     unknown_loc_110++;
@@ -26663,7 +26911,8 @@ l10038FFB:
     }
     STACKVAR(-288, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-292, 4), 16, 4)));
     ACCESS(STACKVAR(-292, 4), 4, 4) = STACKVAR(-288, 4);
-    unsigned int unknown_loc_11C = 0;
+    unsigned int unknown_loc_11C;
+    unknown_loc_11C = 0;
     goto l100390BC;
 l100390AD:
     unknown_loc_11C++;
@@ -26700,7 +26949,8 @@ l10039100:
     }
     STACKVAR(-300, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(-308, 4), 16, 4)));
     ACCESS(STACKVAR(-308, 4), 4, 4) = STACKVAR(-300, 4);
-    unsigned int unknown_loc_128 = 0;
+    unsigned int unknown_loc_128;
+    unknown_loc_128 = 0;
     goto l10039204;
 l100391F5:
     unknown_loc_128++;
@@ -26865,7 +27115,8 @@ p100398B0
     {
         goto l1003992C;
     }
-    int unknown_loc_0C = reinterpret_cast<int>(ACCESS(this, -4, 4));
+    int unknown_loc_0C;
+    unknown_loc_0C = reinterpret_cast<int>(ACCESS(this, -4, 4));
     STACKVAR(-8, 4) = 0x00000024;
     STACKVAR(-4, 4) = this;
     STACKVAR(-4, 4) = reinterpret_cast<any_int32>(STACKVAR(-4, 4)) + reinterpret_cast<any_int32>(STACKVAR(-8, 4)) * unknown_loc_0C;
@@ -27206,7 +27457,8 @@ p10039F60
     {
         goto l10039FCF;
     }
-    unsigned int unknown_loc_04 = 0;
+    unsigned int unknown_loc_04;
+    unknown_loc_04 = 0;
     goto l10039F8F;
 l10039F86:
     unknown_loc_04++;
@@ -27274,7 +27526,8 @@ p1003A050
     {
         goto l1003A136;
     }
-    unsigned int unknown_loc_10 = 0;
+    unsigned int unknown_loc_10;
+    unknown_loc_10 = 0;
     goto l1003A118;
 l1003A10F:
     unknown_loc_10++;
@@ -27356,7 +27609,8 @@ p1003A240
     }
     STACKVAR(-12, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(this, 16, 4)));
     STACKVAR(-4, 4) = STACKVAR(-12, 4);
-    unsigned int unknown_loc_08 = 0;
+    unsigned int unknown_loc_08;
+    unknown_loc_08 = 0;
     goto l1003A2C6;
 l1003A2BD:
     unknown_loc_08++;
@@ -27418,7 +27672,8 @@ p1003A3C0
     }
     STACKVAR(-12, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(this, 16, 4)));
     STACKVAR(-4, 4) = STACKVAR(-12, 4);
-    unsigned int unknown_loc_08 = 0;
+    unsigned int unknown_loc_08;
+    unknown_loc_08 = 0;
     goto l1003A448;
 l1003A43F:
     unknown_loc_08++;
@@ -27480,7 +27735,8 @@ p1003A560
     {
         goto l1003A5D3;
     }
-    unsigned int unknown_loc_04 = 0;
+    unsigned int unknown_loc_04;
+    unknown_loc_04 = 0;
     goto l1003A5AB;
 l1003A5A2:
     unknown_loc_04++;
@@ -27523,7 +27779,8 @@ p1003A630
     {
         goto l1003A6A3;
     }
-    unsigned int unknown_loc_04 = 0;
+    unsigned int unknown_loc_04;
+    unknown_loc_04 = 0;
     goto l1003A67B;
 l1003A672:
     unknown_loc_04++;
@@ -27606,7 +27863,8 @@ p1003A800
     {
         goto l1003A88E;
     }
-    unsigned int unknown_loc_04 = 0;
+    unsigned int unknown_loc_04;
+    unknown_loc_04 = 0;
     goto l1003A84E;
 l1003A845:
     unknown_loc_04++;
@@ -27657,7 +27915,8 @@ p1003A8E0
     {
         goto l1003A96E;
     }
-    unsigned int unknown_loc_04 = 0;
+    unsigned int unknown_loc_04;
+    unknown_loc_04 = 0;
     goto l1003A92E;
 l1003A925:
     unknown_loc_04++;
@@ -27748,7 +28007,8 @@ p1003AAC0
     {
         goto l1003AB4E;
     }
-    unsigned int unknown_loc_04 = 0;
+    unsigned int unknown_loc_04;
+    unknown_loc_04 = 0;
     goto l1003AB0E;
 l1003AB05:
     unknown_loc_04++;
@@ -27799,7 +28059,8 @@ p1003ABA0
     {
         goto l1003AC2E;
     }
-    unsigned int unknown_loc_04 = 0;
+    unsigned int unknown_loc_04;
+    unknown_loc_04 = 0;
     goto l1003ABEE;
 l1003ABE5:
     unknown_loc_04++;
@@ -27870,7 +28131,8 @@ p1003AD00
     {
         goto l1003AD8E;
     }
-    unsigned int unknown_loc_04 = 0;
+    unsigned int unknown_loc_04;
+    unknown_loc_04 = 0;
     goto l1003AD4E;
 l1003AD45:
     unknown_loc_04++;
@@ -27921,7 +28183,8 @@ p1003ADE0
     {
         goto l1003AE6E;
     }
-    unsigned int unknown_loc_04 = 0;
+    unsigned int unknown_loc_04;
+    unknown_loc_04 = 0;
     goto l1003AE2E;
 l1003AE25:
     unknown_loc_04++;
@@ -27972,7 +28235,8 @@ p1003AEC0
     {
         goto l1003B012;
     }
-    unsigned int unknown_loc_04 = 0;
+    unsigned int unknown_loc_04;
+    unknown_loc_04 = 0;
     goto l1003AF12;
 l1003AF09:
     unknown_loc_04++;
@@ -28002,7 +28266,8 @@ l1003AF12:
     {
         goto l1003AFB3;
     }
-    unsigned int unknown_loc_14 = 0;
+    unsigned int unknown_loc_14;
+    unknown_loc_14 = 0;
     goto l1003AF8B;
 l1003AF82:
     unknown_loc_14++;
@@ -28062,7 +28327,8 @@ p1003B070
     {
         goto l1003B0E3;
     }
-    unsigned int unknown_loc_04 = 0;
+    unsigned int unknown_loc_04;
+    unknown_loc_04 = 0;
     goto l1003B0BB;
 l1003B0B2:
     unknown_loc_04++;
@@ -28105,7 +28371,8 @@ p1003B140
     {
         goto l1003B292;
     }
-    unsigned int unknown_loc_04 = 0;
+    unsigned int unknown_loc_04;
+    unknown_loc_04 = 0;
     goto l1003B192;
 l1003B189:
     unknown_loc_04++;
@@ -28135,7 +28402,8 @@ l1003B192:
     {
         goto l1003B233;
     }
-    unsigned int unknown_loc_14 = 0;
+    unsigned int unknown_loc_14;
+    unknown_loc_14 = 0;
     goto l1003B20B;
 l1003B202:
     unknown_loc_14++;
@@ -28195,7 +28463,8 @@ p1003B2F0
     {
         goto l1003B37E;
     }
-    unsigned int unknown_loc_04 = 0;
+    unsigned int unknown_loc_04;
+    unknown_loc_04 = 0;
     goto l1003B33E;
 l1003B335:
     unknown_loc_04++;
@@ -28246,7 +28515,8 @@ p1003B3D0
     {
         goto l1003B45E;
     }
-    unsigned int unknown_loc_04 = 0;
+    unsigned int unknown_loc_04;
+    unknown_loc_04 = 0;
     goto l1003B41E;
 l1003B415:
     unknown_loc_04++;
@@ -28297,7 +28567,8 @@ p1003B4B0
     {
         goto l1003B53E;
     }
-    unsigned int unknown_loc_04 = 0;
+    unsigned int unknown_loc_04;
+    unknown_loc_04 = 0;
     goto l1003B4FE;
 l1003B4F5:
     unknown_loc_04++;
@@ -28348,7 +28619,8 @@ p1003B590
     {
         goto l1003B61E;
     }
-    unsigned int unknown_loc_04 = 0;
+    unsigned int unknown_loc_04;
+    unknown_loc_04 = 0;
     goto l1003B5DE;
 l1003B5D5:
     unknown_loc_04++;
@@ -28470,7 +28742,8 @@ p1003B840
     {
         goto l1003B894;
     }
-    unsigned int unknown_loc_04 = 0;
+    unsigned int unknown_loc_04;
+    unknown_loc_04 = 0;
     goto l1003B86C;
 l1003B863:
     unknown_loc_04++;
@@ -28576,7 +28849,8 @@ p1003BA80
     {
         goto l1003BAEF;
     }
-    unsigned int unknown_loc_04 = 0;
+    unsigned int unknown_loc_04;
+    unknown_loc_04 = 0;
     goto l1003BAAF;
 l1003BAA6:
     unknown_loc_04++;
@@ -28645,7 +28919,8 @@ p1003BBE0
     {
         goto l1003BC4F;
     }
-    unsigned int unknown_loc_04 = 0;
+    unsigned int unknown_loc_04;
+    unknown_loc_04 = 0;
     goto l1003BC0F;
 l1003BC06:
     unknown_loc_04++;
@@ -28697,7 +28972,8 @@ p1003BCE0
     {
         goto l1003BE13;
     }
-    unsigned int unknown_loc_04 = 0;
+    unsigned int unknown_loc_04;
+    unknown_loc_04 = 0;
     goto l1003BD13;
 l1003BD0A:
     unknown_loc_04++;
@@ -28727,7 +29003,8 @@ l1003BD13:
     {
         goto l1003BDB4;
     }
-    unsigned int unknown_loc_14 = 0;
+    unsigned int unknown_loc_14;
+    unknown_loc_14 = 0;
     goto l1003BD8C;
 l1003BD83:
     unknown_loc_14++;
@@ -28790,7 +29067,8 @@ p1003BEB0
     {
         goto l1003BF1F;
     }
-    unsigned int unknown_loc_04 = 0;
+    unsigned int unknown_loc_04;
+    unknown_loc_04 = 0;
     goto l1003BEDF;
 l1003BED6:
     unknown_loc_04++;
@@ -28844,7 +29122,8 @@ p1003BFC0
     {
         goto l1003C02F;
     }
-    unsigned int unknown_loc_04 = 0;
+    unsigned int unknown_loc_04;
+    unknown_loc_04 = 0;
     goto l1003BFEF;
 l1003BFE6:
     unknown_loc_04++;
@@ -28889,7 +29168,8 @@ p1003C070
     {
         goto l1003C0FE;
     }
-    unsigned int unknown_loc_04 = 0;
+    unsigned int unknown_loc_04;
+    unknown_loc_04 = 0;
     goto l1003C0BE;
 l1003C0B5:
     unknown_loc_04++;
@@ -28940,7 +29220,8 @@ p1003C150
     {
         goto l1003C1DE;
     }
-    unsigned int unknown_loc_04 = 0;
+    unsigned int unknown_loc_04;
+    unknown_loc_04 = 0;
     goto l1003C19E;
 l1003C195:
     unknown_loc_04++;
@@ -28991,7 +29272,8 @@ p1003C230
     {
         goto l1003C2BE;
     }
-    unsigned int unknown_loc_04 = 0;
+    unsigned int unknown_loc_04;
+    unknown_loc_04 = 0;
     goto l1003C27E;
 l1003C275:
     unknown_loc_04++;
@@ -29042,7 +29324,8 @@ p1003C310
     {
         goto l1003C39E;
     }
-    unsigned int unknown_loc_04 = 0;
+    unsigned int unknown_loc_04;
+    unknown_loc_04 = 0;
     goto l1003C35E;
 l1003C355:
     unknown_loc_04++;
@@ -29093,7 +29376,8 @@ p1003C3F0
     {
         goto l1003C47E;
     }
-    unsigned int unknown_loc_04 = 0;
+    unsigned int unknown_loc_04;
+    unknown_loc_04 = 0;
     goto l1003C43E;
 l1003C435:
     unknown_loc_04++;
@@ -29144,7 +29428,8 @@ p1003C4D0
     {
         goto l1003C55E;
     }
-    unsigned int unknown_loc_04 = 0;
+    unsigned int unknown_loc_04;
+    unknown_loc_04 = 0;
     goto l1003C51E;
 l1003C515:
     unknown_loc_04++;
@@ -29195,7 +29480,8 @@ p1003C5B0
     {
         goto l1003C63E;
     }
-    unsigned int unknown_loc_04 = 0;
+    unsigned int unknown_loc_04;
+    unknown_loc_04 = 0;
     goto l1003C5FE;
 l1003C5F5:
     unknown_loc_04++;
@@ -29246,7 +29532,8 @@ p1003C690
     {
         goto l1003C71E;
     }
-    unsigned int unknown_loc_04 = 0;
+    unsigned int unknown_loc_04;
+    unknown_loc_04 = 0;
     goto l1003C6DE;
 l1003C6D5:
     unknown_loc_04++;
@@ -29297,7 +29584,8 @@ p1003C770
     {
         goto l1003C7FE;
     }
-    unsigned int unknown_loc_04 = 0;
+    unsigned int unknown_loc_04;
+    unknown_loc_04 = 0;
     goto l1003C7BE;
 l1003C7B5:
     unknown_loc_04++;
@@ -29348,7 +29636,8 @@ p1003C850
     {
         goto l1003C8DE;
     }
-    unsigned int unknown_loc_04 = 0;
+    unsigned int unknown_loc_04;
+    unknown_loc_04 = 0;
     goto l1003C89E;
 l1003C895:
     unknown_loc_04++;
@@ -29397,7 +29686,8 @@ p1003C930
     {
         goto l1003CA70;
     }
-    unsigned int unknown_loc_10 = 0;
+    unsigned int unknown_loc_10;
+    unknown_loc_10 = 0;
     goto l1003C970;
 l1003C967:
     unknown_loc_10++;
@@ -29427,7 +29717,8 @@ l1003C970:
     {
         goto l1003CA11;
     }
-    unsigned int unknown_loc_20 = 0;
+    unsigned int unknown_loc_20;
+    unknown_loc_20 = 0;
     goto l1003C9E9;
 l1003C9E0:
     unknown_loc_20++;
@@ -29470,7 +29761,8 @@ l1003CAA3:
     }
     STACKVAR(-8, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(12, 4), 16, 4)));
     ACCESS(STACKVAR(12, 4), 4, 4) = STACKVAR(-8, 4);
-    unsigned int unknown_loc_04 = 0;
+    unsigned int unknown_loc_04;
+    unknown_loc_04 = 0;
     goto l1003CB18;
 l1003CB0F:
     unknown_loc_04++;
@@ -29518,7 +29810,8 @@ p1003CBD0
     {
         goto l1003CC4C;
     }
-    unsigned int unknown_loc_10 = 0;
+    unsigned int unknown_loc_10;
+    unknown_loc_10 = 0;
     goto l1003CC0C;
 l1003CC03:
     unknown_loc_10++;
@@ -29552,7 +29845,8 @@ l1003CC7F:
     }
     STACKVAR(-8, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(12, 4), 16, 4)));
     ACCESS(STACKVAR(12, 4), 4, 4) = STACKVAR(-8, 4);
-    unsigned int unknown_loc_04 = 0;
+    unsigned int unknown_loc_04;
+    unknown_loc_04 = 0;
     goto l1003CCF4;
 l1003CCEB:
     unknown_loc_04++;
@@ -29595,7 +29889,8 @@ p1003CD80
     {
         goto l1003CDFC;
     }
-    unsigned int unknown_loc_10 = 0;
+    unsigned int unknown_loc_10;
+    unknown_loc_10 = 0;
     goto l1003CDBC;
 l1003CDB3:
     unknown_loc_10++;
@@ -29629,7 +29924,8 @@ l1003CE2F:
     }
     STACKVAR(-8, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(12, 4), 16, 4)));
     ACCESS(STACKVAR(12, 4), 4, 4) = STACKVAR(-8, 4);
-    unsigned int unknown_loc_04 = 0;
+    unsigned int unknown_loc_04;
+    unknown_loc_04 = 0;
     goto l1003CEA4;
 l1003CE9B:
     unknown_loc_04++;
@@ -29683,7 +29979,8 @@ p1003CFD0
     {
         goto l1003D04C;
     }
-    unsigned int unknown_loc_10 = 0;
+    unsigned int unknown_loc_10;
+    unknown_loc_10 = 0;
     goto l1003D00C;
 l1003D003:
     unknown_loc_10++;
@@ -29717,7 +30014,8 @@ l1003D07F:
     }
     STACKVAR(-8, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(12, 4), 16, 4)));
     ACCESS(STACKVAR(12, 4), 4, 4) = STACKVAR(-8, 4);
-    unsigned int unknown_loc_04 = 0;
+    unsigned int unknown_loc_04;
+    unknown_loc_04 = 0;
     goto l1003D0F4;
 l1003D0EB:
     unknown_loc_04++;
@@ -29771,7 +30069,8 @@ p1003D1F0
     }
     STACKVAR(-8, 4) = ??2@YAPAXI@Z(ACCESS(STACKVAR(12, 4), 16, 4));
     ACCESS(STACKVAR(12, 4), 4, 4) = STACKVAR(-8, 4);
-    unsigned int unknown_loc_04 = 0;
+    unsigned int unknown_loc_04;
+    unknown_loc_04 = 0;
     goto l1003D2AB;
 l1003D2A2:
     unknown_loc_04++;
@@ -29805,7 +30104,8 @@ p1003D2E0
     }
     STACKVAR(-8, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(12, 4), 16, 4)));
     ACCESS(STACKVAR(12, 4), 4, 4) = STACKVAR(-8, 4);
-    unsigned int unknown_loc_04 = 0;
+    unsigned int unknown_loc_04;
+    unknown_loc_04 = 0;
     goto l1003D39E;
 l1003D395:
     unknown_loc_04++;
@@ -29835,7 +30135,8 @@ p1003D3D0
     {
         goto l1003D44C;
     }
-    unsigned int unknown_loc_10 = 0;
+    unsigned int unknown_loc_10;
+    unknown_loc_10 = 0;
     goto l1003D40C;
 l1003D403:
     unknown_loc_10++;
@@ -29869,7 +30170,8 @@ l1003D47F:
     }
     STACKVAR(-8, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(STACKVAR(12, 4), 16, 4)));
     ACCESS(STACKVAR(12, 4), 4, 4) = STACKVAR(-8, 4);
-    unsigned int unknown_loc_04 = 0;
+    unsigned int unknown_loc_04;
+    unknown_loc_04 = 0;
     goto l1003D4F4;
 l1003D4EB:
     unknown_loc_04++;
@@ -29927,7 +30229,8 @@ p1003D5F0
     {
         goto l1003D6E0;
     }
-    int unknown_loc_1C = reinterpret_cast<int>(STACKVAR(-4, 4));
+    int unknown_loc_1C;
+    unknown_loc_1C = reinterpret_cast<int>(STACKVAR(-4, 4));
     STACKVAR(-24, 4) = 0x00000018;
     STACKVAR(-20, 4) = STACKVAR(-12, 4);
 l1003D6B6:
@@ -29944,7 +30247,8 @@ l1003D6E0:
     STACKVAR(-32, 4) = 0x00000000;
 l1003D6E7:
     ACCESS(STACKVAR(12, 4), 4, 4) = STACKVAR(-32, 4);
-    unsigned int unknown_loc_08 = 0;
+    unsigned int unknown_loc_08;
+    unknown_loc_08 = 0;
     goto l1003D702;
 l1003D6F9:
     unknown_loc_08++;
@@ -30070,7 +30374,8 @@ p1003D9B0
     {
         goto l1003DA23;
     }
-    unsigned int unknown_loc_04 = 0;
+    unsigned int unknown_loc_04;
+    unknown_loc_04 = 0;
     goto l1003D9FB;
 l1003D9F2:
     unknown_loc_04++;
@@ -30143,7 +30448,8 @@ p1003DB00
     {
         goto l1003DB8A;
     }
-    unsigned int unknown_loc_04 = 0;
+    unsigned int unknown_loc_04;
+    unknown_loc_04 = 0;
     goto l1003DB4B;
 l1003DB42:
     unknown_loc_04++;
@@ -30224,7 +30530,8 @@ l1003DC48:
     }
     STACKVAR(-824, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(csvs, 16, 4)));
     STACKVAR(-816, 4) = STACKVAR(-824, 4);
-    unsigned int unknown_loc_334 = 0;
+    unsigned int unknown_loc_334;
+    unknown_loc_334 = 0;
     goto l1003DDFA;
 l1003DDEB:
     unknown_loc_334++;
@@ -30286,7 +30593,8 @@ p1003DF00
     {
         goto l1003DF8E;
     }
-    unsigned int unknown_loc_04 = 0;
+    unsigned int unknown_loc_04;
+    unknown_loc_04 = 0;
     goto l1003DF4E;
 l1003DF45:
     unknown_loc_04++;
@@ -30337,7 +30645,8 @@ p1003DFE0
     {
         goto l1003E06E;
     }
-    unsigned int unknown_loc_04 = 0;
+    unsigned int unknown_loc_04;
+    unknown_loc_04 = 0;
     goto l1003E02E;
 l1003E025:
     unknown_loc_04++;
@@ -30388,7 +30697,8 @@ p1003E0C0
     {
         goto l1003E14E;
     }
-    unsigned int unknown_loc_04 = 0;
+    unsigned int unknown_loc_04;
+    unknown_loc_04 = 0;
     goto l1003E10E;
 l1003E105:
     unknown_loc_04++;
@@ -30439,7 +30749,8 @@ p1003E1A0
     {
         goto l1003E22E;
     }
-    unsigned int unknown_loc_04 = 0;
+    unsigned int unknown_loc_04;
+    unknown_loc_04 = 0;
     goto l1003E1EE;
 l1003E1E5:
     unknown_loc_04++;
@@ -30480,9 +30791,11 @@ p1003E280
     {
         goto l1003E330;
     }
-    int unknown_loc_04 = PyTuple_Size(reinterpret_cast<PyObject *>(STACKVAR(8, 4)));
+    int unknown_loc_04;
+    unknown_loc_04 = PyTuple_Size(reinterpret_cast<PyObject *>(STACKVAR(8, 4)));
     mout << vararg("Tuple with %d args\n", unknown_loc_04);
-    int unknown_loc_08 = 0;
+    int unknown_loc_08;
+    unknown_loc_08 = 0;
     goto l1003E2D9;
 l1003E2D0:
     unknown_loc_08++;
@@ -30969,7 +31282,8 @@ p1003EFD4
     }
     STACKVAR(-164, 4) = ??2@YAPAXI@Z(0x00000004 * reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004A530), 0, 4)));
     STACKVAR(-156, 4) = STACKVAR(-164, 4);
-    unsigned int unknown_loc_A0 = 0;
+    unsigned int unknown_loc_A0;
+    unknown_loc_A0 = 0;
     goto l1003F0E4;
 l1003F0D5:
     unknown_loc_A0++;
@@ -31077,7 +31391,8 @@ l1003F39C:
     }
     STACKVAR(-296, 4) = STACKVAR(8, 4);
     STACKVAR(-300, 4) = STACKVAR(16, 4);
-    int unknown_loc_138 = strcmp(reinterpret_cast<char *>(STACKVAR(-300, 4)), reinterpret_cast<char *>(STACKVAR(-296, 4)));
+    int unknown_loc_138;
+    unknown_loc_138 = strcmp(reinterpret_cast<char *>(STACKVAR(-300, 4)), reinterpret_cast<char *>(STACKVAR(-296, 4)));
     if (unknown_loc_138 == 0)
     {
         goto l1003F9DA;
@@ -31174,7 +31489,8 @@ l1003F56E:
         }
         goto l1003F565;
     }
-    int unknown_loc_120 = reinterpret_cast<int>(ACCESS(ARRPTR(GLOBAL(0x1004BB58), 4, static_cast<any_int32>(reinterpret_cast<char>(ACCESS(STACKVAR(16, 4), 1, 1))), 0), 0, 4));
+    int unknown_loc_120;
+    unknown_loc_120 = reinterpret_cast<int>(ACCESS(ARRPTR(GLOBAL(0x1004BB58), 4, static_cast<any_int32>(reinterpret_cast<char>(ACCESS(STACKVAR(16, 4), 1, 1))), 0), 0, 4));
     STACKVAR(-12, 4) = ACCESS(ARRPTR(GLOBAL(0x1004BB5C), 4, static_cast<any_int32>(reinterpret_cast<char>(ACCESS(STACKVAR(16, 4), 1, 1))), 0), 0, 4);
     STACKVAR(-8, 4) = reinterpret_cast<any_int32>(ACCESS(GLOBAL(0x1004BF60), 0, 4)) + 16 * unknown_loc_120;
     while (unknown_loc_120 < reinterpret_cast<int>(STACKVAR(-12, 4)) && unknown_function_1003FA98(STACKVAR(16, 4), STACKVAR(-8, 4)) != 0x00000000)
@@ -31974,7 +32290,8 @@ B_ParticleGType::B_ParticleGType(const B_Name &new_type, const B_Name &parent_ty
     {
         goto l100410FD;
     }
-    unsigned int unknown_loc_18 = 0;
+    unsigned int unknown_loc_18;
+    unknown_loc_18 = 0;
     goto l100410D6;
 l100410CD:
     unknown_loc_18++;
@@ -32069,7 +32386,8 @@ B_IDataFile &operator >>(B_IDataFile &file, B_ParticleGType &particleType)
     {
         goto l100413A1;
     }
-    unsigned int unknown_loc_20 = 0;
+    unsigned int unknown_loc_20;
+    unknown_loc_20 = 0;
     goto l1004137A;
 l10041371:
     unknown_loc_20++;
