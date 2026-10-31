@@ -52,10 +52,9 @@ B_OctTree::~B_OctTree()
 }
 
 // address: 0x00453264
-void B_OctantNodeBase::B_OctTreeSectorsList()
+B_OctTreeSectorsList::B_OctTreeSectorsList()
 {
-    ACCESS(this, 0, 4) = 0x00000000;
-    REGDEF(eax=this)
+    this->size = 0;
 }
 
 // address: 0x0045346F
