@@ -873,7 +873,7 @@ const char *GetCurrentLanguage()
 {
     strcpy(reinterpret_cast<char *>(LOCAL(-256)), GetConfigDirectory());
     strcat(reinterpret_cast<char *>(LOCAL(-256)), "/Lang.ini");
-    GetPrivateProfileStringA("Language", "CurrentLanguage", "English", reinterpret_cast<CHAR *>(GLOBAL(0x10049F0C)), 256, reinterpret_cast<CHAR *>(LOCAL(-256)));
+    GetPrivateProfileString("Language", "CurrentLanguage", "English", reinterpret_cast<CHAR *>(GLOBAL(0x10049F0C)), 256, reinterpret_cast<CHAR *>(LOCAL(-256)));
     return reinterpret_cast<char *>(GLOBAL(0x10049F0C));
 }
 
@@ -22883,7 +22883,7 @@ void OutputWin32Error(const char *message)
 {
     STACKVAR(-4, 4) = GetLastError();
     mout << message;
-    FormatMessageA(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM, nullptr, reinterpret_cast<DWORD>(STACKVAR(-4, 4)), LANG_USER_DEFAULT, reinterpret_cast<CHAR *>(LOCAL(-8)), 0, nullptr);
+    FormatMessage(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM, nullptr, reinterpret_cast<DWORD>(STACKVAR(-4, 4)), LANG_USER_DEFAULT, reinterpret_cast<CHAR *>(LOCAL(-8)), 0, nullptr);
     mout << reinterpret_cast<char *>(STACKVAR(-8, 4));
     LocalFree(reinterpret_cast<HLOCAL>(STACKVAR(-8, 4)));
 }

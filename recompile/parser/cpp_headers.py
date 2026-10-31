@@ -62,11 +62,16 @@ class HeaderState:
         self._incomplete_types = incomplete_types
         self._external_procedures = external_procedures
         self._constants = Constants()
+        self._procedure_macros = {}
         self._visited = False
 
     @property
     def constants(self):
         return self._constants
+
+    @property
+    def procedure_macros(self):
+        return self._procedure_macros
 
     def update_declarations(self, header_state):
         if isinstance(header_state, XmlMetadata):
@@ -209,6 +214,8 @@ class HeaderState:
             self._constants.add(const_name, from_hex(const_value))
         elif const_value.isdigit():
             self._constants.add(const_name, int(const_value))
+        elif const_value.isidentifier():
+            self._procedure_macros[const_name] = const_value
 
     def _parse_include_file(self, include_file):
         included_header_state = self._header_states.get(include_file)
@@ -292,6 +299,16 @@ def _collect_cpp_declarations(
                     files_declarations[file_name] = header_state
 
 
+def _rename_external_procedures(procedure_macros, external_procedures):
+    # Use macros like '#define FormatMessage FormatMessageA' as names of
+    # imported procedures
+    for macro_name, proc_name in procedure_macros.items():
+        proc_decl = external_procedures.get(proc_name)
+        if proc_decl is not None:
+            external_procedures[proc_name] = proc_decl.copy(
+                proc_name=macro_name)
+
+
 def parse_cpp_header(src_path):
     header_states = {}
     files_declarations = {}
@@ -308,6 +325,9 @@ def parse_cpp_header(src_path):
         incomplete_types, external_procedures)
     for file_declaration in files_declarations.values():
         file_declaration.parse()
+    for file_declaration in files_declarations.values():
+        _rename_external_procedures(
+            file_declaration.procedure_macros, external_procedures)
     characteristics_file = os.path.join(
         extern_definitions_path, "characteristics.json")
     characteristics = ExternalCharacteristics.read(characteristics_file)

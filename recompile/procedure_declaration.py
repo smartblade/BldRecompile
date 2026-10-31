@@ -28,11 +28,13 @@ class ProcedureDeclaration:
         )
         self._stack_variable = None
 
-    def copy(self, parameters=None):
+    def copy(self, parameters=None, proc_name=None):
         if parameters is None:
             parameters = self._parameters
+        if proc_name is None:
+            proc_name = self._proc_name
         return ProcedureDeclaration(
-            self._proc_name,
+            proc_name,
             self._convention,
             self._method_class,
             parameters,

@@ -11,7 +11,7 @@
 			"boolean": "yes"
 		}
 	},
-	"FormatMessageA": {
+	"FormatMessage": {
 		"parameters": [
 			{
 				"index": "0",

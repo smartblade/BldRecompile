@@ -7,3 +7,6 @@
 
 #define LANG_SYSTEM_DEFAULT             0x0800
 #define LANG_USER_DEFAULT               0x0400
+
+#define FormatMessage                   FormatMessageA
+#define GetPrivateProfileString         GetPrivateProfileStringA
