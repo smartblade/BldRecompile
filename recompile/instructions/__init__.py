@@ -1,6 +1,7 @@
 from .assignment import Assignment
 from .break_instruction import Break
 from .code_instruction import CodeInstruction
+from .continue_instruction import Continue
 from .delete import Delete
 from .empty import empty
 from .for_instruction import ForInstruction

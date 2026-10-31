@@ -89,6 +89,10 @@ class ExpressionTransformer:
         return None
 
     @staticmethod
+    def transform_pre_decrement(expression, **kwargs):
+        return None
+
+    @staticmethod
     def transform_procedure_call(
         copy_pc, proc_name, arguments, **kwargs
     ):
