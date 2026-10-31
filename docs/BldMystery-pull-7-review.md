@@ -6,7 +6,7 @@ Pull request: [smartblade/BldMystery#7](https://github.com/smartblade/BldMystery
 The procedures implemented in the pull request were converted by
 BldRecompile (see `recompile/Blade.exe.cpp`). The issues below were found
 while doing it. Each one comes with a suggested patch against `ee43e85` or
-with suggested code. Sections 1-5 are bugs, sections 6-9 are differences of
+with suggested code. Sections 1-5 are bugs, sections 6-10 are differences of
 the generated code from the original binary.
 
 ## 1. `~B_OctantNodeBase` is attributed to the scalar deleting destructor
@@ -576,6 +576,64 @@ Suggested fix: write it like `LeafNode::CollectSectorsInBox`, with a
 
   The original code was probably `outBuffer.Append(sectors.elements[i])`
   (or `sectors[i]`), but this is a guess.
+
+## 10. Octree constants are literals, not `static double` variables
+
+`src/BWorld/OctTree.cpp` declares
+
+```cpp
+static double child_size_divisor = 2.0;
+static double child_offset_divisor = 4.0;
+static double kOctTreeMargin = 10.0;
+```
+
+and compares coordinates with `kOctTreeMargin` and `-kOctTreeMargin`. In
+the binary the values are read from `.rdata` (`005BD000`-`005C7072`),
+which is not writable, while non-const `static double` variables would be
+placed to `.data` (`005C8000`). `-kOctTreeMargin` is not computed with
+`fchs` either, it is a separate constant `-10.0`:
+
+| Address | Value |
+|---|---|
+| `0x005BD710` | `2.0` |
+| `0x005BDB68` | `4.0` |
+| `0x005BDB88` | `10.0` |
+| `0x005BDD48` | `-10.0` |
+
+```asm
+l00452388 PROC                          ; B_OctantNode::CollectSectorsAtPoint
+           ...
+           fld qword ptr [ebp+010h]     ; halfSize
+           fdiv qword ptr [g005BD710]   ; / 2.0
+           fstp qword ptr [ebp-008h]
+           fld qword ptr [ebp+010h]     ; halfSize
+           fdiv qword ptr [g005BDB68]   ; / 4.0
+           fstp qword ptr [ebp-010h]
+           ...
+           fld qword ptr [eax]          ; localPos.x
+           fcomp qword ptr [g005BDB88]  ; < 10.0
+           ...
+           fcomp qword ptr [g005BDD48]  ; > -10.0
+```
+
+The converted code (`B_OctantNode::CollectSectorsAtPoint`,
+`B_OctantNode::CollectSectorsInBox`, `B_OctTree::FindSectorsAtPoint`):
+
+```cpp
+STACKVAR(-8, 8) = halfSize / 2.0;
+STACKVAR(-16, 8) = halfSize / 4.0;
+if (localPos.x < 10.0)
+...
+            if (localPos.z > -10.0 && ACCESS(this, 8, 4) != 0x00000000)
+...
+if (this->m_root != nullptr && this->m_halfSize + 10.0 > fabs(reinterpret_cast<double>(STACKVAR(-24, 8))) && ...)
+```
+
+So the original code used literals (`2.0`, `4.0`, `10.0`, `-10.0`) or
+`const double` constants, which the compiler replaces with literals. With
+the `static double` variables of the pull request the compiler reads them
+from `.data` and computes `-kOctTreeMargin` with `fld` and `fchs`.
+Suggested fix: use literals or `const double` constants.
 
 ## Procedures that match the binary
 
