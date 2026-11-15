@@ -22883,7 +22883,7 @@ void OutputWin32Error(const char *message)
 {
     STACKVAR(-4, 4) = GetLastError();
     mout << message;
-    FormatMessageA(4352, nullptr, reinterpret_cast<DWORD>(STACKVAR(-4, 4)), RASTER_MODE_ADD_SCR_RGB, reinterpret_cast<CHAR *>(LOCAL(-8)), 0, nullptr);
+    FormatMessageA(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM, nullptr, reinterpret_cast<DWORD>(STACKVAR(-4, 4)), LANG_USER_DEFAULT, reinterpret_cast<CHAR *>(LOCAL(-8)), 0, nullptr);
     mout << reinterpret_cast<char *>(STACKVAR(-8, 4));
     LocalFree(reinterpret_cast<HLOCAL>(STACKVAR(-8, 4)));
 }

@@ -11,6 +11,18 @@
 			"boolean": "yes"
 		}
 	},
+	"FormatMessageA": {
+		"parameters": [
+			{
+				"index": "0",
+				"constantset": "FORMAT_MESSAGE_*"
+			},
+			{
+				"index": "3",
+				"constantset": "LANG_*"
+			}
+		]
+	},
 	"lseek": {
 		"parameters": [
 			{
