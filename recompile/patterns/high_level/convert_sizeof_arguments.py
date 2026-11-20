@@ -30,7 +30,7 @@ def convert_sizeof_arguments(arguments, proc_decl):
         return arguments
     sizeof_expression = "sizeof({})".format(pointee.get_type_name())
     new_const_arg = expressions.NamedConstant(
-        const_arg.data_type.size, sizeof_expression)
+        const_arg.data_type, sizeof_expression, const_arg.value)
     new_arguments = list(arguments)
     new_arguments[2] = new_const_arg
     return new_arguments

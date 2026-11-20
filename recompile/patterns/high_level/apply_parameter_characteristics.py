@@ -30,4 +30,4 @@ def _apply_constant_set(e, file_declarations, constant_set):
     constant_name = file_declarations.constants.find_name(e.value, constant_set)
     if constant_name is None:
         return None
-    return expressions.NamedConstant(e.data_type.size, constant_name)
+    return expressions.NamedConstant(e.data_type, constant_name, e.value)

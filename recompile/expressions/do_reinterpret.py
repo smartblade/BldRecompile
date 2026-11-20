@@ -89,24 +89,18 @@ def _reinterpret_const(data_type, c):
             c.data_type, data_type))
 
 
-def _reinterpret_named_const(data_type, c):
-    if (
-        isinstance(
-            data_type,
-            (
-                data_types.Int32,
-                data_types.UInt32,
-                data_types.Long32,
-                data_types.UChar,
-            )
-        ) and
-        isinstance(c.data_type, data_types.AnyInt) and
-        data_type.size == c.data_type.size
-    ):
-        return expressions.ImplicitCast(data_type, c)
-    raise Exception(
-        "Unimplemented reinterpret cast from {} to {}".format(
-            c.data_type, data_type))
+def _reinterpret_named_const(data_type, named_c):
+    c = expressions.Constant(named_c.data_type, named_c.value)
+    new_c = _reinterpret_const(data_type, c)
+    if not isinstance(new_c, expressions.Constant):
+        return new_c
+    # An integer named constant keeps its name as an integer of another type
+    # of the same size, also if the sign changes
+    is_int_cast = data_type.is_any_int and named_c.data_type.is_any_int
+    if not is_int_cast and c.value != new_c.value:
+        return new_c
+    return expressions.NamedConstant(
+        new_c.data_type, named_c.name, new_c.value)
 
 
 def _eliminate_reinterpret(data_type, cast):

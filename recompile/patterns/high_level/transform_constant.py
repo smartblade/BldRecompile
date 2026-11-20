@@ -21,7 +21,7 @@ def transform_constant(c, file_declarations, **kwargs):
         if constant_name is None:
             return None
         constant_name = "-{}".format(constant_name)
-    return expressions.NamedConstant(c.data_type.size, constant_name)
+    return expressions.NamedConstant(c.data_type, constant_name, c.value)
 
 
 def _make_named_const_from_characteristics(
@@ -40,7 +40,8 @@ def _make_named_const_from_characteristics(
         return None
     var = stack_vars[const_characteristics.sizeof_variable_offset]
     sizeof_expression = "sizeof({})".format(var.data_type.get_type_name())
-    result = expressions.NamedConstant(c.data_type.size, sizeof_expression)
+    result = expressions.NamedConstant(
+        c.data_type, sizeof_expression, var.data_type.size)
     if c.value == -var.data_type.size:
         result = expressions.Negate(expressions.StaticCast(c.data_type, result))
     else:
