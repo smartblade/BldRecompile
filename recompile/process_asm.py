@@ -1341,7 +1341,7 @@ def run():
         (
             files_declarations, declared_types, external_procedures,
             external_characteristics
-        ) = cpp_parser.parse_cpp_header(src_dir)
+        ) = cpp_parser.parse_cpp_header(cpp_parser.FileTree(src_dir))
     else:
         files_declarations = {}
         declared_types = {}

@@ -8,6 +8,7 @@ from patterns.characteristics import ExternalCharacteristics
 from procedure_declaration import ProcedureDeclaration
 
 from .constants import Constants
+from .file_tree import FileTree
 from .xml_metadata import XmlMetadata
 
 preprocessor_regexp = re.compile(
@@ -53,9 +54,10 @@ _standard_types = {
 
 class HeaderState:
     def __init__(
-        self, file_name, header_states, declared_types, incomplete_types,
-        external_aliases,
+        self, file_tree, file_name, header_states, declared_types,
+        incomplete_types, external_aliases,
     ):
+        self._file_tree = file_tree
         self._file_name = file_name
         self._header_states = header_states
         self._declared_types = declared_types
@@ -83,7 +85,7 @@ class HeaderState:
         if self._visited:
             return
         self._visited = True
-        with open(self._file_name) as f:
+        with self._file_tree.open(self._file_name) as f:
             lines = f.readlines()
         is_comment = False
         is_native_placeholders = False
@@ -269,48 +271,51 @@ def _strip_comments(line, is_comment):
 
 
 def _collect_cpp_declarations(
-    src_path, header_states, files_declarations, declared_types,
+    file_tree, header_states, files_declarations, declared_types,
     incomplete_types, external_procedures, external_aliases
 ):
-    for (root, dirs, files) in os.walk(src_path):
-        for file in files:
-            if (
-                file.lower().endswith(".cpp") or
-                file.lower().endswith(".h") or
-                file.lower().endswith(".xml")
-            ):
-                file_name = os.path.join(root, file)
-                head, dir_name1 = os.path.split(root)
-                head, dir_name2 = os.path.split(head)
-                declarations = [declared_types, incomplete_types]
-                if file.lower().endswith(".xml"):
-                    header_state = XmlMetadata(
-                        file_name, header_states, *declarations,
-                        external_procedures)
-                else:
-                    header_state = HeaderState(
-                        file_name, header_states, *declarations,
-                        external_aliases)
-                header_states[file] = header_state
-                header_states["{}/{}".format(dir_name1, file)] = header_state
-                header_states[
-                    "{}/{}/{}".format(
-                        dir_name2, dir_name1, file)] = header_state
-                if not file_name.lower().endswith(".xml"):
-                    files_declarations[file_name] = header_state
+    for file_name in file_tree.walk():
+        root, file = os.path.split(file_name)
+        if (
+            file.lower().endswith(".cpp") or
+            file.lower().endswith(".h") or
+            file.lower().endswith(".xml")
+        ):
+            head, dir_name1 = os.path.split(root)
+            head, dir_name2 = os.path.split(head)
+            declarations = [declared_types, incomplete_types]
+            if file.lower().endswith(".xml"):
+                header_state = XmlMetadata(
+                    file_tree, file_name, header_states, *declarations,
+                    external_procedures)
+            else:
+                header_state = HeaderState(
+                    file_tree, file_name, header_states, *declarations,
+                    external_aliases)
+            header_states[file] = header_state
+            header_states["{}/{}".format(dir_name1, file)] = header_state
+            header_states[
+                "{}/{}/{}".format(
+                    dir_name2, dir_name1, file)] = header_state
+            if not file_name.lower().endswith(".xml"):
+                files_declarations[file_name] = header_state
 
 
 def _rename_external_procedures(procedure_macros, external_procedures):
-    # Use macros like '#define FormatMessage FormatMessageA' as names of
-    # imported procedures
+    # Use macros of ANSI procedures of WinAPI like '#define FormatMessage
+    # FormatMessageA' as names of imported procedures. Other macros, e.g.
+    # '#define newtupleobject PyTuple_New' of rename2.h of Python, are old
+    # names of the procedures
     for macro_name, proc_name in procedure_macros.items():
+        if proc_name != macro_name + "A":
+            continue
         proc_decl = external_procedures.get(proc_name)
         if proc_decl is not None:
             external_procedures[proc_name] = proc_decl.copy(
                 proc_name=macro_name)
 
 
-def parse_cpp_header(src_path):
+def parse_cpp_header(src_tree):
     header_states = {}
     files_declarations = {}
     declared_types = _standard_types
@@ -320,11 +325,11 @@ def parse_cpp_header(src_path):
     extern_definitions_path = os.path.join(
         os.path.dirname(os.path.realpath(__file__)), "externdefs")
     _collect_cpp_declarations(
-        extern_definitions_path, header_states, files_declarations,
+        FileTree(extern_definitions_path), header_states, files_declarations,
         declared_types, incomplete_types, external_procedures,
         external_aliases)
     _collect_cpp_declarations(
-        src_path, header_states, files_declarations, declared_types,
+        src_tree, header_states, files_declarations, declared_types,
         incomplete_types, external_procedures, external_aliases)
     for file_declaration in files_declarations.values():
         file_declaration.parse()

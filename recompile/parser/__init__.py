@@ -4,6 +4,7 @@ from .cpp_demangling import demangle_cpp
 from .cpp_expression import parse_cpp_expression
 from .cpp_function import parse_cpp_function
 from .cpp_headers import parse_cpp_header
+from .file_tree import FileTree
 from .cpp_variable_declaration import parse_cpp_variable_declaration
 from .data_type import parse_data_type
 from .procedure_declaration import split_procedure_parameters

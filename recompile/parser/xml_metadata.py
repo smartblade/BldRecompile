@@ -7,9 +7,10 @@ from procedure_declaration import ProcedureDeclaration
 
 class XmlMetadata:
     def __init__(
-        self, file_name, header_states, declared_types, incomplete_types,
-        external_procedures
+        self, file_tree, file_name, header_states, declared_types,
+        incomplete_types, external_procedures
     ):
+        self._file_tree = file_tree
         self._file_name = file_name
         self._header_states = header_states
         self._declared_types = declared_types
@@ -22,7 +23,8 @@ class XmlMetadata:
         if self._visited:
             return
         self._visited = True
-        tree = ElementTree.parse(self._file_name)
+        with self._file_tree.open(self._file_name, "rb") as f:
+            tree = ElementTree.parse(f)
         root = tree.getroot()
         types = root.find("Types", _namespace)
         for type_elem in types:
