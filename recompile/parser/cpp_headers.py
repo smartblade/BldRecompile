@@ -315,7 +315,9 @@ def _rename_external_procedures(procedure_macros, external_procedures):
                 proc_name=macro_name)
 
 
-def parse_cpp_header(src_tree):
+def parse_cpp_header(src_tree, externdefs_tree=None):
+    """externdefs_tree replaces the declarations of recompile/parser/externdefs
+    in unit tests: reading all of them takes most of the time of a test."""
     header_states = {}
     files_declarations = {}
     declared_types = _standard_types
@@ -324,8 +326,10 @@ def parse_cpp_header(src_tree):
     external_aliases = {}
     extern_definitions_path = os.path.join(
         os.path.dirname(os.path.realpath(__file__)), "externdefs")
+    if externdefs_tree is None:
+        externdefs_tree = FileTree(extern_definitions_path)
     _collect_cpp_declarations(
-        FileTree(extern_definitions_path), header_states, files_declarations,
+        externdefs_tree, header_states, files_declarations,
         declared_types, incomplete_types, external_procedures,
         external_aliases)
     _collect_cpp_declarations(

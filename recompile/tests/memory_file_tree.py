@@ -5,9 +5,9 @@ import os
 class MemoryFileTree:
     """FileTree of unit tests: the files are given by their contents."""
 
-    def __init__(self, files):
+    def __init__(self, files, root="src"):
         self._files = {
-            os.path.join("src", *path.split("/")): content
+            os.path.join(root, *path.split("/")): content
             for path, content in files.items()
         }
 
