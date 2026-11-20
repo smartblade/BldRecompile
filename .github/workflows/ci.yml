@@ -26,3 +26,34 @@ jobs:
 
       - name: Check that BBLibc.dll.cpp is up to date
         run: git diff --exit-code -- BBLibc.dll.cpp
+
+  bldmystery:
+    name: Sources of BldMystery
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Check out BldMystery
+        uses: actions/checkout@v4
+        with:
+          repository: smartblade/bldmystery
+          ref: 7cf77ad07d13352c01c06abff416010fd04273bc
+          path: bldmystery
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Write intermediate files of the modules of BldMystery
+        working-directory: bldmystery
+        run: python process_asm.py --force=yes
+
+      - name: Update the sources of BldMystery
+        working-directory: recompile
+        run: >-
+          python process_asm.py --asm-patterns=yes
+          --src=../bldmystery/src --update-src-at=../bldmystery/src
+
+      - name: Check that the sources of BldMystery don't change
+        working-directory: bldmystery
+        run: git diff --exit-code
