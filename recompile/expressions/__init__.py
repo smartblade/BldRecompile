@@ -29,7 +29,6 @@ from .reinterpret_cast import ReinterpretCast
 from .static_cast import StaticCast
 from .string_constant import StringConstant
 from .unparsed_token import UnparsedToken
-from .unparsed_tokens import UnparsedTokens
 
 import expressions.intermediate
 
