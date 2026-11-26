@@ -9,7 +9,14 @@ from .update_inlines import define_nearest_inline_definitions
 from .writer import get_code
 
 
-def update_src(src_path, module_name, procedures, exported_procedures):
+def update_src(
+    src_path, module_name, procedures, exported_procedures,
+    excluded_procedures=frozenset(),
+):
+    """Update the sources by the converted procedures, except the
+    procedures (module name, address) of excluded_procedures."""
+    excluded_addresses = set(
+        addr for module, addr in excluded_procedures if module == module_name)
     proc_by_addr = {}
     for procedure in procedures:
         proc_by_addr[procedure.address] = procedure
@@ -20,7 +27,8 @@ def update_src(src_path, module_name, procedures, exported_procedures):
     _define_nearest_src_definitions_for_files(src_files)
     bind_headers(src_files, procedures_data)
     define_nearest_inline_definitions(src_files, procedures_data)
-    updating_procedures = _get_updating_procedures(procedures_data)
+    updating_procedures = _get_updating_procedures(
+        procedures_data, excluded_addresses)
     for src_file in src_files:
         _process_file(
             src_file, module_name, updating_procedures, exported_procedures)
@@ -84,10 +92,10 @@ def _define_files_from_adjacent_procedures(procedures_data):
             unset_file_addresses = []
 
 
-def _get_updating_procedures(procedures_data):
+def _get_updating_procedures(procedures_data, excluded_addresses):
     updating_procedures = {}
     for addr, procedure_data in procedures_data.items():
-        if addr in _excluded_addresses:
+        if addr in excluded_addresses:
             continue
         src_definition = procedure_data.src_definition
         if src_definition is not None:
@@ -201,10 +209,3 @@ class _FileData:
     def add_procedure(self, proc):
         self._procedures.append(proc)
 
-
-_excluded_addresses = {
-    0x100022D0, 0x10002550, 0x10002580, 0x100025C0, 0x100030E0, 0x10003300,
-    0x10003337, 0x100033A4, 0x10003410, 0x100039BA,
-    0x100066E0, 0x10006720, 0x10029BE0,
-    0x1002A590,
-}

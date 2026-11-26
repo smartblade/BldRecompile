@@ -53,6 +53,7 @@ jobs:
         run: >-
           python process_asm.py --asm-patterns=yes
           --src=../bldmystery/src --update-src-at=../bldmystery/src
+          --excluded-procedures=excluded_procedures.txt
 
       - name: Check that the sources of BldMystery don't change
         working-directory: bldmystery

@@ -13,7 +13,7 @@ import parser as cpp_parser
 from patterns.asm_patterns import process_asm_patterns
 from patterns.characteristics import ModuleCharacteristics
 from read_exports import read_exports
-from update_src import update_src
+from update_src import parse_excluded_procedures, update_src
 
 parser = OptionParser()
 parser.add_option("--show-hex-prefix", dest="show_hex_prefix",
@@ -36,6 +36,10 @@ parser.add_option("--src", dest="src",
                   default=None)
 parser.add_option("--update-src-at", dest="update_src_at",
                   help="Save updated sources to specified directory",
+                  default=None)
+parser.add_option("--excluded-procedures", dest="excluded_procedures",
+                  help="Text file of procedures not updated by "
+                  "--update-src-at, a line 'MODULE:ADDRESS' per procedure",
                   default=None)
 parser.add_option("--run-tests", dest="run_tests", action="store_true",
                   help="Run unit tests",
@@ -1370,8 +1374,14 @@ def run():
             if options.update_src_at is not None:
                 update_src_at = os.path.abspath(options.update_src_at)
                 print("Update sources at {}...".format(update_src_at))
+                excluded_procedures = set()
+                if options.excluded_procedures is not None:
+                    with open(options.excluded_procedures) as f:
+                        excluded_procedures = parse_excluded_procedures(
+                            f, options.excluded_procedures)
                 update_src(
-                    update_src_at, module_name, procedures, exported_procedures)
+                    update_src_at, module_name, procedures, exported_procedures,
+                    excluded_procedures)
 
 
 def process_asm_dir(asm_files, declarations):

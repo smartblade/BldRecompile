@@ -1,0 +1,16 @@
+# Procedures not updated in the sources of BldMystery by --update-src-at,
+# passed by --excluded-procedures: MODULE:ADDRESS, '#' starts a comment.
+BBLibc.dll:100022D0  # B_Name::operator const char *
+BBLibc.dll:10002550  # B_MessageChannel::~B_MessageChannel
+BBLibc.dll:10002580  # B_MessageChannel::B_MessageChannel(const B_MessageChannel &)
+BBLibc.dll:100025C0  # B_MessageChannel::operator =
+BBLibc.dll:100030E0  # B_List::~B_List
+BBLibc.dll:10003300  # B_Name::B_Name()
+BBLibc.dll:10003337  # B_Name::B_Name(const char *)
+BBLibc.dll:100033A4  # B_Name::B_Name(const B_Name &)
+BBLibc.dll:10003410  # B_Name::B_Name(unsigned int)
+BBLibc.dll:100039BA  # B_Name::~B_Name
+BBLibc.dll:100066E0  # B_Resource::B_Resource(const B_Resource &)
+BBLibc.dll:10006720  # B_Resource::operator =
+BBLibc.dll:10029BE0  # vararg
+BBLibc.dll:1002A590  # OutputWin32Error
